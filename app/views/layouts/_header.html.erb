@@ -1,0 +1,41 @@
+<header class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to "SubConTraX.com", root_path, class: 'brand' %>
+      <nav>
+
+        <ul class="nav pull-right">
+          <li><%= link_to "Home", root_path %></li>
+          <li><%= link_to "Help" %></li>
+          <% if user_signed_in? %>
+              <li><%= link_to "Users" %></li>
+              <li><%= link_to "Tickets", '#' %></li>
+              <li><%= link_to "New Ticket", '#' %></li>
+              <li>
+                <div class="btn-group">
+                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="icon-user"></i>
+                    My Account
+                    <span class="caret"></span>
+                  </a>
+
+
+                  <ul class="dropdown-menu">
+                    <li><%= link_to "Profile" %></li>
+                    <li><%= link_to "Settings" %></li>
+                    <li class="divider"></li>
+                    <li>
+                      <%= link_to "Sign out",  method: "delete" %>
+                    </li>
+                  </ul>
+                </div>
+
+              </li>
+          <% else %>
+              <li><%= link_to "Sign in" %></li>
+          <% end %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

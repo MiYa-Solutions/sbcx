@@ -1,0 +1,35 @@
+<div class="page-header">
+  <h1><%="Organizations" %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Created At</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @organizations.each do |org| %>
+      <tr>
+        <td><%= link_to org.id, organization_path(org) %></td>
+        <td><%= org.name %></td>
+        <td><%=l org.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_organization_path(org), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      organization_path(org),
+                      :method => :delete,
+                      :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_organization_path,
+            :class => 'btn btn-primary' %>
