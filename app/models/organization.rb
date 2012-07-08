@@ -49,6 +49,12 @@ class Organization < ActiveRecord::Base
 
   validates :name, { presence: true, length: { maximum: 255 } }
 
+  validate :has_at_least_one_role
+
+  private
+  def has_at_least_one_role
+    errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0
+  end
 
 
-                                                                                                                                                      end
+end

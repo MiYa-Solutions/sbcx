@@ -4,7 +4,8 @@ Sbcx::Application.routes.draw do
 
   devise_for :users
 
-  resources :organizations, only: [:new, :create, :edit, :show, :index]
+  get '/region_select/subregion_options' => 'region_select#subregion_options'
+  resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

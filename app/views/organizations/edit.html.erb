@@ -1,2 +1,12 @@
-<h1>Organizations#edit</h1>
-<p>Find me in app/views/organizations/edit.html.erb</p>
+<% provide(:title, "Edit Organization") %>
+<h1>Update Your Organization Profile</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= simple_form_for(@organization) do |f| %>
+        <%= render 'fields', f: f %>
+        <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
+    <% end %>
+
+  </div>
+</div>

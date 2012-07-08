@@ -37,7 +37,13 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
   end
 
-  def subregion_options
-    render partial: 'shared/subregion_select'
+  def update
+    @organization = Organization.find(params[:id])
+    if @organization.update_attributes(params[:organization])
+      flash[:success] = "Profile updated"
+      redirect_to @organization
+    else
+      render 'edit'
+    end
   end
 end

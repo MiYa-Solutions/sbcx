@@ -27,15 +27,15 @@
 
 <%= f.input :phone %>
 
-<%= f.input :website%>
+<%= f.input :website, as: :url%>
 
 <%= f.input :address1 %>
 
 <%= f.input :address2 %>
 
-<%= f.country_select :country, { priority: %w[US] }, prompt: 'Please select a country' %>
+<%= f.country_select :country, { priority: %w[US] } %>
 
-<%= render partial: 'shared/subregion_select' %>
+<%= render  'region_select/subregion_select' %>
 
 
 
