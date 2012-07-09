@@ -23,6 +23,10 @@
 #
 
 class Organization < ActiveRecord::Base
+  has_many :users
+  has_many :customers
+  has_many :org_to_roles
+  has_many :organization_roles, :through => :org_to_roles
 
 
   attr_accessible :address1,
@@ -39,13 +43,14 @@ class Organization < ActiveRecord::Base
                   :subcontrax_member,
                   :website,
                   :work_phone,
-                  :zip,
-  :organization_role_ids
+                  :zip, :organization_role_ids
+
+  # accessing associated models
+  attr_accessible :users_attributes
 
 
-  has_many :users
-  has_many :org_to_roles
-  has_many :organization_roles, :through => :org_to_roles
+
+  accepts_nested_attributes_for :users
 
   validates :name, { presence: true, length: { maximum: 255 } }
 

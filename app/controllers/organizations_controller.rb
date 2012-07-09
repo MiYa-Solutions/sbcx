@@ -46,4 +46,5 @@ class OrganizationsController < ApplicationController
       render 'edit'
     end
   end
+
 end

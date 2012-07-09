@@ -1,0 +1,48 @@
+<h2>Register for a new account</h2>
+
+<% resource.build_organization %>
+
+<%= form_for(resource, :html => { :class => 'form-horizontal' }, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
+    <fieldset>
+      <legend class="hidden">Sign Up Form</legend>
+      <h3>User Information</h3>
+      <div class="control-group">
+        <%= f.label :email, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.email_field :email %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :password, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.password_field :password %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :password_confirmation, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.password_field :password_confirmation %>
+        </div>
+      </div>
+
+      <h3>Company/Organization Information</h3>
+      <%= f.simple_fields_for :organization_attributes, resource.organization do |fo| %>
+          <div class="control-group">
+            <%= fo.label :name, :class => 'control-label' %>
+            <div class="controls">
+              <%= fo.text_field :name, :class => 'text_field' %>
+            </div>
+          </div>
+
+          <%= fo.association :organization_roles  ,:collection => OrganizationRole.all(:order => 'name'), as: :check_boxes%>
+    <% end %>
+
+      <div class="form-actions">
+        <%= f.submit "Sign up", :class => 'btn btn-primary' %>
+        <%= link_to 'Forgot Password?', :new_user_password, :class => 'btn btn-info' %>
+      </div>
+    </fieldset>
+
+<% end %>
