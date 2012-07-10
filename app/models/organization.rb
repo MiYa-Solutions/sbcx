@@ -24,7 +24,7 @@
 
 class Organization < ActiveRecord::Base
   has_many :users
-  has_many :customers
+  has_many :customers, inverse_of: :organization
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
 

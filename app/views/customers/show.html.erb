@@ -1,9 +1,23 @@
-<% provide(:title, @cusomter.name) %>
+<h1> Customers Attributes</h1>
+<%= provide(:title, @customer.name) %>
 <div class="row">
   <div class="span8">
-    <%= render partial: 'customer' %>
+    <%= render @customer %>
   </div>
 
 </div>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              organization_customers_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_organization_customer_path(@customer.organization, @customer), :class => 'btn' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              organization_customer_path( @customer.organization, @customer),
+              :method => 'delete',
+              :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
+              :class => 'btn btn-danger' %>
+</div>
+
 
 

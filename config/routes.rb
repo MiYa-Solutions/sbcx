@@ -6,7 +6,7 @@ Sbcx::Application.routes.draw do
 
   get '/region_select/subregion_options' => 'region_select#subregion_options'
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update] do
-    resources :customers do
+    resources :customers, only: [:new, :create, :edit, :show, :index, :update] do
 
       end
   end

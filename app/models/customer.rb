@@ -22,7 +22,9 @@
 
 class Customer < ActiveRecord::Base
   # todo check if organization_id can be removed
+  # todo ensure customers are retrieved only with org id to prevent from unauthorized orgs to see customers
   attr_accessible :address1, :address2, :city, :company, :country, :email, :mobile_phone, :name, :organization_id, :phone, :state, :work_phone, :zip
-  belongs_to :organization
+  belongs_to :organization, inverse_of: :customers
+  validates_presence_of :organization
 
 end
