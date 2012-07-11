@@ -1,0 +1,6 @@
+
+<% for attribute in customer.attributes.keys  %>
+    <b><%= attribute.humanize %></b> <%= customer.attributes[attribute].to_s %><br />
+<% end %>
+
+

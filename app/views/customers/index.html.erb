@@ -1,0 +1,13 @@
+<%= provide(:title, 'All users') %>
+<h1>All Customers</h1>
+<%= link_to 'Create Customer', new_organization_customer_path %>
+
+<%= will_paginate @customers %>
+<ul class="users">
+  <% @customers.each do |customer| %>
+      <li>
+      <%= render customer %>
+      </li>
+  <% end %>
+</ul>
+<%= will_paginate @customers %>
