@@ -28,7 +28,11 @@ group :assets do
   gem 'sass-rails',   '3.2.4'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
+
 end
+
+
+
 
 group :test do
   gem 'capybara', '1.1.2'
@@ -45,3 +49,6 @@ end
 group :production do
   gem 'pg', '0.14.0'
 end
+
+
+
