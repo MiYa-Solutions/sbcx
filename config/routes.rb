@@ -1,15 +1,15 @@
 Sbcx::Application.routes.draw do
 
+  resources :providers
+
   root to: 'static_pages#welcome'
 
   devise_for :users, :controllers => {:registrations => "registrations"}
 
-  get '/region_select/subregion_options' => 'region_select#subregion_options'
-  resources :organizations, only: [:new, :create, :edit, :show, :index, :update] do
-    resources :customers, only: [:new, :create, :edit, :show, :index, :update] do
+  get '/region_select/subregion_options' => 'region_select#subregion_options', as: :region_select
 
-      end
-  end
+  resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
+  resources :customers, only: [:new, :create, :edit, :show, :index, :update]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
