@@ -1,33 +1,42 @@
 class CustomersController < ApplicationController
   def new
-    @organization = Organization.find(params[:organization_id])
+
     @customer = Customer.new
-    render 'new'
+
   end
 
   def create
-    @organization = Organization.find(params[:organization_id])
+    @organization = current_user.organization
     @customer = @organization.customers.build(params[:customer])
 
     # todo create symbols for the notification strings
     if @customer.save
       flash[:success] = "Customer created!"
-      redirect_to  organization_customer_path @organization, @customer
+      redirect_to  customer_path @customer
     else
       render 'new'
     end
   end
 
   def edit
+    @customer = current_user.organization.customers.find(params[:id])
   end
   def update
+    @customer = current_user.organization.customers.find(params[:id])
+    if @customer.update_attributes(params[:customer])
+      flash[:success] = "Profile updated"
+      redirect_to @customer
+    else
+      render 'edit'
+    end
+
   end
 
   def index
-    @customers = Organization.find(params[:organization_id]).customers.paginate(page: params[:page], per_page: 10)
+    @customers = current_user.organization.customers.paginate(page: params[:page], per_page: 10)
   end
 
   def show
-    @customer = Customer.find(params[:id])
+    @customer = current_user.organization.customers.find(params[:id])
   end
 end

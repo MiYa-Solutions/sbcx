@@ -27,6 +27,9 @@ class Organization < ActiveRecord::Base
   has_many :customers, inverse_of: :organization
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
+  has_many :agreements
+  has_many :providers, class_name: 'Organization', through: :agreements
+  has_many :subcontractors, class_name: 'Organization', through: :agreements
 
 
   attr_accessible :address1,

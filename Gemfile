@@ -19,6 +19,7 @@ group :development, :test do
   gem 'rspec-rails', '2.9.0'
   gem 'guard-rspec', '0.5.5'
   gem 'annotate', '~> 2.4.1.beta'
+  gem 'nifty-generators'
 
 end
 
@@ -28,11 +29,7 @@ group :assets do
   gem 'sass-rails',   '3.2.4'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
-
 end
-
-
-
 
 group :test do
   gem 'capybara', '1.1.2'
@@ -44,11 +41,11 @@ group :test do
   gem 'guard-spork', '0.3.2'
   gem 'spork', '0.9.0'
   gem 'launchy', '2.1.0'
+  gem 'mocha'
 end
 
 group :production do
   gem 'pg', '0.14.0'
 end
 
-
-
+gem "mocha", :group => :test
