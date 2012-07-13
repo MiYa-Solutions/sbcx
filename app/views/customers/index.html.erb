@@ -1,13 +1,44 @@
-<%= provide(:title, 'All users') %>
-<h1>All Customers</h1>
-<%= link_to 'Create Customer', new_organization_customer_path %>
+<div class="row-fluid" id="show_customers">
+  <div class="well">
 
-<%= will_paginate @customers %>
-<ul class="users">
-  <% @customers.each do |customer| %>
-      <li>
-      <%= render customer %>
-      </li>
-  <% end %>
-</ul>
-<%= will_paginate @customers %>
+    <h2>My Customers</h2>
+    <div class="row">
+      <div class="span4">
+        <%= form_tag organization_customer_path, id: "search_form", :method => :get, :remote => true do %>
+            <p>
+              <%= text_field_tag :search, params[:search] %>
+              <%= submit_tag "Search", :name => nil %>
+            </p>
+        <% end %>
+    </div>
+
+      <div class="span3">
+        <%= link_to 'New Customer', new_organization_customer_path, :class => 'btn vtn-large btn-primary' %>
+      </div>
+    </div>
+
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address 1</th>
+        <th>Address 2</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @customers.each do |customer| %>
+          <%= render customer %>
+      <% end %>
+      </tbody>
+    </table>
+
+
+  </div>
+</div>
+
