@@ -1,5 +1,5 @@
 <tr>
-  <td><%= link_to customer.name, organization_customer_path(customer) %></td>
+  <td><%= link_to customer.name, customer_path(customer) %></td>
   <td><%= customer.address1 %></td>
   <td><%= customer.address2 %></td>
   <td><%= customer.city %></td>
@@ -7,8 +7,8 @@
   <td><%= customer.zip %></td>
   <td><%= customer.phone %></td>
   <td>
-    <%= link_to 'Edit', edit_organization_customer_path(customer), :class => 'btn btn-mini' %>
-    <%= link_to 'Destroy', organization_customer_path(customer), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+    <%= link_to 'Edit', edit_customer_path(customer), :class => 'btn btn-mini' %>
+    <%= link_to 'Destroy', customer_path(customer), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
 
 
   </td>
