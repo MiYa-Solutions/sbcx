@@ -1,6 +1,12 @@
 class ProvidersController < ApplicationController
   def new
-    @provider = current_user.organization.providers.build
+
+    if params[:search].nil?
+      @provider = current_user.organization.providers.build
+    else
+
+    end
+
   end
 
   def create
@@ -23,8 +29,8 @@ class ProvidersController < ApplicationController
 
   def update
     @provider = current_user.organization.providers.find(params[:id])
-    if @provider.update_attributes(params[:provider])
-      redirect_to @provider, :notice  => "Successfully updated provider."
+    if @provider.update_attributes(params[:organization])
+      redirect_to provider_path(@provider), :notice  => "Successfully updated provider."
     else
       render :action => 'edit'
     end
@@ -37,7 +43,8 @@ class ProvidersController < ApplicationController
   end
 
   def index
-    @providers = current_user.organization.providers.all
+    @new_providers = current_user.organization.providers.all
+    @providers = current_user.organization.provider_candidates(params[:search])
   end
 
   def show

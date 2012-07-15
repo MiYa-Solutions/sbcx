@@ -1,6 +1,14 @@
-<% title "Edit Provider" %>
-
-<%= render 'form' %>
+<h1>Edit Provider</h1>
+<div class="row">
+  <div class="span6 offset3">
+    <%= simple_form_for @provider, url: provider_url(@provider) do |f| %>
+        <%= render 'fields', f: f %>
+        <div>
+          <%= f.submit "Create", class: "btn btn-large btn-primary" %>
+        </div>
+    <% end %>
+  </div>
+</div>
 
 <p>
   <%= link_to "Show", @provider %> |

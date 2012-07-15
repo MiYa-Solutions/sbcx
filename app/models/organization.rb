@@ -89,6 +89,16 @@ class Organization < ActiveRecord::Base
 
   end
 
+  def provider_candidates(search)
+    # todo fix the bug where all organizations are returned
+      if search
+        Organization.all( :conditions => ['name LIKE ?', "%#{search}%"])
+      else
+        Organization.all
+      end
+
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0

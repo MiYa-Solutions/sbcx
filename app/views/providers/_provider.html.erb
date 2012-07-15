@@ -1,0 +1,7 @@
+<li>
+  <%= link_to provider.name, providers_path(provider) %>
+  <%= form_for(current_user.organization.agreements.build(provider_id: provider.id)) do |f| %>
+      <div><%= f.hidden_field :provider_id %></div>
+      <%= f.submit "Add", class: "btn btn-large btn-primary" %>
+  <% end %>
+</li>
