@@ -4,9 +4,14 @@ class ProvidersController < ApplicationController
   end
 
   def create
-    @provider = current_user.organization.providers.build(params[:provider])
-    if @provider.save
-      redirect_to @provider, :notice => "Successfully created provider."
+    params[:organization][:organization_role_ids] =  [OrganizationRole::PROVIDER_ROLE_ID]
+
+    # todo the below is not safe as the provider save can fail and as a result the agreement will not be saved
+    @provider = current_user.organization.providers.build(params[:organization])
+    @provider.save
+
+    if current_user.organization.add_provider!(@provider)
+      redirect_to provider_path(@provider), :notice => "Successfully created provider."
     else
       render :action => 'new'
     end
