@@ -1,6 +1,7 @@
+
 <% if object.errors.any? %>
 
-    <div id="error_explanation">
+         <div id="error_explanation">
 
         The form contains <%= pluralize(object.errors.count, "error", :class => "alert alert-error string mandatory") %>.
 
@@ -13,4 +14,6 @@
 
     </div>
 
+
 <% end %>
+

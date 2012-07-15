@@ -12,56 +12,40 @@
         </div>
 
 <fieldset>
-     <legend class="hidden">Sign Up Form</legend>
-       <div class="row">
-            <div class="span8">
-              <div class="well form-inline">
-              <legend>User Information:</legend>
 
-                  <div class="control-group">
-                     <label class="string optional control-label" for="email">Email</label>
-                     <div class="controls">
-                   <%= f.email_field :email, :class => 'input-large' %>
-                     </div>
-                   </div>
-
-                   <div class="control-group string mandatory">
-                     <label class="string optional control-label" for="password">Password</label>
-                     <div class="controls">
-                   <%= f.password_field :password %>
-                     </div>
-                   </div>
-
-                   <div class="control-group string mandatory">
-                     <label class="string optional control-label" for="password_confirmation">Password</label>
-                     <div class="controls">
-                   <%= f.password_field :password_confirmation %>
-                     </div>
-                   </div>
-
-                </div>
-            </div>
-       </div>
-
-  <div class="row">
-      <div class="span8">
-        <div class="well form-inline">
-          <legend>Company/Organization Information:</legend>
-              <%= f.simple_fields_for :organization_attributes, resource.organization do |fo| %>
-              <%= render 'organizations/fields', f: fo %>
-              <% end %>
+      <h4>User Information:</h4>  </br>
+      <div class="control-group">
+        <label class="string required control-label" for="email">Email</label>
+        <div class="controls">
+          <%= f.email_field :email %>
         </div>
       </div>
 
-  </div>
-
-      <div class="form-actions">
-      <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %>      </br>
+      <div class="control-group string required">
+        <label class="string optional control-label" for="password">Password</label>
+        <div class="controls">
+          <%= f.password_field :password %>
+        </div>
       </div>
 
+      <div class="control-group string required">
+        <label class="string optional control-label" for="password_confirmation">Password</label>
+        <div class="controls">
+          <%= f.password_field :password_confirmation %>
+        </div>
+      </div>
+
+    <hr>
+
+      <h4>Company/Organization Information:</h4>  </br>
+      <%= f.simple_fields_for :organization_attributes, resource.organization do |fo| %>
+          <%= render 'organizations/fields', f: fo %>
+      <% end %>
 
 
-
+      <div class="form-actions">
+      <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %> </br>
+      </div>
 
 
 </fieldset>
