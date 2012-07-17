@@ -14,13 +14,17 @@ class ProvidersController < ApplicationController
 
     # todo the below is not safe as the provider save can fail and as a result the agreement will not be saved
     @provider = current_user.organization.providers.build(params[:organization])
-    @provider.save
-
-    if current_user.organization.add_provider!(@provider)
-      redirect_to provider_path(@provider), :notice => "Successfully created provider."
+    if @provider.save
+      if current_user.organization.add_provider!(@provider)
+        redirect_to provider_path(@provider), :notice => "Successfully created provider."
+      else
+        render :action => 'new'
+      end
     else
-      render :action => 'new'
+      render 'providers/new'
     end
+
+
   end
 
   def edit

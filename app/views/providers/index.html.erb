@@ -5,7 +5,7 @@
     </p>
 <% end %>
 
-<ul class="providers" id="new_providers">
+<ul class="providers" >
 
 </ul>
 
@@ -17,6 +17,7 @@
     <th></th>
     <th></th>
   </tr>
+  <div  id="new_providers">
   <% for provider in @new_providers %>
     <tr>
       <td><%= provider.id %></td>
@@ -26,6 +27,7 @@
       <td><%= link_to "Edit", edit_provider_path(provider) %></td>
     </tr>
   <% end %>
+  </div>
 </table>
 
 <p><%= link_to "New Provider", new_provider_path, class: 'btn' %></p>
