@@ -27,9 +27,23 @@ class Organization < ActiveRecord::Base
   has_many :customers, inverse_of: :organization
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
-  has_many :agreements
-  has_many :providers, class_name: 'Organization', through: :agreements
-  has_many :subcontractors, class_name: 'Organization', through: :agreements
+  #has_many :agreements
+  #has_many :providers,  through: :agreements, foreign_key: :subcontractor_id
+  #has_many :subcontractors, through: :agreements, foreign_key: :provider_id
+
+
+  # relationships is the table tha holds the link between a user and its followers and the users it follows
+  has_many :agreements, foreign_key: "provider_id", class_name: "Agreement"
+  # followed users are the set of users a user is following
+  has_many :subcontractors, through: :relationships, source: :subcontractor
+  # the reverse relationship is a symbol creating a form of a virtual table that will allow the creation of
+  # the below followers relationship
+  has_many :reverse_relationships, foreign_key: "subcontractor_id",
+           class_name:                          "Agreement"
+
+  # followers are made available thanks to the reverse relationship virtual table above
+  has_many :providers, through: :reverse_relationships, source: :provider
+
 
 
   attr_accessible :address1,
@@ -46,18 +60,44 @@ class Organization < ActiveRecord::Base
                   :subcontrax_member,
                   :website,
                   :work_phone,
-                  :zip, :organization_role_ids
+                  :zip, :organization_role_ids, :provider_id
 
   # accessing associated models
-  attr_accessible :users_attributes
+  attr_accessible :users_attributes, :provider_attributes, :agreement_attributes, :agreements
 
 
 
-  accepts_nested_attributes_for :users
+
+  accepts_nested_attributes_for :users, :agreements
 
   validates :name, { presence: true, length: { maximum: 255 } }
 
   validate :has_at_least_one_role
+
+  def provider?
+    organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
+  end
+
+  def subcontractor?
+    organization_role_ids.include? OrganizationRole::SUBCONTRACTOR_ROLE_ID
+  end
+
+  def add_provider!(p)
+    # todo ensure both provider and new are in the same transaction
+
+    self.providers << p
+
+  end
+
+  def provider_candidates(search)
+    # todo fix the bug where all organizations are returned
+      if search
+        Organization.all( :conditions => ['name LIKE ?', "%#{search}%"])
+      else
+        Organization.all
+      end
+
+  end
 
   private
   def has_at_least_one_role

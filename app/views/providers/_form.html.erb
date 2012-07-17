@@ -1,7 +1,11 @@
-<%= simple_form_for @provider do |f| %>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p><%= f.submit %></p>
-<% end %>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= simple_form_for @provider, url: providers_url do |f| %>
+        <%= render 'fields', f: f %>
+        <div>
+          <%= f.submit "Create", class: "btn btn-large btn-primary" %>
+        </div>
+    <% end %>
+  </div>
+</div>

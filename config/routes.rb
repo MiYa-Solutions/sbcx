@@ -1,5 +1,7 @@
 Sbcx::Application.routes.draw do
 
+  resources :agreements, only: [:new, :create, :edit, :show]
+
   resources :providers
 
   root to: 'static_pages#welcome'

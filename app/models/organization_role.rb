@@ -13,4 +13,11 @@ class OrganizationRole < ActiveRecord::Base
   set_primary_key :id
   has_many :org_to_roles
   has_many :organizations, through: :org_to_roles
+
+  PROVIDER_ROLE_ID = 1
+  PROVIDER_ROLE_NAME = 'Provider'
+
+  SUBCONTRACTOR_ROLE_ID = 2
+  SUBCONTRACTOR_ROLE_NAME = 'Subcontractor'
+
 end

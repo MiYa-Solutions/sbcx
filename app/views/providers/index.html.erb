@@ -1,17 +1,31 @@
-<% title "Providers" %>
+<%= form_tag providers_path, id: "agreement_search_form", :method => :get, :remote => true do %>
+    <p>
+      <%= text_field_tag :search, params[:search] %>
+      <%= submit_tag "Search", :name => nil %>
+    </p>
+<% end %>
 
-<table>
+<ul class="providers" id="new_providers">
+
+</ul>
+
+<table class="table">
   <tr>
+    <th>ID</th>
     <th>Name</th>
+    <th>Company</th>
+    <th></th>
+    <th></th>
   </tr>
-  <% for provider in @providers %>
+  <% for provider in @new_providers %>
     <tr>
-      <td><%= provider.name %></td>
-      <td><%= link_to "Show", provider %></td>
+      <td><%= provider.id %></td>
+      <td><%= link_to provider.name, provider_path(provider) %></td>
+      <td><%= provider.company %></td>
+      <td><%= link_to "Show", providers_path(provider) %></td>
       <td><%= link_to "Edit", edit_provider_path(provider) %></td>
-      <td><%= link_to "Destroy", provider, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end %>
 </table>
 
-<p><%= link_to "New Provider", new_provider_path %></p>
+<p><%= link_to "New Provider", new_provider_path, class: 'btn' %></p>
