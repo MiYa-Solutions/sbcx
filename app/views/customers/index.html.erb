@@ -4,40 +4,46 @@
     <h2>My Customers</h2>
     <div class="row">
       <div class="span4">
-        <%= form_tag customers_path, id: "search_form", :method => :get, :remote => true do %>
+        <%= form_tag customers_path, id: "search_customer_form", :method => :get, :remote => true do %>
             <p>
               <%= text_field_tag :search, params[:search] %>
               <%= submit_tag "Search", :name => nil %>
             </p>
         <% end %>
-    </div>
+     </div>
 
       <div class="span3">
         <%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary' %>
       </div>
     </div>
 
+    <% if @customers.empty? %>
+        <p>No records, click "Add Customer" to add new contact</p>
 
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Address 1</th>
-        <th>Address 2</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip</th>
-        <th>Phone</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @customers.each do |customer| %>
-          <%= render customer %>
-      <% end %>
-      </tbody>
-    </table>
 
+  <% else %>
+        <%= will_paginate @customers %>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Address 1</th>
+            <th>Address 2</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip</th>
+            <th>Phone</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @customers.each do |customer| %>
+              <%= render customer %>
+          <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @customers %>
+    <% end %>
 
   </div>
 </div>
