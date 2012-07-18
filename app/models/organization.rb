@@ -35,7 +35,7 @@ class Organization < ActiveRecord::Base
   # relationships is the table tha holds the link between a user and its followers and the users it follows
   has_many :agreements, foreign_key: "provider_id", class_name: "Agreement"
   # followed users are the set of users a user is following
-  has_many :subcontractors, through: :relationships, source: :subcontractor
+  has_many :subcontractors, through: :agreements, source: :subcontractor
   # the reverse relationship is a symbol creating a form of a virtual table that will allow the creation of
   # the below followers relationship
   has_many :reverse_relationships, foreign_key: "subcontractor_id",
@@ -43,7 +43,6 @@ class Organization < ActiveRecord::Base
 
   # followers are made available thanks to the reverse relationship virtual table above
   has_many :providers, through: :reverse_relationships, source: :provider
-
 
 
   attr_accessible :address1,
@@ -66,8 +65,6 @@ class Organization < ActiveRecord::Base
   attr_accessible :users_attributes, :provider_attributes, :agreement_attributes, :agreements
 
 
-
-
   accepts_nested_attributes_for :users, :agreements
 
   validates :name, { presence: true, length: { maximum: 255 } }
@@ -82,20 +79,26 @@ class Organization < ActiveRecord::Base
     organization_role_ids.include? OrganizationRole::SUBCONTRACTOR_ROLE_ID
   end
 
-  def add_provider!(p)
+  def create_provider!(params)
+    params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
+
+    providers.create(params[:provider])
+
     # todo ensure both provider and new are in the same transaction
 
-    self.providers << p
+  end
 
+  def add_provider(provider)
+    providers << provider
   end
 
   def provider_candidates(search)
     # todo fix the bug where all organizations are returned
-      if search
-        Organization.all( :conditions => ['name LIKE ?', "%#{search}%"])
-      else
-        Organization.all
-      end
+    if search
+      Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
+    else
+      Organization.all
+    end
 
   end
 

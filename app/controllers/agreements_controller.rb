@@ -14,7 +14,8 @@ class AgreementsController < ApplicationController
         render :action => 'new'
       end
     else
-      current_user.organization.add_provider!(Organization.find(params[:agreement][:provider_id]))
+      provider = Provider.find(params[:agreement][:provider_id])
+      current_user.organization.add_provider(provider)
       redirect_to providers_path
     end
 
@@ -27,7 +28,7 @@ class AgreementsController < ApplicationController
   def update
     @agreements = Agreements.find(params[:id])
     if @agreements.update_attributes(params[:agreements])
-      redirect_to root_url, :notice  => "Successfully updated agreements."
+      redirect_to root_url, :notice => "Successfully updated agreements."
     else
       render :action => 'edit'
     end

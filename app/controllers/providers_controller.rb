@@ -10,16 +10,13 @@ class ProvidersController < ApplicationController
   end
 
   def create
-    params[:organization][:organization_role_ids] =  [OrganizationRole::PROVIDER_ROLE_ID]
+    begin
+      @provider = current_user.organization.create_provider!(params)
+      redirect_to @provider, :notice => "Successfully created provider."
 
-    # todo the below is not safe as the provider save can fail and as a result the agreement will not be saved
-    @provider = current_user.organization.providers.build(params[:organization])
-    @provider.save
-
-    if current_user.organization.add_provider!(@provider)
-      redirect_to provider_path(@provider), :notice => "Successfully created provider."
-    else
-      render :action => 'new'
+    rescue ActiveRecord::RecordInvalid
+      logger.debug "ActiveRecord::RecordInvalid"
+      render :new
     end
   end
 
@@ -30,7 +27,7 @@ class ProvidersController < ApplicationController
   def update
     @provider = current_user.organization.providers.find(params[:id])
     if @provider.update_attributes(params[:organization])
-      redirect_to provider_path(@provider), :notice  => "Successfully updated provider."
+      redirect_to provider_path(@provider), :notice => "Successfully updated provider."
     else
       render :action => 'edit'
     end
@@ -44,7 +41,7 @@ class ProvidersController < ApplicationController
 
   def index
     @new_providers = current_user.organization.providers.all
-    @providers = current_user.organization.provider_candidates(params[:search])
+    @providers     = current_user.organization.provider_candidates(params[:search])
   end
 
   def show
