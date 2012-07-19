@@ -1,33 +1,46 @@
-<%= form_tag providers_path, id: "agreement_search_form", :method => :get, :remote => true do %>
-    <p>
-      <%= text_field_tag :search, params[:search] %>
-      <%= submit_tag "Search", :name => nil %>
-    </p>
+<div class="well">
+  <h2>My Providers</h2>
+
+  <div class="row">
+    <div class="span9">
+        <%= form_tag providers_path, id: "agreement_search_form", :method => :get, :remote => true do %>
+            <p>
+              <%= text_field_tag :search, params[:search] %>
+              <%= submit_tag "Search", :name => nil %>
+              <!-- #<%= link_to 'Show All', providers_path, :class => 'btn btn-mini' %>-->
+
+          </p>
+        <% end %>
+    </div>
+
+    <div class="span2">
+      <%= link_to 'Add Provider', new_provider_path, :class => 'btn btn-primary' %>
+    </div>
+  </div>
+
+
+<% if @new_providers.empty? %>
+      <span class="label">No records, click "Add Provider" to add new contact</span>
+<% else %>
+
+    <table class="table table-striped" >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Company</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="new_providers">
+          <% @new_providers.each do |provider| %>
+              <%= render provider %>
+          <% end %>
+
+      </tbody>
+      </table>
+      <%= will_paginate @new_providers, :class => 'pagination pagination-centered' %>
+
 <% end %>
 
-<ul class="providers" >
-
-</ul>
-
-<table class="table">
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Company</th>
-    <th></th>
-    <th></th>
-  </tr>
-  <div  id="new_providers">
-  <% for provider in @new_providers %>
-    <tr>
-      <td><%= provider.id %></td>
-      <td><%= link_to provider.name, provider_path(provider) %></td>
-      <td><%= provider.company %></td>
-      <td><%= link_to "Show", providers_path(provider) %></td>
-      <td><%= link_to "Edit", edit_provider_path(provider) %></td>
-    </tr>
-  <% end %>
-  </div>
-</table>
-
-<p><%= link_to "New Provider", new_provider_path, class: 'btn' %></p>
+</div>

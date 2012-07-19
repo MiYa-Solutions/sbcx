@@ -47,7 +47,7 @@ class ProvidersController < ApplicationController
   end
 
   def index
-    @new_providers = current_user.organization.providers.all
+    @new_providers = current_user.organization.providers.paginate(page: params[:page], per_page: 2)
     @providers = current_user.organization.provider_candidates(params[:search])
   end
 

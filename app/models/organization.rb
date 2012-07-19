@@ -35,7 +35,7 @@ class Organization < ActiveRecord::Base
   # relationships is the table tha holds the link between a user and its followers and the users it follows
   has_many :agreements, foreign_key: "provider_id", class_name: "Agreement"
   # followed users are the set of users a user is following
-  has_many :subcontractors, through: :relationships, source: :subcontractor
+  has_many :subcontractors, through: :agreements, source: :subcontractor
   # the reverse relationship is a symbol creating a form of a virtual table that will allow the creation of
   # the below followers relationship
   has_many :reverse_relationships, foreign_key: "subcontractor_id",
@@ -96,6 +96,16 @@ class Organization < ActiveRecord::Base
       else
         Organization.all
       end
+
+  end
+
+  def customer_candidates(search)
+    # todo fix the bug where all organizations are returned
+    if search
+      customers( :conditions => ['name LIKE ?', "%#{search}%"])
+    else
+      customers
+    end
 
   end
 

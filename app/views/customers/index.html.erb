@@ -1,28 +1,33 @@
-<div class="row-fluid" id="show_customers">
-  <div class="well">
+<div class="well">
 
-    <h2>My Customers</h2>
-    <div class="row">
-      <div class="span4">
-        <%= form_tag customers_path, id: "search_customer_form", :method => :get, :remote => true do %>
-            <p>
-              <%= text_field_tag :search, params[:search] %>
-              <%= submit_tag "Search", :name => nil %>
-            </p>
-        <% end %>
-     </div>
+  <div class="row" style="padding-left: 15px" >
+    <div class="label" style="font-size: 18pt; height: 32px; padding-top: 5px" >
 
-      <div class="span3">
-        <%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary' %>
+      <div class="span3" style="padding-top: 5px">
+        My Customers
       </div>
+
+      <div class="span5">
+          <%= form_tag customers_path, id: "search_customer_form", :method => :get, :remote => true do %>
+              <p>
+                <%= text_field_tag :search, params[:search] %>
+                <%= submit_tag "Search", :name => nil %>
+              </p>
+          <% end %>
+      </div>
+
+      <div class="span3" align="center">
+          <%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary' %>
+      </div>
+
     </div>
-
-    <% if @customers.empty? %>
-        <p>No records, click "Add Customer" to add new contact</p>
+  </div>
 
 
-  <% else %>
-        <%= will_paginate @customers %>
+<% if @new_customers.empty? %>
+        <span class="label">No records, click "Add Customer" to add new contact</span>
+
+<% else %>
         <table class="table table-striped">
           <thead>
           <tr>
@@ -36,15 +41,17 @@
             <th>Actions</th>
           </tr>
           </thead>
-          <tbody>
-          <% @customers.each do |customer| %>
+          <tbody id="new_customers">
+
+          <% @new_customers.each do |customer| %>
               <%= render customer %>
           <% end %>
           </tbody>
         </table>
-        <%= will_paginate @customers %>
-    <% end %>
 
-  </div>
+        <%= will_paginate @new_customers, :class => 'pagination pagination-centered'  %>
+
+<% end %>
+
 </div>
 

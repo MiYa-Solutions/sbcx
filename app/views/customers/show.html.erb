@@ -2,8 +2,14 @@
 
 <div class="row-fluid" xmlns="http://www.w3.org/1999/html">
   <div class="well">
-    <h2 style="color: #0055CC"><%= @customer.name %></h2>
 
+    <div class="row">
+    <div class="span4">
+       <div class="label" style="font-size: 12pt" >
+         <%= @customer.name %>
+       </div>
+     </div>
+    </div>
 
     <div class="row">
       <div class="span4">
@@ -53,9 +59,9 @@
     </div>
 
     <div class="form-actions">
-      <%= link_to 'Back', customers_path, :class => 'btn' %>
-      <%= link_to 'Edit', edit_customer_path(@customer), :class => 'btn btn-primary' %>
-      <%= link_to 'Delete', customer_path(@customer), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' %>
+      <%= link_to 'Back', customers_path, :class => 'btn btn-large' %>
+      <%= link_to 'Edit', edit_customer_path(@customer), :class => 'btn btn-large btn-primary' %>
+      <%= link_to 'Archive', customer_path(@customer), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-large btn-danger' %>
     </div>
 
   </div>
