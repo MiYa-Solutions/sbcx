@@ -1,4 +1,6 @@
 class CustomersController < ApplicationController
+  before_filter :authenticate_user!
+
   def new
 
     @customer = Customer.new
@@ -7,12 +9,12 @@ class CustomersController < ApplicationController
 
   def create
     @organization = current_user.organization
-    @customer = @organization.customers.build(params[:customer])
+    @customer     = @organization.customers.build(params[:customer])
 
     # todo create symbols for the notification strings
     if @customer.save
       flash[:success] = "Customer created!"
-      redirect_to  customer_path @customer
+      redirect_to customer_path @customer
     else
       render 'new'
     end
@@ -21,6 +23,7 @@ class CustomersController < ApplicationController
   def edit
     @customer = current_user.organization.customers.find(params[:id])
   end
+
   def update
     @customer = current_user.organization.customers.find(params[:id])
     if @customer.update_attributes(params[:customer])

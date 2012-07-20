@@ -5,9 +5,6 @@
     </p>
 <% end %>
 
-<ul class="providers" id="new_providers">
-
-</ul>
 
 <table class="table">
   <tr>
@@ -17,15 +14,13 @@
     <th></th>
     <th></th>
   </tr>
-  <% for provider in @new_providers %>
-    <tr>
-      <td><%= provider.id %></td>
-      <td><%= link_to provider.name, provider_path(provider) %></td>
-      <td><%= provider.company %></td>
-      <td><%= link_to "Show", providers_path(provider) %></td>
-      <td><%= link_to "Edit", edit_provider_path(provider) %></td>
-    </tr>
-  <% end %>
+  <div id="new_providers">
+    <% @new_providers.each do |provider| %>
+        <tr>
+          <%= render provider %>
+        </tr>
+    <% end %>
+  </div>
 </table>
 
 <p><%= link_to "New Provider", new_provider_path, class: 'btn' %></p>

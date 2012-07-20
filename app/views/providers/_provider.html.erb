@@ -1,7 +1,15 @@
-<li>
-  <%= link_to provider.name, providers_path(provider) %>
-  <%= form_for(current_user.organization.agreements.build(provider_id: provider.id)) do |f| %>
-      <div><%= f.hidden_field :provider_id %></div>
-      <%= f.submit "Add", class: "btn btn-large btn-primary" %>
-  <% end %>
-</li>
+<tr>
+  <td><%= link_to provider.name, provider %></td>
+  <td><%= provider.address1 %></td>
+  <td><%= provider.address2 %></td>
+  <td><%= provider.city %></td>
+  <td><%= provider.state %></td>
+  <td><%= provider.zip %></td>
+  <td><%= provider.phone %></td>
+  <td>
+    <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
+    <%= link_to 'Destroy', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+
+
+  </td>
+</tr>

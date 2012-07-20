@@ -1,4 +1,6 @@
 class ProvidersController < ApplicationController
+  before_filter :authenticate_user!
+
   def new
 
     if params[:search].nil?
@@ -10,14 +12,24 @@ class ProvidersController < ApplicationController
   end
 
   def create
-    begin
-      @provider = current_user.organization.create_provider!(params)
+    #begin
+    #  #@provider = current_user.organization.create_provider!(params)
+    #
+    #
+    #rescue ActiveRecord::RecordInvalid
+    #  logger.debug "ActiveRecord::RecordInvalid"
+    #  render 'new'
+    #end
+    params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
+    @provider                                 = current_user.organization.providers.build(params[:provider])
+    @provider.agreements.build(subcontractor_id: current_user.organization.id, provider_id: @provider)
+    if @provider.save
       redirect_to @provider, :notice => "Successfully created provider."
+    else
+      render 'new'
 
-    rescue ActiveRecord::RecordInvalid
-      logger.debug "ActiveRecord::RecordInvalid"
-      render :new
     end
+
   end
 
   def edit
@@ -26,7 +38,7 @@ class ProvidersController < ApplicationController
 
   def update
     @provider = current_user.organization.providers.find(params[:id])
-    if @provider.update_attributes(params[:organization])
+    if @provider.update_attributes(params[:provider])
       redirect_to provider_path(@provider), :notice => "Successfully updated provider."
     else
       render :action => 'edit'

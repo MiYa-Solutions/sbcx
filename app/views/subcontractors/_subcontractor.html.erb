@@ -1,0 +1,7 @@
+<li>
+  <%= link_to subcontractor.name, subcontractors_path(subcontractor) %>
+  <%= form_for(current_user.organization.agreements.build(subcontractor_id: subcontractor.id)) do |f| %>
+      <div><%= f.hidden_field :subcontractor_id %></div>
+      <%= f.submit "Add", class: "btn btn-large btn-primary" %>
+  <% end %>
+</li>

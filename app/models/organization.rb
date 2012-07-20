@@ -38,11 +38,11 @@ class Organization < ActiveRecord::Base
   has_many :subcontractors, through: :agreements, source: :subcontractor
   # the reverse relationship is a symbol creating a form of a virtual table that will allow the creation of
   # the below followers relationship
-  has_many :reverse_relationships, foreign_key: "subcontractor_id",
-           class_name:                          "Agreement"
+  has_many :reverse_agreements, foreign_key: "subcontractor_id",
+           class_name:                       "Agreement"
 
   # followers are made available thanks to the reverse relationship virtual table above
-  has_many :providers, through: :reverse_relationships, source: :provider
+  has_many :providers, through: :reverse_agreements, source: :provider
 
 
   attr_accessible :address1,
@@ -56,7 +56,6 @@ class Organization < ActiveRecord::Base
                   :phone,
                   :state,
                   :status,
-                  :subcontrax_member,
                   :website,
                   :work_phone,
                   :zip, :organization_role_ids, :provider_id
@@ -82,7 +81,7 @@ class Organization < ActiveRecord::Base
   def create_provider!(params)
     params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
 
-    providers.create(params[:provider])
+    providers.create!(params[:provider])
 
     # todo ensure both provider and new are in the same transaction
 
@@ -92,7 +91,31 @@ class Organization < ActiveRecord::Base
     providers << provider
   end
 
+  def create_subcontractor!(params)
+    params[:organization_role_ids] = [OrganizationRole::SUBCONTRACTOR_ROLE_ID]
+
+    subcontractors.create!(params[:subcontractor])
+    #subcontractors.build(params[:subcontractor]).save
+
+    # todo ensure both subcontractor and new are in the same transaction
+
+  end
+
+  def add_subcontractor(subcontractor)
+    subcontractors << subcontractor
+  end
+
   def provider_candidates(search)
+    # todo fix the bug where all organizations are returned
+    if search
+      Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
+    else
+      Organization.all
+    end
+
+  end
+
+  def subcontractor_candidates(search)
     # todo fix the bug where all organizations are returned
     if search
       Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
