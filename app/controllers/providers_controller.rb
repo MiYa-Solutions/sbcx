@@ -21,10 +21,10 @@ class ProvidersController < ApplicationController
     #  render 'new'
     #end
     params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
-    @provider                                 = current_user.organization.providers.build(params[:provider])
-    @provider.agreements.build(subcontractor_id: current_user.organization.id, provider_id: @provider)
+    @provider = current_user.organization.providers.new(params[:provider])
+    @provider.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @provider)
     if @provider.save
-      redirect_to @provider, :notice => "Successfully created provider."
+      redirect_to @provider, :notice => t('providers.flash.create_provider', name: @provider.name)
     else
       render 'new'
 
@@ -39,7 +39,7 @@ class ProvidersController < ApplicationController
   def update
     @provider = current_user.organization.providers.find(params[:id])
     if @provider.update_attributes(params[:provider])
-      redirect_to provider_path(@provider), :notice => "Successfully updated provider."
+      redirect_to @provider, :notice => "Successfully updated provider."
     else
       render :action => 'edit'
     end
@@ -53,7 +53,7 @@ class ProvidersController < ApplicationController
 
   def index
     @new_providers = current_user.organization.providers.all
-    @providers     = current_user.organization.provider_candidates(params[:search])
+    @providers = current_user.organization.provider_candidates(params[:search])
   end
 
   def show

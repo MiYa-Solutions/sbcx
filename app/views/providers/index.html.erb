@@ -14,13 +14,11 @@
     <th></th>
     <th></th>
   </tr>
-  <div id="new_providers">
-    <% @new_providers.each do |provider| %>
-        <tr>
-          <%= render provider %>
-        </tr>
-    <% end %>
-  </div>
+  <% @new_providers.each do |provider| %>
+      <tr>
+        <%= render provider %>
+      </tr>
+  <% end %>
 </table>
 
-<p><%= link_to "New Provider", new_provider_path, class: 'btn' %></p>
+<p><%= link_to t('providers.buttons.create_provider'), new_provider_path, class: 'btn' %></p>

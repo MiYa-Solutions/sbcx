@@ -7,37 +7,18 @@ class SubcontractorsController < ApplicationController
   end
 
   def create
-    #begin
-    #  #params[:subcontractor][:organization_role_ids] = [OrganizationRole::SUBCONTRACTOR_ROLE_ID]
-    #  @subcontractor = current_user.organization.create_subcontractor!(params[:subcontractor])
-    #  redirect_to @subcontractor
-    #
-    #rescue ActiveRecord::RecordInvalid
-    #  render @subcontractor
-    #
-    #end
+    #add the appropriate role
     params[:subcontractor][:organization_role_ids] = [OrganizationRole::SUBCONTRACTOR_ROLE_ID]
-    @subcontractor                                 = current_user.organization.subcontractors.build(params[:subcontractor])
 
-    agreement = @subcontractor.agreements.build(provider_id: current_user.organization.id, subcontractor_id: @subcontractor)
-    if agreement.save
-      redirect_to @subcontractor, :notice => "Successfully created Subcontractor."
+    @subcontractor = current_user.organization.subcontractors.new(params[:subcontractor])
+    @subcontractor.agreements.new(subcontractor_id: @subcontractor, provider_id: current_user.organization.id)
+    if current_user.organization.save
+      redirect_to @subcontractor, :notice => t('subcontractor.flash.create', name: @subcontractor.name)
     else
       render 'new'
 
     end
 
-
-    #begin
-    #  @subcontractor = current_user.organization.create_subcontractor!(params)
-    #  redirect_to @subcontractor, :notice => "Successfully created subcontractor."
-    #
-    #rescue ActiveRecord::RecordInvalid
-    #  logger.debug "ActiveRecord::RecordInvalid"
-    #  @subcontractor = current_user.organization.subcontractors.build
-    #  @subcontractor.
-    #  render :new
-    #end
   end
 
   def edit
@@ -61,7 +42,7 @@ class SubcontractorsController < ApplicationController
 
   def index
     @new_subcontractors = current_user.organization.subcontractors.all
-    @subcontractors     = current_user.organization.subcontractor_candidates(params[:search])
+    @subcontractors = current_user.organization.subcontractor_candidates(params[:search])
   end
 
   def show

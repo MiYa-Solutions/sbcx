@@ -1,0 +1,9 @@
+en:
+  subcontractor:
+    buttons:
+      create: 'The Regular Provider Button'
+    flash:
+      create: '%{name} subcontractor was created successfully!'
+    index:
+      create_button: 'Create The Provider'
+    new:

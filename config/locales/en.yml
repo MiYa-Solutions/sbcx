@@ -2,4 +2,15 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  messages:
+    subcontractor:
+      subcontractor_created: " Subcontractor creates successfully!"
+  activerecord:
+    models:
+      agreement: "Subcontracting Agreement"
+    attributes:
+      provider:
+        name: "Provider Name"
+
+
+

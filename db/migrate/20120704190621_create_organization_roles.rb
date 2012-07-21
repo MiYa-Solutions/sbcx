@@ -1,9 +1,7 @@
 class CreateOrganizationRoles < ActiveRecord::Migration
   def change
-    create_table :organization_roles, id: false do |t|
-      t.integer :id, :null =>false
-      t.primary_key :id
-
+    create_table :organization_roles, id: false, :primary_key => :id do |t|
+      t.integer :id, :null => false
       t.string :name
       t.timestamps
     end

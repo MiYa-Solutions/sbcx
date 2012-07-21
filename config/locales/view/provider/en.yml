@@ -1,0 +1,9 @@
+en:
+  providers:
+    buttons:
+      create_provider: 'The Regular Provider Button'
+    flash:
+      create_provider: '%{name} provider was created successfully!'
+    index:
+      create_provider_button: 'Create The Provider'
+    new:
