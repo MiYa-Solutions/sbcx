@@ -1,15 +1,91 @@
-<h1> Provider</h1>
+<% provide(:title, @provider.name) %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @provider.name %>
-  <strong>Company:</strong>
-  <%= @provider.company %>
+  <div class="well">
 
-</p>
+    <div class="row">
+      <div class="span4" >
+        <% if @provider.subcontrax_member==true %>
+              <%= form_for(current_user.organization.agreements.build(provider_id: @provider.id)) do |f| %>
+                  <div><%= f.hidden_field :provider_id %></div>
+                  <%= f.submit "Add Member", class: "btn btn-large btn-success" %>
+              <% end %>
+        <% end %>
+    </div>
+      </div>
 
-<p>
-  <%= link_to "Edit", edit_provider_path(@provider) %> |
-  <%= link_to "Destroy", @provider, :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", providers_path %>
-</p>
+    <div class="row">
+      <div class="span4">
+        <div class="label" style="font-size: 12pt; padding-left: 5px" >
+          <%= @provider.name %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span4">
+        <table class="table table-striped table-condensed">
+          <tbody>
+          <tr>
+            <td>Company:</td>
+            <td><h4><%= @provider.company %></h4></td>
+          </tr>
+          <tr>
+            <td>Address:</td>
+            <td><h4><%= @provider.address1 %> <%= @provider.address2 %></h4></td>
+          </tr>
+          <tr>
+            <td>City:</td>
+            <td><h4><%= @provider.city %></h4></td>
+          </tr>
+          <tr>
+            <td>State:</td>
+            <td><h4><%= @provider.state %></h4></td>
+          </tr>
+          <tr>
+            <td>Country:</td>
+            <td><h4><%= @provider.country %></h4></td>
+          </tr>
+          <tr>
+            <td>Zip:</td>
+            <td><h4><%= @provider.zip %></h4></td>
+          </tr>
+          <tr>
+            <td>Phone:</td>
+            <td><h4><%= @provider.phone %></h4></td>
+          </tr>
+          <tr>
+            <td>Mobile Phone:</td>
+            <td><h4><%= @provider.mobile %></h4></td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td><h4><%= @provider.email %></h4></td>
+          </tr>
+          <tr>
+            <td>Website:</td>
+            <td><h4><%= @provider.website %></h4></td>
+          </tr>
+
+          </tbody>
+        </table>
+
+
+     </div>
+
+    </div>
+
+    <div class="form-actions">
+      <% if @provider.subcontrax_member==true %>
+          <%= link_to 'Back', providers_path, :class => 'btn btn-large' %>
+          <%= link_to 'Archive', providers_path(@provider), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-large btn-danger' %>
+
+      <% else %>
+          <%= link_to 'Back', providers_path, :class => 'btn btn-large' %>
+          <%= link_to 'Edit', edit_provider_path(@provider), :class => 'btn btn-large btn-primary' %>
+          <%= link_to 'Archive', providers_path(@provider), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-large btn-danger' %>
+      <% end %>
+    </div>
+
+  </div>
+
+

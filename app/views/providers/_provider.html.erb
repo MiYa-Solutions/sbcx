@@ -2,9 +2,25 @@
   <td><%= link_to provider.name, provider_path(provider) %></td>
   <td><%= provider.company %></td>
   <td><%= provider.phone %></td>
-  <td  >
-    <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
-    <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+  <td>
+    <% if provider.subcontrax_member==true %>
+        <span class="label label-success">
+          Member
+        </span>
+   <% end %>
   </td>
+  <td  >
+    <% if provider.subcontrax_member==true %>
+        <%= link_to 'Add', provider_path(provider), :class => 'btn btn-success' %>
+        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+
+    <% else %>
+
+        <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
+        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+
+    <% end %>
+
+  </td  >
 </tr>
 

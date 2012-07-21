@@ -4,14 +4,29 @@
 
 <%= f.input :company %>
 
-<%= f.input :phone %>
-
-<%= f.input :website, as: :url%>
-
 <%= f.input :address1 %>
 
 <%= f.input :address2 %>
 
-<%= f.country_select :country, { priority: %w[US] } %>
+<%= f.input :city %>
 
-<%= render  'region_select/subregion_select' %>
+<div class="control-group string mandatory">
+  <label class="string optional control-label" for="provider_country">Country</label>
+    <div class="controls">
+        <%= f.country_select :country, { priority: %w[US] } %>
+    </div>
+</div>
+
+<div class="control-group string mandatory">
+  <label class="string optional control-label" for="provider_state">State</label>
+  <div class="controls">
+    <%= render  'region_select/subregion_select' %>
+  </div>
+</div>
+
+
+<%= f.input :zip %>
+<%= f.input :phone %>
+<%= f.input :mobile %>
+<%= f.input :email, as: :email %>
+<%= f.input :website, as: :url%>
