@@ -26,5 +26,6 @@ class Customer < ActiveRecord::Base
   attr_accessible :address1, :address2, :city, :company, :country, :email, :mobile_phone, :name, :organization_id, :phone, :state, :work_phone, :zip
   belongs_to :organization, inverse_of: :customers
   validates_presence_of :organization
+  has_many :service_calls, :inverse_of => :customer
 
 end

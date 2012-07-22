@@ -1,0 +1,26 @@
+<p>
+  <strong>Customer:</strong>
+  <%= @service_call.customer.name %>
+</p>
+<p>
+  <strong>Notes:</strong>
+  <%= @service_call.notes %>
+</p>
+<p>
+  <strong>Started On:</strong>
+  <%= @service_call.started_on %>
+</p>
+<p>
+  <strong>Organization:</strong>
+  <%= @service_call.organization.name %>
+</p>
+<p>
+  <strong>Completed On:</strong>
+  <%= @service_call.completed_on %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_service_call_path(@service_call) %> |
+  <%= link_to "Destroy", @service_call, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", service_calls_path %>
+</p>

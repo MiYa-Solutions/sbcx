@@ -9,7 +9,7 @@ class CustomersController < ApplicationController
 
   def create
     @organization = current_user.organization
-    @customer     = @organization.customers.build(params[:customer])
+    @customer = @organization.customers.build(params[:customer])
 
     # todo create symbols for the notification strings
     if @customer.save
@@ -36,7 +36,8 @@ class CustomersController < ApplicationController
   end
 
   def index
-    @customers = current_user.organization.customers.paginate(page: params[:page], per_page: 10)
+    @new_customers = current_user.organization.customers.paginate(page: params[:page], per_page: 2)
+    @customers = current_user.organization.customer_candidates(params[:search])
   end
 
   def show

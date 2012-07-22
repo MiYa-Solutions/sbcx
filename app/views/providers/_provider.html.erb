@@ -1,15 +1,10 @@
 <tr>
-  <td><%= link_to provider.name, provider %></td>
-  <td><%= provider.address1 %></td>
-  <td><%= provider.address2 %></td>
-  <td><%= provider.city %></td>
-  <td><%= provider.state %></td>
-  <td><%= provider.zip %></td>
+  <td><%= link_to provider.name, provider_path(provider) %></td>
+  <td><%= provider.company %></td>
   <td><%= provider.phone %></td>
   <td>
     <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
-    <%= link_to 'Destroy', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
-
-
+    <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
   </td>
 </tr>
+

@@ -1,5 +1,7 @@
 Sbcx::Application.routes.draw do
 
+  resources :service_calls, only: [:new, :create, :edit, :show, :index, :update]
+
   resources :agreements, only: [:new, :create, :edit, :show, :index]
 
   resources :providers, only: [:new, :create, :edit, :show, :index, :update]

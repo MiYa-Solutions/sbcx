@@ -8,14 +8,12 @@ class AgreementsController < ApplicationController
   end
 
   def create
-    if params[:agreement][:provider_id].nil?
-      @agreements = Agreements.new(params[:agreements])
-      if @agreements.save
-        redirect_to root_url, :notice => "Successfully created agreements."
-      else
-        render :action => 'new'
-      end
-    else
+    if params[:agreement][:provider_id].nil? # are we adding a subcontractor?
+      subcontractor = Subcontractor.find(params[:agreement][:subcontractor_id])
+      current_user.organization.add_subcontractor(subcontractor)
+      redirect_to subcontractor
+
+    else #
       provider = Provider.find(params[:agreement][:provider_id])
       current_user.organization.add_provider(provider)
       redirect_to providers_path

@@ -12,6 +12,6 @@
 
 <%= f.input :address2 %>
 
-<%= f.country_select :country, { priority: %w[US] } %>
+<%= f.country_select :country, {priority: %w[US]} %>
 
-<%= render 'region_select/subregion_select' %>
+<%= render 'region_select/subregion_select', object: f.object %>

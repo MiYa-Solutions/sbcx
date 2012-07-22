@@ -13,7 +13,7 @@ class SubcontractorsController < ApplicationController
     @subcontractor = current_user.organization.subcontractors.new(params[:subcontractor])
     @subcontractor.agreements.new(subcontractor_id: @subcontractor, provider_id: current_user.organization.id)
     if current_user.organization.save
-      redirect_to @subcontractor, :notice => t('subcontractor.flash.create', name: @subcontractor.name)
+      redirect_to @subcontractor, :notice => t('subcontractors.flash.create', name: @subcontractor.name)
     else
       render 'new'
 

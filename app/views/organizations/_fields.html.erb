@@ -21,21 +21,32 @@
 <%= render 'shared/error_messages', object: f.object %>
 
 <%= f.input :name %>
-<%= f.association :organization_roles  ,:collection => OrganizationRole.all(:order => 'name'), as: :check_boxes%>
+<%= f.association :organization_roles, :collection => OrganizationRole.all(:order => 'name'), as: :check_boxes %>
 
 <%= f.input :company %>
 
 <%= f.input :phone %>
 
-<%= f.input :website, as: :url%>
+<%= f.input :website, as: :url %>
 
 <%= f.input :address1 %>
 
 <%= f.input :address2 %>
 
-<%= f.country_select :country, { priority: %w[US] } %>
+<div class="control-group string mandatory">
+  <label class="string optional control-label" for="customer_country">Country</label>
 
-<%= render  'region_select/subregion_select' %>
+  <div class="controls">
+    <%= f.country_select :country, {priority: %w[US]} %>
+  </div>
+</div>
 
+<div class="control-group string mandatory">
+  <label class="string optional control-label" for="customer_state">State</label>
+
+  <div class="controls">
+    <%= render 'region_select/subregion_select', object: f.object %>
+  </div>
+</div>
 
 

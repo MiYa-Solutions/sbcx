@@ -1,9 +1,10 @@
 en:
-  subcontractor:
+  subcontractors:
     buttons:
-      create: 'The Regular Provider Button'
+      create: 'The Subcontractor Button: find me in config/locales/view/subcontaractor/en.yml'
     flash:
       create: '%{name} subcontractor was created successfully!'
     index:
-      create_button: 'Create The Provider'
+      create_button: 'Create  Subcontractor find me in config/locales/view/subcontaractor/en.yml'
+      show_link: 'Show SubCon'
     new:

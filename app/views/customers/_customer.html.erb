@@ -1,7 +1,17 @@
+<tr>
+  <td><%= link_to customer.name, customer_path(customer) %></td>
+  <td><%= customer.address1 %></td>
+  <td><%= customer.address2 %></td>
+  <td><%= customer.city %></td>
+  <td><%= customer.state %></td>
+  <td><%= customer.zip %></td>
+  <td><%= customer.phone %></td>
+  <td>
+    <%= link_to 'Edit', edit_customer_path(customer), :class => 'btn btn-mini' %>
+    <%= link_to 'Archive', customer_path(customer), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
 
-<% for attribute in customer.attributes.keys  %>
-    <b><%= attribute.humanize %></b> <%= customer.attributes[attribute].to_s %><br />
-    <%= link_to "Edit", edit_customer_path(customer)  %>
-<% end %>
+
+  </td>
+</tr>
 
 

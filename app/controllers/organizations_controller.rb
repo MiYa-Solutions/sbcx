@@ -16,7 +16,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new(params[:organization])
 
     if @organization.save
-      flash[:success] =  "Organization Created Successfully"
+      flash[:success] = "Organization Created Successfully"
       redirect_to @organization
     else
       render 'new'
@@ -29,8 +29,7 @@ class OrganizationsController < ApplicationController
   end
 
   def index
-    @organizations = Organization.all
-
+    @organizations = Organization.paginate(page: params[:page], per_page: 2)
   end
 
   def edit

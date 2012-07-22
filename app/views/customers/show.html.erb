@@ -1,23 +1,69 @@
-<h1> Customers Attributes</h1>
-<%= provide(:title, @customer.name) %>
-<div class="row">
-  <div class="span8">
-    <%= render @customer %>
+<% provide(:title, @customer.name) %>
+
+<div class="row-fluid" xmlns="http://www.w3.org/1999/html">
+  <div class="well">
+
+    <div class="row">
+      <div class="span4">
+        <div class="label" style="font-size: 12pt">
+          <%= @customer.name %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span4">
+        <table class="table table-striped table-condensed">
+          <tbody>
+          <tr>
+            <td>Company:</td>
+            <td><h4><%= @customer.company %></h4></td>
+          </tr>
+          <tr>
+            <td>Address:</td>
+            <td><h4><%= @customer.address1 %> <%= @customer.address2 %></h4></td>
+          </tr>
+          <tr>
+            <td>City:</td>
+            <td><h4><%= @customer.city %></h4></td>
+          </tr>
+          <tr>
+            <td>State:</td>
+            <td><h4><%= @customer.state %></h4></td>
+          </tr>
+          <tr>
+            <td>Country:</td>
+            <td><h4><%= @customer.country %></h4></td>
+          </tr>
+          <tr>
+            <td>Zip:</td>
+            <td><h4><%= @customer.zip %></h4></td>
+          </tr>
+          <tr>
+            <td>Phone:</td>
+            <td><h4><%= @customer.phone %></h4></td>
+          </tr>
+          <tr>
+            <td>Mobile Phone:</td>
+            <td><h4><%= @customer.mobile_phone %></h4></td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td><h4><%= @customer.email %></h4></td>
+          </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= link_to 'Back', customers_path, :class => 'btn btn-large' %>
+      <%= link_to 'Edit', edit_customer_path(@customer), :class => 'btn btn-large btn-primary' %>
+      <%= link_to 'Archive', customer_path(@customer), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-large btn-danger' %>
+    </div>
+
   </div>
-
 </div>
-
-<div class="form-actions">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              customers_path, :class => 'btn'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_customer_path( @customer), :class => 'btn' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              customer_path( @customer),
-              :method => 'delete',
-              :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
-              :class => 'btn btn-danger' %>
-</div>
-
-
 

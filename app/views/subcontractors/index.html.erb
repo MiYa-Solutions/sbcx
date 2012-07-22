@@ -22,10 +22,11 @@
         <td><%= subcontractor.id %></td>
         <td><%= link_to subcontractor.name, subcontractor_path(subcontractor) %></td>
         <td><%= subcontractor.company %></td>
-        <td><%= link_to "Show", subcontractors_path(subcontractor) %></td>
+        <td><%= link_to t('.show_link'), subcontractors_path(subcontractor) %></td>
         <td><%= link_to "Edit", edit_subcontractor_path(subcontractor) %></td>
       </tr>
   <% end %>
 </table>
 
-<p><%= link_to "New Subcontractor", new_subcontractor_path, class: 'btn' %></p>
+<p><%= link_to t('subcontractors.buttons.create'), new_subcontractor_path, class: 'btn' %></p>
+<p><%= link_to t('.create_button'), new_subcontractor_path, class: 'btn' %></p>

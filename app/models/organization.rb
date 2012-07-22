@@ -27,21 +27,19 @@ class Organization < ActiveRecord::Base
   has_many :customers, inverse_of: :organization
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
-  #has_many :agreements
-  #has_many :providers,  through: :agreements, foreign_key: :subcontractor_id
-  #has_many :subcontractors, through: :agreements, foreign_key: :provider_id
+
+  has_many :service_calls, :inverse_of => :organization
 
 
-  # relationships is the table tha holds the link between a user and its followers and the users it follows
+  # agreements is the table tha holds the link between an organization er and its providers and subcontractors
   has_many :agreements, foreign_key: "provider_id", class_name: "Agreement"
-  # followed users are the set of users a user is following
+  # subcontractors are a set of subcontractors which this organization has an agreement with
   has_many :subcontractors, through: :agreements, source: :subcontractor
-  # the reverse relationship is a symbol creating a form of a virtual table that will allow the creation of
-  # the below followers relationship
+  # the reverse agreements is a symbol creating a form of a virtual table that will allow the creation of
+  # the below providers relationship
   has_many :reverse_agreements, foreign_key: "subcontractor_id",
-           class_name:                       "Agreement"
-
-  # followers are made available thanks to the reverse relationship virtual table above
+           class_name: "Agreement"
+  # providers are made available thanks to the reverse relationship virtual table above
   has_many :providers, through: :reverse_agreements, source: :provider
 
 
@@ -66,7 +64,7 @@ class Organization < ActiveRecord::Base
 
   accepts_nested_attributes_for :users, :agreements
 
-  validates :name, { presence: true, length: { maximum: 255 } }
+  validates :name, {presence: true, length: {maximum: 255}}
 
   validate :has_at_least_one_role
 
@@ -121,6 +119,16 @@ class Organization < ActiveRecord::Base
       Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
     else
       Organization.all
+    end
+
+  end
+
+  def customer_candidates(search)
+    # todo fix the bug where all organizations are returned
+    if search
+      customers(:conditions => ['name LIKE ?', "%#{search}%"])
+    else
+      customers
     end
 
   end

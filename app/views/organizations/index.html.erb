@@ -1,6 +1,7 @@
 <div class="page-header">
-  <h1><%="Organizations" %></h1>
+  <h1><%= "Organizations" %></h1>
 </div>
+<%= will_paginate @organizations %>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -15,7 +16,7 @@
       <tr>
         <td><%= link_to org.id, organization_path(org) %></td>
         <td><%= org.name %></td>
-        <td><%=l org.created_at %></td>
+        <td><%= l org.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_organization_path(org), :class => 'btn btn-mini' %>
