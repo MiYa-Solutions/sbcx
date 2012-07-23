@@ -4,28 +4,46 @@
 
 <%= f.input :company %>
 
-<%= f.input :address1 %>
-
-<%= f.input :address2 %>
-
-<%= f.input :city %>
-
-<div class="control-group string mandatory">
-  <label class="string optional control-label" for="provider_country">Country</label>
-    <div class="controls">
-        <%= f.country_select :country, { priority: %w[US] } %>
-    </div>
+<div class="row">
+  <div class="span5">
+    <%= f.input :address1 %>
+  </div>
+  <div class="span4">
+   <%= f.input :address2 %>
+  </div>
 </div>
 
-<div class="control-group string mandatory">
-  <label class="string optional control-label" for="provider_state">State</label>
-  <div class="controls">
-    <%= render  'region_select/subregion_select' %>
+<div class="row">
+  <div class="span5">
+
+    <div class="control-group string mandatory">
+      <label class="string optional control-label" for="provider_country">Country</label>
+        <div class="controls">
+            <%= f.country_select :country, { priority: %w[US] } %>
+        </div>
+    </div>
+  </div>
+  <div class="span4">
+    <div class="control-group string mandatory">
+      <label class="string optional control-label" for="provider_state">State</label>
+      <div class="controls">
+        <%= render  'region_select/subregion_select' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span5">
+    <%= f.input :city %>
+  </div>
+  <div class="span4">
+    <%= f.input :zip %>
+
   </div>
 </div>
 
 
-<%= f.input :zip %>
 <%= f.input :phone %>
 <%= f.input :mobile %>
 <%= f.input :email, as: :email %>
