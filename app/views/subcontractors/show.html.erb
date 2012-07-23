@@ -1,0 +1,23 @@
+<h1> Subcontractor</h1>
+<% for attribute in @subcontractor.attributes.keys %>
+    <ul class="providers">
+      <li>
+        <b><%= attribute.humanize %></b> <%= @subcontractor.attributes[attribute].to_s %>
+      </li>
+    </ul>
+<% end %>
+
+<h2> Roles</h2>
+<% for role in @subcontractor.organization_roles %>
+    <ul class="providers">
+      <li>
+        <%= role.name %>
+      </li>
+    </ul>
+<% end %>
+
+<p>
+  <%= link_to "Edit", edit_subcontractor_path(@subcontractor) %> |
+  <%= link_to "Destroy", @subcontractor, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", subcontractors_path %>
+</p>

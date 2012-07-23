@@ -19,5 +19,5 @@ bundler_stubs/
 *.DS_Store
 
 # RubyMine idea files to ignore
-.idea/workspace.xml
-.idea/tasks.xml
+.idea/**
+.idea/*.*

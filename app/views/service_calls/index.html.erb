@@ -1,0 +1,25 @@
+<h1> "Service Calls"</h1>
+
+<table>
+  <tr>
+    <th>Customer</th>
+    <th>Notes</th>
+    <th>Started On</th>
+    <th>Organization</th>
+    <th>Completed On</th>
+  </tr>
+  <% for service_call in @service_calls %>
+      <tr>
+        <td><%= service_call.customer_id %></td>
+        <td><%= service_call.notes %></td>
+        <td><%= service_call.started_on %></td>
+        <td><%= service_call.organization_id %></td>
+        <td><%= service_call.completed_on %></td>
+        <td><%= link_to "Show", service_call %></td>
+        <td><%= link_to "Edit", edit_service_call_path(service_call) %></td>
+        <td><%= link_to "Destroy", service_call, :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Service Call", new_service_call_path %></p>

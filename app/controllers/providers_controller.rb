@@ -1,4 +1,6 @@
 class ProvidersController < ApplicationController
+  before_filter :authenticate_user!
+
   def new
 
     if params[:search].nil?
@@ -10,20 +12,23 @@ class ProvidersController < ApplicationController
   end
 
   def create
-    params[:organization][:organization_role_ids] =  [OrganizationRole::PROVIDER_ROLE_ID]
-
-    # todo the below is not safe as the provider save can fail and as a result the agreement will not be saved
-    @provider = current_user.organization.providers.build(params[:organization])
+    #begin
+    #  #@provider = current_user.organization.create_provider!(params)
+    #
+    #
+    #rescue ActiveRecord::RecordInvalid
+    #  logger.debug "ActiveRecord::RecordInvalid"
+    #  render 'new'
+    #end
+    params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
+    @provider = current_user.organization.providers.new(params[:provider])
+    @provider.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @provider)
     if @provider.save
-      if current_user.organization.add_provider!(@provider)
-        redirect_to provider_path(@provider), :notice => "Successfully created provider."
-      else
-        render :action => 'new'
-      end
+      redirect_to @provider, :notice => t('providers.flash.create_provider', name: @provider.name)
     else
-      render 'providers/new'
-    end
+      render 'new'
 
+    end
 
   end
 
@@ -33,8 +38,8 @@ class ProvidersController < ApplicationController
 
   def update
     @provider = current_user.organization.providers.find(params[:id])
-    if @provider.update_attributes(params[:organization])
-      redirect_to provider_path(@provider), :notice  => "Successfully updated provider."
+    if @provider.update_attributes(params[:provider])
+      redirect_to @provider, :notice => "Successfully updated provider."
     else
       render :action => 'edit'
     end
@@ -47,7 +52,7 @@ class ProvidersController < ApplicationController
   end
 
   def index
-    @new_providers = current_user.organization.providers.paginate(page: params[:page], per_page: 2)
+    @new_providers = current_user.organization.providers.paginate(page: params[:page], per_page: 10)
     @providers = current_user.organization.provider_candidates(params[:search])
   end
 

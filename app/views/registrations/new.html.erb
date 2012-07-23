@@ -13,37 +13,37 @@
    <br>
     <% resource.build_organization %>
 
-<%= simple_form_for(resource, :html => { :class => 'form-horizontal' }, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+    <%= simple_form_for(resource, :html => {:class => 'form-horizontal'}, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
 
         <% if f.object.errors.any? %>
             <div class="alert alert-block alert-error">
               <a class="close" data-dismiss="alert" href="#">×</a>
-                     <%= devise_error_messages! %>
+              <%= devise_error_messages! %>
             </div>
         <% end %>
 
-<fieldset>
+        <fieldset>
 
-      <h4>User Information:</h4>  </br>
+          <h4>User Information:</h4>  </br>
 
-      <%= f.input :email %>
-      <%= f.input :password %>
-      <%= f.input :password_confirmation %>
+          <%= f.input :email %>
+          <%= f.input :password %>
+          <%= f.input :password_confirmation %>
 
-      <hr>
+          <hr>
 
-      <h4>Company/Organization Information:</h4>  </br>
+          <h4>Company/Organization Information:</h4>  </br>
           <%= f.simple_fields_for :organization_attributes, resource.organization do |fo| %>
               <%= render 'organizations/fields', f: fo %>
           <% end %>
 
-      <div class="form-actions">
-        <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %> </br>
-      </div>
+          <div class="form-actions">
+            <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %> </br>
+          </div>
 
-</fieldset>
+        </fieldset>
 
-<% end %>
+    <% end %>
 
   </div>
 </div>

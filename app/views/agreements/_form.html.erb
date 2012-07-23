@@ -1,9 +1,9 @@
 <%= simple_form_for @agreement do |f| %>
-  <%= f.input :name %>
-  <%= f.input :description %>
-   <%=   f.input 'Agreement Type', collection: [['Provider', 'Provider'] ,['Subcontractor', 'Subcontract']] %>
-  <%= f.select :agreement_type, as: :radio_buttons %>
+    <%= f.input :name %>
+    <%= f.input :description %>
+    <%= f.input "Agreement Type", collection: [['Provider', 'Provider'], ['Subcontractor', 'Subcontract']] %>
+    <%= f.select :agreement_type, as: :radio_buttons %>
 
 
-  <p><%= f.submit %></p>
+    <p><%= f.submit %></p>
 <% end %>

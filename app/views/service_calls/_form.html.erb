@@ -1,0 +1,7 @@
+<%= simple_form_for @service_call do |f| %>
+    <%= f.association :customer, collection: current_user.organization.customers %>
+    <%= f.input :notes %>
+    <%= f.datetime_select :started_on %>
+    <%= f.input :completed_on %>
+    <p><%= f.submit %></p>
+<% end %>
