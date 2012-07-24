@@ -13,6 +13,7 @@ gem 'carmen-rails', '~> 1.0.0.beta3'
 
 gem 'devise', '2.0.0'
 gem 'simple_form', '2.0.2'
+gem 'declarative_authorization', '0.5.5'
 
 group :development, :test do
   gem 'pg', '0.14.0'
@@ -26,7 +27,7 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '3.2.4'
+  gem 'sass-rails', '3.2.4'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
 end

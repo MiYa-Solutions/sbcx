@@ -8,3 +8,10 @@
 
 OrganizationRole.find_or_create_by_id_and_name(id: OrganizationRole::PROVIDER_ROLE_ID, name: OrganizationRole::PROVIDER_ROLE_NAME)
 OrganizationRole.find_or_create_by_id_and_name(id: OrganizationRole::SUBCONTRACTOR_ROLE_ID, name: OrganizationRole::SUBCONTRACTOR_ROLE_NAME)
+
+Role.find_or_create_by_name("Admin")
+Role.find_or_create_by_name("Org Admin")
+Role.find_or_create_by_name("Dispatcher")
+Role.find_or_create_by_name("Technician")
+
+

@@ -4,6 +4,16 @@
     <%= render partial: 'organization' %>
   </div>
 
+
 </div>
 
+<div class="row">
+  <div class="span8">
+    <%= render partial: 'organization_associations' %>
+  </div>
+
+  <%= link_to t("Create User", :default => t("helpers.links.back")),
+              new_my_user_path, :class => 'btn' %>
+
+</div>
 

@@ -6,6 +6,10 @@ class RegistrationsController < Devise::RegistrationsController
 
   end
 
+  def create
+    super
+  end
+
   #def create
   #  # todo make registration work with an organization and a user created at the same time
   #  #build_resource
