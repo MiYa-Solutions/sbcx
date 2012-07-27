@@ -5,12 +5,6 @@ en:
   messages:
     subcontractor:
       subcontractor_created: " Subcontractor creates successfully!"
-  activerecord:
-    models:
-      agreement: "Subcontracting Agreement"
-    attributes:
-      provider:
-        name: "Provider Name"
 
 
 

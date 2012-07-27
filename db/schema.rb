@@ -14,92 +14,92 @@
 ActiveRecord::Schema.define(:version => 20120721211352) do
 
   create_table "agreements", :force => true do |t|
-    t.string "name"
-    t.integer "subcontractor_id"
-    t.integer "provider_id"
-    t.text "description"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name"
+    t.integer  "subcontractor_id"
+    t.integer  "provider_id"
+    t.text     "description"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "customers", :force => true do |t|
-    t.string "name"
-    t.integer "organization_id"
-    t.string "company"
-    t.string "address1"
-    t.string "address2"
-    t.string "city"
-    t.string "state"
-    t.string "zip"
-    t.string "country"
-    t.string "phone"
-    t.string "mobile_phone"
-    t.string "work_phone"
-    t.string "email"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name"
+    t.integer  "organization_id"
+    t.string   "company"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.string   "phone"
+    t.string   "mobile_phone"
+    t.string   "work_phone"
+    t.string   "email"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "org_to_roles", :force => true do |t|
-    t.integer "organization_id"
-    t.integer "organization_role_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "organization_id"
+    t.integer  "organization_role_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   add_index "org_to_roles", ["organization_id", "organization_role_id"], :name => "index_org_to_roles_on_organization_id_and_organization_role_id"
 
   create_table "organization_roles", :id => false, :force => true do |t|
-    t.integer "id", :null => false
-    t.string "name"
+    t.integer  "id",         :null => false
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "organizations", :force => true do |t|
-    t.string "name"
-    t.string "phone"
-    t.string "website"
-    t.string "company"
-    t.string "address1"
-    t.string "address2"
-    t.string "city"
-    t.string "state"
-    t.string "zip"
-    t.string "country"
-    t.string "mobile"
-    t.string "work_phone"
-    t.string "email"
-    t.boolean "subcontrax_member"
-    t.integer "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name"
+    t.string   "phone"
+    t.string   "website"
+    t.string   "company"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.string   "mobile"
+    t.string   "work_phone"
+    t.string   "email"
+    t.boolean  "subcontrax_member"
+    t.integer  "status"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "service_calls", :force => true do |t|
-    t.integer "customer_id"
-    t.text "notes"
+    t.integer  "customer_id"
+    t.text     "notes"
     t.datetime "started_on"
-    t.integer "organization_id"
+    t.integer  "organization_id"
     t.datetime "completed_on"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "users", :force => true do |t|
-    t.string "email", :default => "", :null => false
-    t.string "encrypted_password", :default => "", :null => false
-    t.string "reset_password_token"
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer "sign_in_count", :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer "organization_id"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.integer  "organization_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

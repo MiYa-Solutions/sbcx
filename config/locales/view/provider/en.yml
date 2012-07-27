@@ -1,7 +1,8 @@
 en:
   providers:
     buttons:
-      create_provider: 'The Regular Provider Button'
+      create_provider: 'Save Provider'
+      edit_provider: "Edit"
     flash:
       create_provider: '%{name} provider was created successfully!'
     index:

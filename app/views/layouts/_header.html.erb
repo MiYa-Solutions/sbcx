@@ -1,49 +1,45 @@
-<header class="navbar navbar-fixed-top">
+<div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
+    <div class="container-fluid">
+      <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
 
-    <div style="margin:0; padding-left: 20px; ">
-      <%= link_to "SubConTraX", root_path, class: 'brand' %>
-    </div>
+      <a href="#" class="brand">SubConTraX</a>
 
-    <div class="container">
-      <div class="nav-collapse">
-        <!--<nav>-->
-
+      <div class="nav-collapse ">
         <ul class="nav pull-right">
+          <% if user_signed_in? %>
           <li><%= link_to "Home", root_path %></li>
           <li><%= link_to "Organizations", organizations_path %></li>
           <li><%= link_to "Customers", customers_path %></li>
           <li><%= link_to "Providers", providers_path %></li>
-
-
-          <% if user_signed_in? %>
-              <li><%= link_to "Users" %></li>
-              <li>
-                <div class="btn-group">
-                  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="icon-user"></i>
-                    My Account
+          <li>
+            <div class="btn-group">
+                   <a href="#" data-toggle="dropdown" class="btn dropdown-toggle">
+                      <i class="icon-user"></i> My Account
                     <span class="caret"></span>
                   </a>
-
-
                   <ul class="dropdown-menu">
                     <li><%= link_to "Profile" %></li>
                     <li><%= link_to "Settings" %></li>
                     <li class="divider"></li>
                     <li>
-                      <%= link_to "Sign out", destroy_user_session_path, method: "delete" %>
+                      <%= link_to "Sign out", destroy_user_session_path, method: "delete"
+                      %>
                     </li>
                   </ul>
-                </div>
+              <% else %>
+                  <li><%= link_to "Sign in", new_user_session_path %></li>
+              <% end %>
+           </div>
+          </li>
 
-              </li>
-          <% else %>
-              <li><%= link_to "Sign in", new_user_session_path %></li>
-          <% end %>
         </ul>
-        <!--</nav>-->
-      </div>
+      </div><!--/.nav-collapse -->
+
     </div>
   </div>
-</header>
+</div>

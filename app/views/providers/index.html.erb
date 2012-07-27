@@ -1,25 +1,25 @@
 <div class="well">
 
-  <div class="row" style="padding-left: 15px" >
-    <div class="label" style="font-size: 18pt; height: 32px; padding-top: 5px" >
+  <div class="row-fluid">
+        <div class="smart_label"  >
 
-      <div class="span3" style="padding-top: 5px">
-        My Providers
-      </div>
+          <div class="span3">
+             <h1>My Providers</h1>
+          </div>
 
-      <div class="span5">
-        <%= form_tag providers_path, id: "agreement_search_form", :method => :get, :remote => true do %>
-            <p>
-              <%= text_field_tag :search, params[:search] %>
-              <%= submit_tag "Search", :name => nil %>
-            </p>
-        <% end %>
-      </div>
+          <div class="span5">
+            <%= form_tag providers_path, id: "agreement_search_form", :method => :get, :remote => true do %>
+                <p>
+                  <%= text_field_tag :search, params[:search] %>
+                  <%= submit_tag "Search", :name => nil %>
+                </p>
+            <% end %>
+          </div>
 
-      <div class="span3" align="center" style="padding-left: 1px">
-             <%= link_to 'New Provider', new_provider_path, :class => 'btn btn-primary' %>
-      </div>
-  </div>
+          <div class="span3" align="center">
+                 <%= link_to 'New Provider', new_provider_path, :class => 'btn btn-primary' %>
+          </div>
+    </div>
   </div>
 
 
@@ -44,6 +44,7 @@
 
       </tbody>
       </table>
+
       <%= will_paginate @new_providers, :class => 'pagination pagination-centered' %>
 
 <% end %>
