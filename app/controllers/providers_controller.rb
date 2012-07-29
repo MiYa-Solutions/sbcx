@@ -21,6 +21,7 @@ class ProvidersController < ApplicationController
     #  render 'new'
     #end
     params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
+    params[:provider][:status_event] = :make_local
     @provider = current_user.organization.providers.new(params[:provider])
     @provider.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @provider)
     if @provider.save

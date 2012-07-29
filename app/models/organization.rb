@@ -53,7 +53,7 @@ class Organization < ActiveRecord::Base
                   :name,
                   :phone,
                   :state,
-                  :status,
+                  :status_event,
                   :website,
                   :work_phone,
                   :zip, :organization_role_ids, :provider_id
@@ -67,6 +67,64 @@ class Organization < ActiveRecord::Base
   validates :name, {presence: true, length: {maximum: 255}}
 
   validate :has_at_least_one_role
+
+  def make_member
+    self.subcontrax_member=true
+    Rails.logger.debug "#{self.name} has been created as a MEMBER!"
+  end
+
+  def alert_local
+    Rails.logger.debug "#{self.name} has been created as LOCAL!"
+  end
+
+
+  # State machine  for Organization status
+
+  # first we will define the organization state values
+  STATUS_NEW = 0
+  STATUS_LOCAL_ENABLED = 1
+  STATUS_LOCAL_DISABLED = -1
+  STATUS_SBCX_ACTIVE_MEMBER = 2
+  STATUS_SBCX_INACTIVE_MEMBER =-2
+
+  # The state machine definitions
+  state_machine :status, :initial => :new do
+    state :new, value: STATUS_NEW # no organization should be set with this initial state
+    state :local_enabled, value: STATUS_LOCAL_ENABLED # a local organization is a private provider or subcontractor associated with another organization
+    state :local_disabled, value: STATUS_LOCAL_DISABLED
+    state :sbcx_member, value: STATUS_SBCX_ACTIVE_MEMBER
+    state :sbcx_member_disabled, value: STATUS_SBCX_INACTIVE_MEMBER
+
+    before_transition :new => :sbcx_member, :do => :make_member
+    after_transition :new => :local_enabled, :do => :alert_local
+
+    event :make_local do
+      transition :new => :local_enabled
+    end
+
+    event :disable_local do
+      transition :local_enabled => :local_disabled
+    end
+
+    event :enable_local do
+      transition :local_disabled => :local_enabled
+    end
+
+    event :make_sbcx_member do
+      transition :new => :sbcx_member
+    end
+
+    event :disable_sbcx_memeber do
+      transition :sbcx_member => :sbcx_member_disabled
+    end
+
+    event :enable_sbcx_memeber do
+      transition :sbcx_member_disabled => :sbcx_member
+    end
+
+
+  end
+
 
   def provider?
     organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
@@ -132,6 +190,10 @@ class Organization < ActiveRecord::Base
     end
 
   end
+
+  #def initialize
+  #  super()
+  #end
 
   private
   def has_at_least_one_role

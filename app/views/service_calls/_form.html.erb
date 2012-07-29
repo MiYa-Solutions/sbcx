@@ -1,4 +1,8 @@
 <%= simple_form_for @service_call do |f| %>
+    <% if !f.object.new_record? %>
+        <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+    <% end %>
+
     <%= f.association :customer, collection: current_user.organization.customers %>
     <%= f.input :notes %>
     <%= f.datetime_select :started_on %>
