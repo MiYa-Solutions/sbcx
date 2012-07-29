@@ -9,6 +9,7 @@
   <%= render 'layouts/shim' %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
 <%= render 'layouts/header' %>
 
@@ -32,10 +33,12 @@
 
  <% else %>
 <div class="container">
+  <!--<div class="row-fluid">-->
          <% flash.each do |key, value| %>
               <%= content_tag(:div, value, class: "alert alert-#{key}") %>
           <% end %>
           <%= yield %>
+<!--</div>-->
 </div>
  <% end %>
 

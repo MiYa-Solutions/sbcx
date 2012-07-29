@@ -1,48 +1,38 @@
 <fieldset>
 <%= render 'shared/error_messages', object: f.object %>
 
+<!--<ul class="unstyled">-->
 
+  <%= f.input :name %>
+  <%= f.input :company %>
+  <%= f.input :phone %>
+  <%= f.input :mobile %>
+  <%= f.input :email, as: :email %>
+  <%= f.input :website, as: :url%>
 
-
-<%= f.input :name %>
-
-<%= f.input :company %>
-<%= f.input :address1 %>
-<%= f.input :address2, :html => {:class => 'input-small'} %>
-
-
-<div class="row-fluid">
-  <div class="span4">
-
-    <div class="control-group string mandatory">
-      <label class="string optional control-label" for="provider_country">Country</label>
-        <div class="controls">
-            <%= f.country_select :country, { priority: %w[US] } %>
+   <div class="field_input">
+   <ul>
+     <li> <%= f.input :address1 %></li>
+     <li><%= f.input :address2, :html => {:class => 'input-small'} %></li>
+     <li>
+        <div class="control-group string mandatory">
+          <label class="string optional control-label" for="provider_country">Country</label>
+            <div class="controls">
+              <%= f.country_select :country, { priority: %w[US] } %>
+            </div>
         </div>
-    </div>
+      </li>
+      <li>
+        <div class="control-group string mandatory">
+            <label class="string optional control-label" for="provider_state">State</label>
+            <div class="controls">
+              <%= render  'region_select/subregion_select', f: f %>
+            </div>
+        </div>
+      </li>
+     <li> <%= f.input :city %>   </li>
+     <li><%= f.input :zip %>   </li>
+      </ul>
   </div>
-  <div class="span5" >
-    <div class="control-group string mandatory">
-      <label class="string optional control-label" for="provider_state">State</label>
-      <div class="controls">
-        <%= render  'region_select/subregion_select', f: f %>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="span4">
-    <%= f.input :city %>
-  </div>
-  <div class="span8">
-    <%= f.input :zip %>
-    </div>
-</div>
-
-
-<%= f.input :phone %>
-<%= f.input :mobile %>
-<%= f.input :email, as: :email %>
-<%= f.input :website, as: :url%>
 </fieldset>
