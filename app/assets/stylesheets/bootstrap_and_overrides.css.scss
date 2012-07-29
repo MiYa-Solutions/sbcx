@@ -19,6 +19,35 @@ body { padding-top: 60px; }
 
 }
 
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: $grayLight;
+
+  a {
+    color: #555;
+    &:hover {
+      color: gray;
+    }
+  }
+  small {
+    float: left;
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 10px;
+
+    }
+
+  }
+
+}
+
 .smart_label {
   background-color: $grayLight;
   display: block;
@@ -104,30 +133,20 @@ fieldset label {
   font-weight: bold;
 }
 
-footer {
-  margin-top: 45px;
-  padding-top: 5px;
-  border-top: 1px solid #eaeaea;
-  color: $grayLight;
+.table thead {
+ border-bottom:  1px solid #404853;
+}
 
-  a {
-    color: #555;
-    &:hover {
-      color: gray;
-    }
-  }
-  small {
-    float: left;
-  }
-  ul {
-    float: right;
-    list-style: none;
-    li {
-      float: left;
-      margin-left: 10px;
+.table-striped tbody tr:nth-child(even) td,
+.table-striped tbody tr:nth-child(even) th {
+  background-color: #ffffff;
+}
 
-    }
+.table tbody tr:hover td,
+.table tbody tr:hover th {
+  background-color: #eeeeee;
+}
 
-  }
-
+smart_alert {
+  display: block;
 }

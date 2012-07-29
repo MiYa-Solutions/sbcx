@@ -1,7 +1,10 @@
 <h2>Resend unlock instructions</h2>
 
 <%= simple_form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= f.error_notification %>
+    <div class="alert alert-block alert-error">
+      <a class="close" data-dismiss="alert" href="#">×</a>
+        <%= f.error_notification %>
+    </div>
 
   <div class="inputs">
     <%= f.input :email, :required => true %>

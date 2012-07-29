@@ -1,11 +1,9 @@
 <fieldset>
 <%= render 'shared/error_messages', object: f.object %>
 
-<!--<ul class="unstyled">-->
-
   <%= f.input :name %>
   <%= f.input :company %>
-  <%= f.input :phone %>
+  <%= f.input :phone, :html => {:class => 'input-xlarge' } %>
   <%= f.input :mobile %>
   <%= f.input :email, as: :email %>
   <%= f.input :website, as: :url%>
@@ -13,7 +11,7 @@
    <div class="field_input">
    <ul>
      <li> <%= f.input :address1 %></li>
-     <li><%= f.input :address2, :html => {:class => 'input-small'} %></li>
+     <li><%= f.input :address2 %></li>
      <li>
         <div class="control-group string mandatory">
           <label class="string optional control-label" for="provider_country">Country</label>

@@ -15,30 +15,34 @@
 
 <% if user_signed_in? %>
 <div class="container-fluid">
-
     <div class="row-fluid">
 
          <div class="span2">
           <%= render 'layouts/sidebar' %>
-          </div>
+         </div>
 
         <div class="span10">
 
           <% flash.each do |key, value| %>
-              <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+              <div class="smart_alert">
+             <a class="close" data-dismiss="alert" href="#">×</a>
+             <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+              </div>
           <% end %>
+
           <%= yield %>
+
         </div>
+
     </div>
+</div>
 
  <% else %>
 <div class="container">
-  <!--<div class="row-fluid">-->
          <% flash.each do |key, value| %>
               <%= content_tag(:div, value, class: "alert alert-#{key}") %>
           <% end %>
           <%= yield %>
-<!--</div>-->
 </div>
  <% end %>
 
@@ -57,10 +61,10 @@
       <!--</div>-->
     <!--</div>-->
 
-  </div>
+
   <%= render 'layouts/footer' %>
   <%= debug(params) if Rails.env.development? %>
-</div>
+
 
 </body>
 </html>
