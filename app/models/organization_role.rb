@@ -14,6 +14,8 @@ class OrganizationRole < ActiveRecord::Base
   has_many :org_to_roles
   has_many :organizations, through: :org_to_roles
 
+  OWNER_ROLE_ID = 0
+  OWNER_ROLE_NAME = 'System Owner'
   PROVIDER_ROLE_ID = 1
   PROVIDER_ROLE_NAME = 'Provider'
 
