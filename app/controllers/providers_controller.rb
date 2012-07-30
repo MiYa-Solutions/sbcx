@@ -21,6 +21,7 @@ class ProvidersController < ApplicationController
     #  render 'new'
     #end
     params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
+    params[:provider][:status_event] = :make_local
     @provider = current_user.organization.providers.new(params[:provider])
     @provider.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @provider)
     if @provider.save
@@ -52,7 +53,7 @@ class ProvidersController < ApplicationController
   end
 
   def index
-    @new_providers = current_user.organization.providers.paginate(page: params[:page], per_page: 3)
+    @new_providers = current_user.organization.providers.paginate(page: params[:page], per_page: 10)
     @providers = current_user.organization.provider_candidates(params[:search])
   end
 

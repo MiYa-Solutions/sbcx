@@ -1,0 +1,14 @@
+<%= provide(:title, 'New User') %>
+<h1>New User</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= simple_form_for(@my_user, :url => my_users_path(@my_user)) do |f| %>
+        <%= render 'fields', f: f %>
+        <div>
+          <%= f.submit "Create", class: "btn btn-large btn-primary" %>
+        </div>
+    <% end %>
+  </div>
+</div>
+

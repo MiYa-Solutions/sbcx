@@ -18,9 +18,25 @@
   <strong>Completed On:</strong>
   <%= @service_call.completed_on %>
 </p>
+<p>
+  <strong>Status</strong>
+  <%= @service_call.human_status_name %>
+</p>
+<p>
+  <strong>Subcontractor</strong>
+  <%= @service_call.subcontractor %>
+</p>
+
 
 <p>
   <%= link_to "Edit", edit_service_call_path(@service_call) %> |
   <%= link_to "Destroy", @service_call, :confirm => 'Are you sure?', :method => :delete %> |
   <%= link_to "View All", service_calls_path %>
 </p>
+
+<%= simple_form_for @service_call do |f| %>
+    <%= f.input :subcontractor, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id %>
+    <%= hidden_field_tag :status_event, 'transfer' %>
+    <%= f.submit 'Transfer' %>
+
+<% end %>

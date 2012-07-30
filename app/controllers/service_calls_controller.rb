@@ -30,11 +30,18 @@ class ServiceCallsController < ApplicationController
 
   def update
     @service_call = ServiceCall.find(params[:id])
-    if @service_call.update_attributes(params[:service_call])
-      redirect_to @service_call, :notice => "Successfully updated service call."
+    if params[:status_event].nil?
+      if @service_call.update_attributes(params[:service_call])
+        redirect_to @service_call, :notice => "Successfully updated service call."
+      else
+        render :action => 'edit'
+      end
     else
-      render :action => 'edit'
+      subcontractor = Subcontractor.find(params[:service_call][:subcontractor])
+      @service_call.transfer(recipient: subcontractor)
+      render 'show'
     end
+
   end
 
   def destroy

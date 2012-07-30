@@ -15,11 +15,7 @@
 #  last_sign_in_ip        :string(255)
 #  created_at             :datetime        not null
 #  updated_at             :datetime        not null
-#
-# Indexes
-#
-#  index_users_on_email                 (email) UNIQUE
-#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  organization_id        :integer
 #
 
 class User < ActiveRecord::Base
@@ -30,10 +26,18 @@ class User < ActiveRecord::Base
 
   belongs_to :organization
 
+  # associations necessary for the Authorization functionality using declarative_authorization
+  has_many :assignments
+  has_many :roles, through: :assignments
+
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :organization_attributes, :organization
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :organization_attributes, :organization, :role_ids
   accepts_nested_attributes_for :organization
+  validates_presence_of :organization
 
-
-  #validates_presence_of :organization
+  def role_symbols
+    roles.map do |role|
+      role.name.underscore.to_sym
+    end
+  end
 end

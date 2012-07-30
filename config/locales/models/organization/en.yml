@@ -1,0 +1,16 @@
+en:
+  activerecord:
+    state_machines:
+      organization:
+        status:
+          states:
+            local_enabled: Enabled
+            local_disabled: Disabled
+            sbcx_member: Active
+            sbcx_member_disabled: Inactive
+          events:
+            disable_local: Enabled
+            enable_local: Disabled
+            disable_sbcx_memeber: Disabled
+            enable_sbcx_memeber:  Enabled
+

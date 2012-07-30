@@ -1,6 +1,7 @@
 class OrganizationsController < ApplicationController
 
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!
+  filter_resource_access
 
   def new
     @organization = Organization.new
@@ -24,7 +25,14 @@ class OrganizationsController < ApplicationController
   end
 
   def show
-    @organization = Organization.find(params[:id])
+    if has_role? :admin
+      @organization = Organization.find(params[:id])
+    else
+      @organization = current_user.organization
+    end
+
+    @users = @organization.users
+
 
   end
 
