@@ -184,7 +184,7 @@ class Organization < ActiveRecord::Base
   def customer_candidates(search)
     # todo fix the bug where all organizations are returned
     if search
-      customers(:conditions => ['name LIKE ?', "%#{search}%"])
+      customers.where('name LIKE ?', "%#{search}%")
     else
       customers
     end
