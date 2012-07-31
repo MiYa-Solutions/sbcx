@@ -14,7 +14,7 @@ body { padding-top: 60px; }
 @import "bootstrap-responsive";
 
 .navbar .brand {
-  color: #FAFFB8;
+  color: #eaeaea;
   font-weight: bold;
 
 }
@@ -48,6 +48,26 @@ footer {
 
 }
 
+.member_label {
+
+  background-color: #5BB65B;
+  text-align: center;
+  border-radius: 3px 3px 3px 3px;
+  padding: 1px 4px 2px;
+   badge {
+     color: white;
+     font-size: 12px;
+     font-weight: bold;
+     line-height: 14px;
+     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+     vertical-align: baseline;
+     white-space: nowrap;
+     letter-spacing: .08em;
+   }
+
+}
+
+
 .smart_label {
   background-color: $grayLight;
   display: block;
@@ -62,6 +82,7 @@ footer {
     color: white;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     line-height: 28px;
+    letter-spacing: .07em;
   }
 
   h1:hover {
@@ -150,3 +171,4 @@ fieldset label {
 smart_alert {
   display: block;
 }
+

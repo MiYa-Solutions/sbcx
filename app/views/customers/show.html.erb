@@ -1,17 +1,18 @@
 <% provide(:title, @customer.name) %>
 
-<div class="row-fluid" xmlns="http://www.w3.org/1999/html">
-  <div class="well">
+<div class="well">
 
-    <div class="row">
+  <div class="row-fluid">
     <div class="span4">
-       <div class="label" style="font-size: 12pt; padding-left: 5px" >
-         <%= @customer.name %>
-       </div>
-     </div>
+      <div class="smart_label"  >
+        <h1><%= @customer.name %></h1>
+      </div>
     </div>
+  </div>
 
-    <div class="row">
+
+
+    <div class="row-fluid">
       <div class="span4">
         <table class="table table-striped table-condensed">
           <tbody>
@@ -59,9 +60,9 @@
     </div>
 
     <div class="form-actions">
-      <%= link_to 'Back', customers_path, :class => 'btn btn-large' %>
-      <%= link_to 'Edit', edit_customer_path(@customer), :class => 'btn btn-large btn-primary' %>
-      <%= link_to 'Archive', customer_path(@customer), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-large btn-danger' %>
+      <%= link_to 'Back', customers_path, :class => 'btn btn-medium' %>
+      <%= link_to 'Edit', edit_customer_path(@customer), :class => 'btn btn-medium btn-primary' %>
+      <%= link_to 'Archive', customer_path(@customer), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
     </div>
 
   </div>

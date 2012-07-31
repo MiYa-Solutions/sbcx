@@ -4,20 +4,20 @@
   <td><%= provider.phone %></td>
   <td>
     <% if provider.subcontrax_member==true %>
-        <span class="label label-success">
-          Member
+        <span class="member_label">
+          <badge>Member</badge>
         </span>
    <% end %>
   </td>
   <td  >
     <% if provider.subcontrax_member==true %>
-        <%= link_to 'Add', provider_path(provider), :class => 'btn btn-success' %>
-        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        <%= link_to 'Add', provider_path(provider), :class => 'btn btn-small btn-success' %>
+        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-small btn-danger' %>
 
     <% else %>
 
-        <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
-        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-small' %>
+        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-small btn-danger' %>
 
     <% end %>
 

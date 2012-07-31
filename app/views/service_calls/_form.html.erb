@@ -5,7 +5,12 @@
 
     <%= f.association :customer, collection: current_user.organization.customers %>
     <%= f.input :notes %>
+
+
     <%= f.datetime_select :started_on %>
+
+    <%= f.text_field :started_on, data: {behaviour: 'datepicker'}%>
+
     <%= f.input :completed_on %>
     <p><%= f.submit %></p>
 <% end %>

@@ -13,9 +13,21 @@
         <ul class="nav pull-right">
           <% if user_signed_in? %>
           <li><%= link_to "Home", root_path %></li>
-          <li><%= link_to "Organizations", organizations_path %></li>
+          <li><%= link_to "Service Calls", service_calls_path %></li>
+
+          <% permitted_to? :index, :organizations do %>
+                  <li><%= link_to "Organizations", organizations_path %></li>
+        <% end %>
+
+          <li><%= link_to "Employees", my_users_path %></li>
           <li><%= link_to "Customers", customers_path %></li>
           <li><%= link_to "Providers", providers_path %></li>
+          <li><%= link_to "Subcontractors", subcontractors_path %></li>
+
+
+
+
+
           <li>
             <div class="btn-group">
                    <a href="#" data-toggle="dropdown" class="btn dropdown-toggle">
@@ -23,6 +35,8 @@
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
+                    <li><a><%= current_user.email %></a></li>
+                    <li class="divider"></li>
                     <li><%= link_to "Profile" %></li>
                     <li><%= link_to "Settings" %></li>
                     <li class="divider"></li>
