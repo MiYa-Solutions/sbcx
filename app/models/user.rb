@@ -34,6 +34,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :organization_attributes, :organization, :role_ids
   accepts_nested_attributes_for :organization
   validates_presence_of :organization
+  validates_presence_of :roles
+
 
   def role_symbols
     roles.map do |role|

@@ -11,10 +11,10 @@ OrganizationRole.find_or_create_by_id_and_name(id: OrganizationRole::PROVIDER_RO
 OrganizationRole.find_or_create_by_id_and_name(id: OrganizationRole::SUBCONTRACTOR_ROLE_ID, name: OrganizationRole::SUBCONTRACTOR_ROLE_NAME)
 OrganizationRole.find_or_create_by_id_and_name(id: OrganizationRole::OWNER_ROLE_ID, name: OrganizationRole::OWNER_ROLE_NAME)
 
-Role.find_or_create_by_name("Admin")
-Role.find_or_create_by_name("Org Admin")
-Role.find_or_create_by_name("Dispatcher")
-Role.find_or_create_by_name("Technician")
+Role.find_or_create_by_name(Role::ADMIN_ROLE_NAME)
+Role.find_or_create_by_name(Role::ORG_ADMIN_ROLE_NAME)
+Role.find_or_create_by_name(Role::DISPATCHER_ORG_NAME)
+Role.find_or_create_by_name(Role::TECHNICIAN_ROLE_NAME)
 
 owner_org = Organization.find_by_email('info@miyasolutions.com')
 if owner_org.nil?

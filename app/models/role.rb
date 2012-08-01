@@ -12,4 +12,10 @@ class Role < ActiveRecord::Base
   has_many :assignments
   has_many :users, :through => :assignments
 
+  ADMIN_ROLE_NAME = "Admin"
+  ORG_ADMIN_ROLE_NAME = "Org Admin"
+  DISPATCHER_ORG_NAME = "Dispatcher"
+  TECHNICIAN_ROLE_NAME = "Technician"
+
+
 end
