@@ -1,16 +1,46 @@
-<%= simple_form_for @service_call do |f| %>
-    <% if !f.object.new_record? %>
-        <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
-    <% end %>
+<fieldset>
+    <div class="row-fluid">
+        <div class="span5">
 
-    <%= f.association :customer, collection: current_user.organization.customers %>
-    <%= f.input :notes %>
+                <% if !f.object.new_record? %>
+                    <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+                <% end %>
 
 
-    <%= f.datetime_select :started_on %>
+                <%= f.association :customer, collection: current_user.organization.customers %>
 
-    <%= f.text_field :started_on, data: {behaviour: 'datepicker'}%>
 
-    <%= f.input :completed_on %>
-    <p><%= f.submit %></p>
-<% end %>
+                  <div class="control-group string mandatory">
+                    <label class="string optional control-label" for="service_call_started_on">Started On</label>
+                    <div class="controls">
+                      <%= f.text_field :started_on, data: {behaviour: 'datepicker'}, placeholder: 'Click to select date'%>
+                      <%= f.text_field :completed_on, data: {behaviour: 'datepicker'}, placeholder: 'Click to select time'%>
+                    </div>
+                  </div>
+                       <br>
+                      <div class="control-group string mandatory">
+                        <label class="string optional control-label" for="service_call_completed_on">Completed On</label>
+                        <div class="controls">
+                          <%= f.text_field :completed_on, data: {behaviour: 'datepicker'}, placeholder: 'Click to select date'%>
+                          <%= f.text_field :completed_on, data: {behaviour: 'datepicker'}, placeholder: 'Click to select time'%>
+
+                        </div>
+                  </div>
+
+      </div>
+
+
+      <div class="span5">
+           <div class="miya_note_area string mandatory">
+                <%= f.input :notes %>
+           </div>
+      </div>
+
+
+
+  <%= f.datetime_select :started_on %>
+
+  <%= f.input :completed_on %>
+
+    </div>
+</fieldset>

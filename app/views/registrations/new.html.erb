@@ -1,17 +1,16 @@
-<div class="row-fluid" id="Sign-up">
+<!--<div class="row-fluid" id="sign-up">-->
   <div class="well">
 
-
-    <div class="row" style="padding-left: 15px" >
-      <div class="label" style="font-size: 18pt; height: 32px; padding-top: 5px" >
-         <div class="span6" style="padding-top: 7px">
-          Register for a new account
-        </div>
-      </div>
+    <div class="row-fluid">
+        <div class="smart_label">
+      <h1>Register for a new account</h1>
+    </div>
+     <br>
     </div>
 
-   <br>
     <% resource.build_organization %>
+
+    <div class="row-fluid">
 
     <%= simple_form_for(resource, :html => {:class => 'form-horizontal'}, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
 
@@ -23,19 +22,29 @@
         <% end %>
 
         <fieldset>
+          <div class="row-fluid">
+            <div class="alert alert-info">
+          <h4>User Information:</h4>
+          </br>
 
-          <h4>User Information:</h4>  </br>
-
-          <%= f.input :email %>
+          <%= f.input :email, hint: 'email address is also your new user name', :input_html => { :class => 'input-large' } %>
           <%= f.input :password %>
-          <%= f.input :password_confirmation %>
+          <%= f.input :password_confirmation, label: 'Confirm Password' %>
+            </div>
+          </div>
 
-          <hr>
+
+          <div class="row-fluid">
+            <!--<div class="span8">-->
+          <div class="alert alert-success">
 
           <h4>Company/Organization Information:</h4>  </br>
           <%= f.simple_fields_for :organization_attributes, resource.organization do |fo| %>
               <%= render 'organizations/fields', f: fo %>
           <% end %>
+          </div>
+            <!--</div>-->
+          </div>
 
           <div class="form-actions">
             <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %> </br>
@@ -44,6 +53,7 @@
         </fieldset>
 
     <% end %>
+    </div>
 
   </div>
-</div>
+<!--</div>-->
