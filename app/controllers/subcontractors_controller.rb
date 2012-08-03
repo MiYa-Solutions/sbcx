@@ -41,9 +41,10 @@ class SubcontractorsController < ApplicationController
   end
 
   def index
-    @new_subcontractors = current_user.organization.subcontractors.all
+    @new_subcontractors = current_user.organization.subcontractors.paginate(page: params[:page], per_page: 2)
     @subcontractors = current_user.organization.subcontractor_candidates(params[:search])
   end
+
 
   def show
     @subcontractor = current_user.organization.subcontractors.find(params[:id])

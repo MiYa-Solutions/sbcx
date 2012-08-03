@@ -1,7 +1,26 @@
-<li>
-  <%= link_to subcontractor.name, subcontractors_path(subcontractor) %>
-  <%= form_for(current_user.organization.agreements.build(subcontractor_id: subcontractor.id)) do |f| %>
-      <div><%= f.hidden_field :subcontractor_id %></div>
-      <%= f.submit "Add", class: "btn btn-large btn-primary" %>
-  <% end %>
-</li>
+<tr>
+  <td><%= link_to subcontractor.name, subcontractor_path(subcontractor) %>
+    <% if subcontractor.subcontrax_member==true %>
+        <span class="member_label">
+          <badge>Member</badge>
+        </span>
+    <% end %>
+  </td>
+  <td><%= subcontractor.company %></td>
+  <td><%= subcontractor.phone %></td>
+  <td><%= subcontractor.email %></td>
+
+  <td  >
+    <% if subcontractor.subcontrax_member==true %>
+        <%= link_to 'Add', subcontractors_path(subcontractor), :class => 'btn btn-small btn-success' %>
+        <%= link_to 'Archive', subcontractors_path(subcontractor), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-small btn-danger' %>
+
+    <% else %>
+
+        <%= link_to 'Edit', edit_subcontractor_path(subcontractor), :class => 'btn btn-small' %>
+        <%= link_to 'Archive', subcontractors_path(subcontractor), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-small btn-danger' %>
+
+    <% end %>
+
+  </td  >
+</tr>
