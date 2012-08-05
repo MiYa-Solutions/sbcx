@@ -54,7 +54,8 @@ footer {
   text-align: center;
   border-radius: 3px 3px 3px 3px;
   padding: 1px 4px 2px;
-   badge {
+
+  badge {
      color: white;
      font-size: 12px;
      font-weight: bold;
@@ -67,6 +68,37 @@ footer {
 
 }
 
+.miya_note_area {
+
+  input, textarea {
+    width: 300px;
+    height: 210px;
+  }
+
+}
+
+
+select {
+  -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+  background-color: white;
+  border: 1px solid #CCCCCC;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+.miya_input_area {
+
+  select {
+    -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    background-color: white;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+
+  }
+
+
+}
 
 .smart_label {
   background-color: $grayLight;
@@ -111,6 +143,10 @@ footer {
 
   input {
     margin-bottom: 0px;
+  }
+
+  input, textarea {
+    width: 105px;
   }
 
   .container-fluid {
