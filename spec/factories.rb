@@ -5,7 +5,7 @@ FactoryGirl.define do
 
     factory :provider do |prov|
       the_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
-      organization_role_ids [the_role.id]
+      organization_roles [the_role]
     end
   end
 
@@ -15,6 +15,16 @@ FactoryGirl.define do
     password "foobar"
     password_confirmation "foobar"
     the_role = Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME)
-    role_ids [the_role.id]
+    roles [the_role]
   end
+
+  factory :owner_admin, class: User do
+    organization
+    sequence(:email) { |n| "owner_admin_#{n}@example.com" }
+    password "foobar"
+    password_confirmation "foobar"
+    the_role = Role.find_by_name(Role::ADMIN_ROLE_NAME)
+    roles [the_role]
+  end
+
 end

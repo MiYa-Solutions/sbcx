@@ -33,8 +33,10 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :organization_attributes, :organization, :role_ids
   accepts_nested_attributes_for :organization
+
   validates_presence_of :organization
   validates_presence_of :roles
+  validates_with RoleValidator
 
 
   def role_symbols

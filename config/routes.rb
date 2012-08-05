@@ -1,5 +1,7 @@
 Sbcx::Application.routes.draw do
 
+  #resource :profile, controller: 'registrations', only: [:show]
+
   resources :my_users, only: [:new, :create, :edit, :show, :index, :update]
 
   resources :service_calls, only: [:new, :create, :edit, :show, :index, :update]
@@ -14,6 +16,10 @@ Sbcx::Application.routes.draw do
 
   # overriding the devise registration controller
   devise_for :users, :controllers => {:registrations => "registrations"}
+  devise_scope :user do
+    match "/profile" => "registrations#show"
+  end
+
 
   get '/region_select/subregion_options' => 'region_select#subregion_options', as: :region_select
 

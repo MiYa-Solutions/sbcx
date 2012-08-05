@@ -3,5 +3,5 @@ en:
     permission_denied: "Sorry, you are not allowed to access that page."
   user:
     flash:
-      created_successfully: "the user was created succesfully"
+      created_successfully: "the user was created successfully"
       updated_successfully: "User updated successfully"

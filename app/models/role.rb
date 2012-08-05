@@ -17,5 +17,11 @@ class Role < ActiveRecord::Base
   DISPATCHER_ORG_NAME = "Dispatcher"
   TECHNICIAN_ROLE_NAME = "Technician"
 
+  def to_i
+    self.id
+  end
 
+  def to_s
+    self.name
+  end
 end

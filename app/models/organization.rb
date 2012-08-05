@@ -67,6 +67,8 @@ class Organization < ActiveRecord::Base
   validates :name, {presence: true, length: {maximum: 255}}
 
   validate :has_at_least_one_role
+  validates_presence_of :organization_roles
+  validates_with OneOwnerValidator
 
   def make_member
     self.subcontrax_member=true
