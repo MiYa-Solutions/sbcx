@@ -12,15 +12,22 @@
 
   <td  >
     <% if subcontractor.subcontrax_member==true %>
-        <%= link_to 'Add', subcontractors_path(subcontractor), :class => 'btn btn-small btn-success' %>
-        <%= link_to 'Archive', subcontractors_path(subcontractor), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-small btn-danger' %>
+        <div class="row-fluid">
+          <%= form_for current_user.organization.agreements.build(subcontractor_id: subcontractor.id), :html => {:class => 'add_member'} do |f| %>
+              <%= f.hidden_field :subcontractor_id %>
+              <%= f.submit "Add", class: "btn btn-mini btn-success" %>
+          <% end %>
+          <%= link_to 'Archive', subcontractors_path(subcontractor), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        </div>
 
     <% else %>
 
-        <%= link_to 'Edit', edit_subcontractor_path(subcontractor), :class => 'btn btn-small' %>
-        <%= link_to 'Archive', subcontractors_path(subcontractor), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-small btn-danger' %>
+        <%= link_to 'Edit', edit_subcontractor_path(subcontractor), :class => 'btn btn-mini' %>
+        <%= link_to 'Archive', subcontractors_path(subcontractor), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        <%= link_to 'Send Invite' , new_subcontractor_path, :class => 'btn btn-mini btn-success' %>
 
-    <% end %>
+
+  <% end %>
 
   </td  >
 </tr>

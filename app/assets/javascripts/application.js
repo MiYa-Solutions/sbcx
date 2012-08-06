@@ -18,7 +18,7 @@
 
 
 $(document).on("focus", "[data-behaviour~='datepicker']", function (e) {
-    $(this).datepicker({"format":"mm-dd-yyyy", "weekStart":1, "autoclose":true});
+    $(this).datepicker({"format":"mm-dd-yy", "weekStart":1, "autoclose":true});
 
 });
 
