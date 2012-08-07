@@ -10,7 +10,8 @@
 
 class OrganizationRole < ActiveRecord::Base
   attr_accessible :name, :id
-  set_primary_key :id
+  self.primary_key= :id
+  #set_primary_key :id
   has_many :org_to_roles
   has_many :organizations, through: :org_to_roles
 

@@ -6,7 +6,7 @@
     <%= simple_form_for(@my_user, :url => my_users_path(@my_user)) do |f| %>
         <%= render 'fields', f: f %>
         <div>
-          <%= f.submit "Create", class: "btn btn-large btn-primary" %>
+          <%= f.submit "Create", class: "btn btn-large btn-primary", id: 'create_user_button' %>
         </div>
     <% end %>
   </div>

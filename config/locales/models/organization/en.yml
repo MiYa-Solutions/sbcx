@@ -14,3 +14,6 @@ en:
             disable_sbcx_memeber: Disabled
             enable_sbcx_memeber:  Enabled
 
+  errors:
+    messages:
+      one_system_owner: "There can be only one system owner"

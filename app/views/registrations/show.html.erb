@@ -1,0 +1,25 @@
+<h1> Profile </h1>
+<div id="org_details">
+  <% for attribute in @organization.attributes.keys %>
+      <b><%= attribute.humanize %></b>
+      <% if attribute.to_sym == :status %>
+          <%= @organization.human_status_name %>
+          <br/>
+      <% else %>
+          <%= @organization.attributes[attribute].to_s %>
+          <br/>
+      <% end %>
+
+  <% end %>
+</div>
+
+<div id="org_users">
+  <ul>
+    <li> User:
+      <%= @current_user.email %>
+    </li>
+  </ul>
+  <%= link_to t("Create User"), new_my_user_path, :class => 'btn', id: 'add_user_button' %>
+  <%= link_to "Change Password", edit_user_registration_path, id: 'reset_password' %>
+
+</div>

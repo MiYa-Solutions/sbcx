@@ -1,5 +1,6 @@
 class MyUsersController < ApplicationController
   def index
+    @users = current_user.organization.users.paginate(page: params[:page], per_page: 2)
   end
 
   def new
@@ -11,7 +12,7 @@ class MyUsersController < ApplicationController
 
     if @my_user.save
       flash[:success] = t('user.flash.created_successfully')
-      redirect_to :back
+      redirect_to my_users_path
     else
       render 'new'
     end
