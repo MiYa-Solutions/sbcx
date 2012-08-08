@@ -48,14 +48,29 @@ footer {
 
 }
 
+.hero-unit{
+  h1 {
+  text-align: center;
+  }
 
-.welcome_logo {
+  .welcome_logo {
   height: 100px;
 
-  logo {
+  }
+  .logo {
   float: right;
   }
+
 }
+
+.sign-up {
+
+  .row-fluid [class*="span"] {
+    margin-left: 0.564%;
+  }
+
+}
+
 
 
 .member_label {

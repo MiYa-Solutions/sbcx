@@ -13,12 +13,16 @@
   <td  >
     <% if provider.subcontrax_member==true %>
          <div class="row-fluid">
-          <%= form_for current_user.organization.agreements.build(provider_id: provider.id), :html => {:class => 'add_member'} do |f| %>
-              <%= f.hidden_field :provider_id %>
-              <%= f.submit "Add", class: "btn btn-mini btn-info" %>
-          <% end %>
+              <% if  provider.id.in? current_user.organization.provider_ids %>
           <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
-         </div>
+           <% else %>
+               <%= form_for current_user.organization.agreements.build(provider_id: provider.id), :html => {:class => 'add_member'} do |f| %>
+                   <%= f.hidden_field :provider_id %>
+                   <%= f.submit "Add", class: "btn btn-mini btn-info" %>
+               <% end %>
+               </div>
+
+         <% end %>
   <% else %>
 
         <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
