@@ -18,10 +18,9 @@
 
         <%= render 'fields', f: f %>
 
-          <div class="control-group string required">
-            <div class="controls">
-              <%= f.submit "Create Subcontractor", class: "btn btn-large btn-primary" %>
-            </div>
+          <div class="form-actions">
+            <%= link_to 'Back', subcontractors_path, :class => 'btn btn-medium' %>
+            <%= f.submit "Create Subcontractor", class: "btn btn-medium btn-primary" %>
           </div>
       <% end %>
 

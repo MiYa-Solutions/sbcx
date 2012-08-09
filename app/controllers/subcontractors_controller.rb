@@ -48,5 +48,6 @@ class SubcontractorsController < ApplicationController
 
   def show
     @subcontractor = current_user.organization.subcontractors.find(params[:id])
+
   end
 end

@@ -15,12 +15,26 @@
 <div class="row-fluid">
   <div class="span10 ">
     <%= simple_form_for @provider, url: providers_url, :html => {:class => 'form-horizontal' } do |f| %>
+        <% if f.object.errors.any? %>
+            <div class="alert alert-block alert-error">
+              <a class="close" data-dismiss="alert" href="#">×</a>
+              <%= render 'shared/error_messages', object: f.object %>
+            </div>
+        <% end %>
+
+
+
         <%= render 'fields', f: f %>
+
+
+
+
 
         <div class="form-actions">
         <!--<div class="control-group string required">-->
           <!--<div class="controls">-->
-            <%= f.submit t('providers.buttons.create_provider'), class: "btn btn-large btn-primary" %>
+          <%= link_to 'Back', providers_path, :class => 'btn btn-medium' %>
+          <%= f.submit t('providers.buttons.create_provider'), class: "btn btn-medium btn-primary" %>
           <!--</div>-->
         </div>
     <% end %>
