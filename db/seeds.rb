@@ -28,6 +28,8 @@ if owner_org.nil?
   mark.roles << Role.find_by_name("Admin")
 
   owner_org.save
+  ishay.save
+  mark.save
 end
 
 
