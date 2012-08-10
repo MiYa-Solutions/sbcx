@@ -1,36 +1,50 @@
-<div class="page-header">
-  <h1><%= "Organizations" %></h1>
-</div>
-<%= will_paginate @organizations %>
+<div class="well">
+
+  <div class="smart_label"  >
+    <ul>
+      <li><h1>Organizations</h1></li>
+      <li>
+        <!--search placement-->
+      </li>
+      <li>
+        <%= link_to 'New Organization', new_organization_path, :class => 'btn btn-primary' %>
+      </li>
+    </ul>
+  </div>
+
+  <br>
+
+
+  <% if @organizations.empty? %>
+      <span class="alert alert-info">No records, click "New Organizations" to add new contact</span>
+  <% else %>
+
+
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Created At</th>
-    <th>Actions</th>
-  </tr>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
   </thead>
   <tbody>
-  <% @organizations.each do |org| %>
+      <% @organizations.each do |org| %>
       <tr>
-        <td><%= link_to org.id, organization_path(org) %></td>
-        <td><%= org.name %></td>
-        <td><%= l org.created_at %></td>
+        <td><%= org.id %></td>
+        <td><%= link_to org.name, organization_path(org) %></td>
         <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_organization_path(org), :class => 'btn btn-mini' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      organization_path(org),
-                      :method => :delete,
-                      :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
-                      :class => 'btn btn-mini btn-danger' %>
+          <%= link_to 'Edit', edit_organization_path(org), :class => 'btn btn-mini' %>
+          <%= link_to 'Archive', organization_path(org), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>
-  <% end %>
+       <% end %>
   </tbody>
 </table>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_organization_path,
-            :class => 'btn btn-primary' %>
+      <%= will_paginate @organizations, :class => 'pagination pagination-centered' %>
+
+
+  <% end %>
+
+</div>

@@ -279,3 +279,16 @@ smart_alert {
 
 }
 
+
+.radio, .checkbox {
+  min-height: 18px;
+  padding-left: 18px;
+}
+
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+  float: left;
+  margin-left: -18px;
+  margin-top: -.005em;;
+
+}
+

@@ -37,7 +37,7 @@ class OrganizationsController < ApplicationController
   end
 
   def index
-    @organizations = Organization.paginate(page: params[:page], per_page: 2)
+    @organizations = Organization.paginate(page: params[:page], per_page: 10)
   end
 
   def edit

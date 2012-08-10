@@ -1,16 +1,30 @@
-<%= provide(:title, 'New User') %>
-<h1>Edit User</h1>
+<%= provide(:title, 'Edit User') %>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= simple_form_for(@my_user, url: my_user_path(@my_user)) do |f| %>
-        <%= f.input :email, :required => true, :autofocus => true %>
-        <%= f.association :roles, as: :check_boxes %>
+<div class="well">
 
-        <div>
-          <%= f.submit "Save", class: "btn btn-large btn-primary" %>
-        </div>
-    <% end %>
+  <div class="row-fluid">
+    <div class="span10">
+      <div class="smart_label"  >
+        <h1>Edit <%= @my_user.id %> Info:</h1>
+      </div>
+    </div>
   </div>
-</div>
 
+  <br>
+
+  <div class="row-fluid">
+    <div class="span10 ">
+      <%= simple_form_for @my_user, url: my_user_path(@my_user), :html => {:class => 'form-horizontal' } do |f| %>
+          <%= f.input :email, :required => true, :autofocus => true %>
+          <%= f.association :roles, as: :check_boxes %>
+
+          <div class="form-actions">
+            <%= link_to 'Back', my_users_path, :class => 'btn btn-medium' %>
+            <%= f.submit "Save Changes", class: "btn btn-medium btn-primary" %>
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+
+</div>
