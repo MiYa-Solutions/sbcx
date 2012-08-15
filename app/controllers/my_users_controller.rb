@@ -1,6 +1,9 @@
 class MyUsersController < ApplicationController
   def index
     @users = current_user.organization.users.paginate(page: params[:page], per_page: 2)
+
+  #  @new_my_users = current_user.organization.users.paginate(page: params[:page], per_page: 5)
+  #  @my_users = current_user.organization.users_candidates(params[:search])
   end
 
   def new
@@ -37,5 +40,8 @@ class MyUsersController < ApplicationController
   def show
     # todo move to the below to the organization model and use declarative_authorization
     @my_user = current_user.organization.users.find(params[:id])
+
+
+
   end
 end

@@ -19,6 +19,12 @@ body { padding-top: 60px; }
 
 }
 
+.nav-list {
+  margin-bottom: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 
 footer {
   margin-top: 45px;
@@ -48,9 +54,36 @@ footer {
 
 }
 
+.hero-unit{
+  h1 {
+  text-align: center;
+  }
+
+  .welcome_logo {
+  height: 100px;
+
+  }
+  .logo {
+  float: right;
+  }
+
+}
+
+.sign-up {
+
+  .row-fluid [class*="span"] {
+    margin-left: 0.564%;
+  }
+
+}
+
+
+
 .member_label {
 
-  background-color: #5BB65B;
+  //background-color: #5BB65B;
+  background-color: #3A87AD;
+
   text-align: center;
   border-radius: 3px 3px 3px 3px;
   padding: 1px 4px 2px;
@@ -114,7 +147,7 @@ select {
     color: white;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     line-height: 28px;
-    letter-spacing: .07em;
+    letter-spacing: .01em;
   }
 
   h1:hover {
@@ -136,6 +169,7 @@ select {
 
   }
 
+
   form {
     line-height: 1px;
     margin: 0 0 1px;
@@ -145,13 +179,43 @@ select {
     margin-bottom: 0px;
   }
 
+
+
   input, textarea {
-    width: 105px;
+    width: 210px;
+  }
+
+  .btn-medium {
+    width: 80px;
+    height: 28px;
   }
 
   .container-fluid {
     padding-left: 2px;
     padding-right: 2px;
+  }
+
+  .btn-large {
+    //height: 18px;
+    width: 100px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 4px 4px 4px 4px;
+    font-size: 13px;
+    line-height: 18px;
+    margin-bottom: 0;
+    padding: 4px 10px;
+  }
+
+  .btn-info {
+    height: 18px;
+    width: 80px;
+
+  }
+
+  .btn-signup {
+    width: 120px;
+
   }
 }
 
@@ -176,7 +240,7 @@ select {
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 7px;
 }
 
 fieldset input {
@@ -206,5 +270,12 @@ fieldset label {
 
 smart_alert {
   display: block;
+}
+
+.add_member {
+  margin: 0;
+  display: inline-block;
+  width: 40px;
+
 }
 

@@ -1,25 +1,36 @@
 <tr>
-  <td><%= link_to provider.name, provider_path(provider) %></td>
-  <td><%= provider.company %></td>
-  <td><%= provider.phone %></td>
-  <td>
+  <td><%= link_to provider.name, provider_path(provider) %>
     <% if provider.subcontrax_member==true %>
         <span class="member_label">
           <badge>Member</badge>
         </span>
-   <% end %>
-  </td>
-  <td  >
-    <% if provider.subcontrax_member==true %>
-        <%= link_to 'Add', provider_path(provider), :class => 'btn btn-small btn-success' %>
-        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-small btn-danger' %>
-
-    <% else %>
-
-        <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-small' %>
-        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-small btn-danger' %>
-
     <% end %>
+  </td>
+  <td><%= provider.company %></td>
+  <td><%= provider.phone %></td>
+  <td><%= provider.email %></td>
+  <td>
+    <% if provider.subcontrax_member==true %>
+      <div class="row-fluid">
+        <% if  provider.id.in? current_user.organization.provider_ids %>
+          <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        <% else %>
+               <%= form_for current_user.organization.agreements.build(provider_id: provider.id), :html => {:class => 'add_member'} do |f| %>
+                   <%= f.hidden_field :provider_id %>
+                   <%= f.submit "Add", class: "btn btn-mini btn-info" %>
+               <% end %>
+
+         <% end %>
+      </div>
+
+  <% else %>
+
+        <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
+        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        <%= link_to 'Send Invite' , new_provider_path, :class => 'btn btn-mini btn-info' %>
+
+
+  <% end %>
 
   </td  >
 </tr>

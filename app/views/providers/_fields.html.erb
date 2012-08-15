@@ -1,38 +1,37 @@
 <fieldset>
-  <%= render 'shared/error_messages', object: f.object %>
+
 
   <%= f.input :name %>
   <%= f.input :company %>
   <%= f.input :phone, class: 'input-xlarge' %>
   <%= f.input :mobile %>
   <%= f.input :email, as: :email %>
-  <%= f.input :website, as: :url %>
+  <%= f.input :website, as: :url%>
 
-  <div class="field_input">
-    <ul>
-      <li> <%= f.input :address1 %></li>
-      <li><%= f.input :address2 %></li>
-      <li>
+   <div class="field_input">
+   <ul>
+     <li> <%= f.input :address1 %></li>
+     <li><%= f.input :address2 %></li>
+     <li>
         <div class="control-group string mandatory">
           <label class="string optional control-label" for="provider_country">Country</label>
-
-          <div class="controls">
-            <%= f.country_select :country, {priority: %w[US]}, id: 'country' %>
-          </div>
+            <div class="controls">
+              <%= f.country_select :country, { priority: %w[US] }, id: 'country' %>
+            </div>
         </div>
       </li>
       <li>
         <div class="control-group string mandatory">
-          <label class="string optional control-label" for="provider_state">State</label>
+            <label class="string optional control-label" for="provider_state">State</label>
+            <div class="controls">
+              <%= render  'region_select/subregion_select', f: f %>
 
-          <div class="controls">
-            <%= render 'region_select/subregion_select', f: f %>
-          </div>
+            </div>
         </div>
       </li>
-      <li> <%= f.input :city %>   </li>
-      <li><%= f.input :zip %>   </li>
-    </ul>
+     <li> <%= f.input :city %>   </li>
+     <li><%= f.input :zip %>   </li>
+      </ul>
   </div>
 
 </fieldset>

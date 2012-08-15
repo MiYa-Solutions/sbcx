@@ -3,57 +3,69 @@
 
     <div class="row-fluid">
         <div class="smart_label">
-      <h1>Register for a new account</h1>
-    </div>
-     <br>
+          <h1>Register for a new account</h1>
+        </div>
+        <br>
     </div>
 
     <% resource.build_organization %>
 
+<div class="sign-up">
+
+
     <div class="row-fluid">
 
-    <%= simple_form_for(resource, :html => {:class => 'form-horizontal'}, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
 
-        <% if f.object.errors.any? %>
-            <div class="alert alert-block alert-error">
-              <a class="close" data-dismiss="alert" href="#">×</a>
-              <%= devise_error_messages! %>
-            </div>
-        <% end %>
+            <%= simple_form_for(resource, :html => {:class => 'form-horizontal'}, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+          <!--<fieldset>-->
 
-        <fieldset>
-          <div class="row-fluid">
-            <div class="alert alert-info">
-          <h4>User Information:</h4>
-          </br>
-
-          <%= f.input :email, hint: 'email address is also your new user name', :input_html => { :class => 'input-large' } %>
-          <%= f.input :password %>
-          <%= f.input :password_confirmation, label: 'Confirm Password' %>
-            </div>
-          </div>
-
-
-          <div class="row-fluid">
-            <!--<div class="span8">-->
-          <div class="alert alert-success">
-
-          <h4>Company/Organization Information:</h4>  </br>
-          <%= f.simple_fields_for :organization_attributes, resource.organization do |fo| %>
-              <%= render 'organizations/fields', f: fo %>
+          <% if f.object.errors.any? %>
+                    <div class="alert alert-block alert-error">
+                      <a class="close" data-dismiss="alert" href="#">×</a>
+                      <%= devise_error_messages! %>
+                    </div>
           <% end %>
+
+          <div class="span6">
+
+                <div class="alert alert-info">
+              <h4>User Information:</h4>
+              </br>
+
+                  <%= f.input :email, hint: 'email address is also your new user name', :input_html => { :class => 'input-large' } %>
+                  <%= f.input :password %>
+                  <%= f.input :password_confirmation, label: 'Confirm Password' %>
+                </div>
+
+         </div>
+
+
+        <div class="span6">
+                 <div class="alert alert-info">
+
+                  <h4>Company/Organization Information:</h4>  </br>
+                  <%= f.simple_fields_for :organization_attributes, resource.organization do |fo| %>
+                      <%= render 'organizations/fields', f: fo %>
+                  <% end %>
+                 </div>
           </div>
-            <!--</div>-->
-          </div>
+
+    </div>
+
+
+  <div class="row-fluid">
 
           <div class="form-actions">
             <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %> </br>
           </div>
 
-        </fieldset>
-
-    <% end %>
-    </div>
 
   </div>
-<!--</div>-->
+          <!--</fieldset>-->
+
+    <% end %>
+
+
+      </div>
+</div>
+
