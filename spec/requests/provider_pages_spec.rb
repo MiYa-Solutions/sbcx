@@ -56,7 +56,7 @@ describe "Provider Pages" do
 
           describe "to include providers who are sbcx memebers", js: true do
 
-            let!(:member_provider) { FactoryGirl.create(:member) }
+            let(:member_provider) { FactoryGirl.build(:member) }
 
             before do #the actual search
               fill_in 'search', with: member_provider.name

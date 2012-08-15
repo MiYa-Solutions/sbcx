@@ -19,9 +19,9 @@ FactoryGirl.define do
       end
     end
 
-    factory :member do
-      organization_roles [OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID), OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)]
-
+    factory :member, class: Organization do
+      the_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
+      organization_roles [the_role]
 
       after_build do |member|
         member.users << FactoryGirl.build(:admin, organization: member)
