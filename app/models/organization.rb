@@ -1,4 +1,3 @@
-require 'union'
 # == Schema Information
 #
 # Table name: organizations
