@@ -1,46 +1,46 @@
 <div class="well">
 
-<div class="smart_label"  >
- <ul>
-     <li><h1>My Providers</h1></li>
-     <li>
+  <div class="smart_label">
+    <ul>
+      <li><h1>My Providers</h1></li>
+      <li>
         <%= form_tag providers_path, id: "agreement_search_form", :method => :get, :remote => true do %>
-             <%= text_field_tag :search, params[:search] %>
-             <%= submit_tag "Search", :name => nil, class: 'btn btn-medium' %>
+            <%= text_field_tag :search, params[:search] %>
+            <%= submit_tag "Search", :name => nil, class: 'btn btn-medium' %>
         <% end %>
-     </li>
-     <li>
-       <%= link_to 'New Provider', new_provider_path, :class => 'btn btn-primary' %>
-     </li>
-  </ul>
-</div>
+      </li>
+      <li>
+        <%= link_to 'New Provider', new_provider_path, :class => 'btn btn-primary' %>
+      </li>
+    </ul>
+  </div>
 
-<br>
+  <br>
 
-<% if @new_providers.empty? %>
+  <% if @providers.empty? %>
       <span class="alert alert-info">No records, click "New Provider" to add new contact</span>
-<% else %>
+  <% else %>
 
 
-    <table class="table table-striped" >
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Company</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="new_providers">
-              <% @new_providers.each do |provider| %>
-                  <%= render provider %>
-              <% end %>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Company</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="new_providers">
+        <% @providers.each do |provider| %>
+            <%= render provider %>
+        <% end %>
 
-          </tbody>
-    </table>
+        </tbody>
+      </table>
 
-    <%= will_paginate @new_providers, :class => 'pagination pagination-centered' %>
-<% end %>
+      <%= will_paginate @providers, :class => 'pagination pagination-centered' %>
+  <% end %>
 
 </div>

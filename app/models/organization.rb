@@ -61,7 +61,6 @@ class Organization < ActiveRecord::Base
   # accessing associated models
   attr_accessible :users_attributes, :provider_attributes, :agreement_attributes, :agreements
 
-
   accepts_nested_attributes_for :users, :agreements
 
   validates :name, {presence: true, length: {maximum: 255}}
@@ -70,15 +69,17 @@ class Organization < ActiveRecord::Base
   validates_presence_of :organization_roles
   validates_with OneOwnerValidator
 
-  def make_member
-    self.subcontrax_member=true
-    Rails.logger.debug "#{self.name} has been created as a MEMBER!"
-  end
+  includes :organization_roles
 
-  def alert_local
-    Rails.logger.debug "#{self.name} has been created as LOCAL!"
-  end
 
+  scope :members, -> { where("subcontrax_member = true") }
+  scope :providers, -> { includes(:organization_roles).where("organization_roles.id = ? ", OrganizationRole::PROVIDER_ROLE_ID) }
+  scope :provider_members, -> { members.providers }
+  scope :associated_providers, -> { providers.includes(:agreements) }
+  scope :my_providers, ->(org_id) { associated_providers.where('agreements.subcontractor_id = ?', org_id) - where(id: org_id) }
+  scope :search, ->(query) { where(arel_table[:name].matches("%#{query}%")) }
+
+  scope :provider_search, ->(org_id, query) { (search(query).provider_members - where(id: org_id)| search(query).my_providers(org_id)).order('organizations.name') }
 
   # State machine  for Organization status
 
@@ -127,6 +128,14 @@ class Organization < ActiveRecord::Base
 
   end
 
+  def make_member
+    self.subcontrax_member=true
+    Rails.logger.debug "#{self.name} has been created as a MEMBER!"
+  end
+
+  def alert_local
+    Rails.logger.debug "#{self.name} has been created as LOCAL!"
+  end
 
   def provider?
     organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
@@ -163,12 +172,21 @@ class Organization < ActiveRecord::Base
     subcontractors << subcontractor
   end
 
-  def provider_candidates(search)
+  def provider_candidates(org_id, search)
     # todo fix the bug where all organizations are returned
     if search
-      Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
+      Provider.provider_members | self.providers
+      #prov_members = Organization.provider_members(search).order(:id)
+      #local_prov = providers.where('organizations.name LIKE ?', "%#{search}%").order(:id)
+      #
+      #local_prov.merge(prov_members)
+
+      #Organization.local_and_candidate_providers(search)
+      #Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
     else
-      Organization.all
+      Provider.search_providers(org_id, '')
+      #Organization.local_and_candidate_providers(search)
+      #Organization.all
     end
 
   end
@@ -176,9 +194,10 @@ class Organization < ActiveRecord::Base
   def subcontractor_candidates(search)
     # todo fix the bug where all organizations are returned
     if search
-      Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
+      local_and_candidate_providers
+      #Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
     else
-      Organization.all
+      local_and_candidate_providers
     end
 
   end

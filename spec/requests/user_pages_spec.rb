@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 require 'capybara/rspec'
 
 describe "User Pages" do

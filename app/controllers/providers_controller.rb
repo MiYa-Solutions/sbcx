@@ -46,15 +46,22 @@ class ProvidersController < ApplicationController
     end
   end
 
-  def destroy
-    @provider = Provider.find(params[:id])
-    @provider.destroy
-    redirect_to providers_url, :notice => "Successfully destroyed provider."
-  end
+  # provider can't be destroyed. instead it just needs to move to an disabled status
+  #def destroy
+  #  @provider = Provider.find(params[:id])
+  #  @provider.destroy
+  #  redirect_to providers_url, :notice => "Successfully destroyed provider."
+  #end
 
   def index
-    @new_providers = current_user.organization.providers.paginate(page: params[:page], per_page: 5)
-    @providers = current_user.organization.provider_candidates(params[:search])
+    if params[:search].nil?
+
+      @providers = Provider.provider_search(current_user.organization.id, "").paginate(page: params[:page], per_page: 10)
+    else
+      @providers = Provider.provider_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 10)
+    end
+
+
   end
 
   def show
