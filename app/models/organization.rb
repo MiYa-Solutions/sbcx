@@ -74,12 +74,18 @@ class Organization < ActiveRecord::Base
 
   scope :members, -> { where("subcontrax_member = true") }
   scope :providers, -> { includes(:organization_roles).where("organization_roles.id = ? ", OrganizationRole::PROVIDER_ROLE_ID) }
+  scope :subcontractors, -> { includes(:organization_roles).where("organization_roles.id = ? ", OrganizationRole::SUBCONTRACTOR_ROLE_ID) }
+
+  scope :subcontractor_members, -> { members.subcontractors }
   scope :provider_members, -> { members.providers }
   scope :associated_providers, -> { providers.includes(:agreements) }
+  scope :associated_subcontractors, -> { subcontractors.includes(:agreements) }
   scope :my_providers, ->(org_id) { associated_providers.where('agreements.subcontractor_id = ?', org_id) - where(id: org_id) }
+  scope :my_subcontractors, ->(org_id) { associated_subcontractors.where('agreements.provider_id = ?', org_id) - where(id: org_id) }
   scope :search, ->(query) { where(arel_table[:name].matches("%#{query}%")) }
 
   scope :provider_search, ->(org_id, query) { (search(query).provider_members - where(id: org_id)| search(query).my_providers(org_id)).order('organizations.name') }
+  scope :subcontractor_search, ->(org_id, query) { (search(query).subcontractor_members - where(id: org_id)| search(query).my_subcontractors(org_id)).order('organizations.name') }
 
   # State machine  for Organization status
 

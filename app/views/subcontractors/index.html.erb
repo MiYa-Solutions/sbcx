@@ -17,7 +17,7 @@
 
 <br>
 
-<% if @new_subcontractors.empty? %>
+<% if @subcontractors.empty? %>
       <span class="alert alert-info">No records, click "New Subcontractor" to add new contact</span>
 <% else %>
 
@@ -32,14 +32,14 @@
         </tr>
         </thead>
         <tbody id="new_subcontractors">
-        <% @new_subcontractors.each do |subcontractor| %>
+        <% @subcontractors.each do |subcontractor| %>
             <%= render subcontractor %>
         <% end %>
 
         </tbody>
     </table>
 
-    <%= will_paginate @new_subcontractors, :class => 'pagination pagination-centered' %>
+    <%= will_paginate @subcontractors, :class => 'pagination pagination-centered' %>
 
 <% end %>
 

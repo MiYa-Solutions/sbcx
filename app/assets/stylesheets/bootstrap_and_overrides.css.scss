@@ -154,6 +154,14 @@ select {
     background-position: -48px -16px;
   }
 
+  p {
+    font-style: italic;
+    font-weight:bold;
+    color: $white;
+    font-family: arial;
+    font-size: 12px;
+  }
+
   ul {
     list-style: none;
     margin: 0;

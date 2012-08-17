@@ -19,7 +19,7 @@ gem 'state_machine'
 gem 'ruby-graphviz', :require => 'graphviz'
 
 group :development, :test do
-  gem 'pg', '0.14.0'
+  gem 'pg'
   gem 'rspec-rails', '2.9.0'
   gem 'guard-rspec', '0.5.5'
   gem 'annotate', '~> 2.4.1.beta'
@@ -49,7 +49,7 @@ group :test do
 end
 
 group :production do
-  gem 'pg', '0.14.0'
+  gem 'pg'
 end
-
+gem 'pg'
 gem "mocha", :group => :test

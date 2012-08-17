@@ -10,6 +10,9 @@
         <% end %>
       </li>
       <li>
+        <p>Search for local Providers and SubConTraX members</p>
+      </li>
+      <li>
         <%= link_to 'New Provider', new_provider_path, :class => 'btn btn-primary' %>
       </li>
     </ul>
@@ -18,7 +21,7 @@
   <br>
 
   <% if @providers.empty? %>
-      <span class="alert alert-info">No records, click "New Provider" to add new contact</span>
+      <span class="alert alert-info" id="empty_search_result_notice">No records, click "New Provider" to add new contact</span>
   <% else %>
 
 
