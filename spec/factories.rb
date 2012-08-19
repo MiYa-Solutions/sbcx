@@ -1,13 +1,26 @@
+require 'declarative_authorization/maintenance'
+include Authorization::TestHelper
+
 FactoryGirl.define do
 
   factory :org, class: Organization do
     sequence(:name) { |n| "Organization #{n}" }
     sequence(:email) { |n| "org_person_#{n}@example.com" }
 
-
     factory :provider, class: Provider do |prov|
       the_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
       organization_roles [the_role]
+    end
+
+    factory :subcontractor, class: Subcontractor do
+      the_role = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
+      organization_roles [the_role]
+    end
+
+    factory :all_roles, class: Organization do
+      prov_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
+      sub_role = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
+      organization_roles [prov_role, sub_role]
     end
 
     factory :org_with_providers, class: Organization do
@@ -18,17 +31,19 @@ FactoryGirl.define do
         30.times { org.providers << FactoryGirl.create(:provider) }
       end
     end
+  end
 
-    factory :member, class: Organization do
-      the_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
-      organization_roles [the_role]
+  factory :member, class: Organization do
+    sequence(:name) { |n| "Organization Member#{n}" }
+    sequence(:email) { |n| "member_person_#{n}@example.com" }
 
-      after_build do |member|
-        member.users << FactoryGirl.build(:admin, organization: member)
-        member.make_member
-      end
+    prov_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
+    sub_role = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
+    organization_roles [prov_role, sub_role]
+
+    after_build do |member|
+      member.make_member
     end
-
   end
 
   factory :admin, class: User do
@@ -49,6 +64,14 @@ FactoryGirl.define do
     roles [the_role]
   end
 
+  factory :member_admin, class: User do
+    association :organization, factory: :member
+    sequence(:email) { |n| "mem_admin_#{n}@example.com" }
+    password "foobar"
+    password_confirmation "foobar"
+    the_role = Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME)
+    roles [the_role]
+  end
 
   factory :owner_admin, class: User do
     organization

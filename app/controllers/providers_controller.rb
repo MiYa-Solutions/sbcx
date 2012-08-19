@@ -1,13 +1,16 @@
 class ProvidersController < ApplicationController
   before_filter :authenticate_user!
 
+
+  filter_access_to :update, attribute_check: true
+  filter_access_to :show, attribute_check: true
+  filter_access_to :edit
+  filter_access_to :new
+  filter_access_to :index
+  #filter_access_to :all
+
   def new
-
-    if params[:search].nil?
-      @provider = current_user.organization.providers.build
-    else
-
-    end
+    @provider = current_user.organization.providers.new
 
   end
 
@@ -56,7 +59,7 @@ class ProvidersController < ApplicationController
   def index
     if params[:search].nil?
 
-      @providers = Provider.provider_search(current_user.organization.id, "").paginate(page: params[:page], per_page: 10)
+      @providers = current_user.organization.providers.paginate(page: params[:page], per_page: 10)
     else
       @providers = Provider.provider_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 10)
     end
@@ -65,6 +68,6 @@ class ProvidersController < ApplicationController
   end
 
   def show
-    @provider = current_user.organization.providers.find(params[:id])
+    #@provider = Provider.find(params[:id])
   end
 end

@@ -1,27 +1,27 @@
 <div class="well">
 
-<div class="smart_label"  >
- <ul>
+  <div class="smart_label">
+    <ul>
       <li><h1>My Subcontractors</h1></li>
       <li>
         <%= form_tag subcontractors_path, id: "agreement_search_form", :method => :get, :remote => true do %>
             <%= text_field_tag :search, params[:search] %>
-            <%= submit_tag "Search", :name => nil, class: 'btn btn-medium' %>
+            <%= submit_tag "Search", :name => nil, class: 'btn btn-medium', id: 'subcontractor-search-button' %>
         <% end %>
       </li>
       <li>
-        <%= link_to 'New Subcontractor', new_subcontractor_path, :class => 'btn btn-primary' %>
+        <%= link_to 'New Subcontractor', new_subcontractor_path, :class => 'btn btn-primary', id: 'new-subcontractor-button' %>
       </li>
- </ul>
-</div>
+    </ul>
+  </div>
 
-<br>
+  <br>
 
-<% if @subcontractors.empty? %>
-      <span class="alert alert-info">No records, click "New Subcontractor" to add new contact</span>
-<% else %>
+  <% if @subcontractors.empty? %>
+      <span class="alert alert-info" id="empty_search_result_notice">No records, click "New Subcontractor" to add new contact</span>
+  <% else %>
 
-    <table class="table table-striped" >
+      <table class="table table-striped" id="subcontractors_search_results">
         <thead>
         <tr>
           <th>Name</th>
@@ -37,10 +37,10 @@
         <% end %>
 
         </tbody>
-    </table>
+      </table>
 
-    <%= will_paginate @subcontractors, :class => 'pagination pagination-centered' %>
+      <%= will_paginate @subcontractors, :class => 'pagination pagination-centered' %>
 
-<% end %>
+  <% end %>
 
 </div>

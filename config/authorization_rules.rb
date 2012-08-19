@@ -19,8 +19,17 @@ authorization do
 
   end
   role :org_admin do
-    includes :dispatcher
-    has_permission_on [:providers, :subcontractors], :to => [:index, :show]
+    #includes :dispatcher
+    has_permission_on [:providers, :subcontractors], :to => [:index, :new, :edit, :update, :create]
+
+    #has_permission_on :providers, to: [:edit, :update, :create] do
+    #  if_attribute :subcontrax_member => false
+    #end
+
+    has_permission_on :providers, to: [:show] do
+      if_attribute :subcontrax_member => true
+      if_attribute :subcontractor_ids => contains { user.organization.id }
+    end
 
     has_permission_on :users, :to => [:index, :show, :new, :create, :edit, :update]
   end

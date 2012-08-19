@@ -14,19 +14,19 @@
 <%= render 'layouts/header' %>
 
 <% if user_signed_in? %>
-<div class="container-fluid">
-    <div class="row-fluid">
+    <div class="container-fluid">
+      <div class="row-fluid">
 
-         <div class="span2">
+        <div class="span2">
           <%= render 'layouts/sidebar' %>
-         </div>
+        </div>
 
         <div class="span10">
 
           <% flash.each do |key, value| %>
               <div class="smart_alert">
-             <a class="close" data-dismiss="alert" href="#">×</a>
-             <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+                <a class="close" data-dismiss="alert" href="#">×</a>
+                <%= content_tag(:div, value, class: "alert alert-#{key}") %>
               </div>
           <% end %>
 
@@ -34,39 +34,40 @@
 
         </div>
 
+      </div>
     </div>
-</div>
 
- <% else %>
-<div class="container">
-         <% flash.each do |key, value| %>
-        <div class="smart_alert">
-          <a class="close" data-dismiss="alert" href="#">×</a>
-          <%= content_tag(:div, value, class: "alert alert-#{key}") %>
-        </div>
-        <% end %>
-          <%= yield %>
-</div>
- <% end %>
-
-
-    <!--<div class="span2">-->
-      <!--<div class="well">-->
-        <!--<ul class="unstyled">-->
-          <!--<li>-->
-            <!--<a class="thumbnail" href="#">-->
-              <!--<img alt="" src="http://placehold.it/250x250">-->
-            <!--</a>-->
-          <!--</li>-->
-        <!--</ul>-->
+<% else %>
+    <div class="container">
+      <% flash.each do |key, value| %>
+          <div class="smart_alert">
+            <a class="close" data-dismiss="alert" href="#">×</a>
+            <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+          </div>
+      <% end %>
+      <%= yield %>
+    </div>
+<% end %>
 
 
-      <!--</div>-->
-    <!--</div>-->
+<!--<div class="span2">-->
+<!--<div class="well">-->
+<!--<ul class="unstyled">-->
+<!--<li>-->
+<!--<a class="thumbnail" href="#">-->
+<!--<img alt="" src="http://placehold.it/250x250">-->
+<!--</a>-->
+<!--</li>-->
+<!--</ul>-->
 
 
-  <%= render 'layouts/footer' %>
-  <%= debug(params) if Rails.env.development? %>
+<!--</div>-->
+<!--</div>-->
+
+
+<%= render 'layouts/footer' %>
+<%= debug(params) if Rails.env.development? %>
+<%= debug(current_user.roles) if Rails.env.development? %>
 
 
 </body>
