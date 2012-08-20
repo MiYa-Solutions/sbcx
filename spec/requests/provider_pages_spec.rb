@@ -141,6 +141,10 @@ describe "Provider Pages" do
         it { should have_content('new company') }
       end
 
+      describe "of another member" do
+
+      end
+
     end
 
   end

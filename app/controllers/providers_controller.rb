@@ -1,16 +1,17 @@
 class ProvidersController < ApplicationController
   before_filter :authenticate_user!
 
-
-  filter_access_to :update, attribute_check: true
-  filter_access_to :show, attribute_check: true
-  filter_access_to :edit
-  filter_access_to :new
-  filter_access_to :index
+  filter_resource_access
+  #filter_access_to :update, attribute_check: true
+  #filter_access_to :show, attribute_check: true
+  #filter_access_to :edit, attribute_check: true
+  #filter_access_to :new
+  #filter_access_to :index
   #filter_access_to :all
 
   def new
-    @provider = current_user.organization.providers.new
+    # no need for the below as declarative_authorization filter_resource_access taks care of it
+    #@provider = current_user.organization.providers.new
 
   end
 
@@ -37,11 +38,11 @@ class ProvidersController < ApplicationController
   end
 
   def edit
-    @provider = current_user.organization.providers.find(params[:id])
+    #@provider = current_user.organization.providers.find(params[:id])
   end
 
   def update
-    @provider = current_user.organization.providers.find(params[:id])
+    #@provider = current_user.organization.providers.find(params[:id])
     if @provider.update_attributes(params[:provider])
       redirect_to @provider, :notice => "Successfully updated provider."
     else

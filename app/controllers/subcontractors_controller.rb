@@ -1,9 +1,10 @@
 class SubcontractorsController < ApplicationController
   before_filter :authenticate_user!
+  filter_resource_access
 
   def new
 
-    @subcontractor = current_user.organization.subcontractors.build
+    #@subcontractor = current_user.organization.subcontractors.build
   end
 
   def create
@@ -22,11 +23,11 @@ class SubcontractorsController < ApplicationController
   end
 
   def edit
-    @subcontractor = current_user.organization.subcontractors.find(params[:id])
+    #@subcontractor = current_user.organization.subcontractors.find(params[:id])
   end
 
   def update
-    @subcontractor = current_user.organization.subcontractors.find(params[:id])
+    #@subcontractor = current_user.organization.subcontractors.find(params[:id])
     if @subcontractor.update_attributes(params[:subcontractor])
       redirect_to subcontractor_path(@subcontractor), :notice => "Successfully updated subcontractor."
     else
@@ -34,11 +35,11 @@ class SubcontractorsController < ApplicationController
     end
   end
 
-  def destroy
-    @subcontractor = Subcontractor.find(params[:id])
-    @subcontractor.destroy
-    redirect_to subcontractors_url, :notice => "Successfully destroyed subcontractor."
-  end
+  #def destroy
+  #  @subcontractor = Subcontractor.find(params[:id])
+  #  @subcontractor.destroy
+  #  redirect_to subcontractors_url, :notice => "Successfully destroyed subcontractor."
+  #end
 
   def index
     if params[:search].nil?
@@ -54,7 +55,7 @@ class SubcontractorsController < ApplicationController
 
 
   def show
-    @subcontractor = current_user.organization.subcontractors.find(params[:id])
+    #@subcontractor = current_user.organization.subcontractors.find(params[:id])
 
   end
 end
