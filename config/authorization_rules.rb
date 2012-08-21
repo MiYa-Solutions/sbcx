@@ -1,15 +1,16 @@
 authorization do
 
   role :guest do
-    has_permission_on :static_pages, to: [:read, :index]
+    has_permission_on :static_pages, to: :index
   end
   role :admin do
-    has_permission_on [:organizations, :users, :providers, :subcontractors, :service_calls],
-                      :to => [:index, :show, :new, :create, :edit, :update, :destroy]
+    has_permission_on [:static_pages, :organizations, :users, :providers, :subcontractors, :service_calls],
+                      :to => [:index, :show, :new, :create, :edit, :update, :destroy, :read]
 
   end
 
   role :technician do
+    has_permission_on :static_pages, to: [:index, :read]
     has_permission_on [:providers, :subcontractors], :to => [:index]
     has_permission_on :service_calls, :to => [:index, :show, :new, :create, :edit, :update]
 
