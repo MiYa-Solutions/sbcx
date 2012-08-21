@@ -1,13 +1,17 @@
 class ProvidersController < ApplicationController
   before_filter :authenticate_user!
 
+  filter_resource_access
+  #filter_access_to :update, attribute_check: true
+  #filter_access_to :show, attribute_check: true
+  #filter_access_to :edit, attribute_check: true
+  #filter_access_to :new
+  #filter_access_to :index
+  #filter_access_to :all
+
   def new
-
-    if params[:search].nil?
-      @provider = current_user.organization.providers.build
-    else
-
-    end
+    # no need for the below as declarative_authorization filter_resource_access taks care of it
+    #@provider = current_user.organization.providers.new
 
   end
 
@@ -34,11 +38,11 @@ class ProvidersController < ApplicationController
   end
 
   def edit
-    @provider = current_user.organization.providers.find(params[:id])
+    #@provider = current_user.organization.providers.find(params[:id])
   end
 
   def update
-    @provider = current_user.organization.providers.find(params[:id])
+    #@provider = current_user.organization.providers.find(params[:id])
     if @provider.update_attributes(params[:provider])
       redirect_to @provider, :notice => "Successfully updated provider."
     else
@@ -56,7 +60,7 @@ class ProvidersController < ApplicationController
   def index
     if params[:search].nil?
 
-      @providers = Provider.provider_search(current_user.organization.id, "").paginate(page: params[:page], per_page: 10)
+      @providers = current_user.organization.providers.paginate(page: params[:page], per_page: 10)
     else
       @providers = Provider.provider_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 10)
     end
@@ -65,6 +69,6 @@ class ProvidersController < ApplicationController
   end
 
   def show
-    @provider = current_user.organization.providers.find(params[:id])
+    #@provider = Provider.find(params[:id])
   end
 end

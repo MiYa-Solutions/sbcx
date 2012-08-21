@@ -2,29 +2,29 @@
 
 <div class="well">
 
-<div class="row-fluid">
+  <div class="row-fluid">
     <div class="span10">
-       <div class="smart_label"  >
-            <h1>Edit <%= @provider.name %> Info:</h1>
-       </div>
+      <div class="smart_label">
+        <h1>Edit <%= @provider.name %> Info:</h1>
+      </div>
     </div>
-</div>
+  </div>
 
-<br>
+  <br>
 
-<div class="row-fluid">
+  <div class="row-fluid">
     <div class="span10 ">
-        <%= simple_form_for @provider, url: provider_url(@provider), :html => {:class => 'form-horizontal' } do |f| %>
-        <%= render 'fields', f: f %>
+      <%= simple_form_for @provider, url: provider_url(@provider), :html => {:class => 'form-horizontal'} do |f| %>
+          <%= render 'fields', f: f %>
 
-        <div class="form-actions">
-              <%= link_to 'Back', providers_path, :class => 'btn btn-medium' %>
-              <%= f.submit "Save Changes", class: "btn btn-medium btn-primary" %>
-         </div>
-        <% end %>
+          <div class="form-actions">
+            <%= link_to 'Back', providers_path, :class => 'btn btn-medium' %>
+            <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", id: 'save_provider_btn' %>
+          </div>
+      <% end %>
 
     </div>
-</div>
+  </div>
 
 </div>
 

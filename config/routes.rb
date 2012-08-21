@@ -12,7 +12,7 @@ Sbcx::Application.routes.draw do
   resources :subcontractors, only: [:new, :create, :edit, :show, :index, :update]
 
 
-  root to: 'static_pages#welcome'
+  root to: 'static_pages#index'
 
   # overriding the devise registration controller
   devise_for :users, :controllers => {:registrations => "registrations"}
@@ -25,6 +25,9 @@ Sbcx::Application.routes.draw do
 
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   resources :customers, only: [:new, :create, :edit, :show, :index, :update]
+
+  match 'welcome' => 'static_pages#welcome', :as => 'user_root'
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

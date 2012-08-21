@@ -7,3 +7,25 @@ def sign_in(user)
   # Sign in when not using Capybara.
   #cookies[:remember_token] = user.remember_token
 end
+
+def clean(org)
+  org.subcontractors.each do |prov|
+    prov.destroy
+  end
+
+  org.subcontractors.destroy_all
+
+  org.providers.each do |prov|
+    prov.destroy
+  end
+
+  org.providers.destroy_all
+
+  org.users.each do |usr|
+    usr.destroy
+  end
+
+  org.users.destroy_all
+  org.destroy
+
+end
