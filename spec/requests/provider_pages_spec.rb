@@ -65,6 +65,8 @@ describe "Provider Pages" do
             let!(:member) { FactoryGirl.create(:member_admin).organization }
 
             before do #the actual search
+              member.name = "moshe"
+              member.save
               fill_in 'search', with: member.name
               click_button 'provider-search-button'
             end
@@ -106,7 +108,7 @@ describe "Provider Pages" do
         visit new_provider_path
       end
 
-      let(:new_prov) { FactoryGirl.build(:provider) }
+      let!(:new_prov) { FactoryGirl.build(:provider) }
 
       it "should add local provider successfully" do
         expect do
@@ -114,6 +116,7 @@ describe "Provider Pages" do
           click_button 'create_provider_btn'
 
         end.to change(Organization, :count).by(1)
+
       end
 
     end
