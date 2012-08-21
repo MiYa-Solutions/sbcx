@@ -11,17 +11,30 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require jquery-ui
 //= require jquery_ujs
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require_tree .
 
 
-$(document).on("focus", "[data-behaviour~='datepicker']", function (e) {
-    $(this).datepicker({"format":"mm-dd-yy", "weekStart":1, "autoclose":true});
+
+
+$(function() {
+    $( ".datepicker" ).datepicker();
+    $( "#format" ).change(function() {
+        $( "#datepicker" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });
 
 });
 
-$('#select-time').datetimepicker() ;
+$(function() {
+    $( ".datepicker2").datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+});
 
+
+$(".collapse").collapse()
 

@@ -1,6 +1,7 @@
 // Set the correct sprite paths
-$iconSpritePath: image-path('glyphicons-halflings.png');
-$iconWhiteSpritePath: image-path('glyphicons-halflings-white.png');
+$iconSpritePath: asset-url('glyphicons-halflings.png', image);
+$iconWhiteSpritePath: asset-url('glyphicons-halflings-white.png', image);
+
 
 $navbarBackground: #555;
 $navbarBackgroundHighlight: #888;
@@ -8,6 +9,8 @@ $navbarText: #eee;
 $navbarLinkColor: #eee;
 
 @import "bootstrap";
+@import "jquery.ui.base.css";
+@import "jquery.ui.theme.css";
 
 body { padding-top: 60px; }
 
@@ -104,11 +107,18 @@ footer {
 .miya_note_area {
 
   input, textarea {
-    width: 300px;
+    width: 80%;
     height: 210px;
   }
 
+  .control-label {
+    width: 70px;
+    padding-left: 65px;
+
+  }
+
 }
+
 
 
 select {
@@ -299,4 +309,7 @@ smart_alert {
   margin-top: -.005em;;
 
 }
+
+
+
 
