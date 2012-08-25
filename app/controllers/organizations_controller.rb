@@ -47,11 +47,19 @@ class OrganizationsController < ApplicationController
   def update
     @organization = Organization.find(params[:id])
     if @organization.update_attributes(params[:organization])
+      respond_to do |format|
+        format.js { }
+        format.html do
       flash[:success] = "Profile updated"
       redirect_to @organization
-    else
+        end
+      end
+     else
       render 'edit'
-    end
+      end
+
   end
 
 end
+
+

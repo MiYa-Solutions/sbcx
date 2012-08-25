@@ -36,5 +36,5 @@ $(function() {
 });
 
 
-$(".collapse").collapse()
+$(".collapse").collapse('toggle')
 

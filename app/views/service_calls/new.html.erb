@@ -32,7 +32,7 @@
 
   <div class="row-fluid">
     <div class="span10 ">
-      <button class="btn btn-danger" data-toggle="collapse" data-target="#demo">
+      <button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">
         Add customer
       </button>
 
@@ -41,8 +41,6 @@
           <div class="span10 ">
             <br>
             <p>
-              text here
-
 
              <%= simple_form_for @customer, :html => {:class => 'form-horizontal'}, :remote => true do |f| %>
               <%= render 'customers/fields', f: f %>
@@ -51,9 +49,9 @@
             </div>
 
             <% end %>
-              <button class="btn btn-danger" data-toggle="collapse" data-target="#demo">
-                Save and close
-              </button>
+              <!--<button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
+                <!--Save and close-->
+              <!--</button>-->
             </p>
           </div>
         </div>

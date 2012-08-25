@@ -17,7 +17,7 @@
         <% else %>
                <%= form_for current_user.organization.agreements.build(provider_id: provider.id), :html => {:class => 'add_member'} do |f| %>
                    <%= f.hidden_field :provider_id %>
-                   <%= f.submit "Add", class: "btn btn-mini btn-info" %>
+                   <%= f.submit "Add", class: "btn btn-mini btn-info", id: "#{provider.id}-add-sbcx-provider" %>
                <% end %>
 
          <% end %>
