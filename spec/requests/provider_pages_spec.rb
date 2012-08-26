@@ -65,6 +65,8 @@ describe "Provider Pages" do
             let!(:member) { FactoryGirl.create(:member_admin).organization }
 
             before do #the actual search
+              member.name = "moshe"
+              member.save
               fill_in 'search', with: member.name
               click_button 'provider-search-button'
             end
@@ -77,9 +79,29 @@ describe "Provider Pages" do
             it { should have_selector('table#providers_search_results td', text: member.name) }
 
           end
-          describe "show a mix of local and similar public providers" do
-            pending "implementation"
+          describe "show a mix of local and similar public providers", js: true do
+            #pending "implementation"
+            let!(:member) { FactoryGirl.create(:member_admin).organization }
+
+            before do # the high level example
+              2.times { org.providers << FactoryGirl.create(:provider) }
+              visit providers_path
+              fill_in 'search', with: member.name
+              click_button 'provider-search-button'
+              click_button "#{member.id}-add-sbcx-provider"
+              visit providers_path
+            end
+
+            after do
+              clean member
+            end
+
+            it { should have_selector('table#providers_search_results tr', count: 6) }
+            it { should have_selector('table#providers_search_results td', text: member.name) }
+            it { should have_selector('.member_label') }
+
           end
+
           describe " it should not show local providers of other members", js: true do
             let(:another_member) { FactoryGirl.create(:member) }
 
@@ -106,7 +128,7 @@ describe "Provider Pages" do
         visit new_provider_path
       end
 
-      let(:new_prov) { FactoryGirl.build(:provider) }
+      let!(:new_prov) { FactoryGirl.build(:provider) }
 
       it "should add local provider successfully" do
         expect do
@@ -114,6 +136,7 @@ describe "Provider Pages" do
           click_button 'create_provider_btn'
 
         end.to change(Organization, :count).by(1)
+
       end
 
     end

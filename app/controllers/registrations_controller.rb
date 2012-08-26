@@ -1,11 +1,16 @@
 class RegistrationsController < Devise::RegistrationsController
   def edit
+    #new Ishay
+    @organization = current_user.organization
     super
+
   end
 
   def show
     @organization = current_user.organization
     @current_user = current_user
+    #new Ishay
+    @users = @organization.users
   end
 
   def new

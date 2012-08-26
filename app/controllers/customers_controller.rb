@@ -13,8 +13,13 @@ class CustomersController < ApplicationController
 
     # todo create symbols for the notification strings
     if @customer.save
-      flash[:success] = "Customer created!"
-      redirect_to customer_path @customer
+      respond_to do |format|
+        format.js { }
+        format.html do
+          flash[:success] = "Customer created!"
+          redirect_to customer_path @customer
+        end
+      end
     else
       render 'new'
     end

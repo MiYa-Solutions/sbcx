@@ -13,23 +13,53 @@
   <br>
 
   <div class="row-fluid">
-    <!--<div class="span12 ">-->
 
 
       <%= simple_form_for @service_call, url: service_calls_url, :html => {:class => 'form-horizontal' } do |f| %>
           <%= render 'form', f: f %>
 
-          <!--<div class="control-group string required">-->
-            <!--<div class="controls">-->
           <div class="form-actions">
-
-          <%= link_to "Back to List", service_calls_path, :class => 'btn btn-large' %>
-              <%= f.submit "Create Service Call", class: "btn btn-large btn-primary" %>
-            </div>
-          <!--</div>-->
+              <%= link_to "Back to List", service_calls_path, :class => 'btn btn-medium' %>
+              <%= f.submit "Create Service Call", class: "btn btn-medium btn-primary" %>
+          </div>
       <% end %>
 
-    <!--</div>-->
   </div>
+
+
+
+
+
+  <div class="row-fluid">
+    <div class="span10 ">
+      <button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">
+        Add customer
+      </button>
+
+      <div id="new_customer_in_service_call" class="collapse">
+        <div class="row-fluid">
+          <div class="span10 ">
+            <br>
+            <p>
+
+             <%= simple_form_for @customer, :html => {:class => 'form-horizontal'}, :remote => true do |f| %>
+              <%= render 'customers/fields', f: f %>
+            <div class="form-actions">
+              <%= f.submit "Create Customer", class: "btn btn-medium btn-primary" %>
+            </div>
+
+            <% end %>
+              <!--<button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
+                <!--Save and close-->
+              <!--</button>-->
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
 </div>
 

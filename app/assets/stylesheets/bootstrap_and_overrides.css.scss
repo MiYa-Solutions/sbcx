@@ -204,7 +204,7 @@ select {
   }
 
   .btn-medium {
-    width: 80px;
+    width: auto;
     height: 28px;
   }
 
@@ -226,8 +226,8 @@ select {
   }
 
   .btn-info {
-    height: 18px;
-    width: 80px;
+    height: auto;
+    width: auto;
 
   }
 
@@ -311,5 +311,12 @@ smart_alert {
 }
 
 
+.form-actions  {
+  .btn {
+    width: auto;
+    height: auto;
+  }
+
+}
 
 
