@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120729004145) do
+ActiveRecord::Schema.define(:version => 20120826165628) do
 
   create_table "agreements", :force => true do |t|
     t.string "name"
@@ -115,6 +115,18 @@ ActiveRecord::Schema.define(:version => 20120729004145) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer "organization_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone"
+    t.string "company"
+    t.string "address1"
+    t.string "address2"
+    t.string "country"
+    t.string "state"
+    t.string "city"
+    t.string "zip"
+    t.string "mobile_phone"
+    t.string "work_phone"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

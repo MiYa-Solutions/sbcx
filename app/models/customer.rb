@@ -21,11 +21,26 @@
 #
 
 class Customer < ActiveRecord::Base
-  # todo check if organization_id can be removed
-  # todo ensure customers are retrieved only with org id to prevent from unauthorized orgs to see customers
-  attr_accessible :address1, :address2, :city, :company, :country, :email, :mobile_phone, :name, :organization_id, :phone, :state, :work_phone, :zip
+  attr_accessible :address1,
+                  :address2,
+                  :city,
+                  :company,
+                  :country,
+                  :email,
+                  :mobile_phone,
+                  :name,
+                  :phone,
+                  :state,
+                  :work_phone,
+                  :zip
+
   belongs_to :organization, inverse_of: :customers
   validates_presence_of :organization
+  validates_presence_of :name
   has_many :service_calls, :inverse_of => :customer
+
+  scope :search, ->(query, org_id) { fellow_customers(org_id).where(arel_table[:name].matches("%#{query}%")) }
+  scope :fellow_customers, ->(org_id) { where(:organization_id => org_id) }
+
 
 end

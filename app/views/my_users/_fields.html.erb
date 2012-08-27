@@ -1,10 +1,23 @@
 <%= f.error_notification %>
 
 <!--<div class="inputs">-->
-  <%= f.input :email, :required => true, :autofocus => true %>
-  <%= f.input :password, :required => true %>
-  <%= f.input :password_confirmation, label: 'Confirm Password', :required => true %>
-  <%= f.association :roles, collection: applicable_user_roles, as: :check_boxes %>
+<%= f.input :email, :required => true, :autofocus => true %>
+<%= f.input :first_name %>
+<%= f.input :last_name %>
+<%= f.input :phone %>
+<%= f.input :company %>
+<%= f.input :address1 %>
+<%= f.input :address2 %>
+<%= f.country_select :country, { priority: %w[US] }, id: 'country' %>
+<%= render 'region_select/subregion_select', f: f %>
+<%= f.input :city %>
+<%= f.input :zip %>
+<%= f.input :mobile_phone %>
+<%= f.input :work_phone %>
+
+
+<%= f.association :roles, collection: applicable_user_roles, as: :check_boxes %>
+
 <!--</div>-->
 
 

@@ -24,8 +24,23 @@ def clean(org)
   org.users.each do |usr|
     usr.destroy
   end
-
   org.users.destroy_all
+
+  org.customers.each do |cus|
+    cus.destroy
+  end
+  org.customers.destroy_all
+
+  org.agreements.each do |agreement|
+    agreement.destroy
+  end
+  org.agreements.destroy_all
+  org.reverse_agreements.each do |agreement|
+    agreement.destroy
+  end
+  org.reverse_agreements.destroy_all
+
+
   org.destroy
 
 end

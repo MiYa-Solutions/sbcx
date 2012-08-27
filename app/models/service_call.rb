@@ -2,14 +2,16 @@
 #
 # Table name: service_calls
 #
-#  id              :integer         not null, primary key
-#  customer_id     :integer
-#  notes           :text
-#  started_on      :datetime
-#  organization_id :integer
-#  completed_on    :datetime
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
+#  id               :integer         not null, primary key
+#  customer_id      :integer
+#  notes            :text
+#  started_on       :datetime
+#  organization_id  :integer
+#  completed_on     :datetime
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#  status           :integer
+#  subcontractor_id :integer
 #
 
 class ServiceCall < ActiveRecord::Base
@@ -22,11 +24,11 @@ class ServiceCall < ActiveRecord::Base
   # State machine  for ServiceCall status
 
   # first we will define the service call state values
-  STATUS_NEW = 0
+  STATUS_NEW         = 0
   STATUS_TRANSFERRED = 1
-  STATUS_DISPATCHED = 2
-  STATUS_COMPLETED = 3
-  STATUS_SETTLED = 4
+  STATUS_DISPATCHED  = 2
+  STATUS_COMPLETED   = 3
+  STATUS_SETTLED     = 4
 
   # The state machine definitions
   state_machine :status, :initial => :new do
@@ -63,7 +65,7 @@ class ServiceCall < ActiveRecord::Base
   end
 
   def transfer_service_call(transition)
-    recipient = transition.args[0][:recipient]
+    recipient          = transition.args[0][:recipient]
     self.subcontractor = recipient
     Rails.logger.debug "Transferred Service Call to: #{recipient.name}"
 

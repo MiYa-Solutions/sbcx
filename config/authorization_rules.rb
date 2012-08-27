@@ -10,7 +10,9 @@ authorization do
   end
 
   role :technician do
+
     has_permission_on :static_pages, to: [:index, :read]
+    has_permission_on :my_users, to: [:index, :read]
     has_permission_on [:providers, :subcontractors], :to => [:index]
     has_permission_on :service_calls, :to => [:index, :show, :new, :create, :edit, :update]
 
@@ -19,6 +21,7 @@ authorization do
   role :dispatcher do
 
     includes :technician
+    has_permission_on :customers, :to => [:index, :show, :new, :create, :edit, :update]
     has_permission_on :service_calls, :to => [:index, :show, :new, :create, :edit, :update] do
       if_attribute :customer_organization_id => is { user.organization.id }
     end
@@ -26,7 +29,9 @@ authorization do
   end
   role :org_admin do
     includes :dispatcher
+    has_permission_on :my_users, :to => [:new, :create, :edit, :update, :show]
     has_permission_on [:providers, :subcontractors], :to => [:new, :create]
+
 
     has_permission_on :providers, to: [:show] do
       if_attribute :subcontrax_member => true
@@ -46,6 +51,7 @@ authorization do
     end
 
     has_permission_on :users, :to => [:index, :show, :new, :create, :edit, :update]
+    has_permission_on :customers, :to => [:index, :show, :new, :create, :edit, :update]
   end
 
 

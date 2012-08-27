@@ -2,12 +2,6 @@ class ProvidersController < ApplicationController
   before_filter :authenticate_user!
 
   filter_resource_access
-  #filter_access_to :update, attribute_check: true
-  #filter_access_to :show, attribute_check: true
-  #filter_access_to :edit, attribute_check: true
-  #filter_access_to :new
-  #filter_access_to :index
-  #filter_access_to :all
 
   def new
     # no need for the below as declarative_authorization filter_resource_access taks care of it
@@ -16,17 +10,9 @@ class ProvidersController < ApplicationController
   end
 
   def create
-    #begin
-    #  #@provider = current_user.organization.create_provider!(params)
-    #
-    #
-    #rescue ActiveRecord::RecordInvalid
-    #  logger.debug "ActiveRecord::RecordInvalid"
-    #  render 'new'
-    #end
     params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
-    params[:provider][:status_event] = :make_local
-    @provider = current_user.organization.providers.new(params[:provider])
+    params[:provider][:status_event]          = :make_local
+    @provider                                 = current_user.organization.providers.new(params[:provider])
     @provider.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @provider)
     if @provider.save
       redirect_to @provider, :notice => t('providers.flash.create_provider', name: @provider.name)
