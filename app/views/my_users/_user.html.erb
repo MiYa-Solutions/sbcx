@@ -1,10 +1,10 @@
 <h1> User Attributes</h1>
-<% for attribute in @my_user.attributes.keys %>
-    <b><%= attribute.humanize %></b> <%= @my_user.attributes[attribute].to_s %><br />
+<% for attribute in user.attributes.keys %>
+    <b><%= attribute.humanize %></b> <%= user.attributes[attribute].to_s %><br />
 <% end %>
 <ul>
   <h3>Roles</h3>
-  <% @my_user.roles.each do |role| %>
+  <% user.roles.each do |role| %>
       <li>
         <%= role.name %>
       </li>

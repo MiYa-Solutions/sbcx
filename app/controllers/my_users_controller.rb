@@ -1,9 +1,19 @@
 class MyUsersController < ApplicationController
-  def index
-    @users = current_user.organization.users.paginate(page: params[:page], per_page: 2)
 
-  #  @new_my_users = current_user.organization.users.paginate(page: params[:page], per_page: 5)
-  #  @my_users = current_user.organization.users_candidates(params[:search])
+  filter_access_to :update, attribute_check: true
+  filter_access_to :show
+  filter_access_to :edit, attribute_check: true
+  filter_access_to :new
+  filter_access_to :index
+  filter_access_to :all
+
+
+  def index
+    if params[:search].nil?
+      @users = current_user.organization.users.paginate(page: params[:page], per_page: 10)
+    else
+      @users = User.colleagues(current_user.organization.id).search(params[:search]).paginate(page: params[:page], per_page: 10)
+    end
   end
 
   def new
@@ -38,10 +48,6 @@ class MyUsersController < ApplicationController
   end
 
   def show
-    # todo move to the below to the organization model and use declarative_authorization
     @my_user = current_user.organization.users.find(params[:id])
-
-
-
   end
 end

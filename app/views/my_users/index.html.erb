@@ -1,8 +1,15 @@
 <div class="well">
 
-  <div class="smart_label"  >
+  <div class="smart_label">
     <ul>
       <li><h1>My Employees</h1></li>
+      <li>
+        <%= form_tag my_users_path, id: "my_users_search_form", :method => :get, :remote => true do %>
+            <%= text_field_tag :search, params[:search] %>
+            <%= submit_tag "Search", :name => nil, class: 'btn btn-medium', :id => 'my_users-search-button' %>
+        <% end %>
+      </li>
+
 
       <li>
         <%= link_to 'New Employees', new_my_user_path, :class => 'btn btn-primary' %>
@@ -17,30 +24,30 @@
   <% else %>
 
       <table class="table table-striped" id="users">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @users.each do |user| %>
-          <tr>
-            <td><%= link_to user.id, my_user_path(user) %></td>
-            <td><%= user.email %></td>
-            <td>
-              <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                          edit_my_user_path(user), :class => 'btn btn-mini' %>
-              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                          my_user_path(user),
-                          :method => :delete,
-                          :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
-                          :class => 'btn btn-mini btn-danger' %>
-            </td>
-          </tr>
-      <% end %>
-      </tbody>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="new_my_users">
+        <% @users.each do |user| %>
+            <tr>
+              <td><%= link_to user.id, my_user_path(user) %></td>
+              <td><%= user.email %></td>
+              <td>
+                <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                            edit_my_user_path(user), :class => 'btn btn-mini' %>
+                <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                            my_user_path(user),
+                            :method  => :delete,
+                            :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
+                            :class   => 'btn btn-mini btn-danger' %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
       </table>
 
 

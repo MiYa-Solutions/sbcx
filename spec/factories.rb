@@ -19,7 +19,7 @@ FactoryGirl.define do
 
     factory :all_roles, class: Organization do
       prov_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
-      sub_role = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
+      sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
       organization_roles [prov_role, sub_role]
     end
 
@@ -38,7 +38,7 @@ FactoryGirl.define do
     sequence(:email) { |n| "member_person_#{n}@example.com" }
 
     prov_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
-    sub_role = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
+    sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
     organization_roles [prov_role, sub_role]
 
     after_build do |member|
@@ -49,6 +49,8 @@ FactoryGirl.define do
   factory :admin, class: User do
     association :organization, factory: :org
     sequence(:email) { |n| "admin_test#{n}@example.com" }
+    first_name Faker::Name.first_name
+    last_name Faker::Name.last_name
     password "foobar"
     password_confirmation "foobar"
     the_role = Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME)
@@ -58,6 +60,7 @@ FactoryGirl.define do
   factory :org_admin, class: User do
     association :organization, factory: :provider
     sequence(:email) { |n| "org_admin_#{n}@example.com" }
+    first_name Faker::Name.name
     password "foobar"
     password_confirmation "foobar"
     the_role = Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME)
@@ -67,6 +70,7 @@ FactoryGirl.define do
   factory :member_admin, class: User do
     association :organization, factory: :member
     sequence(:email) { |n| "mem_admin_#{n}@example.com" }
+    first_name Faker::Name.name
     password "foobar"
     password_confirmation "foobar"
     the_role = Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME)
@@ -80,6 +84,11 @@ FactoryGirl.define do
     password_confirmation "foobar"
     the_role = Role.find_by_name(Role::ADMIN_ROLE_NAME)
     roles [the_role]
+  end
+
+  factory :customer do
+    association :organization, factory: :member
+    name Faker::Name.name
   end
 
 
