@@ -13,11 +13,17 @@ describe "Subcontractor pages" do
   subject { page }
 
   describe "with Org Admin" do
+
     describe "My Subcontractors Index" do
 
-      before { visit subcontractors_path }
+      before do
+        with_user(org_admin_user) do
+          visit subcontractors_path
+        end
 
-      describe " With No Subcontractors" do
+      end
+
+      describe "With No Subcontractors" do
         it { should have_selector('#empty_search_result_notice') }
         it { should have_selector('#new-subcontractor-button') }
 
@@ -25,15 +31,13 @@ describe "Subcontractor pages" do
 
       describe "With Many Local Subcontractors" do
         let!(:member) { FactoryGirl.create(:member_admin).organization }
+
         before do # the high level example
           2.times { org.subcontractors << FactoryGirl.create(:subcontractor) }
           visit subcontractors_path
         end
 
-        after do
-          clean member
-        end
-
+        after { clean member }
 
         it { should have_selector('#subcontractors_search_results') }
         it { should have_selector('#new-subcontractor-button') }
@@ -52,6 +56,8 @@ describe "Subcontractor pages" do
             let!(:member) { FactoryGirl.create(:member_admin).organization }
 
             before do #the actual search
+              member.name = "moshe"
+              member.save
               fill_in 'search', with: member.name
               click_button 'subcontractor-search-button'
             end
@@ -59,33 +65,52 @@ describe "Subcontractor pages" do
             after do
               clean member
             end
-            it { should have_selector('table#subcontractors_search_results tr', count: 2) }
-            it { should have_selector('table#subcontractors_search_results td', text: member.name) }
+
+            it { should_not have_selector('table#subcontractors_search_results tr', count: 2) }
+            it { should_not have_selector('table#subcontractors_search_results td', text: member.name) }
 
           end
-          describe "show a mix of local and similar public subcontractors" do
-            pending "implementation"
-          end
-          describe " it should not show local subcontractors of other members", js: true do
-            let(:another_member) { FactoryGirl.create(:member) }
-            let(:subcontractor) { FactoryGirl.build(:subcontractor, name: "Other Member's Local Provider") }
 
-            before do # before searching for another prov
-              another_member.subcontractors << subcontractor
-              fill_in 'search', with: subcontractor.name
+          describe "show a mix of local and similar public subcontractors", js: true do
+            #pending "implementation"
+            let!(:member) { FactoryGirl.create(:member_admin).organization }
+
+            before do # the high level example
+              2.times { org.subcontractors << FactoryGirl.create(:subcontractor) }
+              visit subcontractors_path
+              fill_in 'search', with: member.name
               click_button 'subcontractor-search-button'
+              click_button "#{member.id}-add-sbcx-subcontractor"
+              visit subcontractors_path
             end
 
+            after do
+              clean member
+            end
+
+            it { should have_selector('table#subcontractors_search_results tr', count: 6) }
+            it { should have_selector('table#subcontractors_search_results td', text: member.name) }
+            it { should have_selector('.member_label') }
+
+          end
+
+          describe " it should not show local subcontractors of other members", js: true do
+            let(:another_member) { FactoryGirl.create(:member) }
+
+            before do # before searching for another prov
+              another_member.providers << FactoryGirl.create(:provider, name: "Other Member's Local Subcontractor")
+              fill_in 'search', with: "Other Member's Local Subcontractor"
+              click_button 'subcontractor-search-button'
+            end
 
             after do
               clean another_member
             end
 
-            it { should_not have_content(subcontractor.name) }
+            it { should_not have_content("Other Member's Local Subcontractor") }
           end
         end
       end
-
     end
 
     describe "Add Subcontractor" do
@@ -107,5 +132,5 @@ describe "Subcontractor pages" do
 
 
   end
-
 end
+

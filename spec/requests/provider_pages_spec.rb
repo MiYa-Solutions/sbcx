@@ -79,6 +79,7 @@ describe "Provider Pages" do
             it { should have_selector('table#providers_search_results td', text: member.name) }
 
           end
+
           describe "show a mix of local and similar public providers", js: true do
             #pending "implementation"
             let!(:member) { FactoryGirl.create(:member_admin).organization }
