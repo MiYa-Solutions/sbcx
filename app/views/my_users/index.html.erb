@@ -34,7 +34,7 @@
         <tbody id="new_my_users">
         <% @users.each do |user| %>
             <tr>
-              <td><%= link_to user.first_name, my_user_path(user) %></td>
+              <td><%= link_to "#{user.first_name} #{user.last_name}", my_user_path(user) %></td>
               <td><%= user.email %></td>
               <td>
                 <%= link_to t('.edit', :default => t("helpers.links.edit")),

@@ -3,17 +3,16 @@
 <div class="well">
 
   <div class="row-fluid">
-    <div class="span10">
       <div class="smart_label"  >
         <h1>New User:</h1>
 
       </div>
-    </div>
   </div>
   <br>
 
+  <div class="sign-up">
+
   <div class="row-fluid">
-    <div class="span10 ">
       <%= simple_form_for @my_user, url: my_users_path, :html => {:class => 'form-horizontal' } do |f| %>
           <% if f.object.errors.any? %>
               <div class="alert alert-block alert-error">
@@ -21,14 +20,16 @@
                 <%= render 'shared/error_messages', object: f.object %>
               </div>
           <% end %>
-          <%= render 'fields', f: f %>
+      <%= render 'fields', f: f %>
+        <br>
 
+ </div>
           <div class="form-actions">
             <%= link_to 'Back', my_users_path, :class => 'btn btn-medium' %>
             <%= f.submit "Create User", class: "btn btn-medium btn-primary", id: 'create_user_button' %>
-          </div>
+         </div>
       <% end %>
 
-    </div>
-  </div>
+
+</div>
 </div>

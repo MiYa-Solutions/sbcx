@@ -5,7 +5,7 @@
   <div class="row-fluid">
     <div class="span10">
       <div class="smart_label">
-        <h1>Edit <%= @my_user.id %> Info:</h1>
+        <!--<h1>Edit <#%= @my_user.first_name %> Info:</h1>-->
       </div>
     </div>
   </div>
@@ -14,9 +14,9 @@
 
   <div class="row-fluid">
     <div class="span10 ">
-      <%= simple_form_for @my_user, url: my_user_path(@my_user), :html => { :class => 'form-horizontal' } do |f| %>
+      <%= simple_form_for @my_user, url: my_user_url(@my_user), :html => { :class => 'form-horizontal' } do |f| %>
 
-          <%= render 'fields', f: f %>
+    <%= render 'fields', f: f %>
 
           <div class="form-actions">
             <%= link_to 'Back', my_users_path, :class => 'btn btn-medium' %>

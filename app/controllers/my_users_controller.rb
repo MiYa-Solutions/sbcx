@@ -34,6 +34,7 @@ class MyUsersController < ApplicationController
 
   def edit
     @my_user = current_user.organization.users.find(params[:id])
+
   end
 
   def update
