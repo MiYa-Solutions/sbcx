@@ -1,22 +1,41 @@
 <%= f.error_notification %>
 
 <!--<div class="inputs">-->
-<%= f.input :email, :required => true, :autofocus => true %>
-<%= f.input :first_name %>
+<%= f.input :first_name, :autofocus => true  %>
 <%= f.input :last_name %>
+<%= f.input :email, :required => true%>
+
 <%= f.input :phone %>
 <%= f.input :company %>
 <%= f.input :address1 %>
 <%= f.input :address2 %>
-<%= f.country_select :country, { priority: %w[US] }, id: 'country' %>
-<%= render 'region_select/subregion_select', f: f %>
+
 <%= f.input :city %>
 <%= f.input :zip %>
+<div class="control-group string mandatory">
+  <label class="string optional control-label" for="customer_country">Country</label>
+
+  <div class="controls">
+    <%= f.country_select :country, { priority: %w[US] }, id: 'country' %>
+  </div>
+
+</div>
+
+
+<div class="control-group string mandatory">
+  <label class="string optional control-label" for="customer_state">State</label>
+
+  <div class="controls">
+    <%= render 'region_select/subregion_select', f: f %>
+
+  </div>
+</div>
+
 <%= f.input :mobile_phone %>
 <%= f.input :work_phone %>
 
 
-<%= f.association :roles, collection: applicable_user_roles, as: :check_boxes %>
+<!--<#%= f.association :roles, collection: applicable_user_roles, as: :check_boxes %>     -->
 
 <!--</div>-->
 
