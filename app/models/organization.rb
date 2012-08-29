@@ -38,7 +38,7 @@ class Organization < ActiveRecord::Base
   # the reverse agreements is a symbol creating a form of a virtual table that will allow the creation of
   # the below providers relationship
   has_many :reverse_agreements, foreign_key: "subcontractor_id",
-           class_name: "Agreement"
+           class_name:                       "Agreement"
   # providers are made available thanks to the reverse relationship virtual table above
   has_many :providers, through: :reverse_agreements, source: :provider
 
@@ -63,7 +63,7 @@ class Organization < ActiveRecord::Base
 
   accepts_nested_attributes_for :users, :agreements
 
-  validates :name, {presence: true, length: {maximum: 255}}
+  validates :name, { presence: true, length: { maximum: 255 } }
 
   validate :has_at_least_one_role
   validates_presence_of :organization_roles
@@ -92,15 +92,15 @@ class Organization < ActiveRecord::Base
   # State machine  for Organization status
 
   # first we will define the organization state values
-  STATUS_NEW = 0
-  STATUS_LOCAL_ENABLED = 1
-  STATUS_LOCAL_DISABLED = -1
-  STATUS_SBCX_ACTIVE_MEMBER = 2
+  STATUS_NEW                  = 0
+  STATUS_LOCAL_ENABLED        = 1
+  STATUS_LOCAL_DISABLED       = -1
+  STATUS_SBCX_ACTIVE_MEMBER   = 2
   STATUS_SBCX_INACTIVE_MEMBER =-2
 
   # The state machine definitions
   state_machine :status, :initial => :new do
-    state :new, value: STATUS_NEW # no organization should be set with this initial state
+    state :new, value: STATUS_NEW                     # no organization should be set with this initial state
     state :local_enabled, value: STATUS_LOCAL_ENABLED # a local organization is a private provider or subcontractor associated with another organization
     state :local_disabled, value: STATUS_LOCAL_DISABLED
     state :sbcx_member, value: STATUS_SBCX_ACTIVE_MEMBER
@@ -137,7 +137,9 @@ class Organization < ActiveRecord::Base
   end
 
   def make_member
-    self.subcontrax_member=true
+    self.subcontrax_member  = true
+    self.organization_roles = [OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID),
+                               OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)]
     Rails.logger.debug "#{self.name} has been created as a MEMBER!"
   end
 
