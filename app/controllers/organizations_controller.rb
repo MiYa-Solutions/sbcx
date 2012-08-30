@@ -50,13 +50,13 @@ class OrganizationsController < ApplicationController
       respond_to do |format|
         format.js { }
         format.html do
-      flash[:success] = "Profile updated"
-      redirect_to @organization
+          flash[:success] = "Profile updated"
+          redirect_to @organization
         end
       end
-     else
+    else
       render 'edit'
-      end
+    end
 
   end
 

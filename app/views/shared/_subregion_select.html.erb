@@ -3,10 +3,10 @@
   <% country = Carmen::Country.coded(parent_region) %>
 
   <% if country.nil? %>
-      <%= subregion_select(:provider, :state, 'US') %>
+      <%= subregion_select(f.object, :state, 'US') %>
   <% elsif country.subregions? %>
-      <%= subregion_select(:provider, :state, parent_region) %>
+      <%= subregion_select(f.object, :state, parent_region) %>
   <% else %>
-      <%= text_field(:provider, :state) %>
+      <%= text_field(f.object, :state) %>
   <% end %>
 </div>

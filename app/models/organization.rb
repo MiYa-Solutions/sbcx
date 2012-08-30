@@ -182,50 +182,6 @@ class Organization < ActiveRecord::Base
     subcontractors << subcontractor
   end
 
-  def provider_candidates(org_id, search)
-    # todo fix the bug where all organizations are returned
-    if search
-      Provider.provider_members | self.providers
-      #prov_members = Organization.provider_members(search).order(:id)
-      #local_prov = providers.where('organizations.name LIKE ?', "%#{search}%").order(:id)
-      #
-      #local_prov.merge(prov_members)
-
-      #Organization.local_and_candidate_providers(search)
-      #Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
-    else
-      Provider.search_providers(org_id, '')
-      #Organization.local_and_candidate_providers(search)
-      #Organization.all
-    end
-
-  end
-
-  def subcontractor_candidates(search)
-    # todo fix the bug where all organizations are returned
-    if search
-      local_and_candidate_providers
-      #Organization.all(:conditions => ['name LIKE ?', "%#{search}%"])
-    else
-      local_and_candidate_providers
-    end
-
-  end
-
-  def customer_candidates(search)
-    # todo fix the bug where all organizations are returned
-    if search
-      customers.where('name LIKE ?', "%#{search}%")
-    else
-      customers
-    end
-
-  end
-
-  #def initialize
-  #  super()
-  #end
-
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0
