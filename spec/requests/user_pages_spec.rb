@@ -109,6 +109,10 @@ describe "User Pages" do
 
       end
 
+      describe "organization edit" do
+
+      end
+
     end
 
     describe "add a user" do

@@ -33,6 +33,10 @@ authorization do
     has_permission_on [:providers, :subcontractors], :to => [:new, :create]
 
 
+    has_permission_on :organizations, to: [:show, :edit, :update] do
+      if_attribute :id => is { user.organization.id }
+    end
+
     has_permission_on :providers, to: [:show] do
       if_attribute :subcontrax_member => true
       if_attribute :subcontractor_ids => contains { user.organization.id }
@@ -52,6 +56,17 @@ authorization do
 
     has_permission_on :users, :to => [:index, :show, :new, :create, :edit, :update]
     has_permission_on :customers, :to => [:index, :show, :new, :create, :edit, :update]
+
+    has_permission_on :agreements, :to => [:index, :show, :new, :edit]
+
+    has_permission_on :agreements, :to => [:create] do
+      if_attribute :provider_id => is { nil }
+      if_attribute :subcontractor_id => is { nil }
+    end
+    has_permission_on :agreements, :to => [:update] do
+      if_attribute :provider_id => is { user.organization.id }
+      if_attribute :subcontractor_id => is { user.organization.id }
+    end
   end
 
 
