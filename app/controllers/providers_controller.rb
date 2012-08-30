@@ -47,12 +47,15 @@ class ProvidersController < ApplicationController
     if params[:search].nil?
 
       @providers = current_user.organization.providers.paginate(page: params[:page], per_page: 10)
+
     else
       @providers = Provider.provider_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 10)
+
     end
 
 
   end
+
 
   def show
     #@provider = Provider.find(params[:id])

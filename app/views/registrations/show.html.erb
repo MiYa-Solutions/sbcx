@@ -64,33 +64,36 @@
           <td>Website:</td>
           <td><h4><%= @organization.website %></h4></td>
         </tr>
-        <tr>
-          <td>Roles:</td>
-          <td>
-            <% for role in @organization.organization_roles %>
-                <table>
-                  <tbody>
-                  <tr>
-                    <span class="label label-info"><%= role.name %></span>
-                  </tr>
-                  </tbody>
-                </table>
-            <% end %>
-          </td>
-        </tr>
+        <!--<tr>-->
+          <!--<td>Roles:</td>-->
+          <!--<td>-->
+            <!--<#% for role in @organization.organization_roles %>-->
+                <!--<table>-->
+                  <!--<tbody>-->
+                  <!--<tr>-->
+                    <!--<span class="label label-info"><#%= role.name %></span>-->
+                  <!--</tr>-->
+                  <!--</tbody>-->
+                <!--</table>-->
+            <!--<#% end %>-->
+          <!--</td>-->
+        <!--</tr>-->
         </tr>
         <td>Users:</td>
         <td>
           <% for user in @users %>
-              <table>
+              <table class="table_unstyled">
                 <tbody>
                 <tr>
+                  <td>
                   <%= link_to user.email, my_user_path(user) %>
-                  <% user.roles.each do |role| %>
+                  </td>
+                  <td>
+                    <% user.roles.each do |role| %>
                       (<%= role.name %>)
-
-                  <% end %>
-                </tr>
+                    <% end %>
+                  </td>
+                 </tr>
                 </tbody>
               </table>
           <% end %>

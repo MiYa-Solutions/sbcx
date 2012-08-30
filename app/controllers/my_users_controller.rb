@@ -16,6 +16,7 @@ class MyUsersController < ApplicationController
     end
   end
 
+
   def new
     @my_user = current_user.organization.users.new
   end
