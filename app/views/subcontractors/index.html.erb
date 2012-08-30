@@ -17,11 +17,10 @@
 
   <br>
 
-  <% if @subcontractors.empty? %>
-      <span class="alert alert-info" id="empty_search_result_notice">No records, click "New Subcontractor" to add new contact</span>
-  <% else %>
 
-      <table class="table table-striped" id="subcontractors_search_results">
+  <table class="table table-striped" id="subcontractors_search_results">
+  <% if ! @subcontractors.empty? %>
+        <br>
         <thead>
         <tr>
           <th>Name</th>
@@ -31,16 +30,21 @@
           <th>Actions</th>
         </tr>
         </thead>
-        <tbody id="new_subcontractors">
-        <% @subcontractors.each do |subcontractor| %>
-            <%= render subcontractor %>
-        <% end %>
+    <% else %>
+        <span class="alert alert-info" id="empty_search_result_notice">No records, click "New Subcontractor" to add new contact</span>
+        <br>
+        <br>
+    <% end %>
 
-        </tbody>
-      </table>
 
-      <%= will_paginate @subcontractors, :class => 'pagination pagination-centered' %>
+    <tbody id="new_subcontractors">
+    <% @subcontractors.each do |subcontractor| %>
+        <%= render subcontractor %>
+    <% end %>
 
-  <% end %>
+    </tbody>
+  </table>
+
+  <%= will_paginate @providers, :class => 'pagination pagination-centered' %>
 
 </div>
