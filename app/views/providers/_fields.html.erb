@@ -1,18 +1,18 @@
 <fieldset>
 
 
-  <%= f.input :name %>
+  <%= f.input :name, autofocus: true %>
   <%= f.input :company %>
   <%= f.input :phone, class: 'input-xlarge' %>
   <%= f.input :mobile %>
   <%= f.input :email, as: :email %>
   <%= f.input :website, as: :url %>
 
-  <div class="field_input">
-    <ul>
-      <li> <%= f.input :address1 %></li>
-      <li><%= f.input :address2 %></li>
-      <li>
+  <!--<div class="field_input">-->
+    <!--<ul>-->
+     <%= f.input :address1 %>
+      <%= f.input :address2 %>
+
         <div class="control-group string mandatory">
           <label class="string optional control-label" for="provider_country">Country</label>
 
@@ -20,8 +20,7 @@
             <%= f.country_select :country, { priority: %w[US] }, id: 'country' %>
           </div>
         </div>
-      </li>
-      <li>
+
         <div class="control-group string mandatory">
           <label class="string optional control-label" for="provider_state">State</label>
 
@@ -30,10 +29,8 @@
 
           </div>
         </div>
-      </li>
-      <li> <%= f.input :city %>   </li>
-      <li><%= f.input :zip %>   </li>
-    </ul>
-  </div>
+      <%= f.input :city %>
+      <%= f.input :zip %>
+
 
 </fieldset>

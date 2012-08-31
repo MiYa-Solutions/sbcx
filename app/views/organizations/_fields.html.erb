@@ -20,7 +20,7 @@
 
 <%= render 'shared/error_messages', object: f.object %>
 
-<%= f.input :name, label: 'Company Name' %>
+<%= f.input :name, label: 'Company Name', autofocus: true %>
 <!--<#%= f.association :organization_roles, :collection => OrganizationRole.all(:order => 'name'), as: :check_boxes %> -->
 
 <% if !f.object.new_record? %>
@@ -29,9 +29,6 @@
 
 <!--<#%= f.input :company %>-->
 
-<%= f.input :phone %>
-
-<%= f.input :website, as: :url %>
 
 <%= f.input :address1 %>
 
@@ -57,4 +54,4 @@
 </div>
 
 
-<%= f.input :website %>
+<%= f.input :website, as: :url %>

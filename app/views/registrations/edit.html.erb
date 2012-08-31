@@ -8,9 +8,11 @@
         <ul>
           <li><h1>Edit My User:</h1></li>
           <li>
-            <button class="btn btn-info btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
-              Edit Organization
-            </button>
+            <% permitted_to? :index, :organizations do %>
+                <button class="btn btn-info btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
+                  Edit Organization
+                </button>
+            <% end %>
           </li>
         </ul>
 
@@ -25,9 +27,30 @@
               <%= f.error_notification %>
 
               <fieldset>
-              <%= f.input :email, :required => true, :autofocus => true %>
+              <%= f.input :email, :required => true %>
+              <%= f.input :first_name %>
+              <%= f.input :last_name %>
+              <%= f.input :phone %>
+              <%= f.input :mobile_phone %>
+              <%= f.input :work_phone %>
 
-              <%= f.input :password, :hint => "Leave blank if you wish to keep current password", :required => false, :label => "New Password" %>
+                <br>
+                <!--<div class="row-fluid">-->
+                  <!--<div class="span8">-->
+                    <div class="smart_label">
+                      <ul>
+                        <li>
+                          <h2>Login Info:</h2>
+                        </li>
+                        <li>
+                        </li>
+                      </ul>
+                    </div>
+                  <!--</div>-->
+                <!--</div>-->
+              <br>
+
+                <%= f.input :password, :hint => "Leave blank if you wish to keep current password", :required => false, :label => "New Password" %>
               <%= f.input :password_confirmation, :required => false, :label => "Confirm New Password" %>
               <%= f.input :current_password, :hint => "Enter your current password to confirm changes", :required => true %>
 

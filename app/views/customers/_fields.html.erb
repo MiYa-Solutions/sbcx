@@ -17,7 +17,7 @@
 <!--#  created_at      :datetime        not null-->
 <!--#  updated_at      :datetime        not null-->
 
-<%= f.input :name %>
+<%= f.input :name, autofocus: true %>
 <%= f.input :company %>
 
 
@@ -40,7 +40,8 @@
   <label class="string optional control-label" for="customer_state">State</label>
 
   <div class="controls">
-    <%= render 'region_select/subregion_select', object: f.object %>
+    <%= render 'subregion_select', object: f.object %>
+
   </div>
 </div>
 
