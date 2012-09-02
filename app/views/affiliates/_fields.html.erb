@@ -1,0 +1,37 @@
+<fieldset>
+
+
+  <%= f.input :name, autofocus: true %>
+  <%= f.association :organization_roles, :collection => applicable_roles, as: :check_boxes %>
+  <%= f.input :company %>
+  <%= f.input :phone, class: 'input-xlarge' %>
+  <%= f.input :mobile %>
+  <%= f.input :email, as: :email %>
+  <%= f.input :website, as: :url %>
+
+  <!--<div class="field_input">-->
+  <!--<ul>-->
+  <%= f.input :address1 %>
+  <%= f.input :address2 %>
+
+  <div class="control-group string mandatory">
+    <label class="string optional control-label" for="provider_country">Country</label>
+
+    <div class="controls">
+      <%= f.country_select :country, { priority: %w[US] }, id: 'country' %>
+    </div>
+  </div>
+
+  <div class="control-group string mandatory">
+    <label class="string optional control-label" for="affiliate_state">State</label>
+
+    <div class="controls">
+      <%= render 'subregion_select', f: f %>
+
+    </div>
+  </div>
+  <%= f.input :city %>
+  <%= f.input :zip %>
+
+
+</fieldset>

@@ -1,0 +1,39 @@
+<tr>
+  <td><%= link_to affiliate.name, affiliate_path(affiliate) %>
+    <% if affiliate.subcontrax_member==true %>
+        <span class="member_label">
+          <badge>Member</badge>
+        </span>
+    <% end %>
+  </td>
+  <td><%= affiliate.company %></td>
+  <td><%= affiliate.phone %></td>
+  <td><%= affiliate.email %></td>
+  <td>
+    <% if affiliate.subcontrax_member==true %>
+        <div class="row-fluid">
+          <% if  affiliate.id.in? affiliate_ids %>
+              <%= link_to 'Archive', edit_affiliate_path(affiliate), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+          <% else %>
+              <%= form_for affiliate.agreements.new, :html => { :class => 'add_member' } do |f| %>
+
+                  <%= f.hidden_field :provider_id %>
+                  <%= f.hidden_field :subcontractor_id, value: current_user.organization.id %>
+                  <%= f.submit "Add", class: "btn btn-mini btn-info", id: "#{affiliate.id}-add-sbcx-member" %>
+              <% end %>
+
+          <% end %>
+        </div>
+
+    <% else %>
+
+        <%= link_to 'Edit', edit_affiliate_path(affiliate), :class => 'btn btn-mini' %>
+        <%= link_to 'Archive', affiliate_path(affiliate), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        <%= link_to 'Send Invite', new_affiliate_path, :class => 'btn btn-mini btn-info' %>
+
+
+    <% end %>
+
+  </td>
+</tr>
+

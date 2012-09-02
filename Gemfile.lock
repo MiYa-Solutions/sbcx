@@ -101,7 +101,7 @@ GEM
       guard (>= 0.8.4)
       spork (>= 0.8.4)
     hike (1.2.1)
-    i18n (0.6.0)
+    i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (2.1.1)
       railties (>= 3.1.0, < 5.0)

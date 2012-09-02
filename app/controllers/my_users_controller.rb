@@ -1,8 +1,9 @@
 class MyUsersController < ApplicationController
+  before_filter :authenticate_user!
 
-  filter_access_to :update, attribute_check: true
+  filter_access_to :update, attribute_check: true, model: User
   filter_access_to :show
-  filter_access_to :edit, attribute_check: true
+  filter_access_to :edit, attribute_check: true, model: User
   filter_access_to :new
   filter_access_to :index
   filter_access_to :all
