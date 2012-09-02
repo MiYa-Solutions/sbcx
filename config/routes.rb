@@ -28,7 +28,7 @@ Sbcx::Application.routes.draw do
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   resources :customers, only: [:new, :create, :edit, :show, :index, :update]
 
-  match 'welcome' => 'static_pages#welcome', :as => 'user_root'
+  match 'welcome' => 'static_pages#welcome', :as => :user_root
 
 
   # The priority is based upon order of creation:
