@@ -10,12 +10,12 @@ class RegistrationsController < Devise::RegistrationsController
     @organization = current_user.organization
     @current_user = current_user
     #new Ishay
-    @users = @organization.users
+    @users        = @organization.users
   end
 
   def new
-    resource = build_resource({})
-    @user = User.new
+    resource      = build_resource({ })
+    @user         = User.new
     @organization = @user.build_organization
 
   end
@@ -47,25 +47,26 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
 
-  def update
-    @user = User.find_by_email(params[:user][:email])
-
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-
-    if resource.update_with_password(params[resource_name])
-      if is_navigational_format?
-        if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
-          flash_key = :update_needs_confirmation
-        end
-        set_flash_message :success, flash_key || :updated
-      end
-      sign_in resource_name, resource, :bypass => true
-      respond_with resource, :location => after_update_path_for(resource)
-    else
-      clean_up_passwords resource
-      respond_with resource
-    end
-  end
+  #def update
+  #  super
+  #  #@user = User.find_by_email(params[:user][:email])
+  #  #
+  #  #self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+  #  #
+  #  #if resource.update_with_password(params[resource_name])
+  #  #  if is_navigational_format?
+  #  #    if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
+  #  #      flash_key = :update_needs_confirmation
+  #  #    end
+  #  #    set_flash_message :success, flash_key || :updated
+  #  #  end
+  #  #  sign_in resource_name, resource, :bypass => true
+  #  #  respond_with resource, :location => after_update_path_for(resource)
+  #  #else
+  #  #  clean_up_passwords resource
+  #  #  respond_with resource
+  #  #end
+  #end
 
   def after_update_path_for(resource)
     profile_path
