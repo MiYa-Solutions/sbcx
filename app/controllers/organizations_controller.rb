@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
 
-  #before_filter :authenticate_user!
+  before_filter :authenticate_user!
   filter_resource_access
 
   def new
@@ -8,7 +8,7 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @organizationer }
+      format.json { render json: @organization }
     end
   end
 

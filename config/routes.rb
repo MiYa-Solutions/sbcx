@@ -1,8 +1,9 @@
 Sbcx::Application.routes.draw do
 
+
   #resource :profile, controller: 'registrations', only: [:show]
 
-  resources :my_users, only: [:new, :create, :edit, :show, :index, :update]
+  resources :my_users, only: [:new, :create, :edit, :show, :index, :update], controller: 'my_users'
 
   resources :service_calls, only: [:new, :create, :edit, :show, :index, :update]
 
@@ -10,12 +11,13 @@ Sbcx::Application.routes.draw do
 
   resources :providers, only: [:new, :create, :edit, :show, :index, :update]
   resources :subcontractors, only: [:new, :create, :edit, :show, :index, :update]
+  resources :affiliates, only: [:new, :create, :edit, :show, :index, :update], controller: 'affiliates'
 
 
   root to: 'static_pages#index'
 
   # overriding the devise registration controller
-  devise_for :users, :controllers => {:registrations => "registrations"}
+  devise_for :users, :controllers => { :registrations => "registrations" }
   devise_scope :user do
     match "/profile" => "registrations#show"
   end
@@ -26,7 +28,7 @@ Sbcx::Application.routes.draw do
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   resources :customers, only: [:new, :create, :edit, :show, :index, :update]
 
-  match 'welcome' => 'static_pages#welcome', :as => 'user_root'
+  match 'welcome' => 'static_pages#welcome', :as => :user_root
 
 
   # The priority is based upon order of creation:

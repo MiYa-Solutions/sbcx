@@ -1,18 +1,19 @@
 class ServiceCallsController < ApplicationController
   before_filter :authenticate_user!
 
+
   def index
     @service_calls = current_user.organization.service_calls
   end
 
   def show
     @service_call = ServiceCall.find(params[:id])
-    @customer = Customer.new
+    @customer     = Customer.new
   end
 
   def new
     @service_call = ServiceCall.new
-    @customer = Customer.new
+    @customer     = Customer.new
   end
 
   def create

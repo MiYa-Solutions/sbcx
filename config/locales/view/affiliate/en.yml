@@ -1,0 +1,14 @@
+en:
+  affiliates:
+    buttons:
+      create_provider: 'Save Affiliate'
+      edit_provider: "Edit"
+      search: "Search"
+      new_affiliate: "New Affiliate"
+      create: "Create"
+      save: "Save Changes"
+    flash:
+      create_affiliate_success: '%{name} was created successfully!'
+    index:
+      create_provider_button: 'Create'
+    new:

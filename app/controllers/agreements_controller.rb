@@ -9,16 +9,31 @@ class AgreementsController < ApplicationController
   end
 
   def create
-    if params[:agreement][:provider_id].nil? # are we adding a subcontractor?
-      subcontractor = Subcontractor.find(params[:agreement][:subcontractor_id])
-      current_user.organization.add_subcontractor(subcontractor)
-      redirect_to subcontractor
 
-    else #
-      provider = Provider.find(params[:agreement][:provider_id])
-      current_user.organization.add_provider(provider)
-      redirect_to providers_path
+    if !params[:agreement][:provider_id].nil? && !params[:agreement][:subcontractor_id].nil? # are we adding a member?
+      org = Organization.find(params[:agreement][:provider_id])
+      current_user.organization.reverse_agreements.new(provider_id: params[:agreement][:provider_id])
+      current_user.organization.agreements.new(subcontractor_id: org.id)
+
+    else
+      if params[:agreement][:subcontractor_id] # are we adding a provider?
+        org = Subcontractor.find(params[:agreement][:subcontractor_id])
+        current_user.organization.add_subcontractor(org)
+
+
+      else #
+        org = Provider.find(params[:agreement][:provider_id])
+        current_user.organization.add_provider(org)
+
+      end
     end
+
+    if current_user.organization.save
+      redirect_to affiliate_path(org.id)
+    else
+      raise "Can't save Agreement"
+    end
+
 
   end
 
