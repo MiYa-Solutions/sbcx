@@ -4,7 +4,7 @@ authorization do
     has_permission_on :static_pages, to: :index
   end
   role :admin do
-    has_permission_on [:affiliates, :static_pages, :organizations, :users, :providers, :subcontractors, :service_calls],
+    has_permission_on [:affiliates, :static_pages, :organizations, :users, :providers, :subcontractors, :service_calls, :customers],
                       :to => [:index, :show, :new, :create, :edit, :update, :destroy, :read]
 
   end

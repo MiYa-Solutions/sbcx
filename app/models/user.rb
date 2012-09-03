@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :organization
 
-  validates_presence_of :organization
+  validates_presence_of :organization, :first_name
   validates_presence_of :roles
   validates_with RoleValidator
 
