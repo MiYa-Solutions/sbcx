@@ -8,9 +8,9 @@ development:
 test:
   new_member_event_emails: "mark@miyasolutions.com"
   mailer_user:
-  mail_password:
+  mailer_password:
 
 production:
   new_member_event_emails: ["mark@miyasolutions.com", "ishay@miyasolutions.com"]
   mailer_user:
-  mail_password:
+  mailer_password:
