@@ -17,7 +17,14 @@ if defined?(Bundler)
 end
 
 module Sbcx
+  def self.config
+    Application.config
+  end
+
   class Application < Rails::Application
+    # loading the SubConTraX configuration parameters located in config.yml
+    YAML.load_file("#{Rails.root}/config/config.yml")[Rails.env].each { |key, value| config.send "#{key}=", value }
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -39,14 +46,14 @@ module Sbcx
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
+    config.i18n.load_path                     += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
 
 
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+    config.encoding                           = "utf-8"
 
     # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password]
+    config.filter_parameters                  += [:password]
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -60,11 +67,25 @@ module Sbcx
     config.active_record.whitelist_attributes = false
 
     # Enable the asset pipeline
-    config.assets.enabled = true
+    config.assets.enabled                     = true
 
     config.assets.initialize_on_precompile = false
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    config.assets.version                  = '1.0'
+
+    config.action_mailer.delivery_method = :smtp
+    ActionMailer::Base.smtp_settings     = {
+        :enable_starttls_auto => true,
+        :address              => "smtp.gmail.com",
+        :port                 => "587",
+        :domain               => "subcontrax.com",
+        :authentication       => :login,
+        #:user_name          => "mark@miyasolutions.com", #should be you@domain.com
+        #:password           => "miyabiz11"
+        :user_name            => config.mailer_user, #should be you@domain.com
+        :password             => config.mailer_password
+    }
+
   end
 end

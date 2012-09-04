@@ -41,6 +41,7 @@ class User < ActiveRecord::Base
   # associations necessary for the Authorization functionality using declarative_authorization
   has_many :assignments
   has_many :roles, through: :assignments
+  has_many :events, as: :eventable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password,

@@ -40,7 +40,8 @@ class MyUsersController < ApplicationController
   end
 
   def update
-    @my_user = current_user.organization.users.find(params[:id])
+    @my_user      = current_user.organization.users.find(params[:id])
+    @organization = current_user.organization
     if @my_user.update_attributes(params[:user])
       flash[:success] = t('user.flash.updated_successfully')
       redirect_to my_user_path

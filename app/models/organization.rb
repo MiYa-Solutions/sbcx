@@ -30,6 +30,8 @@ class Organization < ActiveRecord::Base
 
   has_many :service_calls, :inverse_of => :organization
 
+  has_many :events, as: :eventable
+
 
   # agreements is the table tha holds the link between an organization er and its providers and subcontractors
   has_many :agreements, foreign_key: "provider_id", class_name: "Agreement"
@@ -143,7 +145,7 @@ class Organization < ActiveRecord::Base
     self.subcontrax_member  = true
     self.organization_roles = [OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID),
                                OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)]
-    Rails.logger.debug "#{self.name} has been created as a MEMBER!"
+    self.events << NewMemberEvent.new(name: "#{self.name} is a new member", description: "a new member was created")
   end
 
   def alert_local
