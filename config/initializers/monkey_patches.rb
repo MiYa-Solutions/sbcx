@@ -46,9 +46,9 @@ class Formatter
   # todo highlight the start and end of a request in the log
   def format_msg(msg)
     formatted_msg = msg.strip
-    #if formatted_msg.start_with? "Started"
-    #  formated_msg.s
-    #end
+    formatted_msg = formatted_msg.sub /Started/, "\033[42;33mStarted"
+    formatted_msg = formatted_msg.sub /Completed/, "\033[44;37mCompleted"
+    "#{formatted_msg}\033[0m"
   end
 
 end
