@@ -38,6 +38,8 @@ Sbcx::Application.configure do
   # devise install requirement for the mailer configuration
   config.action_mailer.default_url_options               = { :host => 'localhost:3000' }
 
+  #config.log_tags = [:uuid, :remote_ip, lambda { |req| Time.now }]
+
   #SubConTraX specific configurations
   #config.owner_emails = %w[mark@miyasolutions.com]
 end

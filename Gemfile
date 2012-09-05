@@ -10,6 +10,7 @@ gem 'bootstrap-will_paginate', '0.0.5'
 gem 'bootstrap-datepicker-rails'
 gem 'carmen-rails', '~> 1.0.0.beta3'
 
+gem 'pg'
 
 gem 'devise', '2.0.0'
 gem 'simple_form', '2.0.2'
@@ -18,13 +19,15 @@ gem 'declarative_authorization', '0.5.5'
 gem 'state_machine'
 gem 'ruby-graphviz', :require => 'graphviz'
 
+group :development do
+  gem 'thin'
+end
 group :development, :test do
-  gem 'pg'
   gem 'rspec-rails', '2.9.0'
   gem 'guard-rspec', '0.5.5'
   gem 'annotate', '~> 2.4.1.beta'
   gem 'nifty-generators'
-
+  gem 'quiet_assets'
 end
 
 # Gems used only for assets and not required
@@ -47,10 +50,8 @@ group :test do
   gem 'spork', '0.9.0'
   gem 'launchy', '2.1.0'
   gem 'mocha'
+  gem "mocha", :group => :test
 end
 
 group :production do
-  gem 'pg'
 end
-gem 'pg'
-gem "mocha", :group => :test
