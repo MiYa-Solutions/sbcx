@@ -9,57 +9,26 @@
 
       <% end %>
 
-      <%= f.association :customer, collection: current_user.organization.customers %>
+      <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
 
-      <div class="control-group string mandatory">
-        <label class="string optional control-label" for="service_call_started_on">Started On</label>
+      <div class="control-group string ">
+        <label class="string  control-label" for="service_call_started_on">Started On</label>
+
         <div class="controls">
-          <%= f.text_field :started_on, class: "datepicker input-small" %>
-          <strong>at</strong>
-          <select id="select01" class="input-mini">
-            <option>Hr</option>
-            <option>00</option>
-            <option>01</option>
-            <option>02</option>
-            <option>03</option>
-          </select>
-          <strong>: </strong>
-          <select id="select02" class="input-mini">
-            <option>Min</option>
-            <option>00</option>
-            <option>15</option>
-            <option>30</option>
-            <option>35</option>
-          </select>
-
-          <!--<input type="text" class="input-mini"> : <input type="text" class="input-mini">-->
+          <%= f.text_field :started_on_text, class: "datepicker" %>
           <span class="help-inline">Click to set date</span>
 
         </div>
       </div>
 
-      <div class="control-group string mandatory">
-        <label class="string optional control-label" for="service_call_completed_on">Completed On</label>
-        <div class="controls">
-          <%= f.text_field :completed_on, class: "datepicker2 input-small" %>
-          <strong>at</strong>
-          <select id="select03" class="input-mini">
-            <option>Hr</option>
-            <option>00</option>
-            <option>01</option>
-            <option>02</option>
-            <option>03</option>
-          </select>
-          <strong>: </strong>
-          <select id="select04" class="input-mini">
-            <option>Min</option>
-            <option>00</option>
-            <option>15</option>
-            <option>30</option>
-            <option>35</option>
-          </select>
+      <div class="control-group string ">
+        <label class="string  control-label" for="service_call_completed_on">Completed On</label>
 
+        <div class="controls">
+          <%= f.text_field :completed_on_text, class: "datepicker" %>
           <span class="help-inline">Click to set date</span>
+          <%= label_tag :new_customer %>
+          <%= f.text_field :new_customer %>
         </div>
       </div>
     </div>

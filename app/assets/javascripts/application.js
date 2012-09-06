@@ -18,20 +18,15 @@
 //= require_tree .
 
 
-
-
-$(function() {
-    $( ".datepicker" ).datepicker();
-    $( "#format" ).change(function() {
-        $( "#datepicker" ).datepicker( "option", "dateFormat", $( this ).val() );
-    });
-
+$(function () {
+    $(".datepicker").datepicker({ dateFormat:"yy-mm-dd" });
 });
 
-$(function() {
-    $( ".datepicker2").datepicker({
-        changeMonth: true,
-        changeYear: true
+
+$(function () {
+    $(".datepicker2").datepicker({
+        changeMonth:true,
+        changeYear:true
     });
 });
 
