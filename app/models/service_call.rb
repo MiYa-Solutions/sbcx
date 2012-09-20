@@ -31,6 +31,8 @@ class ServiceCall < ActiveRecord::Base
 
   validate :check_completed_on_text, :check_started_on_text
 
+  accepts_nested_attributes_for :customer
+
 
   # State machine  for ServiceCall status
 
@@ -128,11 +130,7 @@ class ServiceCall < ActiveRecord::Base
   end
 
   def create_customer
-    if new_customer.present?
-      the_customer              = Customer.new(name: new_customer)
-      the_customer.organization = self.organization
-      self.customer = the_customer if the_customer.valid?
-    end
+    self.customer = self.organization.customers.create(name: new_customer) if new_customer.present?
   end
 
 end
