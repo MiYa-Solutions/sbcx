@@ -148,6 +148,11 @@ describe User do
     it { should_not be_valid }
   end
 
+  describe "when first name is not present" do
+    before { user.first_name = " " }
+    it { should_not be_valid }
+  end
+
   describe "when email format is invalid" do
     it "should be invalid" do
       addresses = %w[user@foo,com user_at_foo.org example.user@foo.

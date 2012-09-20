@@ -3,20 +3,25 @@
 <div class="well">
 
   <div class="row-fluid">
-    <div class="span10">
-      <div class="smart_label">
-        <!--<h1>Edit <#%= @my_user.first_name %> Info:</h1>-->
-      </div>
+    <div class="smart_label"  >
+      <h1>Edit <%= @my_user.first_name %> <%= @my_user.last_name %> Info:</h1>
     </div>
   </div>
-
   <br>
 
-  <div class="row-fluid">
-    <div class="span10 ">
-      <%= simple_form_for @my_user, url: my_user_url(@my_user), :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="sign-up">
 
-    <%= render 'fields', f: f %>
+  <div class="row-fluid">
+      <%= simple_form_for @my_user, url: my_user_url(@my_user), :html => { :class => 'form-horizontal' } do |f| %>
+        <% if f.object.errors.any? %>
+            <div class="alert alert-block alert-error">
+              <a class="close" data-dismiss="alert" href="#">×</a>
+              <%= render 'shared/error_messages', object: f.object %>
+            </div>
+        <% end %>
+          <%= render 'fields', f: f %>
+        <br>
+  </div>
 
           <div class="form-actions">
             <%= link_to 'Back', my_users_path, :class => 'btn btn-medium' %>
@@ -24,7 +29,6 @@
           </div>
       <% end %>
 
-    </div>
   </div>
 
 </div>
