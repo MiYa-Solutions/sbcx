@@ -1,17 +1,20 @@
 require "spec_helper"
 
 describe AdminMailer do
+  let(:user) { FactoryGirl.build(:org_admin) }
+  let(:org) { user.organization }
+
   describe "sign_up_alert" do
-    let(:mail) { AdminMailer.sign_up_alert }
+    let(:mail) { AdminMailer.sign_up_alert(org) }
 
     it "renders the headers" do
-      mail.subject.should eq("Sign up alert")
-      mail.to.should eq(["to@example.org"])
-      mail.from.should eq(["from@example.com"])
+      mail.subject.should match("new member!!!")
+      mail.to.should eq([Sbcx.config.new_member_event_emails])
+      mail.from.should eq(["admin@subcontrax.com"])
     end
 
     it "renders the body" do
-      mail.body.encoded.should match("Hi")
+      mail.body.encoded.should match("YALLA")
     end
   end
 

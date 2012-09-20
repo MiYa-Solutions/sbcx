@@ -20,5 +20,24 @@ describe Event do
 
   subject { event }
 
-  it { should_not be_valid }
+  it { should respond_to(:user_id) }
+  it { should respond_to(:name) }
+  it { should respond_to(:type) }
+  it { should respond_to(:description) }
+  it { should respond_to(:eventable_type) }
+  it { should respond_to(:eventable_id) }
+  it { should respond_to(:created_at) }
+  it { should respond_to(:updated_at) }
+
+  describe "should not be instantiated" do
+    it "an event must be instantiated using a subclass that implements process_event method" do
+      expect do
+        event.process_event
+      end.should raise_error
+    end
+
+  end
+
+
+  it { should be_valid }
 end

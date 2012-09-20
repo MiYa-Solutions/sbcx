@@ -22,8 +22,10 @@ if owner_org.nil?
   owner_org.organization_roles << OrganizationRole.find(OrganizationRole::OWNER_ROLE_ID)
   owner_org.save
 
-  ishay = owner_org.users.new(email: 'ishay@miyasolutions.com', password: '123456', :password_confirmation => '123456')
-  mark = owner_org.users.new(email: 'mark@miyasolutions.com', password: '123456', :password_confirmation => '123456')
+  ishay = owner_org.users.new(email:      'ishay@miyasolutions.com', password: '123456', :password_confirmation => '123456',
+                              first_name: 'Ishay', last_name: 'Yaari')
+  mark  = owner_org.users.new(email:      'mark@miyasolutions.com', password: '123456', :password_confirmation => '123456',
+                              first_name: 'Mark', last_name: 'Milman')
   ishay.roles << Role.find_by_name("Admin")
   mark.roles << Role.find_by_name("Admin")
 

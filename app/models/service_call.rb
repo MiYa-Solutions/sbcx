@@ -36,42 +36,53 @@ class ServiceCall < ActiveRecord::Base
 
   # first we will define the service call state values
   STATUS_NEW         = 0
-  STATUS_TRANSFERRED = 1
-  STATUS_DISPATCHED  = 2
-  STATUS_COMPLETED   = 3
-  STATUS_SETTLED     = 4
+  STATUS_OPEN        = 1
+  STATUS_CLOSED      = 2
+  STATUS_DISPATCHED  = 3
+  STATUS_IN_PROGRESS = 4
+  STATUS_WORK_DONE   = 5
+
 
   # The state machine definitions
   state_machine :status, :initial => :new do
     state :new, value: STATUS_NEW
-    state :transferred, value: STATUS_TRANSFERRED
+    state :open, value: STATUS_OPEN
+    state :closed, value: STATUS_CLOSED
     state :dispatched, value: STATUS_DISPATCHED
-    state :completed, value: STATUS_COMPLETED
-    state :settled, value: STATUS_SETTLED
+    state :in_progress, value: STATUS_IN_PROGRESS
+    state :work_done, value: STATUS_WORK_DONE
 
-    before_transition :new => :transferred, :do => :transfer_service_call
-    after_transition :new => :local_enabled, :do => :alert_local
+    #before_transition :new => :transferred, :do => :transfer_service_call
+    #after_transition :new => :local_enabled, :do => :alert_local
 
     event :transfer do
-      transition :new => :transferred
+      transition :new => :open
+    end
+
+    event :close do
+      transition :open => :closed
     end
 
     event :dispatch do
-      transition [:new, :transferred] => :dispatched
+      transition :new => :dispatched
     end
 
-    event :complete do
-      transition :dispatched => :completed
+    event :start do
+      transition :dispatched => :in_progress
     end
 
     event :settle do
-      transition :completed => :settled
+      transition :work_done => :closed
     end
 
-    def transfer(recipient, *args)
-      Rails.logger.debug "Transferring job to #{recipient.name}"
-      super
+    event :settle do
+      transition :work_done => :closed
     end
+
+    #def transfer(recipient, *args)
+    #  Rails.logger.debug "Transferring job to #{recipient.name}"
+    #  super
+    #end
 
   end
 

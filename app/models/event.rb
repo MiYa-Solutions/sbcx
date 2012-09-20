@@ -15,9 +15,14 @@
 class Event < ActiveRecord::Base
   attr_accessible :name, :description
   belongs_to :eventable, polymorphic: true
+  belongs_to :user
 
   def process_event
     raise "Event base class was invoked instead of one of the sub-classes"
+  end
+
+  def associated_object
+    eventable_type.classify.constantize.find(self.eventable_id)
   end
 
 end

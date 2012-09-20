@@ -19,12 +19,14 @@ class AffiliatesController < ApplicationController
   def create
 
     params[:affiliate][:status_event] = :make_local
-    if params[:affiliate][:organization_role_ids] && params[:affiliate][:organization_role_ids].include?(OrganizationRole::PROVIDER_ROLE_ID.to_s)
-      @affiliate.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @affiliate)
+    if params[:affiliate][:organization_role_ids] &&
+        params[:affiliate][:organization_role_ids].include?(OrganizationRole::PROVIDER_ROLE_ID.to_s)
+
+      @affiliate.agreements.build(subcontractor_id: current_user.organization.id, provider: @affiliate.becomes(Provider))
     end
 
     if params[:affiliate][:organization_role_ids] && params[:affiliate][:organization_role_ids].include?(OrganizationRole::SUBCONTRACTOR_ROLE_ID.to_s)
-      @affiliate.reverse_agreements.new(provider_id: current_user.organization.id, subcontractor_id: @affiliate)
+      @affiliate.reverse_agreements.build(provider_id: current_user.organization.id, subcontractor: @affiliate.becomes(Subcontractor))
     end
 
     if @affiliate.save

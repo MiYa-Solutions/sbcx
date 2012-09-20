@@ -13,7 +13,7 @@
 
 class Agreement < ActiveRecord::Base
 
-  attr_accessible :provider_id, :subcontractor_id
+  attr_accessible :provider_id, :subcontractor_id, :provider, :subcontractor
 
   belongs_to :provider, class_name: "Provider"
   belongs_to :subcontractor, class_name: "Subcontractor"

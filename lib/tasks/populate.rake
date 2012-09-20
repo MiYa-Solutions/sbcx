@@ -62,10 +62,10 @@ def create_members
     mem.save
     mem.users << new_user([org_admin_role])
     2.times do
-      mem.users = [new_user([dispatcher_role], { })]
+      mem.users << new_user([dispatcher_role], { })
     end
     2.times do
-      mem.users = [new_user([technician_role], { })]
+      mem.users << new_user([technician_role], { })
     end
 
     mem.save
@@ -104,26 +104,28 @@ end
 
 def new_customer(params = { })
 
-  params[:email]        = params[:email] || Faker::Internet.email
-  params[:name]         = params[:name] || Faker::Name.name
-  params[:phone]        = params[:phone] || Faker::PhoneNumber.phone_number
-  params[:mobile_phone] = params[:mobile_phone] || Faker::PhoneNumber.phone_number
-  params[:work_phone]   = params[:work_phone] || Faker::PhoneNumber.phone_number
-  params[:company]      = params[:company] || Faker::Company.name
-  params[:address1]     = params[:address1] || Faker::Address.street_address
-  params[:address2]     = params[:address2] || Faker::Address.street_address(true)
-  params[:city]         = params[:city] || Faker::Address.city
-  params[:state]        = params[:state] || Faker::Address.us_state_abbr
-  params[:zip]          = params[:zip] || Faker::Address.zip_code
-  params[:country]      = params[:zip] || "US"
+  params[:email]        ||= Faker::Internet.email
+  params[:name]         ||= Faker::Name.name
+  params[:phone]        ||= Faker::PhoneNumber.phone_number
+  params[:mobile_phone] ||= Faker::PhoneNumber.phone_number
+  params[:work_phone]   ||= Faker::PhoneNumber.phone_number
+  params[:company]      ||= Faker::Company.name
+  params[:address1]     ||= Faker::Address.street_address
+  params[:address2]     ||= Faker::Address.street_address(true)
+  params[:city]         ||= Faker::Address.city
+  params[:state]        ||= Faker::Address.us_state_abbr
+  params[:zip]          ||= Faker::Address.zip_code
+  params[:country]      ||= "US"
 
   Customer.new(params)
 end
 
 def new_user(roles = [], params = { })
-  params[:email]                 = params[:email] || Faker::Internet.email
-  params[:password]              = params[:password] || "123456"
-  params[:password_confirmation] = params[:password_confirmation] || "123456"
+  params[:email]                 ||= Faker::Internet.email
+  params[:password]              ||= "123456"
+  params[:password_confirmation] ||= "123456"
+  params[:first_name]            ||= Faker::Name.first_name
+  params[:last_name]             ||= Faker::Name.last_name
 
   user       = User.new(params)
   user.roles = roles
