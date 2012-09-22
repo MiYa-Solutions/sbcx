@@ -11,13 +11,13 @@ class ServiceCallObserver < ActiveRecord::Observer
   #def after_update(record)
   #  Rails.logger.debug {"invoked observer after update"}
   #end
+  #def after_transition(vehicle, transition)
+  #  Rails.logger.debug { "invoked observer after transition" }
+  #end
 
-  def after_transition(vehicle, transition)
-    Rails.logger.debug { "invoked observer after transition" }
-  end
-
-  def before_transfer(service_call, transition)
-    service_call.transfer_service_call #(transition)
+  def after_transfer(service_call, transition)
+    service_call.events << ServiceCallTransferEvent.new
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
   end
+
 end

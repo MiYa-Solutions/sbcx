@@ -17,7 +17,7 @@
 </p>
 <p>
   <strong>Organization:</strong>
-  <%= @service_call.organization.name %>
+  <%= @service_call.organization.try(:name) %>
 </p>
 <p>
   <strong>Completed On:</strong>

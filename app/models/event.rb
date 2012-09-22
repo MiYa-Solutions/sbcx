@@ -17,12 +17,19 @@ class Event < ActiveRecord::Base
   belongs_to :eventable, polymorphic: true
   belongs_to :user
 
+  after_initialize :init
+
   def process_event
     raise "Event base class was invoked instead of one of the sub-classes"
   end
 
   def associated_object
     eventable_type.classify.constantize.find(self.eventable_id)
+  end
+
+  def init
+    raise "did you forget to implement init for your event?"
+
   end
 
 end

@@ -19,15 +19,19 @@ class ServiceCall < ActiveRecord::Base
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
+  belongs_to :provider
   belongs_to :technician, class_name: User
+  has_many :events, as: :eventable
 
   # virtual attributes
   attr_writer :started_on_text
   attr_writer :completed_on_text
   attr_accessor :new_customer
 
+  # transform the dates before saving
   before_save :save_started_on_text
   before_save :save_completed_on_text
+  # create a new customer in case one was asked for
   before_save :create_customer
 
   validate :check_completed_on_text, :check_started_on_text
@@ -88,13 +92,6 @@ class ServiceCall < ActiveRecord::Base
     #  Rails.logger.debug "Transferring job to #{recipient.name}"
     #  super
     #end
-
-  end
-
-  def transfer_service_call #(transition)
-                            #recipient          = transition.args[0][:recipient]
-    self.subcontractor #= recipient
-    Rails.logger.debug { "Transferred Service Call to: #{self.subcontractor}" }
 
   end
 
