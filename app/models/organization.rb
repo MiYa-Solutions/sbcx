@@ -31,6 +31,7 @@ class Organization < ActiveRecord::Base
   has_many :service_calls, :inverse_of => :organization
 
   has_many :events, as: :eventable
+  has_many :technicians, class_name: User
 
 
   # agreements is the table tha holds the link between an organization er and its providers and subcontractors

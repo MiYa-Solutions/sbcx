@@ -15,10 +15,11 @@
 #
 
 class ServiceCall < ActiveRecord::Base
-  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event
+  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
+  belongs_to :technician, class_name: User
 
   # virtual attributes
   attr_writer :started_on_text
@@ -90,10 +91,10 @@ class ServiceCall < ActiveRecord::Base
 
   end
 
-  def transfer_service_call(transition)
-    recipient          = transition.args[0][:recipient]
-    self.subcontractor = recipient
-    Rails.logger.debug "Transferred Service Call to: #{recipient.name}"
+  def transfer_service_call #(transition)
+                            #recipient          = transition.args[0][:recipient]
+    self.subcontractor #= recipient
+    Rails.logger.debug { "Transferred Service Call to: #{self.subcontractor}" }
 
   end
 

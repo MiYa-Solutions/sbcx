@@ -29,7 +29,11 @@
 </p>
 <p>
   <strong>Subcontractor</strong>
-  <%= @service_call.subcontractor %>
+  <%= @service_call.subcontractor.try(:name) %>
+</p>
+<p>
+  <strong>Technician</strong>
+  <%= @service_call.technician.try(:name) %>
 </p>
 
 

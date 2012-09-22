@@ -41,10 +41,12 @@ class ServiceCallsController < ApplicationController
         render :action => 'edit'
       end
     else
-      subcontractor = Subcontractor.find(params[:service_call][:subcontractor])
-      @service_call.transfer(recipient: subcontractor)
+
+      process_event
+      #@service_call.transfer(recipient: subcontractor)
       render 'show'
     end
+
 
   end
 
@@ -53,4 +55,23 @@ class ServiceCallsController < ApplicationController
     @service_call.destroy
     redirect_to service_calls_url, :notice => "Successfully destroyed service call."
   end
+
+  private
+
+  def process_event
+
+    case params[:status_event]
+      when 'transfer'
+        @service_call.subcontractor = Subcontractor.find(params[:service_call][:subcontractor]) unless params[:service_call][:subcontractor].nil?
+      when 'dispatch'
+        @service_call.technician = User.find(params[:service_call][:technician]) unless params[:service_call][:technician].nil?
+      else
+
+    end
+
+
+    @service_call.send(params[:status_event].to_sym) #, recipient: subcontractor)
+
+  end
+
 end

@@ -17,14 +17,7 @@ class ServiceCallObserver < ActiveRecord::Observer
   end
 
   def before_transfer(service_call, transition)
-    service_call.transfer_service_call(transition)
-    puts "YALLA"
-    Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
-  end
-
-  def after_transfer(service_call, transition)
-    service_call.transfer_service_call(transition)
-    puts "YALLA"
+    service_call.transfer_service_call #(transition)
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 end
