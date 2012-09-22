@@ -1,6 +1,11 @@
 <p>
+  <strong>ID:</strong>
+  <%= @service_call.id %>
+</p>
+
+<p>
   <strong>Customer:</strong>
-  <%= @service_call.customer_id %>
+  <%= @service_call.customer.name %>
 </p>
 <p>
   <strong>Notes:</strong>
@@ -20,7 +25,7 @@
 </p>
 <p>
   <strong>Status</strong>
-  <%= @service_call.human_status_name %>
+  <%= @service_call.human_status_name.titleize %>
 </p>
 <p>
   <strong>Subcontractor</strong>
@@ -34,9 +39,5 @@
   <%= link_to "View All", service_calls_path %>
 </p>
 
-<%= simple_form_for @service_call do |f| %>
-    <%= f.input :subcontractor, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id %>
-    <%= hidden_field_tag :status_event, 'transfer' %>
-    <%= f.submit 'Transfer' %>
 
-<% end %>
+<%= event_list(@service_call) %>

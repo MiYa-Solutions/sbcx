@@ -15,7 +15,7 @@
 #
 
 class ServiceCall < ActiveRecord::Base
-  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer
+  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
@@ -57,6 +57,7 @@ class ServiceCall < ActiveRecord::Base
     #before_transition :new => :transferred, :do => :transfer_service_call
     #after_transition :new => :local_enabled, :do => :alert_local
 
+
     event :transfer do
       transition :new => :open
     end
@@ -77,9 +78,10 @@ class ServiceCall < ActiveRecord::Base
       transition :work_done => :closed
     end
 
-    event :settle do
-      transition :work_done => :closed
+    event :complete do
+      transition :in_progress => :work_done
     end
+
 
     #def transfer(recipient, *args)
     #  Rails.logger.debug "Transferring job to #{recipient.name}"
@@ -134,3 +136,4 @@ class ServiceCall < ActiveRecord::Base
   end
 
 end
+

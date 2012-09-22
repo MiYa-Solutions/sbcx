@@ -65,9 +65,16 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :organization
 
+  attr_writer :name
+
+  def name
+    @name ||= "#{self.first_name} #{last_name}"
+  end
+
   validates_presence_of :organization, :first_name
   validates_presence_of :roles
   validates_with RoleValidator
+
 
   scope :colleagues, ->(org_id) { where("organization_id = ?", org_id) }
   scope :search, ->(query) { where(arel_table[:email].matches("%#{query}%")) }

@@ -1,3 +1,2 @@
 # Activate observers that should always be running
-ActiveRecord::Base.observers = EventObserver
-
+#ActiveRecord::Base.observers = EventObserver, ServiceCallObserver
