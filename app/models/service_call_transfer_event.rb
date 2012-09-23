@@ -1,8 +1,9 @@
 class ServiceCallTransferEvent < Event
 
   def init
-    self.name        = "Transferred Service Call"
-    self.description = "THE TRANSFER DESCRIPTION"
+    self.name         = "Transferred Service Call"
+    self.description  = "THE TRANSFER DESCRIPTION"
+    self.reference_id = 2
   end
 
   def process_event
@@ -17,7 +18,7 @@ class ServiceCallTransferEvent < Event
     new_service_call.save!
 
     Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
-
+    new_service_call
 
   end
 

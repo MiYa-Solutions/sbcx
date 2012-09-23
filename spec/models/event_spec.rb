@@ -16,7 +16,8 @@ require 'spec_helper'
 
 describe Event do
 
-  event = Event.new()
+  let!(:event) { FactoryGirl.build(:event) }
+
 
   subject { event }
 
@@ -28,6 +29,7 @@ describe Event do
   it { should respond_to(:eventable_id) }
   it { should respond_to(:created_at) }
   it { should respond_to(:updated_at) }
+  it { should respond_to(:reference_id) }
 
   describe "should not be instantiated" do
     it "an event must be instantiated using a subclass that implements process_event method" do

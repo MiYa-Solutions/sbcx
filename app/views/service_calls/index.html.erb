@@ -10,7 +10,7 @@
   </tr>
   <% for service_call in @service_calls %>
       <tr>
-        <td><%= service_call.customer_id %></td>
+        <td><%= service_call.customer.try(:name) %></td>
         <td><%= service_call.notes %></td>
         <td><%= service_call.started_on %></td>
         <td><%= service_call.organization_id %></td>

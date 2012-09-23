@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_33" class="java.beans.XMLDecoder"> 
+ <object class="java.util.HashMap"/> 
+ <object class="java.util.ArrayList"> 
+  <void method="add"> 
+   <object class="edu.usfca.vas.data.DataWrapperFA"> 
+    <void property="graphicMachine"> 
+     <void property="machine"> 
+      <void property="alphabet"> 
+       <void property="symbols"> 
+        <void method="clear"/> 
+        <void method="add"> 
+         <string>0</string> 
+        </void> 
+        <void method="add"> 
+         <string>1</string> 
+        </void> 
+       </void> 
+      </void> 
+     </void> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+ <int>0</int> 
+</java> 

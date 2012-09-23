@@ -9,6 +9,7 @@
 
       <% end %>
 
+      <%= f.association :provider, collection: current_user.organization.providers, value: f.object.provider %>
       <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
 
       <div class="control-group string ">

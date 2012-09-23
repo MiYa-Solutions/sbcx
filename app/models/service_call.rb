@@ -15,7 +15,7 @@
 #
 
 class ServiceCall < ActiveRecord::Base
-  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor
+  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor, :provider_id
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
@@ -35,6 +35,7 @@ class ServiceCall < ActiveRecord::Base
   before_save :create_customer
 
   validate :check_completed_on_text, :check_started_on_text
+  validates_presence_of :organization, :customer, :provider
 
   accepts_nested_attributes_for :customer
 

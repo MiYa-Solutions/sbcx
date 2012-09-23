@@ -56,7 +56,7 @@ module ServiceCallsHelper
     simple_form_for service_call do |f|
       concat (f.input :subcontractor, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id)
       concat (hidden_field_tag :status_event, 'transfer')
-      concat (f.submit ServiceCall.human_status_event_name(:transfer).titleize)
+      concat (f.submit ServiceCall.human_status_event_name(:transfer).titleize, id: 'service_call_transfer_btn')
     end
   end
 

@@ -91,5 +91,25 @@ FactoryGirl.define do
     name Faker::Name.name
   end
 
+  factory :service_call do
+    association :organization, factory: :member
+    association :customer
+    association :provider
+    notes Faker::Lorem.sentence
+
+    factory :transferred_service_call do
+      association :subcontractor
+    end
+  end
+
+  factory :service_call_transfer_event do
+    association :eventable, factory: :transferred_service_call
+    type ServiceCallTransferEvent
+  end
+
+  factory :event do
+
+  end
+
 
 end

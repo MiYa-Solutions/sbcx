@@ -6,4 +6,8 @@ class NewMemberEvent < Event
 
     AdminMailer.sign_up_alert(org).deliver
   end
+
+  def init
+
+  end
 end

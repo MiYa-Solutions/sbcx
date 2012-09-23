@@ -25,7 +25,6 @@
 require 'spec_helper'
 
 describe Organization do
-  pending "add some examples to (or delete) #{__FILE__}"
 
   let(:user) { FactoryGirl.build(:org_admin) }
   let(:org) { user.organization }

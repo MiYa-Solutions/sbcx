@@ -28,7 +28,6 @@ class Event < ActiveRecord::Base
   end
 
   def init
-    raise "did you forget to implement init for your event?"
 
   end
 

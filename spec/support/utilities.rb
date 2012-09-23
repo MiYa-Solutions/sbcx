@@ -1,3 +1,8 @@
+def in_browser(name)
+  Capybara.session_name = name
+  yield
+end
+
 def sign_in(user)
   visit new_user_session_path
   fill_in 'user_email', with: user.email

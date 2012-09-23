@@ -5,7 +5,7 @@
 
 <p>
   <strong>Customer:</strong>
-  <%= @service_call.customer.name %>
+  <%= @service_call.customer.try(:name) %>
 </p>
 <p>
   <strong>Notes:</strong>
@@ -25,7 +25,7 @@
 </p>
 <p>
   <strong>Status</strong>
-  <%= @service_call.human_status_name.titleize %>
+  <span id="service_call_status"><%= @service_call.human_status_name.titleize %></span>
 </p>
 <p>
   <strong>Subcontractor</strong>
