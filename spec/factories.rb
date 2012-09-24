@@ -91,15 +91,23 @@ FactoryGirl.define do
     name Faker::Name.name
   end
 
-  factory :service_call do
+  factory :service_call, class: TransferredServiceCall do
     association :organization, factory: :member
     association :customer
-    association :provider
+    association :subcontractor
+
     notes Faker::Lorem.sentence
 
-    factory :transferred_service_call do
-      association :subcontractor
-    end
+  end
+
+  factory :my_service_call do
+    association :organization, factory: :member
+    association :customer
+    association :subcontractor
+
+    notes Faker::Lorem.sentence
+
+
   end
 
   factory :service_call_transfer_event do

@@ -20,10 +20,12 @@ class ServiceCallsController < ApplicationController
   def create
 
     @service_call = current_user.organization.service_calls.new(params[:service_call])
-    #@service_call.organization = current_user.organization
+    set_service_call_type
+
     if @service_call.save
-      redirect_to @service_call, :notice => "Successfully created service call."
+      redirect_to @service_call.becomes(ServiceCall), :notice => "Successfully created service call."
     else
+      @service_call.becomes(ServiceCall)
       render :action => 'new'
     end
   end
@@ -57,6 +59,26 @@ class ServiceCallsController < ApplicationController
   end
 
   private
+
+  def set_service_call_type
+
+    case @service_call.my_role
+      when :prov
+        @service_call      = @service_call.becomes(MyServiceCall)
+        @service_call.type = "MyServiceCall"
+
+      when :subcon
+        @service_call      = @service_call.becomes(TransferredServiceCall)
+        @service_call.type = "TransferredServiceCall"
+
+      else
+        @service_call      = @service_call.becomes(MyServiceCall)
+        @service_call.type = "MyServiceCall"
+    end
+    #@service_call.organization = current_user.organization
+    @service_call.init_state_machines
+
+  end
 
   def process_event
 

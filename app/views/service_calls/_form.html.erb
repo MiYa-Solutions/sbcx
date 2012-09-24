@@ -5,7 +5,7 @@
 
       <% if !f.object.new_record? %>
 
-          <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+          <%= f.input :status_event, collection: f.object.becomes(ServiceCall).status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
 
       <% end %>
 

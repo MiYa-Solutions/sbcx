@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120922222159) do
+ActiveRecord::Schema.define(:version => 20120924223626) do
 
   create_table "agreements", :force => true do |t|
     t.string "name"
@@ -115,7 +115,12 @@ ActiveRecord::Schema.define(:version => 20120922222159) do
     t.integer "subcontractor_id"
     t.integer "technician_id"
     t.integer "provider_id"
+    t.integer "subcontractor_status"
+    t.string "type"
+    t.integer "ref_id"
   end
+
+  add_index "service_calls", ["ref_id"], :name => "index_service_calls_on_ref_id"
 
   create_table "users", :force => true do |t|
     t.string "email", :default => "", :null => false

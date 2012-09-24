@@ -1,35 +1,38 @@
-<p>
-  <strong>ID:</strong>
-  <%= @service_call.id %>
-</p>
+<% @service_call.attributes.map.each do |key, value| %>
+    <p>
+      <strong><%= key.titleize %></strong>
 
+      <% case key %>
+      <% when "status" %>
+          <span class="label label-success"><%= @service_call.human_status_name.titleize %> </span>
+      <% when "subcontractor_status" %>
+          <span class="label label-info"><%= @service_call.human_subcontractor_status_name.titleize %></span>
+
+      <% else %>
+          <%= value %>
+      <% end %>
+    </p>
+
+
+<% end %>
+
+
+===============================================================
 <p>
   <strong>Customer:</strong>
   <%= @service_call.customer.try(:name) %>
-</p>
-<p>
-  <strong>Notes:</strong>
-  <%= @service_call.notes %>
-</p>
-<p>
-  <strong>Started On:</strong>
-  <%= @service_call.started_on %>
 </p>
 <p>
   <strong>Organization:</strong>
   <%= @service_call.organization.try(:name) %>
 </p>
 <p>
-  <strong>Completed On:</strong>
-  <%= @service_call.completed_on %>
-</p>
-<p>
-  <strong>Status</strong>
-  <span id="service_call_status"><%= @service_call.human_status_name.titleize %></span>
-</p>
-<p>
   <strong>Subcontractor</strong>
   <%= @service_call.subcontractor.try(:name) %>
+</p>
+<p>
+  <strong>Provider</strong>
+  <%= @service_call.provider.try(:name) %>
 </p>
 <p>
   <strong>Technician</strong>
@@ -38,8 +41,8 @@
 
 
 <p>
-  <%= link_to "Edit", edit_service_call_path(@service_call) %> |
-  <%= link_to "Destroy", @service_call, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "Edit", edit_service_call_path(@service_call.becomes(ServiceCall)) %> |
+  <%= link_to "Destroy", @service_call.becomes(ServiceCall), :confirm => 'Are you sure?', :method => :delete %> |
   <%= link_to "View All", service_calls_path %>
 </p>
 

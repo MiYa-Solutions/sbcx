@@ -20,4 +20,15 @@ class ServiceCallObserver < ActiveRecord::Observer
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 
+  def before_transfer(service_call, transition)
+    service_call.ref_id ||= service_call.id
+    Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
+  end
+
+  def before_accept(service_call, transition)
+    service_call.events << ServiceCallAcceptEvent.new
+
+    Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
+  end
+
 end

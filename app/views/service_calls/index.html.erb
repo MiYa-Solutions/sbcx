@@ -1,25 +1,57 @@
-<h1> "Service Calls"</h1>
+<div class="well">
 
-<table>
-  <tr>
-    <th>Customer</th>
-    <th>Notes</th>
-    <th>Started On</th>
-    <th>Organization</th>
-    <th>Completed On</th>
-  </tr>
-  <% for service_call in @service_calls %>
-      <tr>
-        <td><%= service_call.customer.try(:name) %></td>
-        <td><%= service_call.notes %></td>
-        <td><%= service_call.started_on %></td>
-        <td><%= service_call.organization_id %></td>
-        <td><%= service_call.completed_on %></td>
-        <td><%= link_to "Show", service_call %></td>
-        <td><%= link_to "Edit", edit_service_call_path(service_call) %></td>
-        <td><%= link_to "Destroy", service_call, :confirm => 'Are you sure?', :method => :delete %></td>
-      </tr>
+  <div class="smart_label">
+    <ul>
+      <li><h1>Service Calls</h1></li>
+      <li>
+        <!--search placement-->
+      </li>
+      <li>
+        <%= link_to 'New Service Call', new_service_call_path, :class => 'btn btn-primary' %>
+      </li>
+    </ul>
+  </div>
+
+  <br>
+
+
+  <% if @service_calls.empty? %>
+      <span class="alert alert-info">No records, click "New Service Call" to add new contact</span>
+  <% else %>
+
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Status</th>
+          <th>Subcontractor Status</th>
+          <th>Provider</th>
+          <th>Subcontractor</th>
+          <th>Customer</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @service_calls.each do |sc| %>
+            <tr>
+
+              <td><%= link_to sc.id, service_call_path(sc) %></td>
+              <td><%= sc.human_status_name %></td>
+              <td><%= sc.human_subcontractor_status_name %></td>
+              <td><%= sc.provider.try(:name) %></td>
+              <td><%= sc.subcontractor.try(:name) %></td>
+              <td><%= sc.customer.try(:name) %></td>
+              <td>
+                <%= link_to 'Edit', edit_service_call_path(sc), :class => 'btn btn-mini' %>
+                <%= link_to 'Show', sc.becomes(ServiceCall), :class => 'btn btn-mini btn-danger' %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+
   <% end %>
-</table>
 
-<p><%= link_to "New Service Call", new_service_call_path %></p>
+</div>
