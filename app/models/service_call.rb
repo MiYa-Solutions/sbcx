@@ -137,43 +137,45 @@ class ServiceCall < ActiveRecord::Base
   # State machine for ServiceCall subcontractor_status
   # status constant list:
   SUBCON_STATUS_NA          = 0
-  SUBCON_STATUS_ACCEPTED    = 1
-  SUBCON_STATUS_REJECTED    = 2
-  SUBCON_STATUS_TRANSFERRED = 3
-  SUBCON_STATUS_IN_PROGRESS = 4
-  SUBCON_STATUS_WORK_DONE   = 5
-  SUBCON_STATUS_SETTLED     = 6
+  SUBCON_STATUS_PENDING     = 1
+  SUBCON_STATUS_ACCEPTED    = 2
+  SUBCON_STATUS_REJECTED    = 3
+  SUBCON_STATUS_TRANSFERRED = 4
+  SUBCON_STATUS_IN_PROGRESS = 5
+  SUBCON_STATUS_WORK_DONE   = 6
+  SUBCON_STATUS_SETTLED     = 7
 
-  state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
-    state :na, value: SUBCON_STATUS_NA
-    state :accepted, value: SUBCON_STATUS_ACCEPTED
-    state :rejected, value: SUBCON_STATUS_REJECTED
-    state :transferred, value: SUBCON_STATUS_TRANSFERRED
-    state :in_progress, value: SUBCON_STATUS_IN_PROGRESS
-    state :work_done, value: SUBCON_STATUS_WORK_DONE
-    state :settled, value: SUBCON_STATUS_SETTLED
-
-    event :subcon_transfer do
-      transition :na => :transferred
-    end
-
-    event :subcon_accept do
-      transition :transferred => :accepted
-    end
-    event :subcon_reject do
-      transition :transferred => :rejected
-    end
-    event :subcon_start do
-      transition [:accepted] => :in_progress
-    end
-    event :subcon_complete do
-      transition [:in_progress] => :work_done
-    end
-    event :subcon_settle do
-      transition [:work_done] => :settled
-    end
-
-  end
+  #state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
+  #  state :na, value: SUBCON_STATUS_NA
+  #  state :pending, value: SUBCON_STATUS_PENDING
+  #  state :accepted, value: SUBCON_STATUS_ACCEPTED
+  #  state :rejected, value: SUBCON_STATUS_REJECTED
+  #  state :transferred, value: SUBCON_STATUS_TRANSFERRED
+  #  state :in_progress, value: SUBCON_STATUS_IN_PROGRESS
+  #  state :work_done, value: SUBCON_STATUS_WORK_DONE
+  #  state :settled, value: SUBCON_STATUS_SETTLED
+  #
+  #  event :subcon_transfer do
+  #    transition [:na] => :transferred
+  #  end
+  #
+  #  event :subcon_accept do
+  #    transition :transferred => :accepted
+  #  end
+  #  event :subcon_reject do
+  #    transition :transferred => :rejected
+  #  end
+  #  event :subcon_start do
+  #    transition [:accepted] => :in_progress
+  #  end
+  #  event :subcon_complete do
+  #    transition [:in_progress] => :work_done
+  #  end
+  #  event :subcon_settle do
+  #    transition [:work_done] => :settled
+  #  end
+  #
+  #end
 
   def completed_on_text
     @completed_on_text || completed_on.try(:strftime, "%Y-%m-%d %H:%M:%S")

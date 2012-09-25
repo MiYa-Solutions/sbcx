@@ -59,4 +59,36 @@ class TransferredServiceCall < ServiceCall
     end
 
   end
+
+  state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
+    state :na, value: SUBCON_STATUS_NA
+    state :pending, value: SUBCON_STATUS_PENDING
+    state :accepted, value: SUBCON_STATUS_ACCEPTED
+    state :rejected, value: SUBCON_STATUS_REJECTED
+    state :transferred, value: SUBCON_STATUS_TRANSFERRED
+    state :in_progress, value: SUBCON_STATUS_IN_PROGRESS
+    state :work_done, value: SUBCON_STATUS_WORK_DONE
+    state :settled, value: SUBCON_STATUS_SETTLED
+
+    event :subcon_transfer do
+      transition [:na] => :transferred
+    end
+
+    event :subcon_accept do
+      transition :transferred => :accepted
+    end
+    event :subcon_reject do
+      transition :transferred => :rejected
+    end
+    event :subcon_start do
+      transition [:accepted] => :in_progress
+    end
+    event :subcon_complete do
+      transition [:in_progress] => :work_done
+    end
+    event :subcon_settle do
+      transition [:work_done] => :settled
+    end
+
+  end
 end

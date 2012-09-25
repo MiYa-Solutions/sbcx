@@ -1,8 +1,11 @@
 class ServiceCallObserver < ActiveRecord::Observer
 
-  #def after_save(record)
-  #  Rails.logger.debug {"invoked observer after save"}
-  #end
+  def after_create(record)
+    Rails.logger.debug { "invoked ServiceCallObserver after create" }
+    record.ref_id ||= record.id
+    record.save
+  end
+
   #
   #def after_create(record)
   #  Rails.logger.debug {"invoked observer after create"}
@@ -21,7 +24,9 @@ class ServiceCallObserver < ActiveRecord::Observer
   end
 
   def before_transfer(service_call, transition)
-    service_call.ref_id ||= service_call.id
+
+    service_call.subcon_transfer_subcon
+
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 
@@ -30,5 +35,10 @@ class ServiceCallObserver < ActiveRecord::Observer
 
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
   end
+
+  def before_subcontractor_accepted
+    self.subcon_accept
+  end
+
 
 end

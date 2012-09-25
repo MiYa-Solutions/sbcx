@@ -25,9 +25,9 @@ class ServiceCallTransferEvent < Event
   def process_event
     Rails.logger.debug { "Running ServiceCallTransferEvent process" }
 
-    service_call                      = associated_object
-    service_call.subcontractor_status = ServiceCall::SUBCON_STATUS_TRANSFERRED
-    service_call.save!
+    service_call     = associated_object
+    #service_call.subcontractor_status = ServiceCall::SUBCON_STATUS_TRANSFERRED
+    #service_call.save!
 
     new_service_call = TransferredServiceCall.new
 
