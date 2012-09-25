@@ -48,3 +48,23 @@
 
 
 <%= event_list(@service_call) %>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <% Event.attribute_names.each do |name| %>
+        <th><%= name.titleize %></th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody>
+  <% @service_call.events.each do |event| %>
+      <tr>
+        <% event.attributes.each do |key, value| %>
+            <td><%= value %></td>
+
+        <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
