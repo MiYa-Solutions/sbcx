@@ -1,0 +1,35 @@
+en:
+  activerecord:
+    models:
+      my_service_call: "Service Call"
+    attributes:
+      my_service_call:
+        provider: "Originator"
+      transferred_service_call:
+        provider: "Originator"
+      service_call:
+        provider: "המקור"
+        provider_id: "Originator"
+    state_machines:
+      my_service_call:
+        status:
+          events:
+            transfer: "PATUAKH"
+            dispatch: "הזנק"
+          states:
+            new: "HADASH"
+            transferred: "הועבר"
+        subcontractor_status:
+          pending: "Pending"
+      transferred_service_call:
+        status:
+          events:
+            transfer: "העבר שוב"
+            accept: "קבל"
+            dispatch: "הזנק"
+          states:
+            transferred: "הועבר"
+            received_new: "התקבל חדש"
+        subcontractor_status:
+          states:
+            na: "Not Applicable"

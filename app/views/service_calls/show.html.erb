@@ -1,12 +1,12 @@
 <% @service_call.attributes.map.each do |key, value| %>
     <p>
-      <strong><%= key.titleize %></strong>
+      <strong><%= ServiceCall.human_attribute_name(key) %></strong>
 
       <% case key %>
       <% when "status" %>
-          <span class="label label-success"><%= @service_call.human_status_name.titleize %> </span>
+          <span class="label label-success" id="service_call_status"><%= @service_call.human_status_name.titleize %></span>
       <% when "subcontractor_status" %>
-          <span class="label label-info"><%= @service_call.human_subcontractor_status_name.titleize %></span>
+          <span class="label label-info" id="service_call_subcontractor_status"><%= @service_call.human_subcontractor_status_name.titleize %></span>
 
       <% else %>
           <%= value %>
@@ -31,14 +31,23 @@
   <%= @service_call.subcontractor.try(:name) %>
 </p>
 <p>
-  <strong>Provider</strong>
-  <%= @service_call.provider.try(:name) %>
+  <strong><%= ServiceCall.human_attribute_name(:provider) %></strong>
+  <span id="provider"><%= @service_call.provider.try(:name) %></span>
 </p>
 <p>
   <strong>Technician</strong>
   <%= @service_call.technician.try(:name) %>
 </p>
 
+<p>
+  <strong><%= ServiceCall.human_attribute_name(:creator) %> </strong>
+  <%= @service_call.creator.try(:name) %>
+</p>
+
+<p>
+  <strong><%= ServiceCall.human_attribute_name(:updater) %> </strong>
+  <%= @service_call.updater.try(:name) %>
+</p>
 
 <p>
   <%= link_to "Edit", edit_service_call_path(@service_call.becomes(ServiceCall)) %> |

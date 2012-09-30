@@ -71,35 +71,65 @@ describe "Service Call pages" do
     end
 
     describe "show service call" do
-      let!(:service_call) { FactoryGirl.create(:service_call, organization: org, customer: customer, provider: provider) }
+      let!(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil) }
 
       before do
         subcontractor.save
-        visit service_call_path service_call
-      end
+        in_browser(:org) do
+          visit service_call_path service_call
+        end
 
-      it { should have_button('service_call_transfer_btn') }
+      end
+      it { should have_selector('#service_call_transfer_btn', value: I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
+      it { should have_selector('#service_call_dispatch_btn', value: I18n.t('activerecord.state_machines.my_service_call.status.events.dispatch')) }
+      it { should have_selector('span#service_call_status') }
+
 
       describe "transfer service call" do
+
         before do
-          select subcontractor.name, from: 'service_call_subcontractor'
-          click_button 'service_call_transfer_btn'
+          in_browser(:org) do
+            select subcontractor.name, from: 'service_call_subcontractor'
+            click_button 'service_call_transfer_btn'
+          end
         end
 
-        it "should change the status to open" do
-          should have_selector('#service_call_status', text: ServiceCall.human_status_name(:open).titleize)
+        it "should change the status to transferred localized" do
+          should have_selector('span#service_call_status', text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
         end
 
-        it "should show up in the subcontractors gui" do
-          in_browser(:org2) do
-            visit service_calls_path
-            should have_selector('h1', text: 'Service Calls')
-            should have_content(customer.name)
+        it "should change the subcon status to pending localized" do
+          should have_selector('span#service_call_subcontractor_status', text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.pending'))
+        end
+
+        describe "subcontractor view" do
+          let(:subcon_service_call) { ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id) }
+
+          before do
+            in_browser(:org2) do
+              visit service_call_path subcon_service_call
+            end
           end
 
+          it "should show up in the subcontractors gui with a locelized received_new status" do
+            should have_selector('span#service_call_status', text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.received_new'))
+          end
+
+          it "should have a subcontractor status with localized na" do
+            should have_selector('span#service_call_subcontractor_status', text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.na'))
+          end
+
+          it "should have the right provider " do
+            should have_selector('#provider', text: org.name)
+          end
+          it "should allow to accept the service call" do
+            should have_selector('#accept_service_call_btn', value: I18n.t('activerecord.state_machines.transferred_service_call.status.events.accept'))
+          end
 
         end
+
       end
+
 
     end
 

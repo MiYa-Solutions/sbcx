@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924223626) do
+ActiveRecord::Schema.define(:version => 20120930003700) do
 
   create_table "agreements", :force => true do |t|
     t.string "name"
@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(:version => 20120924223626) do
     t.integer "subcontractor_status"
     t.string "type"
     t.integer "ref_id"
+    t.integer "creator_id"
+    t.integer "updater_id"
   end
 
   add_index "service_calls", ["ref_id"], :name => "index_service_calls_on_ref_id"

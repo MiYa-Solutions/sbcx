@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  include Userstamp
+
   before_filter { |c| Authorization.current_user = c.current_user }
 
   protected
@@ -10,3 +12,4 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 end
+

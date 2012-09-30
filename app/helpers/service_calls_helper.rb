@@ -32,7 +32,7 @@ module ServiceCallsHelper
   def accept_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag :status_event, 'accept')
-      concat (f.submit service_call.class.human_status_event_name(:accept).titleize)
+      concat (f.submit service_call.class.human_status_event_name(:accept).titleize, id: 'accept_service_call_btn')
     end
   end
 
@@ -75,7 +75,7 @@ module ServiceCallsHelper
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (f.input :technician, collection: f.object.organization.technicians, label_method: :name, value_method: :id)
       concat (hidden_field_tag :status_event, 'dispatch')
-      concat (f.submit service_call.class.human_status_event_name(:dispatch).titleize)
+      concat (f.submit service_call.class.human_status_event_name(:dispatch).titleize, id: 'service_call_dispatch_btn')
     end
   end
 

@@ -27,6 +27,8 @@ describe ServiceCall do
   it { should respond_to(:customer_id) }
   it { should respond_to(:organization_id) }
   it { should respond_to(:technician_id) }
+  it { should respond_to(:creator_id) }
+  it { should respond_to(:updater_id) }
 
   it { should be_valid }
 

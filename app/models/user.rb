@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :organization
+  model_stamper
 
   # associations necessary for the Authorization functionality using declarative_authorization
   has_many :assignments

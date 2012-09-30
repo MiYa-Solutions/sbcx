@@ -26,6 +26,8 @@ class ServiceCall < ActiveRecord::Base
   belongs_to :technician, class_name: User
   has_many :events, as: :eventable
 
+  stampable
+
   # virtual attributes
   attr_writer :started_on_text
   attr_writer :completed_on_text
