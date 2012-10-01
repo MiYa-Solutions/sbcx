@@ -84,15 +84,18 @@ class ServiceCallsController < ApplicationController
 
     case params[:status_event]
       when 'transfer'
-        @service_call.subcontractor = Subcontractor.find(params[:service_call][:subcontractor]) unless params[:service_call][:subcontractor].nil?
+        #@service_call.subcontractor = Subcontractor.find(params[:service_call][:subcontractor]) unless params[:service_call][:subcontractor].nil?
+        @service_call.subcontractor_id = params[:service_call][:subcontractor] unless params[:service_call][:subcontractor].nil?
+
       when 'dispatch'
         @service_call.technician = User.find(params[:service_call][:technician]) unless params[:service_call][:technician].nil?
       else
+        @service_call.send(params[:status_event].to_sym) #, recipient: subcontractor)
 
     end
 
-
     @service_call.send(params[:status_event].to_sym) #, recipient: subcontractor)
+
 
   end
 

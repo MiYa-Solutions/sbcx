@@ -55,6 +55,9 @@ class MyServiceCall < ServiceCall
     event :subcontractor_accepted do
       transition :transferred => :transferred
     end
+    event :subcontractor_rejected do
+      transition :transferred => :transferred
+    end
 
   end
 
@@ -69,7 +72,7 @@ class MyServiceCall < ServiceCall
     state :work_done, value: SUBCON_STATUS_WORK_DONE
     state :settled, value: SUBCON_STATUS_SETTLED
 
-    event :subcon_transfer do
+    event :transfer do
       transition [:na] => :pending
     end
 
@@ -77,7 +80,7 @@ class MyServiceCall < ServiceCall
       transition [:in_progress, :pending, :accepted] => :transferred
     end
 
-    event :subcon_accept do
+    event :accept do
       transition :pending => :accepted
     end
     event :subcon_reject do

@@ -20,7 +20,10 @@ en:
             new: "HADASH"
             transferred: "הועבר"
         subcontractor_status:
-          pending: "Pending"
+          states:
+            pending: "Pending"
+            accepted: "התקבל"
+            rejected: "נדחה"
       transferred_service_call:
         status:
           events:

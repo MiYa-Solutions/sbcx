@@ -39,7 +39,7 @@ module ServiceCallsHelper
   def reject_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag :status_event, 'reject')
-      concat (f.submit service_call.class.human_status_event_name(:reject).titleize)
+      concat (f.submit service_call.class.human_status_event_name(:reject).titleize, id: 'reject_service_call_btn')
     end
   end
 
