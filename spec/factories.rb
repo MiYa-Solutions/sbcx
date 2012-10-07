@@ -95,6 +95,7 @@ FactoryGirl.define do
     association :organization, factory: :member
     association :customer
     association :subcontractor
+    association :provider
 
     notes Faker::Lorem.sentence
 
@@ -111,11 +112,23 @@ FactoryGirl.define do
   end
 
   factory :service_call_transfer_event do
-    association :eventable, factory: :transferred_service_call
+    association :eventable, factory: :service_call
     type ServiceCallTransferEvent
   end
 
   factory :event do
+
+  end
+
+  factory :technician, class: User do
+    association :organization, factory: :member
+    sequence(:email) { |n| "technician_test#{n}@example.com" }
+    first_name Faker::Name.first_name
+    last_name Faker::Name.last_name
+    password "foobar"
+    password_confirmation "foobar"
+    the_role = Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)
+    roles [the_role]
 
   end
 

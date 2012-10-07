@@ -17,8 +17,8 @@
 class ServiceCallRejectEvent < Event
 
   def init
-    self.name         = "Reject Service Call"
-    self.description  = "Service rejected by subcontractor"
+    self.name         = I18n.t('service_call_reject_event.name')
+    self.description  = I18n.t('service_call_reject_event.description')
     self.reference_id = 4
   end
 
@@ -28,7 +28,7 @@ class ServiceCallRejectEvent < Event
     service_call = associated_object
 
     prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-    prov_service_call.subcon_reject_subcon
+    prov_service_call.subcontractor_rejected
 
     prov_service_call
 

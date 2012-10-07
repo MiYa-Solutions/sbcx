@@ -36,7 +36,7 @@ class MyServiceCall < ServiceCall
       transition [:dispatched, :in_progress] => :work_done
     end
 
-    event :customer_paid do
+    event :paid do
       transition [:work_done, :in_progress] => :closed
     end
 
@@ -56,6 +56,18 @@ class MyServiceCall < ServiceCall
       transition :transferred => :transferred
     end
     event :subcontractor_rejected do
+      transition :transferred => :transferred
+    end
+    event :subcontractor_dispatched do
+      transition :transferred => :transferred
+    end
+    event :subcontractor_started do
+      transition :transferred => :transferred
+    end
+    event :subcontractor_completed do
+      transition :transferred => :transferred
+    end
+    event :subcontractor_settled do
       transition :transferred => :transferred
     end
 
@@ -83,16 +95,16 @@ class MyServiceCall < ServiceCall
     event :accept do
       transition :pending => :accepted
     end
-    event :subcon_reject do
+    event :reject do
       transition :pending => :rejected
     end
-    event :subcon_start do
-      transition [:accepted] => :in_progress
+    event :start do
+      transition [:accepted, :pending] => :in_progress
     end
-    event :subcon_complete do
+    event :complete do
       transition [:in_progress] => :work_done
     end
-    event :subcon_settle do
+    event :settle do
       transition [:work_done] => :settled
     end
 

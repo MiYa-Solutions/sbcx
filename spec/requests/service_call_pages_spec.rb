@@ -6,22 +6,32 @@ describe "Service Call pages" do
   # ==============================================================
   # data elements to inspect
   # ==============================================================
-  status                  = 'span#service_call_status'
-  subcontractor_status    = 'span#service_call_subcontractor_status'
-  service_call_started_on = '#service_call_started_on_text'
+  status                    = 'span#service_call_status'
+  subcontractor_status      = 'span#service_call_subcontractor_status'
+  billing_status            = 'span#service_call_billing_status'
+  service_call_started_on   = '#service_call_started_on_text'
+  service_call_completed_on = '#service_call_completed_on_text'
   # ==============================================================
   # buttons to click and inspect
   # ==============================================================
-  transfer_btn            = '#service_call_transfer_btn'
-  transfer_btn_selector   = 'service_call_transfer_btn'
-  dispatch_btn            = '#service_call_dispatch_btn'
-  dispatch_btn_selector   = 'service_call_dispatch_btn'
-  create_btn              = 'service_call_create_btn'
-  create_btn_selector     = 'service_call_create_btn'
-  accept_btn              = '#accept_service_call_btn'
-  accept_btn_selector     = 'accept_service_call_btn'
-  reject_btn              = '#reject_service_call_btn'
-  reject_btn_selector     = 'reject_service_call_btn'
+  transfer_btn              = '#service_call_transfer_btn'
+  transfer_btn_selector     = 'service_call_transfer_btn'
+  dispatch_btn              = '#service_call_dispatch_btn'
+  dispatch_btn_selector     = 'service_call_dispatch_btn'
+  create_btn                = 'service_call_create_btn'
+  create_btn_selector       = 'service_call_create_btn'
+  accept_btn                = '#accept_service_call_btn'
+  accept_btn_selector       = 'accept_service_call_btn'
+  reject_btn                = '#reject_service_call_btn'
+  reject_btn_selector       = 'reject_service_call_btn'
+  settle_btn                = '#settle_service_call_btn'
+  settle_btn_selector       = 'settle_service_call_btn'
+  start_btn                 = '#start_service_call_btn'
+  start_btn_selector        = 'start_service_call_btn'
+  complete_btn              = '#complete_service_call_btn'
+  complete_btn_selector     = 'complete_service_call_btn'
+  paid_btn                  = '#paid_service_call_btn'
+  paid_btn_selector         = 'paid_service_call_btn'
 
 
   describe "with Org Admin" do
@@ -160,7 +170,6 @@ describe "Service Call pages" do
 
         end
 
-
         describe "subcontractor accepts the service call" do
 
           # accept the service call
@@ -179,6 +188,163 @@ describe "Service Call pages" do
           end
           it "subcontractor status changes to accepted" do
             should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.accepted'))
+          end
+
+          it { should have_selector(settle_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
+
+
+          describe "subcontractor browser" do
+            before { in_browser(:org2) { } }
+
+            it " status changed to accepted" do
+              should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.accepted'))
+            end
+
+            it " subcontractor status remains na" do
+              should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.na'))
+            end
+
+          end
+
+          describe "subcontractor dispatches the service call" do
+            let!(:technician) { FactoryGirl.create(:technician, organization: subcontractor) }
+            before do
+              in_browser(:org2) do
+                visit service_call_path @subcon_service_call
+                # todo implement technician scope in Organization
+                select technician.name, from: 'service_call_technician'
+                click_button dispatch_btn_selector
+              end
+
+              in_browser(:org) { visit service_call_path service_call }
+            end
+
+            it "status remains transferred" do
+              should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+
+            end
+            it "subcontractor status changes to in progress" do
+              should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.in_progress'))
+            end
+
+            describe "subcontractor view after dispatch" do
+              before { in_browser(:org2) { } }
+              it "status should change to dispatched" do
+                should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.dispatched'))
+
+              end
+              it "subcontractor status should remain na" do
+                should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.na'))
+
+              end
+
+
+            end
+
+            describe "subcontractor starts the service call" do
+              before do
+                in_browser(:org2) do
+                  visit service_call_path @subcon_service_call
+                  click_button start_btn_selector
+                end
+
+                in_browser(:org) { visit service_call_path service_call }
+              end
+
+              it "status remains transferred" do
+                should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+
+              end
+              it "subcontractor status remains in progress" do
+                should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.in_progress'))
+              end
+              it "start time is set" do
+                Time.parse(find(service_call_started_on).text) <= Time.current
+              end
+
+              describe "subcontractor view after start" do
+                before { in_browser(:org2) { } }
+                it "status should change to in progress" do
+                  should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.in_progress'))
+
+                end
+                it "subcontractor status should remain na" do
+                  should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.na'))
+
+                end
+
+                it "start date should be updated with the current time" do
+                  Time.parse(find(service_call_started_on).text) <= Time.current
+                end
+
+
+              end
+
+              describe "subcontractor completes the service call" do
+                before do
+                  in_browser(:org2) do
+                    visit service_call_path @subcon_service_call
+                    click_button complete_btn_selector
+                  end
+
+                  in_browser(:org) { visit service_call_path service_call }
+                end
+
+                it "status remains transferred" do
+                  should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+
+                end
+                it "subcontractor status changes to completed" do
+                  should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.work_done'))
+                end
+                it "completion time is set" do
+                  Time.parse(find(service_call_completed_on).text) <= Time.current
+                end
+
+                describe "subcontractor view after complete" do
+                  before { in_browser(:org2) { } }
+                  it "status should change to completed" do
+                    should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.work_done'))
+
+                  end
+                  it "subcontractor status should remain na" do
+                    should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.na'))
+
+                  end
+
+                  it "completed date should be updated with the current time" do
+                    Time.parse(find(service_call_completed_on).text) <= Time.current
+                  end
+
+
+                end
+
+                describe "subcontractor settles with the provider" do
+                  before do
+                    in_browser(:org2) do
+                      visit service_call_path @subcon_service_call
+                      click_button settle_btn_selector
+                    end
+
+                    in_browser(:org) { visit service_call_path service_call }
+                  end
+
+                  # transferred is considered open
+                  it "status remains transferred" do
+                    should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+
+                  end
+                  it "subcontractor status changes to settled" do
+                    should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.settled'))
+                  end
+
+
+                end
+
+              end
+            end
+
+
           end
         end
 
@@ -202,6 +368,89 @@ describe "Service Call pages" do
             should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.rejected'))
           end
         end
+      end
+
+      describe "dispatch the service call" do
+        let!(:technician) { FactoryGirl.create(:technician, organization: org) }
+        before do
+          in_browser(:org) do
+            visit service_call_path service_call
+            # todo implement technician scope in Organization
+            select technician.name, from: 'service_call_technician'
+            click_button dispatch_btn_selector
+          end
+
+        end
+
+        it "status should change to dispatched" do
+          should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.dispatched'))
+
+        end
+        it "subcontractor status should remain na" do
+          should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.na'))
+
+        end
+
+
+        describe "start the job" do
+          before do
+            click_button start_btn_selector
+          end
+
+          it "start time is set" do
+            Time.parse(find(service_call_started_on).text) <= Time.current
+          end
+
+          it "status should change to dispatched" do
+            should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.in_progress'))
+
+          end
+          it "subcontractor status should remain na" do
+            should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.na'))
+
+          end
+
+          describe "job done" do
+            before do
+              click_button complete_btn_selector
+            end
+            it "status should change to completed" do
+              should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.work_done'))
+
+            end
+            it "subcontractor status should remain na" do
+              should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.na'))
+
+            end
+            it "completion time is set" do
+              Time.parse(find(service_call_completed_on).text) <= Time.current
+            end
+
+            describe "customer paid" do
+              before do
+                fill_in 'service_call_total_price', with: '100'
+                click_button paid_btn_selector
+              end
+
+              it "status should change to closed" do
+                should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.closed'))
+              end
+
+              it "customer status should change to paid" do
+                should have_selector(billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.paid'))
+              end
+            end
+
+          end
+
+
+        end
+
+        describe "job done" do
+
+        end
+
+
       end
 
     end

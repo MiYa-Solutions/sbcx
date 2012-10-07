@@ -21,11 +21,21 @@ module ServiceCallsHelper
             concat (content_tag :li, reject_form(service_call))
           when :accept
             concat (content_tag :li, accept_form(service_call))
+          when :paid
+            concat (content_tag :li, paid_form(service_call))
           else
             concat(content_tag :li, service_call.class.human_status_event_name(event))
         end
       end
 
+    end
+  end
+
+  def paid_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (hidden_field_tag :status_event, 'paid')
+      concat (f.input :total_price)
+      concat (f.submit service_call.class.human_status_event_name(:paid).titleize, id: 'paid_service_call_btn')
     end
   end
 
@@ -53,21 +63,21 @@ module ServiceCallsHelper
   def settle_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag :status_event, 'settle')
-      concat (f.submit service_call.class.human_status_event_name(:settle).titleize)
+      concat (f.submit service_call.class.human_status_event_name(:settle).titleize, id: 'settle_service_call_btn')
     end
   end
 
   def complete_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag :status_event, 'work_completed')
-      concat (f.submit service_call.class.human_status_event_name(:work_completed).titleize)
+      concat (f.submit service_call.class.human_status_event_name(:work_completed).titleize, id: 'complete_service_call_btn')
     end
   end
 
   def start_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag :status_event, 'start')
-      concat (f.submit service_call.class.human_status_event_name(:start).titleize)
+      concat (f.submit service_call.class.human_status_event_name(:start).titleize, id: 'start_service_call_btn')
     end
   end
 

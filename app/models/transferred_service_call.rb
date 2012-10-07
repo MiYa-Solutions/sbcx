@@ -2,7 +2,7 @@ class TransferredServiceCall < ServiceCall
   validates_presence_of :provider
 
   before_validation do
-    self.subcontractor = self.organization.becomes(Subcontractor)
+    self.subcontractor ||= self.organization.try(:becomes, Subcontractor)
   end
 
   STATUS_RECEIVED_NEW = 20
@@ -28,7 +28,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :work_completed do
-      transition :in_progress => :work_done
+      transition [:in_progress, :dispatched] => :work_done
     end
 
     event :customer_paid do
@@ -59,6 +59,7 @@ class TransferredServiceCall < ServiceCall
     end
 
   end
+
 
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA

@@ -44,9 +44,14 @@ class ServiceCallsController < ApplicationController
       end
     else
 
-      process_event
+      if process_event
+        redirect_to service_call_path @service_call, :notice => t('messages.service_call.event', params[:status_event].humanize.titleize)
+
+      else
+        render 'show'
+      end
       #@service_call.transfer(recipient: subcontractor)
-      render 'show'
+
     end
 
 
@@ -85,10 +90,12 @@ class ServiceCallsController < ApplicationController
     case params[:status_event]
       when 'transfer'
         #@service_call.subcontractor = Subcontractor.find(params[:service_call][:subcontractor]) unless params[:service_call][:subcontractor].nil?
-        @service_call.subcontractor_id = params[:service_call][:subcontractor] unless params[:service_call][:subcontractor].nil?
+        @service_call.subcontractor_id = params[:service_call][:subcontractor] unless params[:service_call][:subcontractor].empty?
 
       when 'dispatch'
-        @service_call.technician = User.find(params[:service_call][:technician]) unless params[:service_call][:technician].nil?
+        @service_call.technician = User.find(params[:service_call][:technician]) unless params[:service_call][:technician].empty?
+      when 'paid'
+        @service_call.total_price = params[:service_call][:total_price] unless params[:service_call][:total_price].empty?
       else
         @service_call.send(params[:status_event].to_sym) #, recipient: subcontractor)
 

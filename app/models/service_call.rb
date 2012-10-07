@@ -68,6 +68,7 @@ class ServiceCall < ActiveRecord::Base
     state :na, value: STATUS_NA
   end
 
+
   def init_state_machines
     initialize_state_machines
   end
@@ -86,6 +87,32 @@ class ServiceCall < ActiveRecord::Base
   SUBCON_STATUS_IN_PROGRESS = 5
   SUBCON_STATUS_WORK_DONE   = 6
   SUBCON_STATUS_SETTLED     = 7
+
+  state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
+    state :na, value: SUBCON_STATUS_NA
+  end
+
+  BILLING_STATUS_PENDING = 0
+  BILLING_STATUS_PAID    = 1
+  BILLING_STATUS_OVERDUE = 2
+
+  state_machine :billing_status, initial: :pending, namespace: 'customer' do
+    state :pending, value: BILLING_STATUS_PENDING
+    state :paid, value: BILLING_STATUS_PAID do
+      validates_numericality_of :total_price
+    end
+    state :overdue, value: BILLING_STATUS_OVERDUE do
+      validates_numericality_of :total_price
+    end
+
+    event :paid do
+      transition :pending => :paid
+    end
+
+    event :overdue do
+      transition :pending => :overdue
+    end
+  end
 
   def completed_on_text
     @completed_on_text || completed_on.try(:strftime, "%Y-%m-%d %H:%M:%S")
