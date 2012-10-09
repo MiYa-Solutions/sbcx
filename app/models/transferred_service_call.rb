@@ -1,9 +1,36 @@
+# == Schema Information
+#
+# Table name: service_calls
+#
+#  id                   :integer         not null, primary key
+#  customer_id          :integer
+#  notes                :text
+#  started_on           :datetime
+#  organization_id      :integer
+#  completed_on         :datetime
+#  created_at           :datetime        not null
+#  updated_at           :datetime        not null
+#  status               :integer
+#  subcontractor_id     :integer
+#  technician_id        :integer
+#  provider_id          :integer
+#  subcontractor_status :integer
+#  type                 :string(255)
+#  ref_id               :integer
+#  creator_id           :integer
+#  updater_id           :integer
+#  settled_on           :datetime
+#  billing_status       :integer
+#  total_price          :decimal(, )
+#
+
 class TransferredServiceCall < ServiceCall
   validates_presence_of :provider
-
+  validate :provider_is_not_a_member
   before_validation do
     self.subcontractor ||= self.organization.try(:becomes, Subcontractor)
   end
+
 
   STATUS_RECEIVED_NEW = 20
   STATUS_ACCEPTED     = 21
@@ -91,5 +118,11 @@ class TransferredServiceCall < ServiceCall
       transition [:work_done] => :settled
     end
 
+  end
+  private
+  def provider_is_not_a_member
+    if provider.subcontrax_member && ServiceCall.find_by_ref_id_and_organization_id(ref_id, provider_id).nil?
+      errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
+    end
   end
 end

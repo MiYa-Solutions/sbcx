@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: service_calls
+#
+#  id                   :integer         not null, primary key
+#  customer_id          :integer
+#  notes                :text
+#  started_on           :datetime
+#  organization_id      :integer
+#  completed_on         :datetime
+#  created_at           :datetime        not null
+#  updated_at           :datetime        not null
+#  status               :integer
+#  subcontractor_id     :integer
+#  technician_id        :integer
+#  provider_id          :integer
+#  subcontractor_status :integer
+#  type                 :string(255)
+#  ref_id               :integer
+#  creator_id           :integer
+#  updater_id           :integer
+#  settled_on           :datetime
+#  billing_status       :integer
+#  total_price          :decimal(, )
+#
+
 class MyServiceCall < ServiceCall
 
   before_validation do
@@ -29,7 +55,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :start do
-      transition :dispatched => :in_progress
+      transition [:new, :dispatched] => :in_progress
     end
 
     event :work_completed do
@@ -50,25 +76,6 @@ class MyServiceCall < ServiceCall
 
     event :settle do
       transition :transferred => :settled
-    end
-
-    event :subcontractor_accepted do
-      transition :transferred => :transferred
-    end
-    event :subcontractor_rejected do
-      transition :transferred => :transferred
-    end
-    event :subcontractor_dispatched do
-      transition :transferred => :transferred
-    end
-    event :subcontractor_started do
-      transition :transferred => :transferred
-    end
-    event :subcontractor_completed do
-      transition :transferred => :transferred
-    end
-    event :subcontractor_settled do
-      transition :transferred => :transferred
     end
 
   end
@@ -99,7 +106,7 @@ class MyServiceCall < ServiceCall
       transition :pending => :rejected
     end
     event :start do
-      transition [:accepted, :pending] => :in_progress
+      transition [:accepted, :pending, :in_progress] => :in_progress
     end
     event :complete do
       transition [:in_progress] => :work_done

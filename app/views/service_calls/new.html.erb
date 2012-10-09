@@ -15,8 +15,8 @@
   <div class="row-fluid">
 
 
-    <%= simple_form_for @service_call, url: service_calls_url, :html => { :class => 'form-horizontal' } do |f| %>
-        <%= render 'form', f: f %>
+    <%= simple_form_for @service_call, as: :service_call, url: service_calls_url, :html => { :class => 'form-horizontal' } do |f| %>
+        <%= render 'fields', f: f %>
 
         <div class="form-actions">
           <%= link_to "Back to List", service_calls_path, :class => 'btn btn-medium' %>

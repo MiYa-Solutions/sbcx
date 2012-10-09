@@ -15,10 +15,17 @@
 #  technician_id        :integer
 #  provider_id          :integer
 #  subcontractor_status :integer
+#  type                 :string(255)
+#  ref_id               :integer
+#  creator_id           :integer
+#  updater_id           :integer
+#  settled_on           :datetime
+#  billing_status       :integer
+#  total_price          :decimal(, )
 #
 
 class ServiceCall < ActiveRecord::Base
-  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor, :provider_id
+  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor_id, :provider_id, :technician_id, :total_price
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
@@ -46,8 +53,18 @@ class ServiceCall < ActiveRecord::Base
 
   # if im not the subcontractor of this service call then I'm the provider
   def my_role
-    @my_role ||= self.organization_id == subcontractor_id ? :subcon : :prov
+    if subcontractor_id.nil?
+      if provider_id.nil?
+        @my_role = :prov
+      else
+        @my_role = :subcon
+      end
+    else
+      @my_role ||= self.organization_id == self.subcontractor_id ? :subcon : :prov
+
+    end
   end
+
 
 # State machine  for ServiceCall status
 # first we will define the service call state values

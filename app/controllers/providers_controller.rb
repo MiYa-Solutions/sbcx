@@ -12,9 +12,10 @@ class ProvidersController < ApplicationController
   def create
     params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
     params[:provider][:status_event]          = :make_local
-    @provider                                 = current_user.organization.providers.new(params[:provider])
-    @provider.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @provider)
-    if @provider.save
+    #@provider                                 = current_user.organization.providers.build(params[:provider])
+    ##@provider.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @provider)
+    @provider                                 = current_user.organization.providers.create(params[:provider])
+    if @provider.valid? #@provider.save
       redirect_to @provider, :notice => t('providers.flash.create_provider', name: @provider.name)
     else
       render 'new'

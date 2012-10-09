@@ -22,10 +22,11 @@ class ServiceCallsController < ApplicationController
     @service_call = current_user.organization.service_calls.new(params[:service_call])
     set_service_call_type
 
-    if @service_call.save
-      redirect_to @service_call.becomes(ServiceCall), :notice => "Successfully created service call."
+    # save the service call through it's type to invoke the proper call backs
+    if @service_call.becomes(@service_call.type.constantize).save
+      redirect_to service_call_path @service_call, :notice => "Successfully created service call."
     else
-      @service_call.becomes(ServiceCall)
+      #@service_call.becomes(ServiceCall)
       render :action => 'new'
     end
   end
@@ -36,25 +37,11 @@ class ServiceCallsController < ApplicationController
 
   def update
     @service_call = ServiceCall.find(params[:id])
-    if params[:status_event].nil?
-      if @service_call.update_attributes(params[:service_call])
-        redirect_to @service_call, :notice => "Successfully updated service call."
-      else
-        render :action => 'edit'
-      end
+    if @service_call.update_attributes(params[:service_call])
+      redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
     else
-
-      if process_event
-        redirect_to service_call_path @service_call, :notice => t('messages.service_call.event', params[:status_event].humanize.titleize)
-
-      else
-        render 'show'
-      end
-      #@service_call.transfer(recipient: subcontractor)
-
+      render :action => 'edit'
     end
-
-
   end
 
   def destroy
@@ -69,19 +56,26 @@ class ServiceCallsController < ApplicationController
 
     case @service_call.my_role
       when :prov
-        @service_call      = @service_call.becomes(MyServiceCall)
+        #@service_call      = @service_call.becomes(MyServiceCall)
         @service_call.type = "MyServiceCall"
+        @service_call.becomes(MyServiceCall).init_state_machines
+
 
       when :subcon
-        @service_call      = @service_call.becomes(TransferredServiceCall)
+        #@service_call      = @service_call.becomes(TransferredServiceCall)
         @service_call.type = "TransferredServiceCall"
+        @service_call.becomes(TransferredServiceCall).init_state_machines
 
       else
-        @service_call      = @service_call.becomes(MyServiceCall)
-        @service_call.type = "MyServiceCall"
+        #@service_call      = @service_call.becomes(MyServiceCall)
+        #@service_call.type = "MyServiceCall"
+        raise "Unexpected service call my_role"
     end
+
     #@service_call.organization = current_user.organization
-    @service_call.init_state_machines
+    #@service_call.init_state_machines
+    #@service_call.init_state_machines
+    #@service_call.save
 
   end
 

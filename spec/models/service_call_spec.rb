@@ -15,6 +15,13 @@
 #  technician_id        :integer
 #  provider_id          :integer
 #  subcontractor_status :integer
+#  type                 :string(255)
+#  ref_id               :integer
+#  creator_id           :integer
+#  updater_id           :integer
+#  settled_on           :datetime
+#  billing_status       :integer
+#  total_price          :decimal(, )
 #
 
 require 'spec_helper'

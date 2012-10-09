@@ -28,7 +28,7 @@ class ServiceCallAcceptEvent < Event
     service_call = associated_object
 
     prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-    prov_service_call.subcontractor_accepted
+    prov_service_call.accept_subcon
 
     prov_service_call
 

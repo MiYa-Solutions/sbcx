@@ -16,28 +16,10 @@ class MyServiceCallObserver < ServiceCallObserver
 
   def before_start(service_call, transition)
     service_call.started_on = Time.now
+    service_call.technician ||= service_call.creator
     Rails.logger.debug { "invoked observer BEFORE start \n #{service_call.inspect} \n #{transition.args.inspect}" }
   end
 
-  def before_subcontractor_accepted(service_call, transition)
-    service_call.accept_subcon
-  end
-
-  def before_subcontractor_rejected(service_call, transition)
-    service_call.reject_subcon
-  end
-
-  def after_subcontractor_dispatched(service_call, transition)
-    service_call.start_subcon
-  end
-
-  def after_subcontractor_completed(service_call, transition)
-    service_call.complete_subcon
-  end
-
-  def before_subcontractor_settled(service_call, transition)
-    service_call.settle_subcon
-  end
 
   def before_paid(service_call, transition)
     service_call.paid_customer

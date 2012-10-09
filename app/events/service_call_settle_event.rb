@@ -15,7 +15,7 @@ class ServiceCallSettleEvent < Event
 
     prov_service_call            = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
     prov_service_call.settled_on = service_call.settled_on
-    prov_service_call.subcontractor_settled
+    prov_service_call.settle_subcon
 
 
   end

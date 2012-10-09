@@ -11,6 +11,11 @@ describe "Service Call pages" do
   billing_status            = 'span#service_call_billing_status'
   service_call_started_on   = '#service_call_started_on_text'
   service_call_completed_on = '#service_call_completed_on_text'
+  subcontractor_select      = 'service_call_subcontractor_id'
+  provider_select           = 'service_call_provider_id'
+  technician_select         = 'service_call_technician_id'
+  status_select             = 'service_call_status_event'
+
   # ==============================================================
   # buttons to click and inspect
   # ==============================================================
@@ -32,12 +37,14 @@ describe "Service Call pages" do
   complete_btn_selector     = 'complete_service_call_btn'
   paid_btn                  = '#paid_service_call_btn'
   paid_btn_selector         = 'paid_service_call_btn'
+  save_btn                  = '#service_call_save_btn'
+  save_btn_selector         = 'service_call_save_btn'
 
 
   describe "with Org Admin" do
 
-    let(:org_admin_user) { FactoryGirl.create(:org_admin) }
-    let(:org_admin_user2) { FactoryGirl.create(:org_admin) }
+    let(:org_admin_user) { FactoryGirl.create(:member_admin) }
+    let(:org_admin_user2) { FactoryGirl.create(:member_admin) }
     let(:org) { org_admin_user.organization }
     let(:org2) { org_admin_user2.organization }
 
@@ -56,6 +63,7 @@ describe "Service Call pages" do
     let(:customer) { FactoryGirl.create(:customer, organization: org) }
 
     before do
+      org.providers << org2.becomes(Provider)
       in_browser(:org) do
         sign_in org_admin_user
       end
@@ -91,21 +99,77 @@ describe "Service Call pages" do
 
       end
 
+      describe "transferred service call" do
 
-      it "should be created successfully" do
-        in_browser(:org) do
-          expect do
-            select provider.name, from: 'service_call_provider_id'
-            select customer.name, from: 'service_call_customer_id'
-            click_button create_btn
-          end.to change(ServiceCall, :count).by(1)
+
+        describe "when the provider is a member" do
+          before do
+            in_browser(:org) do
+              select org2.name, from: 'service_call_provider_id'
+              select customer.name, from: 'service_call_customer_id'
+            end
+          end
+
+          it "should not allow to create, as the service call should originate from the provider" do
+            expect do
+              click_button create_btn
+            end.to_not change(ServiceCall, :count)
+          end
+        end
+
+        describe "when the provider is NOT a member (local)" do
+          #let(:local_provider) { FactoryGirl.build(:provider) }
+
+          before do
+            org.providers << provider
+            in_browser(:org) do
+              visit new_service_call_path
+              select provider.name, from: 'service_call_provider_id'
+              select customer.name, from: 'service_call_customer_id'
+            end
+          end
+
+          let(:service_call) { ServiceCall.last }
+
+          # unlike when the provider is a member where a copy of the service call should be created
+          it "should create only one service call " do
+            expect do
+              click_button create_btn
+            end.to change(ServiceCall, :count).by(1)
+          end
+          it "should be of type MyServiceCall" do
+            expect { service_call.should be_a_kind_of(TransferredServiceCall) }
+          end
         end
 
 
       end
 
+      describe "my service call" do
+        before do
+          in_browser(:org) do
+            select customer.name, from: 'service_call_customer_id'
+          end
+        end
+
+
+        it "should be created successfully" do
+          expect do
+            click_button create_btn
+          end.to change(ServiceCall, :count).by(1)
+        end
+
+        let(:service_call) { ServiceCall.last }
+
+        it "should be of type MyServiceCall" do
+          expect { service_call.should be_a_kind_of(MyServiceCall) }
+        end
+
+      end
+
 
     end
+
 
     describe "show service call" do
       let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil) }
@@ -118,15 +182,26 @@ describe "Service Call pages" do
 
       end
       it { should have_selector(transfer_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
-      it { should have_selector(dispatch_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.dispatch')) }
+
       it { should have_selector(status) }
 
+      describe "multi user organization" do
 
-      describe "transfer my service call" do
+        let!(:technician) { FactoryGirl.create(:technician, organization: org) }
+
+        before do
+          visit service_call_path service_call
+        end
+
+        it { should have_selector(dispatch_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.dispatch')) }
+
+      end
+
+      describe "transfer my service call to a member subcontractor" do
         # transfer the service call
         before do
           in_browser(:org) do
-            select subcontractor.name, from: 'service_call_subcontractor'
+            select subcontractor.name, from: subcontractor_select
             click_button transfer_btn_selector
           end
           @subcon_service_call = ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id)
@@ -212,7 +287,7 @@ describe "Service Call pages" do
               in_browser(:org2) do
                 visit service_call_path @subcon_service_call
                 # todo implement technician scope in Organization
-                select technician.name, from: 'service_call_technician'
+                select technician.name, from: technician_select
                 click_button dispatch_btn_selector
               end
 
@@ -370,13 +445,28 @@ describe "Service Call pages" do
         end
       end
 
+      describe "transfer my service call to a local subcontractor" do
+        let(:local_subcontractor) { FactoryGirl.create(:subcontractor) }
+        before do
+          org.subcontractors << local_subcontractor
+          visit service_call_path service_call
+          select local_subcontractor.name, from: subcontractor_select
+        end
+
+        it "should not create another service call" do
+          expect { click_button transfer_btn_selector }.to_not change(ServiceCall, :count)
+        end
+
+
+      end
+
       describe "dispatch the service call" do
         let!(:technician) { FactoryGirl.create(:technician, organization: org) }
         before do
           in_browser(:org) do
             visit service_call_path service_call
             # todo implement technician scope in Organization
-            select technician.name, from: 'service_call_technician'
+            select technician.name, from: technician_select
             click_button dispatch_btn_selector
           end
 
@@ -453,7 +543,56 @@ describe "Service Call pages" do
 
       end
 
+      describe "with single user organization" do
+
+        it "should show start instead of dispatch" do
+          should have_selector(start_btn)
+        end
+
+        it "should not show dispatch" do
+          should_not have_selector(dispatch_btn)
+        end
+      end
+
+
     end
+
+    describe "edit service call page" do
+      describe "edit my service call" do
+        let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil) }
+
+        before do
+          visit edit_service_call_path service_call
+        end
+
+
+        it "should have a subcontractor select box" do
+          should have_selector("##{subcontractor_select}")
+        end
+        it "should have a provider select box" do
+          should have_selector("##{provider_select}")
+        end
+        it "should have a technician select box" do
+          should have_selector("##{technician_select}")
+        end
+
+        describe "dispatch without a technician specified should show an error" do
+          before do
+            select I18n.t('activerecord.state_machines.my_service_call.status.states.dispatched'), from: status_select
+            click_button save_btn_selector
+          end
+
+          it { should have_selector("div.error") }
+        end
+
+
+      end
+
+      describe "edit transferred service call" do
+        pending
+      end
+    end
+
 
   end
 
