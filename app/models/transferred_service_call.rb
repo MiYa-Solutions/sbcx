@@ -99,20 +99,20 @@ class TransferredServiceCall < ServiceCall
     state :settled, value: SUBCON_STATUS_SETTLED
 
     event :subcon_transfer do
-      transition [:na] => :transferred
+      transition [:na] => :pending
     end
 
     event :subcon_accept do
-      transition :transferred => :accepted
+      transition :pending => :accepted
     end
     event :subcon_reject do
-      transition :transferred => :rejected
+      transition :pending => :rejected
     end
     event :subcon_start do
-      transition [:accepted] => :in_progress
+      transition [:pending, :accepted] => :in_progress
     end
     event :subcon_complete do
-      transition [:in_progress] => :work_done
+      transition [:pending, :accepted, :in_progress] => :work_done
     end
     event :subcon_settle do
       transition [:work_done] => :settled

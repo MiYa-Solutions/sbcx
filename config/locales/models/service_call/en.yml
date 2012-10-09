@@ -51,7 +51,7 @@ en:
             work_done: "Completed"
 
           states:
-            transferred: "הועבר"
+            transferred: "Passed On"
             received_new: "התקבל חדש"
             accepted: "Accepted"
             dispatched: "Dispatched"
@@ -61,6 +61,8 @@ en:
         subcontractor_status:
           states:
             na: "Not Applicable"
+            pending: "Pending"
+            transferred: "Transferred"
   messages:
     service_call:
       event: 'The service call was %{event_name} successfully'

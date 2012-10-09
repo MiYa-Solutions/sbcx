@@ -140,6 +140,10 @@ describe "Service Call pages" do
           it "should be of type MyServiceCall" do
             expect { service_call.should be_a_kind_of(TransferredServiceCall) }
           end
+
+          pending "verify that the customer is associated with the provider and not the creator fo the service call"
+
+          pending "verify that customer is accessible"
         end
 
 
@@ -443,6 +447,39 @@ describe "Service Call pages" do
             should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.rejected'))
           end
         end
+
+        describe "subcontractor transfers the service call to a local subcontractor" do
+          let(:local_subcontractor) { FactoryGirl.create(:subcontractor) }
+
+          let(:second_service_call) { ServiceCall.find_by_organization_id_and_ref_id(local_subcontractor.id, @subcon_service_call.ref_id) }
+
+          before do
+            org2.subcontractors << local_subcontractor
+            in_browser(:org2) do
+              visit service_call_path @subcon_service_call
+              select local_subcontractor.name, from: subcontractor_select
+              click_button transfer_btn_selector
+
+            end
+          end
+
+          it "should NOT find the service call for the local subcontractor" do
+            second_service_call.should be_nil
+          end
+
+          it "should change the status to transferred localized" do
+            should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
+          end
+
+          it "should change the subcontractor status to pending localized" do
+            should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.pending'))
+          end
+
+        end
+
+        describe "subcontractor transfers the service call to a member subcontractor" do
+          pending
+        end
       end
 
       describe "transfer my service call to a local subcontractor" do
@@ -554,7 +591,7 @@ describe "Service Call pages" do
         end
       end
 
-
+      pending "verify there is no access to the provider's customer"
     end
 
     describe "edit service call page" do
