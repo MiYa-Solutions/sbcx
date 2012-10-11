@@ -15,6 +15,7 @@ describe "Service Call pages" do
   provider_select           = 'service_call_provider_id'
   technician_select         = 'service_call_technician_id'
   status_select             = 'service_call_status_event'
+  new_customer_fld          = 'service_call_new_customer'
 
   # ==============================================================
   # buttons to click and inspect
@@ -51,6 +52,7 @@ describe "Service Call pages" do
     let(:provider) {
       prov = FactoryGirl.create(:provider)
       org.providers << prov
+      org.save!
       prov
     }
 
@@ -99,6 +101,10 @@ describe "Service Call pages" do
 
       end
 
+      describe "customer selection" do
+        pending "updated when changing the provider with the associated customers"
+      end
+
       describe "transferred service call" do
 
 
@@ -125,7 +131,8 @@ describe "Service Call pages" do
             in_browser(:org) do
               visit new_service_call_path
               select provider.name, from: 'service_call_provider_id'
-              select customer.name, from: 'service_call_customer_id'
+              fill_in new_customer_fld, with: Faker::Name.name
+
             end
           end
 
@@ -137,13 +144,23 @@ describe "Service Call pages" do
               click_button create_btn
             end.to change(ServiceCall, :count).by(1)
           end
-          it "should be of type MyServiceCall" do
-            expect { service_call.should be_a_kind_of(TransferredServiceCall) }
+
+          describe "after the create click" do
+            before { click_button create_btn }
+            it "should be of type MyServiceCall" do
+              service_call.should be_a_kind_of(TransferredServiceCall)
+            end
+
+            it "the customer is accessible" do
+              visit customer_path service_call.customer
+              should have_content(service_call.customer.name)
+            end
+
+            it "the customer should belong to the provider" do
+              service_call.customer.organization.id.should == service_call.provider.id
+            end
+
           end
-
-          pending "verify that the customer is associated with the provider and not the creator fo the service call"
-
-          pending "verify that customer is accessible"
         end
 
 
@@ -595,16 +612,18 @@ describe "Service Call pages" do
     end
 
     describe "edit service call page" do
+      before { in_browser(:org) { } }
       describe "edit my service call" do
-        let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil) }
+        let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil, provider: org.becomes(Provider)) }
 
         before do
           visit edit_service_call_path service_call
         end
 
-
+        it { should_not have_selector('error') }
         it "should have a subcontractor select box" do
           should have_selector("##{subcontractor_select}")
+
         end
         it "should have a provider select box" do
           should have_selector("##{provider_select}")

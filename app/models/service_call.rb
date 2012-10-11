@@ -44,10 +44,12 @@ class ServiceCall < ActiveRecord::Base
   before_save :save_started_on_text
   before_save :save_completed_on_text
   # create a new customer in case one was asked for
-  before_save :create_customer
+  before_validation :create_customer
 
-  validate :check_completed_on_text, :check_started_on_text
-  validates_presence_of :organization, :customer
+  validate :check_completed_on_text, :check_started_on_text, :customer_belongs_to_provider
+  validates_presence_of :organization, :provider
+  validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
+
 
   accepts_nested_attributes_for :customer
 
@@ -166,7 +168,12 @@ class ServiceCall < ActiveRecord::Base
   end
 
   def create_customer
-    self.customer = self.organization.customers.create(name: new_customer) if new_customer.present?
+    self.customer = self.provider.customers.new(name: new_customer) if new_customer.present? && customer.nil?
+  end
+
+  private
+  def customer_belongs_to_provider
+    errors.add(:customer, I18n.t('service_call.errors.customer_does_not_belong_to_provider')) unless !customer || customer.organization_id == provider_id
   end
 
 end

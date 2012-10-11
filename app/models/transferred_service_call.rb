@@ -121,8 +121,16 @@ class TransferredServiceCall < ServiceCall
   end
   private
   def provider_is_not_a_member
-    if provider.subcontrax_member && ServiceCall.find_by_ref_id_and_organization_id(ref_id, provider_id).nil?
-      errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
+    if provider
+      if provider.subcontrax_member && ServiceCall.find_by_ref_id_and_organization_id(ref_id, provider_id).nil?
+        errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
+      end
+    else
+      errors.add(:provider, I18n.t('service_call.errors.missing_provider'))
+
     end
+    #if provider.subcontrax_member && ServiceCall.find_by_ref_id_and_organization_id(ref_id, provider_id).nil?
+    #  errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
+    #end
   end
 end

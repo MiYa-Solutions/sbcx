@@ -50,7 +50,10 @@ describe ServiceCall do
   end
   describe "when provider is not present" do
     before { service_call.provider = nil }
-    it { should_not be_valid }
+    it "it should default to the creating organization" do
+      #service_call.provider
+      should_not be_valid
+    end
   end
 
 

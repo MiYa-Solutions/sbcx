@@ -11,7 +11,9 @@
 
       <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
       <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
-      <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
+      <div id="customer_wrapper">
+        <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
+      </div>
       <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
 
       <div class="control-group string ">
