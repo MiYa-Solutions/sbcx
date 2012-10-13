@@ -41,8 +41,11 @@ FactoryGirl.define do
     sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
     organization_roles [prov_role, sub_role]
 
+
     after_build do |member|
       member.make_member
+      member.customers << Customer.new(name: Faker::Name.name)
+      member.save
     end
   end
 
@@ -116,10 +119,14 @@ FactoryGirl.define do
 
   factory :my_service_call do
     association :organization, factory: :member
-    association :customer
+
     association :subcontractor
 
     notes Faker::Lorem.sentence
+
+    after_build do |service_call|
+      service_call.customer = service_call.organization.customers.first
+    end
 
 
   end

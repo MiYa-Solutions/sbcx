@@ -21,14 +21,14 @@ class ServiceCallsController < ApplicationController
 
     @service_call = current_user.organization.service_calls.new(params[:service_call])
     set_service_call_type
+    # copy instance variables as it is lost in the 'becomes' method call
     service_call_instance              = @service_call.becomes(@service_call.type.constantize)
     service_call_instance.new_customer = @service_call.new_customer
 
     # save the service call through it's type to invoke the proper call backs
     if service_call_instance.save
-      redirect_to service_call_path @service_call, :notice => "Successfully created service call."
+      redirect_to service_call_path @service_call, :notice => t('service_call.crud_messages.success')
     else
-      #@service_call.becomes(ServiceCall)
       render :action => 'new'
     end
   end

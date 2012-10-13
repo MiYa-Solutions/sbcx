@@ -27,7 +27,7 @@
 require 'spec_helper'
 
 describe ServiceCall do
-  let(:service_call) { FactoryGirl.build(:service_call) }
+  let(:service_call) { FactoryGirl.build(:transferred_sc_with_new_customer) }
 
   subject { service_call }
 
@@ -44,16 +44,20 @@ describe ServiceCall do
     it { should_not be_valid }
   end
 
-  describe "when customer is not present" do
-    before { service_call.customer = nil }
+  describe "when customer and new_customer is not present" do
+    before do
+      service_call.customer     = nil
+      service_call.new_customer = nil
+    end
     it { should_not be_valid }
   end
   describe "when provider is not present" do
-    before { service_call.provider = nil }
-    it "it should default to the creating organization" do
-      #service_call.provider
-      should_not be_valid
+    before do
+      service_call.provider     = nil
+      service_call.new_customer = nil
     end
+
+    it { should_not be_valid }
   end
 
 

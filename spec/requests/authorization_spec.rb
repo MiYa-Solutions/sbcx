@@ -19,9 +19,8 @@ describe "Authorization" do
       let(:other_customer) { FactoryGirl.create(:customer, organization: mem2_user.organization) }
 
       it "should not find customer of another member" do
-        expect do
-          visit customer_path(other_customer)
-        end.should raise_error(ActiveRecord::RecordNotFound)
+        visit customer_path(other_customer)
+        should have_selector('.alert-error')
       end
 
 

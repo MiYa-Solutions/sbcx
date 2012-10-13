@@ -71,3 +71,5 @@ en:
       cant_create_for_member: "You can't create a transferred service call when the provider is a memeber. Please contact the provider and ask him to create the service call"
       missing_provider: "Please specify a provider for this transferred service call"
       customer_does_not_belong_to_provider: "The customer must belong to the provider"
+    crud_messages:
+      success: "The service call was created successfully"

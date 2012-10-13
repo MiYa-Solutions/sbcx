@@ -15,6 +15,7 @@ describe "Service Call pages" do
   provider_select           = 'service_call_provider_id'
   technician_select         = 'service_call_technician_id'
   status_select             = 'service_call_status_event'
+  customer_select           = 'service_call_customer_id'
   new_customer_fld          = 'service_call_new_customer'
 
   # ==============================================================
@@ -497,6 +498,11 @@ describe "Service Call pages" do
         describe "subcontractor transfers the service call to a member subcontractor" do
           pending
         end
+
+        describe "verify there is no access to the provider's customer" do
+          before { visit service_call_path service_call }
+        end
+
       end
 
       describe "transfer my service call to a local subcontractor" do
@@ -608,7 +614,6 @@ describe "Service Call pages" do
         end
       end
 
-      pending "verify there is no access to the provider's customer"
     end
 
     describe "edit service call page" do
@@ -630,6 +635,9 @@ describe "Service Call pages" do
         end
         it "should have a technician select box" do
           should have_selector("##{technician_select}")
+        end
+        it "should have a customer select box" do
+          should have_selector("##{customer_select}")
         end
 
         describe "dispatch without a technician specified should show an error" do

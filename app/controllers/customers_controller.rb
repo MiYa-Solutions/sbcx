@@ -22,7 +22,7 @@ class CustomersController < ApplicationController
       respond_to do |format|
         format.js { }
         format.html do
-          flash[:success] = "Customer created!"
+          flash[:success] = t 'customer.crud_messages.success', customer_name: @customer.name
           redirect_to customer_path @customer
         end
       end
@@ -53,9 +53,11 @@ class CustomersController < ApplicationController
         if params[:organization_id].nil? || params[:organization_id].empty?
           if params[:search].nil?
             @customers = Customer.fellow_customers(current_user.organization.id)
+
           else
             @customers = Customer.search(params[:search], current_user.organization.id)
           end
+          render 'customers/index'
         else
           unless  Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
             if params[:search].nil?
@@ -63,10 +65,11 @@ class CustomersController < ApplicationController
             else
               @customers = Customer.search(params[:search], params[:organization_id])
             end
+            render 'customers/customer_select'
           end
         end
 
-        render 'customers/customer_select'
+
       end
       format.html do
         if params[:organization_id].nil? || params[:organization_id].empty?
