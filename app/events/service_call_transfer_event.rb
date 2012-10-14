@@ -24,23 +24,25 @@ class ServiceCallTransferEvent < Event
 
   def process_event
     Rails.logger.debug { "Running ServiceCallTransferEvent process" }
-    service_call     = associated_object
-    self.description = I18n.t('service_call_transfer_event.description', subcontractor_name: service_call.subcontractor.name)
+    service_call = associated_object
 
     # create a service call copy for the subcontractor only if it is a member
     if service_call.subcontractor.subcontrax_member
+
       new_service_call = TransferredServiceCall.new
 
       new_service_call.organization = service_call.subcontractor.becomes(Organization)
-      new_service_call.provider     = service_call.organization.becomes(Provider)
+      new_service_call.provider     = service_call.provider
       new_service_call.customer     = service_call.customer
       new_service_call.ref_id       = service_call.ref_id
+
+      self.description = I18n.t('service_call_transfer_event.description', subcontractor_name: service_call.subcontractor.name)
+      self.save!
       new_service_call.save!
     end
 
 
     Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
-    self.save!
     new_service_call
 
   end

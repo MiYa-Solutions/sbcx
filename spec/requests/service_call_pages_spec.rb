@@ -47,8 +47,10 @@ describe "Service Call pages" do
 
     let(:org_admin_user) { FactoryGirl.create(:member_admin) }
     let(:org_admin_user2) { FactoryGirl.create(:member_admin) }
+    let(:org_admin_user3) { FactoryGirl.create(:member_admin) }
     let(:org) { org_admin_user.organization }
     let(:org2) { org_admin_user2.organization }
+    let(:org3) { org_admin_user3.organization }
 
     let(:provider) {
       prov = FactoryGirl.create(:provider)
@@ -496,7 +498,50 @@ describe "Service Call pages" do
         end
 
         describe "subcontractor transfers the service call to a member subcontractor" do
-          pending
+          let(:third_service_call) { ServiceCall.find_by_organization_id_and_ref_id(org3.id, @subcon_service_call.ref_id) }
+
+          before do
+            org2.subcontractors << org3.becomes(Subcontractor)
+
+            in_browser(:org2) do
+              visit service_call_path @subcon_service_call
+              select org3.name, from: subcontractor_select
+
+            end
+            in_browser(:org3) do
+              sign_in org_admin_user3
+            end
+          end
+
+
+          it "created successfully" do
+            expect do
+              in_browser(:org2) do
+                click_button transfer_btn_selector
+              end
+            end.to change(ServiceCall, :count).by(1)
+          end
+
+          describe "after transfer" do
+            before { in_browser(:org2) { click_button transfer_btn_selector } }
+            it "should find the service call for the member subcontractor" do
+              third_service_call.should_not be_nil
+            end
+
+            it "should change the status to passed" do
+              in_browser(:org2) do
+                should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
+              end
+
+            end
+
+            it "should change the subcontractor status to pending localized" do
+              in_browser(:org2) do
+                should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.pending'))
+              end
+            end
+          end
+
         end
 
         describe "verify there is no access to the provider's customer" do
@@ -653,11 +698,37 @@ describe "Service Call pages" do
       end
 
       describe "edit transferred service call" do
-        pending
+        let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil, provider: org.becomes(Provider)) }
+        let(:transferred_service_call) do
+          service_call.subcontractor = org2.becomes(Subcontractor)
+          service_call.transfer
+          ServiceCall.last
+        end
+
+        before do
+          in_browser(:org2) do
+            visit edit_service_call_path transferred_service_call
+          end
+
+        end
+        it "should not allow to change the provider" do
+          provider = FactoryGirl.build(:provider)
+          org2.providers << provider
+
+          in_browser(:org2) do
+            put service_call_path transferred_service_call, service_call: { provider_id: provider.id }
+          end
+
+          transferred_service_call.provider_id.should_not == provider.id
+          #page.should have_selector('.alert-error')
+
+        end
+
       end
+
     end
-
-
   end
 
+
 end
+
