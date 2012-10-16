@@ -15,18 +15,27 @@
 #  technician_id        :integer
 #  provider_id          :integer
 #  subcontractor_status :integer
+#  type                 :string(255)
+#  ref_id               :integer
+#  creator_id           :integer
+#  updater_id           :integer
+#  settled_on           :datetime
+#  billing_status       :integer
+#  total_price          :decimal(, )
 #
 
 require 'spec_helper'
 
 describe ServiceCall do
-  let(:service_call) { FactoryGirl.build(:service_call) }
+  let(:service_call) { FactoryGirl.build(:transferred_sc_with_new_customer) }
 
   subject { service_call }
 
   it { should respond_to(:customer_id) }
   it { should respond_to(:organization_id) }
   it { should respond_to(:technician_id) }
+  it { should respond_to(:creator_id) }
+  it { should respond_to(:updater_id) }
 
   it { should be_valid }
 
@@ -35,12 +44,19 @@ describe ServiceCall do
     it { should_not be_valid }
   end
 
-  describe "when customer is not present" do
-    before { service_call.customer = nil }
+  describe "when customer and new_customer is not present" do
+    before do
+      service_call.customer     = nil
+      service_call.new_customer = nil
+    end
     it { should_not be_valid }
   end
   describe "when provider is not present" do
-    before { service_call.provider = nil }
+    before do
+      service_call.provider     = nil
+      service_call.new_customer = nil
+    end
+
     it { should_not be_valid }
   end
 

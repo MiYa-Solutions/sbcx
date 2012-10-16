@@ -41,8 +41,11 @@ FactoryGirl.define do
     sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
     organization_roles [prov_role, sub_role]
 
+
     after_build do |member|
       member.make_member
+      member.customers << Customer.new(name: Faker::Name.name)
+      member.save
     end
   end
 
@@ -91,31 +94,61 @@ FactoryGirl.define do
     name Faker::Name.name
   end
 
+  factory :local_provider_customer, class: Customer do
+    association :organization, factory: :provider
+    name Faker::Name.name
+  end
+
   factory :service_call, class: TransferredServiceCall do
     association :organization, factory: :member
     association :customer
     association :subcontractor
+    association :provider
 
     notes Faker::Lorem.sentence
 
   end
 
+  factory :transferred_sc_with_new_customer, class: TransferredServiceCall do
+    association :organization, factory: :member
+    association :provider
+    new_customer Faker::Name.name
+    association :subcontractor
+    notes Faker::Lorem.sentence
+  end
+
   factory :my_service_call do
     association :organization, factory: :member
-    association :customer
+
     association :subcontractor
 
     notes Faker::Lorem.sentence
+
+    after_build do |service_call|
+      service_call.customer = service_call.organization.customers.first
+    end
 
 
   end
 
   factory :service_call_transfer_event do
-    association :eventable, factory: :transferred_service_call
+    association :eventable, factory: :my_service_call
     type ServiceCallTransferEvent
   end
 
   factory :event do
+
+  end
+
+  factory :technician, class: User do
+    association :organization, factory: :member
+    sequence(:email) { |n| "technician_test#{n}@example.com" }
+    first_name Faker::Name.first_name
+    last_name Faker::Name.last_name
+    password "foobar"
+    password_confirmation "foobar"
+    the_role = Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)
+    roles [the_role]
 
   end
 

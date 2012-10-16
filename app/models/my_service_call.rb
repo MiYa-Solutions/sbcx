@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: service_calls
+#
+#  id                   :integer         not null, primary key
+#  customer_id          :integer
+#  notes                :text
+#  started_on           :datetime
+#  organization_id      :integer
+#  completed_on         :datetime
+#  created_at           :datetime        not null
+#  updated_at           :datetime        not null
+#  status               :integer
+#  subcontractor_id     :integer
+#  technician_id        :integer
+#  provider_id          :integer
+#  subcontractor_status :integer
+#  type                 :string(255)
+#  ref_id               :integer
+#  creator_id           :integer
+#  updater_id           :integer
+#  settled_on           :datetime
+#  billing_status       :integer
+#  total_price          :decimal(, )
+#
+
 class MyServiceCall < ServiceCall
 
   before_validation do
@@ -29,14 +55,14 @@ class MyServiceCall < ServiceCall
     end
 
     event :start do
-      transition :dispatched => :in_progress
+      transition [:new, :dispatched] => :in_progress
     end
 
     event :work_completed do
       transition [:dispatched, :in_progress] => :work_done
     end
 
-    event :customer_paid do
+    event :paid do
       transition [:work_done, :in_progress] => :closed
     end
 
@@ -50,6 +76,43 @@ class MyServiceCall < ServiceCall
 
     event :settle do
       transition :transferred => :settled
+    end
+
+  end
+
+
+  state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
+    state :na, value: SUBCON_STATUS_NA
+    state :pending, value: SUBCON_STATUS_PENDING
+    state :accepted, value: SUBCON_STATUS_ACCEPTED
+    state :rejected, value: SUBCON_STATUS_REJECTED
+    state :transferred, value: SUBCON_STATUS_TRANSFERRED
+    state :in_progress, value: SUBCON_STATUS_IN_PROGRESS
+    state :work_done, value: SUBCON_STATUS_WORK_DONE
+    state :settled, value: SUBCON_STATUS_SETTLED
+
+    event :transfer do
+      transition [:na] => :pending
+    end
+
+    event :subcon_transferred_again do
+      transition [:in_progress, :pending, :accepted] => :transferred
+    end
+
+    event :accept do
+      transition :pending => :accepted
+    end
+    event :reject do
+      transition :pending => :rejected
+    end
+    event :start do
+      transition [:accepted, :pending, :in_progress] => :in_progress
+    end
+    event :complete do
+      transition [:in_progress] => :work_done
+    end
+    event :settle do
+      transition [:work_done] => :settled
     end
 
   end

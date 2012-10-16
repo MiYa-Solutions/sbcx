@@ -15,15 +15,20 @@
 #
 
 class NewMemberEvent < Event
+
+  def init
+    self.name = I18n.t('new_member_event.name')
+
+    self.reference_id = 1
+  end
+
   # this is the event processed by the observer after the creation
   def process_event
     Rails.logger.debug "Running NewMemberEvent process"
-    org = associated_object
+    org              = associated_object
+    self.description = I18n.t('new_member_event.description', name: org.name)
 
     AdminMailer.sign_up_alert(org).deliver
   end
 
-  def init
-
-  end
 end

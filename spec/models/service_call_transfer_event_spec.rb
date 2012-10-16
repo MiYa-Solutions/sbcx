@@ -19,6 +19,13 @@ require 'spec_helper'
 describe ServiceCallTransferEvent do
 
   let!(:event) { FactoryGirl.create(:service_call_transfer_event) }
+  let!(:transferable_event) do
+    new_event     = FactoryGirl.create(:service_call_transfer_event)
+    subcontractor = new_event.associated_object.subcontractor
+    subcontractor.make_member
+    subcontractor.save
+    new_event
+  end
   subject { event }
 
   describe "event processing" do
@@ -28,9 +35,9 @@ describe ServiceCallTransferEvent do
       }.should_not raise_error
     end
 
-    it "should create another record for the subcontractor" do
+    it "should create another record for a member subcontractor" do
       expect {
-        event.process_event
+        transferable_event.process_event
       }.to change { ServiceCall.count }.by (1)
     end
 
@@ -41,8 +48,8 @@ describe ServiceCallTransferEvent do
   end
 
   describe " transferred new service call attributes" do
-    let(:service_call) { event.eventable }
-    let(:new_service_call) { event.process_event }
+    let(:service_call) { transferable_event.eventable }
+    let(:new_service_call) { transferable_event.process_event }
 
     it "organization id should be the the service call's subcontractor id" do
       new_service_call.organization_id.should == service_call.subcontractor_id

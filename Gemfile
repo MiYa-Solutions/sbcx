@@ -17,6 +17,7 @@ gem 'simple_form', '2.0.2'
 gem 'declarative_authorization', '0.5.5'
 
 gem 'state_machine'
+gem 'magiclabs-userstamp'
 
 group :development do
   gem 'thin'

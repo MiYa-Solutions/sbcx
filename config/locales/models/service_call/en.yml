@@ -1,0 +1,75 @@
+en:
+  activerecord:
+    models:
+      my_service_call: "Service Call"
+
+    attributes:
+      my_service_call:
+        provider: "Originator"
+
+      transferred_service_call:
+        provider: "Originator"
+
+      service_call:
+        provider: "המקור"
+        provider_id: "Originator"
+
+    state_machines:
+      service_call:
+        billing_status:
+          states:
+            paid: "Paid"
+            pending: "Pending"
+      my_service_call:
+        status:
+          events:
+            transfer: "PATUAKH"
+            dispatch: "הזנק"
+          states:
+            new: "HADASH"
+            transferred: "הועבר"
+            dispatched: "Dispatched"
+            in_progress: "In Progress"
+            work_done: "Done"
+            closed: "Closed"
+        subcontractor_status:
+          states:
+            pending: "Pending"
+            accepted: "התקבל"
+            rejected: "נדחה"
+            dispatched: "Dispatched"
+            in_progress: "In Progress"
+            work_done: "Completed"
+            settled: "Settled"
+            na: "NA"
+      transferred_service_call:
+        status:
+          events:
+            transfer: "העבר שוב"
+            accept: "קבל"
+            dispatch: "הזנק"
+            work_done: "Completed"
+
+          states:
+            transferred: "Passed On"
+            received_new: "התקבל חדש"
+            accepted: "Accepted"
+            dispatched: "Dispatched"
+            in_progress: "In Progress"
+
+            work_done: "Done"
+        subcontractor_status:
+          states:
+            na: "Not Applicable"
+            pending: "Pending"
+            transferred: "Transferred"
+  messages:
+    service_call:
+      event: 'The service call was %{event_name} successfully'
+  service_call:
+    errors:
+      cant_create_for_member: "You can't create a transferred service call when the provider is a memeber. Please contact the provider and ask him to create the service call"
+      missing_provider: "Please specify a provider for this transferred service call"
+      customer_does_not_belong_to_provider: "The customer must belong to the provider"
+    crud_messages:
+      success: "The service call was created successfully"

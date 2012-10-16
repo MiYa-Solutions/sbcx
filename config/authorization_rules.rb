@@ -15,16 +15,21 @@ authorization do
     has_permission_on :my_users, to: [:index, :read]
     has_permission_on [:providers, :subcontractors], :to => [:index]
     has_permission_on [:affiliates, :subcontractors], :to => [:index]
-    has_permission_on :service_calls, :to => [:index, :show, :new, :create, :edit, :update]
+    #has_permission_on :service_calls, :to => [:index, :show, :new, :create, :edit, :update]
 
   end
 
   role :dispatcher do
 
     includes :technician
-    has_permission_on :customers, :to => [:index, :show, :new, :create, :edit, :update]
-    has_permission_on :service_calls, :to => [:index, :show, :new, :create, :edit, :update] do
-      if_attribute :customer_organization_id => is { user.organization.id }
+    has_permission_on :customers, :to => [:index, :show, :new, :create, :edit, :update] do
+      if_attribute :organization => is { user.organization }
+      if_attribute :organization => { :subcontrax_member => is_not { true } }, :organization_id => is_in { user.organization.providers.pluck('organizations.id') }
+    end
+    has_permission_on :service_calls, :to => [:new, :create] do
+    end
+    has_permission_on :service_calls, :to => [:edit, :index, :show, :update] do
+      if_attribute :organization_id => is { user.organization.id }
     end
 
   end
@@ -67,7 +72,7 @@ authorization do
     end
 
     has_permission_on :users, :to => [:index, :show, :new, :create, :edit, :update]
-    has_permission_on :customers, :to => [:index, :show, :new, :create, :edit, :update]
+    #has_permission_on :customers, :to => [:index, :show, :new, :create, :edit, :update]
 
     has_permission_on :agreements, :to => [:index, :show, :new, :edit]
 

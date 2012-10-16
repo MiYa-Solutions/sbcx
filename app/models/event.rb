@@ -18,6 +18,7 @@ class Event < ActiveRecord::Base
   attr_accessible :name, :description
   belongs_to :eventable, polymorphic: true
   belongs_to :user
+  stampable
 
   after_initialize :init
 

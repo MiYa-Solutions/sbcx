@@ -1,0 +1,32 @@
+en:
+  new_member_event:
+    name: "Welcome!"
+    description: '%{name}, congratulations and welcome to SubConTraX'
+
+  service_call_accept_event:
+    name: "Service Call Accepted"
+    description: "You have accepted the the transferred service call"
+
+  service_call_reject_event:
+    name: "Reject Service Call"
+    description: "You have rejected this service call"
+
+  service_call_transfer_event:
+    name: "Transferred Service Call"
+    description: 'Transferred the service call to %{subcontractor_name}'
+
+  service_call_dispatch_event:
+    description: 'Dispatched to ${technician}'
+    name: "Service Call Dispatched"
+
+  service_call_start_event:
+    name: "Service call started"
+    description: '%{technician} started the job'
+
+  service_call_complete_event:
+    name: "Completed Service Call"
+    description: 'Service call completed by %{technician}'
+
+  service_call_settle_event:
+    name: "Settled Service Call"
+    description: "The balance for this service call was setteled between the provider and subcontractor"

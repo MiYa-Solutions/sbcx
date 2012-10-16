@@ -1,0 +1,4 @@
+en:
+  customer:
+    crud_messages:
+      success: 'The customer, %{customer_name}, was created successfully'

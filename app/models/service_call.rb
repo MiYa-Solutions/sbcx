@@ -15,16 +15,25 @@
 #  technician_id        :integer
 #  provider_id          :integer
 #  subcontractor_status :integer
+#  type                 :string(255)
+#  ref_id               :integer
+#  creator_id           :integer
+#  updater_id           :integer
+#  settled_on           :datetime
+#  billing_status       :integer
+#  total_price          :decimal(, )
 #
 
 class ServiceCall < ActiveRecord::Base
-  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor, :provider_id
+  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor_id, :provider_id, :technician_id, :total_price
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
   belongs_to :provider
   belongs_to :technician, class_name: User
   has_many :events, as: :eventable
+
+  stampable
 
   # virtual attributes
   attr_writer :started_on_text
@@ -35,17 +44,29 @@ class ServiceCall < ActiveRecord::Base
   before_save :save_started_on_text
   before_save :save_completed_on_text
   # create a new customer in case one was asked for
-  before_save :create_customer
+  before_validation :create_customer
 
-  validate :check_completed_on_text, :check_started_on_text
-  validates_presence_of :organization, :customer
+  validate :check_completed_on_text, :check_started_on_text, :customer_belongs_to_provider
+  validates_presence_of :organization, :provider
+  validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
+
 
   accepts_nested_attributes_for :customer
 
   # if im not the subcontractor of this service call then I'm the provider
   def my_role
-    @my_role ||= self.organization_id == subcontractor_id ? :subcon : :prov
+    if subcontractor_id.nil?
+      if provider_id.nil?
+        @my_role = :prov
+      else
+        @my_role = :subcon
+      end
+    else
+      @my_role ||= self.organization_id == self.subcontractor_id ? :subcon : :prov
+
+    end
   end
+
 
 # State machine  for ServiceCall status
 # first we will define the service call state values
@@ -65,70 +86,11 @@ class ServiceCall < ActiveRecord::Base
   state_machine :status, initial: :na do
     state :na, value: STATUS_NA
   end
-#
-# The state machine definitions
-#state_machine :status, :initial => :new do
-#  state :new, value: STATUS_NEW
-#  state :open, value: STATUS_OPEN
-#  state :closed, value: STATUS_CLOSED
-#  state :dispatched, value: STATUS_DISPATCHED
-#  state :in_progress, value: STATUS_IN_PROGRESS
-#  state :work_done, value: STATUS_WORK_DONE
-#
-#  #before_transition :new => :transferred, :do => :transfer_service_call
-#  #after_transition :new => :local_enabled, :do => :alert_local
-#
-#  event :accept do
-#    transition :open => :open
-#
-#  end
-#
-#  event :transfer do
-#    transition :new => :open
-#  end
-#
-#  event :close do
-#    transition :open => :closed
-#  end
-#
-#  event :dispatch do
-#    transition :new => :dispatched
-#  end
-#
-#  event :start do
-#    transition :dispatched => :in_progress
-#  end
-#
-#  event :settle do
-#    transition :work_done => :closed
-#  end
-#
-#  event :complete do
-#    transition :in_progress => :work_done
-#  end
-#
-#
-#  #def transfer(recipient, *args)
-#  #  Rails.logger.debug "Transferring job to #{recipient.name}"
-#  #  super
-#  #end
-#
-#end
 
 
   def init_state_machines
     initialize_state_machines
   end
-
-#def accept
-#  subcon_accept
-#  super
-#end
-#
-#def transfer
-#  self.subcontractor_status= SUBCON_STATUS_TRANSFERRED
-#  super
-#end
 
   def next_events
     my_role == :prov ? next_provider_events : next_subcontractor_events
@@ -137,42 +99,38 @@ class ServiceCall < ActiveRecord::Base
   # State machine for ServiceCall subcontractor_status
   # status constant list:
   SUBCON_STATUS_NA          = 0
-  SUBCON_STATUS_ACCEPTED    = 1
-  SUBCON_STATUS_REJECTED    = 2
-  SUBCON_STATUS_TRANSFERRED = 3
-  SUBCON_STATUS_IN_PROGRESS = 4
-  SUBCON_STATUS_WORK_DONE   = 5
-  SUBCON_STATUS_SETTLED     = 6
+  SUBCON_STATUS_PENDING     = 1
+  SUBCON_STATUS_ACCEPTED    = 2
+  SUBCON_STATUS_REJECTED    = 3
+  SUBCON_STATUS_TRANSFERRED = 4
+  SUBCON_STATUS_IN_PROGRESS = 5
+  SUBCON_STATUS_WORK_DONE   = 6
+  SUBCON_STATUS_SETTLED     = 7
 
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
-    state :accepted, value: SUBCON_STATUS_ACCEPTED
-    state :rejected, value: SUBCON_STATUS_REJECTED
-    state :transferred, value: SUBCON_STATUS_TRANSFERRED
-    state :in_progress, value: SUBCON_STATUS_IN_PROGRESS
-    state :work_done, value: SUBCON_STATUS_WORK_DONE
-    state :settled, value: SUBCON_STATUS_SETTLED
+  end
 
-    event :subcon_transfer do
-      transition :na => :transferred
-    end
+  BILLING_STATUS_PENDING = 0
+  BILLING_STATUS_PAID    = 1
+  BILLING_STATUS_OVERDUE = 2
 
-    event :subcon_accept do
-      transition :transferred => :accepted
+  state_machine :billing_status, initial: :pending, namespace: 'customer' do
+    state :pending, value: BILLING_STATUS_PENDING
+    state :paid, value: BILLING_STATUS_PAID do
+      validates_numericality_of :total_price
     end
-    event :subcon_reject do
-      transition :transferred => :rejected
-    end
-    event :subcon_start do
-      transition [:accepted] => :in_progress
-    end
-    event :subcon_complete do
-      transition [:in_progress] => :work_done
-    end
-    event :subcon_settle do
-      transition [:work_done] => :settled
+    state :overdue, value: BILLING_STATUS_OVERDUE do
+      validates_numericality_of :total_price
     end
 
+    event :paid do
+      transition :pending => :paid
+    end
+
+    event :overdue do
+      transition :pending => :overdue
+    end
   end
 
   def completed_on_text
@@ -210,7 +168,12 @@ class ServiceCall < ActiveRecord::Base
   end
 
   def create_customer
-    self.customer = self.organization.customers.create(name: new_customer) if new_customer.present?
+    self.customer = self.provider.customers.new(name: new_customer) if new_customer.present? && customer.nil?
+  end
+
+  private
+  def customer_belongs_to_provider
+    errors.add(:customer, I18n.t('service_call.errors.customer_does_not_belong_to_provider')) unless !customer || customer.organization_id == provider_id
   end
 
 end

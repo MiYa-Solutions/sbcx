@@ -23,7 +23,7 @@
 require 'spec_helper'
 
 describe Customer do
-  let(:customer) { FactoryGirl.build(:customer) }
+  let!(:customer) { FactoryGirl.build(:customer) }
 
   subject { customer }
 

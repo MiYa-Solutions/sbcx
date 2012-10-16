@@ -14,13 +14,13 @@
 
   <div class="row-fluid">
     <div class="span10 ">
-      <%= simple_form_for @service_call, :html => { :class => 'form-horizontal' } do |f| %>
+      <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' } do |f| %>
 
-          <%= render 'form', f: f %>
+          <%= render 'fields', f: f %>
 
           <div class="form-actions">
-            <%= link_to 'Show', @service_call, :class => 'btn btn-medium' %>
-            <%= f.submit "Save Changes", class: "btn btn-medium btn-primary" %>
+            <%= link_to 'Show', @service_call.becomes(ServiceCall), :class => 'btn btn-medium' %>
+            <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", id: 'service_call_save_btn' %>
             <%= link_to "View All", service_calls_path, class: "btn btn-medium btn-success" %>
 
           </div>

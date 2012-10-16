@@ -9,15 +9,20 @@ class CustomersController < ApplicationController
   end
 
   def create
-    @organization = current_user.organization
-    @customer     = @organization.customers.build(params[:customer])
+    if params[:customer][:organization_id].nil?
+      @organization = current_user.organization
+    else
+      @organization = Organization.find(params[:customer][:organization_id])
+    end
+
+    @customer = @organization.customers.build(params[:customer])
 
     # todo create symbols for the notification strings
     if @customer.save
       respond_to do |format|
         format.js { }
         format.html do
-          flash[:success] = "Customer created!"
+          flash[:success] = t 'customer.crud_messages.success', customer_name: @customer.name
           redirect_to customer_path @customer
         end
       end
@@ -31,7 +36,7 @@ class CustomersController < ApplicationController
   end
 
   def update
-    @customer = current_user.organization.customers.find(params[:id])
+    #@customer = current_user.organization.customers.find(params[:id])
     if @customer.update_attributes(params[:customer])
       flash[:success] = "Profile updated"
       redirect_to @customer
@@ -43,17 +48,60 @@ class CustomersController < ApplicationController
 
   def index
 
-    if params[:search].nil?
-      @customers = current_user.organization.customers.paginate(page: params[:page], per_page: 10)
-    else
-      @customers = Customer.search(params[:search], current_user.organization.id).paginate(page: params[:page], per_page: 10)
+    respond_to do |format|
+      format.js do
+        if params[:organization_id].nil? || params[:organization_id].empty?
+          if params[:search].nil?
+            @customers = Customer.fellow_customers(current_user.organization.id)
+
+          else
+            @customers = Customer.search(params[:search], current_user.organization.id)
+          end
+          render 'customers/index'
+        else
+          unless  Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
+            if params[:search].nil?
+              @customers = Customer.fellow_customers(params[:organization_id])
+            else
+              @customers = Customer.search(params[:search], params[:organization_id])
+            end
+            render 'customers/customer_select'
+          end
+        end
+
+
+      end
+      format.html do
+        if params[:organization_id].nil? || params[:organization_id].empty?
+          if params[:search].nil?
+            @customers = Customer.fellow_customers(current_user.organization.id).paginate(page: params[:page], per_page: 10)
+          else
+            @customers = Customer.search(params[:search], current_user.organization.id).paginate(page: params[:page], per_page: 10)
+          end
+        else
+          unless  Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
+            if params[:search].nil?
+              @customers = Customer.fellow_customers(params[:organization_id]).paginate(page: params[:page], per_page: 10)
+            else
+              @customers = Customer.search(params[:search], params[:organization_id]).paginate(page: params[:page], per_page: 10)
+            end
+          end
+
+
+        end
+
+      end
+
     end
 
-    #@new_customers = current_user.organization.customers.paginate(page: params[:page], per_page: 2)
-    #@customers = current_user.organization.customer_candidates(params[:search])
+
   end
 
   def show
-    @customer = current_user.organization.customers.find(params[:id])
+    if permitted_to! :show, Customer.find(params[:id])
+      @customer = Customer.find(params[:id])
+    end
+
   end
+
 end

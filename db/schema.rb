@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924223626) do
+ActiveRecord::Schema.define(:version => 20121008215845) do
 
   create_table "agreements", :force => true do |t|
     t.string "name"
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(:version => 20120924223626) do
     t.datetime "updated_at", :null => false
     t.integer "user_id"
     t.integer "reference_id"
+    t.integer "creator_id"
+    t.integer "updater_id"
   end
 
   add_index "events", ["eventable_id", "eventable_type"], :name => "index_events_on_eventable_id_and_eventable_type"
@@ -118,6 +120,11 @@ ActiveRecord::Schema.define(:version => 20120924223626) do
     t.integer "subcontractor_status"
     t.string "type"
     t.integer "ref_id"
+    t.integer "creator_id"
+    t.integer "updater_id"
+    t.datetime "settled_on"
+    t.integer "billing_status"
+    t.decimal "total_price"
   end
 
   add_index "service_calls", ["ref_id"], :name => "index_service_calls_on_ref_id"

@@ -17,8 +17,8 @@
 class ServiceCallAcceptEvent < Event
 
   def init
-    self.name         = "Accepted Service Call"
-    self.description  = "The Acceptance Description"
+    self.name         = I18n.t('service_call_accept_event.name')
+    self.description  = I18n.t('service_call_accept_event.description')
     self.reference_id = 3
   end
 
@@ -27,8 +27,8 @@ class ServiceCallAcceptEvent < Event
 
     service_call = associated_object
 
-    prov_service_call = ServiceCall.find_by_ref_id_and_provider_id(service_call.ref_id, service_call.provider_id)
-    prov_service_call.subcon_accept_subcon
+    prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
+    prov_service_call.accept_subcon
 
     prov_service_call
 
