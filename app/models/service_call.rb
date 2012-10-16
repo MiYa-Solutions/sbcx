@@ -168,7 +168,12 @@ class ServiceCall < ActiveRecord::Base
   end
 
   def create_customer
-    self.customer = self.provider.customers.new(name: new_customer) if new_customer.present? && customer.nil?
+    if provider
+      self.customer = self.provider.customers.new(name: new_customer) if new_customer.present? && customer.nil?
+    else
+      self.customer = self.organization.customers.new(name: new_customer) if new_customer.present? && customer.nil?
+    end
+
   end
 
   private
