@@ -1,3 +1,201 @@
+<div class="well">
+<div class="row-fluid">
+
+  <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
+
+  <div class="no_margins">
+      <div class="span3" id="job_statuses_actions">
+
+     <ul class="unstyled" id="block_job_statuses_actions">
+       <li>
+            <div class= "smart_label">
+              <ul>
+                <li><h1>Job Status:</h1> </li>
+                <li></li>
+              </ul>
+            </div>
+       </li>
+       <li>
+                 <table class="table table-striped table-condensed table-sbcx">
+                      <tbody>
+                        <% if ! @service_call.started_on_text.blank? %>
+                            <tr>
+                              <td>Started at:</td>
+                              <td>
+                                  <span class="status_label_success">
+                                  <badge><%= @service_call.started_on_text %></badge>
+                                  </span>
+                              </td>
+                            </tr>
+                        <% end %>
+                            <tr>
+                              <td>Status:</td>
+                              <td>
+                                      <span class="status_label">
+                                      <badge><%= @service_call.human_status_name %></badge>
+                                      </span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Subcontractor:</td>
+                              <td>
+                                      <span class="status_label">
+                                      <badge><%= @service_call.human_subcontractor_status_name %></badge>
+                                      </span>
+                              </td>
+                            </tr>
+                                <% if ! @service_call.completed_on_text.blank? %>
+                                    <tr>
+                                      <td>Completed at:</td>
+                                      <td>
+                                              <span class="status_label">
+                                              <badge><%= @service_call.completed_on_text %></badge>
+                                              </span>
+                                      </td>
+                                    </tr>
+                                <% end %>
+                            <tr>
+                                  <td>Billing Status:</td>
+                                  <td>
+                                              <span class="status_label">
+                                              <badge><%= @service_call.human_billing_status_name %></badge>
+                                              </span>
+                                  </td>
+                                </tr>
+                        </tbody>
+                 </table>
+       </li>
+
+        <li>
+          <!--<div class="success">-->
+          <!--<#% if ! @service_call.started_on_text.blank? %>-->
+              <!--<span class="status_label_success"><badge>Completed on:</badge></span>-->
+             <!--<#%= f.text_field :completed_on_text, class: "datepicker input-medium", placeholder: 'Click to set date' %>-->
+              <!--&lt;!&ndash;<span class="help-inline">Click to set date</span>&ndash;&gt;-->
+          <!--<#% end %>-->
+          <!--</div>-->
+        </li>
+
+     </ul>
+        </div>
+  </div>
+
+    <div class="span8" id="job_details">
+
+          <div class="smart_label"  >
+            <ul>
+              <li><h1>Job Name:</h1> </li>
+              <li></li>
+
+                <% if ! @service_call.started_on_text.blank? %>
+                  <li>
+                    <span>Completed on:</span>
+                    <%= f.text_field :completed_on_text, class: "datepicker input-medium", placeholder: 'Click to set date' %>
+                  </li>
+                    <!--<span class="help-inline">Click to set date</span>-->
+                <% end %>
+
+
+              </li>
+            </ul>
+          </div>
+
+    <br>
+
+      <div class="row-fluid">
+          <div class="span6">
+            <ul class="unstyled" >
+              <li>
+                      <div id="customer_wrapper">
+                        <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
+                      </div>
+              </li>
+              <li class="list_service_calls" >
+                    <address>
+                      <strong>Twitter, Inc.</strong><button class="btn btn-info btn-mini" data-toggle="collapse" data-target="#show_customer_in_service_call" id="show_customer_from_service_call">
+                      Edit</button><br>
+                      795 Folsom Ave, Suite 600<br>
+                      San Francisco, CA 94107<br>
+                      Phone: (123) 456-7890
+                    </address><br>
+               </li>
+              <li class="list_service_calls" >
+                <address>
+                   <div id="show_customer_in_service_call" class="collapse">
+                            dddd
+                    </div>
+                </address>
+               </li>
+               <li>
+                 <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
+               </li>
+              <li>
+                  <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
+              </li>
+              <li>
+                  <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
+              </li>
+              <li>
+                  <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+              </li>
+            </ul>
+         </div>
+
+          <div class="span6" id="job_notes">
+
+            <div class="miya_note_area string mandatory">
+              <%= f.input :notes %>
+            </div>
+
+          </div>
+      </div>
+    </div>
+
+
+  <% end %>
+</div>
+
+  <!--<div class="event_service_calls">-->
+<div class="row-fluid">
+    <div class="no_margins">
+      <div class="span3">
+        <ul class="unstyled">
+          <li>
+            <div class= "smart_label">
+                  <ul>
+                    <li><h1>Actions:</h1> </li>
+                    <li></li>
+                  </ul>
+            </div>
+          </li>
+          <li><br></li>
+
+         <li>
+            <div class= "action_buttons_service_call">
+              <p>
+                         <%= event_list(@service_call)%>
+              </p>
+            </div>
+         </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+
+
+  <!--end of well  -->
+</div>
+
+
+
+
+
+
+
+
+
+  <h1><%= @service_call.customer.name %></h1>
+
 <% @service_call.attributes.map.each do |key, value| %>
     <p>
       <strong><%= ServiceCall.human_attribute_name(key) %></strong>

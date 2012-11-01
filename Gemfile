@@ -45,7 +45,7 @@ group :test do
   gem 'factory_girl_rails', '1.4.0'
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner', '0.7.0'
-  gem 'rb-fsevent', '0.9.1', :require => false
+  gem 'rb-fsevent', '0.9.1', :require => false  if RUBY_PLATFORM =~ /darwin/i
   gem 'growl', '1.0.3'
   gem 'guard-spork', '0.3.2'
   gem 'spork', '0.9.0'

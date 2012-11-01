@@ -53,7 +53,7 @@
 
                 <%= f.input :password, :hint => "Leave blank if you wish to keep current password", :required => false, :label => "New Password" %>
               <%= f.input :password_confirmation, :required => false, :label => "Confirm New Password" %>
-              <%= f.input :current_password, :hint => "Enter your current password to confirm changes", :required => true %>
+              <%= f.input :current_password, :hint => "Enter your current password to confirm changes", :required => false %>
 
               <div class="form-actions">
                 <%= link_to 'Back', profile_path, :class => 'btn btn-medium', id: 'back_from_edit_profile' %>

@@ -31,5 +31,19 @@ $(function () {
 });
 
 
-$(".collapse").collapse('toggle')
+$(".collapse").collapse('toggle')  ;
+
+
+$(function(){
+    $('.accordion .head').click(function() {
+        $(this).next().toggle('slow');
+        return false;
+    }).next().hide();
+});
+
+$('.typeahead').typeahead();
+
+$(".tooltip").tooltip();
+$("a[rel=tooltip]").tooltip();
+
 

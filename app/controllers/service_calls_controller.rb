@@ -10,6 +10,7 @@ class ServiceCallsController < ApplicationController
   def show
     @service_call = ServiceCall.find(params[:id])
     @customer     = Customer.new
+
   end
 
   def new

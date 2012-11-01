@@ -1,6 +1,6 @@
 module ServiceCallsHelper
   def event_list(service_call)
-    content_tag_for :ul, service_call, class: 'service_call_events' do
+    content_tag_for :ul, service_call, class: 'service_call_events unstyled' do
 
       service_call.status_events.collect do |event|
         case event
@@ -34,49 +34,83 @@ module ServiceCallsHelper
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[status_event]", 'paid')
       concat (f.input :total_price)
-      concat (f.submit service_call.class.human_status_event_name(:paid).titleize, id: 'paid_service_call_btn')
+      concat (f.submit service_call.class.human_status_event_name(:paid).titleize,
+                       id: 'paid_service_call_btn',
+                       class: "btn btn-large btn-primary",
+                       title: 'Click if payment has received',
+                       rel: 'tooltip'
+             )
     end
   end
 
   def accept_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[status_event]", 'accept')
-      concat (f.submit service_call.class.human_status_event_name(:accept).titleize, id: 'accept_service_call_btn')
+      concat (f.submit service_call.class.human_status_event_name(:accept).titleize,
+                       id: 'accept_service_call_btn',
+                       class: "btn btn-large btn-primary",
+                       title: 'Click to indicate that you accept this Service Call',
+                       rel: 'tooltip'
+             )
     end
   end
 
   def reject_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[status_event]", 'reject')
-      concat (f.submit service_call.class.human_status_event_name(:reject).titleize, id: 'reject_service_call_btn')
-    end
-  end
-
-  def cancel_transfer_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall) do |f|
-      concat (hidden_field_tag "service_call[status_event]", 'cancel_transfer')
-      concat (f.submit service_call.class.human_status_event_name(:cancel_transfer).titleize)
+      concat (f.submit service_call.class.human_status_event_name(:reject).titleize,
+                       id: 'reject_service_call_btn',
+                       class: "btn btn-large btn-danger",
+                       title: 'Click to reject this Service Call',
+                       rel: 'tooltip'
+             )
     end
   end
 
   def settle_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[status_event]", 'settle')
-      concat (f.submit service_call.class.human_status_event_name(:settle).titleize, id: 'settle_service_call_btn')
+      concat (f.submit service_call.class.human_status_event_name(:settle).titleize,
+                       id: 'settle_service_call_btn',
+                       class: "btn btn-large btn-primary",
+                       title: 'Click to indicate that you have completed',
+                       rel: 'tooltip'
+             )
+    end
+  end
+
+  def cancel_transfer_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (hidden_field_tag "service_call[status_event]", 'cancel_transfer')
+      concat (f.submit service_call.class.human_status_event_name(:cancel_transfer).titleize,
+                       class: "btn btn-large btn-danger",
+                       title: 'Click if you wish to cancel transferring this Service Call to another Subcontractor',
+                       rel: 'tooltip'
+             )
     end
   end
 
   def complete_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[status_event]", 'work_completed')
-      concat (f.submit service_call.class.human_status_event_name(:work_completed).titleize, id: 'complete_service_call_btn')
+      concat (f.submit service_call.class.human_status_event_name(:work_completed).titleize,
+                       id: 'complete_service_call_btn',
+                       class: "btn btn-large btn-success",
+                       title: 'Click id work is completed',
+                       rel: 'tooltip'
+             )
     end
   end
 
   def start_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[status_event]", 'start')
-      concat (f.submit service_call.class.human_status_event_name(:start).titleize, id: 'start_service_call_btn')
+      concat (f.submit service_call.class.human_status_event_name(:start).titleize,
+                       id: 'start_service_call_btn',
+                       class: "btn btn-large btn-success",
+                       title: 'Click to Start the Service Call',
+                       rel: 'tooltip'
+             )
     end
   end
 
@@ -84,7 +118,12 @@ module ServiceCallsHelper
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (f.input :technician_id, collection: f.object.organization.technicians, label_method: :name, value_method: :id)
       concat (hidden_field_tag "service_call[status_event]", 'dispatch')
-      concat (f.submit service_call.class.human_status_event_name(:dispatch).titleize, id: 'service_call_dispatch_btn')
+      concat (f.submit service_call.class.human_status_event_name(:dispatch).titleize,
+                       id: 'service_call_dispatch_btn',
+                       class: "btn btn-large btn-warning",
+                       title: 'Click to Dispatch the Service Call',
+                       rel: 'tooltip'
+             )
     end
   end
 
@@ -92,7 +131,12 @@ module ServiceCallsHelper
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (f.input :subcontractor_id, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id)
       concat (hidden_field_tag "service_call[status_event]", 'transfer')
-      concat (f.submit service_call.class.human_status_event_name(:transfer).titleize, id: 'service_call_transfer_btn')
+      concat (f.submit service_call.class.human_status_event_name(:transfer).titleize,
+                       id: 'service_call_transfer_btn',
+                       class: "btn btn-large btn-info",
+                       title: 'Click to transfer the Service Call to the Subcontractor you selected',
+                       rel: 'tooltip'
+             )
     end
   end
 
