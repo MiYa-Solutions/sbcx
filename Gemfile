@@ -19,6 +19,8 @@ gem 'declarative_authorization', '0.5.5'
 gem 'state_machine'
 gem 'magiclabs-userstamp'
 
+gem 'best_in_place'
+
 group :development do
   gem 'thin'
   gem 'ruby-graphviz', :require => 'graphviz'

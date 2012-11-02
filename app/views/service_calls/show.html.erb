@@ -110,14 +110,16 @@
                         <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
                       </div>
               </li>
-              <li class="list_service_calls" >
+              <li class="list_service_calls" id="customer_details">
                     <address>
-                      <strong>Twitter, Inc.</strong><button class="btn btn-info btn-mini" data-toggle="collapse" data-target="#show_customer_in_service_call" id="show_customer_from_service_call">
+                      <strong><%= f.object.customer.name %></strong> <button class="btn btn-info btn-mini" data-toggle="collapse" data-target="#show_customer_in_service_call" id="show_customer_from_service_call">
                       Edit</button><br>
-                      795 Folsom Ave, Suite 600<br>
-                      San Francisco, CA 94107<br>
-                      Phone: (123) 456-7890
-                    </address><br>
+                      <%= best_in_place f.object.customer, :address1 %><br>
+                      <%= f.object.customer.address2 %><br>
+                      <%= f.object.customer.city %>, <%= f.object.customer.state %> <%= f.object.customer.zip %><br>
+                      Phone: <%= f.object.customer.phone %><br>
+                      Mobile: <%= f.object.customer.mobile_phone %><br>
+                    </address>
                </li>
               <li>
                 <address>
@@ -159,47 +161,82 @@
 
 </div>
 
-
-
 <!--end of status & Job details section-->
 <% end %>
 
 <div class="row-fluid">
     <div class="no_margins">
-      <div class="span4">
-        <ul class="unstyled">
-          <li>
-            <div class= "smart_label">
-                  <ul>
-                    <li><h1>Actions:</h1> </li>
-                    <li></li>
-                  </ul>
-            </div>
-          </li>
-          <li><br></li>
-        <li>
-            <div class= "action_buttons_service_call">
-              <p>
-                         <%= event_list(@service_call)%>
-              </p>
-            </div>
-         </li>
-      </ul>
-    </div>
+
+    <% if ! event_list(@service_call).empty? %>
+        <div class="span4">
+            <ul class="unstyled">
+              <li>
+                <div class= "smart_label">
+                      <ul>
+                        <li><h1>Actions:</h1> </li>
+                        <li></li>
+                      </ul>
+                </div>
+              </li>
+              <li><br></li>
+            <li>
+                <div class= "action_buttons_service_call">
+                  <p>
+                     <%= event_list(@service_call)%>
+                  </p>
+                </div>
+             </li>
+          </ul>
+        </div>
+    <% end %>
+
   </div>
 </div>
 
 
 
-
+<br>
 <div class="row-fluid">
   <div class="no_margins">
+
+  <% if ! @service_call.events.empty? %>
     <div class= "smart_label">
       <ul>
         <li><h1>Job History:</h1> </li>
         <li></li>
       </ul>
     </div>
+
+    <table class="table table-striped" id="event_log_in_service_call">
+      <thead>
+      <tr>
+        <th>Event Type</th>
+        <th>Description</th>
+        <th>Created at</th>
+        <th>Event ID</th>
+      </tr>
+      </thead>
+      <tbody>
+         <% @service_call.events.each do |event| %>
+          <tr>
+                <td>
+                  <%= event.name  %>
+                </td>
+                <td>
+                  <%= event.description  %>
+                </td>
+                <td>
+                  <%= event.created_at  %>
+                </td>
+                <td>
+                  <%= event.id  %>
+                </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  <% end %>
   </div>
 </div>
 
@@ -212,11 +249,7 @@
 
 
 
-
-
-
-  <h1><%= @service_call.customer.name %></h1>
-
+<h1><%= @service_call.customer.name %></h1>
 <% @service_call.attributes.map.each do |key, value| %>
     <p>
       <strong><%= ServiceCall.human_attribute_name(key) %></strong>
@@ -241,7 +274,6 @@
 
 <% end %>
 
-
 ===============================================================
 <p>
   <strong>Customer:</strong>
@@ -263,45 +295,20 @@
   <strong>Technician</strong>
   <%= @service_call.technician.try(:name) %>
 </p>
-
 <p>
   <strong><%= ServiceCall.human_attribute_name(:creator) %> </strong>
   <%= @service_call.creator.try(:name) %>
 </p>
-
 <p>
   <strong><%= ServiceCall.human_attribute_name(:updater) %> </strong>
   <%= @service_call.updater.try(:name) %>
 </p>
-
 <p>
   <%= link_to "Edit", edit_service_call_path(@service_call.becomes(ServiceCall)) %> |
   <%= link_to "Destroy", @service_call.becomes(ServiceCall), :confirm => 'Are you sure?', :method => :delete %> |
   <%= link_to "View All", service_calls_path %>
 </p>
-
-
 <%= event_list(@service_call) %>
-
-<table class="table table-striped">
-  <thead>
-
-  </thead>
-  <tbody>
-  <% @service_call.events.each do |event| %>
-      <tr>
-        <td>
-          <%= event.description  %>
-        </td>
-        <td>
-          <%= event.name  %>
-        </td>
-
-      </tr>
-  <% end %>
-  </tbody>
-</table>
-
 
 
 <table class="table table-striped">
