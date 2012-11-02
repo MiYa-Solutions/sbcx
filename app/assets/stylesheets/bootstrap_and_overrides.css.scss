@@ -110,7 +110,7 @@ footer {
 .miya_note_area {
 
   input, textarea {
-    width: 80%;
+    width: 90%;
     height: 210px;
   }
 
@@ -118,6 +118,10 @@ footer {
     width: 70px;
     padding-left: 65px;
 
+  }
+
+  .form-horizontal .controls {
+    margin-left: 120px;
   }
 
 }
@@ -401,41 +405,29 @@ smart_alert {
 
 .list_service_calls {
 
-  //ul {
-  //  list-style: none;
-  //  margin: 0;
-  //}
   address {
-    //float: right;
     margin: 0 100px;
+  }
+
+  label {
+    font-weight: bold;
   }
 }
 
 
-//.event_service_calls {
-//  //margin: 0 100px;
-//  .row [class*="span"] {
-//    //-moz-box-sizing: border-box;
-//    //display: block;
-//    //float: left;
-//    margin-left: 2.5641%;
-//    //min-height: 28px;
-//  }
-//}
-
 .no_margins {
   margin-left: none;
-  font-weight: bold;
-
+  margin-right: none;
 
 }
 
 .action_buttons_service_call {
 
-  margin-left: 10%;
+  margin-left: 15%;
 
   .btn-large {
-    width: 80%;
+    width: 70%;
+    font-size: 18px;
   }
 
   label {
@@ -446,4 +438,11 @@ smart_alert {
 .success {
   background-color: #468847;
   width: auto;
+}
+
+.form-actions_in_service_call   {
+
+  .form-actions {
+    padding-left: 20%;
+  }
 }
