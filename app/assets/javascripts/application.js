@@ -14,6 +14,8 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require bootstrap
+//= require jquery.purr
+//= require best_in_place
 //= require bootstrap-datepicker
 //= require_tree .
 
@@ -31,5 +33,21 @@ $(function () {
 });
 
 
-$(".collapse").collapse('toggle')
+$(".collapse").collapse('toggle');
+
+
+$(function(){
+    $('.accordion .head').click(function() {
+        $(this).next().toggle('slow');
+        return false;
+    }).next().hide();
+});
+
+$('.typeahead').typeahead();
+
+$(".tooltip").tooltip();
+$("a[rel=tooltip]").tooltip();
+
+$('.best_in_place').best_in_place();
+
 

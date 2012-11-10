@@ -10,6 +10,7 @@ class ServiceCallsController < ApplicationController
   def show
     @service_call = ServiceCall.find(params[:id])
     @customer     = Customer.new
+
   end
 
   def new
@@ -35,12 +36,20 @@ class ServiceCallsController < ApplicationController
 
   def edit
     @service_call = ServiceCall.find(params[:id])
+
+
   end
 
   def update
     @service_call = ServiceCall.find(params[:id])
+
     if @service_call.update_attributes(params[:service_call])
+      respond_to do |format|
+        format.js { }
+        format.html do
       redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
+        end
+      end
     else
       render :action => 'edit'
     end

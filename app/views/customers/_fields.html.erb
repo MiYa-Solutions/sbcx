@@ -21,16 +21,16 @@
 <%= f.input :company %>
 
 
-<%= f.input :address1 %>
-<%= f.input :address2 %>
-<%= f.input :city %>
+  <%= f.input :address1 %>
+ <%= f.input :address2 %>
+  <%= f.input :city %>
 
 
 <div class="control-group string mandatory">
   <label class="string optional control-label" for="customer_country">Country</label>
 
   <div class="controls">
-    <%= f.country_select :country, { priority: %w[US] }, id: "country" %>
+    <%= f.country_select :country, {priority: %w[US]}, id: "country" %>
   </div>
 
 </div>
@@ -40,7 +40,7 @@
   <label class="string optional control-label" for="customer_state">State</label>
 
   <div class="controls">
-    <%= render 'customers/subregion_select', object: f.object %>
+    <%= render 'subregion_select', object: f.object %>
 
   </div>
 </div>
