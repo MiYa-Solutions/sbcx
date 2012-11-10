@@ -11,5 +11,11 @@ class ApplicationController < ActionController::Base
     flash[:error] = t('authorization.permission_denied')
     redirect_to root_url
   end
+
+  def permitted_params(obj)
+    @permitted_params ||= PermittedParams.new(params, current_user, obj)
+  end
+
+  helper_method :permitted_params
 end
 

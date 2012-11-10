@@ -24,9 +24,14 @@
 
 
 ===============================================================
+<!-- Instead of hard coding the attribute name, you should use the human_attribute_name method to use the I18n translation
 <p>
   <strong>Customer:</strong>
-  <%= @service_call.customer.try(:name) %>
+  <%= link_to @service_call.customer.try(:name), @service_call.customer %>
+</p>
+<p>
+  <strong><%= ServiceCall.human_attribute_name(:address1) %></strong>
+  <%= link_to @service_call.customer.try(:name), @service_call.customer %>
 </p>
 <p>
   <strong>Organization:</strong>

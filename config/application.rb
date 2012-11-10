@@ -37,7 +37,7 @@ module Sbcx
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
     # Activate observers that should always be running.
-    config.active_record.observers            = :my_service_call_observer, :transferred_service_call_observer, :event_observer
+    config.active_record.observers = :my_service_call_observer, :transferred_service_call_observer, :event_observer
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -46,14 +46,14 @@ module Sbcx
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-    config.i18n.load_path                     += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
+    config.i18n.load_path          += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
 
 
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding                           = "utf-8"
+    config.encoding                = "utf-8"
 
     # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters                  += [:password]
+    config.filter_parameters       += [:password]
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -64,10 +64,10 @@ module Sbcx
     # This will create an empty whitelist of attributes available for mass-assignment for all models
     # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
     # parameters by using an attr_accessible or attr_protected declaration.
-    config.active_record.whitelist_attributes = false
+    # config.active_record.whitelist_attributes = false
 
     # Enable the asset pipeline
-    config.assets.enabled                     = true
+    config.assets.enabled          = true
 
     config.assets.initialize_on_precompile = false
 

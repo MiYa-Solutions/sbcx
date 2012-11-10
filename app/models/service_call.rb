@@ -36,10 +36,9 @@ class ServiceCall < ActiveRecord::Base
   stampable
 
   # virtual attributes
-  attr_writer :started_on_text
-  attr_writer :completed_on_text
+  attr_writer :started_on_text, :completed_on_text, :company, :address1, :address2,
+              :city, :state, :zip, :country, :phone, :mobile_phone, :work_phone, :email
   attr_accessor :new_customer
-
   # transform the dates before saving
   before_save :save_started_on_text
   before_save :save_completed_on_text
@@ -52,6 +51,51 @@ class ServiceCall < ActiveRecord::Base
 
 
   accepts_nested_attributes_for :customer
+
+  def company
+    @company ||= customer.try(:company)
+  end
+
+  def address1
+    @address1 ||= customer.try(:address1)
+  end
+
+  def address2
+    @address2 ||= customer.try(:address2)
+  end
+
+  def city
+    @city ||= customer.try(:city)
+  end
+
+  def state
+    @state ||= customer.try(:city)
+  end
+
+  def zip
+    @zip ||= customer.try(:zip)
+  end
+
+  def country
+    @country ||= customer.try(:country)
+  end
+
+  def phone
+    @phone ||= customer.try(:phone)
+  end
+
+  def mobile_phone
+    @mobile_phone ||= customer.try(:mobile_phone)
+
+  end
+
+  def work_phone
+    @work_phone ||= customer.try(:work_phone)
+  end
+
+  def email
+    @email ||= customer.try(:email)
+  end
 
   # if im not the subcontractor of this service call then I'm the provider
   def my_role
@@ -168,13 +212,26 @@ class ServiceCall < ActiveRecord::Base
   end
 
   def create_customer
-    self.customer = self.provider.customers.new(name: new_customer) if new_customer.present? && customer.nil?
+    self.customer = self.provider.customers.new(name:         new_customer,
+                                                address1:     address1,
+                                                address2:     address2,
+                                                country:      country,
+                                                city:         city,
+                                                state:        state,
+                                                zip:          zip,
+                                                phone:        phone,
+                                                mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
+  end
+
+  def before_create
+    name = "#{customer.name} - #{address1}"
   end
 
   private
   def customer_belongs_to_provider
     errors.add(:customer, I18n.t('service_call.errors.customer_does_not_belong_to_provider')) unless !customer || customer.organization_id == provider_id
   end
+
 
 end
 

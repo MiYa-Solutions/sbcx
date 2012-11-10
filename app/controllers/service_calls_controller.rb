@@ -19,7 +19,7 @@ class ServiceCallsController < ApplicationController
 
   def create
 
-    @service_call = current_user.organization.service_calls.new(params[:service_call])
+    @service_call = current_user.organization.service_calls.new(permitted_params(nil).service_call)
     set_service_call_type
     # copy instance variables as it is lost in the 'becomes' method call
     service_call_instance              = @service_call.becomes(@service_call.type.constantize)
@@ -39,7 +39,7 @@ class ServiceCallsController < ApplicationController
 
   def update
     @service_call = ServiceCall.find(params[:id])
-    if @service_call.update_attributes(params[:service_call])
+    if @service_call.update_attributes(permitted_params(@service_call).service_call)
       redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
     else
       render :action => 'edit'
