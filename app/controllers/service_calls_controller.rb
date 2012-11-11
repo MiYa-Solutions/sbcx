@@ -18,8 +18,9 @@ class ServiceCallsController < ApplicationController
   end
 
   def create
-
+    Rails.logger.debug { "entered the create action of ServiceCallController" }
     @service_call = current_user.organization.service_calls.new(permitted_params(nil).service_call)
+
     set_service_call_type
     # copy instance variables as it is lost in the 'becomes' method call
     service_call_instance              = @service_call.becomes(@service_call.type.constantize)
@@ -38,7 +39,7 @@ class ServiceCallsController < ApplicationController
   end
 
   def update
-    @service_call = ServiceCall.find(params[:id])
+    #@service_call = ServiceCall.find(params[:id])
     if @service_call.update_attributes(permitted_params(@service_call).service_call)
       redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
     else
@@ -50,6 +51,11 @@ class ServiceCallsController < ApplicationController
     @service_call = ServiceCall.find(params[:id])
     @service_call.destroy
     redirect_to service_calls_url, :notice => "Successfully destroyed service call."
+  end
+
+
+  def new_service_call_from_params
+    @service_call ||= ServiceCall.new(permitted_params(nil).service_call)
   end
 
   private
@@ -101,5 +107,6 @@ class ServiceCallsController < ApplicationController
 
 
   end
+
 
 end

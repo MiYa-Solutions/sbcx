@@ -49,4 +49,8 @@ class AgreementsController < ApplicationController
       render :action => 'edit'
     end
   end
+
+  def new_agreement_from_params
+    @agreement ||= Agreement.new(params.permit)
+  end
 end

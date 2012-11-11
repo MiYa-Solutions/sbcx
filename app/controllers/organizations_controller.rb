@@ -14,7 +14,7 @@ class OrganizationsController < ApplicationController
 
   def create
 
-    @organization = Organization.new(params[:organization])
+    #@organization = Organization.new(params[:organization])
 
     if @organization.save
       flash[:success] = "Organization Created Successfully"
@@ -41,12 +41,12 @@ class OrganizationsController < ApplicationController
   end
 
   def edit
-    @organization = Organization.find(params[:id])
+    #@organization = Organization.find(params[:id])
   end
 
   def update
-    @organization = Organization.find(params[:id])
-    if @organization.update_attributes(params[:organization])
+    #@organization = Organization.find(params[:id])
+    if @organization.update_attributes(permitted_params(nil).organization)
       respond_to do |format|
         format.js { }
         format.html do
@@ -59,6 +59,12 @@ class OrganizationsController < ApplicationController
     end
 
   end
+
+  # needed to combine declarative_authorization with strong parameters
+  def new_organization_from_params
+    @organization ||= Organization.new(permitted_params(nil).organization)
+  end
+
 
 end
 

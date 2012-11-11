@@ -5,6 +5,12 @@ class ApplicationController < ActionController::Base
 
   before_filter { |c| Authorization.current_user = c.current_user }
 
+  def permitted_params(obj)
+    @permitted_params ||= PermittedParams.new(params, current_user, obj)
+  end
+
+  helper_method :permitted_params
+
   protected
 
   def permission_denied
@@ -12,10 +18,6 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
-  def permitted_params(obj)
-    @permitted_params ||= PermittedParams.new(params, current_user, obj)
-  end
 
-  helper_method :permitted_params
 end
 

@@ -10,12 +10,8 @@ class ProvidersController < ApplicationController
   end
 
   def create
-    params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
-    params[:provider][:status_event]          = :make_local
-    #@provider                                 = current_user.organization.providers.build(params[:provider])
-    ##@provider.agreements.new(subcontractor_id: current_user.organization.id, provider_id: @provider)
-    @provider                                 = current_user.organization.providers.create(params[:provider])
-    if @provider.valid? #@provider.save
+    #@provider.subcontractors << current_user.organization.becomes(Subcontractor)
+    if current_user.organization.save #@provider.save
       redirect_to @provider, :notice => t('providers.flash.create_provider', name: @provider.name)
     else
       render 'new'
@@ -30,7 +26,7 @@ class ProvidersController < ApplicationController
 
   def update
     #@provider = current_user.organization.providers.find(params[:id])
-    if @provider.update_attributes(params[:provider])
+    if @provider.update_attributes(permitted_params(@provider).provider)
       redirect_to @provider, :notice => "Successfully updated provider."
     else
       render :action => 'edit'
@@ -61,4 +57,14 @@ class ProvidersController < ApplicationController
   def show
     #@provider = Provider.find(params[:id])
   end
+
+  def new_provider_from_params
+    unless params[:provider].nil?
+      params[:provider][:organization_role_ids] = [OrganizationRole::PROVIDER_ROLE_ID]
+      params[:provider][:status_event]          = :make_local
+    end
+
+    @provider ||= current_user.organization.providers.new(permitted_params(nil).provider)
+  end
+
 end

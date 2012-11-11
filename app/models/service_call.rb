@@ -25,7 +25,7 @@
 #
 
 class ServiceCall < ActiveRecord::Base
-  attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor_id, :provider_id, :technician_id, :total_price
+  #attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor_id, :provider_id, :technician_id, :total_price
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
@@ -162,7 +162,7 @@ class ServiceCall < ActiveRecord::Base
   state_machine :billing_status, initial: :pending, namespace: 'customer' do
     state :pending, value: BILLING_STATUS_PENDING
     state :paid, value: BILLING_STATUS_PAID do
-      validates_numericality_of :total_price
+      #validate :total_price_validation
     end
     state :overdue, value: BILLING_STATUS_OVERDUE do
       validates_numericality_of :total_price
@@ -230,6 +230,10 @@ class ServiceCall < ActiveRecord::Base
   private
   def customer_belongs_to_provider
     errors.add(:customer, I18n.t('service_call.errors.customer_does_not_belong_to_provider')) unless !customer || customer.organization_id == provider_id
+  end
+
+  def total_price_validation
+    errors.add :total_price, "is not a number" unless !total_price.nil? && total_price.instance_of?(BigDecimal)
   end
 
 

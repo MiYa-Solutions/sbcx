@@ -23,7 +23,7 @@ class MyUsersController < ApplicationController
   end
 
   def create
-    @my_user = current_user.organization.users.new(params[:user])
+    @my_user = current_user.organization.users.new(permitted_params(nil).my_user)
 
     if @my_user.save
       flash[:success] = t('user.flash.created_successfully')
@@ -42,7 +42,7 @@ class MyUsersController < ApplicationController
   def update
     @my_user      = current_user.organization.users.find(params[:id])
     @organization = current_user.organization
-    if @my_user.update_attributes(params[:user])
+    if @my_user.update_attributes(permitted_params(@my_user).my_user)
       flash[:success] = t('user.flash.updated_successfully')
       redirect_to my_user_path
     else
@@ -53,5 +53,9 @@ class MyUsersController < ApplicationController
 
   def show
     @my_user = current_user.organization.users.find(params[:id])
+  end
+
+  def new_my_user_from_params
+    @my_user ||= current_user.organization.users.new(permitted_params(nil).my_user)
   end
 end

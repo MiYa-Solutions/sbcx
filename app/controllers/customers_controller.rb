@@ -4,7 +4,7 @@ class CustomersController < ApplicationController
 
   def new
 
-    @customer = Customer.new
+    #@customer = Customer.new
 
   end
 
@@ -15,7 +15,8 @@ class CustomersController < ApplicationController
       @organization = Organization.find(params[:customer][:organization_id])
     end
 
-    @customer = @organization.customers.build(params[:customer])
+    @customer = @organization.customers.build(permitted_params(nil).customer)
+
 
     # todo create symbols for the notification strings
     if @customer.save
@@ -103,5 +104,10 @@ class CustomersController < ApplicationController
     end
 
   end
+
+  def new_customer_from_params
+    @customer ||= Customer.new(params.permit)
+  end
+
 
 end

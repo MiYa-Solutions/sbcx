@@ -22,7 +22,8 @@ authorization do
   role :dispatcher do
 
     includes :technician
-    has_permission_on :customers, :to => [:index, :show, :new, :create, :edit, :update] do
+    has_permission_on :customers, :to => [:new, :create]
+    has_permission_on :customers, :to => [:index, :show, :edit, :update] do
       if_attribute :organization => is { user.organization }
       if_attribute :organization => { :subcontrax_member => is_not { true } }, :organization_id => is_in { user.organization.providers.pluck('organizations.id') }
     end

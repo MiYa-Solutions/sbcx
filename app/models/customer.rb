@@ -21,18 +21,18 @@
 #
 
 class Customer < ActiveRecord::Base
-  attr_accessible :address1,
-                  :address2,
-                  :city,
-                  :company,
-                  :country,
-                  :email,
-                  :mobile_phone,
-                  :name,
-                  :phone,
-                  :state,
-                  :work_phone,
-                  :zip
+  #attr_accessible :address1,
+  #                :address2,
+  #                :city,
+  #                :company,
+  #                :country,
+  #                :email,
+  #                :mobile_phone,
+  #                :name,
+  #                :phone,
+  #                :state,
+  #                :work_phone,
+  #                :zip
 
   belongs_to :organization, inverse_of: :customers
   validates_presence_of :organization
@@ -41,6 +41,5 @@ class Customer < ActiveRecord::Base
 
   scope :search, ->(query, org_id) { fellow_customers(org_id).where(arel_table[:name].matches("%#{query}%")) }
   scope :fellow_customers, ->(org_id) { where(:organization_id => org_id) }
-
 
 end

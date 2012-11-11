@@ -74,74 +74,75 @@ describe User do
     }.to change { User.count }.by(1)
   end
 
-  describe "accessible attributes" do
-    it "should not allow access to last_sign_ip" do
-      expect do
-        User.new(last_sign_in_ip: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to current_sign_in_ip" do
-      expect do
-        User.new(current_sign_in_ip: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to encrypted_password" do
-      expect do
-        User.new(encrypted_password: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to reset_password_sent_at" do
-      expect do
-        User.new(reset_password_sent_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to remember_created_at" do
-      expect do
-        User.new(remember_created_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to sign_in_count" do
-      expect do
-        User.new(sign_in_count: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to current_sign_in_at" do
-      expect do
-        User.new(current_sign_in_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to last_sign_in_at" do
-      expect do
-        User.new(last_sign_in_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to current_sign_in_ip" do
-      expect do
-        User.new(current_sign_in_ip: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to last_sign_in_ip" do
-      expect do
-        User.new(last_sign_in_ip: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to created_at" do
-      expect do
-        User.new(created_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to updated_at" do
-      expect do
-        User.new(updated_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to organization_id" do
-      expect do
-        User.new(organization_id: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-
-  end
+  # removed as the test in no longer works now that we use strong parameters
+  #describe "accessible attributes" do
+  #  it "should not allow access to last_sign_ip" do
+  #    expect do
+  #      User.new(last_sign_in_ip: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to current_sign_in_ip" do
+  #    expect do
+  #      User.new(current_sign_in_ip: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to encrypted_password" do
+  #    expect do
+  #      User.new(encrypted_password: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to reset_password_sent_at" do
+  #    expect do
+  #      User.new(reset_password_sent_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to remember_created_at" do
+  #    expect do
+  #      User.new(remember_created_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to sign_in_count" do
+  #    expect do
+  #      User.new(sign_in_count: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to current_sign_in_at" do
+  #    expect do
+  #      User.new(current_sign_in_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to last_sign_in_at" do
+  #    expect do
+  #      User.new(last_sign_in_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to current_sign_in_ip" do
+  #    expect do
+  #      User.new(current_sign_in_ip: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to last_sign_in_ip" do
+  #    expect do
+  #      User.new(last_sign_in_ip: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to created_at" do
+  #    expect do
+  #      User.new(created_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to updated_at" do
+  #    expect do
+  #      User.new(updated_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to organization_id" do
+  #    expect do
+  #      User.new(organization_id: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #
+  #end
 
   describe "when email is not present" do
     before { user.email = " " }

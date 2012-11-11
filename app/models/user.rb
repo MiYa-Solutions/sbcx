@@ -45,24 +45,24 @@ class User < ActiveRecord::Base
   has_many :events, as: :eventable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password,
-                  :password_confirmation,
-                  :remember_me,
-                  :organization_attributes,
-                  :organization,
-                  :role_ids,
-                  :first_name,
-                  :last_name,
-                  :phone,
-                  :company,
-                  :address1,
-                  :address2,
-                  :country,
-                  :state,
-                  :city,
-                  :zip,
-                  :mobile_phone,
-                  :work_phone
+  #attr_accessible :email, :password,
+  #                :password_confirmation,
+  #                :remember_me,
+  #                :organization_attributes,
+  #                :organization,
+  #                :role_ids,
+  #                :first_name,
+  #                :last_name,
+  #                :phone,
+  #                :company,
+  #                :address1,
+  #                :address2,
+  #                :country,
+  #                :state,
+  #                :city,
+  #                :zip,
+  #                :mobile_phone,
+  #                :work_phone
 
   accepts_nested_attributes_for :organization
 
