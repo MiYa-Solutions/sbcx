@@ -15,7 +15,7 @@ class CustomersController < ApplicationController
       @organization = Organization.find(params[:customer][:organization_id])
     end
 
-    @customer = @organization.customers.build(params[:customer])
+    @customer = @organization.customers.build(permitted_params(nil).customer)
 
     # todo create symbols for the notification strings
     if @customer.save
@@ -38,13 +38,8 @@ class CustomersController < ApplicationController
   def update
     #@customer = current_user.organization.customers.find(params[:id])
     if @customer.update_attributes(params[:customer])
-      respond_to do |format|
-        format.js { }
-        format.html do
       flash[:success] = "Profile updated"
       redirect_to @customer
-        end
-      end
     else
       render 'edit'
     end

@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
+  #before_filter :permit_params
   def edit
     @organization = current_user.organization
     super
@@ -51,6 +52,20 @@ class RegistrationsController < Devise::RegistrationsController
 
   def after_update_path_for(resource)
     profile_path
+  end
+
+  # From Devise: Build a devise resource passing in the session. Useful to move
+  # temporary session data to the newly created user.
+  # From MiYa: need to override for strong parameters
+  def build_resource(hash=nil)
+    hash          ||= params[resource_name].permit(*permitted_params(nil).new_user_attributes) || { }
+    self.resource = resource_class.new_with_session(hash, session)
+  end
+
+  private
+
+  def resource_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
 end

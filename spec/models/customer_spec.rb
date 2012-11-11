@@ -49,14 +49,6 @@ describe Customer do
     }.to change { Customer.count }.by(1)
   end
 
-  describe "accessible attributes" do
-    it "should not allow access to organization_id" do
-      expect do
-        Customer.new(organization_id: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-  end
-
   describe "validation" do
     describe "when name is not present" do
       before do

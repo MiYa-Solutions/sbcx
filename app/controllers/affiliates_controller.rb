@@ -46,7 +46,7 @@ class AffiliatesController < ApplicationController
   def update
     # no need for the below as declarative_authorization filter_resource_access takes care of it
     #@affiliate = Affiliate.find(params[:id])
-    if @affiliate.update_attributes(params[:affiliate])
+    if @affiliate.update_attributes(permitted_params(@affiliate).affiliate)
       redirect_to @affiliate, :notice => "Successfully updated provider."
     else
       render :action => :edit
@@ -65,6 +65,10 @@ class AffiliatesController < ApplicationController
   def show
     # no need for the below as declarative_authorization filter_resource_access takes care of it
     #@affiliate = Affiliate.find(params[:id])
+  end
+
+  def new_affiliate_from_params
+    @affiliate ||= Affiliate.new(permitted_params(nil).affiliate)
   end
 
 end

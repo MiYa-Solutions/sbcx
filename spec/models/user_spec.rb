@@ -74,74 +74,75 @@ describe User do
     }.to change { User.count }.by(1)
   end
 
-  describe "accessible attributes" do
-    it "should not allow access to last_sign_ip" do
-      expect do
-        User.new(last_sign_in_ip: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to current_sign_in_ip" do
-      expect do
-        User.new(current_sign_in_ip: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to encrypted_password" do
-      expect do
-        User.new(encrypted_password: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to reset_password_sent_at" do
-      expect do
-        User.new(reset_password_sent_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to remember_created_at" do
-      expect do
-        User.new(remember_created_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to sign_in_count" do
-      expect do
-        User.new(sign_in_count: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to current_sign_in_at" do
-      expect do
-        User.new(current_sign_in_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to last_sign_in_at" do
-      expect do
-        User.new(last_sign_in_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to current_sign_in_ip" do
-      expect do
-        User.new(current_sign_in_ip: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to last_sign_in_ip" do
-      expect do
-        User.new(last_sign_in_ip: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to created_at" do
-      expect do
-        User.new(created_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to updated_at" do
-      expect do
-        User.new(updated_at: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to organization_id" do
-      expect do
-        User.new(organization_id: "1")
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-
-  end
+  # removed as the test in no longer works now that we use strong parameters
+  #describe "accessible attributes" do
+  #  it "should not allow access to last_sign_ip" do
+  #    expect do
+  #      User.new(last_sign_in_ip: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to current_sign_in_ip" do
+  #    expect do
+  #      User.new(current_sign_in_ip: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to encrypted_password" do
+  #    expect do
+  #      User.new(encrypted_password: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to reset_password_sent_at" do
+  #    expect do
+  #      User.new(reset_password_sent_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to remember_created_at" do
+  #    expect do
+  #      User.new(remember_created_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to sign_in_count" do
+  #    expect do
+  #      User.new(sign_in_count: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to current_sign_in_at" do
+  #    expect do
+  #      User.new(current_sign_in_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to last_sign_in_at" do
+  #    expect do
+  #      User.new(last_sign_in_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to current_sign_in_ip" do
+  #    expect do
+  #      User.new(current_sign_in_ip: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to last_sign_in_ip" do
+  #    expect do
+  #      User.new(last_sign_in_ip: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to created_at" do
+  #    expect do
+  #      User.new(created_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to updated_at" do
+  #    expect do
+  #      User.new(updated_at: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to organization_id" do
+  #    expect do
+  #      User.new(organization_id: "1")
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #
+  #end
 
   describe "when email is not present" do
     before { user.email = " " }
@@ -215,6 +216,11 @@ describe User do
     it { should_not be_valid }
   end
 
+  describe "without first name organization" do
+    before { user.first_name = " " }
+    it { should_not be_valid }
+  end
+
   describe "user can't be assigned with an admin role if not associated with Owner organization" do
     before do
       user.roles << Role.find_by_name(Role::ADMIN_ROLE_NAME)
@@ -226,74 +232,4 @@ describe User do
   end
 
 end
-
-#describe "micropost associations" do
-#
-#  before { @user.save }
-#  let!(:older_micropost) do
-#    FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
-#  end
-#  let!(:newer_micropost) do
-#    FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
-#  end
-#
-#  it "should have the right microposts in the right order" do
-#    @user.microposts.should == [newer_micropost, older_micropost]
-#  end
-#
-#  it "should destroy associated microposts" do
-#    microposts = @user.microposts
-#    @user.destroy
-#    microposts.each do |micropost|
-#      Micropost.find_by_id(micropost.id).should be_nil
-#    end
-#  end
-#
-#  describe "status" do
-#    let(:unfollowed_post) do
-#      FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
-#    end
-#    let(:followed_user) { FactoryGirl.create(:user) }
-#
-#    before do
-#      @user.follow!(followed_user)
-#      3.times { followed_user.microposts.create!(content: "Lorem ipsum") }
-#    end
-#
-#    its(:feed) { should include(older_micropost) }
-#    its(:feed) { should include(newer_micropost) }
-#    its(:feed) { should_not include(unfollowed_post) }
-#    its(:feed) do
-#      followed_user.microposts.each do |micropost|
-#        should include(micropost)
-#      end
-#    end
-#  end
-#end
-#
-#describe "following" do
-#  let(:other_user) { FactoryGirl.create(:user) }
-#  before do
-#    @user.save
-#    @user.follow!(other_user)
-#  end
-#
-#  it { should be_following(other_user) }
-#  its(:followed_users) { should include(other_user) }
-#
-#  describe "followed user" do
-#    subject { other_user }
-#    its(:followers) { should include(@user) }
-#  end
-#
-#  describe "and unfollowing" do
-#    before { @user.unfollow!(other_user) }
-#
-#    it { should_not be_following(other_user) }
-#    its(:followed_users) { should_not include(other_user) }
-#  end
-#end
-
-
-
 

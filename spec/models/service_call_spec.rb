@@ -31,11 +31,26 @@ describe ServiceCall do
 
   subject { service_call }
 
-  it { should respond_to(:customer_id) }
-  it { should respond_to(:organization_id) }
-  it { should respond_to(:technician_id) }
-  it { should respond_to(:creator_id) }
-  it { should respond_to(:updater_id) }
+  it "should have the expected attributes" do
+    should respond_to(:customer_id)
+    should respond_to(:organization_id)
+    should respond_to(:technician_id)
+    should respond_to(:creator_id)
+    should respond_to(:updater_id)
+    should respond_to(:name)
+    should respond_to(:settlement_date)
+    should respond_to(:first_name)
+    should respond_to(:last_name)
+    should respond_to(:address1)
+    should respond_to(:address2)
+    should respond_to(:country)
+    should respond_to(:city)
+    should respond_to(:state)
+    should respond_to(:zip)
+    should respond_to(:phone)
+    should respond_to(:mobile_phone)
+  end
+
 
   it { should be_valid }
 

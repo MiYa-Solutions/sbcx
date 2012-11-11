@@ -18,6 +18,7 @@ gem 'declarative_authorization', '0.5.5'
 
 gem 'state_machine'
 gem 'magiclabs-userstamp'
+gem 'strong_parameters'
 
 gem 'best_in_place'
 

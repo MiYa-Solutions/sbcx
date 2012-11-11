@@ -46,24 +46,6 @@ class Organization < ActiveRecord::Base
   has_many :providers, through: :reverse_agreements, source: :provider
 
 
-  attr_accessible :address1,
-                  :address2,
-                  :city,
-                  :company,
-                  :country,
-                  :email,
-                  :mobile,
-                  :name,
-                  :phone,
-                  :state,
-                  :status_event,
-                  :website,
-                  :work_phone,
-                  :zip, :organization_role_ids, :provider_id
-
-  # accessing associated models
-  attr_accessible :users_attributes, :provider_attributes, :agreement_attributes, :agreements
-
   accepts_nested_attributes_for :users, :agreements
 
   validates :name, { presence: true, length: { maximum: 255 } }

@@ -274,10 +274,16 @@
 
 <% end %>
 
+
 ===============================================================
+<!-- Instead of hard coding the attribute name, you should use the human_attribute_name method to use the I18n translation -->
 <p>
   <strong>Customer:</strong>
-  <%= @service_call.customer.try(:name) %>
+  <%= link_to @service_call.customer.try(:name), @service_call.customer %>
+</p>
+<p>
+  <strong><%= ServiceCall.human_attribute_name(:address1) %></strong>
+  <%= link_to @service_call.customer.try(:name), @service_call.customer %>
 </p>
 <p>
   <strong>Organization:</strong>
@@ -295,21 +301,25 @@
   <strong>Technician</strong>
   <%= @service_call.technician.try(:name) %>
 </p>
+
 <p>
   <strong><%= ServiceCall.human_attribute_name(:creator) %> </strong>
   <%= @service_call.creator.try(:name) %>
 </p>
+
 <p>
   <strong><%= ServiceCall.human_attribute_name(:updater) %> </strong>
   <%= @service_call.updater.try(:name) %>
 </p>
+
 <p>
   <%= link_to "Edit", edit_service_call_path(@service_call.becomes(ServiceCall)) %> |
   <%= link_to "Destroy", @service_call.becomes(ServiceCall), :confirm => 'Are you sure?', :method => :delete %> |
   <%= link_to "View All", service_calls_path %>
 </p>
-<%= event_list(@service_call) %>
 
+
+<%= event_list(@service_call) %>
 
 <table class="table table-striped">
   <thead>
@@ -324,6 +334,7 @@
       <tr>
         <% event.attributes.each do |key, value| %>
             <td><%= value %></td>
+
         <% end %>
       </tr>
   <% end %>

@@ -8,11 +8,9 @@ class SubcontractorsController < ApplicationController
   end
 
   def create
-    #add the appropriate role
-    params[:subcontractor][:organization_role_ids] = [OrganizationRole::SUBCONTRACTOR_ROLE_ID]
 
-    @subcontractor = current_user.organization.subcontractors.new(params[:subcontractor])
-    @subcontractor.agreements.new(subcontractor_id: @subcontractor, provider_id: current_user.organization.id)
+    #@subcontractor = current_user.organization.subcontractors.new(permitted_params(nil).subcontractor)
+    #@subcontractor.agreements.new(subcontractor_id: @subcontractor, provider_id: current_user.organization.id)
     if current_user.organization.save
       redirect_to @subcontractor, :notice => t('subcontractors.flash.create', name: @subcontractor.name)
     else
@@ -28,7 +26,7 @@ class SubcontractorsController < ApplicationController
 
   def update
     #@subcontractor = current_user.organization.subcontractors.find(params[:id])
-    if @subcontractor.update_attributes(params[:subcontractor])
+    if @subcontractor.update_attributes(permitted_params(@subcontractor).subcontractor)
       redirect_to subcontractor_path(@subcontractor), :notice => "Successfully updated subcontractor."
     else
       render :action => 'edit'
@@ -58,4 +56,12 @@ class SubcontractorsController < ApplicationController
     #@subcontractor = current_user.organization.subcontractors.find(params[:id])
 
   end
+
+  def new_subcontractor_from_params
+    #add the appropriate role
+    params[:subcontractor][:organization_role_ids] = [OrganizationRole::SUBCONTRACTOR_ROLE_ID]
+
+    @subcontractor ||= current_user.organization.subcontractors.new(permitted_params(nil).subcontractor)
+  end
+
 end

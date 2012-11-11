@@ -63,20 +63,18 @@ describe Organization do
     }.to change { Organization.count }.by(1)
   end
 
-  describe "accessible attributes" do
-    it "should not allow access to subcontrax_member" do
-      expect do
-        Organization.new(subcontrax_member: true)
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-    it "should not allow access to status" do
-      expect do
-        Organization.new(status: 2)
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-
-
-  end
+  #describe "accessible attributes" do
+  #  it "should not allow access to subcontrax_member" do
+  #    expect do
+  #      Organization.new(subcontrax_member: true)
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #  it "should not allow access to status" do
+  #    expect do
+  #      Organization.new(status: 2)
+  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  #  end
+  #end
   describe "when name is not present" do
     before { org.name = " " }
     it { should_not be_valid }
