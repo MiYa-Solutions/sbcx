@@ -10,7 +10,7 @@ describe "Service Call pages" do
   subcontractor_status      = 'span#service_call_subcontractor_status'
   billing_status            = 'span#service_call_billing_status'
   service_call_started_on   = '#service_call_started_on_text'
-  service_call_completed_on = '#service_call_completed_on_text'
+  service_call_completed_on = '#service_call_completed_on'
   subcontractor_select      = 'service_call_subcontractor_id'
   provider_select           = 'service_call_provider_id'
   technician_select         = 'service_call_technician_id'

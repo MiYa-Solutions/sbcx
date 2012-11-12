@@ -39,8 +39,6 @@ describe ServiceCall do
     should respond_to(:updater_id)
     should respond_to(:name)
     should respond_to(:settlement_date)
-    should respond_to(:first_name)
-    should respond_to(:last_name)
     should respond_to(:address1)
     should respond_to(:address2)
     should respond_to(:country)
