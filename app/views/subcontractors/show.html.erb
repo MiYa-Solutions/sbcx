@@ -4,9 +4,9 @@
 
   <div class="row-fluid">
     <div class="span5">
-      <div class="smart_label"  >
+      <div class="smart_label">
         <ul>
-          <li><h1><%= @subcontractor.name %></h1> </li>
+          <li><h1><%= @subcontractor.name %></h1></li>
           <li>
             <% if @subcontractor.subcontrax_member==true %>
                 <% if  @subcontractor.id.in? current_user.organization.subcontractor_ids %>
@@ -18,7 +18,7 @@
                     <% end %>
                 <% end %>
             <% else %>
-                <%= link_to 'Send Invite' , subcontractor_path, :class => 'btn btn-large btn-info' %>
+                <%= link_to 'Send Invite', subcontractor_path, :class => 'btn btn-large btn-info' %>
             <% end %>
           </li>
         </ul>
@@ -31,6 +31,11 @@
     <div class="span5">
       <table class="table table-striped table-condensed">
         <tbody>
+        <tr>
+          <td><%= Subcontractor.human_attribute_name(:status) %></td>
+          <td><h4><%= @subcontractor.human_status_name %></h4></td>
+        </tr>
+
         <tr>
           <td>Company:</td>
           <td><h4><%= @subcontractor.company %></h4></td>
