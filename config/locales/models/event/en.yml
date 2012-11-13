@@ -1,0 +1,8 @@
+en:
+  activerecord:
+      models:
+        event: "Subcontracting Agreement"
+      attributes:
+        event:
+          name: "LALA Name"
+          description: "Mama"

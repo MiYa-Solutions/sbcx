@@ -197,7 +197,8 @@ describe "Service Call pages" do
     end
 
 
-    describe "show service call" do
+    describe "show service call", js: true do
+      self.use_transactional_fixtures = false
       let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil) }
 
       before do
@@ -233,7 +234,7 @@ describe "Service Call pages" do
           @subcon_service_call = ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id)
         end
 
-        it "should change the status to transferred localized" do
+        it "should change the status to transferred" do
           should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
         end
 

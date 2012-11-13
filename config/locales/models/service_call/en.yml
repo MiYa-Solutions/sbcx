@@ -29,7 +29,7 @@ en:
           canceled: "Canceled"
         status:
           events:
-            transfer: "PATUAKH"
+            transfer: "Transfer"
             dispatch: "הזנק"
           states:
             new: "HADASH"

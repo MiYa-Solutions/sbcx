@@ -219,8 +219,8 @@
         <table class="table table-striped" id="event_log_in_service_call">
           <thead>
           <tr>
-            <th>Event Type</th>
-            <th>Description</th>
+            <th><%= Event.human_attribute_name(:name) %> </th>
+            <th><%= Event.human_attribute_name(:description) %></th>
             <th>Created at</th>
             <th>Event ID</th>
           </tr>

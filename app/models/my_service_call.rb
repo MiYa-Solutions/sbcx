@@ -89,8 +89,8 @@ class MyServiceCall < ServiceCall
     event :canceled_by_subcon do
       transition :transferred => :canceled
     end
-
   end
+
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
     state :pending, value: SUBCON_STATUS_PENDING

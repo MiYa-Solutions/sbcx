@@ -68,8 +68,8 @@ describe "Customer Pages" do
             it { should have_selector('table#customers_search_results td', text: customer.name) }
           end
 
-          describe "should not find customers of other members", js: true do
-            self.use_transactional_fixtures = false
+          describe "should not find customers of other members" do
+            #self.use_transactional_fixtures = false
 
             let(:other_customer) { FactoryGirl.create(:customer, name: "not my moshe") }
 
@@ -86,7 +86,7 @@ describe "Customer Pages" do
             end
 
             it { should_not have_selector('table#customers_search_results tr', count: 2) }
-            it { should_not have_selector('table#customers_search_results td', text: other_customer.name) }
+            it { should_not have_selector('table#customers_search_results td.a', text: other_customer.name) }
 
           end
 
