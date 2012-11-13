@@ -46,12 +46,17 @@ class MyServiceCall < ServiceCall
     end
     state :work_done, value: STATUS_WORK_DONE
     state :closed, value: STATUS_CLOSED
+    state :canceled, value: STATUS_CANCELED
 
     #before_transition :new => :transferred, :do => :transfer_service_call
     #after_transition :new => :local_enabled, :do => :alert_local
 
     event :dispatch do
       transition [:new] => :dispatched
+    end
+
+    event :cancel do
+      transition [:new, :dispatched, :in_progress] => :canceled
     end
 
     event :start do
@@ -80,7 +85,12 @@ class MyServiceCall < ServiceCall
 
   end
 
+  state_machine :private_status, :attribute => :status do
+    event :canceled_by_subcon do
+      transition :transferred => :canceled
+    end
 
+  end
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
     state :pending, value: SUBCON_STATUS_PENDING

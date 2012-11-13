@@ -24,6 +24,7 @@
         <thead>
         <tr>
           <th>ID</th>
+          <th>Ref</th>
           <th>Status</th>
           <th>Subcontractor Status</th>
           <th>Provider</th>
@@ -37,6 +38,7 @@
             <tr>
 
               <td><%= link_to sc.id, service_call_path(sc) %></td>
+              <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
               <td><%= sc.human_status_name %></td>
               <td><%= sc.human_subcontractor_status_name %></td>
               <td><%= sc.provider.try(:name) %></td>

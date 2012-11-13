@@ -126,6 +126,7 @@ class ServiceCall < ActiveRecord::Base
   STATUS_WORK_DONE   = 4
   STATUS_SETTLED     = 5
   STATUS_IN_PROGRESS = 6
+  STATUS_CANCELED    = 7
 
 
   state_machine :status, initial: :na do
@@ -223,7 +224,7 @@ class ServiceCall < ActiveRecord::Base
                                                   zip:          zip,
                                                   phone:        phone,
                                                   mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
-    
+
     else
       self.customer = self.organization.customers.new(name:         new_customer,
                                                       address1:     address1,
@@ -234,8 +235,8 @@ class ServiceCall < ActiveRecord::Base
                                                       zip:          zip,
                                                       phone:        phone,
                                                       mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
-  end
     end
+  end
 
 
   def before_create

@@ -51,7 +51,7 @@ describe "Subcontractor pages" do
             clean org
           end
 
-          describe "to include subcontractors who are sbcx memebers", js: true do
+          describe "to include subcontractors who are sbcx memebers" do
 
             let!(:member) { FactoryGirl.create(:member_admin).organization }
 
@@ -67,11 +67,11 @@ describe "Subcontractor pages" do
             end
 
             it { should_not have_selector('table#subcontractors_search_results tr', count: 2) }
-            it { should_not have_selector('table#subcontractors_search_results td', text: member.name) }
+            it { should have_selector('table#subcontractors_search_results td', text: member.name) }
 
           end
 
-          describe "show a mix of local and similar public subcontractors", js: true do
+          describe "show a mix of local and similar public subcontractors" do
             #pending "implementation"
             let!(:member) { FactoryGirl.create(:member_admin).organization }
 
@@ -114,11 +114,12 @@ describe "Subcontractor pages" do
     end
 
     describe "Add Subcontractor" do
+      let(:new_prov) { FactoryGirl.build(:subcontractor) }
+
       before do
         visit new_subcontractor_path
       end
 
-      let(:new_prov) { FactoryGirl.build(:subcontractor) }
 
       it "should add local subcontractor successfully" do
         expect do

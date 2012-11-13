@@ -1,6 +1,6 @@
 class MyServiceCallObserver < ServiceCallObserver
   def after_transfer(service_call, transition)
-    service_call.events << ServiceCallTransferEvent.new
+    service_call.events << ServiceCallTransferEvent.new(description: I18n.t('service_call_transfer_event.description', subcontractor_name: service_call.subcontractor.name))
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 
@@ -26,5 +26,9 @@ class MyServiceCallObserver < ServiceCallObserver
 
   end
 
+  def before_cancel(service_call, transition)
+    service_call.events << ServiceCallCancelEvent.new(description: I18n.t('service_call_cancel_event.description'))
+
+  end
 
 end

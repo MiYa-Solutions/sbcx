@@ -24,6 +24,9 @@ en:
             paid: "Paid"
             pending: "Pending"
       my_service_call:
+        private_status:
+        states:
+          canceled: "Canceled"
         status:
           events:
             transfer: "PATUAKH"
@@ -35,6 +38,7 @@ en:
             in_progress: "In Progress"
             work_done: "Done"
             closed: "Closed"
+            canceled: "Canceled"
         subcontractor_status:
           states:
             pending: "Pending"
@@ -61,6 +65,7 @@ en:
             in_progress: "In Progress"
 
             work_done: "Done"
+            canceled: "Canceled"
         subcontractor_status:
           states:
             na: "Not Applicable"
@@ -76,3 +81,8 @@ en:
       customer_does_not_belong_to_provider: "The customer must belong to the provider"
     crud_messages:
       success: "The service call was created successfully"
+  service_call_cancel_event:
+    name: "Canceled Service Call"
+    description: "Service call canceled"
+  service_call_canceled_event:
+    description: 'The service call was canceled by %{user} from %{org}'

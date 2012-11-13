@@ -49,6 +49,11 @@ class TransferredServiceCall < ServiceCall
     end
     state :work_done, value: STATUS_WORK_DONE
     state :settled, value: STATUS_SETTLED
+    state :canceled, value: STATUS_CANCELED
+
+    event :cancel do
+      transition [:received_new, :accepted, :in_progress] => :canceled
+    end
 
     event :settle do
       transition :work_done => :settled

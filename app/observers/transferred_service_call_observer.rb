@@ -62,4 +62,10 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   end
 
+  def before_cancel(service_call, transition)
+    service_call.events << ServiceCallCancelEvent.new(description: I18n.t('service_call_cancel_event.description'))
+
+  end
+
+
 end

@@ -36,7 +36,7 @@ class Agreement < ActiveRecord::Base
     state :pending_approval, value: STATUS_PENDING_APPROVAL
     state :rejected, value: STATUS_REJECTED
     state :active, value: STATUS_ACTIVE
-    state :disabled, value: STATUS_SBCX_INACTIVE_MEMBER
+    state :disabled, value: STATUS_DISABLED
 
 
     event :submit do

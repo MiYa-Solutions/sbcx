@@ -36,7 +36,7 @@ class ServiceCallTransferEvent < Event
       new_service_call.customer     = service_call.customer
       new_service_call.ref_id       = service_call.ref_id
 
-      self.description = I18n.t('service_call_transfer_event.description', subcontractor_name: service_call.subcontractor.name)
+      #self.description = I18n.t('service_call_transfer_event.description', subcontractor_name: service_call.subcontractor.name) if description.nil?
       self.save!
       new_service_call.save!
     end

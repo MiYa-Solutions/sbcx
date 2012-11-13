@@ -59,7 +59,7 @@ class SubcontractorsController < ApplicationController
 
   def new_subcontractor_from_params
     #add the appropriate role
-    params[:subcontractor][:organization_role_ids] = [OrganizationRole::SUBCONTRACTOR_ROLE_ID]
+    params[:subcontractor][:organization_role_ids] = [OrganizationRole::SUBCONTRACTOR_ROLE_ID] unless params[:subcontractor].nil?
 
     @subcontractor ||= current_user.organization.subcontractors.new(permitted_params(nil).subcontractor)
   end

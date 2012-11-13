@@ -41,6 +41,8 @@ describe "Service Call pages" do
   paid_btn_selector         = 'paid_service_call_btn'
   save_btn                  = '#service_call_save_btn'
   save_btn_selector         = 'service_call_save_btn'
+  cancel_btn                = '#cancel_service_call_btn'
+  cancel_btn_selector       = 'cancel_service_call_btn'
 
 
   describe "with Org Admin" do
@@ -379,6 +381,30 @@ describe "Service Call pages" do
 
               end
 
+              describe "subcontractor cancels the service call" do
+
+                before do
+                  in_browser(:org2) do
+                    visit service_call_path @subcon_service_call
+                    click_button cancel_btn_selector
+                  end
+
+                  in_browser(:org) { visit service_call_path service_call }
+                end
+
+                it "should change the status to canceled" do
+                  should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
+
+                end
+
+                it "should have canceled event displayed" do
+                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', user: org_admin_user2.name, org: org2.name))
+                end
+
+
+                it "subcontractor sc should have a canceled status"
+              end
+
               describe "subcontractor completes the service call" do
                 before do
                   in_browser(:org2) do
@@ -604,6 +630,26 @@ describe "Service Call pages" do
             should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.na'))
 
           end
+
+          describe "cancels the service call" do
+
+            before do
+              visit service_call_path service_call
+              click_button cancel_btn_selector
+            end
+
+            it "should change the status to canceled" do
+              should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.canceled'))
+
+            end
+
+            it "should have canceled event displayed" do
+              should have_selector('table#event_log_in_service_call td', text: "Cancel")
+            end
+
+            it "subcontractor sc should have a canceled status"
+          end
+
 
           describe "job done" do
             before do
