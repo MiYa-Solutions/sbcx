@@ -438,8 +438,17 @@ describe "Service Call pages" do
                   should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', user: org_admin_user2.name, org: org2.name))
                 end
 
+                it "subcontractor status  should be canceled" do
+                  should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.canceled'))
+                end
+                it "subcontractor sc  should be canceled" do
+                  in_browser(:org2) do
+                    should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
+                  end
 
-                it "subcontractor sc should have a canceled status"
+                end
+
+
               end
 
               describe "subcontractor completes the service call" do

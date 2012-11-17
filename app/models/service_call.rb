@@ -173,7 +173,7 @@ class ServiceCall < ActiveRecord::Base
     end
 
     event :paid do
-      transition :pending => :paid
+      transition [:pending, :overdue] => :paid
     end
 
     event :overdue do
