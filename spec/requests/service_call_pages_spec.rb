@@ -349,6 +349,14 @@ describe "Service Call pages" do
               should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.in_progress'))
             end
 
+            it " service call should have a dispatched event associated " do
+              service_call.events.pluck(:reference_id).should include(16)
+            end
+            it " transferred service call should have a dispatched event associated " do
+              @subcon_service_call.events.pluck(:reference_id).should include(5)
+            end
+
+
             describe "subcontractor view after dispatch" do
               before { in_browser(:org2) { } }
               it "status should change to dispatched" do
@@ -383,6 +391,14 @@ describe "Service Call pages" do
               it "start time is set" do
                 Time.parse(find(service_call_started_on).text) <= Time.current
               end
+
+              it " service call should have a started event associated " do
+                service_call.events.pluck(:reference_id).should include(17)
+              end
+              it " transferred service call should have a dispatched event associated " do
+                @subcon_service_call.events.pluck(:reference_id).should include(6)
+              end
+
 
               describe "subcontractor view after start" do
                 before { in_browser(:org2) { } }
@@ -639,16 +655,6 @@ describe "Service Call pages" do
           end
 
         end
-
-        it "status should change to dispatched" do
-          should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.dispatched'))
-
-        end
-        it "subcontractor status should remain na" do
-          should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.na'))
-
-        end
-
 
         describe "start the job" do
           before do

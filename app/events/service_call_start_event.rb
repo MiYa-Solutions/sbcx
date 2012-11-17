@@ -15,6 +15,8 @@ class ServiceCallStartEvent < Event
       prov_service_call            = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
       prov_service_call.started_on = service_call.started_on
       prov_service_call.start_subcon
+      prov_service_call.events << ServiceCallStartedEvent.new(description: I18n.t('service_call_started_event.description', subcon_name: service_call.organization.name))
+
     end
     self.description = I18n.t('service_call_start_event.description', technician: service_call.technician.name)
     self.save

@@ -100,3 +100,9 @@ en:
   service_call_accepted_event:
     name: "Service Call Accepted"
     description: 'The service call was accepted by %{subcon_name}'
+  service_call_started_event:
+    name: "Service call in progress"
+    description: '%{subcon_name} has started the service call'
+  service_call_dispatched_event:
+    name: "Service Call Dispatched"
+    description: "%{subcon_name} has dispatched the service call"
