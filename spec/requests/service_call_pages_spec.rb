@@ -440,6 +440,14 @@ describe "Service Call pages" do
                   Time.parse(find(service_call_completed_on).text) <= Time.current
                 end
 
+                it " service call should have an completed event associated " do
+                  service_call.events.pluck(:reference_id).should include(13)
+                end
+                it " transferred service call should have an complete event associated " do
+                  @subcon_service_call.events.pluck(:reference_id).should include(7)
+                end
+
+
                 describe "subcontractor view after complete" do
                   before { in_browser(:org2) { } }
                   it "status should change to completed" do

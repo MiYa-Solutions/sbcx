@@ -94,3 +94,6 @@ en:
   service_call_rejected_event:
     name: "Service Call Rejected"
     description: 'Service call was rejected by %{subcon_name}'
+  service_call_completed_event:
+    name: "Service Call Completed"
+    description: "The service call was completed"
