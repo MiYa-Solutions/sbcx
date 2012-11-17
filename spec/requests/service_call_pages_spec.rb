@@ -652,9 +652,15 @@ describe "Service Call pages" do
             # todo implement technician scope in Organization
             select technician.name, from: technician_select
             click_button dispatch_btn_selector
+            service_call.reload
           end
 
         end
+
+        it " service call should have a dispatched event associated " do
+          service_call.events.pluck(:reference_id).should include(5)
+        end
+
 
         describe "start the job" do
           before do
@@ -665,7 +671,7 @@ describe "Service Call pages" do
             Time.parse(find(service_call_started_on).text) <= Time.current
           end
 
-          it "status should change to dispatched" do
+          it "status should change to in progress" do
             should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.in_progress'))
 
           end
@@ -673,6 +679,12 @@ describe "Service Call pages" do
             should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.na'))
 
           end
+
+          it " service call should have a started event associated " do
+            service_call.events.pluck(:reference_id).should include(6)
+            service_call.events.where(reference_id: 6).first.description.should eq(I18n.t('service_call_start_event.description', technician: service_call.technician.name))
+          end
+
 
           describe "cancels the service call" do
 
@@ -690,7 +702,11 @@ describe "Service Call pages" do
               should have_selector('table#event_log_in_service_call td', text: "Cancel")
             end
 
-            it "subcontractor sc should have a canceled status"
+            it " service call should have a canceled event associated " do
+              service_call.events.pluck(:reference_id).should include(9)
+              service_call.events.where(reference_id: 9).first.description.should eq(I18n.t('service_call_cancel_event.description'))
+            end
+
           end
 
 
@@ -710,6 +726,12 @@ describe "Service Call pages" do
               Time.parse(find(service_call_completed_on).text) <= Time.current
             end
 
+            it "should have a completed event associated " do
+              service_call.events.pluck(:reference_id).should include(7)
+              service_call.events.where(reference_id: 7).first.description.should eq(I18n.t('service_call_complete_event.description', technician: service_call.technician.name))
+            end
+
+
             describe "customer paid" do
               before do
                 fill_in 'service_call_total_price', with: '100'
@@ -723,6 +745,12 @@ describe "Service Call pages" do
               it "customer status should change to paid" do
                 should have_selector(billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.paid'))
               end
+
+              it "should have a paid event associated " do
+                service_call.events.pluck(:reference_id).should include(18)
+                service_call.events.where(reference_id: 18).first.description.should eq(I18n.t('service_call_paid_event.description'))
+              end
+
             end
 
           end

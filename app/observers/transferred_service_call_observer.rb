@@ -67,5 +67,9 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   end
 
+  def before_paid(service_call, transition)
+    service_call.events << ServiceCallPaidEvent.new(description: I18n.t('service_call_paid_event.description'))
+  end
+
 
 end

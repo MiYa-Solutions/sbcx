@@ -63,7 +63,7 @@ class TransferredServiceCall < ServiceCall
       transition [:in_progress, :dispatched] => :work_done
     end
 
-    event :customer_paid do
+    event :paid do
       transition [:in_progress, :work_done] => :work_done
     end
 

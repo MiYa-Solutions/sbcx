@@ -106,3 +106,6 @@ en:
   service_call_dispatched_event:
     name: "Service Call Dispatched"
     description: "%{subcon_name} has dispatched the service call"
+  service_call_paid_event:
+    name: "Customer Paid"
+    description: "Customer has paid for the service"
