@@ -82,6 +82,12 @@ describe "Service Call pages" do
 
     end
 
+    #after do
+    #  clean org unless org.nil?
+    #  clean org2 unless org2.nil?
+    #  clean org3 unless org3.nil?
+    #end
+
     subject { page }
 
     describe "new service call page" do
@@ -197,8 +203,8 @@ describe "Service Call pages" do
     end
 
 
-    describe "show service call", js: true do
-      self.use_transactional_fixtures = false
+    describe "show service call" do
+      #self.use_transactional_fixtures = false
       let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil) }
 
       before do
@@ -240,6 +246,13 @@ describe "Service Call pages" do
 
         it "should change the subcontractor status to pending localized" do
           should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.pending'))
+        end
+
+        it " service call should have an Transfer event associated " do
+          service_call.events.pluck(:reference_id).should include(2)
+        end
+        it " transferred service call should have an Received event associated " do
+          @subcon_service_call.events.pluck(:reference_id).should include(11)
         end
 
         describe "subcontractor browser" do
@@ -394,7 +407,7 @@ describe "Service Call pages" do
                 end
 
                 it "should change the status to canceled" do
-                  should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
+                  should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.canceled'))
 
                 end
 

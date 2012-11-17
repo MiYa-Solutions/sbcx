@@ -152,6 +152,7 @@ class ServiceCall < ActiveRecord::Base
   SUBCON_STATUS_IN_PROGRESS = 5
   SUBCON_STATUS_WORK_DONE   = 6
   SUBCON_STATUS_SETTLED     = 7
+  SUBCON_STATUS_CANCELED    = 8
 
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA

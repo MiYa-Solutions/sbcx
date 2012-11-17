@@ -85,12 +85,6 @@ class MyServiceCall < ServiceCall
 
   end
 
-  state_machine :private_status, :attribute => :status do
-    event :canceled_by_subcon do
-      transition :transferred => :canceled
-    end
-  end
-
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
     state :pending, value: SUBCON_STATUS_PENDING
@@ -100,6 +94,7 @@ class MyServiceCall < ServiceCall
     state :in_progress, value: SUBCON_STATUS_IN_PROGRESS
     state :work_done, value: SUBCON_STATUS_WORK_DONE
     state :settled, value: SUBCON_STATUS_SETTLED
+    state :canceled, value: SUBCON_STATUS_CANCELED
 
     event :transfer do
       transition [:na] => :pending
@@ -124,6 +119,11 @@ class MyServiceCall < ServiceCall
     event :settle do
       transition [:work_done] => :settled
     end
+
+    event :cancel do
+      transition [:accepted, :in_progress] => :canceled
+    end
+
 
   end
 
