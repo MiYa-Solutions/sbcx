@@ -91,3 +91,6 @@ en:
   service_call_received_event:
     name: "Received New Service Call"
     description: 'Received a new service call from %{name}'
+  service_call_rejected_event:
+    name: "Service Call Rejected"
+    description: 'Service call was rejected by %{subcon_name}'

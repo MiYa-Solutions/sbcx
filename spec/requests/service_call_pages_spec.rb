@@ -506,6 +506,14 @@ describe "Service Call pages" do
           it "subcontractor status changes to rejected" do
             should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.rejected'))
           end
+
+          it " service call should have an rejected event associated " do
+            service_call.events.pluck(:reference_id).should include(12)
+          end
+          it " transferred service call should have an rejected event associated " do
+            @subcon_service_call.events.pluck(:reference_id).should include(4)
+          end
+
         end
 
         describe "subcontractor transfers the service call to a local subcontractor" do
