@@ -307,6 +307,13 @@ describe "Service Call pages" do
 
           it { should have_selector(settle_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
 
+          it " service call should have an accepted event associated " do
+            service_call.events.pluck(:reference_id).should include(14)
+          end
+          it " transferred service call should have an accepted event associated " do
+            @subcon_service_call.events.pluck(:reference_id).should include(3)
+          end
+
 
           describe "subcontractor browser" do
             before { in_browser(:org2) { } }

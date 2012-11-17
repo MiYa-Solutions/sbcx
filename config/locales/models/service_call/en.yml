@@ -97,3 +97,6 @@ en:
   service_call_completed_event:
     name: "Service Call Completed"
     description: "The service call was completed"
+  service_call_accepted_event:
+    name: "Service Call Accepted"
+    description: 'The service call was accepted by %{subcon_name}'
