@@ -53,6 +53,8 @@ class Organization < ActiveRecord::Base
   validate :has_at_least_one_role
   validates_presence_of :organization_roles
   validates_with OneOwnerValidator
+  validates_uniqueness_of :name, scope: [:subcontrax_member], if: Proc.new { |org| org.subcontrax_member }
+
 
   includes :organization_roles
 

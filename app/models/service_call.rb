@@ -152,6 +152,8 @@ class ServiceCall < ActiveRecord::Base
   SUBCON_STATUS_IN_PROGRESS = 5
   SUBCON_STATUS_WORK_DONE   = 6
   SUBCON_STATUS_SETTLED     = 7
+  SUBCON_STATUS_CANCELED    = 8
+  SUBCON_STATUS_PAID        = 9
 
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
@@ -167,11 +169,11 @@ class ServiceCall < ActiveRecord::Base
       #validate :total_price_validation
     end
     state :overdue, value: BILLING_STATUS_OVERDUE do
-      validates_numericality_of :total_price
+      #validates_numericality_of :total_price
     end
 
     event :paid do
-      transition :pending => :paid
+      transition [:pending, :overdue] => :paid
     end
 
     event :overdue do

@@ -49,6 +49,7 @@ en:
             work_done: "Completed"
             settled: "Settled"
             na: "NA"
+            canceled: "Canceled"
       transferred_service_call:
         status:
           events:
@@ -71,6 +72,7 @@ en:
             na: "Not Applicable"
             pending: "Pending"
             transferred: "Transferred"
+            canceled: "Canceled"
   messages:
     service_call:
       event: 'The service call was %{event_name} successfully'
@@ -86,3 +88,24 @@ en:
     description: "Service call canceled"
   service_call_canceled_event:
     description: 'The service call was canceled by %{user} from %{org}'
+  service_call_received_event:
+    name: "Received New Service Call"
+    description: 'Received a new service call from %{name}'
+  service_call_rejected_event:
+    name: "Service Call Rejected"
+    description: 'Service call was rejected by %{subcon_name}'
+  service_call_completed_event:
+    name: "Service Call Completed"
+    description: "The service call was completed"
+  service_call_accepted_event:
+    name: "Service Call Accepted"
+    description: 'The service call was accepted by %{subcon_name}'
+  service_call_started_event:
+    name: "Service call in progress"
+    description: '%{subcon_name} has started the service call'
+  service_call_dispatched_event:
+    name: "Service Call Dispatched"
+    description: "%{subcon_name} has dispatched the service call"
+  service_call_paid_event:
+    name: "Customer Paid"
+    description: "Customer has paid for the service"

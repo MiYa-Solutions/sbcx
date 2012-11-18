@@ -16,7 +16,7 @@ en:
     description: 'Transferred the service call to %{subcontractor_name}'
 
   service_call_dispatch_event:
-    description: 'Dispatched to ${technician}'
+    description: 'Dispatched to %{technician}'
     name: "Service Call Dispatched"
 
   service_call_start_event:

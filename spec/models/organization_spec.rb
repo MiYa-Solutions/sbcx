@@ -57,11 +57,18 @@ describe Organization do
 
   it { should be_valid }
 
+  describe "name should be unique across all members" do
+    let(:new_mem) { new_mem = org.dup }
+    it { new_mem.should_not be_valid }
+
+  end
+
   it "saved successfully" do
     expect {
       org.save
     }.to change { Organization.count }.by(1)
   end
+
 
   #describe "accessible attributes" do
   #  it "should not allow access to subcontrax_member" do

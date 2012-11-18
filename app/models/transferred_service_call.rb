@@ -63,7 +63,7 @@ class TransferredServiceCall < ServiceCall
       transition [:in_progress, :dispatched] => :work_done
     end
 
-    event :customer_paid do
+    event :paid do
       transition [:in_progress, :work_done] => :work_done
     end
 
@@ -102,6 +102,7 @@ class TransferredServiceCall < ServiceCall
     state :in_progress, value: SUBCON_STATUS_IN_PROGRESS
     state :work_done, value: SUBCON_STATUS_WORK_DONE
     state :settled, value: SUBCON_STATUS_SETTLED
+    state :paid, value: SUBCON_STATUS_PAID
 
     event :subcon_transfer do
       transition [:na] => :pending
@@ -123,6 +124,9 @@ class TransferredServiceCall < ServiceCall
       transition [:work_done] => :settled
     end
 
+    event :paid do
+      transition [:accepted, :in_progress] => :paid
+    end
   end
   private
   def provider_is_not_a_member

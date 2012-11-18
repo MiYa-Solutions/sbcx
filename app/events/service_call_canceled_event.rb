@@ -27,7 +27,7 @@ class ServiceCallCanceledEvent < Event
 
     service_call = associated_object
 
-    service_call.canceled_by_subcon
+    service_call.cancel_subcon
 
   end
 

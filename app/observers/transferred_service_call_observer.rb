@@ -1,6 +1,6 @@
 class TransferredServiceCallObserver < ServiceCallObserver
   def after_transfer(service_call, transition)
-    service_call.events << ServiceCallTransferEvent.new
+    service_call.events << ServiceCallTransferEvent.new(description: I18n.t('service_call_transfer_event.description', subcontractor_name: service_call.subcontractor.name))
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 
@@ -57,7 +57,7 @@ class TransferredServiceCallObserver < ServiceCallObserver
   end
 
   def after_dispatch(service_call, transition)
-    service_call.events << ServiceCallDispatchEvent.new
+    service_call.events << ServiceCallDispatchEvent.new(description: I18n.t('service_call_dispatch_event.description', technician: service_call.technician.name))
     Rails.logger.debug { "invoked observer before dispatch \n #{service_call.inspect} \n #{transition.inspect}" }
 
   end
@@ -65,6 +65,10 @@ class TransferredServiceCallObserver < ServiceCallObserver
   def before_cancel(service_call, transition)
     service_call.events << ServiceCallCancelEvent.new(description: I18n.t('service_call_cancel_event.description'))
 
+  end
+
+  def before_paid(service_call, transition)
+    service_call.events << ServiceCallPaidEvent.new(description: I18n.t('service_call_paid_event.description'))
   end
 
 

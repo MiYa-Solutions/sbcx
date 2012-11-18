@@ -28,6 +28,7 @@ class ServiceCallRejectEvent < Event
     service_call = associated_object
 
     prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
+    prov_service_call.events << ServiceCallRejectedEvent.new(description: I18n.t('service_call_rejected_event.description', subcon_name: service_call.organization.name))
     prov_service_call.reject_subcon
 
     prov_service_call

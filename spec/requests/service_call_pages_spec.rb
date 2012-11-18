@@ -82,6 +82,12 @@ describe "Service Call pages" do
 
     end
 
+    #after do
+    #  clean org unless org.nil?
+    #  clean org2 unless org2.nil?
+    #  clean org3 unless org3.nil?
+    #end
+
     subject { page }
 
     describe "new service call page" do
@@ -197,8 +203,8 @@ describe "Service Call pages" do
     end
 
 
-    describe "show service call", js: true do
-      self.use_transactional_fixtures = false
+    describe "show service call" do
+      #self.use_transactional_fixtures = false
       let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil) }
 
       before do
@@ -240,6 +246,13 @@ describe "Service Call pages" do
 
         it "should change the subcontractor status to pending localized" do
           should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.pending'))
+        end
+
+        it " service call should have an Transfer event associated " do
+          service_call.events.pluck(:reference_id).should include(2)
+        end
+        it " transferred service call should have an Received event associated " do
+          @subcon_service_call.events.pluck(:reference_id).should include(11)
         end
 
         describe "subcontractor browser" do
@@ -294,6 +307,13 @@ describe "Service Call pages" do
 
           it { should have_selector(settle_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
 
+          it " service call should have an accepted event associated " do
+            service_call.events.pluck(:reference_id).should include(14)
+          end
+          it " transferred service call should have an accepted event associated " do
+            @subcon_service_call.events.pluck(:reference_id).should include(3)
+          end
+
 
           describe "subcontractor browser" do
             before { in_browser(:org2) { } }
@@ -328,6 +348,14 @@ describe "Service Call pages" do
             it "subcontractor status changes to in progress" do
               should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.in_progress'))
             end
+
+            it " service call should have a dispatched event associated " do
+              service_call.events.pluck(:reference_id).should include(16)
+            end
+            it " transferred service call should have a dispatched event associated " do
+              @subcon_service_call.events.pluck(:reference_id).should include(5)
+            end
+
 
             describe "subcontractor view after dispatch" do
               before { in_browser(:org2) { } }
@@ -364,6 +392,14 @@ describe "Service Call pages" do
                 Time.parse(find(service_call_started_on).text) <= Time.current
               end
 
+              it " service call should have a started event associated " do
+                service_call.events.pluck(:reference_id).should include(17)
+              end
+              it " transferred service call should have a dispatched event associated " do
+                @subcon_service_call.events.pluck(:reference_id).should include(6)
+              end
+
+
               describe "subcontractor view after start" do
                 before { in_browser(:org2) { } }
                 it "status should change to in progress" do
@@ -394,7 +430,7 @@ describe "Service Call pages" do
                 end
 
                 it "should change the status to canceled" do
-                  should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
+                  should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.canceled'))
 
                 end
 
@@ -402,8 +438,17 @@ describe "Service Call pages" do
                   should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', user: org_admin_user2.name, org: org2.name))
                 end
 
+                it "subcontractor status  should be canceled" do
+                  should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.canceled'))
+                end
+                it "subcontractor sc  should be canceled" do
+                  in_browser(:org2) do
+                    should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
+                  end
 
-                it "subcontractor sc should have a canceled status"
+                end
+
+
               end
 
               describe "subcontractor completes the service call" do
@@ -426,6 +471,14 @@ describe "Service Call pages" do
                 it "completion time is set" do
                   Time.parse(find(service_call_completed_on).text) <= Time.current
                 end
+
+                it " service call should have an completed event associated " do
+                  service_call.events.pluck(:reference_id).should include(13)
+                end
+                it " transferred service call should have an complete event associated " do
+                  @subcon_service_call.events.pluck(:reference_id).should include(7)
+                end
+
 
                 describe "subcontractor view after complete" do
                   before { in_browser(:org2) { } }
@@ -493,6 +546,14 @@ describe "Service Call pages" do
           it "subcontractor status changes to rejected" do
             should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.rejected'))
           end
+
+          it " service call should have an rejected event associated " do
+            service_call.events.pluck(:reference_id).should include(12)
+          end
+          it " transferred service call should have an rejected event associated " do
+            @subcon_service_call.events.pluck(:reference_id).should include(4)
+          end
+
         end
 
         describe "subcontractor transfers the service call to a local subcontractor" do
@@ -600,17 +661,13 @@ describe "Service Call pages" do
             # todo implement technician scope in Organization
             select technician.name, from: technician_select
             click_button dispatch_btn_selector
+            service_call.reload
           end
 
         end
 
-        it "status should change to dispatched" do
-          should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.dispatched'))
-
-        end
-        it "subcontractor status should remain na" do
-          should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.na'))
-
+        it " service call should have a dispatched event associated " do
+          service_call.events.pluck(:reference_id).should include(5)
         end
 
 
@@ -623,7 +680,7 @@ describe "Service Call pages" do
             Time.parse(find(service_call_started_on).text) <= Time.current
           end
 
-          it "status should change to dispatched" do
+          it "status should change to in progress" do
             should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.in_progress'))
 
           end
@@ -631,6 +688,12 @@ describe "Service Call pages" do
             should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.na'))
 
           end
+
+          it " service call should have a started event associated " do
+            service_call.events.pluck(:reference_id).should include(6)
+            service_call.events.where(reference_id: 6).first.description.should eq(I18n.t('service_call_start_event.description', technician: service_call.technician.name))
+          end
+
 
           describe "cancels the service call" do
 
@@ -648,7 +711,11 @@ describe "Service Call pages" do
               should have_selector('table#event_log_in_service_call td', text: "Cancel")
             end
 
-            it "subcontractor sc should have a canceled status"
+            it " service call should have a canceled event associated " do
+              service_call.events.pluck(:reference_id).should include(9)
+              service_call.events.where(reference_id: 9).first.description.should eq(I18n.t('service_call_cancel_event.description'))
+            end
+
           end
 
 
@@ -668,6 +735,12 @@ describe "Service Call pages" do
               Time.parse(find(service_call_completed_on).text) <= Time.current
             end
 
+            it "should have a completed event associated " do
+              service_call.events.pluck(:reference_id).should include(7)
+              service_call.events.where(reference_id: 7).first.description.should eq(I18n.t('service_call_complete_event.description', technician: service_call.technician.name))
+            end
+
+
             describe "customer paid" do
               before do
                 fill_in 'service_call_total_price', with: '100'
@@ -681,6 +754,12 @@ describe "Service Call pages" do
               it "customer status should change to paid" do
                 should have_selector(billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.paid'))
               end
+
+              it "should have a paid event associated " do
+                service_call.events.pluck(:reference_id).should include(18)
+                service_call.events.where(reference_id: 18).first.description.should eq(I18n.t('service_call_paid_event.description'))
+              end
+
             end
 
           end
