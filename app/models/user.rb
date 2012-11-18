@@ -43,8 +43,12 @@ class User < ActiveRecord::Base
   has_many :assignments
   has_many :roles, through: :assignments
   has_many :events, as: :eventable
+  has_many :notifications
 
   accepts_nested_attributes_for :organization
+
+  # todo make role lookup based on ids and not names
+  scope :my_admins, ->(org_id) { includes(:roles).where("roles.name = ? AND organization_id = ?", "#{Role::ORG_ADMIN_ROLE_NAME}", org_id) }
 
   attr_writer :name
 

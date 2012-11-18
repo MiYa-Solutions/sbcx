@@ -32,6 +32,7 @@ class ServiceCall < ActiveRecord::Base
   belongs_to :provider
   belongs_to :technician, class_name: User
   has_many :events, as: :eventable
+  has_many :notifications, as: :notifiable
 
   stampable
 

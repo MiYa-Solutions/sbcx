@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121112203500) do
+ActiveRecord::Schema.define(:version => 20121118210833) do
 
   create_table "agreements", :force => true do |t|
     t.string "name"
@@ -63,6 +63,18 @@ ActiveRecord::Schema.define(:version => 20121112203500) do
   end
 
   add_index "events", ["eventable_id", "eventable_type"], :name => "index_events_on_eventable_id_and_eventable_type"
+
+  create_table "notifications", :force => true do |t|
+    t.string "subject"
+    t.text "content"
+    t.integer "status"
+    t.integer "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer "notifiable_id"
+    t.string "notifiable_type"
+    t.string "type"
+  end
 
   create_table "org_to_roles", :force => true do |t|
     t.integer "organization_id"
