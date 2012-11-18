@@ -1,7 +1,6 @@
 <fieldset>
 
 
-  <%= f.input :status_event, label: Provider.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
   <%= f.input :name, autofocus: true %>
   <%= f.input :company %>
   <%= f.input :phone, class: 'input-xlarge' %>
@@ -32,6 +31,8 @@
   </div>
   <%= f.input :city %>
   <%= f.input :zip %>
+  <%= f.input :status_event, label: Provider.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+
 
 
 </fieldset>

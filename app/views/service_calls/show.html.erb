@@ -91,13 +91,14 @@
         <br>
 
         <div class="row-fluid">
-          <div class="span6">
+
+          <div class="span8">
             <ul class="unstyled list_service_calls">
 
               <% if !@service_call.started_on_text.blank? %>
                   <li>
                     <div class="control-group select required">
-                      <label class="select optional control-label" for="completed_on_text">Completed On:</label>
+                      <label class="select optional control-label" for="completed_on_text">Completed On</label>
 
                       <div class="controls">
                         <%= f.text_field :completed_on_text, class: "datepicker", placeholder: 'Click to set date' %>
@@ -138,32 +139,52 @@
                 </address>
               </li>
               <li>
-                <%= f.object.subcontractor.try(:name) %>
+                <div class="control-group select required">
+                  <label class="select optional control-label" for="completed_on_text">Subcontractor</label>
+                  <div class="controls">
+                      <div class="input-large uneditable-input" title="To change Subcontractor use the action section" rel= 'tooltip'>
+                        <%= f.object.subcontractor.try (:name)  %>
+                      </div>
+                  </div>
+                </div>
               </li>
               <li>
-                f.object.technician.try(:name)
+                <div class="control-group select required">
+                  <label class="select optional control-label" for="completed_on_text">Technician</label>
+                  <div class="controls">
+
+                    <div class="input-large uneditable-input" title="To change Technician use the action section" rel= 'tooltip'>
+                    <%= f.object.technician.try(:name) %>
+                    </div>
+
+                  </div>
+                </div>
+
               </li>
               <li>
-                <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+                  <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
               </li>
             </ul>
 
-            <div class="form-actions_in_service_call">
-              <div class="form-actions">
-                <%= link_to "Back", service_calls_path, class: "btn btn-large btn-info" %>
-                <%= f.submit "Save Changes", class: "btn btn-large btn-primary", id: 'service_call_save_btn' %>
-              </div>
+            <!--here-->
             </div>
 
-          </div>
-
-          <div class="span6" id="job_notes">
+          <div class="span4" id="job_notes">
 
             <div class="miya_note_area string mandatory">
               <%= f.input :notes %>
             </div>
 
           </div>
+
+        </div>
+
+        <div class="form-actions_in_service_call">
+          <div class="form-actions">
+            <%= link_to "Back", service_calls_path, class: "btn btn-large btn-info" %>
+            <%= f.submit "Save Changes", class: "btn btn-large btn-primary", id: 'service_call_save_btn' %>
+          </div>
+
 
         </div>
       </div>
@@ -176,7 +197,7 @@
 <div class="row-fluid">
   <div class="no_margins">
 
-    <% if !event_list(@service_call).empty? %>
+    <% if @service_call.status_events.size > 0 %>
         <div class="span4">
           <ul class="unstyled">
             <li>

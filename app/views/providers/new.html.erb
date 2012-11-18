@@ -1,37 +1,47 @@
 <%= provide(:title, 'New Provider') %>
+    <div class="well">
+    <%= simple_form_for @provider, url: providers_url, :html => {:class => 'form-horizontal'} do |f| %>
 
-<div class="well">
+        <div class="row-fluid">
+            <div class="no_margins">
 
-  <div class="row-fluid">
-    <div class="span12">
-      <div class="smart_label">
-        <h1>New Provider:</h1>
+              <div class="span6">
 
-      </div>
-    </div>
-  </div>
-  <br>
+                <div class="smart_label">
+                  <h1>Enter New Provider details:</h1>
+                </div>
+                <br>
+                <% if f.object.errors.any? %>
+                    <div class="alert alert-block alert-error">
+                      <a class="close" data-dismiss="alert" href="#">×</a>
+                      <%= render 'shared/error_messages', object: f.object %>
+                    </div>
+                <% end %>
+                <%= render 'fields', f: f %>
 
-  <div class="row-fluid">
-    <div class="span10 ">
-      <%= simple_form_for @provider, url: providers_url, :html => {:class => 'form-horizontal'} do |f| %>
-          <% if f.object.errors.any? %>
-              <div class="alert alert-block alert-error">
-                <a class="close" data-dismiss="alert" href="#">×</a>
-                <%= render 'shared/error_messages', object: f.object %>
+                <div class="form-actions">
+                  <%= link_to 'Back', providers_path, :class => 'btn btn-medium' %>
+                  <%= f.submit t('providers.buttons.create_provider'), class: "btn btn-medium btn-primary", id: 'create_provider_btn' %>
+                </div>
+
               </div>
-          <% end %>
-          <%= render 'fields', f: f %>
+              <div class="span6">
 
-          <div class="form-actions">
-            <!--<div class="control-group string required">-->
-            <!--<div class="controls">-->
-            <%= link_to 'Back', providers_path, :class => 'btn btn-medium' %>
-            <%= f.submit t('providers.buttons.create_provider'), class: "btn btn-medium btn-primary", id: 'create_provider_btn' %>
-            <!--</div>-->
-          </div>
-      <% end %>
+                <div class="smart_label">
+                  <h1>Add Agreements:</h1>
+                </div>
+                <br>
 
-    </div>
-  </div>
+                    <%= render 'agreements/form', f: f %>
+
+
+
+              </div>
+
+
+            </div>
+        </div>
+
+
+<% end %>
 </div>
