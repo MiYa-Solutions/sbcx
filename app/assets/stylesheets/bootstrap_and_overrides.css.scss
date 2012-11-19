@@ -115,13 +115,19 @@ footer {
   }
 
   .control-label {
-    width: 70px;
-    padding-left: 65px;
+    //width: 70px;
+    //padding-left: 65px;
+    padding-left: 15px;
+    width: 35px
 
   }
 
-  .form-horizontal .controls {
-    margin-left: 120px;
+  .controls {
+    margin-left: 15px;
+  }
+
+  label {
+    font-weight: bold;
   }
 
 }
@@ -134,6 +140,16 @@ select {
   border: 1px solid #CCCCCC;
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  width: 93%;
+
+}
+
+.input-large {
+  width: 90%;
+}
+
+input, textarea {
+  width: 90%;
 }
 
 .miya_input_area {
@@ -144,10 +160,18 @@ select {
     border: 1px solid #CCCCCC;
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-
+    width: 90%;
   }
 
+}
 
+
+.sign_in_controls {
+
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    margin-top: 8px;
+  }
 }
 
 .smart_label {
@@ -224,7 +248,9 @@ select {
 
 
   input, textarea {
-    width: 210px;
+    width: auto;
+    //width: 210px;
+
   }
 
   .btn-medium {
