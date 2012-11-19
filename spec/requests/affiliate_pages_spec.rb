@@ -60,7 +60,7 @@ describe "Affiliate Pages" do
             clean org
           end
 
-          describe "to include affiliates who are sbcx memebers", js: true do
+          describe "to include affiliates who are sbcx members", js: true do
 
             let!(:member) { FactoryGirl.create(:member_admin).organization }
 

@@ -8,6 +8,9 @@
         <ul>
           <li><h1>Edit My User:</h1></li>
           <li>
+            <button class="btn btn-danger btn-medium" data-toggle="collapse" data-target="#edit_password_in_edit_profile" id="edit_org_from_edit_profile">
+              Reset Password
+            </button>
             <% permitted_to? :edit, :organizations do %>
                 <button class="btn btn-info btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
                   Edit Organization
@@ -28,39 +31,34 @@
               <%= f.error_notification %>
 
               <fieldset>
-              <%= f.input :email, :required => true %>
-              <%= f.input :first_name %>
-              <%= f.input :last_name %>
-              <%= f.input :phone %>
-              <%= f.input :mobile_phone %>
-              <%= f.input :work_phone %>
+                  <%= f.input :email, :required => true %>
+                  <%= f.input :first_name %>
+                  <%= f.input :last_name %>
+                  <%= f.input :phone %>
+                  <%= f.input :mobile_phone %>
+                  <%= f.input :work_phone %>
 
-                <br>
-                <!--<div class="row-    fluid">-->
-                  <!--<div class="span8">-->
-                    <div class="smart_label">
-                      <ul>
-                        <li>
-                          <h2>Login Info:</h2>
-                        </li>
-                        <li>
-                        </li>
-                      </ul>
-                    </div>
-                  <!--</div>-->
-                <!--</div>-->
+                <div class="form-actions">
+                  <%= link_to 'Back', profile_path, :class => 'btn btn-medium', id: 'back_from_edit_profile' %>
+                  <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", id: 'save_profile_changes' %>
+                </div>
+             <% end %>
+             </fieldset>
+
+                <!--<br>-->
+               <!---->
+                    <!--<div class="smart_label">-->
+                      <!--<ul>-->
+                        <!--<li>-->
+                          <!--<h2>Login Info:</h2>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--</li>-->
+                      <!--</ul>-->
+                    <!--</div>-->
+
               <br>
 
-                <%= f.input :password, :hint => "Leave blank if you wish to keep current password", :required => false, :label => "New Password" %>
-              <%= f.input :password_confirmation, :required => false, :label => "Confirm New Password" %>
-              <%= f.input :current_password, :hint => "Enter your current password to confirm changes", :required => false %>
-
-              <div class="form-actions">
-                <%= link_to 'Back', profile_path, :class => 'btn btn-medium', id: 'back_from_edit_profile' %>
-                <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", id: 'save_profile_changes' %>
-              </div>
-              <% end %>
-             </fieldset>
 
           <p><strong>Unhappy?</strong>
           <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete, class: "btn btn-medium btn-danger", :id => "cancel_my_account" %>
@@ -78,12 +76,36 @@
               <%= simple_form_for @organization, :html => {:class => 'form-horizontal'}, :remote => true do |f| %>
                   <%= render 'organizations/fields', f: f %>
                   <div class="form-actions">
+                    <button class="btn btn-info btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
+                      cancel
+                    </button>
                     <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", :id => "save_org_from_edit_profile" %>
                   </div>
               <% end %>
 
-        </div>
-    </div>
+            </div>
+
+             <div id="edit_password_in_edit_profile" class="collapse">
+
+               <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:method => :put}, :html => {:class => 'form-horizontal'}) do |f| %>
+                   </fieldset>
+                   <%= f.error_notification %>
+                   <%= f.input :password, :hint => "Leave blank if you wish to keep current password", :required => false, :label => "New Password" %>
+                   <%= f.input :password_confirmation, :required => false, :label => "Confirm New Password" %>
+                   <%= f.input :current_password, :hint => "Enter your current password to confirm changes", :required => false %>
+
+                   <div class="form-actions">
+                     <button class="btn btn-info btn-medium" data-toggle="collapse" data-target="#edit_password_in_edit_profile" id="edit_org_from_edit_profile">
+                       cancel
+                     </button>
+
+                     <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", id: 'save_password_changes' %>
+                   </div>
+                   </fieldset>
+               <% end %>
+             </div>
+
+      </div>
 
   </div>
 

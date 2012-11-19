@@ -1,6 +1,7 @@
 <div class="row-fluid">
   <div class="well">
 
+
        <div class="smart_label"  >
       <ul>
         <li><h1>Sign In</h1></li>
@@ -12,15 +13,26 @@
 
     <br>
 
+    <div class="row-fluid">
+      <div class="span4">
+
+
         <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-horizontal' }) do |f| %>
                       <%= f.input :email %>
                       <%= f.input :password %>
+            <div class="sign_in_controls">
                       <%= f.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
-                         <div class="form-actions">
-                            <%= f.button :submit, "Sign in", :class => 'btn btn-large btn-primary' %>
-                      </div>
+            </div>
+
+            <div class="form-actions">
+                <%= f.button :submit, "Sign in", :class => 'btn btn-large btn-primary' %>
+
+            </div>
+
         <% end %>
 
+      </div>
+    </div>
 
   </div>
 </div>

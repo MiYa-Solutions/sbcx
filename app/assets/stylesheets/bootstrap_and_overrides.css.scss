@@ -165,6 +165,15 @@ input, textarea {
 
 }
 
+
+.sign_in_controls {
+
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    margin-top: 8px;
+  }
+}
+
 .smart_label {
   background-color: $grayLight;
   display: block;
@@ -239,7 +248,7 @@ input, textarea {
 
 
   input, textarea {
-    width: 80%;
+    width: auto;
     //width: 210px;
 
   }

@@ -56,6 +56,8 @@ class ProvidersController < ApplicationController
 
   def show
     #@provider = Provider.find(params[:id])
+    @agreement = Agreement.new
+    @agreements = @provider.agreements
   end
 
   def new_provider_from_params
