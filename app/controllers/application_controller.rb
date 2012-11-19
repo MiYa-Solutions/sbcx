@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   include Userstamp
 
   before_filter { |c| Authorization.current_user = c.current_user }
+  # todo make counting more efficient
+  before_filter { |c| @notification_count = c.current_user.try(:notifications).try(:size) }
 
   def permitted_params(obj)
     @permitted_params ||= PermittedParams.new(params, current_user, obj)

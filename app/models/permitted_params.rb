@@ -224,4 +224,12 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
   end
 
+  def notification
+    params.require(:notification).permit(*notification_attributes)
+  end
+
+  def notification_attributes
+    [:status_event]
+  end
+
 end

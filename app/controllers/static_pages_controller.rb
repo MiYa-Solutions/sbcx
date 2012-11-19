@@ -7,6 +7,7 @@ class StaticPagesController < ApplicationController
       flash[:error] = "Please login first"
       render 'index'
     end
+    @notifications = current_user.try(:notifications)
   end
 
   def index

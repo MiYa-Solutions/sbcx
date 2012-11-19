@@ -12,6 +12,9 @@ authorization do
   role :technician do
 
     has_permission_on :static_pages, to: [:index, :read]
+    has_permission_on :notifications, to: [:index, :show, :read, :update, :destroy] do
+      if_attribute :user => is { user }
+    end
     has_permission_on :my_users, to: [:index, :read]
     has_permission_on [:providers, :subcontractors], :to => [:index]
     has_permission_on [:affiliates, :subcontractors], :to => [:index]

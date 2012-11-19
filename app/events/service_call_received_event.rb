@@ -5,6 +5,12 @@ class ServiceCallReceivedEvent < Event
   end
 
   def process_event
+    service_call = associated_object
+    org          = service_call.organization
+
+    User.my_admins(org.id).each do |user|
+      service_call.notifications << ReceivedServiceCallNotification.new(subject: "You Received New Service Call", content: "This content ", user: user)
+    end
 
   end
 

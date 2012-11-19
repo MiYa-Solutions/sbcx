@@ -1,0 +1,24 @@
+<h1>Listing notifications</h1>
+
+<table class="table table-striped">
+  <tr>
+    <th><%= Notification.human_attribute_name :subject %></th>
+    <th><%= Notification.human_attribute_name :content %></th>
+    <th><%= Notification.human_attribute_name :status %></th>
+    <th> Actions</th>
+  </tr>
+
+  <% @notifications.each do |notification| %>
+      <tr>
+        <td><%= link_to notification.subject, notification.becomes(Notification) %></td>
+        <td><%= notification.html_message %></td>
+        <td><%= notification.human_status_name.titleize %></td>
+
+        <td><%= link_to 'Show', notification.becomes(Notification), :class => 'btn btn-mini btn-info' %>
+          <%= link_to 'Destroy', notification.becomes(Notification), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-mini btn-danger' %></td>
+      </tr>
+  <% end %>
+</table>
+
+<br/>
+

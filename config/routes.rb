@@ -12,6 +12,7 @@ Sbcx::Application.routes.draw do
   resources :providers, only: [:new, :create, :edit, :show, :index, :update]
   resources :subcontractors, only: [:new, :create, :edit, :show, :index, :update]
   resources :affiliates, only: [:new, :create, :edit, :show, :index, :update], controller: 'affiliates'
+  resources :notifications, only: [:show, :index, :update, :destroy]
 
 
   root to: 'static_pages#index'
