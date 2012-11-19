@@ -1,5 +1,4 @@
 <div class="well">
-<%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
 
     <div class="row-fluid">
 
@@ -68,13 +67,38 @@
             </li>
           </ul>
 
+          <br>
+
+          <% if @service_call.status_events.size > 0 %>
+
+                  <ul class="unstyled">
+                    <li>
+                      <div class="smart_label">
+                        <ul>
+                          <li><h1>Actions:</h1></li>
+                          <li></li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li><br></li>
+                    <li>
+                      <div class="action_buttons_service_call">
+                        <p>
+                          <%= event_list(@service_call) %>
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+
+            <% end %>
 
         </div>
       </div>
 
       <div class="span8" id="job_details">
+        <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
 
-        <div class="smart_label">
+      <div class="smart_label">
           <ul>
             <li><h1>Job Name:</h1></li>
             <li></li>
@@ -185,7 +209,6 @@
             <%= f.submit "Save Changes", class: "btn btn-large btn-primary", id: 'service_call_save_btn' %>
           </div>
 
-
         </div>
       </div>
 
@@ -194,34 +217,34 @@
     <!--end of status & Job details section-->
 <% end %>
 
-<div class="row-fluid">
-  <div class="no_margins">
+<!--<div class="row-fluid">-->
+  <!--<div class="no_margins">-->
 
-    <% if @service_call.status_events.size > 0 %>
-        <div class="span4">
-          <ul class="unstyled">
-            <li>
-              <div class="smart_label">
-                <ul>
-                  <li><h1>Actions:</h1></li>
-                  <li></li>
-                </ul>
-              </div>
-            </li>
-            <li><br></li>
-            <li>
-              <div class="action_buttons_service_call">
-                <p>
-                  <%= event_list(@service_call) %>
-                </p>
-              </div>
-            </li>
-          </ul>
-        </div>
-    <% end %>
+    <!--<#% if @service_call.status_events.size > 0 %>-->
+        <!--<div class="span4">-->
+          <!--<ul class="unstyled">-->
+            <!--<li>-->
+              <!--<div class="smart_label">-->
+                <!--<ul>-->
+                  <!--<li><h1>Actions:</h1></li>-->
+                  <!--<li></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</li>-->
+            <!--<li><br></li>-->
+            <!--<li>-->
+              <!--<div class="action_buttons_service_call">-->
+                <!--<p>-->
+                  <!--<#= event_list(@service_call) %>-->
+                <!--</p>-->
+              <!--</div>-->
+            <!--</li>-->
+          <!--</ul>-->
+        <!--</div>-->
+    <!--<#% end %>-->
 
-  </div>
-</div>
+  <!--</div>-->
+<!--</div>-->
 
 
 <br>
