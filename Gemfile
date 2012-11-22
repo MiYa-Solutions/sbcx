@@ -21,9 +21,10 @@ gem 'magiclabs-userstamp'
 gem 'strong_parameters'
 
 gem 'best_in_place'
+gem 'thin'
+gem 'figaro'
 
 group :development do
-  gem 'thin'
   gem 'ruby-graphviz', :require => 'graphviz'
 end
 group :development, :test do
