@@ -45,7 +45,10 @@ class ServiceCallsController < ApplicationController
       respond_to do |format|
         format.js { }
         format.html do
-      redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
+          redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
+        end
+        format.mobile do
+          redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
         end
       end
     else

@@ -18,7 +18,8 @@ Sbcx::Application.routes.draw do
   root to: 'static_pages#index'
 
   # overriding the devise registration controller
-  devise_for :users, :controllers => { :registrations => "registrations", :passwords => "passwords" }
+  devise_for :users, :controllers => { :registrations => "registrations", :passwords => "passwords", :sessions => "sessions" }
+
   devise_scope :user do
     match "/profile" => "registrations#show"
   end

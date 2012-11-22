@@ -1,0 +1,7 @@
+<%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+<!--#<#% end %> -->
+<%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+<%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
+<%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
+
+<%= f.input :notes %>

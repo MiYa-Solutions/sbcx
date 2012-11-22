@@ -4,62 +4,64 @@
     <div class="span5">
 
       <!--#<#% if !f.object.new_record? %>-->
-            <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+      <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
       <!--#<#% end %> -->
-            <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
-            <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
-            <div id="customer_wrapper">
+      <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+      <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
+      <div id="customer_wrapper">
 
-                <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
+        <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
 
+      </div>
+
+      <div class="control-group string ">
+        <div class="controls">
+          <a class="btn btn-danger btn-medium" data-toggle="collapse" data-target="#new_customer_in_service_call">
+            Add customer
+          </a>
+        </div>
+      </div>
+
+      <div id="new_customer_in_service_call" class="collapse">
+        <address>
+          <div class="control-group string ">
+            <div class="controls">
+              <%= f.text_field :new_customer, placeholder: 'Customer Name' %>
+              <%= f.text_field :address1, placeholder: 'Address 1' %>
+              <%= f.text_field :address2, placeholder: 'Address 2' %>
+              <%= f.text_field :company, placeholder: 'Company Name' %>
+              <%= f.text_field :city, placeholder: 'City' %>
+              <%= f.text_field :state, placeholder: 'State' %>
+              <%= f.text_field :zip, placeholder: 'Zip code' %>
+              <%= f.text_field :country, placeholder: 'Country' %>
+              <%= f.text_field :phone, placeholder: 'Primary Phone' %>
+              <%= f.text_field :mobile_phone, placeholder: 'Mobile Phone' %>
+              <%= f.text_field :work_phone, placeholder: 'Work Phone' %>
+              <%= f.text_field :email, placeholder: 'Email address' %>
             </div>
+          </div>
+        </address>
+      </div>
 
-            <div class="control-group string ">
-              <div class="controls">
-                <button class="btn btn-danger btn-medium" data-toggle="collapse" data-target="#new_customer_in_service_call">
-                   Add customer
-                </button>
-              </div>
-             </div>
+      <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
 
-            <div id="new_customer_in_service_call" class="collapse">
-                <address>
-                    <div class="control-group string ">
-                        <div class="controls">
-                              <%= f.text_field :new_customer, placeholder: 'Customer Name' %>
-                              <%= f.text_field :address1, placeholder: 'Address 1' %>
-                              <%= f.text_field :address2, placeholder: 'Address 2' %>
-                              <%= f.text_field :company, placeholder: 'Company Name' %>
-                              <%= f.text_field :city, placeholder: 'City' %>
-                              <%= f.text_field :state, placeholder: 'State' %>
-                              <%= f.text_field :zip, placeholder: 'Zip code' %>
-                              <%= f.text_field :country, placeholder: 'Country' %>
-                              <%= f.text_field :phone, placeholder: 'Primary Phone' %>
-                              <%= f.text_field :mobile_phone, placeholder: 'Mobile Phone' %>
-                              <%= f.text_field :work_phone, placeholder: 'Work Phone' %>
-                              <%= f.text_field :email, placeholder: 'Email address' %>
-                        </div>
-                  </div>
-                </address>
-            </div>
+      <div class="control-group string ">
+        <label class="string  control-label" for="service_call_started_on">Started On</label>
 
-            <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
+        <div class="controls">
+          <%= f.text_field :started_on_text, class: "datepicker" %>
+          <span class="help-inline">Click to set date</span>
+        </div>
+      </div>
 
-             <div class="control-group string ">
-                 <label class="string  control-label" for="service_call_started_on">Started On</label>
-                 <div class="controls">
-                    <%= f.text_field :started_on_text, class: "datepicker" %>
-                    <span class="help-inline">Click to set date</span>
-                </div>
-            </div>
+      <div class="control-group string ">
+        <label class="string  control-label" for="service_call_completed_on">Completed On</label>
 
-            <div class="control-group string ">
-                <label class="string  control-label" for="service_call_completed_on">Completed On</label>
-                <div class="controls">
-                    <%= f.text_field :completed_on_text, class: "datepicker" %>
-                    <span class="help-inline">Click to set date</span>
-                </div>
-            </div>
+        <div class="controls">
+          <%= f.text_field :completed_on_text, class: "datepicker" %>
+          <span class="help-inline">Click to set date</span>
+        </div>
+      </div>
     </div>
 
     <div class="span5">
@@ -71,56 +73,54 @@
   </div>
 
 
-
-
   <!--<div class="row-fluid">-->
-    <!--<div class="span10 ">-->
-      <!--<button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
-        <!--Add customer-->
-      <!--</button>-->
+  <!--<div class="span10 ">-->
+  <!--<button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
+  <!--Add customer-->
+  <!--</button>-->
 
-      <!--<div id="new_customer_in_service_call" class="collapse">-->
-        <!--<div class="row-fluid">-->
-          <!--<div class="span5 ">-->
-            <!--<br>-->
-            <!--<#%= f.label :new_customer %>-->
-            <!--<#%= f.text_field :new_customer %>-->
-            <!--<#%= f.label :address1 %>-->
-            <!--<#%= f.text_field :address1 %>-->
-            <!--<#%= f.label :address2 %>-->
-            <!--<#%= f.text_field :address2 %>-->
-            <!--<#%= f.label :company %>-->
-            <!--<#%= f.text_field :company %>-->
-            <!--<#%= f.label :city %>-->
-            <!--<#%= f.text_field :city %>-->
-            <!--<#%= f.label :state %>-->
-            <!--<#%= f.text_field :state %>-->
-            <!--<#%= f.label :zip %>-->
-            <!--<#%= f.text_field :zip %>-->
-            <!--<#%= f.label :country %>-->
-            <!--<#%= f.text_field :country %>-->
-            <!--<#%= f.label :phone %>-->
-            <!--<#%= f.text_field :phone %>-->
-            <!--<#%= f.label :mobile_phone %>-->
-            <!--<#%= f.text_field :mobile_phone %>-->
-            <!--<#%= f.label :work_phone %>-->
-            <!--<#%= f.text_field :work_phone %>-->
-            <!--<#%= f.label :email %>-->
-            <!--<#%= f.text_field :email %>-->
-            <!--<p>-->
+  <!--<div id="new_customer_in_service_call" class="collapse">-->
+  <!--<div class="row-fluid">-->
+  <!--<div class="span5 ">-->
+  <!--<br>-->
+  <!--<#%= f.label :new_customer %>-->
+  <!--<#%= f.text_field :new_customer %>-->
+  <!--<#%= f.label :address1 %>-->
+  <!--<#%= f.text_field :address1 %>-->
+  <!--<#%= f.label :address2 %>-->
+  <!--<#%= f.text_field :address2 %>-->
+  <!--<#%= f.label :company %>-->
+  <!--<#%= f.text_field :company %>-->
+  <!--<#%= f.label :city %>-->
+  <!--<#%= f.text_field :city %>-->
+  <!--<#%= f.label :state %>-->
+  <!--<#%= f.text_field :state %>-->
+  <!--<#%= f.label :zip %>-->
+  <!--<#%= f.text_field :zip %>-->
+  <!--<#%= f.label :country %>-->
+  <!--<#%= f.text_field :country %>-->
+  <!--<#%= f.label :phone %>-->
+  <!--<#%= f.text_field :phone %>-->
+  <!--<#%= f.label :mobile_phone %>-->
+  <!--<#%= f.text_field :mobile_phone %>-->
+  <!--<#%= f.label :work_phone %>-->
+  <!--<#%= f.text_field :work_phone %>-->
+  <!--<#%= f.label :email %>-->
+  <!--<#%= f.text_field :email %>-->
+  <!--<p>-->
 
-              <!--#<%# simple_form_for @customer, :html => {:class => 'form-horizontal'}, :remote => true do |f| %>-->
-              <!--#<%# render 'customers/fields', f: f %>-->
-              <!--<div class="form-actions">-->
-              <!--#<%# f.submit "Create Customer", class: "btn btn-medium btn-primary" %>-->
-              <!--</div>-->
+  <!--#<%# simple_form_for @customer, :html => {:class => 'form-horizontal'}, :remote => true do |f| %>-->
+  <!--#<%# render 'customers/fields', f: f %>-->
+  <!--<div class="form-actions">-->
+  <!--#<%# f.submit "Create Customer", class: "btn btn-medium btn-primary" %>-->
+  <!--</div>-->
 
-              <!--<%# end %>-->
-              <!--<button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
-              <!--Save and close-->
-              <!--</button>-->
-            <!--</p>-->
-          <!--</div>-->
+  <!--<%# end %>-->
+  <!--<button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
+  <!--Save and close-->
+  <!--</button>-->
+  <!--</p>-->
+  <!--</div>-->
 
 
 </fieldset>
