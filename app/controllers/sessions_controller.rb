@@ -11,4 +11,17 @@ class SessionsController < Devise::SessionsController
       respond_with resource, :location => redirect_location(resource_name, resource)
     end
   end
+
+  def build_resource(hash=nil)
+    validated_params ||= params[resource_name] || ActionController::Parameters.new
+    hash             ||= validated_params.permit(*permitted_params(nil).new_user_attributes) || { }
+    self.resource    = resource_class.new_with_session(hash, session)
+  end
+
+  private
+
+  def resource_params
+    params.require(:user).permit(:email, :password, :password_confirmation)
+  end
+
 end
