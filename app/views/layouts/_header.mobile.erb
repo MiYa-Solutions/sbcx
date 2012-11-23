@@ -1,35 +1,32 @@
-<div data-role="header" class="ui-header ui-bar-a" role="banner">
+<h1 class="ui-title" role="heading" aria-level="1"><%= yield(:title) || "Untitled" %></h1>
+<% if user_signed_in? %>
+    <%= link_to destroy_user_session_path, method: :delete, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a", data: { ajax: "false", icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
+        <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign Out</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>
+    <% end %>
+<% else %>
+    <%= link_to new_user_session_path, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a", data: { icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
+        <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign In</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>
+    <% end %>
+<% end %>
 
-  <h1 class="ui-title" role="heading" aria-level="1"><%= yield(:title) || "Untitled" %></h1>
-  <% if user_signed_in? %>
-      <%= link_to destroy_user_session_path, method: :delete, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a", data: { ajax: "false", icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
-          <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign Out</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>
+<div data-role="navbar" class="ui-navbar ui-mini" role="navigation">
+  <ul class="ui-grid-a">
+
+    <li class="ui-block-a">
+      <%= link_to user_root_path, class: "ui-btn ui-btn-inline ui-btn-up-a", data: { corners: "false", shadow: "false", iconshadow: "true", wrapperels: "span", theme: "a", inline: "true", transition: "slidedown" } do %>
+          <span class="ui-btn-inner"><span class="ui-btn-text">Home</span></span>
       <% end %>
-  <% else %>
-      <%= link_to new_user_session_path, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a", data: { icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
-          <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign In</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>
+    </li>
+    <li class="ui-block-b">
+      <%= link_to new_service_call_path, class: "ui-btn ui-btn-inline ui-btn-up-a", data: { corners: "false", shadow: "false", iconshadow: "true", wrapperels: "span", theme: "a", inline: "true", transition: "flow" } do %>
+          <span class="ui-btn-inner"><span class="ui-btn-text"><%= ServiceCall.name.humanize %></span></span>
       <% end %>
-  <% end %>
-
-  <div data-role="navbar" class="ui-navbar ui-mini" role="navigation">
-    <ul class="ui-grid-a">
-
-      <li class="ui-block-a">
-        <%= link_to user_root_path, class: "ui-btn ui-btn-inline ui-btn-up-a", data: { corners: "false", shadow: "false", iconshadow: "true", wrapperels: "span", theme: "a", inline: "true" } do %>
-            <span class="ui-btn-inner"><span class="ui-btn-text">Home</span></span>
-        <% end %>
-      </li>
-      <li class="ui-block-b">
-        <%= link_to new_service_call_path, class: "ui-btn ui-btn-inline ui-btn-up-a", data: { corners: "false", shadow: "false", iconshadow: "true", wrapperels: "span", theme: "a", inline: "true", transition: "flow" } do %>
-            <span class="ui-btn-inner"><span class="ui-btn-text"><%= ServiceCall.name.humanize %></span></span>
-        <% end %>
-      </li>
-      <li class="ui-block-c">
-        <%= link_to affiliates_path, class: "ui-btn ui-btn-inline ui-btn-up-a", data: { corners: "false", shadow: "false", iconshadow: "true", wrapperels: "span", theme: "a", inline: "true" } do %>
-            <span class="ui-btn-inner"><span class="ui-btn-text">Affiliates</span></span>
-        <% end %>
-      </li>
-    </ul>
-  </div>
-  <!-- /navbar -->
+    </li>
+    <li class="ui-block-c">
+      <%= link_to affiliates_path, class: "ui-btn ui-btn-inline ui-btn-up-a", data: { corners: "false", shadow: "false", iconshadow: "true", wrapperels: "span", theme: "a", inline: "true" } do %>
+          <span class="ui-btn-inner"><span class="ui-btn-text">Affiliates</span></span>
+      <% end %>
+    </li>
+  </ul>
 </div>
+<!-- /navbar -->
