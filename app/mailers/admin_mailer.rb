@@ -10,6 +10,6 @@ class AdminMailer < ActionMailer::Base
   def sign_up_alert(org)
     @organization = org
 
-    mail to: ENV["NEW_MEMBER_EVENT_EMAILS"], subject: "#{Rails.env}: We have a new member!!!"
+    mail to: ENV["NEW_MEMBER_EVENT_EMAILS"], subject: "#{ENV["APP_NAME"]}: We have a new member!!!"
   end
 end
