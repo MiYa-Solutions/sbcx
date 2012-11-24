@@ -21,9 +21,10 @@ gem 'magiclabs-userstamp'
 gem 'strong_parameters'
 
 gem 'best_in_place'
+gem 'thin'
+gem 'figaro'
 
 group :development do
-  gem 'thin'
   gem 'ruby-graphviz', :require => 'graphviz'
 end
 group :development, :test do
@@ -57,6 +58,12 @@ group :test do
   gem 'capybara-screenshot'
   gem 'poltergeist'
 end
+
+# ######################
+# seems to not be necessary anymore after adding the code in mobile.js
+# #########################
+# using rails-ujs fork to be able to handle data-ajax=false in link_to when using jquery-mobile
+#gem 'jquery-ujs', "1.0",  git: "git://github.com/scottwb/jquery-ujs.git", branch: "jquery-mobile-data-ajax"
 
 group :production do
 end

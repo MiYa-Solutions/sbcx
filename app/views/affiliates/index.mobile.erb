@@ -1,0 +1,7 @@
+<% provide(:title, Affiliate.name.humanize.pluralize) %>
+
+<ul data-role="listview">
+  <% @affiliates.each do |provider| %>
+      <li><%= link_to provider.name, provider %></li>
+  <% end %>
+</ul>

@@ -23,7 +23,7 @@ module Sbcx
 
   class Application < Rails::Application
     # loading the SubConTraX configuration parameters located in config.yml
-    YAML.load_file("#{Rails.root}/config/config.yml")[Rails.env].each { |key, value| config.send "#{key}=", value }
+    #YAML.load_file("#{Rails.root}/config/config.yml")[Rails.env].each { |key, value| config.send "#{key}=", value }
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -83,8 +83,8 @@ module Sbcx
         :authentication       => :login,
         #:user_name          => "mark@miyasolutions.com", #should be you@domain.com
         #:password           => "miyabiz11"
-        :user_name            => config.mailer_user, #should be you@domain.com
-        :password             => config.mailer_password
+        :user_name            => ENV["MAILER_USER"], #should be you@domain.com
+        :password             => ENV["MAILER_PASSWORD"]
     }
 
   end

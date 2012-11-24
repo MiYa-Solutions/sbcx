@@ -1,0 +1,14 @@
+<tr>
+  <td><%= link_to notification.subject, notification_path(notification) %>  </td>
+  <td><%= notification.html_message %></td>
+  <td><%= notification.human_status_name %></td>
+
+  <td>
+
+    <%= link_to 'Show', notification_path(notification), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+    <%= link_to 'Destroy', new_provider_path, :class => 'btn btn-mini btn-info' %>
+
+
+  </td>
+</tr>
+

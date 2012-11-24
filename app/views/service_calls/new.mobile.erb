@@ -1,0 +1,9 @@
+<%= provide(:title, 'New Service Call') %>
+<%= simple_form_for @service_call, as: :service_call, url: service_calls_url, :html => { :class => 'form-horizontal' } do |f| %>
+    <%= render 'fields', f: f %>
+
+    <div class="form-actions">
+      <%= link_to "Back to List", service_calls_path, :class => 'btn btn-large' %>
+      <%= f.submit "Create Service Call", class: "btn btn-large btn-primary", id: 'service_call_create_btn' %>
+    </div>
+<% end %>
