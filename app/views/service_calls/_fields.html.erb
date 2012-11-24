@@ -16,9 +16,11 @@
 
             <div class="control-group string ">
               <div class="controls">
-                <button class="btn btn-danger btn-medium" data-toggle="collapse" data-target="#new_customer_in_service_call">
-                   Add customer
-                </button>
+                <!--<button class="btn btn-danger btn-medium" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
+                   <!--Add customer-->
+                <!--</button>-->
+
+                <%= link_to 'Add New', :html => {:data-toggle => 'collapse'}, :html => {:data-target => '#new_customer_in_service_call'}  %>
               </div>
              </div>
 

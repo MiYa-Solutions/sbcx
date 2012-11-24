@@ -21,7 +21,13 @@
       <%= render 'notifications/notification', notification: notification %>
   <% end %>
 
+
+
+
   </tbody>
 </table>
 
+<%= @service_calls.each do |f| %>
+    <%= render 'service_calls/index', f: f %>
 
+<% end %>
