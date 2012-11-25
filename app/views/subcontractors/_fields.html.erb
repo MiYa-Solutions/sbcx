@@ -1,6 +1,5 @@
 <fieldset>
   <%= render 'shared/error_messages', object: f.object %>
-  <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
   <%= f.input :name, label: 'Name', autofocus: true %>
   <%= f.input :company %>
   <%= f.input :phone %>
@@ -30,6 +29,8 @@
 
   <%= f.input :city %>
   <%= f.input :zip %>
+  <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+
 
 
 </fieldset>
