@@ -4,7 +4,7 @@ class CustomersController < ApplicationController
 
   def new
 
-    @customer = Customer.new
+    #@customer = Customer.new
 
   end
 
@@ -16,6 +16,7 @@ class CustomersController < ApplicationController
     end
 
     @customer = @organization.customers.build(permitted_params(nil).customer)
+
 
     # todo create symbols for the notification strings
     if @customer.save
@@ -103,5 +104,10 @@ class CustomersController < ApplicationController
     end
 
   end
+
+  def new_customer_from_params
+    @customer ||= current_user.organization.customers.new(permitted_params(nil).customer)
+  end
+
 
 end
