@@ -1,7 +1,14 @@
 <% provide(:title, Affiliate.name.humanize.pluralize) %>
 
-<ul data-role="listview">
+<ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
   <% @affiliates.each do |provider| %>
-      <li><%= link_to provider.name, provider %></li>
+      <li><%= link_to provider.name, provider %>
+        <% if provider.subcontrax_member==true %>
+            <div class="Miya_mobile_member_tag">
+              <div class="ui-li-count ui-btn-up-b ui-btn-corner-all"> Member</div>
+             </div>
+        <% end %>
+      </li>
   <% end %>
 </ul>
+

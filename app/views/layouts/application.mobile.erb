@@ -6,13 +6,13 @@
   <%= javascript_include_tag "application" %>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <%= stylesheet_link_tag "http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" %>
+  <%= stylesheet_link_tag "http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css", "mobile.css" %>
   <%= javascript_include_tag "http://code.jquery.com/jquery-1.8.2.min.js", "http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js", "mobile" %>
   <%= csrf_meta_tag %>
 
 </head>
 <body>
-<div data-role="page">
+<div data-role="page" data-theme="a" data-content-theme="a">
 
   <div data-role="header">
     <%= render 'layouts/header' %>
@@ -34,9 +34,9 @@
   </div>
   <!-- /content -->
 
-  <div data-role="footer">
-    <h4><%= current_user.try(:email) %></h4>
-  </div>
+  <footer data-role="footer" data-position="fixed">
+    <%= render 'layouts/footer' %>
+  </footer>
   <!-- /footer -->
 </div>
 <!-- /page -->
