@@ -17,6 +17,8 @@ describe "Service Call pages" do
   status_select             = 'service_call_status_event'
   customer_select           = 'service_call_customer_id'
   new_customer_fld          = 'service_call_new_customer'
+  notification_counter      = '#notification-counter'
+  notifications             = '#notifications'
 
   # ==============================================================
   # buttons to click and inspect
@@ -264,6 +266,14 @@ describe "Service Call pages" do
             end
 
 
+          end
+
+          it "notification counter should indicate a notice" do
+            should have_selector(notification_counter, text: "1")
+          end
+          it "notification counter should indicate a notice" do
+            visit user_root_path
+            should have_selector(notifications, text: /#{service_call.provider.name}/)
           end
 
           it "should show up in the subcontractors gui with a locelized received_new status" do

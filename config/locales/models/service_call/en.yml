@@ -112,3 +112,7 @@ en:
   notifications:
     received_service_call_notification:
       html_message: 'Received a new %{link} from %{prov_name}'
+    completed_service_call_notification:
+      html_message: 'The %{subcontractor} has completed the %{link}'
+    completed_notification:
+      html_message: '%{technician} has completed the %{link}'

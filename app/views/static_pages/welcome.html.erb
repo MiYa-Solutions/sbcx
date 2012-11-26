@@ -2,33 +2,33 @@
 
   <div class="row-fluid">
     <% if !@notifications.empty? %>
-          <div class="smart_label">
-            <ul>
-              <li><h1>Notifications</h1></li>
-              <li></li>
-            </ul>
-          </div>
+        <div class="smart_label">
+          <ul>
+            <li><h1>Notifications</h1></li>
+            <li></li>
+          </ul>
+        </div>
 
-          <br>
+        <br>
 
-          <table class="table table-striped" id="providers_search_results">
-              <thead>
-                <tr>
-                    <th><%= Notification.human_attribute_name(:subject) %></th>
-                    <th><%= Notification.human_attribute_name(:content) %></th>
-                    <th><%= Notification.human_attribute_name(:status) %></th>
-                    <th> Actions</th>
-                </tr>
-              </thead>
-              <tbody id="notifications">
-                    <% @notifications.each do |notification| %>
-                        <%= render 'notifications/notification', notification: notification %>
-                    <% end %>
-              </tbody>
-          </table>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th><%= Notification.human_attribute_name(:subject) %></th>
+            <th><%= Notification.human_attribute_name(:content) %></th>
+            <th><%= Notification.human_attribute_name(:status) %></th>
+            <th> Actions</th>
+          </tr>
+          </thead>
+          <tbody id="notifications">
+          <% @notifications.each do |notification| %>
+              <%= render 'notifications/notification', notification: notification %>
+          <% end %>
+          </tbody>
+        </table>
 
     <% else %>
-      <span class="alert alert-info" id="empty_search_result_notice">No Notifications</span>
+        <span class="alert alert-info" id="empty_search_result_notice">No Notifications</span>
         <br>
         <br>
     <% end %>
@@ -49,33 +49,33 @@
 
 
         <table class="table table-striped">
-         <thead>
-            <tr>
-                <th>Reference</th>
-                <th>Status</th>
-                <th>Subcontractor Status</th>
-                <th>Provider</th>
-                <th>Subcontractor</th>
-                <th>Customer</th>
-                <th>Actions</th>
-            </tr>
-         </thead>
-         <tbody>
-            <% @service_calls.each do |sc| %>
-                <tr>
-                    <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
-                    <td><%= sc.human_status_name %></td>
-                    <td><%= sc.human_subcontractor_status_name %></td>
-                    <td><%= sc.provider.try(:name) %></td>
-                    <td><%= sc.subcontractor.try(:name) %></td>
-                    <td><%= sc.customer.try(:name) %></td>
+          <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Status</th>
+            <th>Subcontractor Status</th>
+            <th>Provider</th>
+            <th>Subcontractor</th>
+            <th>Customer</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @service_calls.each do |sc| %>
+              <tr>
+                <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
+                <td><%= sc.human_status_name %></td>
+                <td><%= sc.human_subcontractor_status_name %></td>
+                <td><%= sc.provider.try(:name) %></td>
+                <td><%= sc.subcontractor.try(:name) %></td>
+                <td><%= sc.customer.try(:name) %></td>
                 <td>
-                    <%= link_to 'Edit', edit_service_call_path(sc), :class => 'btn btn-mini' %>
-                    <%= link_to 'Show', sc.becomes(ServiceCall), :class => 'btn btn-mini btn-danger' %>
+                  <%= link_to 'Edit', edit_service_call_path(sc), :class => 'btn btn-mini' %>
+                  <%= link_to 'Show', sc.becomes(ServiceCall), :class => 'btn btn-mini btn-danger' %>
                 </td>
-                </tr>
-            <% end %>
-         </tbody>
+              </tr>
+          <% end %>
+          </tbody>
         </table>
 
     <% else %>
@@ -87,5 +87,5 @@
   </div>
 
 
-        <!--End of Well-->
+  <!--End of Well-->
 </div>

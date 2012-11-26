@@ -9,7 +9,9 @@ class ServiceCallReceivedEvent < Event
     org          = service_call.organization
 
     User.my_admins(org.id).each do |user|
-      service_call.notifications << ReceivedServiceCallNotification.new(subject: "You Received New Service Call", content: "This content ", user: user)
+      notification = ReceivedServiceCallNotification.new(subject: I18n.t('notification_mailer.received_new_service_call.subject', provider: service_call.provider.name), user: user)
+      service_call.notifications << notification
+      notification.deliver
     end
 
   end

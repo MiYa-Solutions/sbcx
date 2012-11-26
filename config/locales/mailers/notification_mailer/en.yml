@@ -1,0 +1,5 @@
+en:
+  notification_mailer:
+    received_new_service_call:
+      subject: 'New Service Call From %{provider}'
+      content: 'This is to inform you that %{provider} has transferred service call %{ref} to you. Please click the blow link to view the service call'

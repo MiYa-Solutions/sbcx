@@ -4,7 +4,7 @@ require 'spec_helper'
 # data elements to inspect
 # ==============================================================
 
-notification_counter = 'span#notification-counter.label'
+notification_counter = '#notification-counter'
 
 describe "Notifications" do
   let(:org_admin_user) { FactoryGirl.create(:member_admin) }
@@ -41,7 +41,9 @@ describe "Notifications" do
 
   end
 
-  describe "Welcome page" do
+  subject { page }
+
+  describe "layout" do
     it "should show the number of unread notifications" do
       visit user_root_path
       should have_selector notification_counter
