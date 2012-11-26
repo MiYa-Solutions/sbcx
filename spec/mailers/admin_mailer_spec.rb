@@ -9,7 +9,7 @@ describe AdminMailer do
 
     it "renders the headers" do
       mail.subject.should match("new member!!!")
-      mail.to.should eq([Sbcx.config.new_member_event_emails])
+      mail.to.should eq([ENV["NEW_MEMBER_EVENT_EMAILS"]])
       mail.from.should eq(["admin@subcontrax.com"])
     end
 

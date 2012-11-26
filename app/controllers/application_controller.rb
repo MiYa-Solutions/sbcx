@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_filter { |c| Authorization.current_user = c.current_user }
   # todo make counting more efficient
-  before_filter { |c| @notification_count = c.current_user.try(:notifications).try(:size) }
+  before_filter { |c| @notification_count = Notification.where(user_id: c.current_user.id).where(status: Notification::NOTIFICATION_UNREAD).count unless current_user.nil? }
 
   before_filter :prepare_for_mobile
 
