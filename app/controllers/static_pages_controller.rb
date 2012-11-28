@@ -8,7 +8,7 @@ class StaticPagesController < ApplicationController
       render 'index'
     end
     @notifications = current_user.try(:notifications)
-    @service_calls = current_user.organization.service_calls
+    #@service_calls = current_user.organization.service_calls
 
   end
 
