@@ -10,21 +10,16 @@
   <!--</div>-->
 <!--</fieldset>-->
 
-<div data-role="navbar" role="navigation">
-  <!--<div data-role="controlgroup" data-type="horizontal" data-inline="true">-->
-  <ul>
-    <li>
-      <%= link_to user_root_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "slidedown" do %>
-          <span>Subcontractors</span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to new_service_call_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "flow" do %>
-          <span>Providers</span>
-      <% end %>
-    </li>
-  </ul>
-</div>
+<fieldset class="ui-grid-a">
+  <div class="ui-block-a">
+    <%= link_to 'Subcontractors', user_root_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+  </div>
+  <div class="ui-block-b">
+    <%= link_to 'Providers', new_service_call_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+  </div>
+</fieldset>
+
+
 
 
 

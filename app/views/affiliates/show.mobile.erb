@@ -31,19 +31,19 @@
 <% else %>
     <fieldset class="ui-grid-b">
       <div class="ui-block-a">
-        <%= link_to 'Back', affiliates_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+        <%= link_to 'Back', affiliates_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
       </div>
       <div class="ui-block-b">
-        <%= link_to 'Delete', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button" %>
+        <%= link_to 'Edit', edit_affiliate_path(@affiliate), "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "gear" %>
       </div>
       <div class="ui-block-c">
-        <%= link_to 'Edit', edit_affiliate_path(@affiliate), "data-role" => "button", :class => "ui-btn-up-b" %>
+        <%= link_to 'Invite', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b", "data-icon" => "email" %>
       </div>
     </fieldset>
 
-    <div class="ui-grid-solo">
-        <%= link_to 'Send Invite', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b" %>
-    </div>
+    <!--<div class="ui-grid-solo">-->
+        <!--<#%= link_to 'Send Invite', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b" %>-->
+    <!--</div>-->
 <% end %>
 <br>
 
@@ -110,9 +110,10 @@
     </div>
   </li>
   <li class="ui-li">
-    Email:
-    <br>
-    <%= @affiliate.email %>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Email:</div>
+      <div class="ui-block-b" data-type="email" ><%= @affiliate.email %></div>
+    </div>
    </li>
   <li class="ui-li">
     Website:
@@ -129,9 +130,16 @@
       </div>
     </div>
   </li>
+  <% if ! @affiliate.subcontrax_member==true %>
+      <li>
+        <fieldset>
+          <div class="ui-grid-solo">
+            <%= link_to 'Delete', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete" %>
+          </div>
+        </fieldset>
+      </li>
+  <% end %>
 </ul>
-
-
 
 
 

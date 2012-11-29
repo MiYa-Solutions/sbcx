@@ -101,7 +101,7 @@
 
 .ui-header .ui-title, .ui-footer .ui-title {
   display: block;
-  font-size: 14px;
+  font-size: 12px;
   margin: 0.6em 10% 0.8em;
   min-height: 1.1em;
   outline: 0 none !important;
@@ -122,5 +122,64 @@
   font-size: 12px;
   padding: 0.6em 10px;
 
+}
+
+
+
+.title_header {
+
+  .ui-title {
+    display: block;
+    font-size: 16px;
+    margin: 0 none;
+    min-height: 1.1em;
+    outline: 0 none !important;
+    overflow: hidden;
+    padding: 0;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: normal;
+
+  }
+}
+
+//.miya_header {
+//
+//  .ui-navbar {
+//    //padding: 1px -15px -15px;
+//    margin-left: -15px;
+//    margin-right: 0;
+//    //padding-right: -30px;
+//    max-width: 120%;
+//  }
+//}
+
+
+//label.ui-select .ui-input-text {
+//  display: inline-block;
+//  //font-size: 16px;
+//  font-weight: normal;
+//  //line-height: 1.4;
+//  margin: 0 2% 0 0;
+//  vertical-align: top;
+//  width: 20%;
+//}
+//
+//input .ui-select, .ui-input-text  {
+//  display: inline-block;
+//  width: 78%;
+//  float: left;
+//}
+
+//input {
+//.ui-input-text {
+//  display: inline-block;
+//  width: 78%;
+//  float: left;
+//}
+//}
+
+.ui-checkbox, .ui-radio {
+  width: 50%;
 }
 
