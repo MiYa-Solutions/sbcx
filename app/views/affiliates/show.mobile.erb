@@ -1,6 +1,6 @@
-<% provide(:title, @affiliate.name) %>
+<% provide(:title, "<span background-color=red>LALA</span> <div class='btn' >Li</div>".html_safe) %>
 
-<% if @affiliate.subcontrax_member==true %>
+<% if @affiliate.subcontrax_member? %>
     <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
         <fieldset class="ui-grid-b">
           <div class="ui-block-a">

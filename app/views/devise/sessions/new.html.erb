@@ -18,7 +18,7 @@
 
 
         <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-horizontal' }) do |f| %>
-                      <%= f.input :email %>
+                      <%= f.input :email, "type" => "email"  %>
                       <%= f.input :password %>
             <div class="sign_in_controls">
                       <%= f.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
