@@ -10,6 +10,12 @@
 
 }
 
+.miya_blue_button {
+  .ui-btn-up-b {
+    height: 33px;
+  }
+}
+
 .ui-content {
   padding-top: 1px;
   padding-right: 15px;
@@ -17,6 +23,14 @@
   padding-bottom: 15px;
 
 }
+
+.ui-li, .ui-li.ui-field-contain {
+  font-size: 14px;
+}
+
+input.ui-input-text, textarea.ui-input-text {
+  font-size: 14px;
+  }
 
 .ui-btn-up-a {
 
@@ -39,11 +53,11 @@
 
 
 .unstyled {
-  ul {
-   list-style: none outside none;
-   margin-left: 0;
+   ul {
+     list-style: none outside none;
+     margin-left: 0;
+   }
  }
-}
 
 //.Miya_ui_li {
 //  .ui-li, .ui-li-static, .ui-btn-up-a {
@@ -143,41 +157,14 @@
   }
 }
 
-//.miya_header {
-//
-//  .ui-navbar {
-//    //padding: 1px -15px -15px;
-//    margin-left: -15px;
-//    margin-right: 0;
-//    //padding-right: -30px;
-//    max-width: 120%;
-//  }
-//}
-
-
-//label.ui-select .ui-input-text {
-//  display: inline-block;
-//  //font-size: 16px;
-//  font-weight: normal;
-//  //line-height: 1.4;
-//  margin: 0 2% 0 0;
-//  vertical-align: top;
-//  width: 20%;
-//}
-//
-//input .ui-select, .ui-input-text  {
-//  display: inline-block;
-//  width: 78%;
-//  float: left;
-//}
-
-//input {
-//.ui-input-text {
-//  display: inline-block;
-//  width: 78%;
-//  float: left;
-//}
-//}
+.small_text_button {
+  .ui-btn-inner {
+     font-size: 10px;
+  }
+  .ui-btn-up-c {
+    height: 32px;
+  }
+}
 
 .ui-checkbox, .ui-radio {
   width: 50%;

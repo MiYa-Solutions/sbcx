@@ -18,13 +18,23 @@
     </ul>
   </div>
 
-  <br>
 
-  <table class="table table-striped" id="affiliates_search_results">
-    <% if !@affiliates.empty? %>
+
+  <% if !@affiliates.empty? %>
+    <table class="table table-striped" id="affiliates_search_results">
         <br>
         <thead>
+          <!--<tr>-->
+            <!--<div class="miya_table_row">-->
+              <!--<span class="member_label">-->
+                    <!--<badge><i class="icon-user icon-white"></i></badge>-->
+               <!--</span><span> &nbsp;</span>-->
+              <!--<span class="miya_blue_note"> SubConTraX Member</span>-->
+            <!--</div>-->
+             <!--</tr>-->
+
         <tr>
+          <th></th>
           <th>Name</th>
           <th>Company</th>
           <th>Phone</th>
@@ -48,5 +58,12 @@
   </table>
 
   <%= will_paginate @affiliates, :class => 'pagination pagination-centered' %>
+
+  <div class="miya_table_row">
+              <span class="member_label">
+                    <badge><i class="icon-user icon-white"></i></badge>
+               </span><span> &nbsp;</span>
+    <span class="miya_blue_note"> SubConTraX Member</span>
+  </div>
 
 </div>

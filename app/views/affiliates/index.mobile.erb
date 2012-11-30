@@ -1,35 +1,40 @@
 <% provide(:title, Affiliate.name.humanize.pluralize) %>
 
 <!--<fieldset data-type="horizontal" data-role="controlgroup" class="ui-corner-all ui-controlgroup ui-controlgroup-horizontal">-->
-  <!--<div class="ui-controlgroup-controls">-->
+<!--<div class="ui-controlgroup-controls">-->
 
-    <!--<div class="ui-radio"><input type="radio" value="on" id="radio-choice-c" name="radio-choice-b"><label for="radio-choice-c" data-corners="true" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-radio-on ui-btn-active ui-corner-left ui-btn-up-c"><span class="ui-btn-inner ui-corner-left"><span class="ui-btn-text">Subcontractors</span></span></label></div>-->
+<!--<div class="ui-radio"><input type="radio" value="on" id="radio-choice-c" name="radio-choice-b"><label for="radio-choice-c" data-corners="true" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-radio-on ui-btn-active ui-corner-left ui-btn-up-c"><span class="ui-btn-inner ui-corner-left"><span class="ui-btn-text">Subcontractors</span></span></label></div>-->
 
-    <!--<div class="ui-radio"><input type="radio" value="off" id="radio-choice-d" name="radio-choice-b"><label for="radio-choice-d" data-corners="true" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-radio-off ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">Providers</span></span></label></div>-->
+<!--<div class="ui-radio"><input type="radio" value="off" id="radio-choice-d" name="radio-choice-b"><label for="radio-choice-d" data-corners="true" data-shadow="false" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-radio-off ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">Providers</span></span></label></div>-->
 
-  <!--</div>-->
+<!--</div>-->
 <!--</fieldset>-->
 
-<fieldset class="ui-grid-a">
+
+<fieldset class="ui-grid-b">
   <div class="ui-block-a">
-    <%= link_to 'Subcontractors', user_root_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+      <div class="small_text_button">
+             <%= link_to 'Subcontractors', user_root_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+      </div>
   </div>
   <div class="ui-block-b">
-    <%= link_to 'Providers', new_service_call_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+  <%= link_to 'Providers', new_service_call_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+</div>
+  <div class="ui-block-c">
+    <div class="miya_blue_button">
+      <%= link_to 'Add New', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b", id: 'new-affiliate-button' %>
+
+    </div>
   </div>
 </fieldset>
-
-
-
 
 
 <!-- /navbar -->
 <br>
 
-
 <ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
   <% @affiliates.each do |affiliate| %>
-      <li class="inline_mobile" ><%= link_to affiliate.name, affiliate %>
+      <li class="inline_mobile"><%= link_to affiliate.name, affiliate, "data-transition" => "slide" %>
         <% if affiliate.subcontrax_member==true %>
             <span class="member_label_mobile">
               <badge>Member</badge>
