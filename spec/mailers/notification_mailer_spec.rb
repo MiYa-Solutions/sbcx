@@ -1,5 +1,9 @@
 require "spec_helper"
 
 describe NotificationMailer do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "received service call notification " do
+    it "should have the notification defined" do
+      NotificationMailer.should respond_to(:received_service_call)
+    end
+  end
 end

@@ -18,7 +18,7 @@ authorization do
     has_permission_on :my_users, to: [:index, :read]
     has_permission_on [:providers, :subcontractors], :to => [:index]
     has_permission_on [:affiliates, :subcontractors], :to => [:index]
-    #has_permission_on :service_calls, :to => [:index, :show, :new, :create, :edit, :update]
+    has_permission_on :service_calls, :to => [:index, :show, :edit, :update]
 
   end
 

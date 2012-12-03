@@ -3,3 +3,18 @@ en:
     received_new_service_call:
       subject: 'New Service Call From %{provider}'
       content: 'This is to inform you that %{provider} has transferred service call %{ref} to you. Please click the blow link to view the service call'
+
+    completed_service_call:
+      content: 'This is to inform you that %{technician} has completed service call %{ref}. Please click the blow link to view the service call'
+    completed_transferred_service_call:
+      content: 'This is to inform you that %{provider} has completed service call %{ref}. Please click the blow link to view the service call'
+  notifications:
+    sc_complete_notification:
+      subject: 'Service call %{ref} is completed'
+      content: '%{technician} has completed the service call at: %{completed_at}'
+    sc_completed_notification:
+      subject: 'Service call %{ref} is completed'
+      content: '%{subcontractor} has completed the service call at: %{completed_at}'
+    sc_accepted_notification:
+      subject: 'Transferred service call %{ref} has been accepted '
+      content: '%{subcontractor} has accepted the service call'

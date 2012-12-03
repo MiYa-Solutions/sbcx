@@ -13,7 +13,7 @@ OrganizationRole.find_or_create_by_id_and_name(id: OrganizationRole::OWNER_ROLE_
 
 Role.find_or_create_by_name(Role::ADMIN_ROLE_NAME)
 Role.find_or_create_by_name(Role::ORG_ADMIN_ROLE_NAME)
-Role.find_or_create_by_name(Role::DISPATCHER_ORG_NAME)
+Role.find_or_create_by_name(Role::DISPATCHER_ROLE_NAME)
 Role.find_or_create_by_name(Role::TECHNICIAN_ROLE_NAME)
 
 owner_org = Organization.find_by_email('info@miyasolutions.com')

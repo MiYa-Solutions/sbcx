@@ -49,7 +49,7 @@ describe "Service Call pages" do
 
   describe "with Org Admin" do
 
-    let(:org_admin_user) { FactoryGirl.create(:member_admin) }
+    let(:org_admin_user) { FactoryGirl.create(:member_admin, roles: []) }
     let(:org_admin_user2) { FactoryGirl.create(:member_admin) }
     let(:org_admin_user3) { FactoryGirl.create(:member_admin) }
     let(:org) { org_admin_user.organization }

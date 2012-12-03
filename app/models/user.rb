@@ -63,7 +63,10 @@ class User < ActiveRecord::Base
 
   scope :colleagues, ->(org_id) { where("organization_id = ?", org_id) }
   scope :search, ->(query) { where(arel_table[:email].matches("%#{query}%")) }
-  #scope :technicians, -> (org_id) { where("organization.id = ?", org_id).includes(:roles).where("roles.name = ?", Role::TECHNICIAN_ROLE_NAME) }
+  scope :technicians, -> { includes(:roles).where("roles.name = ?", Role::TECHNICIAN_ROLE_NAME) }
+  scope :dispatchers, -> { includes(:roles).where("roles.name = ?", Role::DISPATCHER_ROLE_NAME) }
+  scope :my_technicians, ->(org_id, columns) { technicians.where("organization_id = ?", org_id).select(columns) }
+  scope :my_dispatchers, ->(org_id) { dispatchers.where("organization_id = ?", org_id) }
 
   def role_symbols
     roles.map do |role|

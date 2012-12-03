@@ -37,7 +37,7 @@ def create_members
   sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
 
   org_admin_role  = Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME)
-  dispatcher_role = Role.find_by_name(Role::DISPATCHER_ORG_NAME)
+  dispatcher_role = Role.find_by_name(Role::DISPATCHER_ROLE_NAME)
   technician_role = Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)
 
   # create two members for manual testing
@@ -46,7 +46,9 @@ def create_members
     mem   = new_member([prov_role, sub_role], { name:  "Test Member#{index}",
                                                 email: "testmem#{index}@testmem#{index}.com" })
     mem.save!
-    mem.users << new_user([org_admin_role], { email: "mem#{index}@mem#{index}.com" })
+    mem.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "mem#{index}@mem#{index}.com" })
+    mem.users << new_user([dispatcher_role], { email: "disp#{index}@mem#{index}.com" })
+    mem.users << new_user([technician_role], { email: "tech#{index}@mem#{index}.com" })
 
     2.times do
       mem.users << new_user([dispatcher_role], { })

@@ -31,7 +31,6 @@ class Organization < ActiveRecord::Base
   has_many :service_calls, :inverse_of => :organization
 
   has_many :events, as: :eventable
-  has_many :technicians, class_name: User
 
 
   # agreements is the table tha holds the link between an organization er and its providers and subcontractors
@@ -78,6 +77,9 @@ class Organization < ActiveRecord::Base
   scope :subcontractor_search, ->(org_id, query) { ((search(query).subcontractor_members - where(id: org_id)| search(query).my_subcontractors(org_id)).order('organizations.name')) }
   scope :affiliate_search, ->(org_id, query) { ((((search(query).members - where(id: org_id))| (search(query).my_affiliates(org_id) - where(id: org_id)))).order('organizations.name')) }
 
+  def technicians(columns = "")
+    User.my_technicians(self.id, columns)
+  end
 
   # State machine  for Organization status
 

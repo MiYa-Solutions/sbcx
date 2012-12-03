@@ -14,7 +14,7 @@
 #  reference_id   :integer
 #
 
-class ServiceCallAcceptEvent < Event
+class ServiceCallAcceptEvent < ServiceCallEvent
 
   def init
     self.name         = I18n.t('service_call_accept_event.name')
@@ -22,16 +22,19 @@ class ServiceCallAcceptEvent < Event
     self.reference_id = 3
   end
 
-  def process_event
-    Rails.logger.debug { "Running ServiceCallAcceptEvent process" }
+  def notification_recipients
+    nil
+  end
 
-    service_call = associated_object
+  def notification_class
+    nil
+  end
 
+  def update_provider
     prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-    prov_service_call.events << ServiceCallAcceptedEvent.new(description: I18n.t('service_call_accepted_event.description', subcon_name: service_call.organization.name))
-    prov_service_call.accept_subcon
 
-    prov_service_call
+    prov_service_call.events << ServiceCallAcceptedEvent.new
+    prov_service_call.accept_subcon
 
   end
 

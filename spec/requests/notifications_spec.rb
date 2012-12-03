@@ -49,4 +49,6 @@ describe "Notifications" do
       should have_selector notification_counter
     end
   end
+
+
 end
