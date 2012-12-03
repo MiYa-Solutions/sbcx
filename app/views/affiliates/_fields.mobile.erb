@@ -1,8 +1,16 @@
-<fieldset>
+<!--<div class="ui-body ui-body-a">-->
 
+<!--<div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">-->
+  <!--<label for="name-a" class="ui-input-text">Text Input:</label>-->
+  <%= f.input :name, autofocus: true, "class" => "ui-input-text ui-body-a ui-corner-all ui-shadow-inset" %>
 
-  <%= f.input :name, autofocus: true %>
-  <%= f.input :status_event, label: Affiliate.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+  <!--<input type="text" value="" id="name-a" name="name" class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset">-->
+<!--</div>-->
+<!--<div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">-->
+
+<%= f.input :status_event, label: Affiliate.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+<!--</div>-->
+
 
   <%= f.association :organization_roles, :collection => applicable_roles, as: :check_boxes %>
   <%= f.input :company %>
@@ -36,4 +44,4 @@
   <%= f.input :zip %>
 
 
-</fieldset>
+<!--</div>-->

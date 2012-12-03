@@ -1,41 +1,29 @@
 <div data-role="header">
 
     <img border="0" src="/assets/logo2.png" alt="MiYa" style="float:left; display:inline"/>
-    <h1><%= yield(:title) || "Untitled" %></h1>
+
     <% if user_signed_in? %>
-        <%= link_to destroy_user_session_path, method: :delete, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a", data: { ajax: "false", icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
-            <span class="ui-btn-inner ui-btn-corner-all ui-btn-up-b"><span class="ui-btn-text ">Sign Out</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>
+        <div class="ui-grid-solo">
+        <%= link_to destroy_user_session_path, method: :delete, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-b", data: { ajax: "false", icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
+            <span class="ui-btn-inner ui-btn-corner-all ui-btn-up-b">
+              <span class="ui-btn-text ">Sign Out</span>
+              <span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span>
+            </span></a>
+        </div>
         <% end %>
     <% else %>
+        <div class="ui-grid-solo">
         <%= link_to new_user_session_path, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a", data: { icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
             <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign In</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>
-        <% end %>
+              </div>
+          <% end %>
     <% end %>
+  <br>
+   <br>
+  <div class="title_header">
+  <h1 class="ui-title" role="heading" aria-level="1"><%= yield(:title) || "Untitled" %></h1>
+  </div>
 
 </div>
 
-<div data-role="navbar" role="navigation">
-  <!--<div data-role="controlgroup" data-type="horizontal" data-inline="true">-->
 
-
-
-    <ul>
-      <li>
-        <%= link_to user_root_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "slidedown" do %>
-            <span>Home</span>
-        <% end %>
-      </li>
-      <li>
-        <%= link_to new_service_call_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "flow" do %>
-            <span><%= ServiceCall.name.humanize %></span>
-        <% end %>
-      </li>
-      <li>
-        <%= link_to affiliates_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
-            <span>Affiliates</span>
-        <% end %>
-      </li>
-    </ul>
-
-</div>
-<!-- /navbar -->

@@ -1,71 +1,148 @@
-<% provide(:title, @affiliate.name) %>
+<% provide(:title, "<span background-color=red>LALA</span> <div class='btn' >Li</div>".html_safe) %>
 
-<ul data-role="listview" class="ui-listview">
-  <li class="custom_list ui-li ui-li-static">Status: <div style="float: right" class="custom_list"> <%= @affiliate.human_status_name %></div></li>
-  <li class="ui-li ui-li-static">Company: <div style="padding-left: 10px"><%= @affiliate.company %></div></li>
-  <li class="ui-li ui-li-static">Address: <div style="float: right" style= "white-space: normal"> <%= @affiliate.address1 %> <%= @affiliate.address2 %></div></li>
-  <li class="ui-li ui-li-static">City: <div style="float: right"> <%= @affiliate.city %></div></li>
-  <li class="ui-li ui-li-static">State:<div style="float: right"> <%= @affiliate.state %></div></li>
-  <li class="ui-li ui-li-static">Country: <div style="float: right"> <%= @affiliate.country %></div></li>
-  <li class="ui-li ui-li-static">Zip: <div style="float: right"> <%= @affiliate.zip %></div></li>
-  <li class="ui-li ui-li-static">Phone: <div style="float: right"> <%= @affiliate.phone %></div></li>
-  <li class="ui-li ui-li-static">Mobile:<div style="float: right"> <%= @affiliate.mobile %></div></li>
-  <li class="ui-li ui-li-static">Email: <div style="float: right"> <%= @affiliate.email %></div></li>
-  <li class="ui-li ui-li-static">Website:<div style="float: right"> <%= @affiliate.website %></div></li>
-  <li class="ui-li ui-li-static">Roles: <div style="float: right">
-    <% for role in @affiliate.organization_roles %>
-        <ul data-role="listview" class="ui-listview">
-           <li>
-             <span class="label label-info"><%= role.name %></span>
-           </li>
-        </ul>
+<% if @affiliate.subcontrax_member? %>
+    <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
+        <fieldset class="ui-grid-b">
+          <div class="ui-block-a">
+            <%= link_to 'Back', affiliates_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+          </div>
+          <div class="ui-block-b">
+            <%= link_to 'Archive', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button" %>
+          </div>
+          <div class="ui-block-c">
+            <%= link_to 'Agreements', affiliates_path, "data-role" => "button", :class => "ui-btn-up-b" %>
+          </div>
+        </fieldset>
+    <% else %>
+        <fieldset class="ui-grid-a">
+          <div class="ui-block-a">
+            <%= link_to 'Back', affiliates_path, "data-role" => "button", :class => "ui-btn-up-c" %>
+          </div>
+          <div class="ui-block-b">
+            <div class="miya_blue_button">
+            <%= form_for(current_user.organization.agreements.build(provider_id: @affiliate.id)) do |f| %>
+                <div><%= f.hidden_field :provider_id %></div>
+                <%= f.submit "Add Member", "data-theme" => "b" %>
+            <% end %>
+          </div>
+          </div>
+        </fieldset>
+
     <% end %>
-  </div></li>
+
+<% else %>
+    <fieldset class="ui-grid-b">
+      <div class="ui-block-a">
+        <%= link_to 'Back', affiliates_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+      </div>
+      <div class="ui-block-b">
+        <%= link_to 'Edit', edit_affiliate_path(@affiliate), "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "gear", "data-transition" => "slidefade" %>
+      </div>
+      <div class="ui-block-c">
+        <div class="miya_blue_button">
+
+        <%= link_to 'Invite', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b", "data-icon" => "email" %>
+      </div>
+      </div>
+    </fieldset>
+
+<% end %>
+<br>
+
+<ul data-role="listview">
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Status:</div>
+      <div class="ui-block-b"><%= @affiliate.human_status_name %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Name:</div>
+      <div class="ui-block-b"><%= @affiliate.name %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Company:</div>
+      <div class="ui-block-b"><%= @affiliate.company %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Address:</div>
+      <div class="ui-block-b" style= "display:inline !important"><%= @affiliate.address1 %> <%= @affiliate.address2 %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">City:</div>
+      <div class="ui-block-b"><%= @affiliate.city %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">State:</div>
+      <div class="ui-block-b"><%= @affiliate.state %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Country:</div>
+      <div class="ui-block-b"><%= @affiliate.country %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Zip:</div>
+      <div class="ui-block-b"><%= @affiliate.zip %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Phone:</div>
+      <div class="ui-block-b"><%= @affiliate.phone %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Mobile:</div>
+      <div class="ui-block-b"><%= @affiliate.mobile %></div>
+    </div>
+  </li>
+  <li class="ui-li">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Email:</div>
+      <div class="ui-block-b" data-type="email" ><%= @affiliate.email %></div>
+    </div>
+  </li>
+  <li class="ui-li">
+    Website:
+    <br>
+    <%= @affiliate.website %>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Roles:</div>
+      <div class="ui-block-b">
+        <% for role in @affiliate.organization_roles %>
+            <span><%= role.name %></span>
+        <% end %>
+      </div>
+    </div>
+  </li>
+  <% if ! @affiliate.subcontrax_member==true %>
+      <li>
+        <fieldset>
+          <div class="ui-grid-solo">
+            <%= link_to 'Delete', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete" %>
+          </div>
+        </fieldset>
+      </li>
+  <% end %>
 </ul>
 
 
-  <div class="row-fluid">
-    <div class="span5">
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= @affiliate.name %></h1></li>
-          <li>
-            <% if @affiliate.subcontrax_member==true %>
-                <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
-                    <!--Archive is already at the bottom-->
-                <% else %>
-                    <%= form_for(current_user.organization.agreements.build(provider_id: @affiliate.id)) do |f| %>
-                        <div><%= f.hidden_field :provider_id %></div>
-                        <%= f.submit "Add Member", class: "btn btn-large btn-primary" %>
-                    <% end %>
-                <% end %>
-            <% else %>
-                <%= link_to 'Send Invite', new_affiliate_path, :class => 'btn btn-large btn-info' %>
-            <% end %>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
-
-
-
-
-
-
-  <div class="form-actions">
-    <% if @affiliate.subcontrax_member==true %>
-        <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
-        <% if  @affiliate.id.in? affiliate_ids %>
-            <%= link_to 'Archive', affiliate_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
-        <% end %>
-
-    <% else %>
-        <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
-        <%= link_to 'Edit', edit_affiliate_path(@affiliate), :class => 'btn btn-medium btn-primary' %>
-        <%= link_to 'Archive', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
-    <% end %>
-  </div>
 
 
