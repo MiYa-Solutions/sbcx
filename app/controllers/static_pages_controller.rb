@@ -3,13 +3,13 @@ class StaticPagesController < ApplicationController
   #filter_access_to :welcome, :require => :read
 
   def welcome
-    unless user_signed_in?
+    if user_signed_in?
+      @notifications = current_user.notifications.where(:status => Notification::NOTIFICATION_UNREAD)
+      @service_calls = current_user.organization.service_calls
+    else
       flash[:error] = "Please login first"
       render 'index'
     end
-    @notifications = current_user.try(:notifications)
-    @service_calls = current_user.organization.service_calls
-
   end
 
   def index

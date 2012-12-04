@@ -45,6 +45,7 @@ FactoryGirl.define do
     after_build do |member|
       member.make_member
       member.customers << Customer.new(name: Faker::Name.name)
+      FactoryGirl.create_list(:admin, 1, organization: member)
       member.save
     end
   end
@@ -66,8 +67,8 @@ FactoryGirl.define do
     first_name Faker::Name.name
     password "foobar"
     password_confirmation "foobar"
-    the_role = Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME)
-    roles [the_role]
+    the_roles = [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME)]
+    roles the_roles
   end
 
   factory :member_admin, class: User do
@@ -101,7 +102,6 @@ FactoryGirl.define do
 
   factory :service_call, class: TransferredServiceCall do
     association :organization, factory: :member
-    association :customer
     association :subcontractor
     association :provider
 
@@ -150,6 +150,25 @@ FactoryGirl.define do
     the_role = Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)
     roles [the_role]
 
+  end
+  factory :dispatcher, class: User do
+    association :organization, factory: :member
+    sequence(:email) { |n| "dispatcher_test#{n}@example.com" }
+    first_name Faker::Name.first_name
+    last_name Faker::Name.last_name
+    password "foobar"
+    password_confirmation "foobar"
+    the_role = Role.find_by_name(Role::DISPATCHER_ROLE_NAME)
+    roles [the_role]
+
+  end
+
+  factory :received_service_call_notification, class: ScReceivedNotification do
+    association :notifiable, factory: :service_call
+
+    after_create do |notification, evaluator|
+      notification.user = FactoryGirl.create(:admin, organization: notification.notifiable.organization)
+    end
   end
 
 

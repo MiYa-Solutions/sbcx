@@ -12,7 +12,7 @@ class ServiceCallDispatchEvent < Event
     # todo notify the technician in case it is not the submitting user
 
     prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-    unless prov_service_call.organization_id == service_call.organization_id
+    unless prov_service_call.nil? || prov_service_call.organization_id == service_call.organization_id
       prov_service_call.start_subcon
 
       prov_service_call.events << ServiceCallDispatchedEvent.new(description: I18n.t('service_call_dispatched_event.description', subcon_name: service_call.organization.name))

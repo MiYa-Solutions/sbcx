@@ -83,6 +83,8 @@ en:
       customer_does_not_belong_to_provider: "The customer must belong to the provider"
     crud_messages:
       success: "The service call was created successfully"
+      update:
+        success: "The service call was updated succesfully"
   service_call_cancel_event:
     name: "Canceled Service Call"
     description: "Service call canceled"
@@ -96,7 +98,7 @@ en:
     description: 'Service call was rejected by %{subcon_name}'
   service_call_completed_event:
     name: "Service Call Completed"
-    description: "The service call was completed"
+    description: '%{subcontractor} has completed the service'
   service_call_accepted_event:
     name: "Service Call Accepted"
     description: 'The service call was accepted by %{subcon_name}'
@@ -112,3 +114,9 @@ en:
   notifications:
     received_service_call_notification:
       html_message: 'Received a new %{link} from %{prov_name}'
+    sc_completed_notification:
+      html_message: 'The %{subcontractor} has completed the %{link}'
+    sc_complete_notification:
+      html_message: '%{technician} has completed the %{link}'
+    sc_accepted_notification:
+      html_message: '%{subcontractor} has accepted the %{link}'

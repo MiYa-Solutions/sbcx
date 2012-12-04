@@ -28,7 +28,8 @@ class ServiceCallsController < ApplicationController
 
     # save the service call through it's type to invoke the proper call backs
     if service_call_instance.save
-      redirect_to service_call_path @service_call, :notice => t('service_call.crud_messages.success')
+      flash[:success] = t('service_call.crud_messages.success')
+      redirect_to service_call_path @service_call
     else
       render :action => 'new'
     end
@@ -45,10 +46,12 @@ class ServiceCallsController < ApplicationController
       respond_to do |format|
         format.js { }
         format.html do
-          redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
+          flash[:success] = t('service_call.crud_messages.update.success')
+          redirect_to service_call_path @service_call
         end
         format.mobile do
-          redirect_to service_call_path @service_call, :notice => "Successfully updated service call."
+          flash[:success] = t('service_call.crud_messages.update.success')
+          redirect_to service_call_path @service_call
         end
       end
     else

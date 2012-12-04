@@ -9,8 +9,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def service_call_attributes
-    case obj.class
-      when MyServiceCall
+    case obj.class.name
+      when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
           [:status_event,
            :provider_id,
@@ -35,7 +35,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
            :total_price
           ]
         end
-      when TransferredServiceCall
+      when TransferredServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
           [:status_event,
            :provider_id,
@@ -57,20 +57,11 @@ class PermittedParams < Struct.new(:params, :user, :obj)
            :work_phone,
            :email,
            :notes]
-        end
-
-      else
-        if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
+        elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
           [:status_event,
-           :provider_id,
-           :subcontractor_id,
-           :customer_id,
-           :technician_id,
-           :started_on_text,
            :completed_on_text,
-           :new_customer,
-           #:address1,
-           #:address2,
+           :address1,
+           :address2,
            :company,
            :city,
            :state,
@@ -80,8 +71,82 @@ class PermittedParams < Struct.new(:params, :user, :obj)
            :mobile_phone,
            :work_phone,
            :email,
-           :notes
-          ]
+           :notes]
+        elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
+          [:status_event,
+           :subcontractor_id,
+           :technician_id,
+           :started_on_text,
+           :completed_on_text,
+           :address1,
+           :address2,
+           :company,
+           :city,
+           :state,
+           :zip,
+           :country,
+           :phone,
+           :mobile_phone,
+           :work_phone,
+           :email,
+           :notes]
+        end
+
+      else # new service call
+        if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
+          [:status_event,
+           :provider_id,
+           :subcontractor_id,
+           :customer_id,
+           :technician_id,
+           :started_on_text,
+           :completed_on_text,
+           :new_customer,
+           :address1,
+           :address2,
+           :company,
+           :city,
+           :state,
+           :zip,
+           :country,
+           :phone,
+           :mobile_phone,
+           :work_phone,
+           :email,
+           :notes]
+        elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
+          [:status_event,
+           :completed_on_text,
+           :address1,
+           :address2,
+           :company,
+           :city,
+           :state,
+           :zip,
+           :country,
+           :phone,
+           :mobile_phone,
+           :work_phone,
+           :email,
+           :notes]
+        elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
+          [:status_event,
+           :subcontractor_id,
+           :technician_id,
+           :started_on_text,
+           :completed_on_text,
+           :address1,
+           :address2,
+           :company,
+           :city,
+           :state,
+           :zip,
+           :country,
+           :phone,
+           :mobile_phone,
+           :work_phone,
+           :email,
+           :notes]
         end
     end
   end
