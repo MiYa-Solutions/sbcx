@@ -87,9 +87,9 @@ en:
         success: "The service call was updated succesfully"
   service_call_cancel_event:
     name: "Canceled Service Call"
-    description: "Service call canceled"
+    description: 'The service call was canceled by %{user}'
   service_call_canceled_event:
-    description: 'The service call was canceled by %{user} from %{org}'
+    description: 'The service call was canceled by %{subcontractor}'
   service_call_received_event:
     name: "Received New Service Call"
     description: 'Received a new service call from %{name}'
