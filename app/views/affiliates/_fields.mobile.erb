@@ -11,8 +11,9 @@
 <%= f.input :status_event, label: Affiliate.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
 <!--</div>-->
 
-
-  <%= f.association :organization_roles, :collection => applicable_roles, as: :check_boxes %>
+  <div class= "miya_checkbox" data-mini= "true" data-theme= "c">
+  <%= f.association :organization_roles, :collection => applicable_roles, as: :check_boxes  %>
+  </div>
   <%= f.input :company %>
   <%= f.input :phone, class: 'input-xlarge' %>
   <%= f.input :mobile %>
