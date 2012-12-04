@@ -15,12 +15,11 @@
 <div data-role="page" data-theme="a" data-content-theme="a">
 
   <div data-role="header">
-    <%= render 'layouts/header' %>
-
+     <%= render 'layouts/header' %>
   </div>
-  <!-- /header -->
 
   <div data-role="content">
+
     <% unless flash.empty? %>
         <div class="info">
           <%- flash.each do |name, msg| -%>
@@ -32,13 +31,12 @@
     <%= yield %>
 
   </div>
-  <!-- /content -->
 
   <footer data-role="footer" data-position="fixed">
     <%= render 'layouts/footer' %>
   </footer>
-  <!-- /footer -->
+
 </div>
-<!-- /page -->
+
 </body>
 </html>

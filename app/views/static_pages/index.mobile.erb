@@ -1,1 +1,27 @@
-Index.mobile.erb - the public page
+<%= provide(:title, 'Welcome') %>
+
+<div class="miya_logo_large">
+  <img src="/assets/mobileLarge.png" alt="MiYa"/>
+
+  <br>
+  <!--<#%= link_to new_user_session_path, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a", type: "hidden", data: { icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>-->
+  <!--<span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign In</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>-->
+  <!--<#% end %>-->
+
+  <div class="ui-grid-solo">
+
+    <a href="/users/sign_in" data-role="button" data-inline="true" data-icon="gear" data-corners="true" data-shadow="true"  data-iconshadow="true" data-wrapperels="span" data-theme="b" class="ui-btn ui-shadow ui-btn-left ui-btn-corner-all ui-btn-icon-left ui-btn-up-b">
+      <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign in</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>
+  </div>
+
+</div>
+
+
+<br><br><br><br><br>
+
+<p>Don't have an account yet?</p>
+<a href="/users/sign_in" data-role="button" data-inline="true" data-icon="plus" rel="external" data-corners="true" data-shadow="true"  data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-shadow ui-btn-right ui-btn-corner-all ui-btn-icon-left ui-btn-up-c">
+  <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign Up</span><span class="ui-icon ui-icon-plus ui-icon-shadow">&nbsp;</span></span></a>
+
+
+<br><br><br><br><br>

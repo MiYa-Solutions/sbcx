@@ -1,13 +1,28 @@
+<%= provide(:title, 'Sign In') %>
+
+<div class="miya_logo_large">
+  <img src="/assets/mobileLarge.png" alt="MiYa"/>
+  <br>
+</div>
+
+
 <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-horizontal' }) do |f| %>
     <%= f.input :email %>
     <%= f.input :password %>
-    <div class="sign_in_controls">
+    <div class="miya_checkbox sign_in_controls">
       <%= f.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
     </div>
 
-    <div class="form-actions">
-      <%= f.button :submit, "Sign in", :class => 'btn btn-large btn-primary' %>
 
-    </div>
+    <%= f.button :submit, "Sign in", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'sign_in_mobile_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+
+
+    <br>
+    <br>
 
 <% end %>
+
+
+<p>Forgot your password?</p>
+  <a href="/users/sign_in" data-role="button" data-inline="true" data-icon="gear" rel="external" data-corners="true" data-shadow="true"  data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-shadow ui-btn-right ui-btn-corner-all ui-btn-icon-left ui-btn-up-c">
+    <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Reset Password</span><span class="ui-icon ui-icon-alert ui-icon-shadow">&nbsp;</span></span></a>

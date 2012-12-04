@@ -1,4 +1,5 @@
-<% provide(:title, "<span background-color=red>LALA</span> <div class='btn' >Li</div>".html_safe) %>
+<!--<#% provide(:title, "<span background-color=red>LALA</span> <div class='btn' >Li</div>".html_safe) %>-->
+<% provide(:title, @affiliate.name) %>
 
 <% if @affiliate.subcontrax_member? %>
     <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>

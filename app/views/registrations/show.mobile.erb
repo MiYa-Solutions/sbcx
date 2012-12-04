@@ -1,0 +1,11 @@
+<% provide(:title, 'More') %>
+
+<div class="ui-grid-solo">
+  <%= link_to destroy_user_session_path, method: :delete, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-b", data: { ajax: "false", icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
+            <span class="ui-btn-inner ui-btn-corner-all ui-btn-up-b">
+              <span class="ui-btn-text ">Sign Out</span>
+              <span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span>
+            </span></a>
+
+  <% end %>
+</div>
