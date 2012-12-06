@@ -9,7 +9,7 @@
       </li>
       <li>
         <%= link_to new_service_call_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "type" => "button", "data-icon" => "star", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "flow" do %>
-            <span>Service Call</span>
+            <span>My Jobs</span>
         <% end %>
       </li>
       <li>
@@ -24,10 +24,12 @@
       </li>
     </ul>
     <% else %>
+
         <div class="miya_logo_footer">
-          <img src="/assets/logoM.png" alt="MiYa"/>
+          <img src="/assets/logoM.png" id= "centered_image" alt="MiYa"/>
         </div>
     <% end %>
 
     <!--<h5><#%= current_user.try(:email) %></h5>-->
   </div>
+

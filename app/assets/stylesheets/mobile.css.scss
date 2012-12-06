@@ -31,7 +31,7 @@
 
 .miya_blue_button {
   .ui-btn-up-b {
-    height: 33px;
+    height: 32px;
   }
 }
 
@@ -122,13 +122,17 @@ input.ui-input-text, textarea.ui-input-text {
   position: relative;
   text-overflow: ellipsis;
   white-space: normal;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0.6em 10px;
 
 }
 
 
-
+.ui-btn-inner-small {
+  .ui-btn-inner {
+    font-size: 12px;
+  }
+}
 
 
 .small_text_button {
@@ -179,17 +183,23 @@ input.ui-input-text, textarea.ui-input-text {
     vertical-align: middle;
     position: absolute;
 
+
   }
 }
 
 .miya_logo_footer {
 
+  //margin-left: 10%;
+
 
   img {
+    display: block;
       border: 0;
       display: inline;
-      margin-left: 10%;
-    }
+      align: center;
+    margin-left: 10%;
+
+  }
 
 }
 

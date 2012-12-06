@@ -1,0 +1,31 @@
+<% provide(:title, 'My Customers') %>
+
+<div class="three_buttons_top ui-btn-inner-small">
+
+  <fieldset class="ui-grid-b">
+
+    <div class="ui-block-a">
+    </div>
+
+    <div class="ui-block-b">
+    </div>
+
+    <div class="ui-block-c">
+
+    </div>
+
+  </fieldset>
+</div>
+
+
+<br>
+
+<ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
+  <% @customers.each do |customer| %>
+      <li class="inline_mobile"><%= link_to customer.name, customer, "data-transition" => "slide" %>
+      </li>
+  <% end %>
+</ul>
+
+
+
