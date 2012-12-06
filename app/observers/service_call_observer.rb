@@ -22,9 +22,9 @@ class ServiceCallObserver < ActiveRecord::Observer
     Rails.logger.debug { "invoked observer after accept \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 
-  def before_subcontractor_accepted
-    self.subcon_accept
-  end
+  #def before_subcontractor_accepted
+  #  self.subcon_accept
+  #end
 
   #
   #def after_update(record)

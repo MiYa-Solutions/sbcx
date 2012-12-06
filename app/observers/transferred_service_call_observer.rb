@@ -57,13 +57,13 @@ class TransferredServiceCallObserver < ServiceCallObserver
   end
 
   def after_dispatch(service_call, transition)
-    service_call.events << ServiceCallDispatchEvent.new(description: I18n.t('service_call_dispatch_event.description', technician: service_call.technician.name))
+    service_call.events << ServiceCallDispatchEvent.new
     Rails.logger.debug { "invoked observer before dispatch \n #{service_call.inspect} \n #{transition.inspect}" }
 
   end
 
-  def before_cancel(service_call, transition)
-    service_call.events << ServiceCallCancelEvent.new(description: I18n.t('service_call_cancel_event.description'))
+  def after_cancel(service_call, transition)
+    service_call.events << ServiceCallCancelEvent.new
 
   end
 

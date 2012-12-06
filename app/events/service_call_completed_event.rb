@@ -7,8 +7,6 @@ class ServiceCallCompletedEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-
     prov_service_call.completed_on = service_call.completed_on
     prov_service_call.events << ServiceCallCompletedEvent.new
     prov_service_call.complete_subcon

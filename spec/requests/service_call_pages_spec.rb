@@ -49,9 +49,9 @@ describe "Service Call pages" do
 
   describe "with Org Admin" do
 
-    let(:org_admin_user) { FactoryGirl.create(:member_admin, roles: []) }
-    let(:org_admin_user2) { FactoryGirl.create(:member_admin) }
-    let(:org_admin_user3) { FactoryGirl.create(:member_admin) }
+    let(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+    let(:org_admin_user2) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+    let(:org_admin_user3) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
     let(:org) { org_admin_user.organization }
     let(:org2) { org_admin_user2.organization }
     let(:org3) { org_admin_user3.organization }
@@ -264,14 +264,12 @@ describe "Service Call pages" do
             in_browser(:org2) do
               visit service_call_path subcon_service_call
             end
-
-
           end
 
           it "notification counter should indicate a notice" do
             should have_selector(notification_counter, text: "1")
           end
-          it "notification counter should indicate a notice" do
+          it "notification should appear in the welcome" do
             visit user_root_path
             should have_selector(notifications, text: /#{service_call.provider.name}/)
           end
@@ -445,7 +443,7 @@ describe "Service Call pages" do
                 end
 
                 it "should have canceled event displayed" do
-                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', user: org_admin_user2.name, org: org2.name))
+                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', subcontractor: org2.name))
                 end
 
                 it "subcontractor status  should be canceled" do

@@ -1,7 +1,7 @@
 class ScCompletedNotification < ServiceCallNotification
 
   def html_message
-    I18n.t('notifications.sc_completed_notification.html_message', subcontractor: service_call.provider.name, link: service_call_link).html_safe
+    I18n.t('notifications.sc_completed_notification.html_message', subcontractor: service_call.subcontractor.name, link: service_call_link).html_safe
   end
 
   def default_subject

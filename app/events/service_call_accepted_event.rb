@@ -15,11 +15,12 @@ class ServiceCallAcceptedEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-
     prov_service_call.events << ServiceCallAcceptedEvent.new
-    prov_service_call.accept_subcon
+  end
 
+  def process_event
+    service_call.accept_subcon
+    super
   end
 
 
