@@ -18,3 +18,13 @@ en:
     sc_accepted_notification:
       subject: 'Transferred service call %{ref} has been accepted '
       content: '%{subcontractor} has accepted the service call'
+    sc_canceled_notification:
+      subject: 'Transferred service call %{ref} has been canceled '
+      content: '%{subcontractor} has reported the service call as canceled by the customer accepted the service call'
+    sc_dispatch_notification:
+      subject: 'You got a new service call to work on'
+      content: 'Your dispatcher is requesting you to start working on service call %{ref}'
+    sc_dispatched_notification:
+      subject: '%{subcontractor} has dispatched service call %{ref}'
+      content: 'Please note that %{subcontractor} has dispatched service call %{ref}'
+

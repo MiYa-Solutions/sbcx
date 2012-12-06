@@ -14,21 +14,30 @@
 #  reference_id   :integer
 
 
-class ServiceCallCanceledEvent < Event
+class ServiceCallCanceledEvent < ServiceCallEvent
 
   def init
     self.name = I18n.t('service_call_cancel_event.name') if name.nil?
-    self.description = I18n.t('service_call_cancel_event.description') if description.nil?
+    self.description = I18n.t('service_call_canceled_event.description', subcontractor: service_call.subcontractor.name) if description.nil?
     self.reference_id = 9
   end
 
+  def update_provider
+    prov_service_call.events << ServiceCallCanceledEvent.new
+    prov_service_call
+  end
+
   def process_event
-    Rails.logger.debug { "Running ServiceCallCancelEvent process" }
-
-    service_call = associated_object
-
     service_call.cancel_subcon
+    super
+  end
 
+  def notification_recipients
+    User.my_dispatchers(service_call.organization.id)
+  end
+
+  def notification_class
+    ScCanceledNotification
   end
 
 

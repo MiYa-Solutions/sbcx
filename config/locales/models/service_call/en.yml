@@ -84,10 +84,10 @@ en:
     crud_messages:
       success: "The service call was created successfully"
       update:
-        success: "The service call was updated succesfully"
+        success: "The service call was updated successfully"
   service_call_cancel_event:
-    name: "Canceled Service Call"
-    description: 'The service call was canceled by %{user}'
+    name: "Service Call Canceled"
+    description: 'The service call was reported as canceled by %{user}'
   service_call_canceled_event:
     description: 'The service call was canceled by %{subcontractor}'
   service_call_received_event:
@@ -107,7 +107,7 @@ en:
     description: '%{subcon_name} has started the service call'
   service_call_dispatched_event:
     name: "Service Call Dispatched"
-    description: "%{subcon_name} has dispatched the service call"
+    description: '%{subcontractor} has dispatched the service call'
   service_call_paid_event:
     name: "Customer Paid"
     description: "Customer has paid for the service"
@@ -120,3 +120,9 @@ en:
       html_message: '%{technician} has completed the %{link}'
     sc_accepted_notification:
       html_message: '%{subcontractor} has accepted the %{link}'
+    sc_canceled_notification:
+      html_message: '%{subcontractor} reported the customer has canceled the %{link}'
+    sc_dispatch_notification:
+      html_message: 'You got a new %{link} to work on!'
+    sc_dispatched_notification:
+      html_message: '%{subcontractor} has dispatched the %{link}'

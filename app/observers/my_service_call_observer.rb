@@ -16,7 +16,7 @@ class MyServiceCallObserver < ServiceCallObserver
   end
 
   def after_work_completed(service_call, transition)
-    service_call.events << ServiceCallCompleteEvent.new(description: I18n.t('service_call_complete_event.description', technician: service_call.technician.name))
+    service_call.events << ServiceCallCompleteEvent.new
     Rails.logger.debug { "invoked observer BEFORE complete \n #{service_call.inspect} \n #{transition.args.inspect}" }
   end
 

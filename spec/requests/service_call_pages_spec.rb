@@ -443,7 +443,7 @@ describe "Service Call pages" do
                 end
 
                 it "should have canceled event displayed" do
-                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', user: org_admin_user2.name, org: org2.name))
+                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', subcontractor: org2.name))
                 end
 
                 it "subcontractor status  should be canceled" do
