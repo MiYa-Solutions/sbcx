@@ -30,4 +30,7 @@ en:
     sc_paid_notification:
       subject: '%{customer} has paid for service call %{ref}'
       content: 'Please note that %{customer} has paid for service call %{ref}'
+    sc_cancel_notification:
+      subject: 'Service call %{ref} was canceled by the customer'
+      content: 'Please note that service call %{ref} was canceled by the customer (%{customer})'
 

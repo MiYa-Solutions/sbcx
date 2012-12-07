@@ -23,11 +23,11 @@ class ServiceCallCancelEvent < ServiceCallEvent
   end
 
   def notification_recipients
-    nil
+    User.my_dispatchers(service_call.organization.id)
   end
 
   def notification_class
-    nil
+    ScCancelNotification
   end
 
   def update_provider

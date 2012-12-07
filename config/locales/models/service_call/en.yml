@@ -128,3 +128,5 @@ en:
       html_message: '%{subcontractor} has dispatched the %{link}'
     sc_paid_notification:
       html_message: '%{customer} has paid for the %{link}'
+    sc_cancel_notification:
+      html_message: 'The customer (%{customer}) has canceled for the %{link}'

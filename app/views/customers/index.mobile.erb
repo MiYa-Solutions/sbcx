@@ -1,0 +1,46 @@
+<div class="well">
+
+  <div class="smart_label">
+    <ul>
+      <li><h1>My Customers</h1></li>
+      <li>
+        <%= form_tag customers_path, id: "search_customer_form", :method => :get, :remote => true do %>
+            <%= text_field_tag :search, params[:search] %>
+            <%= submit_tag "Search", :name => nil, class: 'btn btn-medium', id: 'customer-search-button' %>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary', id: 'new-customer-button' %>
+      </li>
+    </ul>
+  </div>
+  <br>
+
+
+  <% if @customers.empty? %>
+      <span class="alert alert-info">No records, click "Add Customer" to add new contact</span>
+
+  <% else %>
+      <table class="table table-striped" id="customers_search_results">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="new_customers">
+
+        <% @customers.each do |customer| %>
+            <%= render customer %>
+        <% end %>
+        </tbody>
+      </table>
+
+      <%= will_paginate @customers, :class => 'pagination pagination-centered' %>
+
+  <% end %>
+
+</div>
+
