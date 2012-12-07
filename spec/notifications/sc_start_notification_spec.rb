@@ -4,16 +4,18 @@ describe ScStartNotification do
   let(:service_call) { FactoryGirl.create(:my_service_call, subcontractor: FactoryGirl.create(:member).becomes(Subcontractor)) }
 
 
-  describe "transferred service call" do
-    it "is created once the service call is transferred to the subcontractor" do
+  describe "for transferred service call" do
+    it "is created once the subcontractor starts the service call" do
 
       expect {
         service_call.transfer
-        subcon_sc            = ServiceCall.find_by_organization_id_and_ref_id(service_call.subcontractor.id, service_call.ref_id)
+        subcon_sc = ServiceCall.find_by_organization_id_and_ref_id(service_call.subcontractor.id, service_call.ref_id)
+        FactoryGirl.create(:dispatcher, organization: subcon_sc.organization)
         subcon_sc.technician = FactoryGirl.create(:technician, organization: subcon_sc.organization)
         subcon_sc.dispatch
+        subcon_sc.start
 
-      }.to change { ScDispatchNotification.count }.by (1)
+      }.to change { ScStartNotification.count }.by (1)
 
     end
   end

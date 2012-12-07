@@ -1,27 +1,25 @@
-class ServiceCallStartEvent < Event
+class ServiceCallStartEvent < ServiceCallEvent
   def init
-    self.name = I18n.t('service_call_start_event.name')
-
+    self.name         = I18n.t('service_call_start_event.name')
+    self.description  = I18n.t('service_call_start_event.description', technician: service_call.technician.name)
     self.reference_id = 6
   end
 
-  # this is the event processed by the observer after the creation
-  def process_event
-    Rails.logger.debug { "Running ServiceCallDispatchEvent process" }
-    service_call = associated_object
+  def notification_recipients
+    User.my_dispatchers(service_call.organization.id)
+  end
 
-    # todo notify the technician in case it is not the submitting user
-    if service_call.provider.subcontrax_member
-      prov_service_call            = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-      prov_service_call.started_on = service_call.started_on
-      prov_service_call.start_subcon
-      prov_service_call.events << ServiceCallStartedEvent.new(description: I18n.t('service_call_started_event.description', subcon_name: service_call.organization.name))
+  def notification_class
+    ScStartNotification
+  end
 
-    end
-    self.description = I18n.t('service_call_start_event.description', technician: service_call.technician.name)
-    self.save
+  def update_provider
+    prov_service_call.started_on = service_call.started_on
+    prov_service_call.start_subcon
 
+    prov_service_call.events << ServiceCallStartedEvent.new
 
   end
+
 
 end

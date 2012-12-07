@@ -42,4 +42,10 @@ en:
     sc_settled_notification:
       subject: 'Service call %{ref} was marked as settled by the subcontractor'
       content: 'Please note that service call %{ref} was marked as settled by the subcontractor (%{subcontractor})'
+    sc_start_notification:
+      subject: 'Service call %{ref} is completed'
+      content: '%{technician} has started the service call at: %{started_at}'
+    sc_started_notification:
+      subject: 'Service call %{ref} is completed'
+      content: '%{subcontractor} has started the service call at: %{started_at}'
 

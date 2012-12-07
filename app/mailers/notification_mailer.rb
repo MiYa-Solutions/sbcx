@@ -73,6 +73,18 @@ class NotificationMailer < ActionMailer::Base
     mail to: user.email, subject: subject
   end
 
+  def sc_start_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
+  def sc_started_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
   def sc_settled_notification(subject, user, service_call)
     @service_call = service_call
     @user         = user
