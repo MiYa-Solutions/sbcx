@@ -61,6 +61,12 @@ class NotificationMailer < ActionMailer::Base
     mail to: user.email, subject: subject
   end
 
+  def sc_rejected_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
 
   # todo implement method_missing to make the mailer more DRY
   #def method_missing(method, *args, &block)

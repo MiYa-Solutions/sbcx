@@ -18,6 +18,9 @@ en:
     sc_accepted_notification:
       subject: 'Transferred service call %{ref} has been accepted '
       content: '%{subcontractor} has accepted the service call'
+    sc_rejected_notification:
+      subject: 'Transferred service call %{ref} has been rejected '
+      content: '%{subcontractor} has rejected the service call'
     sc_canceled_notification:
       subject: 'Transferred service call %{ref} has been canceled '
       content: '%{subcontractor} has reported the service call as canceled by the customer accepted the service call'

@@ -4,6 +4,7 @@ describe NotificationMailer do
   describe "received service call notification " do
     it "should have the notification defined" do
       [:sc_completed_notification,
+       :sc_rejected_notification,
        :sc_received_notification,
        :sc_complete_notification,
        :sc_accepted_notification,

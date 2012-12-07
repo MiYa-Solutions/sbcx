@@ -15,7 +15,7 @@
 #
 
 class ServiceCallRejectEvent < Event
-
+  #todo refactor to inherit from ServiceCallEvent
   def init
     self.name         = I18n.t('service_call_reject_event.name')
     self.description  = I18n.t('service_call_reject_event.description')

@@ -120,6 +120,8 @@ en:
       html_message: '%{technician} has completed the %{link}'
     sc_accepted_notification:
       html_message: '%{subcontractor} has accepted the %{link}'
+    sc_rejected_notification:
+      html_message: '%{subcontractor} has rejected the %{link}'
     sc_canceled_notification:
       html_message: '%{subcontractor} reported the customer has canceled the %{link}'
     sc_dispatch_notification:

@@ -111,7 +111,7 @@ class TransferredServiceCall < ServiceCall
     event :accept do
       transition :pending => :accepted
     end
-    event :subcon_reject do
+    event :reject do
       transition :pending => :rejected
     end
     event :start do
