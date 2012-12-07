@@ -36,4 +36,10 @@ en:
     sc_cancel_notification:
       subject: 'Service call %{ref} was canceled by the customer'
       content: 'Please note that service call %{ref} was canceled by the customer (%{customer})'
+    sc_settle_notification:
+      subject: 'Service call %{ref} is settled'
+      content: 'Please note that service call %{ref} has been settled'
+    sc_settled_notification:
+      subject: 'Service call %{ref} was marked as settled by the subcontractor'
+      content: 'Please note that service call %{ref} was marked as settled by the subcontractor (%{subcontractor})'
 

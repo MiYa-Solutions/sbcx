@@ -30,3 +30,7 @@ en:
   service_call_settle_event:
     name: "Settled Service Call"
     description: "The balance for this service call was setteled between the provider and subcontractor"
+
+  service_call_settled_event:
+    name: "Subcontractor marked as settled"
+    description: '%{subcontractor} has marked this service call as settled'

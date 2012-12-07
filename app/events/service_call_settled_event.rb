@@ -1,8 +1,8 @@
-class ServiceCallSettleEvent < ServiceCallEvent
+class ServiceCallSettledEvent < ServiceCallEvent
   def init
-    self.name         = I18n.t('service_call_settle_event.name')
-    self.description  = I18n.t('service_call_settle_event.description')
-    self.reference_id = 8
+    self.name         = I18n.t('service_call_settled_event.name')
+    self.description  = I18n.t('service_call_settled_event.description')
+    self.reference_id = 19
   end
 
   def update_provider
@@ -16,7 +16,7 @@ class ServiceCallSettleEvent < ServiceCallEvent
   end
 
   def notification_class
-    ScSettleNotification
+    ScSettledNotification
   end
 
 

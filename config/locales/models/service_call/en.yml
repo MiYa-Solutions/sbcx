@@ -130,5 +130,11 @@ en:
       html_message: '%{subcontractor} has dispatched the %{link}'
     sc_paid_notification:
       html_message: '%{customer} has paid for the %{link}'
+    sc_settled_notification:
+      html_message: '%{subcontractor} has marked %{link} %{ref} as settled'
     sc_cancel_notification:
       html_message: 'The customer (%{customer}) has canceled for the %{link}'
+    sc_settle_notification:
+      html_message: '%{link} %{ref} has been settled'
+    sc_settled_notification:
+      html_message: 'The subcontractor (%{subcontractor}) has marked %{link} %{ref} as settled'

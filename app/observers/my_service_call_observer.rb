@@ -47,4 +47,9 @@ class MyServiceCallObserver < ServiceCallObserver
 
   end
 
+  def before_settle(service_call, transition)
+    service_call.events << ServiceCallSettleEvent.new
+
+  end
+
 end
