@@ -27,4 +27,7 @@ en:
     sc_dispatched_notification:
       subject: '%{subcontractor} has dispatched service call %{ref}'
       content: 'Please note that %{subcontractor} has dispatched service call %{ref}'
+    sc_paid_notification:
+      subject: '%{customer} has paid for service call %{ref}'
+      content: 'Please note that %{customer} has paid for service call %{ref}'
 

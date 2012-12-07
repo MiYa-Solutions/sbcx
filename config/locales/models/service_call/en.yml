@@ -126,3 +126,5 @@ en:
       html_message: 'You got a new %{link} to work on!'
     sc_dispatched_notification:
       html_message: '%{subcontractor} has dispatched the %{link}'
+    sc_paid_notification:
+      html_message: '%{customer} has paid for the %{link}'
