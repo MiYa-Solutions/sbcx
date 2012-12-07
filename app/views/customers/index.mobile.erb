@@ -1,46 +1,31 @@
-<div class="well">
+<% provide(:title, 'My Customers') %>
 
-  <div class="smart_label">
-    <ul>
-      <li><h1>My Customers</h1></li>
-      <li>
-        <%= form_tag customers_path, id: "search_customer_form", :method => :get, :remote => true do %>
-            <%= text_field_tag :search, params[:search] %>
-            <%= submit_tag "Search", :name => nil, class: 'btn btn-medium', id: 'customer-search-button' %>
-        <% end %>
-      </li>
-      <li>
-        <%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary', id: 'new-customer-button' %>
-      </li>
-    </ul>
-  </div>
-  <br>
+<div class="three_buttons_top ui-btn-inner-small">
 
+  <fieldset class="ui-grid-b">
 
-  <% if @customers.empty? %>
-      <span class="alert alert-info">No records, click "Add Customer" to add new contact</span>
+    <div class="ui-block-a">
+    </div>
 
-  <% else %>
-      <table class="table table-striped" id="customers_search_results">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Address</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody id="new_customers">
+    <div class="ui-block-b">
+    </div>
 
-        <% @customers.each do |customer| %>
-            <%= render customer %>
-        <% end %>
-        </tbody>
-      </table>
+    <div class="ui-block-c">
 
-      <%= will_paginate @customers, :class => 'pagination pagination-centered' %>
+    </div>
 
-  <% end %>
-
+  </fieldset>
 </div>
+
+
+<br>
+
+<ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
+  <% @customers.each do |customer| %>
+      <li class="inline_mobile"><%= link_to customer.name, customer, "data-transition" => "slide" %>
+      </li>
+  <% end %>
+</ul>
+
+
 

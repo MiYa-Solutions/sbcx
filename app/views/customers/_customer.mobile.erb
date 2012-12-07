@@ -1,8 +1,7 @@
 <tr>
   <td><%= link_to customer.name, customer_path(customer) %></td>
   <td><%= customer.phone %></td>
-  <td><%= customer.address1 %> <%= customer.address2 %>, <%= customer.city %>, <%= customer.state %>
-    , <%= customer.zip %></td>
+  <td><%= customer.address1 %> <%= customer.address2 %>, <%= customer.city %>, <%= customer.state %>, <%= customer.zip %></td>
 
   <td>
     <%= link_to 'Edit', edit_customer_path(customer), :class => 'btn btn-mini' %>
