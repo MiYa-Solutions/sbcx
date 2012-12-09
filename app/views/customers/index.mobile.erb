@@ -21,9 +21,11 @@
 <br>
 
 <ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
-  <% @customers.each do |customer| %>
-      <li class="inline_mobile"><%= link_to customer.name, customer, "data-transition" => "slide" %>
-      </li>
+  <% unless @customers.nil? %>
+      <% @customers.each do |customer| %>
+          <li class="inline_mobile"><%= link_to customer.name, customer, "data-transition" => "slide" %>
+          </li>
+      <% end %>
   <% end %>
 </ul>
 

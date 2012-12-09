@@ -48,7 +48,7 @@ class CustomersController < ApplicationController
   end
 
   def index
-
+    Rails.logger.debug {"In Index"}
     respond_to do |format|
       format.js do
         if params[:organization_id].nil? || params[:organization_id].empty?

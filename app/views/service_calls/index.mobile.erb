@@ -1,0 +1,43 @@
+<% provide(:title, 'Service Call') %>
+
+<div class="three_buttons_top ui-btn-inner-small">
+
+  <fieldset class="ui-grid-b">
+
+    <div class="ui-block-a">
+      <%= link_to 'Subcontractors', user_root_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>
+    </div>
+
+    <div class="ui-block-b">
+      <%= link_to 'Providers', new_service_call_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>
+    </div>
+
+    <div class="ui-block-c">
+      <div class="miya_blue_button">
+        <%= link_to 'New', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b",  id: 'new-affiliate-button'%>
+      </div>
+    </div>
+
+  </fieldset>
+</div>
+
+
+<br>
+
+<ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
+  <% unless @service_calls.empty? %>
+  <% @service_calls.each do |sc| %>
+      <li class="inline_mobile service_calls_index">
+        <%= link_to "#{sc.ref_id}" + " | "  +  "#{sc.customer.try(:name)}", service_call_path(sc), "data-transition" => "slide" %>
+
+        <span class="member_label_mobile">
+              <badge><%= sc.ref_id %></badge>
+        </span>
+
+      </li>
+      <% end %>
+  <% end %>
+</ul>
+
+
+:html => {:class => 'form-horizontal'}

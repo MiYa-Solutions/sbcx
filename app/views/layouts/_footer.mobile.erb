@@ -8,7 +8,7 @@
         <% end %>
       </li>
       <li>
-        <%= link_to new_service_call_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "type" => "button", "data-icon" => "star", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "flow" do %>
+        <%= link_to service_calls_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "type" => "button", "data-icon" => "star", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "flow" do %>
             <span>My Jobs</span>
         <% end %>
       </li>
@@ -16,6 +16,7 @@
         <%= link_to affiliates_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-icon" => "grid", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
             <span>Affiliates</span>
         <% end %>
+
       </li>
       <li>
         <%= link_to profile_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-icon" => "gear", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
@@ -29,7 +30,8 @@
           <img src="/assets/logoM.png" id= "centered_image" alt="MiYa"/>
         </div>
     <% end %>
-
-    <!--<h5><#%= current_user.try(:email) %></h5>-->
   </div>
+    <!--<h5><#%= current_user.try(:email) %></h5>-->
+
+
 
