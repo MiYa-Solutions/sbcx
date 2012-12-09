@@ -31,6 +31,12 @@ class NotificationMailer < ActionMailer::Base
     mail to: user.email, subject: subject
   end
 
+  def sc_cancel_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
   def sc_canceled_notification(subject, user, service_call)
     @service_call = service_call
     @user         = user
@@ -44,6 +50,42 @@ class NotificationMailer < ActionMailer::Base
   end
 
   def sc_dispatched_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
+  def sc_paid_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
+  def sc_rejected_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
+  def sc_settle_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
+  def sc_start_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
+  def sc_started_notification(subject, user, service_call)
+    @service_call = service_call
+    @user         = user
+    mail to: user.email, subject: subject
+  end
+
+  def sc_settled_notification(subject, user, service_call)
     @service_call = service_call
     @user         = user
     mail to: user.email, subject: subject

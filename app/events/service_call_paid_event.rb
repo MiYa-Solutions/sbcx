@@ -1,24 +1,27 @@
-class ServiceCallPaidEvent < Event
+class ServiceCallPaidEvent < ServiceCallEvent
 
   def init
     self.name         = I18n.t('service_call_paid_event.name')
+    self.description  = I18n.t('service_call_paid_event.description')
     self.reference_id = 18
   end
 
   def process_event
-
-    Rails.logger.debug { "Running ServiceCallPaidEvent process" }
-    service_call = associated_object
     service_call.paid_customer
-    # todo notify the technician in case it is not the submitting user
+    super
+  end
 
-    prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-    unless service_call.id == prov_service_call.id
-      prov_service_call.paid_subcon
-      prov_service_call.events << ServiceCallPaidEvent.new(description: I18n.t('service_call_paid_event.description'))
-    end
+  def update_provider
+    prov_service_call.paid_subcon
+    prov_service_call.events << ServiceCallPaidEvent.new
+  end
 
+  def notification_recipients
+    User.my_admins(service_call.organization.id)
+  end
 
+  def notification_class
+    ScPaidNotification
   end
 
 end

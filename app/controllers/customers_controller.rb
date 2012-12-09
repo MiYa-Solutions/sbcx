@@ -48,7 +48,7 @@ class CustomersController < ApplicationController
   end
 
   def index
-    Rails.logger.debug {"In Index"}
+
     respond_to do |format|
       format.js do
         if params[:organization_id].nil? || params[:organization_id].empty?
@@ -72,7 +72,7 @@ class CustomersController < ApplicationController
 
 
       end
-      format.html do
+      format.any(:html, :mobile) do
         if params[:organization_id].nil? || params[:organization_id].empty?
           if params[:search].nil?
             @customers = Customer.fellow_customers(current_user.organization.id).paginate(page: params[:page], per_page: 10)
@@ -92,6 +92,7 @@ class CustomersController < ApplicationController
         end
 
       end
+
 
     end
 

@@ -23,6 +23,8 @@ class Notification < ActiveRecord::Base
 
   end
 
+  scope :my_notifications, ->(user_id) { where(:user_id => user_id) }
+
   def url_helpers
     Rails.application.routes.url_helpers
   end

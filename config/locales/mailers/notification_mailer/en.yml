@@ -18,6 +18,9 @@ en:
     sc_accepted_notification:
       subject: 'Transferred service call %{ref} has been accepted '
       content: '%{subcontractor} has accepted the service call'
+    sc_rejected_notification:
+      subject: 'Transferred service call %{ref} has been rejected '
+      content: '%{subcontractor} has rejected the service call'
     sc_canceled_notification:
       subject: 'Transferred service call %{ref} has been canceled '
       content: '%{subcontractor} has reported the service call as canceled by the customer accepted the service call'
@@ -27,4 +30,22 @@ en:
     sc_dispatched_notification:
       subject: '%{subcontractor} has dispatched service call %{ref}'
       content: 'Please note that %{subcontractor} has dispatched service call %{ref}'
+    sc_paid_notification:
+      subject: '%{customer} has paid for service call %{ref}'
+      content: 'Please note that %{customer} has paid for service call %{ref}'
+    sc_cancel_notification:
+      subject: 'Service call %{ref} was canceled by the customer'
+      content: 'Please note that service call %{ref} was canceled by the customer (%{customer})'
+    sc_settle_notification:
+      subject: 'Service call %{ref} is settled'
+      content: 'Please note that service call %{ref} has been settled'
+    sc_settled_notification:
+      subject: 'Service call %{ref} was marked as settled by the subcontractor'
+      content: 'Please note that service call %{ref} was marked as settled by the subcontractor (%{subcontractor})'
+    sc_start_notification:
+      subject: 'Service call %{ref} is completed'
+      content: '%{technician} has started the service call at: %{started_at}'
+    sc_started_notification:
+      subject: 'Service call %{ref} is completed'
+      content: '%{subcontractor} has started the service call at: %{started_at}'
 

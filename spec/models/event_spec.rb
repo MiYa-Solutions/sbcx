@@ -43,5 +43,5 @@ describe Event do
   end
 
 
-  it { should be_valid }
+  it { should raise_exception } # as event should not be instantiated by himself and must a have a subclass
 end

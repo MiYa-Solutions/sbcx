@@ -17,7 +17,7 @@ describe Notification do
   describe "validation" do
     [:subject, :content, :user, :status].each do |attr|
       it "must have a #{attr}" do
-        should_not be_valid
+        should raise_exception # as a notification should not be instantiated and must have a subclass
         notification.errors[attr].should_not be_nil
       end
     end

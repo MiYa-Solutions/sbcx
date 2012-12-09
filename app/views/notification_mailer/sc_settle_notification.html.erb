@@ -1,0 +1,4 @@
+Dear <%= "#{@user.first_name} #{@user.last_name}" %>,
+
+Settle!  (NOT SettleD)
+<%= link_to "#{ServiceCall.name.humanize} #{@service_call.ref_id}", @service_call.becomes(ServiceCall) %>

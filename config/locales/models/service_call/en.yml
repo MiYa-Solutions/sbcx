@@ -120,9 +120,25 @@ en:
       html_message: '%{technician} has completed the %{link}'
     sc_accepted_notification:
       html_message: '%{subcontractor} has accepted the %{link}'
+    sc_rejected_notification:
+      html_message: '%{subcontractor} has rejected the %{link}'
     sc_canceled_notification:
       html_message: '%{subcontractor} reported the customer has canceled the %{link}'
     sc_dispatch_notification:
       html_message: 'You got a new %{link} to work on!'
     sc_dispatched_notification:
       html_message: '%{subcontractor} has dispatched the %{link}'
+    sc_paid_notification:
+      html_message: '%{customer} has paid for the %{link}'
+    sc_settled_notification:
+      html_message: '%{subcontractor} has marked %{link} %{ref} as settled'
+    sc_cancel_notification:
+      html_message: 'The customer (%{customer}) has canceled for the %{link}'
+    sc_settle_notification:
+      html_message: '%{link} %{ref} has been settled'
+    sc_settled_notification:
+      html_message: 'The subcontractor (%{subcontractor}) has marked %{link} %{ref} as settled'
+    sc_started_notification:
+      html_message: 'The %{subcontractor} has started the %{link}'
+    sc_start_notification:
+      html_message: '%{technician} has started the %{link}'

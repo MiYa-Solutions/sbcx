@@ -38,13 +38,17 @@ class MyServiceCallObserver < ServiceCallObserver
 
 
   def before_paid(service_call, transition)
-
-    service_call.events << ServiceCallPaidEvent.new(description: I18n.t('service_call_paid_event.description'))
+    service_call.events << ServiceCallPaidEvent.new
   end
 
 
   def before_cancel(service_call, transition)
     service_call.events << ServiceCallCancelEvent.new(description: I18n.t('service_call_cancel_event.description'))
+
+  end
+
+  def before_settle(service_call, transition)
+    service_call.events << ServiceCallSettleEvent.new
 
   end
 
