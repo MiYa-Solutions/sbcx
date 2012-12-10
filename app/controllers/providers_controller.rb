@@ -10,12 +10,10 @@ class ProvidersController < ApplicationController
   end
 
   def create
-    #@provider.subcontractors << current_user.organization.becomes(Subcontractor)
-    if current_user.organization.save #@provider.save
+    if @provider.save
       redirect_to @provider, :notice => t('providers.flash.create_provider', name: @provider.name)
     else
       render 'new'
-
     end
 
   end
@@ -27,7 +25,7 @@ class ProvidersController < ApplicationController
   def update
     #@provider = current_user.organization.providers.find(params[:id])
     if @provider.update_attributes(permitted_params(@provider).provider)
-      redirect_to @provider, :notice => "Successfully updated provider."
+      redirect_to @provider, :success => "Successfully updated provider."
     else
       render :action => 'edit'
     end
@@ -49,15 +47,13 @@ class ProvidersController < ApplicationController
       @providers = Provider.provider_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 10)
 
     end
-
-
   end
 
 
   def show
     #@provider = Provider.find(params[:id])
-    @agreement = Agreement.new
-    @agreements = @provider.agreements
+    #@agreement = Agreement.new
+    @agreements = @provider.agreements.where(:subcontractor_id => current_user.organization.id)
   end
 
   def new_provider_from_params
@@ -67,6 +63,13 @@ class ProvidersController < ApplicationController
     end
 
     @provider ||= current_user.organization.providers.new(permitted_params(nil).provider)
+    if @provider.agreements.last.nil?
+      @provider.agreements.build
+    else
+      @provider.agreements.last.subcontractor = current_user.organization.becomes(Subcontractor)
+      @provider.agreements.last.provider      = @provider
+    end
+    @provider
   end
 
 end

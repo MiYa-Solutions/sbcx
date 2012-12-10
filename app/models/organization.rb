@@ -45,7 +45,7 @@ class Organization < ActiveRecord::Base
   has_many :providers, through: :reverse_agreements, source: :provider
 
 
-  accepts_nested_attributes_for :users, :agreements
+  accepts_nested_attributes_for :users, :agreements, :reverse_agreements
 
   validates :name, { presence: true, length: { maximum: 255 } }
 

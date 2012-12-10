@@ -206,12 +206,46 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     ]
   end
 
+  def provider_attributes
+    [:address1,
+     :address2,
+     :city,
+     :company,
+     :country,
+     :email,
+     :mobile,
+     :name,
+     :phone,
+     :state,
+     :status_event,
+     :website,
+     :work_phone,
+     :zip,
+     :organization_role_ids,
+     :provider_id #, agreements_attributes: {"0" => agreement_attributes }]
+    ].tap do |attributes|
+      attributes << { agreements_attributes: agreement_attributes }
+
+    end
+  end
+
   def provider
     if params[:provider].nil?
       # need this step to work around a declarative authorization problem with strong parameters
       params.permit
     else
-      params.require(:provider).permit(*organization_attributes)
+      params.require(:provider).permit(*provider_attributes)
+      #params.require(:provider).permit!
+    end
+
+  end
+
+  def agreement
+    if params[:agreement].nil?
+      # need this step to work around a declarative authorization problem with strong parameters
+      params.permit
+    else
+      params.require(:agreement).permit(agreement_attributes)
     end
 
   end
@@ -263,6 +297,10 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :mobile_phone,
      :work_phone]
 
+  end
+
+  def agreement_attributes
+    [:name, :description, :subcontractor, :provider]
   end
 
   def new_user_attributes

@@ -1,6 +1,12 @@
 require 'spec_helper'
 require 'capybara/rspec'
 
+# ==============================================================
+# data elements to inspect
+# ==============================================================
+agreement_fields = 'div#agreement-fields'
+agreement_name   = 'provider_agreement_name'
+
 
 describe "Provider Pages" do
 
@@ -140,6 +146,10 @@ describe "Provider Pages" do
 
       end
 
+      it "should have the agreement nested fields displayed" do
+        should have_selector(agreement_fields)
+      end
+
     end
 
     describe "Update Provider" do
@@ -155,14 +165,23 @@ describe "Provider Pages" do
 
       it { should have_content(new_prov.name) }
 
+      it "should have the agreement nested fields displayed" do
+        should have_selector(agreement_fields)
+      end
+
+
       describe "successful update" do
         before do
           fill_in 'provider_company', with: "new company"
+          fill_in agreement_name, with: "test agreement"
           click_button 'save_provider_btn'
         end
 
         it { should have_selector('div.alert-notice') }
         it { should have_content('new company') }
+        it "should show the agreement" do
+          should have_content("test agreement")
+        end
       end
 
       describe "of another member" do

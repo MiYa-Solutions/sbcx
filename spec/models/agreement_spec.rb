@@ -14,5 +14,24 @@
 require 'spec_helper'
 
 describe Agreement do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  let(:new_agreement) { Agreement.new }
+
+  subject { new_agreement }
+
+  it "should have the expected attributes and methods" do
+    should respond_to(:provider)
+    should respond_to(:subcontractor)
+    should respond_to(:description)
+    should respond_to(:status)
+  end
+
+  describe "validation" do
+    [:provider, :subcontractor].each do |attr|
+      it "must have a #{attr}" do
+        new_agreement.errors[attr].should_not be_nil
+      end
+    end
+  end
+
 end
