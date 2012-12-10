@@ -1,12 +1,12 @@
 <tr>
-  <td><%= link_to notification.subject, notification_path(notification) %>  </td>
+  <td><%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %>  </td>
   <td><%= notification.html_message %></td>
   <td><%= notification.human_status_name %></td>
 
   <td>
 
-    <%= link_to 'Show', notification_path(notification), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
-    <%= link_to 'Destroy', new_provider_path, :class => 'btn btn-mini btn-info' %>
+    <!--<#%= link_to 'Show', notification_path(notification), :class => 'btn btn-mini btn-info' %>-->
+    <%= link_to 'Dismiss', user_root_path, :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
 
 
   </td>

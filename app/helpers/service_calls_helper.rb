@@ -38,7 +38,7 @@ module ServiceCallsHelper
       concat (f.input :total_price)
       concat (f.submit service_call.class.human_status_event_name(:paid).titleize,
                        id:    'paid_service_call_btn',
-                       class: "btn btn-large btn-primary",
+                       class: "btn btn-large btn-info",
                        title: 'Click if payment has received',
                        rel:   'tooltip'
              )
@@ -50,7 +50,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'accept')
       concat (f.submit service_call.class.human_status_event_name(:accept).titleize,
                        id:    'accept_service_call_btn',
-                       class: "btn btn-large btn-primary",
+                       class: "btn btn-large btn-info",
                        title: 'Click to indicate that you accept this Service Call',
                        rel:   'tooltip'
              )
@@ -62,7 +62,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'cancel')
       concat (f.submit service_call.class.human_status_event_name(:cancel).titleize,
                        id:    'cancel_service_call_btn',
-                       class: "btn btn-large btn-primary",
+                       class: "btn btn-large btn-danger",
                        title: 'cancel this service call',
                        rel:   'tooltip'
              )
@@ -86,7 +86,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'settle')
       concat (f.submit service_call.class.human_status_event_name(:settle).titleize,
                        id:    'settle_service_call_btn',
-                       class: "btn btn-large btn-primary",
+                       class: "btn btn-large",
                        title: 'Click to indicate that you have completed',
                        rel:   'tooltip'
              )
@@ -109,7 +109,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'work_completed')
       concat (f.submit service_call.class.human_status_event_name(:work_completed).titleize,
                        id:    'complete_service_call_btn',
-                       class: "btn btn-large btn-success",
+                       class: "btn btn-large btn-info",
                        title: 'Click id work is completed',
                        rel:   'tooltip'
              )
@@ -121,7 +121,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'start')
       concat (f.submit service_call.class.human_status_event_name(:start).titleize,
                        id:    'start_service_call_btn',
-                       class: "btn btn-large btn-success",
+                       class: "btn btn-large btn-info",
                        title: 'Click to Start the Service Call',
                        rel:   'tooltip'
              )
@@ -134,7 +134,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'dispatch')
       concat (f.submit service_call.class.human_status_event_name(:dispatch).titleize,
                        id:    'service_call_dispatch_btn',
-                       class: "btn btn-large btn-warning",
+                       class: "btn btn-large",
                        title: 'Click to Dispatch the Service Call',
                        rel:   'tooltip'
              )
@@ -147,7 +147,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'transfer')
       concat (f.submit service_call.class.human_status_event_name(:transfer).titleize,
                        id:    'service_call_transfer_btn',
-                       class: "btn btn-large btn-info",
+                       class: "btn btn-large",
                        title: 'Click to transfer the Service Call to the Subcontractor you selected',
                        rel:   'tooltip'
              )

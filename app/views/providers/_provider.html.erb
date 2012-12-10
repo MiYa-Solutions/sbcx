@@ -1,37 +1,57 @@
 <tr>
-  <td><%= link_to provider.name, provider_path(provider) %>
+  <td>
     <% if provider.subcontrax_member==true %>
         <span class="member_label">
-          <badge>Member</badge>
+          <badge><i class="icon-user icon-white"></i></badge>
         </span>
     <% end %>
+
   </td>
+  <td><%= link_to provider.name, provider_path(provider) %></td>
   <td><%= provider.company %></td>
   <td><%= provider.phone %></td>
   <td><%= provider.email %></td>
   <td>
     <% if provider.subcontrax_member==true %>
-      <div class="row-fluid">
         <% if  provider.id.in? current_user.organization.provider_ids %>
-          <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+         <span class="miya_buttons_grid">
+              <%= link_to 'Archive', edit_provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+         </span>
         <% else %>
-               <%= form_for current_user.organization.agreements.build(provider_id: provider.id), :html => {:class => 'add_member'} do |f| %>
-                   <%= f.hidden_field :provider_id %>
-                   <%= f.submit "Add", class: "btn btn-mini btn-info", id: "#{provider.id}-add-sbcx-provider" %>
-               <% end %>
+            <div class="miya_buttons_grid">
+              <ul>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>
+                  <%= form_for current_user.organization.agreements.build(provider_id: provider.id), :html => {:class => 'add_member'} do |f| %>
+                      <%= f.hidden_field :provider_id %>
+                      <%= f.submit "Add", class: "btn btn-mini btn-info", id: "#{provider.id}-add-sbcx-provider" %>
+                  <% end %>
+                </li>
+              </ul>
 
-         <% end %>
-      </div>
+            </div>
+        <% end %>
 
-  <% else %>
+    <% else %>
+        <div class="miya_buttons_grid">
+          <ul>
+            <li>
+              <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+            </li>
+            <li>
+              <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
+            </li>
+            <li>
+              <%= link_to 'Send Invite', new_provider_path, :class => 'btn btn-mini btn-info' %>
+            </li>
 
-        <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
-        <%= link_to 'Archive', provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
-        <%= link_to 'Send Invite' , new_provider_path, :class => 'btn btn-mini btn-info' %>
+          </ul>
+        </div>
+    <% end %>
 
-
-  <% end %>
-
-  </td  >
+  </td>
 </tr>
+
+
 

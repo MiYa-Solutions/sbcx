@@ -1,20 +1,20 @@
-<% provide(:title, 'Service Call') %>
+<% provide(:title, 'Service Calls') %>
 
 <div class="three_buttons_top ui-btn-inner-small">
 
   <fieldset class="ui-grid-b">
 
     <div class="ui-block-a">
-      <%= link_to 'Subcontractors', user_root_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>
+      <!--<#%= link_to 'Subcontractors', user_root_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>-->
     </div>
 
     <div class="ui-block-b">
-      <%= link_to 'Providers', new_service_call_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>
+      <!--<#%= link_to 'Providers', new_service_call_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>-->
     </div>
 
     <div class="ui-block-c">
       <div class="miya_blue_button">
-        <%= link_to 'New', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b",  id: 'new-affiliate-button'%>
+        <%= link_to 'New', new_service_call_path, "data-role" => "button", :class => "ui-btn-up-b",  id: 'new-affiliate-button'%>
       </div>
     </div>
 
@@ -24,20 +24,31 @@
 
 <br>
 
-<ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
-  <% unless @service_calls.empty? %>
-  <% @service_calls.each do |sc| %>
-      <li class="inline_mobile service_calls_index">
-        <%= link_to "#{sc.ref_id}" + " | "  +  "#{sc.customer.try(:name)}", service_call_path(sc), "data-transition" => "slide" %>
 
-        <span class="member_label_mobile">
+<% unless @service_calls.empty? %>
+
+    <ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
+      <% @service_calls.each do |sc| %>
+          <li class="inline_mobile service_calls_index">
+            <p class="ui-li-aside-blue ui-li-desc-blue">
               <badge><%= sc.ref_id %></badge>
-        </span>
+            </p>
 
-      </li>
+            <%= link_to sc.customer.try(:name), service_call_path(sc), "data-transition" => "slide" %>
+
+
+            <p class="ui-li-aside ui-li-desc">
+              <%= sc.human_status_name %>
+            </p>
+            <!--<span class="member_label_mobile">-->
+            <!--<badge><#%= sc.ref_id %></badge>-->
+            <!--</span>-->
+
+          </li>
       <% end %>
-  <% end %>
-</ul>
 
+    </ul>
 
-:html => {:class => 'form-horizontal'}
+<% end %>
+
+<!--"#{sc.ref_id}" + " | "  +  "#{sc.customer.try(:name)}"-->

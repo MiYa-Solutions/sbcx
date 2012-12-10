@@ -22,6 +22,16 @@ body { padding-top: 60px; }
 
 }
 
+.help-inline {
+  color: #555;
+  //text-align: center;
+  //padding-left: 40%;
+}
+
+.well-home {
+     min-height: 278px;
+}
+
 .nav-list {
   margin-bottom: 0;
   padding-left: 5px;
@@ -92,10 +102,11 @@ footer {
 
   //background-color: #5BB65B;
   background-color: #3A87AD;
-
+  padding-top: 2px;
   text-align: center;
   border-radius: 3px 3px 3px 3px;
-  padding: 1px 4px 2px;
+  //padding: 1px 4px 3px;
+
 
   badge {
      color: white;
@@ -110,9 +121,40 @@ footer {
 
 }
 
-.miya_buttons_grid {
+//.miya_buttons_grid {
+//
+//    width: 20px;
+//
+//}
 
-    width: 20px;
+.miya_buttons_grid {
+  min-width: 160px;
+
+  input[type="submit"] {
+    margin-left: 10px;
+    min-width: 65px;
+  }
+
+  ul {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+
+  }
+
+  li {
+    float: left;
+    min-width: 40px;
+    margin-right: 5px;
+  }
+
+  .btn-mini {
+    min-width: 30px;
+    font-size: 11px;
+    line-height: 12px;
+    padding: 2px 5px;
+  }
+
 
 }
 
@@ -124,7 +166,7 @@ footer {
 }
 
 .miya_table_row {
-   padding: 8px;
+   //padding: 8px;
 }
 
 .miya_note_area {
@@ -200,10 +242,11 @@ input, textarea {
   display: block;
   border-radius: 3px 3px 3px 3px;
   padding: 5px;
+  padding-bottom: none;
   overflow: auto;
 
   h1 {
-    font-size: 18px;
+    font-size: 16px;
     text-transform: uppercase;
     font-weight: bold;
     color: white;
@@ -227,6 +270,7 @@ input, textarea {
   }
 
   p {
+    max-width: 250px;
     font-style: italic;
     font-weight:bold;
     color: $white;
@@ -249,6 +293,7 @@ input, textarea {
     li {
     float: left;
     margin: 0 10px;
+    line-height: 16px;
    }
 
    li:last-child {
@@ -358,6 +403,12 @@ fieldset label {
   background-color: #eeeeee;
 }
 
+.table th, .table td {
+  line-height: 12px;
+  padding: 4px;
+  font-size: 11px;
+}
+
 smart_alert {
   display: block;
 }
@@ -428,6 +479,14 @@ smart_alert {
 
 }
 
+.promotion {
+
+  .input-medium {
+    width: 90%;
+  }
+
+}
+
 .status_label_success {
 
   //background-color: #5BB65B;
@@ -475,12 +534,19 @@ smart_alert {
 
   .btn-large {
     width: 70%;
-    font-size: 18px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 8px;
+
   }
 
   label {
     font-weight: bold;
   }
+
+  select {
+    width: 70%;
+    }
 }
 
 .success {

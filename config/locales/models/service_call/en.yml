@@ -113,7 +113,7 @@ en:
     description: "Customer has paid for the service"
   notifications:
     received_service_call_notification:
-      html_message: 'Received a new %{link} from %{prov_name}'
+      html_message: 'New %{link} from %{prov_name}'
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
     sc_complete_notification:

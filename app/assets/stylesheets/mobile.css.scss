@@ -14,6 +14,10 @@
 
 }
 
+.select optional {
+  background-color: white;
+}
+
 .miya_checkbox {
   .ui-icon-checkbox-off {
     background-color: #CCCCCC;
@@ -49,7 +53,7 @@
 
 input.ui-input-text, textarea.ui-input-text {
   font-size: 14px;
-  }
+}
 
 .ui-btn-up-a {
 
@@ -137,7 +141,7 @@ input.ui-input-text, textarea.ui-input-text {
 
 .small_text_button {
   .ui-btn-inner {
-     font-size: 9px;
+    font-size: 9px;
   }
   .ui-btn-up-c {
     height: 32px;
@@ -194,9 +198,9 @@ input.ui-input-text, textarea.ui-input-text {
 
   img {
     display: block;
-      border: 0;
-      display: inline;
-      align: center;
+    border: 0;
+    display: inline;
+    align: center;
     margin-left: 10%;
 
   }
@@ -219,7 +223,7 @@ input.ui-input-text, textarea.ui-input-text {
 
 .header_sign_out {
 
-    h1 {
+  h1 {
     display: block;
     font-size: 16px;
     outline: 0 none !important;
@@ -254,4 +258,66 @@ input.ui-input-text, textarea.ui-input-text {
     vertical-align: middle;
     position: relative;
   }
+
+  .ui-li-aside {
+    //float: right;
+    margin: 0.7em 0;
+    text-align: left;
+    width: 30%;
+    padding-right: 15px;
+  }
+
+  .ui-li-aside-blue {
+    float: left;
+    margin: 0.8em 0;
+    background-color: #396B9E;
+    border-radius: 1em 1em 1em 1em;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: left;
+    width: 30px;
+    margin-left: 5px;
+  }
+
+  .ui-li-desc {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    //margin: -0.5em 0 0.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-li-desc-blue {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    //margin: -0.5em 0 0.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .member_label_mobile {
+    background-color: #396B9E;
+    border-radius: 1em 1em 1em 1em;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin-top: -10px;
+    position: absolute;
+    right: 10%;
+    text-align: center;
+    top: 50%;
+    width: 30px;
+  }
+
+  a.ui-link-inherit {
+    padding-right: 10px;
+  }
+
+
+}
+
+.ui-li-has-arrow .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow {
+  padding-right: 10px;
 }

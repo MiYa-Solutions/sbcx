@@ -24,16 +24,7 @@
     <table class="table table-striped" id="affiliates_search_results">
         <br>
         <thead>
-          <!--<tr>-->
-            <!--<div class="miya_table_row">-->
-              <!--<span class="member_label">-->
-                    <!--<badge><i class="icon-user icon-white"></i></badge>-->
-               <!--</span><span> &nbsp;</span>-->
-              <!--<span class="miya_blue_note"> SubConTraX Member</span>-->
-            <!--</div>-->
-             <!--</tr>-->
-
-        <tr>
+         <tr>
           <th></th>
           <th>Name</th>
           <th>Company</th>
@@ -59,11 +50,16 @@
 
   <%= will_paginate @affiliates, :class => 'pagination pagination-centered' %>
 
-  <div class="miya_table_row">
+  <div class="row-fluid">
+  <!--<div class="miya_table_row">-->
               <span class="member_label">
                     <badge><i class="icon-user icon-white"></i></badge>
-               </span><span> &nbsp;</span>
-    <span class="miya_blue_note"> SubConTraX Member</span>
+               </span>
+    <!--<span>&nbsp;</span>-->
+    <span class="miya_blue_note">&nbsp; SubConTraX Member</span>
   </div>
 
 </div>
+
+
+
