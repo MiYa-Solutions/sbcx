@@ -15,7 +15,7 @@
         <td><%= notification.human_status_name.titleize %></td>
 
         <td><%= link_to 'Show', notification.becomes(Notification), :class => 'btn btn-mini btn-info' %>
-          <%= link_to 'Destroy', notification.becomes(Notification), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-mini btn-danger' %></td>
+          <%= link_to 'Destroy', notification.becomes(Notification), method: :delete, confirm: 'Are you sure?', :class => 'btn btn-mini btn-danger' %></td>
       </tr>
   <% end %>
 </table>
