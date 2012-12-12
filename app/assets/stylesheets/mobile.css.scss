@@ -14,6 +14,38 @@
 
 }
 
+.service-call-actions {
+  .ui-select .ui-btn select {
+    background-color: white;
+
+  }
+}
+
+.unstyled {
+
+  .ui-corner-tl, .ui-corner-tr, .ui-corner-bl, .ui-corner-br, .ui-corner-top, .ui-corner-bottom, .ui-corner-right, .ui-corner-left, .ui-corner-all, .ui-btn-corner-tl, .ui-btn-corner-tr, .ui-btn-corner-bl, .ui-btn-corner-br, .ui-btn-corner-top, .ui-btn-corner-bottom, .ui-btn-corner-right, .ui-btn-corner-left, .ui-btn-corner-all {
+    background-color: #396B9E;
+    //background: linear-gradient(#5F9CC5, #396B9E) repeat scroll 0 0 #396B9E;
+  }
+}
+
+ul.unstyled, ol.unstyled {
+  list-style: none;
+}
+
+.simple_form edit_service_call {
+  .ui-body-a input {
+    background-color: red;
+  }
+
+}
+
+.cancel_service_call_btn {
+  .ui-body-a input {
+    background-color: red;
+  }
+}
+
 .select optional {
   background-color: white;
 }
@@ -149,7 +181,7 @@ input.ui-input-text, textarea.ui-input-text {
 }
 
 .ui-checkbox, .ui-radio {
-  width: 50%;
+  width: 60%;
 }
 
 .help-inline {
@@ -320,4 +352,16 @@ input.ui-input-text, textarea.ui-input-text {
 
 .ui-li-has-arrow .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow {
   padding-right: 10px;
+}
+
+
+.customer_in_service_call {
+
+  //width: 80%;
+  //.ul-listview {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+
 }

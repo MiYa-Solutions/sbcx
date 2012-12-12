@@ -1,2 +1,148 @@
-<h1>Service Call: <%= @service_call.ref_id %></h1>
-<%= event_list(@service_call) %>
+<% provide(:title, "Service Call: #{@service_call.ref_id}" )%>
+
+<fieldset class="ui-grid-b ui-btn-inner-small">
+  <div class="ui-block-a">
+    <%= link_to "Back", service_calls_path, "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-l" %>
+  </div>
+  <div class="ui-block-b">
+
+  </div>
+  <div class="ui-block-c">
+
+  </div>
+</fieldset>
+<!--<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d">ac</li>-->
+
+<div data-role="collapsible-set">
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Actions</h3>
+    <p class="service-call-actions">
+      <%= event_list(@service_call) %>
+
+    </p>
+  </div>
+
+  <!--Job Details-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Job Details</h3>
+      <%= simple_form_for @service_call, as: :service_call, url: service_call_path(@service_call) , :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
+
+        <!--service_call_url(@service_call)-->
+        <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer, :include_blank => @service_call.customer.name %>
+
+
+        <div class="customer_in_service_call">
+        <ul data-role="listview">
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">Name:</div>
+              <div class="ui-block-b"><%= @service_call.customer.name %></div>
+            </div>
+          </li>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">Address:</div>
+                  <div class="ui-block-b"><%= @service_call.customer.address1 %>
+                    <% if !@service_call.customer.address2.blank? %>
+                        <br> <%= @service_call.customer.address2 %>
+                    <% end %>
+                  </div>
+            </div>
+          </li>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">city:</div>
+              <div class="ui-block-b"><%= @service_call.customer.city %></div>
+            </div>
+          </li>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">State:</div>
+              <div class="ui-block-b"><%= @service_call.customer.state %></div>
+            </div>
+          </li>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">Zip:</div>
+              <div class="ui-block-b"><%= @service_call.customer.zip %></div>
+            </div>
+          </li>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">Phone:</div>
+              <div class="ui-block-b"><%= @service_call.customer.phone %></div>
+            </div>
+          </li>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">Mobile:</div>
+              <div class="ui-block-b"><%= @service_call.customer.mobile_phone %></div>
+            </div>
+          </li>
+        </ul>
+        </div>
+
+        <p><strong>  Subcontractor:  <%= f.object.subcontractor.try (:name)  %></strong></p>
+        <% unless @service_call.technician.blank? %>
+           <p><strong>  Technician:  <%= f.object.technician.try (:name)  %></strong></p>
+        <% end %>
+        <p><strong>  Provider:  <%= f.object.provider.try (:name)  %></strong></p>
+
+        <%= f.input :notes %>
+
+       <%= f.submit "Save Changes", id: 'service_call_save', "data-theme" => "b" %>
+
+      <% end %>
+
+  </div>
+
+    <div data-role="collapsible" data-theme="d">
+    <h3>Job Status</h3>
+
+    <ul data-role="listview">
+      <% if !@service_call.started_on_text.blank? %>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">Started at:</div>
+              <div class="ui-block-b"><%= @service_call.started_on_text %></div>
+            </div>
+          </li>
+      <% end %>
+      <li class="ui-li ui-li-static">
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Status:</div>
+          <div class="ui-block-b"><%= @service_call.human_status_name %></div>
+        </div>
+      </li>
+      <% if !@service_call.completed_on_text.blank? %>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a">Completed at:</div>
+              <div class="ui-block-b"><%= @service_call.completed_on_text %></div>
+            </div>
+          </li>
+      <% end %>
+      <li class="ui-li ui-li-static">
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Billing Status:</div>
+          <div class="ui-block-b"><%= @service_call.human_billing_status_name %></div>
+        </div>
+      </li>
+      <li class="ui-li ui-li-static">
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Billing Status:</div>
+          <div class="ui-block-b"><%= @service_call.human_billing_status_name %></div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <!--end of collapsible-->
+</div>
+
+
+
+
+

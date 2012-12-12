@@ -53,3 +53,14 @@ $('.best_in_place').best_in_place();
 $('.popover').popover();
 
 
+$(function(){
+    $('.i').scroller({
+        preset: 'date',
+        invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
+        theme: 'default',
+        display: 'inline',
+        mode: 'scroller',
+        dateOrder: 'mmD ddyy'
+    });
+});
+
