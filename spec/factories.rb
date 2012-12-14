@@ -7,6 +7,11 @@ FactoryGirl.define do
     sequence(:name) { |n| "Organization #{n}" }
     sequence(:email) { |n| "org_person_#{n}@example.com" }
 
+    factory :supplier, class: Supplier do
+      the_role = OrganizationRole.find_by_id(OrganizationRole::SUPPLIER_ROLE_ID)
+      organization_roles [the_role]
+    end
+
     factory :provider, class: Provider do |prov|
       the_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
       organization_roles [the_role]
@@ -20,7 +25,8 @@ FactoryGirl.define do
     factory :all_roles, class: Organization do
       prov_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
       sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
-      organization_roles [prov_role, sub_role]
+      sup_role  = OrganizationRole.find_by_id(OrganizationRole::SUPPLIER_ROLE_ID)
+      organization_roles [prov_role, sub_role, sup_role]
     end
 
     factory :org_with_providers, class: Organization do
@@ -171,5 +177,23 @@ FactoryGirl.define do
     end
   end
 
+  factory :material do
+    association :organization, factory: :member
+    association :supplier
+    name Faker::Name.name
+    description Faker::Lorem.paragraph(1)
+    cost 123.4
+    price 254.7
+  end
+
+  factory :bom do
+    association :material
+    quantity 3
+
+    after_build do |bom, evaluator|
+      bom.ticket = FactoryGirl.build(:my_service_call, organization: bom.material.organization)
+    end
+
+  end
 
 end

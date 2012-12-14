@@ -22,6 +22,8 @@
 #  settled_on           :datetime
 #  billing_status       :integer
 #  total_price          :decimal(, )
+#  settlement_date      :datetime
+#  name                 :string(255)
 #
 
 require 'spec_helper'
@@ -47,6 +49,7 @@ describe ServiceCall do
     should respond_to(:zip)
     should respond_to(:phone)
     should respond_to(:mobile_phone)
+    should respond_to(:boms)
   end
 
 
