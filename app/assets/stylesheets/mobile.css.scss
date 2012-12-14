@@ -359,9 +359,20 @@ input.ui-input-text, textarea.ui-input-text {
 
   //width: 80%;
   //.ul-listview {
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-left: 1x;
+    margin-right: 1px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 
+}
+
+.customer_contacts {
+  .ui-grid-a .ui-block-a {
+    width: 30%;
+    padding-top: 10px;
+  }
+
+  .ui-grid-a .ui-block-b {
+    width: 70%;
+  }
 }

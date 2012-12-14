@@ -25,11 +25,11 @@
 
   <!--Job Details-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
-    <h3>Job Details</h3>
-      <%= simple_form_for @service_call, as: :service_call, url: service_call_path(@service_call) , :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
+    <h3>Customer info</h3>
+      <!--<#%= simple_form_for @service_call, as: :service_call, url: service_call_path(@service_call) , :html => { :class => 'form-horizontal' }, :remote => true do |f| %>-->
 
         <!--service_call_url(@service_call)-->
-        <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer, :include_blank => @service_call.customer.name %>
+        <!--<#%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer, :include_blank => @service_call.customer.name %>-->
 
 
         <div class="customer_in_service_call">
@@ -80,22 +80,45 @@
               <div class="ui-block-b"><%= @service_call.customer.mobile_phone %></div>
             </div>
           </li>
+          <!--<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d">Subcontractor: <%= @service_call.subcontractor.try (:name) %></li>-->
+          <li class="ui-li ui-li-static">
+            <fieldset class="ui-grid-solo ui-btn-inner-small">
+
+            <%= link_to "Edit", edit_service_call_path, "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
+            </fieldset>
+
+          </li>
         </ul>
         </div>
 
-        <p><strong>  Subcontractor:  <%= f.object.subcontractor.try (:name)  %></strong></p>
-        <% unless @service_call.technician.blank? %>
-           <p><strong>  Technician:  <%= f.object.technician.try (:name)  %></strong></p>
-        <% end %>
-        <p><strong>  Provider:  <%= f.object.provider.try (:name)  %></strong></p>
 
-        <%= f.input :notes %>
 
-       <%= f.submit "Save Changes", id: 'service_call_save', "data-theme" => "b" %>
+    <!--<#%= @service_call.subcontractor.try (:name) %>-->
 
-      <% end %>
+
+    <!--<p><strong>  Subcontractor:  <#%= f.object.subcontractor.try (:name)  %></strong></p>-->
+        <!--<#% unless @service_call.technician.blank? %>-->
+           <!--<p><strong>  Technician:  <#%= f.object.technician.try (:name)  %></strong></p>-->
+        <!--<#% end %>-->
+        <!--<p><strong>  Provider:  <#%= f.object.provider.try (:name)  %></strong></p>-->
+
+
+    <!--<#%= @service_call.notes %>-->
+        <!--<#%= f.input :notes %>-->
+
+       <!--<#%= f.submit "Save Changes", id: 'service_call_save', "data-theme" => "b" %>-->
+
+      <!--<#% end %>-->
 
   </div>
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>General Info</h3>
+    <p class="service-call-actions">
+      add subco, tech, dispatcher, notes , billing summary
+    </p>
+  </div>
+
 
     <div data-role="collapsible" data-theme="d">
     <h3>Job Status</h3>
@@ -138,6 +161,19 @@
 
     </ul>
   </div>
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Materials</h3>
+    <p class="service-call-actions">
+        materials    </p>
+  </div>
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Job History</h3>
+    <p class="service-call-actions">
+        Job History    </p>
+  </div>
+
 
   <!--end of collapsible-->
 </div>

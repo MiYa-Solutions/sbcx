@@ -1,11 +1,21 @@
+<% provide(:title, "Update Contact" )%>
+
+
 <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' } do |f| %>
 
-    <%= render 'fields', f: f %>
 
-    <div class="form-actions">
-      <%= link_to 'Show', @service_call.becomes(ServiceCall), :class => 'btn btn-medium' %>
-      <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", id: 'service_call_save_btn' %>
-      <%= link_to "View All", service_calls_path, class: "btn btn-medium btn-success" %>
+    <fieldset class="ui-grid-a ui-btn-inner-small">
+      <div class="ui-block-a">
+        <%= link_to 'Back', service_call_path, "class" => "ui-btn-up-c", "data-role" => "button", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
+      </div>
+      <div class="ui-block-b">
+        <div class="miya_blue_button">
+          <%= f.submit "Save Changes", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_job_info_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+        </div>
+      </div>
+    </fieldset>
+
+    <%= render 'service', f: f %>
 
     </div>
 <% end %>
