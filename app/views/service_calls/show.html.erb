@@ -207,8 +207,8 @@
 
       <div class="form-actions_in_service_call">
         <div class="form-actions">
-          <%= link_to "Back", service_calls_path, class: "btn btn-large btn-info" %>
-          <%= f.submit "Save Changes", class: "btn btn-large btn-primary", id: 'service_call_save_btn' %>
+          <%= link_to "Back", service_calls_path, class: "btn btn-medium" %>
+          <%= f.submit "Save Changes", class: "btn btn-medium btn-info", id: 'service_call_save_btn' %>
         </div>
 
       </div>
@@ -332,99 +332,3 @@
   <!--end of well  -->
   </div>
 
-
-
-
-
-
-<h1><%= @service_call.customer.name %></h1>
-<% @service_call.attributes.map.each do |key, value| %>
-    <p>
-      <strong><%= ServiceCall.human_attribute_name(key) %></strong>
-
-      <% case key %>
-      <% when "status" %>
-          <span class="label label-success" id="service_call_status"><%= @service_call.human_status_name %></span>
-      <% when "subcontractor_status" %>
-          <span class="label label-info"><%= @service_call.human_subcontractor_status_name %></span>
-      <% when "billing_status" %>
-          <span class="label label-info" id="service_call_billing_status"><%= @service_call.human_billing_status_name %></span>
-      <% when "started_on" %>
-          <span class="label label-info" id="service_call_started_on_text"><%= @service_call.started_on_text %></span>
-      <% when "completed_on" %>
-          <span class="label label-info"><%= @service_call.completed_on_text %></span>
-
-      <% else %>
-          <%= value %>
-      <% end %>
-    </p>
-
-
-<% end %>
-
-
-===============================================================
-<!-- Instead of hard coding the attribute name, you should use the human_attribute_name method to use the I18n translation -->
-<p>
-  <strong>Customer:</strong>
-  <%= link_to @service_call.customer.try(:name), @service_call.customer %>
-</p>
-<p>
-  <strong><%= ServiceCall.human_attribute_name(:address1) %></strong>
-  <%= link_to @service_call.customer.try(:name), @service_call.customer %>
-</p>
-<p>
-  <strong>Organization:</strong>
-  <%= @service_call.organization.try(:name) %>
-</p>
-<p>
-  <strong>Subcontractor</strong>
-  <%= @service_call.subcontractor.try(:name) %>
-</p>
-<p>
-  <strong><%= ServiceCall.human_attribute_name(:provider) %></strong>
-  <span id="provider"><%= @service_call.provider.try(:name) %></span>
-</p>
-<p>
-  <strong>Technician</strong>
-  <%= @service_call.technician.try(:name) %>
-</p>
-
-<p>
-  <strong><%= ServiceCall.human_attribute_name(:creator) %> </strong>
-  <%= @service_call.creator.try(:name) %>
-</p>
-
-<p>
-  <strong><%= ServiceCall.human_attribute_name(:updater) %> </strong>
-  <%= @service_call.updater.try(:name) %>
-</p>
-
-<p>
-  <%= link_to "Edit", edit_service_call_path(@service_call.becomes(ServiceCall)) %> |
-  <%= link_to "Destroy", @service_call.becomes(ServiceCall), :confirm => 'Are you sure?', :method => :delete %> |
-  <%= link_to "View All", service_calls_path %>
-</p>
-
-
-
-
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <% Event.attribute_names.each do |name| %>
-        <th><%= name.titleize %></th>
-    <% end %>
-  </tr>
-  </thead>
-  <tbody>
-  <% @service_call.events.each do |event| %>
-      <tr>
-        <% event.attributes.each do |key, value| %>
-            <td><%= value %></td>
-
-        <% end %>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
