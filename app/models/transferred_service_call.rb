@@ -22,6 +22,8 @@
 #  settled_on           :datetime
 #  billing_status       :integer
 #  total_price          :decimal(, )
+#  settlement_date      :datetime
+#  name                 :string(255)
 #
 
 class TransferredServiceCall < ServiceCall

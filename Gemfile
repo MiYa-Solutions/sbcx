@@ -57,6 +57,7 @@ group :test do
   gem 'mocha'
   gem 'capybara-screenshot'
   gem 'poltergeist'
+  gem 'shoulda'
 end
 
 # ######################

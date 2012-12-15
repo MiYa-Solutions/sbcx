@@ -12,6 +12,8 @@
 #  updated_at     :datetime        not null
 #  user_id        :integer
 #  reference_id   :integer
+#  creator_id     :integer
+#  updater_id     :integer
 #
 
 class Event < ActiveRecord::Base

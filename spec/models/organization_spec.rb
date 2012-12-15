@@ -54,6 +54,7 @@ describe Organization do
   it { should respond_to(:service_calls) }
   it { should respond_to(:subcontractors) }
   it { should respond_to(:providers) }
+  it { should respond_to(:materials) }
 
   it { should be_valid }
 

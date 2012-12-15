@@ -5,7 +5,10 @@ Sbcx::Application.routes.draw do
 
   resources :my_users, only: [:new, :create, :edit, :show, :index, :update], controller: 'my_users'
 
-  resources :service_calls, only: [:new, :create, :edit, :show, :index, :update]
+
+  resources :service_calls, only: [:new, :create, :edit, :show, :index, :update] do
+    resources :boms
+  end
 
   resources :agreements, only: [:new, :create, :edit, :show, :index]
 
@@ -29,6 +32,7 @@ Sbcx::Application.routes.draw do
 
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   resources :customers, only: [:new, :create, :edit, :show, :index, :update]
+  resources :materials, only: [:new, :create, :edit, :show, :index, :update]
 
   match 'welcome' => 'static_pages#welcome', :as => :user_root
 

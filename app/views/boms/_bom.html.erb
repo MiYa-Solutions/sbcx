@@ -1,0 +1,10 @@
+<td><%= bom.material_name %></td>
+<td><%= bom.quantity %></td>
+<td><%= bom.cost %></td>
+<td><%= bom.price %></td>
+<td><%= bom.total_cost %></td>
+<td><%= bom.total_price %></td>
+<td><%= link_to 'Show', service_call_bom_path(@service_call, bom) %>
+  <%= link_to 'Edit', edit_service_call_bom_path(@service_call, bom) %>
+  <%= link_to 'Destroy', service_call_bom_path(@service_call, bom), method: :delete, data: { confirm: 'Are you sure?' }, remote: true %>
+</td>
