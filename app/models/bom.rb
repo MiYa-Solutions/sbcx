@@ -61,5 +61,9 @@ class Bom < ActiveRecord::Base
     end
 
   end
+
+  def material_name
+    @material_name ||= material.try(:name)
+  end
 end
 

@@ -1,0 +1,14 @@
+$('#new-bom-button').hide();
+$('#boms-table').before(' <%= j render "in_line_form" %>');
+$('#bom_material_name').autocomplete({
+    source:$('#bom_material_name').data('autocomplete-source')
+});
+
+$('#bom_material_name').focusout(function () {
+    $.getJSON('<%= materials_url %>', {name:$('#bom_material_name').val()}, function (data) {
+        $('#bom_price').val(data[0].price);
+        $('#bom_cost').val(data[0].cost);
+        $('#bom_quantity').val(1);
+    });
+
+});

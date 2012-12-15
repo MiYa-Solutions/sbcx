@@ -1,4 +1,19 @@
 class PermittedParams < Struct.new(:params, :user, :obj)
+
+  def bom
+    if params[:bom].nil?
+      params.permit
+    else
+      params[:bom].permit(*bom_attributes)
+    end
+
+  end
+
+  def bom_attributes
+    [:material_name, :cost, :price, :quantity]
+
+  end
+
   def service_call
     if params[:service_call].nil?
       params.permit

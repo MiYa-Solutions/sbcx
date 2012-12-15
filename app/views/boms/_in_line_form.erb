@@ -1,0 +1,17 @@
+<%= simple_form_for([@ticket, @bom], :html => { :class => 'form-horizontal' }, remote: true) do |f| %>
+    <%= f.error_notification %>
+
+    <div class="form-inputs">
+      <div class="control-group string ">
+        <div class="controls">
+          <%= f.text_field :material_name, placeholder: 'material', data: { autocomplete_source: materials_path } %>
+          <%= f.text_field :quantity, placeholder: 'quantity' %>
+          <%= f.text_field :price, placeholder: 'price' %>
+          <%= f.text_field :cost, placeholder: 'cost' %>
+          <%= f.button :submit %>
+        </div>
+      </div>
+
+    </div>
+
+<% end %>

@@ -28,6 +28,11 @@ class Material < ActiveRecord::Base
 
   before_validation :create_supplier, if: "supplier == nil"
 
+  scope :my_materials, ->(org_id) { where("organization_id = ?", org_id) }
+
+  scope :search, ->(org_id, query) { my_materials(org_id).where(arel_table[:name].matches("%#{query}%")).order('name') }
+
+
   # virtual attributes
   attr_accessor :supplier_name
 
