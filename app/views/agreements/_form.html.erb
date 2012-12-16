@@ -1,6 +1,4 @@
 <%= simple_form_for @agreement do |f| %>
-    <%= f.input :name %>
-    <%= f.input :description %>
-
+    <%= render 'agreements/fields', f: f %>
     <p><%= f.submit %></p>
 <% end %>

@@ -1,32 +1,37 @@
 <%= provide(:title, 'New Provider') %>
-    <div class="well">
+<div class="well">
 
-      <div class="row-fluid">
-          <div class="smart_label">
-            <h1>Enter New Provider details:</h1>
-          </div>
-      </div>
-      <br>
+  <div class="row-fluid">
+    <div class="smart_label">
+      <h1>Enter New Provider details:</h1>
+    </div>
+  </div>
+  <br>
 
-      <div class="row-fluid">
-        <div class="span5">
-            <%= simple_form_for @provider, url: providers_url, :html => {:class => 'form-horizontal'} do |f| %>
+  <div class="row-fluid">
+    <div class="span5">
+      <%= simple_form_for @provider, url: providers_url, :html => { :class => 'form-horizontal' } do |f| %>
 
-                <% if f.object.errors.any? %>
-                      <div class="alert alert-block alert-error">
-                        <a class="close" data-dismiss="alert" href="#">×</a>
-                        <%= render 'shared/error_messages', object: f.object %>
-                      </div>
-                <% end %>
-                <%= render 'fields', f: f %>
-
-                <div class="form-actions">
-                    <%= link_to 'Back', providers_path, :class => 'btn btn-medium' %>
-                    <%= f.submit t('providers.buttons.create_provider'), class: "btn btn-medium btn-primary", id: 'create_provider_btn' %>
-                </div>
+          <% if f.object.errors.any? %>
+              <div class="alert alert-block alert-error">
+                <a class="close" data-dismiss="alert" href="#">×</a>
+                <%= render 'shared/error_messages', object: f.object %>
+              </div>
           <% end %>
-       </div>
-      </div>
+          <%= render 'fields', f: f %>
+          <h3><%= Agreement.name.humanize %></h3>
+          <%= f.simple_fields_for :agreements do |builder| %>
+              <%= render 'agreements/fields', f: builder %>
+          <% end %>
 
-                    <!--<#%= render 'agreements/form', f: f %>-->
+
+          <div class="form-actions">
+            <%= link_to 'Back', providers_path, :class => 'btn btn-medium' %>
+            <%= f.submit t('providers.buttons.create_provider'), class: "btn btn-medium btn-primary", id: 'create_provider_btn' %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!--<#%= render 'agreements/form', f: f %>-->
 </div>
