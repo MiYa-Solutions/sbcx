@@ -2,7 +2,6 @@
 $iconSpritePath: asset-url('glyphicons-halflings.png', image);
 $iconWhiteSpritePath: asset-url('glyphicons-halflings-white.png', image);
 
-
 $navbarBackground: #555;
 $navbarBackgroundHighlight: #888;
 $navbarText: #eee;
@@ -12,7 +11,9 @@ $navbarLinkColor: #eee;
 //@import "jquery.ui.base.css";
 //@import "jquery.ui.theme.css";
 
-body { padding-top: 60px; }
+body {
+  padding-top: 60px;
+}
 
 @import "bootstrap-responsive";
 
@@ -29,7 +30,7 @@ body { padding-top: 60px; }
 }
 
 .well-home {
-     min-height: 278px;
+  min-height: 278px;
 }
 
 .nav-list {
@@ -37,7 +38,6 @@ body { padding-top: 60px; }
   padding-left: 5px;
   padding-right: 5px;
 }
-
 
 footer {
   margin-top: 45px;
@@ -67,17 +67,17 @@ footer {
 
 }
 
-.hero-unit{
+.hero-unit {
   h1 {
-  text-align: center;
+    text-align: center;
   }
 
   .welcome_logo {
-  height: 100px;
+    height: 100px;
 
   }
   .logo {
-  float: right;
+    float: right;
   }
 
 }
@@ -98,7 +98,7 @@ footer {
   margin-top: 5px;
 }
 
-  .member_label {
+.member_label {
 
   //background-color: #5BB65B;
   background-color: #3A87AD;
@@ -107,17 +107,16 @@ footer {
   border-radius: 3px 3px 3px 3px;
   //padding: 1px 4px 3px;
 
-
   badge {
-     color: white;
-     font-size: 12px;
-     font-weight: bold;
-     line-height: 14px;
-     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-     vertical-align: baseline;
-     white-space: nowrap;
-     letter-spacing: .08em;
-   }
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 14px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    vertical-align: baseline;
+    white-space: nowrap;
+    letter-spacing: .08em;
+  }
 
 }
 
@@ -155,18 +154,17 @@ footer {
     padding: 2px 5px;
   }
 
-
 }
 
 .miya_blue_note {
 
-    font-size: 14px;
-    color: #3A87AD;
-    font-weight: bold;
+  font-size: 14px;
+  color: #3A87AD;
+  font-weight: bold;
 }
 
 .miya_table_row {
-   //padding: 8px;
+  //padding: 8px;
 }
 
 .miya_note_area {
@@ -194,8 +192,6 @@ footer {
   }
 
 }
-
-
 
 select {
   -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
@@ -228,9 +224,7 @@ input, textarea {
 
 }
 
-
 .sign_in_controls {
-
 
   .radio input[type="radio"], .checkbox input[type="checkbox"] {
     margin-top: 8px;
@@ -272,14 +266,14 @@ input, textarea {
   p {
     max-width: 250px;
     font-style: italic;
-    font-weight:bold;
+    font-weight: bold;
     color: $white;
     font-family: arial;
     font-size: 12px;
   }
 
   span {
-    font-weight:bold;
+    font-weight: bold;
     color: $white;
     font-family: arial;
     font-size: 14px;
@@ -288,19 +282,18 @@ input, textarea {
   ul {
     list-style: none;
     margin: 0;
-    }
+  }
 
-    li {
+  li {
     float: left;
     margin: 0 10px;
     line-height: 16px;
-   }
+  }
 
-   li:last-child {
+  li:last-child {
     float: right;
 
   }
-
 
   form {
     line-height: 1px;
@@ -310,8 +303,6 @@ input, textarea {
   input {
     margin-bottom: 0px;
   }
-
-
 
   input, textarea {
     width: auto;
@@ -353,24 +344,22 @@ input, textarea {
   }
 }
 
-
 .field_input {
 
   option {
-     width: 200px;
-   }
+    width: 200px;
+  }
 
   ul {
     list-style: none;
     margin: 0;
     vertical-align: none;
-    }
+  }
 
   li {
     float: left;
     //padding-left: 30px;
-    }
-
+  }
 
 }
 
@@ -390,7 +379,7 @@ fieldset label {
 }
 
 .table thead {
- border-bottom:  1px solid #404853;
+  border-bottom: 1px solid #404853;
 }
 
 .table-striped tbody tr:nth-child(even) td,
@@ -420,7 +409,6 @@ smart_alert {
 
 }
 
-
 .radio, .checkbox {
   min-height: 18px;
   padding-left: 18px;
@@ -433,8 +421,7 @@ smart_alert {
 
 }
 
-
-.form-actions  {
+.form-actions {
   .btn {
     width: auto;
     height: auto;
@@ -449,13 +436,10 @@ smart_alert {
   }
 }
 
-
-
 .table-sbcx tbody td:last-child,
 .table-sbcx tbody th:last-child {
   text-align: right;
 }
-
 
 .status_label {
 
@@ -521,7 +505,6 @@ smart_alert {
   }
 }
 
-
 .no_margins {
   margin-left: none;
   margin-right: none;
@@ -546,7 +529,7 @@ smart_alert {
 
   select {
     width: 70%;
-    }
+  }
 }
 
 .success {
@@ -554,7 +537,7 @@ smart_alert {
   width: auto;
 }
 
-.form-actions_in_service_call   {
+.form-actions_in_service_call {
 
   .form-actions {
     padding-left: 20%;
@@ -563,17 +546,39 @@ smart_alert {
 
 .Miya_image {
 
- imp {
- border: 0;
- float: left;
- display: inline;
- }
+  imp {
+    border: 0;
+    float: left;
+    display: inline;
+  }
 }
 
 .Miya_mobile_member_tag {
-  li { background: green; }
+  li {
+    background: green;
+  }
 }
 
 .custom_list .ui-li {
   float: right;
+}
+
+.purr {
+  position: fixed;
+  top: 30px;
+  right: 100px;
+  width: 250px;
+  padding: 20px;
+  background-color: #FCC;
+  border: solid 2px #C66;
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.best_in_place:hover, .do_hover {
+  //padding-right: 1.5em;
+  //background: url("/images/red_pen.png") no-repeat right;
+  background-color: #FCC;
+  border: solid 2px #C66;
 }

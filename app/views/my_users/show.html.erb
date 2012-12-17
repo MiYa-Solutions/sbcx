@@ -6,7 +6,7 @@
     <div class="span5">
       <div class="smart_label">
         <ul>
-          <li><h1><%= @my_user.first_name %> <%= @my_user.last_name  %></h1></li>
+          <li><h1><%= @my_user.first_name %> <%= @my_user.last_name %></h1></li>
           <li><%= link_to 'Reset', my_users_path, :class => 'btn btn-large btn-info' %></li>
         </ul>
       </div>
@@ -19,43 +19,45 @@
         <tbody>
         <tr>
           <td>Email:</td>
-          <td><h4><%= @my_user.email %></h4></td>
+          <td><h4><%= best_in_place @my_user, :email, path: my_user_path %></h4></td>
         </tr>
         <tr>
           <td>Company:</td>
-          <td><h4><%= @my_user.company  %></h4></td>
+          <td><h4><%= best_in_place @my_user, :company, path: my_user_path %></h4></td>
         </tr>
         <tr>
           <td>Address:</td>
-          <td><h4><%= @my_user.address1 %> <%= @my_user.address2 %></h4></td>
+          <td>
+            <h4><%= best_in_place(@my_user, :address1, path: my_user_path, :nil => "click me to edit", cancel_button: "Cancel", ok_button: "Ok") %> <%= @my_user.address2 %></h4>
+          </td>
         </tr>
         <tr>
           <td>City:</td>
-          <td><h4><%= @my_user.city  %></h4></td>
+          <td><h4><%= @my_user.city %></h4></td>
         </tr>
         <tr>
           <td>State:</td>
-          <td><h4><%= @my_user.state  %></h4></td>
+          <td><h4><%= best_in_place @my_user, :state, collection: ["la", "li"], path: my_user_path %></h4></td>
         </tr>
         <tr>
           <td>zip:</td>
-          <td><h4><%= @my_user.zip  %></h4></td>
+          <td><h4><%= @my_user.zip %></h4></td>
         </tr>
         <tr>
           <td>Country:</td>
-          <td><h4><%= @my_user.country  %></h4></td>
+          <td><h4><%= @my_user.country %></h4></td>
         </tr>
         <tr>
           <td>Phone:</td>
-          <td><h4><%= @my_user.phone  %></h4></td>
+          <td><h4><%= @my_user.phone %></h4></td>
         </tr>
         <tr>
           <td>Mobile Phone:</td>
-          <td><h4><%= @my_user.mobile_phone  %></h4></td>
+          <td><h4><%= @my_user.mobile_phone %></h4></td>
         </tr>
         <tr>
           <td>Work Phone:</td>
-          <td><h4><%= @my_user.work_phone  %></h4></td>
+          <td><h4><%= @my_user.work_phone %></h4></td>
         </tr>
         <tr>
           <td>Email:</td>
@@ -65,7 +67,6 @@
           <td>First Name:</td>
           <td><h4><%= @my_user.first_name %></h4></td>
         </tr>
-
         <tr>
           <td>Roles:</td>
           <td>
