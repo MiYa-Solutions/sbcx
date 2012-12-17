@@ -16,6 +16,7 @@
 //= require bootstrap
 //= require jquery.purr
 //= require best_in_place
+//= require best_in_place.purr
 //= require bootstrap-datepicker
 //= require_tree .
 
@@ -36,8 +37,8 @@ $(function () {
 $(".collapse").collapse('toggle');
 
 
-$(function(){
-    $('.accordion .head').click(function() {
+$(function () {
+    $('.accordion .head').click(function () {
         $(this).next().toggle('slow');
         return false;
     }).next().hide();
@@ -48,19 +49,18 @@ $('.typeahead').typeahead();
 $(".tooltip").tooltip();
 $("a[rel=tooltip]").tooltip();
 
-$('.best_in_place').best_in_place();
 
 $('.popover').popover();
 
 
-$(function(){
+$(function () {
     $('.i').scroller({
-        preset: 'date',
-        invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
-        theme: 'default',
-        display: 'inline',
-        mode: 'scroller',
-        dateOrder: 'mmD ddyy'
+        preset:'date',
+        invalid:{ daysOfWeek:[0, 6], daysOfMonth:['5/1', '12/24', '12/25'] },
+        theme:'default',
+        display:'inline',
+        mode:'scroller',
+        dateOrder:'mmD ddyy'
     });
 });
 

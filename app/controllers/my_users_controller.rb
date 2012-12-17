@@ -1,6 +1,8 @@
 class MyUsersController < ApplicationController
   before_filter :authenticate_user!
 
+  respond_to :html, :json, :js
+
   filter_access_to :update, attribute_check: true, model: User
   filter_access_to :show
   filter_access_to :edit, attribute_check: true, model: User
@@ -43,10 +45,31 @@ class MyUsersController < ApplicationController
     @my_user      = current_user.organization.users.find(params[:id])
     @organization = current_user.organization
     if @my_user.update_attributes(permitted_params(@my_user).my_user)
-      flash[:success] = t('user.flash.updated_successfully')
-      redirect_to my_user_path
+      respond_to do |format|
+        format.html do
+          flash[:success] = t('user.flash.updated_successfully')
+          redirect_to my_user_path
+        end
+
+        format.json { respond_with_bip @my_user }
+
+        format.js { }
+      end
+
     else
-      render :edit
+      respond_to do |format|
+        format.html do
+          flash[:error] = t('user.flash.update_error')
+          redirect_to my_user_path
+          render :edit
+        end
+
+        format.any do
+          respond_with_bip @my_user
+        end
+
+      end
+
     end
 
   end
