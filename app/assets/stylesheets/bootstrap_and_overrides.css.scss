@@ -596,7 +596,7 @@ smart_alert {
 
 .add_new_part {
   input, textarea {
-    width: 60%;
+    width: 20%;
   }
   textarea {
     height: 18px;
@@ -609,6 +609,23 @@ smart_alert {
   }
   textarea {
     height: 18px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 5px;
+    line-height: 16px;
+    width: 15%;
+  }
+
+  li:last-child {
+    float: right;
+    width: 10%;
+
   }
 }
 

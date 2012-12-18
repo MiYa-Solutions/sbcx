@@ -2,43 +2,39 @@
     <br>
     <%= f.error_notification %>
 <div class="row-fluid">
-  <div class="span6">
+  <!--<div class="span6">-->
     <div class="add_part_service_call">
-       <fieldset>
-               <div class="control-group string mandatory">
-                 <label class="string optional control-label" for="price">Part Name</label>
-                 <div class="controls">
-                   <%= f.text_field :material_name, placeholder: 'material', data: { autocomplete_source: materials_path } %>
-                 </div>
-               </div>
-               <div class="control-group string mandatory">
-                 <label class="string optional control-label" for="price">Quantity</label>
-                 <div class="controls">
-                   <%= f.text_field :quantity, placeholder: 'quantity' %>
-                 </div>
-               </div>
-               <div class="control-group string mandatory">
-                 <label class="string optional control-label" for="price">Cost Price</label>
-                 <div class="controls">
-                     <%= f.text_field :price, placeholder: 'price' %>
-                 </div>
-               </div>
-               <div class="control-group string mandatory">
-                 <label class="string optional control-label" for="price">List Price</label>
-                 <div class="controls">
-                   <%= f.text_field :cost, placeholder: 'cost' %>
-                 </div>
-               </div>
-       </fieldset>
-    </div>
-  </div>
 
-  <div class="span6">
-    <!--<div class="form-actions">-->
-    <%= link_to "Cancel", service_calls_path, class: "btn btn-medium" %>
-    <%= f.submit "Add Part", class: "btn btn-medium btn-primary", id: 'add_part' %>
-  </div>
+      <ul>
+        <li>
+           <%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>
+
+        </li>
+        <li>
+            <%= f.text_field :quantity, placeholder: 'Quantity' %>
+
+        </li>
+        <li>
+            <%= f.text_field :price, placeholder: 'List Price' %>
+
+        </li>
+        <li>
+            <%= f.text_field :cost, placeholder: 'Cost' %>
+
+        </li>
+        <li>
+          <%= f.submit "Add Part", class: "btn btn-medium btn-primary", id: 'add_part' %>
+
+        </li>
+        <li>
+          <%= link_to "Cancel", service_calls_path, class: "btn btn-medium" %>
+
+        </li>
+      </ul>
+
+
+    </div>
 </div>
-    <!--</div>-->
+
 
 <% end %>
