@@ -8,7 +8,7 @@ class MaterialsController < ApplicationController
     else
       @materials = Material.search(current_user.organization.id, params[:name])
     end
-
+    @material = current_user.organization.materials.new
 
     respond_to do |format|
       format.html # index.html.erb

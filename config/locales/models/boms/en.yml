@@ -1,0 +1,8 @@
+en:
+  activerecord:
+    models:
+      bom: "Part"
+
+    attributes:
+      bom:
+        material_name: "Part Name"
