@@ -1,3 +1,6 @@
-$('#new_bom').remove();
-$('#new-bom-button').show();
+<% if @bom.errors.any? %>
+$('#bom').before('<%= j render(@bom.errors) %>');
+
+<% else %>
 $('#boms:last').append('<%= j render(@bom) %>');
+<% end %>

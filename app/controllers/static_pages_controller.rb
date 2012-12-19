@@ -12,6 +12,12 @@ class StaticPagesController < ApplicationController
     end
   end
 
+  def calendar
+    @tickets         = Ticket.by_date(params[:date], @org.id)
+    @tickets_by_date = Ticket.where("organization_id = ? ", @org.id)
+
+  end
+
   def index
   end
 end

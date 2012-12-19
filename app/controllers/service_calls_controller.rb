@@ -1,7 +1,12 @@
 class ServiceCallsController < ApplicationController
   before_filter :authenticate_user!
+  filter_access_to :autocomplete_customer_name, :require => :index
+  filter_access_to :autocomplete_material_name, :require => :index
   filter_resource_access
 
+  #autocomplete :customer, :name , full: true, limit: 50, :where =>  "organization_id = #{Authorization.current_user.try(:organization).try(:id)}"
+  autocomplete :customer, :name, full: true, limit: 50, :where => "organization_id = #{Authorization.current_user.organization.id}"
+  #autocomplete :material, :name, full: true, limit: 50, :where => "organization_id = #{Authorization.current_user.organization.id}"
 
   def index
     @service_calls = current_user.organization.service_calls
@@ -10,6 +15,7 @@ class ServiceCallsController < ApplicationController
   def show
     @service_call = ServiceCall.find(params[:id])
     @customer     = Customer.new
+    @bom          = Bom.new
   end
 
   def new

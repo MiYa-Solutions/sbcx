@@ -10,7 +10,9 @@
       <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
       <div id="customer_wrapper">
 
-        <%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>
+        <!--<#%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>-->
+        <%= f.input :customer, :url => autocomplete_customer_name_service_calls_path, as: :autocomplete, id_element: "#service_call_customer_id" %>
+        <%= f.hidden_field :customer_id %>
 
       </div>
 

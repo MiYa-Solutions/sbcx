@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+//= require autocomplete-rails
 //= require bootstrap
 //= require jquery.purr
 //= require best_in_place

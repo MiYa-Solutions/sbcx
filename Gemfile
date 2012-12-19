@@ -22,7 +22,8 @@ gem 'strong_parameters'
 
 gem 'best_in_place'
 gem 'thin'
-gem 'figaro'
+gem 'figaro' #for environment variable configuration
+gem 'rails3-jquery-autocomplete'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'
