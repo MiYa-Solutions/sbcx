@@ -120,7 +120,13 @@ footer {
 
 }
 
-//.miya_buttons_grid {
+.navbar .nav > li > a {
+
+  font-size: 16px;
+}
+
+
+  //.miya_buttons_grid {
 //
 //    width: 20px;
 //
@@ -149,7 +155,7 @@ footer {
 
   .btn-mini {
     min-width: 30px;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 12px;
     padding: 2px 5px;
   }
@@ -326,7 +332,7 @@ input, textarea {
     text-align: center;
     vertical-align: middle;
     border-radius: 4px 4px 4px 4px;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 18px;
     margin-bottom: 0;
     padding: 4px 10px;
@@ -395,7 +401,8 @@ fieldset label {
 .table th, .table td {
   line-height: 12px;
   padding: 4px;
-  font-size: 11px;
+  font-size: 14px;
+  padding-top: 8px;
 }
 
 smart_alert {
@@ -452,7 +459,7 @@ smart_alert {
 
   badge {
     color: white;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
     line-height: 14px;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -580,5 +587,52 @@ smart_alert {
   //padding-right: 1.5em;
   background: url("edit.png") no-repeat right;
   //background-color: #FCC;
-  border: solid 1px #C66;
+  //border: solid 2px #C66;
+  background-color: #D9EDF7;
+  border-color: #BCE8F1;
+  color: #3A87AD;
+
+}
+
+.add_new_part {
+  input, textarea {
+    width: 50%;
+  }
+  textarea {
+    height: 18px;
+  }
+}
+
+.add_part_service_call {
+  input, textarea, text_field {
+    width: 70%;
+  }
+  textarea {
+    height: 18px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 5px;
+    line-height: 16px;
+    width: 15%;
+  }
+
+  li:last-child {
+    float: right;
+    width: 10%;
+
+  }
+}
+
+body .modal {
+  //new custom width
+  width: 860px;
+  //must be half of the width, minus scrollbar on the left (30px)
+  margin: -250px 0 0 -400px;
+  //margin-right: 20%
 }

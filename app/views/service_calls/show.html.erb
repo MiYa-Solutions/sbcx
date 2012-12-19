@@ -2,7 +2,6 @@
 
 <div class="row-fluid">
 
-
 <div class="no_margins">
   <div class="span4" id="job_statuses_actions">
 
@@ -10,7 +9,7 @@
       <li>
         <div class="smart_label">
           <ul>
-            <li><h1>Job Status:</h1></li>
+            <li><h1>Job Status</h1></li>
             <li></li>
           </ul>
         </div>
@@ -20,7 +19,7 @@
           <tbody>
           <% if !@service_call.started_on_text.blank? %>
               <tr>
-                <td>Started at:</td>
+                <td>Started at</td>
                 <td>
                                   <span class="status_label_success">
                                   <badge><%= @service_call.started_on_text %></badge>
@@ -29,7 +28,7 @@
               </tr>
           <% end %>
           <tr>
-            <td>Status:</td>
+            <td>Status</td>
             <td>
                                       <span class="status_label">
                                       <badge><%= @service_call.human_status_name %></badge>
@@ -37,7 +36,7 @@
             </td>
           </tr>
           <tr>
-            <td>Subcontractor:</td>
+            <td>Subcontractor</td>
             <td>
                                       <span class="status_label" id="service_call_subcontractor_status">
                                       <badge><%= @service_call.human_subcontractor_status_name %></badge>
@@ -46,7 +45,7 @@
           </tr>
           <% if !@service_call.completed_on_text.blank? %>
               <tr>
-                <td>Completed at:</td>
+                <td>Completed at</td>
                 <td>
                                               <span class="status_label" id="service_call_completed_on">
                                               <badge><%= @service_call.completed_on_text %></badge>
@@ -55,7 +54,7 @@
               </tr>
           <% end %>
           <tr>
-            <td>Billing Status:</td>
+            <td>Billing Status</td>
             <td>
                                               <span class="status_label">
                                               <badge><%= @service_call.human_billing_status_name %></badge>
@@ -68,14 +67,12 @@
     </ul>
 
     <br>
-
-    <% if @service_call.status_events.size > 0 %>
-
-        <ul class="unstyled">
+    <!--<#% if @service_call.status_events.size > 0 %>-->
+    <ul class="unstyled">
           <li>
             <div class="smart_label">
               <ul>
-                <li><h1>Actions:</h1></li>
+                <li><h1>Actions</h1></li>
                 <li></li>
               </ul>
             </div>
@@ -89,18 +86,19 @@
             </div>
           </li>
         </ul>
-
-    <% end %>
+    <!--<#% end %>-->
 
   </div>
 </div>
 
+
+<%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
+<!--Job details-->
 <div class="span8" id="job_details">
-  <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
 
       <div class="smart_label">
         <ul>
-          <li><h1>Job Name:</h1></li>
+          <li><h1>Job Name</h1></li>
           <li></li>
           <!--<#% if ! @service_call.started_on_text.blank? %>-->
           <!--<li>-->
@@ -110,13 +108,18 @@
           <!--&lt;!&ndash;<span class="help-inline">Click to set date</span>&ndash;&gt;-->
           <!--<#% end %>-->
           <!--</li>-->
+          <% if !@service_call.events.empty? %>
+          <li>
+            <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#myModal"> View Job History</button>
+          </li>
+          <% end %>
         </ul>
       </div>
       <br>
-
+        <!--Update Job Info-->
       <div class="row-fluid">
 
-        <div class="span8">
+          <div class="span8">
           <ul class="unstyled list_service_calls">
 
             <% if !@service_call.started_on_text.blank? %>
@@ -207,11 +210,10 @@
       </div>
 
       <div class="form-actions_in_service_call">
-        <div class="form-actions">
-          <%= link_to "Back", service_calls_path, class: "btn btn-medium" %>
-          <%= f.submit "Save Changes", class: "btn btn-medium btn-info", id: 'service_call_save_btn' %>
-        </div>
-
+          <div class="form-actions">
+              <%= link_to "Back", service_calls_path, class: "btn btn-medium" %>
+              <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", id: 'service_call_save_btn' %>
+          </div>
       </div>
       </div>
   <% end %>
@@ -227,6 +229,14 @@
           </button>
         </li>
 
+  <!--Parts-->
+  <div class="row-fluid">
+      <div class="smart_label">
+        <ul>
+          <li><h1>Parts</h1></li>
+          <li><%= link_to 'Add Part', new_service_call_bom_path(@service_call), remote: true, :class => 'btn btn-primary', id: 'new-bom-button' %></li>
+        </ul>
+      </div>
       </ul>
     </div>
     <div id="bom" class="collapse">
@@ -257,97 +267,80 @@
       </thead>
       <tbody id="boms">
 
-      <% @service_call.boms.each do |bom| %>
-          <tr id="bom_<%= bom.id %>">
-            <%= render 'boms/bom', bom: bom %>
+      <table class="table table-striped" id="boms-table">
+        <thead>
+        <tr>
+          <th><%= Bom.human_attribute_name(:material_name) %></th>
+          <th><%= Bom.human_attribute_name(:quantity) %></th>
+          <th><%= Bom.human_attribute_name(:cost) %></th>
+          <th><%= Bom.human_attribute_name(:price) %></th>
+          <th><%= Bom.human_attribute_name(:total_cost) %></th>
+          <th><%= Bom.human_attribute_name(:total_price) %></th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="boms">
+
+        <% @service_call.boms.each do |bom| %>
+            <tr id="bom_<%= bom.id %>">
+              <%= render 'boms/bom', bom: bom %>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+
+  </div>
+
+
+  <!--End Job details Span8-->
+</div>
+<!--End main row-->
+</div>
+
+<!--end of status & Job details section-->
+<% end %>
+<!--end of well  -->
+</div>
+
+<!--Job History Pop-up-->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+     <h3 id="myModalLabel">Job History</h3>
+   </div>
+  <div class="modal-body">
+    <table class="table table-striped" id="job_history_in_show">
+      <thead>
+      <tr>
+        <th><%= Event.human_attribute_name(:name) %> </th>
+        <th><%= Event.human_attribute_name(:description) %></th>
+        <th>Created at</th>
+        <th>Event ID</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @service_call.events.each do |event| %>
+          <tr>
+            <td>
+              <%= event.name %>
+            </td>
+            <td>
+              <%= event.description %>
+            </td>
+            <td>
+              <%= event.created_at %>
+            </td>
+            <td>
+              <%= event.id %>
+            </td>
           </tr>
       <% end %>
       </tbody>
     </table>
-
   </div>
-
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
   </div>
-
-<!--end of status & Job details section-->
-
-<!--<div class="row-fluid">-->
-<!--<div class="no_margins">-->
-
-<!--<#% if @service_call.status_events.size > 0 %>-->
-<!--<div class="span4">-->
-<!--<ul class="unstyled">-->
-<!--<li>-->
-<!--<div class="smart_label">-->
-<!--<ul>-->
-<!--<li><h1>Actions:</h1></li>-->
-<!--<li></li>-->
-<!--</ul>-->
-<!--</div>-->
-<!--</li>-->
-<!--<li><br></li>-->
-<!--<li>-->
-<!--<div class="action_buttons_service_call">-->
-<!--<p>-->
-<!--<#= event_list(@service_call) %>-->
-<!--</p>-->
-<!--</div>-->
-<!--</li>-->
-<!--</ul>-->
-<!--</div>-->
-<!--<#% end %>-->
-
-<!--</div>-->
-<!--</div>-->
-
-
-<br>
-
-<div class="row-fluid">
-  <div class="no_margins">
-
-    <% if !@service_call.events.empty? %>
-        <div class="smart_label">
-          <ul>
-            <li><h1>Job History:</h1></li>
-            <li></li>
-          </ul>
-        </div>
-
-        <table class="table table-striped" id="event_log_in_service_call">
-          <thead>
-          <tr>
-            <th><%= Event.human_attribute_name(:name) %> </th>
-            <th><%= Event.human_attribute_name(:description) %></th>
-            <th>Created at</th>
-            <th>Event ID</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @service_call.events.each do |event| %>
-              <tr>
-                <td>
-                  <%= event.name %>
-                </td>
-                <td>
-                  <%= event.description %>
-                </td>
-                <td>
-                  <%= event.created_at %>
-                </td>
-                <td>
-                  <%= event.id %>
-                </td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
-
-    <% end %>
-  </div>
-</div>
-
-
-<!--end of well  -->
 </div>
 

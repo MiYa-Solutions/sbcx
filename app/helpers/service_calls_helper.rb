@@ -38,7 +38,7 @@ module ServiceCallsHelper
       concat (f.input :total_price)
       concat (f.submit service_call.class.human_status_event_name(:paid).titleize,
                        id:    'paid_service_call_btn',
-                       class: "btn btn-large btn-info",
+                       class: "btn btn-large btn-primary",
                        title: 'Click if payment has received',
                        rel:   'tooltip'
              )
@@ -50,7 +50,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'accept')
       concat (f.submit service_call.class.human_status_event_name(:accept).titleize,
                        id:    'accept_service_call_btn',
-                       class: "btn btn-large btn-info",
+                       class: "btn btn-large btn-primary",
                        title: 'Click to indicate that you accept this Service Call',
                        rel:   'tooltip'
              )
@@ -109,7 +109,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'work_completed')
       concat (f.submit service_call.class.human_status_event_name(:work_completed).titleize,
                        id:    'complete_service_call_btn',
-                       class: "btn btn-large btn-info",
+                       class: "btn btn-large btn-primary",
                        title: 'Click id work is completed',
                        rel:   'tooltip'
              )
@@ -121,7 +121,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'start')
       concat (f.submit service_call.class.human_status_event_name(:start).titleize,
                        id:    'start_service_call_btn',
-                       class: "btn btn-large btn-info",
+                       class: "btn btn-large btn-primary",
                        title: 'Click to Start the Service Call',
                        rel:   'tooltip'
              )

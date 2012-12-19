@@ -15,7 +15,7 @@ require 'spec_helper'
 
 describe Bom do
 
-  let(:bom) { Bom.new }
+  let(:boms) { Bom.new }
 
   subject { bom }
 
@@ -61,7 +61,7 @@ describe Bom do
   end
 
   describe "default values" do
-    let(:valid_bom) { FactoryGirl.create(:bom) }
+    let(:valid_bom) { FactoryGirl.create(:boms) }
 
     it "defaults to the associated material cost" do
       valid_bom.cost.should == valid_bom.material.cost
@@ -88,7 +88,7 @@ describe Bom do
   end
 
   describe "when there is no material with the material_name" do
-    let(:bom) { FactoryGirl.build(:bom) }
+    let(:boms) { FactoryGirl.build(:boms) }
 
     it "should create a material if one is not present" do
       bom.material = nil
