@@ -7,9 +7,14 @@
         <span class="icon-bar"></span>
       </a>
 
-      <%= link_to "SubConTraX", root_path, id: "logo", class: 'brand' %>
+      <!--<#%= link_to "SubConTraX", root_path, id: "logo", class: 'brand' %>-->
+
 
       <ul class="nav">
+        <li>
+          <%= image_tag("LogoImg.png", alt: "MiYa") %>
+
+        </li>
         <li>
           <% if mobile_device? %>
               <%= link_to "Full Site", :mobile => 0 %>
