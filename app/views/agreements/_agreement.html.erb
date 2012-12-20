@@ -1,13 +1,23 @@
 <tr>
-  <td><%= Agreement.human_attribute_name(:status) %></td>
   <td><%= agreement.human_status_name.titleize %></td>
-</tr>
-<tr>
-  <td><%= Agreement.human_attribute_name(:name) %></td>
   <td><%= agreement.name %></td>
-</tr>
-<tr>
-  <td><%= Agreement.human_attribute_name(:description) %></td>
   <td><%= agreement.description %></td>
-</tr>
+  <td>
+    <%= link_to 'Archive', provider_path(@provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+    <%= link_to 'Edit', edit_provider_path(@provider), :class => 'btn btn-mini' %>
+  </td>
+<tr>
+
+
+  <!--<td><#%= Agreement.human_attribute_name(:status) %></td>-->
+  <!--<td><h4><#%= agreement.human_status_name.titleize %></h4></td>-->
+<!--</tr>-->
+<!--<tr>-->
+  <!--<td><#%= Agreement.human_attribute_name(:name) %></td>-->
+  <!--<td><#%= agreement.name %></td>-->
+<!--</tr>-->
+<!--<tr>-->
+  <!--<td><#%= Agreement.human_attribute_name(:description) %></td>-->
+  <!--<td><#%= agreement.description %></td>-->
+<!--</tr>-->
 
