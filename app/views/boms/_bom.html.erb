@@ -1,15 +1,17 @@
-<td><%= bom.material_name %>
-  <!--<i class="icon-search" title="hello" rel='tooltip'></i>-->
-</td>
-<td><%= bom.quantity %></td>
-<td><%= bom.cost %></td>
-<td><%= bom.price %></td>
-<td><%= bom.total_cost %></td>
-<td><%= bom.total_price %></td>
-<td>
-  <!--<#%= link_to 'Show', service_call_bom_path(@service_call, bom) %>-->
-  <!--<#%= link_to 'Edit', edit_service_call_bom_path(@service_call, bom) %>-->
-  <!--<#%= link_to 'Delete', material_path(material), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->
+<tr id="bom_<%= bom.id %>">
+  <td><%= bom.material_name %>
+    <!--<i class="icon-search" title="hello" rel='tooltip'></i>-->
+  </td>
+  <td><%= bom.quantity %></td>
+  <td><%= bom.cost %></td>
+  <td><%= bom.price %></td>
+  <td><%= bom.total_cost %></td>
+  <td><%= bom.total_price %></td>
+  <td>
+    <!--<#%= link_to 'Show', service_call_bom_path(@service_call, bom) %>-->
+    <!--<#%= link_to 'Edit', edit_service_call_bom_path(@service_call, bom) %>-->
+    <!--<#%= link_to 'Delete', material_path(material), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->
 
-  <%= link_to 'Delete', service_call_bom_path(@service_call, bom), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, :class => 'btn btn-mini btn-danger' %>
-</td>
+    <%= link_to 'Delete', service_call_bom_path(@service_call, bom), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, :class => 'btn btn-mini btn-danger' %>
+  </td>
+</tr>

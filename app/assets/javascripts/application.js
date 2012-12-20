@@ -54,14 +54,14 @@ $("a[rel=tooltip]").tooltip();
 $('.popover').popover();
 
 
-$(function () {
-    $('.i').scroller({
-        preset:'date',
-        invalid:{ daysOfWeek:[0, 6], daysOfMonth:['5/1', '12/24', '12/25'] },
-        theme:'default',
-        display:'inline',
-        mode:'scroller',
-        dateOrder:'mmD ddyy'
-    });
-});
+//$(function () {
+//    $('.i').scroller({
+//        preset:'date',
+//        invalid:{ daysOfWeek:[0, 6], daysOfMonth:['5/1', '12/24', '12/25'] },
+//        theme:'default',
+//        display:'inline',
+//        mode:'scroller',
+//        dateOrder:'mmD ddyy'
+//    });
+//});
 

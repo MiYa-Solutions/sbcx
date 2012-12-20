@@ -46,14 +46,14 @@ describe BomsController do
     it "assigns the requested bom as @bom" do
       bom = Bom.create! valid_attributes
       get :show, { :id => bom.to_param }, valid_session
-      assigns(:boms).should eq(bom)
+      assigns(:bom).should eq(bom)
     end
   end
 
   describe "GET new" do
     it "assigns a new bom as @bom" do
       get :new, { }, valid_session
-      assigns(:boms).should be_a_new(Bom)
+      assigns(:bom).should be_a_new(Bom)
     end
   end
 
@@ -61,7 +61,7 @@ describe BomsController do
     it "assigns the requested bom as @bom" do
       bom = Bom.create! valid_attributes
       get :edit, { :id => bom.to_param }, valid_session
-      assigns(:boms).should eq(bom)
+      assigns(:bom).should eq(bom)
     end
   end
 
@@ -69,18 +69,18 @@ describe BomsController do
     describe "with valid params" do
       it "creates a new Bom" do
         expect {
-          post :create, { :boms => valid_attributes }, valid_session
+          post :create, { :bom => valid_attributes }, valid_session
         }.to change(Bom, :count).by(1)
       end
 
       it "assigns a newly created bom as @bom" do
-        post :create, { :boms => valid_attributes }, valid_session
-        assigns(:boms).should be_a(Bom)
-        assigns(:boms).should be_persisted
+        post :create, { :bom => valid_attributes }, valid_session
+        assigns(:bom).should be_a(Bom)
+        assigns(:bom).should be_persisted
       end
 
       it "redirects to the created bom" do
-        post :create, { :boms => valid_attributes }, valid_session
+        post :create, { :bom => valid_attributes }, valid_session
         response.should redirect_to(Bom.last)
       end
     end
@@ -89,14 +89,14 @@ describe BomsController do
       it "assigns a newly created but unsaved bom as @bom" do
         # Trigger the behavior that occurs when invalid params are submitted
         Bom.any_instance.stub(:save).and_return(false)
-        post :create, { :boms => { } }, valid_session
-        assigns(:boms).should be_a_new(Bom)
+        post :create, { :bom => { } }, valid_session
+        assigns(:bom).should be_a_new(Bom)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Bom.any_instance.stub(:save).and_return(false)
-        post :create, { :boms => { } }, valid_session
+        post :create, { :bom => { } }, valid_session
         response.should render_template("new")
       end
     end
@@ -111,18 +111,18 @@ describe BomsController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Bom.any_instance.should_receive(:update_attributes).with({ 'these' => 'params' })
-        put :update, { :id => bom.to_param, :boms => { 'these' => 'params' } }, valid_session
+        put :update, { :id => bom.to_param, :bom => { 'these' => 'params' } }, valid_session
       end
 
       it "assigns the requested bom as @bom" do
         bom = Bom.create! valid_attributes
-        put :update, { :id => bom.to_param, :boms => valid_attributes }, valid_session
-        assigns(:boms).should eq(bom)
+        put :update, { :id => bom.to_param, :bom => valid_attributes }, valid_session
+        assigns(:bom).should eq(bom)
       end
 
       it "redirects to the bom" do
         bom = Bom.create! valid_attributes
-        put :update, { :id => bom.to_param, :boms => valid_attributes }, valid_session
+        put :update, { :id => bom.to_param, :bom => valid_attributes }, valid_session
         response.should redirect_to(bom)
       end
     end
@@ -132,15 +132,15 @@ describe BomsController do
         bom = Bom.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Bom.any_instance.stub(:save).and_return(false)
-        put :update, { :id => bom.to_param, :boms => { } }, valid_session
-        assigns(:boms).should eq(bom)
+        put :update, { :id => bom.to_param, :bom => { } }, valid_session
+        assigns(:bom).should eq(bom)
       end
 
       it "re-renders the 'edit' template" do
         bom = Bom.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Bom.any_instance.stub(:save).and_return(false)
-        put :update, { :id => bom.to_param, :boms => { } }, valid_session
+        put :update, { :id => bom.to_param, :bom => { } }, valid_session
         response.should render_template("edit")
       end
     end

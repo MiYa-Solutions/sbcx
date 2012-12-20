@@ -2,7 +2,8 @@ class MaterialsController < ApplicationController
   filter_access_to :autocomplete_material_name, :require => :index
   filter_resource_access
 
-  autocomplete :material, :name, full: true, limit: 50, :where => "organization_id = #{Authorization.current_user.organization.id}"
+  autocomplete :material, :name, extra_data: [:cost, :price], full: true,
+               limit:                        50, :where => "organization_id = #{Authorization.current_user.organization.id}"
 
   # GET /materials
   # GET /materials.json

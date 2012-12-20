@@ -22,7 +22,7 @@ class Material < ActiveRecord::Base
   belongs_to :supplier
   has_many :boms
 
-  validates_presence_of :supplier, :organization, :status, :name, :price, :cost
+  validates_presence_of :supplier, :organization, :status, :name, :price, :cost, allow_blank: false
   validates_uniqueness_of :name, scope: [:organization_id, :supplier_id]
   validates_numericality_of :price, :cost
 

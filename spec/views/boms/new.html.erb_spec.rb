@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "boms/new" do
   before(:each) do
-    assign(:boms, stub_model(Bom).as_new_record)
+    assign(:bom, stub_model(Bom).as_new_record)
   end
 
   it "renders new bom form" do

@@ -167,7 +167,11 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def customer
-    params.require(:customer).permit(*customer_attributes)
+    if params[:customer].nil?
+      params.permit
+    else
+      params[:customer].permit(*customer_attributes)
+    end
 
   end
 

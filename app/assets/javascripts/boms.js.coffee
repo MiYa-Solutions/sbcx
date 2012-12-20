@@ -1,9 +1,21 @@
 jQuery ->
-  #  $('#bom_material_name').autocomplete
-  #    source: $('#bom_material_name').data('autocomplete-source')
-  $('#new-bom-button').collapse('toggle')
-
-  $("#new-bom-button").click (e) ->
+  old_val = $('#add_part').val()
+  $('#spinner').toggle()
+  $('#new-bom-button').click (e) ->
     e.preventDefault()
+
+  $('#new_bom').bind("ajax:before", ->
+    $('#spinner').toggle()
+    $('#add_part').val("Wait...")
+  )
+
+  $('#new_bom').bind("ajax:complete", ->
+    $('#spinner').toggle()
+    $('#add_part').val(old_val)
+  )
+
+  $('#new_bom').bind("ajax:success", ->
+    $("#ajax-msg").html("<span class='green'>Saved!</span>").show().fadeOut(2000)
+  )
 
 

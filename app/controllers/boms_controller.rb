@@ -3,7 +3,9 @@ class BomsController < ApplicationController
   filter_access_to :autocomplete_material_name, :require => :index
   filter_resource_access
 
-  autocomplete :material, :name, full: true, limit: 50, :where => "organization_id = #{Authorization.current_user.organization.id}"
+  autocomplete :material, :name, extra_data: [:cost, :price], full: true,
+               limit:                        50, :where => "organization_id = #{Authorization.current_user.organization.id}"
+
 
   # GET /boms
   # GET /boms.json
@@ -51,6 +53,7 @@ class BomsController < ApplicationController
   # POST /boms.json
   def create
 
+    sleep 3
     respond_to do |format|
       if @bom.save
         format.html { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
@@ -59,6 +62,7 @@ class BomsController < ApplicationController
       else
         format.html { render action: "new" }
         format.json { render json: @bom.errors, status: :unprocessable_entity }
+        format.js { }
       end
     end
   end

@@ -1,7 +1,7 @@
 class ServiceCallsController < ApplicationController
   before_filter :authenticate_user!
   filter_access_to :autocomplete_customer_name, :require => :index
-  filter_access_to :autocomplete_material_name, :require => :index
+  #filter_access_to :autocomplete_material_name, :require => :index
   filter_resource_access
 
   #autocomplete :customer, :name , full: true, limit: 50, :where =>  "organization_id = #{Authorization.current_user.try(:organization).try(:id)}"
@@ -61,7 +61,14 @@ class ServiceCallsController < ApplicationController
         end
       end
     else
-      render :action => 'edit'
+      respond_to do |format|
+        format.js { }
+        format.html do
+          render :action => 'edit'
+        end
+      end
+
+
     end
   end
 
