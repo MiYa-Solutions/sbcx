@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git
+  revision: bb583e63a353f508b13cfe03acc3bc55d51085a7
+  specs:
+    rails3-jquery-autocomplete (1.0.10)
+      rails (~> 3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -187,8 +194,6 @@ GEM
       activesupport (= 3.2.8)
       bundler (~> 1.0)
       railties (= 3.2.8)
-    rails3-jquery-autocomplete (1.0.10)
-      rails (~> 3.0)
     railties (3.2.8)
       actionpack (= 3.2.8)
       activesupport (= 3.2.8)
@@ -263,7 +268,7 @@ GEM
       multi_json (>= 1.0.2)
     warden (1.2.1)
       rack (>= 1.0)
-    websocket (1.0.5)
+    websocket (1.0.6)
     will_paginate (3.0.3)
     win32-process (0.7.0)
       ffi (>= 1.0.0)
@@ -306,7 +311,7 @@ DEPENDENCIES
   poltergeist
   quiet_assets
   rails (= 3.2.8)
-  rails3-jquery-autocomplete
+  rails3-jquery-autocomplete!
   rb-fsevent (= 0.9.1)
   rspec-rails (= 2.9.0)
   ruby-graphviz

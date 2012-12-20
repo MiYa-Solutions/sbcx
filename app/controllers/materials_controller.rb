@@ -2,8 +2,7 @@ class MaterialsController < ApplicationController
   filter_access_to :autocomplete_material_name, :require => :index
   filter_resource_access
 
-  autocomplete :material, :name, extra_data: [:cost, :price], full: true,
-               limit:                        50, :where => "organization_id = #{Authorization.current_user.organization.id}"
+  autocomplete :material, :name, extra_data: [:cost, :price], full: true, limit: 50
 
   # GET /materials
   # GET /materials.json
@@ -104,5 +103,10 @@ class MaterialsController < ApplicationController
       format.html { redirect_to materials_url }
       format.json { head :no_content }
     end
+  end
+
+  # This is required in order to ensure the user doesn't have access to materials of other organizations
+  def autocomplete_material_name_where
+    "organization_id = #{current_user.organization.id}"
   end
 end

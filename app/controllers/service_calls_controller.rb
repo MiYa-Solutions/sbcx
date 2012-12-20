@@ -1,12 +1,9 @@
 class ServiceCallsController < ApplicationController
   before_filter :authenticate_user!
   filter_access_to :autocomplete_customer_name, :require => :index
-  #filter_access_to :autocomplete_material_name, :require => :index
   filter_resource_access
 
-  #autocomplete :customer, :name , full: true, limit: 50, :where =>  "organization_id = #{Authorization.current_user.try(:organization).try(:id)}"
-  autocomplete :customer, :name, full: true, limit: 50, :where => "organization_id = #{Authorization.current_user.organization.id}"
-  #autocomplete :material, :name, full: true, limit: 50, :where => "organization_id = #{Authorization.current_user.organization.id}"
+  autocomplete :customer, :name, full: true, limit: 50
 
   def index
     @service_calls = current_user.organization.service_calls
@@ -131,6 +128,11 @@ class ServiceCallsController < ApplicationController
     @service_call.send(params[:status_event].to_sym) #, recipient: subcontractor)
 
 
+  end
+
+  # TODO move autocomplete to CustomerController
+  def autocomplete_customer_name_where
+    "organization_id = #{current_user.organization.id}"
   end
 
 
