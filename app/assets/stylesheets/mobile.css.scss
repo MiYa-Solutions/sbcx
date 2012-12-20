@@ -184,10 +184,21 @@ input.ui-input-text, textarea.ui-input-text {
   width: 60%;
 }
 
+.multiple_checkbox {
+  .ui-checkbox, .ui-radio {
+    width: 100%;
+  }
+}
+
 .help-inline {
   color: red;
   text-align: center;
-  padding-left: 40%;
+  padding-left: none;
+}
+
+.shared_errors {
+  color: red;
+
 }
 
 
@@ -374,5 +385,33 @@ input.ui-input-text, textarea.ui-input-text {
 
   .ui-grid-a .ui-block-b {
     width: 70%;
+  }
+}
+
+
+.search_network {
+  //background-color: #CCCCCC;
+  //.ui-grid-a {
+  //  margin: -10px;
+  //}
+  //
+  //.ui-grid-a .ui-block-a {
+  //  width: 70%;
+  //}
+  //
+  //.ui-grid-a .ui-block-b {
+  //  width: 30%;
+  //}
+  //
+  //input.ui-input-text, textarea.ui-input-text {
+  ////    margin: 0.7em 0;
+  //      padding-left: 5px;
+  //}
+  //.ui-input-search input.ui-input-text {
+  //  width: 102%;
+  //
+  //}
+  .ui-shadow-inset {
+    box-shadow: none;
   }
 }

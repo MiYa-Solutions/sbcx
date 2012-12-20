@@ -1,1 +1,174 @@
 <% provide(:title, @provider.name) %>
+
+<% if @provider.subcontrax_member? %>
+    <% if  @provider.id.in? current_user.organization.provider_ids %>
+
+        <fieldset class="ui-grid-a ui-btn-inner-small">
+          <div class="ui-block-a">
+            <%= link_to 'Back', providers_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+          </div>
+          <div class="ui-block-b">
+          </div>
+        </fieldset>
+    <% else %>
+        <fieldset class="ui-grid-a ui-btn-inner-small">
+          <div class="ui-block-a">
+            <%= link_to 'Back', providers_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+          </div>
+          <div class="ui-block-b">
+            <div class="miya_blue_button">
+              <%= form_for(current_user.organization.agreements.build(provider_id: @provider.id)) do |f| %>
+                  <div><%= f.hidden_field :provider_id %></div>
+                  <%= f.submit "Add Member", "data-theme" => "b", "data-icon" => "email" %>
+              <% end %>
+            </div>
+          </div>
+        </fieldset>
+
+    <% end %>
+
+<% else %>
+    <fieldset class="ui-grid-a ui-btn-inner-small">
+
+      <div class="ui-block-a">
+        <%= link_to 'Back', providers_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+      </div>
+
+      <div class="ui-block-b">
+        <div class="miya_blue_button">
+          <%= link_to 'Invite', new_provider_path, "data-role" => "button", :class => "ui-btn-up-b", "data-icon" => "email" %>
+        </div>
+      </div>
+
+    </fieldset>
+
+
+<% end %>
+
+
+<!--Collapse Starts-->
+<div data-role="collapsible-set">
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Agreements</h3>
+    <p>
+      My Agreements
+    </p>
+  </div>
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Balance</h3>
+    <p>
+      This is the Balance
+    </p>
+  </div>
+
+  <div data-role="collapsible" data-collapsed="false" data-theme="d">
+    <h3>Contact Information</h3>
+    <div class="customer_in_service_call">
+         <ul data-role="listview">
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Status:</div>
+                  <div class="ui-block-b"><%= @provider.human_status_name %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Name:</div>
+                  <div class="ui-block-b"><%= @provider.name %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Company:</div>
+                  <div class="ui-block-b"><%= @provider.company %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Address:</div>
+                  <div class="ui-block-b" style= "display:inline !important"><%= @provider.address1 %> <%= @provider.address2 %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">City:</div>
+                  <div class="ui-block-b"><%= @provider.city %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">State:</div>
+                  <div class="ui-block-b"><%= @provider.state %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Country:</div>
+                  <div class="ui-block-b"><%= @provider.country %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Zip:</div>
+                  <div class="ui-block-b"><%= @provider.zip %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Phone:</div>
+                  <div class="ui-block-b"><%= @provider.phone %></div>
+                </div>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Mobile:</div>
+                  <div class="ui-block-b"><%= @provider.mobile %></div>
+                </div>
+              </li>
+              <li class="ui-li">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Email:</div>
+                  <div class="ui-block-b" data-type="email" ><%= @provider.email %></div>
+                </div>
+              </li>
+              <li class="ui-li">
+                Website:
+                <br>
+                <%= @provider.website %>
+              </li>
+              <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                  <div class="ui-block-a">Roles:</div>
+                  <div class="ui-block-b">
+                    <% for role in @provider.organization_roles %>
+                        <span><%= role.name %></span>
+                    <% end %>
+                  </div>
+                </div>
+              </li>
+              <% if ! @provider.subcontrax_member==true %>
+                  <li class="ui-li ui-li-static">
+                     <fieldset class="ui-grid-solo ui-btn-inner-small">
+
+                       <%= link_to "Edit", edit_provider_path(@provider), "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
+
+                     </fieldset>
+                  </li>
+                 <% end %>
+           </ul>
+    </div>
+  </div>
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>More ...</h3>
+    <p>
+    <div class="ui-grid-solo">
+      <%= link_to 'Delete', providers_path(@provider), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete" %>
+    </div>
+    </p>
+  </div>
+
+  <!--Collapse Ends-->
+</div>

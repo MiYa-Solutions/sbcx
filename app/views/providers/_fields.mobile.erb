@@ -1,0 +1,59 @@
+<div class="customer_contacts">
+
+    <div class="ui-grid-a">
+        <div class="ui-block-a">Name:</div>
+        <div class="ui-block-b"><%= f.text_field :name %></div>
+    </div>
+    <div class="ui-grid-a multiple_checkbox">
+        <div class="ui-block-a">Roles:</div>
+        <div class="ui-block-b">
+          <%= f.association :organization_roles, :collection => applicable_roles, as: :check_boxes, class: "ui-hidden-accessible", label: "", require: "false" %>
+        </div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Company:</div>
+      <div class="ui-block-b"><%= f.text_field :company %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Phone:</div>
+      <div class="ui-block-b"><%= f.text_field :phone, as: :phone %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Mobile:</div>
+      <div class="ui-block-b"><%= f.text_field :mobile, as: :phone %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Email:</div>
+      <div class="ui-block-b"><%= f.text_field :email, as: :email %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Website:</div>
+      <div class="ui-block-b"><%= f.text_field :website, as: :url %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Address 1:</div>
+      <div class="ui-block-b"><%= f.text_field :address1 %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Address 2:</div>
+      <div class="ui-block-b"><%= f.text_field :address2 %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">City:</div>
+      <div class="ui-block-b"><%= f.text_field :city %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">State:</div>
+      <div class="ui-block-b"> <%= render 'subregion_select', f: f %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Zip:</div>
+      <div class="ui-block-b"><%= f.text_field :zip %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Country:</div>
+      <div class="ui-block-b"><%= f.country_select :country, { priority: %w[US] }, id: 'country' %></div>
+    </div>
+
+
+</div>
