@@ -1,0 +1,34 @@
+<%= provide(:title, 'New Subcontractor') %>
+
+
+<%= simple_form_for @subcontractor, url: subcontractors_url, :html => { :class => 'form-horizontal' } do |f| %>
+
+    <fieldset class="ui-grid-a ui-btn-inner-small">
+      <div class="ui-block-a">
+        <%= link_to 'Back', subcontractors_path, "class" => "ui-btn-up-c", "data-role" => "button", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
+      </div>
+      <div class="ui-block-b">
+        <div class="miya_blue_button">
+          <%= f.submit 'Save', "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+        </div>
+      </div>
+    </fieldset>
+
+
+    <% if f.object.errors.any? %>
+        <%= render 'shared/error_messages', object: f.object %>
+    <% end %>
+
+    <%= render 'fields', f: f %>
+    <!--<#%= f.simple_fields_for :agreements do |builder| %>-->
+    <!--<#%= render 'agreements/fields', f: builder %>-->
+
+
+    <div class="miya_blue_button">
+      <%= f.submit 'Save', "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save2_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+    </div>
+
+
+<% end %>
+
+

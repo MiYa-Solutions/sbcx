@@ -1,20 +1,20 @@
 <%= simple_form_for([ticket, @bom], :html => { :class => 'form-horizontal' }, remote: true) do |f| %>
     <br>
     <%= f.error_notification %>
-    <div class="row-fluid">
-      <!--<div class="span6">-->
-      <div class="add_part_service_call">
+
+    <div class="row-fluid add_part_service_call">
+      <div class="alert alert-info">
 
         <ul>
           <li></li>
-          <li>
+          <li class="part_field">
             <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id", cost: "#bom_cost", price: "#bom_price" }, placeholder: 'Part Name' %>
             <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
             <%= f.hidden_field :material_id %>
             <%= f.hidden_field :ticket_id, value: @service_call.id %>
 
           </li>
-          <li>
+          <li class="quantity_field">
             <%= f.text_field :quantity, placeholder: 'Quantity' %>
 
           </li>
@@ -27,7 +27,7 @@
 
           </li>
           <li>
-            <%= f.submit "Add Part", class: "btn btn-medium btn-primary", id: 'add_part' %>
+            <%= f.submit "Add", class: "btn btn-medium btn-primary", id: 'add_part' %>
 
           </li>
           <li>
@@ -38,11 +38,16 @@
             <!--<#%= link_to "Cancel", service_calls_path, class: "btn btn-medium" %>-->
 
           </li>
+          <li>
+            <a href="#" data-toggle= "collapse" data-target="#bom" class="close">×</a>
+              <!--<i class="icon-remove-sign"></i> </a>-->
+          </li>
         </ul>
 
-
+        <!--<a href="#" data-dismiss="alert" class="close">×</a>-->
       </div>
     </div>
 
 
 <% end %>
+

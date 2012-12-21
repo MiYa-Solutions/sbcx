@@ -5,7 +5,7 @@
 <fieldset class="ui-grid-b">
 
       <div class="ui-block-a">
-             <%= link_to 'Subcontractors', user_root_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>
+             <%= link_to 'Subcontractors', subcontractors_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>
       </div>
 
       <div class="ui-block-b">
@@ -14,7 +14,7 @@
 
       <div class="ui-block-c">
             <div class="miya_blue_button">
-                 <%= link_to 'New', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b",  id: 'new-affiliate-button'%>
+                 <%= link_to 'New', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b",  id: 'new-affiliate-button', "data-icon" => "email"%>
             </div>
       </div>
 
@@ -24,7 +24,15 @@
 
 <br>
 
-<ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
+<div class="search_network">
+  <%= form_tag affiliates_path, id: "agreement_search_form", :method => :get, :remote => true, :class => "ui-listview-filter ui-bar-c", "role" => "search" do %>
+      <div class="ui-input-search ui-shadow-inset ui-btn-corner-all ui-btn-shadow ui-icon-searchfield ui-body-c">
+        <%= text_field_tag :search, params[:search], "data-divider-theme" => "d", :placeholder => "Search Contacts", "class" => "ui-input-text ui-body-c" %>
+      </div>
+  <% end %>
+</div>
+
+<ul data-role="listview">
   <% @affiliates.each do |affiliate| %>
       <li class="inline_mobile"><%= link_to affiliate.name, affiliate, "data-transition" => "slide" %>
         <% if affiliate.subcontrax_member==true %>

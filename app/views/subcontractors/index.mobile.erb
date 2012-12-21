@@ -1,0 +1,42 @@
+<% provide(:title, Subcontractor.name.humanize.pluralize) %>
+
+<fieldset class="ui-grid-a ui-btn-inner-small">
+
+  <div class="ui-block-a">
+    <%= link_to 'Back', affiliates_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+  </div>
+
+  <div class="ui-block-b">
+    <div class="miya_blue_button">
+      <%= link_to 'New', new_subcontractor_path, "data-role" => "button", :class => "ui-btn-up-b",  id: 'new-provider-button', "data-icon" => "email"%>
+    </div>
+  </div>
+
+</fieldset>
+
+
+<br>
+
+
+<div class="search_network">
+  <%= form_tag subcontractors_path, id: "agreement_search_form", :method => :get, :remote => true, :class => "ui-listview-filter ui-bar-c", "role" => "search" do %>
+      <div class="ui-input-search ui-shadow-inset ui-btn-corner-all ui-btn-shadow ui-icon-searchfield ui-body-c">
+        <%= text_field_tag :search, params[:search], "data-divider-theme" => "d", :placeholder => "Search Contacts", "class" => "ui-input-text ui-body-c" %>
+      </div>
+  <% end %>
+</div>
+
+<ul data-role="listview">
+  <% @subcontractors.each do |subcontractor| %>
+      <li class="inline_mobile"><%= link_to subcontractor.name, subcontractor, "data-transition" => "slide" %>
+        <% if subcontractor.subcontrax_member==true %>
+                <span class="member_label_mobile">
+                  <badge>Member</badge>
+                 </span>
+        <% end %>
+      </li>
+  <% end %>
+</ul>
+
+
+

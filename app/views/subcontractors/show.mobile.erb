@@ -1,0 +1,174 @@
+<% provide(:title, @subcontractor.name) %>
+
+<% if @subcontractor.subcontrax_member? %>
+    <% if  @subcontractor.id.in? current_user.organization.subcontractor_ids %>
+
+        <fieldset class="ui-grid-a ui-btn-inner-small">
+          <div class="ui-block-a">
+            <%= link_to 'Back', subcontractors_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+          </div>
+          <div class="ui-block-b">
+          </div>
+        </fieldset>
+    <% else %>
+        <fieldset class="ui-grid-a ui-btn-inner-small">
+          <div class="ui-block-a">
+            <%= link_to 'Back', subcontractors_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+          </div>
+          <div class="ui-block-b">
+            <div class="miya_blue_button">
+              <%= form_for(current_user.organization.agreements.build(subcontractor_id: @subcontractor.id)) do |f| %>
+                  <div><%= f.hidden_field :subcontractor_id %></div>
+                  <%= f.submit "Add Member", "data-theme" => "b", "data-icon" => "email" %>
+              <% end %>
+            </div>
+          </div>
+        </fieldset>
+
+    <% end %>
+
+<% else %>
+    <fieldset class="ui-grid-a ui-btn-inner-small">
+
+      <div class="ui-block-a">
+        <%= link_to 'Back', subcontractors_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+      </div>
+
+      <div class="ui-block-b">
+        <div class="miya_blue_button">
+          <%= link_to 'Invite', new_subcontractor_path, "data-role" => "button", :class => "ui-btn-up-b", "data-icon" => "email" %>
+        </div>
+      </div>
+
+    </fieldset>
+
+
+<% end %>
+
+
+<!--Collapse Starts-->
+<div data-role="collapsible-set">
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Agreements</h3>
+    <p>
+      My Agreements
+    </p>
+  </div>
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Balance</h3>
+    <p>
+      This is the Balance
+    </p>
+  </div>
+
+  <div data-role="collapsible" data-collapsed="false" data-theme="d">
+    <h3>Contact Information</h3>
+    <div class="customer_in_service_call">
+      <ul data-role="listview">
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Status:</div>
+            <div class="ui-block-b"><%= @subcontractor.human_status_name %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Name:</div>
+            <div class="ui-block-b"><%= @subcontractor.name %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Company:</div>
+            <div class="ui-block-b"><%= @subcontractor.company %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Address:</div>
+            <div class="ui-block-b" style= "display:inline !important"><%= @subcontractor.address1 %> <%= @subcontractor.address2 %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">City:</div>
+            <div class="ui-block-b"><%= @subcontractor.city %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">State:</div>
+            <div class="ui-block-b"><%= @subcontractor.state %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Country:</div>
+            <div class="ui-block-b"><%= @subcontractor.country %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Zip:</div>
+            <div class="ui-block-b"><%= @subcontractor.zip %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Phone:</div>
+            <div class="ui-block-b"><%= @subcontractor.phone %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Mobile:</div>
+            <div class="ui-block-b"><%= @subcontractor.mobile %></div>
+          </div>
+        </li>
+        <li class="ui-li">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Email:</div>
+            <div class="ui-block-b" data-type="email" ><%= @subcontractor.email %></div>
+          </div>
+        </li>
+        <li class="ui-li">
+          Website:
+          <br>
+          <%= @subcontractor.website %>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a">Roles:</div>
+            <div class="ui-block-b">
+              <% for role in @subcontractor.organization_roles %>
+                  <span><%= role.name %></span>
+              <% end %>
+            </div>
+          </div>
+        </li>
+        <% if ! @subcontractor.subcontrax_member==true %>
+            <li class="ui-li ui-li-static">
+              <fieldset class="ui-grid-solo ui-btn-inner-small">
+
+                <%= link_to "Edit", edit_subcontractor_path(@subcontractor), "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
+
+              </fieldset>
+            </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>More ...</h3>
+    <p>
+    <div class="ui-grid-solo">
+      <%= link_to 'Delete', subcontractors_path(@subcontractor), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete" %>
+    </div>
+    </p>
+  </div>
+
+  <!--Collapse Ends-->
+</div>

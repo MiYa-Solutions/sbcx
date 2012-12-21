@@ -139,6 +139,7 @@ input.ui-input-text, textarea.ui-input-text {
   //padding: 1px 4px 2px;
   text-align: center;
   width: 60px;
+  height: 18px;
 
 
   badge {
@@ -281,6 +282,12 @@ input.ui-input-text, textarea.ui-input-text {
 
 .three_buttons_top {
 
+  .ui-grid-b {
+    margin-left: -11px;
+    margin-right: -11px;
+
+  }
+
   .ui-block-a {
 
     width: 40%;
@@ -290,6 +297,8 @@ input.ui-input-text, textarea.ui-input-text {
   }
   .ui-block-c {
     width: 30%;
+    margin-right: -15px;
+
   }
 }
 

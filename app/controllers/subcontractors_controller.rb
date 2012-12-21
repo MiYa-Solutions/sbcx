@@ -42,9 +42,9 @@ class SubcontractorsController < ApplicationController
   def index
     if params[:search].nil?
 
-      @subcontractors = current_user.organization.subcontractors.paginate(page: params[:page], per_page: 10)
+      @subcontractors = current_user.organization.subcontractors.paginate(page: params[:page], per_page: 30)
     else
-      @subcontractors = Subcontractor.subcontractor_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 10)
+      @subcontractors = Subcontractor.subcontractor_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 30)
     end
 
     #@subcontractors = current_user.organization.subcontractors.paginate(page: params[:page], per_page: 5)

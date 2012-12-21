@@ -605,7 +605,7 @@ smart_alert {
 
 .add_part_service_call {
   input, textarea, text_field {
-    width: 70%;
+    width: 90%;
   }
   textarea {
     height: 18px;
@@ -627,6 +627,24 @@ smart_alert {
     width: 10%;
 
   }
+
+  .alert {
+    //border: 1px solid gray;
+    //border-radius: 4px 4px 4px 4px;
+    height: 30px;
+    margin-bottom: 1px;
+    padding-right: 30px;
+    //text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    //background-color: none;
+  }
+
+  .part_field {
+    width: 20%;
+  }
+  .quantity_field {
+    width: 10%;
+  }
+
 }
 
 .edit_provider {
