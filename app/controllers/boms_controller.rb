@@ -1,6 +1,8 @@
 class BomsController < ApplicationController
 
   filter_resource_access
+
+
   # GET /boms
   # GET /boms.json
   def index
@@ -47,6 +49,7 @@ class BomsController < ApplicationController
   # POST /boms.json
   def create
 
+    sleep 3
     respond_to do |format|
       if @bom.save
         format.html { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
@@ -55,6 +58,7 @@ class BomsController < ApplicationController
       else
         format.html { render action: "new" }
         format.json { render json: @bom.errors, status: :unprocessable_entity }
+        format.js { }
       end
     end
   end

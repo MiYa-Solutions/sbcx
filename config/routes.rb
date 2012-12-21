@@ -7,7 +7,11 @@ Sbcx::Application.routes.draw do
 
 
   resources :service_calls, only: [:new, :create, :edit, :show, :index, :update] do
-    resources :boms
+    get :autocomplete_customer_name, :on => :collection
+    get :autocomplete_material_name, :on => :collection
+    resources :boms do
+      get :autocomplete_material_name, :on => :collection
+    end
   end
 
   resources :agreements, only: [:new, :create, :edit, :show, :index]
@@ -32,9 +36,12 @@ Sbcx::Application.routes.draw do
 
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   resources :customers, only: [:new, :create, :edit, :show, :index, :update]
-  resources :materials, only: [:new, :create, :edit, :show, :index, :update]
+  resources :materials, only: [:new, :create, :edit, :show, :index, :update] do
+    get :autocomplete_material_name, :on => :collection
+  end
 
   match 'welcome' => 'static_pages#welcome', :as => :user_root
+  match 'calendar' => 'static_pages#calendar', :as => :calendar
 
 
   # The priority is based upon order of creation:

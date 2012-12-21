@@ -26,11 +26,11 @@ class Bom < ActiveRecord::Base
 
 
   def total_cost
-    self.cost * self.quantity
+    self.cost * self.quantity unless self.cost.nil?
   end
 
   def total_price
-    self.price * self.quantity
+    self.price * self.quantity unless self.quantity.nil?
   end
 
   def set_default_cost

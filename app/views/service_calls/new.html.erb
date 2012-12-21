@@ -4,9 +4,9 @@
 
   <div class="row-fluid">
 
-      <div class="smart_label">
-        <h1>New Service Call</h1>
-      </div>
+    <div class="smart_label">
+      <h1>New Service Call</h1>
+    </div>
 
   </div>
   <br>
@@ -14,6 +14,15 @@
   <div class="row-fluid">
 
     <%= simple_form_for @service_call, as: :service_call, url: service_calls_url, :html => { :class => 'form-horizontal' } do |f| %>
+        <div class="row-fluid">
+          <% if f.object.errors.any? %>
+              <div class="alert alert-block alert-error">
+                <a class="close" data-dismiss="alert" href="#">×</a>
+                <%= render 'shared/error_messages', object: f.object %>
+              </div>
+          <% end %>
+        </div>
+
         <%= render 'fields', f: f %>
 
         <div class="form-actions">
@@ -25,7 +34,7 @@
   </div>
 
 
-     <!--note-->
+  <!--note-->
 
 
 </div>

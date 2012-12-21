@@ -40,20 +40,20 @@ class ServiceCallTransferEvent < ServiceCallEvent
       self.save!
       new_service_call.save!
       Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
-      new_service_call
+
 
     end
 
+    new_service_call
 
-    def notification_recipients
-      nil
-    end
+  end
 
-    def notification_class
-      nil
-    end
+  def notification_recipients
+    nil
+  end
 
-
+  def notification_class
+    nil
   end
 
 

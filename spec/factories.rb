@@ -186,7 +186,7 @@ FactoryGirl.define do
     price 254.7
   end
 
-  factory :boms do
+  factory :bom do
     association :material
     quantity 3
 

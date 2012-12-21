@@ -13,12 +13,13 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+//= require autocomplete-rails
 //= require bootstrap
 //= require jquery.purr
 //= require best_in_place
 //= require best_in_place.purr
 //= require bootstrap-datepicker
-//= require_tree .
+//= require_tree ./all
 
 
 $(function () {
@@ -53,14 +54,14 @@ $("a[rel=tooltip]").tooltip();
 $('.popover').popover();
 
 
-$(function () {
-    $('.i').scroller({
-        preset:'date',
-        invalid:{ daysOfWeek:[0, 6], daysOfMonth:['5/1', '12/24', '12/25'] },
-        theme:'default',
-        display:'inline',
-        mode:'scroller',
-        dateOrder:'mmD ddyy'
-    });
-});
+//$(function () {
+//    $('.i').scroller({
+//        preset:'date',
+//        invalid:{ daysOfWeek:[0, 6], daysOfMonth:['5/1', '12/24', '12/25'] },
+//        theme:'default',
+//        display:'inline',
+//        mode:'scroller',
+//        dateOrder:'mmD ddyy'
+//    });
+//});
 

@@ -175,6 +175,11 @@ class Organization < ActiveRecord::Base
     subcontractors << subcontractor
   end
 
+  def one_of_my_local_providers?(org_id)
+    !Organization.find(org_id).subcontrax_member? &&
+        !Organization.my_providers(self.id).where("organizations.id = ?", org_id).limit(1).empty?
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0

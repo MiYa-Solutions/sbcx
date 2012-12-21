@@ -1,40 +1,48 @@
-<%= simple_form_for([@ticket, @bom], :html => { :class => 'form-horizontal' }, remote: true) do |f| %>
+<%= simple_form_for([ticket, @bom], :html => { :class => 'form-horizontal' }, remote: true) do |f| %>
     <br>
     <%= f.error_notification %>
-<div class="row-fluid">
-  <!--<div class="span6">-->
-    <div class="add_part_service_call">
+    <div class="row-fluid">
+      <!--<div class="span6">-->
+      <div class="add_part_service_call">
 
-      <ul>
-        <li>
-           <%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>
+        <ul>
+          <li></li>
+          <li>
+            <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id", cost: "#bom_cost", price: "#bom_price" }, placeholder: 'Part Name' %>
+            <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
+            <%= f.hidden_field :material_id %>
+            <%= f.hidden_field :ticket_id, value: @service_call.id %>
 
-        </li>
-        <li>
+          </li>
+          <li>
             <%= f.text_field :quantity, placeholder: 'Quantity' %>
 
-        </li>
-        <li>
+          </li>
+          <li>
             <%= f.text_field :price, placeholder: 'List Price' %>
 
-        </li>
-        <li>
+          </li>
+          <li>
             <%= f.text_field :cost, placeholder: 'Cost' %>
 
-        </li>
-        <li>
-          <%= f.submit "Add Part", class: "btn btn-medium btn-primary", id: 'add_part' %>
+          </li>
+          <li>
+            <%= f.submit "Add Part", class: "btn btn-medium btn-primary", id: 'add_part' %>
 
-        </li>
-        <li>
-          <%= link_to "Cancel", service_calls_path, class: "btn btn-medium" %>
+          </li>
+          <li>
+            <div id="ajax-msg"></div>
+          </li>
+          <li>
+            <%= image_tag 'ajax-loader.gif', id: "spinner" %>
+            <!--<#%= link_to "Cancel", service_calls_path, class: "btn btn-medium" %>-->
 
-        </li>
-      </ul>
+          </li>
+        </ul>
 
 
+      </div>
     </div>
-</div>
 
 
 <% end %>

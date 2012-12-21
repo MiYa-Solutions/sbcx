@@ -1,3 +1,39 @@
-$('#new_bom').remove();
-$('#new-bom-button').show();
+<% if @bom.errors.any? %>
+<% unless @bom.errors[:quantity].empty? %>
+$('#bom_quantity').wrap('<div class="control-group error" />')
+
+<% @bom.errors[:quantity].each do |err| %>
+$('#bom_quantity').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+<% unless @bom.errors[:material_name].empty? %>
+$('#bom_material_name').wrap('<div class="control-group error" />')
+
+<% @bom.errors[:material_name].each do |err| %>
+$('#bom_material_name').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+<% unless @bom.errors[:price].empty? %>
+$('#bom_price').wrap('<div class="control-group error" />')
+
+<% @bom.errors[:price].each do |err| %>
+$('#bom_price').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+<% unless @bom.errors[:cost].nil? %>
+$('#bom_cost').wrap('<div class="control-group error" />')
+
+<% @bom.errors[:cost].each do |err| %>
+$('#bom_cost').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+
+<% else %>
 $('#boms:last').append('<%= j render(@bom) %>');
+$('#bom').find('.error').removeClass('error');
+$('#bom').find('.error-msg').remove();
+$('#bom_cost').val('');
+$('#bom_price').val('');
+$('#bom_material_name').val('');
+$('#bom_quantity').val('');
+<% end %>

@@ -1,7 +1,9 @@
 class ServiceCallsController < ApplicationController
   before_filter :authenticate_user!
+  filter_access_to :autocomplete_customer_name, :require => :index
   filter_resource_access
 
+  autocomplete :customer, :name, full: true, limit: 50
 
   def index
     @service_calls = current_user.organization.service_calls
@@ -10,6 +12,7 @@ class ServiceCallsController < ApplicationController
   def show
     @service_call = ServiceCall.find(params[:id])
     @customer     = Customer.new
+    @bom          = Bom.new
   end
 
   def new
@@ -55,7 +58,14 @@ class ServiceCallsController < ApplicationController
         end
       end
     else
-      render :action => 'edit'
+      respond_to do |format|
+        format.js { }
+        format.html do
+          render :action => 'edit'
+        end
+      end
+
+
     end
   end
 
@@ -69,8 +79,6 @@ class ServiceCallsController < ApplicationController
   def new_service_call_from_params
     @service_call ||= ServiceCall.new(permitted_params(nil).service_call)
   end
-
-  private
 
   def set_service_call_type
 
@@ -120,5 +128,24 @@ class ServiceCallsController < ApplicationController
 
   end
 
+  # TODO move autocomplete to CustomerController
+  def autocomplete_customer_name_where
+
+    default = "organization_id = #{current_user.organization.id}"
+
+    if params[:ref_id].nil? || params[:ref_id].blank?
+      return default
+    else
+      org = Organization.find(params[:ref_id])
+      # verify that the organization requested is not a member and that it is part of my subcontractors
+      unless org.subcontrax_member? || !current_user.organization.one_of_my_local_providers?(org.id)
+        return "organization_id = #{org.id}"
+      end
+
+      return "organization_id = -1" # force a blank result
+    end
+
+  end
 
 end
+
