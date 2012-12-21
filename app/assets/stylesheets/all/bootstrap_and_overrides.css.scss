@@ -1,0 +1,654 @@
+// Set the correct sprite paths
+$iconSpritePath: asset-url('glyphicons-halflings.png', image);
+$iconWhiteSpritePath: asset-url('glyphicons-halflings-white.png', image);
+
+$navbarBackground: #555;
+$navbarBackgroundHighlight: #888;
+$navbarText: #eee;
+$navbarLinkColor: #eee;
+
+@import "bootstrap";
+//@import "jquery.ui.base.css";
+//@import "jquery.ui.theme.css";
+
+body {
+  padding-top: 60px;
+}
+
+@import "bootstrap-responsive";
+
+.navbar .brand {
+  color: #eaeaea;
+  font-weight: bold;
+
+}
+
+.help-inline {
+  color: #555;
+  //text-align: center;
+  //padding-left: 40%;
+}
+
+.well-home {
+  min-height: 278px;
+}
+
+.nav-list {
+  margin-bottom: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: $grayLight;
+
+  a {
+    color: #555;
+    &:hover {
+      color: gray;
+    }
+  }
+  small {
+    float: left;
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 10px;
+
+    }
+
+  }
+
+}
+
+.hero-unit {
+  h1 {
+    text-align: center;
+  }
+
+  .welcome_logo {
+    height: 100px;
+
+  }
+  .logo {
+    float: right;
+  }
+
+}
+
+.sign-up {
+
+  .row-fluid [class*="span"] {
+    margin-left: 0.564%;
+  }
+
+  .alert {
+    margin-bottom: 6px;
+  }
+}
+
+.close {
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.member_label {
+
+  //background-color: #5BB65B;
+  background-color: #3A87AD;
+  padding-top: 2px;
+  text-align: center;
+  border-radius: 3px 3px 3px 3px;
+  //padding: 1px 4px 3px;
+
+  badge {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 14px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    vertical-align: baseline;
+    white-space: nowrap;
+    letter-spacing: .08em;
+  }
+
+}
+
+.navbar .nav > li > a {
+
+  font-size: 14px;
+}
+
+//.miya_buttons_grid {
+//
+//    width: 20px;
+//
+//}
+
+.miya_buttons_grid {
+  min-width: 160px;
+
+  input[type="submit"] {
+    margin-left: 10px;
+    min-width: 65px;
+  }
+
+  ul {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+
+  }
+
+  li {
+    float: left;
+    min-width: 40px;
+    margin-right: 5px;
+  }
+
+  .btn-mini {
+    min-width: 30px;
+    font-size: 12px;
+    line-height: 12px;
+    padding: 2px 5px;
+  }
+
+}
+
+.miya_blue_note {
+
+  font-size: 14px;
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.miya_table_row {
+  //padding: 8px;
+}
+
+.miya_note_area {
+
+  input, textarea {
+    width: 90%;
+    height: 210px;
+  }
+
+  .control-label {
+    //width: 70px;
+    //padding-left: 65px;
+    padding-left: 15px;
+    width: 35px;
+    margin-right: 10px;
+
+  }
+
+  .controls {
+    margin-left: 15px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+}
+
+select {
+  -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+  background-color: white;
+  border: 1px solid #CCCCCC;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  width: 83%;
+
+}
+
+.input-large {
+  width: 80%;
+}
+
+input, textarea {
+  width: 80%;
+}
+
+.miya_input_area {
+
+  select {
+    -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    background-color: white;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    width: 80%;
+  }
+
+}
+
+.sign_in_controls {
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    margin-top: 8px;
+  }
+}
+
+.smart_label {
+  background-color: $grayLight;
+  display: block;
+  border-radius: 3px 3px 3px 3px;
+  padding: 5px;
+  padding-bottom: none;
+  overflow: auto;
+
+  h1 {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+  h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 20px;
+    letter-spacing: .01em;
+  }
+
+  h1:hover {
+    background-position: -48px -16px;
+  }
+
+  p {
+    max-width: 250px;
+    font-style: italic;
+    font-weight: bold;
+    color: $white;
+    font-family: arial;
+    font-size: 12px;
+  }
+
+  span {
+    font-weight: bold;
+    color: $white;
+    font-family: arial;
+    font-size: 14px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: right;
+
+  }
+
+  form {
+    line-height: 1px;
+    margin: 0 0 1px;
+  }
+
+  input {
+    margin-bottom: 0px;
+  }
+
+  input, textarea {
+    width: auto;
+    //width: 210px;
+
+  }
+
+  .btn-medium {
+    width: auto;
+    height: 28px;
+  }
+
+  .container-fluid {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .btn-large {
+    //height: 18px;
+    width: 100px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 4px 4px 4px 4px;
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 0;
+    padding: 4px 10px;
+  }
+
+  .btn-info {
+    height: auto;
+    width: auto;
+
+  }
+
+  .btn-signup {
+    width: 120px;
+
+  }
+}
+
+.field_input {
+
+  option {
+    width: 200px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    vertical-align: none;
+  }
+
+  li {
+    float: left;
+    //padding-left: 30px;
+  }
+
+}
+
+.form-horizontal .control-group {
+  margin-bottom: 7px;
+}
+
+fieldset input {
+  margin: 0;
+
+}
+
+fieldset label {
+  color: #404853;
+  display: block;
+  font-weight: bold;
+}
+
+.table thead {
+  border-bottom: 1px solid #404853;
+}
+
+.table-striped tbody tr:nth-child(even) td,
+.table-striped tbody tr:nth-child(even) th {
+  background-color: #ffffff;
+}
+
+.table tbody tr:hover td,
+.table tbody tr:hover th {
+  background-color: #eeeeee;
+}
+
+.table th, .table td {
+  line-height: 12px;
+  padding: 4px;
+  font-size: 13px;
+  padding-top: 8px;
+}
+
+smart_alert {
+  display: block;
+}
+
+.add_member {
+  margin: 0;
+  display: inline-block;
+  width: 40px;
+
+}
+
+.radio, .checkbox {
+  min-height: 18px;
+  padding-left: 18px;
+}
+
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+  float: left;
+  margin-left: -18px;
+  margin-top: 0.1005em;;
+
+}
+
+.form-actions {
+  .btn {
+    width: auto;
+    height: auto;
+  }
+
+}
+
+.table_unstyled {
+
+  td {
+    border-top: 0px;
+  }
+}
+
+.table-sbcx tbody td:last-child,
+.table-sbcx tbody th:last-child {
+  text-align: right;
+}
+
+.status_label {
+
+  //background-color: #5BB65B;
+  width: 60px;
+  background-color: #3A87AD;
+  text-align: center;
+  border-radius: 3px 3px 3px 3px;
+  padding: 1px 14px 2px;
+
+  badge {
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 14px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    vertical-align: baseline;
+    white-space: nowrap;
+    letter-spacing: .08em;
+  }
+
+}
+
+.promotion {
+
+  .input-medium {
+    width: 90%;
+  }
+
+}
+
+.status_label_success {
+
+  //background-color: #5BB65B;
+  width: 60px;
+  background-color: #468847;
+  text-align: center;
+  border-radius: 3px 3px 3px 3px;
+  padding: 1px 14px 2px;
+
+  badge {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 14px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    vertical-align: baseline;
+    white-space: nowrap;
+    letter-spacing: .08em;
+  }
+
+}
+
+.list_service_calls {
+
+  address {
+    margin-left: 100px;
+    margin-top: 10px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+}
+
+.no_margins {
+  margin-left: none;
+  margin-right: none;
+
+}
+
+.action_buttons_service_call {
+
+  margin-left: 15%;
+
+  .btn-large {
+    width: 70%;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 8px;
+
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  select {
+    width: 70%;
+  }
+}
+
+.success {
+  background-color: #468847;
+  width: auto;
+}
+
+.form-actions_in_service_call {
+
+  .form-actions {
+    padding-left: 20%;
+  }
+}
+
+.Miya_image {
+
+  imp {
+    border: 0;
+    float: left;
+    display: inline;
+  }
+}
+
+.Miya_mobile_member_tag {
+  li {
+    background: green;
+  }
+}
+
+.custom_list .ui-li {
+  float: right;
+}
+
+.purr {
+  position: fixed;
+  top: 30px;
+  right: 100px;
+  width: 250px;
+  padding: 20px;
+  background-color: #FCC;
+  border: solid 2px #C66;
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.best_in_place:hover, .do_hover {
+  //padding-right: 1.5em;
+  background: url("edit.png") no-repeat right;
+  //background-color: #FCC;
+  //border: solid 2px #C66;
+  background-color: #D9EDF7;
+  border-color: #BCE8F1;
+  color: #3A87AD;
+
+}
+
+.add_new_part {
+  input, textarea {
+    width: 50%;
+  }
+  textarea {
+    height: 18px;
+  }
+}
+
+.add_part_service_call {
+  input, textarea, text_field {
+    width: 70%;
+  }
+  textarea {
+    height: 18px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 5px;
+    line-height: 16px;
+    width: 15%;
+  }
+
+  li:last-child {
+    float: right;
+    width: 10%;
+
+  }
+}
+
+.edit_provider {
+  textarea {
+    height: 18px;
+    width: 60%;
+  }
+  select {
+    width: 62%;
+  }
+  input {
+    width: 60%;
+  }
+
+  label {
+    font-weight: bold;
+  }
+}
+
+body .modal {
+  //new custom width
+  width: 860px;
+  //must be half of the width, minus scrollbar on the left (30px)
+  margin: -250px 0 0 -400px;
+  //margin-right: 20%
+}

@@ -11,7 +11,7 @@
       <div id="customer_wrapper">
 
         <!--<#%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>-->
-        <%= f.input :customer, :url => autocomplete_customer_name_service_calls_path, as: :autocomplete, id_element: "#service_call_customer_id" %>
+        <%= f.autocomplete_field :customer, autocomplete_customer_name_service_calls_path, update_elements: { id: "#service_call_customer_id" }, data: { ref_id: "" } %>
         <%= f.hidden_field :customer_id %>
 
       </div>

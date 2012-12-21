@@ -47,7 +47,8 @@ describe "Service Call pages" do
   cancel_btn_selector       = 'cancel_service_call_btn'
 
 
-  describe "with Org Admin" do
+  describe "with Org Admin", js: true do
+    self.use_transactional_fixtures = false
 
     let(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
     let(:org_admin_user2) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
@@ -84,15 +85,16 @@ describe "Service Call pages" do
 
     end
 
-    #after do
-    #  clean org unless org.nil?
-    #  clean org2 unless org2.nil?
-    #  clean org3 unless org3.nil?
-    #end
+    after do
+      clean org unless org.nil?
+      clean org2 unless org2.nil?
+      clean org3 unless org3.nil?
+    end
 
     subject { page }
 
     describe "new service call page" do
+
 
       #initialize orgs provider, customer, etc.
       before do
@@ -125,7 +127,7 @@ describe "Service Call pages" do
           before do
             in_browser(:org) do
               select org2.name, from: 'service_call_provider_id'
-              select customer.name, from: 'service_call_customer_id'
+              auto_complete('service_call_customer', customer.name.chop)
             end
           end
 
@@ -180,15 +182,23 @@ describe "Service Call pages" do
       end
 
       describe "my service call" do
+
         before do
           in_browser(:org) do
-            select customer.name, from: 'service_call_customer_id'
+            auto_complete 'service_call_customer', customer.name
           end
+        end
+
+        after do
+          clean(org)
+          clean(org2)
+          clean(org3)
         end
 
 
         it "should be created successfully" do
           expect do
+            auto_complete 'service_call_customer', customer.name.chop
             click_button create_btn
           end.to change(ServiceCall, :count).by(1)
         end
@@ -283,7 +293,7 @@ describe "Service Call pages" do
           end
 
           it "should have the right provider " do
-            should have_selector('#provider', text: org.name)
+            should have_selector(provider_select, text: org.name)
           end
 
           it "should allow to accept the service call" do

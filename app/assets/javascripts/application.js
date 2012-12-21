@@ -19,7 +19,7 @@
 //= require best_in_place
 //= require best_in_place.purr
 //= require bootstrap-datepicker
-//= require_tree .
+//= require_tree ./all
 
 
 $(function () {

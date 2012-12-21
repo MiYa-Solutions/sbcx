@@ -80,8 +80,6 @@ class ServiceCallsController < ApplicationController
     @service_call ||= ServiceCall.new(permitted_params(nil).service_call)
   end
 
-  private
-
   def set_service_call_type
 
     case @service_call.my_role
@@ -132,8 +130,22 @@ class ServiceCallsController < ApplicationController
 
   # TODO move autocomplete to CustomerController
   def autocomplete_customer_name_where
-    "organization_id = #{current_user.organization.id}"
+
+    default = "organization_id = #{current_user.organization.id}"
+
+    if params[:ref_id].nil? || params[:ref_id].blank?
+      return default
+    else
+      org = Organization.find(params[:ref_id])
+      # verify that the organization requested is not a member and that it is part of my subcontractors
+      unless org.subcontrax_member? || !current_user.organization.one_of_my_local_providers?(org.id)
+        return "organization_id = #{org.id}"
+      end
+
+      return "organization_id = -1" # force a blank result
+    end
+
   end
 
-
 end
+

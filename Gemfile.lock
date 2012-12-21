@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git
-  revision: bb583e63a353f508b13cfe03acc3bc55d51085a7
+  revision: 8b81cbb1f0084be75eef644a6fce973d5323994e
   specs:
     rails3-jquery-autocomplete (1.0.10)
       rails (~> 3.0)

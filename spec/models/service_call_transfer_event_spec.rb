@@ -18,8 +18,8 @@ require 'spec_helper'
 
 describe ServiceCallTransferEvent do
 
-  let!(:event) { FactoryGirl.create(:service_call_transfer_event) }
-  let!(:transferable_event) do
+  let(:event) { FactoryGirl.create(:service_call_transfer_event) }
+  let(:transferable_event) do
     new_event     = FactoryGirl.create(:service_call_transfer_event)
     subcontractor = new_event.associated_object.subcontractor
     subcontractor.make_member
