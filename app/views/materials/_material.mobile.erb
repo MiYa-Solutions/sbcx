@@ -1,0 +1,11 @@
+<tr>
+  <td><%= best_in_place material, :name %></td>
+  <td><%= best_in_place material, :description %></td>
+  <td><%= best_in_place material, :cost, :data => {:title => 'click to edit', :rel => 'tooltip'} %></td>
+  <td><%= best_in_place material, :price %></td>
+  <td></td>
+  <td>
+     <%= link_to 'Delete', material_path(material), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+
+   </td>
+</tr>

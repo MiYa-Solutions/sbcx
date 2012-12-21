@@ -63,6 +63,8 @@ ul.unstyled, ol.unstyled {
   }
 }
 
+
+
 .miya_blue_button {
   .ui-btn-up-b {
     height: 32px;
@@ -101,20 +103,20 @@ input.ui-input-text, textarea.ui-input-text {
 }
 
 ​.ui-page .ui-content .ui-listview .ui-li-desc {
-  white-space: normal;
-}
-
-​
+  white-space : normal;
+}​
 
 
 .unstyled {
-  ul {
-    list-style: none outside none;
-    margin-left: 0;
-  }
-}
+   ul {
+     list-style: none outside none;
+     margin-left: 0;
+   }
+ }
 
-.custom_list {
+
+
+.custom_list  {
   //background-color: red;
   padding-right: 20px;
 }
@@ -138,6 +140,7 @@ input.ui-input-text, textarea.ui-input-text {
   text-align: center;
   width: 60px;
 
+
   badge {
     color: #FFFFFF;
     font-weight: bold;
@@ -146,6 +149,7 @@ input.ui-input-text, textarea.ui-input-text {
   }
 
 }
+
 
 .ui-btn-inner {
   display: block;
@@ -159,11 +163,13 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+
 .ui-btn-inner-small {
   .ui-btn-inner {
     font-size: 12px;
   }
 }
+
 
 .small_text_button {
   .ui-btn-inner {
@@ -178,11 +184,23 @@ input.ui-input-text, textarea.ui-input-text {
   width: 60%;
 }
 
+.multiple_checkbox {
+  .ui-checkbox, .ui-radio {
+    width: 100%;
+  }
+}
+
 .help-inline {
   color: red;
   text-align: center;
-  padding-left: 40%;
+  padding-left: none;
 }
+
+.shared_errors {
+  color: red;
+
+}
+
 
 .miya_logo_large {
 
@@ -212,12 +230,14 @@ input.ui-input-text, textarea.ui-input-text {
     vertical-align: middle;
     position: absolute;
 
+
   }
 }
 
 .miya_logo_footer {
 
   //margin-left: 10%;
+
 
   img {
     display: block;
@@ -239,9 +259,10 @@ input.ui-input-text, textarea.ui-input-text {
   text-overflow: ellipsis;
   white-space: normal;
   vertical-align: middle;
-  padding-left: 10%;
+  padding-left:10%;
   width: 50%;
 }
+
 
 .header_sign_out {
 
@@ -337,20 +358,22 @@ input.ui-input-text, textarea.ui-input-text {
     padding-right: 10px;
   }
 
+
 }
 
 .ui-li-has-arrow .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow {
   padding-right: 10px;
 }
 
+
 .customer_in_service_call {
 
   //width: 80%;
   //.ul-listview {
-  margin-left: 1px;
-  margin-right: 1px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+    margin-left: 1x;
+    margin-right: 1px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 
 }
 
@@ -362,5 +385,33 @@ input.ui-input-text, textarea.ui-input-text {
 
   .ui-grid-a .ui-block-b {
     width: 70%;
+  }
+}
+
+
+.search_network {
+  //background-color: #CCCCCC;
+  //.ui-grid-a {
+  //  margin: -10px;
+  //}
+  //
+  //.ui-grid-a .ui-block-a {
+  //  width: 70%;
+  //}
+  //
+  //.ui-grid-a .ui-block-b {
+  //  width: 30%;
+  //}
+  //
+  //input.ui-input-text, textarea.ui-input-text {
+  ////    margin: 0.7em 0;
+  //      padding-left: 5px;
+  //}
+  //.ui-input-search input.ui-input-text {
+  //  width: 102%;
+  //
+  //}
+  .ui-shadow-inset {
+    box-shadow: none;
   }
 }

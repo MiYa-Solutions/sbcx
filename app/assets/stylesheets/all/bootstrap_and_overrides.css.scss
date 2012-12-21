@@ -125,7 +125,8 @@ footer {
   font-size: 14px;
 }
 
-//.miya_buttons_grid {
+
+  //.miya_buttons_grid {
 //
 //    width: 20px;
 //
@@ -584,7 +585,7 @@ smart_alert {
 
 .best_in_place:hover, .do_hover {
   //padding-right: 1.5em;
-  background: url("edit.png") no-repeat right;
+  //background: url("/images/red_pen.png") no-repeat right;
   //background-color: #FCC;
   //border: solid 2px #C66;
   background-color: #D9EDF7;
@@ -641,7 +642,7 @@ smart_alert {
   }
 
   label {
-    font-weight: bold;
+   font-weight: bold;
   }
 }
 
