@@ -687,6 +687,15 @@ body .modal {
     margin-top: 30px;
   }
 
+  h5 {
+    color: inherit;
+    font-size: 30px;
+    line-height: 27px;
+    font-family: "Arial Black";
+    text-align: left;
+    margin-top: 15px;
+  }
+
 
   h4 {
     color: inherit;
@@ -723,6 +732,10 @@ body .modal {
   }
 
   .screens{
+    padding-left: 25%;
+  }
+
+  .diagram{
     padding-left: 15%;
   }
 }
