@@ -161,11 +161,21 @@
     </ul>
   </div>
 
+<!--Parts-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
-    <h3>Materials</h3>
-    <p class="service-call-actions">
-        materials    </p>
+    <h3>Parts</h3>
+
+    <ul data-role="listview">
+      <% @service_call.boms.each do |bom| %>
+         <li>
+         <%= link_to bom.material_name, service_call_path(bom), "data-transition" => "slide" %>
+
+         </li>
+      <% end %>
+
+    </ul>
   </div>
+
 
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <h3>Job History</h3>

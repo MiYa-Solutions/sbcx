@@ -54,13 +54,16 @@
                     <li><%= link_to "Settings" %></li>
                     <li class="divider"></li>
                     <li>
-                      <%= link_to "Sign out", destroy_user_session_path, method: "delete", id: "sign_out_header_link"
-                      %>
+                      <%= link_to "Sign out", destroy_user_session_path, method: "delete", id: "sign_out_header_link" %>
                     </li>
                   </ul>
           <% else %>
-              <li><%= link_to "Sign in", new_user_session_path, id: 'sign_in_header_link' %></li>
-          <% end %>
+              <li>
+                <%= link_to  '<i class="icon-user icon-white"></i> Sign in'.html_safe, new_user_session_path, id: 'sign_in_header_link', class: 'btn btn-primary' %>
+
+              </li>
+
+        <% end %>
           </div>
           </li>
 

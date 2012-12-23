@@ -1,0 +1,27 @@
+<h1>Listing boms</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th><%= Bom.human_attribute_name(:material_name) %></th>
+    <th><%= Bom.human_attribute_name(:quantity) %></th>
+    <th><%= Bom.human_attribute_name(:cost) %></th>
+    <th><%= Bom.human_attribute_name(:price) %></th>
+    <th><%= Bom.human_attribute_name(:total_cost) %></th>
+    <th><%= Bom.human_attribute_name(:total_price) %></th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  <% @boms.each do |bom| %>
+      <tr>
+        <%= render 'bom', bom: bom %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br/>
+
+<%= link_to 'New Bom', new_service_call_bom_path %>
