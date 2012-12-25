@@ -1,3 +1,4 @@
+
 <table class="table table-striped table-condensed">
   <tbody>
   <tr>
@@ -28,6 +29,36 @@
 </table>
 
 
-<%= link_to 'Back', :back %> |
+
+<!--<table class="table table-striped table-condensed">-->
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td><#%= Bom.human_attribute_name(:material_name) %></td>-->
+<!--<td><h4><#%= @bom.material_name %></h4></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td><#%= Bom.human_attribute_name(:quantity) %></td>-->
+<!--<td><h4><#%= @bom.quantity %></h4></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td><#%= Bom.human_attribute_name(:cost) %></td>-->
+<!--<td><h4><#%= @bom.cost %></h4></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td><#%= Bom.human_attribute_name(:price) %></td>-->
+<!--<td><h4><#%= @bom.price %></h4></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td><#%= Bom.human_attribute_name(:total_price) %></td>-->
+<!--<td><h4><#%= @bom.total_price %></h4></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td><#%= Bom.human_attribute_name(:total_cost) %></td>-->
+<!--<td><h4><#%= @bom.total_cost %></h4></td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+
+<%= link_to 'Back', service_call_bom_path  %> |
 <%= link_to 'Edit', edit_service_call_bom_path(@bom.ticket_id, @bom) %> |
 <%= link_to 'Destroy', service_call_bom_path(@bom.ticket_id, @bom), method: :delete, data: { confirm: 'Are you sure?' } %>

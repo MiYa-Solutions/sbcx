@@ -43,6 +43,12 @@ class BomsController < ApplicationController
   def edit
     @bom    = Bom.find(params[:id])
     @ticket = @bom.ticket.becomes(@bom.ticket.class.superclass)
+
+    respond_to do |format|
+      format.html # edit.html.erb
+      format.js   # edit.js.erb
+      format.json { render json: @bom }
+    end
   end
 
   # POST /boms

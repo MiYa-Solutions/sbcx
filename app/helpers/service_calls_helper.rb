@@ -35,7 +35,7 @@ module ServiceCallsHelper
   def paid_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[status_event]", 'paid')
-      concat (f.input :total_price)
+      concat (f.input :total_price, placeholder: 'Enter price')
       concat (f.submit service_call.class.human_status_event_name(:paid).titleize,
                        id:    'paid_service_call_btn',
                        class: "btn btn-large btn-primary",

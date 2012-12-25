@@ -1,29 +1,16 @@
 <% provide(:title, "Service Call: #{@service_call.ref_id}" )%>
 
-<fieldset class="ui-grid-b ui-btn-inner-small">
-  <div class="ui-block-a">
-    <%= link_to "Back", service_calls_path, "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-l" %>
-  </div>
-  <div class="ui-block-b">
 
-  </div>
-  <div class="ui-block-c">
-
-  </div>
-</fieldset>
 <!--<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d">ac</li>-->
 
 <div data-role="collapsible-set">
 
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <h3>Actions</h3>
-    <p class="service-call-actions">
-      <%= event_list(@service_call) %>
-
-    </p>
+    <p class="service-call-actions"><%= event_list(@service_call) %></p>
   </div>
 
-  <!--Job Details-->
+<!--Job Details-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <h3>Customer info</h3>
       <!--<#%= simple_form_for @service_call, as: :service_call, url: service_call_path(@service_call) , :html => { :class => 'form-horizontal' }, :remote => true do |f| %>-->
@@ -112,13 +99,7 @@
 
   </div>
 
-  <div data-role="collapsible" data-collapsed="true" data-theme="d">
-    <h3>General Info</h3>
-    <p class="service-call-actions">
-      add subco, tech, dispatcher, notes , billing summary
-    </p>
-  </div>
-
+<!--Job Status-->
   <div data-role="collapsible" data-theme="d">
     <h3>Job Status</h3>
 
@@ -163,29 +144,84 @@
 
 <!--Parts-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
-    <h3>Parts</h3>
+
+        <h3>Parts</h3>
+
+
+        <div class="miya_blue_button_bom">
+          <%= link_to "Add", new_service_call_bom_path(@service_call), "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" %>
+        </div>
+
 
     <ul data-role="listview">
-      <% @service_call.boms.each do |bom| %>
+     <% @service_call.boms.each do |bom| %>
          <li>
-         <%= link_to bom.material_name, service_call_path(bom), "data-transition" => "slide" %>
-
+         <%= link_to bom.material_name, edit_service_call_bom_path(@service_call, bom), "data-transition" => "slide" %>
          </li>
       <% end %>
-
     </ul>
   </div>
 
 
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
-    <h3>Job History</h3>
+    <h3>Billing Status</h3>
     <p class="service-call-actions">
-        Job History    </p>
+      Billing status
+    </p>
+  </div>
+
+
+
+<!--Job History-->
+   <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>Job History</h3>
+
+     <ul data-role="listview">
+         <% @service_call.events.each do |event| %>
+             <li class="ui-li ui-li-static">
+                 <div class="ui-grid-a">
+                   <div class="ui-block-a"> <%= event.name %></div>
+                   <div class="ui-block-b">
+                     <%= event.description %>
+                     <br>at:
+                     <%= event.created_at %>
+                   </div>
+                 </div>
+             </li>
+         <% end %>
+     </ul>
+
   </div>
 
 
   <!--end of collapsible-->
 </div>
+
+
+<!--Notes-->
+
+<%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
+
+    <div class="customer_contacts">
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a">Notes:</div>
+        <div class="ui-block-b"> <%= f.text_field :notes %> </div>
+      </div>
+      </div>
+
+    <fieldset class="ui-grid-a ui-btn-inner-small">
+      <div class="ui-block-a">
+        <%= link_to "Back", service_calls_path, "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_service_call_btn' %>
+      </div>
+      <div class="ui-block-b">
+        <%= f.submit "Save Changes", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "right", id: 'service_call_save_btn' %>
+      </div>
+    </fieldset>
+
+
+
+<% end %>
 
 
 
