@@ -1,0 +1,3 @@
+class SubcontractingAgreement <Agreement
+
+end

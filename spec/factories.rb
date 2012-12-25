@@ -33,7 +33,7 @@ FactoryGirl.define do
       the_role = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
       organization_roles [the_role]
 
-      after_build do |org|
+      after(:build) do |org|
         30.times { org.providers << FactoryGirl.create(:provider) }
       end
     end
@@ -48,7 +48,7 @@ FactoryGirl.define do
     organization_roles [prov_role, sub_role]
 
 
-    after_build do |member|
+    after(:build) do |member|
       member.make_member
       member.customers << Customer.new(name: Faker::Name.name)
       FactoryGirl.create_list(:admin, 1, organization: member)
@@ -68,7 +68,7 @@ FactoryGirl.define do
   end
 
   factory :org_admin, class: User do
-    association :organization, factory: :provider
+    association :organization, factory: :all_roles
     sequence(:email) { |n| "org_admin_#{n}@example.com" }
     first_name Faker::Name.name
     password "foobar"
@@ -130,7 +130,7 @@ FactoryGirl.define do
 
     notes Faker::Lorem.sentence
 
-    after_build do |service_call|
+    after(:build) do |service_call|
       service_call.customer = service_call.organization.customers.first
     end
 
@@ -172,7 +172,7 @@ FactoryGirl.define do
   factory :received_service_call_notification, class: ScReceivedNotification do
     association :notifiable, factory: :service_call
 
-    after_create do |notification, evaluator|
+    after(:create) do |notification, evaluator|
       notification.user = FactoryGirl.create(:admin, organization: notification.notifiable.organization)
     end
   end
@@ -190,10 +190,18 @@ FactoryGirl.define do
     association :material
     quantity 3
 
-    after_build do |bom, evaluator|
+    after(:build) do |bom, evaluator|
       bom.ticket = FactoryGirl.build(:my_service_call, organization: bom.material.organization)
     end
 
   end
+
+  factory :agreement do
+    association organization, factory: :member
+    association counterparty, factory: :subcontractor
+    name Faker::Name.name
+    description Faker::Lorem.paragraph(1)
+  end
+
 
 end

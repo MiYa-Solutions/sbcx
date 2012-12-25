@@ -13,24 +13,25 @@ class AffiliatesController < ApplicationController
 
   def new
     # no need for the below as declarative_authorization filter_resource_access takes care of it
-    #@affiliate = Affiliate.new
+    @affiliate = @affiliate.becomes(Affiliate)
   end
 
   def create
 
-    params[:affiliate][:status_event] = :make_local
-    if params[:affiliate][:organization_role_ids] &&
-        params[:affiliate][:organization_role_ids].include?(OrganizationRole::PROVIDER_ROLE_ID.to_s)
-
-      @affiliate.agreements.build(subcontractor_id: current_user.organization.id, provider: @affiliate.becomes(Provider))
-    end
-
-    if params[:affiliate][:organization_role_ids] && params[:affiliate][:organization_role_ids].include?(OrganizationRole::SUBCONTRACTOR_ROLE_ID.to_s)
-      @affiliate.reverse_agreements.build(provider_id: current_user.organization.id, subcontractor: @affiliate.becomes(Subcontractor))
-    end
+    #params[:affiliate][:status_event] = :make_local
+    #if params[:affiliate][:organization_role_ids] &&
+    #    params[:affiliate][:organization_role_ids].include?(OrganizationRole::PROVIDER_ROLE_ID.to_s)
+    #
+    #
+    #  @affiliate.agreements.build(subcontractor_id: current_user.organization.id, provider: @affiliate.becomes(Provider))
+    #end
+    #
+    #if params[:affiliate][:organization_role_ids] && params[:affiliate][:organization_role_ids].include?(OrganizationRole::SUBCONTRACTOR_ROLE_ID.to_s)
+    #  @affiliate.reverse_agreements.build(provider_id: current_user.organization.id, subcontractor: @affiliate.becomes(Subcontractor))
+    #end
 
     if @affiliate.save
-      redirect_to @affiliate, :notice => t('affiliates.flash.create_affiliate_success', name: @affiliate.name)
+      redirect_to @affiliate.becomes(Affiliate), :notice => t('affiliates.flash.create_affiliate_success', name: @affiliate.name)
     else
       render :new
 
@@ -68,7 +69,7 @@ class AffiliatesController < ApplicationController
   end
 
   def new_affiliate_from_params
-    @affiliate ||= Affiliate.new(permitted_params(nil).affiliate)
+    @affiliate ||= current_user.organization.affiliates.build(permitted_params(nil).affiliate)
   end
 
 end

@@ -6,12 +6,15 @@ class ProvidersController < ApplicationController
   def new
     # no need for the below as declarative_authorization filter_resource_access taks care of it
     #@provider = current_user.organization.providers.new
+    @provider = @provider.becomes(Provider)
+
 
   end
 
   def create
     if @provider.save
-      redirect_to @provider, :notice => t('providers.flash.create_provider', name: @provider.name)
+      @provider.subcontractors << current_user.organization.becomes(Subcontractor)
+      redirect_to @provider.becomes(Provider), :notice => t('providers.flash.create_provider', name: @provider.name)
     else
       render 'new'
     end
@@ -53,7 +56,7 @@ class ProvidersController < ApplicationController
   def show
     #@provider = Provider.find(params[:id])
     #@agreement = Agreement.new
-    @agreements = @provider.agreements.where(:subcontractor_id => current_user.organization.id)
+    @agreements = @provider.agreements.where(:counterparty_id => current_user.organization.id)
   end
 
   def new_provider_from_params
@@ -63,13 +66,6 @@ class ProvidersController < ApplicationController
     end
 
     @provider ||= current_user.organization.providers.new(permitted_params(nil).provider)
-    if @provider.agreements.last.nil?
-      @provider.agreements.build
-    else
-      @provider.agreements.last.subcontractor = current_user.organization.becomes(Subcontractor)
-      @provider.agreements.last.provider      = @provider
-    end
-    @provider
   end
 
 end

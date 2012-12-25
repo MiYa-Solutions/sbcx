@@ -33,18 +33,40 @@ class Organization < ActiveRecord::Base
   has_many :events, as: :eventable
   has_many :materials
 
+  has_many :accounts
+  has_many :affiliates, through: :accounts, source: :accountable, :source_type => "Organization" do
+    def build(params)
+      affiliate = Affiliate.new(params)
+      proxy_association.owner.accounts.build(accountable: affiliate)
+      affiliate.status = STATUS_LOCAL_ENABLED
+      proxy_association.owner.providers << affiliate if affiliate.organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
+      proxy_association.owner.subcontractors << affiliate if affiliate.organization_role_ids.include? OrganizationRole::SUBCONTRACTOR_ROLE_ID
+      affiliate
+    end
+  end
 
-  # agreements is the table tha holds the link between an organization er and its providers and subcontractors
-  has_many :agreements, foreign_key: "provider_id", class_name: "Agreement"
-  # subcontractors are a set of subcontractors which this organization has an agreement with
-  has_many :subcontractors, through: :agreements, source: :subcontractor
-  # the reverse agreements is a symbol creating a form of a virtual table that will allow the creation of
-  # the below providers relationship
-  has_many :reverse_agreements, foreign_key: "subcontractor_id",
-           class_name:                       "Agreement"
-  # providers are made available thanks to the reverse relationship virtual table above
-  has_many :providers, through: :reverse_agreements, source: :provider
+  has_many :agreements
+  has_many :reverse_agreements, class_name: "Agreement", :foreign_key => "counterparty_id"
+  has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement'" do
+    def << (subcontractor)
+      Agreement.with_scope(:create => { type: "SubcontractingAgreement" }) { self.concat subcontractor }
+      #Account.find_or_create_by_organization_id_and_accountable_id(organization_id: proxy_association.owner.id, accountable_id: subcontractor.id)
+      proxy_association.owner.affiliates << subcontractor unless proxy_association.owner.affiliates.include? subcontractor
+    end
 
+  end
+  has_many :providers, class_name: "Organization", :through => :reverse_agreements, source: :organization, :conditions => "agreements.type = 'SubcontractingAgreement'" do
+    def << (provider)
+      unless provider.agreements.where(:counterparty_id => proxy_association.owner.id).first
+        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization" }) { self.concat provider }
+      end
+      proxy_association.owner.affiliates << provider unless proxy_association.owner.affiliates.include? provider
+      #Account.find_or_create_by_organization_id_and_accountable_id!(organization_id: proxy_association.owner.id, accountable_id: provider.id)
+      provider
+
+    end
+
+  end
 
   accepts_nested_attributes_for :users, :agreements, :reverse_agreements
 
@@ -68,15 +90,16 @@ class Organization < ActiveRecord::Base
   scope :associated_providers, -> { providers.includes(:agreements) }
   scope :associated_subcontractors, -> { subcontractors.includes(:reverse_agreements) }
 
-  scope :my_providers, ->(org_id) { associated_providers.where('agreements.subcontractor_id = ?', org_id) - where(id: org_id) }
-  scope :my_subcontractors, ->(org_id) { associated_subcontractors.where('agreements.provider_id = ?', org_id) - where(id: org_id) }
-  scope :my_affiliates, ->(org_id) { (associated_providers | associated_subcontractors).where('agreements.subcontractor_id = ? OR agreements.provider_id = ?', org_id, org_id) - where(id: org_id) }
+  scope :my_providers, ->(org_id) { associated_providers.where('agreements.counterparty_id = ?', org_id) - where(id: org_id) }
+  scope :my_subcontractors, ->(org_id) { associated_subcontractors.where('agreements.organization_id = ?', org_id) - where(id: org_id) }
+  scope :my_affiliates, ->(org_id) { (associated_providers | associated_subcontractors).where('agreements.counterparty_id = ? OR agreements.organization_id = ?', org_id, org_id) - where(id: org_id) }
 
   scope :search, ->(query) { where(arel_table[:name].matches("%#{query}%")) }
 
   scope :provider_search, ->(org_id, query) { (search(query).provider_members - where(id: org_id)| search(query).my_providers(org_id)).order('organizations.name') }
   scope :subcontractor_search, ->(org_id, query) { ((search(query).subcontractor_members - where(id: org_id)| search(query).my_subcontractors(org_id)).order('organizations.name')) }
-  scope :affiliate_search, ->(org_id, query) { ((((search(query).members - where(id: org_id))| (search(query).my_affiliates(org_id) - where(id: org_id)))).order('organizations.name')) }
+  #scope :affiliate_search, ->(org_id, query) { ((((search(query).members - where(id: org_id))| (search(query).my_affiliates(org_id) - where(id: org_id)))).order('organizations.name')) }
+  scope :affiliate_search, ->(org_id, query) { ((((search(query).members - where(id: org_id))| includes(:accounts).search(query) - where(id: org_id)))).order('organizations.name') }
 
   def technicians(columns = "")
     User.my_technicians(self.id, columns)

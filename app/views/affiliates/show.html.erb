@@ -12,10 +12,7 @@
                 <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
                     <!--Archive is already at the bottom-->
                 <% else %>
-                    <%= form_for(current_user.organization.agreements.build(provider_id: @affiliate.id)) do |f| %>
-                        <div><%= f.hidden_field :provider_id %></div>
-                        <%= f.submit "Add Member", class: "btn btn-large btn-primary" %>
-                    <% end %>
+                    <%= link_to "Add Member", "", class: "btn btn-large btn-primary" %>
                 <% end %>
             <% else %>
                 <%= link_to 'Send Invite', new_affiliate_path, :class => 'btn btn-large btn-info' %>

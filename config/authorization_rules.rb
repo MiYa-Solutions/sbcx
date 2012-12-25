@@ -54,7 +54,7 @@ authorization do
 
     has_permission_on :providers, to: [:show] do
       if_attribute :subcontrax_member => true
-      if_attribute :subcontractor_ids => contains { user.organization.id }
+      if_attribute :id => is_in { user.organization.provider_ids }
     end
 
     has_permission_on :providers, to: [:edit, :update] do
@@ -62,21 +62,19 @@ authorization do
     end
     has_permission_on :subcontractors, to: [:show] do
       if_attribute :subcontrax_member => true
-      if_attribute :provider_ids => contains { user.organization.id }
+      if_attribute :id => is_in { user.organization.subcontractor_ids }
     end
 
     has_permission_on :subcontractors, to: [:edit, :update] do
-      if_attribute :provider_ids => contains { user.organization.id }
+      if_attribute :id => is_in { user.organization.subcontractor_ids }
     end
     has_permission_on :affiliates, to: [:show] do
       if_attribute :subcontrax_member => true
-      if_attribute :provider_ids => contains { user.organization.id }
-      if_attribute :subcontractor_ids => contains { user.organization.id }
+      if_attribute :id => is_in { user.organization.affiliate_ids }
     end
 
     has_permission_on :affiliates, to: [:edit, :update] do
-      if_attribute :provider_ids => contains { user.organization.id }
-      if_attribute :subcontractor_ids => contains { user.organization.id }
+      if_attribute :id => is_in { user.organization.affiliate_ids }
     end
 
     has_permission_on :users, :to => [:index, :show, :new, :create, :edit, :update]
@@ -87,8 +85,8 @@ authorization do
     has_permission_on :agreements, :to => [:create]
 
     has_permission_on :agreements, :to => [:update] do
-      if_attribute :provider_id => is { user.organization.id }
-      if_attribute :subcontractor_id => is { user.organization.id }
+      if_attribute :organization_id => is { user.organization.id }
+      if_attribute :counterparty_id => is { user.organization.id }
     end
   end
 

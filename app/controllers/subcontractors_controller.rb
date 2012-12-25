@@ -4,6 +4,7 @@ class SubcontractorsController < ApplicationController
 
   def new
 
+    @subcontractor = @subcontractor.becomes(Subcontractor)
     #@subcontractor = current_user.organization.subcontractors.build
   end
 
@@ -11,8 +12,9 @@ class SubcontractorsController < ApplicationController
 
     #@subcontractor = current_user.organization.subcontractors.new(permitted_params(nil).subcontractor)
     #@subcontractor.agreements.new(subcontractor_id: @subcontractor, provider_id: current_user.organization.id)
-    if current_user.organization.save
-      redirect_to @subcontractor, :notice => t('subcontractors.flash.create', name: @subcontractor.name)
+    if @subcontractor.save
+      @subcontractor.providers << current_user.organization
+      redirect_to @subcontractor.becomes(Subcontractor), :notice => t('subcontractors.flash.create', name: @subcontractor.name)
     else
       render 'new'
 

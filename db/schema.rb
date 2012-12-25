@@ -11,16 +11,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121215190033) do
+ActiveRecord::Schema.define(:version => 20121223160904) do
+
+  create_table "accounts", :force => true do |t|
+    t.integer "organization_id", :null => false
+    t.integer "accountable_id", :null => false
+    t.string "accountable_type"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "accounts", ["accountable_id", "accountable_type"], :name => "index_accounts_on_accountable_id_and_accountable_type"
+  add_index "accounts", ["organization_id"], :name => "index_accounts_on_organization_id"
 
   create_table "agreements", :force => true do |t|
     t.string "name"
-    t.integer "subcontractor_id"
-    t.integer "provider_id"
+    t.integer "counterparty_id"
+    t.integer "organization_id"
     t.text "description"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer "status"
+    t.string "counterparty_type"
+    t.string "type"
   end
 
   create_table "assignments", :force => true do |t|
