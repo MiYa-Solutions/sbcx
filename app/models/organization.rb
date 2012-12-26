@@ -46,6 +46,13 @@ class Organization < ActiveRecord::Base
   end
 
   has_many :agreements
+  has_many :subcontracting_agreements do
+    def build(params)
+      agreement                  = super
+      agreement.counterparty_type= "Organization"
+      agreement
+    end
+  end
   has_many :reverse_agreements, class_name: "Agreement", :foreign_key => "counterparty_id"
   has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement'" do
     def << (subcontractor)

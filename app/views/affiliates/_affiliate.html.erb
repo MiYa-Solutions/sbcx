@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <% if affiliate.subcontrax_member==true %>
+    <% if affiliate.subcontrax_member? %>
         <span class="member_label">
           <badge><i class="icon-user icon-white"></i></badge>
         </span>
@@ -12,31 +12,27 @@
   <td><%= affiliate.phone %></td>
   <td><%= affiliate.email %></td>
   <td>
-    <% if affiliate.subcontrax_member==true %>
-      <% if  affiliate.id.in? affiliate_ids %>
-         <span class="miya_buttons_grid">
-              <%= link_to 'Archive', edit_affiliate_path(affiliate), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
-         </span>
-      <% else %>
-         <div class="miya_buttons_grid">
-           <ul>
-             <li>&nbsp;</li>
-             <li>&nbsp;</li>
-             <li>
-               <%= form_for affiliate.agreements.new, :html => { :class => 'add_member' } do |f| %>
+    <% if affiliate.subcontrax_member? %>
+        <% unless  affiliate.id.in? affiliate_ids %>
+            <div class="miya_buttons_grid">
+              <ul>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>
+                  <%= form_for affiliate.agreements.new, :html => { :class => 'add_member' } do |f| %>
 
-                   <%= f.hidden_field :provider_id %>
-                   <%= f.hidden_field :subcontractor_id, value: current_user.organization.id %>
-                   <%= f.submit "Add", class: "btn btn-mini btn-info miya_add_member", id: "#{affiliate.id}-add-sbcx-member" %>
-               <% end %>
-             </li>
-           </ul>
+                      <%= f.hidden_field :provider_id %>
+                      <%= f.hidden_field :subcontractor_id, value: current_user.organization.id %>
+                      <%= f.submit "Add", class: "btn btn-mini btn-info miya_add_member", id: "#{affiliate.id}-add-sbcx-member" %>
+                  <% end %>
+                </li>
+              </ul>
 
-          </div>
-      <% end %>
+            </div>
+        <% end %>
 
     <% else %>
-       <div class="miya_buttons_grid">
+        <div class="miya_buttons_grid">
           <ul>
             <li>
               <%= link_to 'Archive', affiliate_path(affiliate), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
@@ -44,12 +40,12 @@
             <li>
               <%= link_to 'Edit', edit_affiliate_path(affiliate), :class => 'btn btn-mini' %>
             </li>
-              <li>
-                <%= link_to 'Send Invite', new_affiliate_path, :class => 'btn btn-mini btn-info' %>
+            <li>
+              <%= link_to 'Send Invite', new_affiliate_path, :class => 'btn btn-mini btn-info' %>
             </li>
 
           </ul>
-       </div>
+        </div>
     <% end %>
 
   </td>

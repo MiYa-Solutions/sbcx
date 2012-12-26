@@ -10,14 +10,11 @@
         <ul>
           <li><h1><%= @provider.name %></h1></li>
           <li>
-            <% if @provider.subcontrax_member==true %>
+            <% if @provider.subcontrax_member? %>
                 <% if  @provider.id.in? current_user.organization.provider_ids %>
                     <!--Archive is already at the bottom-->
                 <% else %>
-                    <%= form_for(current_user.organization.agreements.build(provider_id: @provider.id)) do |f| %>
-                        <div><%= f.hidden_field :provider_id %></div>
-                        <%= f.submit "Add Member", class: "btn btn-large btn-primary" %>
-                    <% end %>
+                    <%= render 'provider_agreement_form', provider: @provider, button_class: "btn btn-primary" %>
                 <% end %>
             <% else %>
                 <%= link_to 'Send Invite', new_provider_path, :class => 'btn btn-large btn-info' %>
@@ -93,35 +90,20 @@
     </div>
 
     <div class="span6">
-          <div class="smart_label">
-            <ul>
-              <li><h1>Agreements</h1></li>
-              <li></li>
-            </ul>
-          </div>
+      <div class="smart_label">
+        <ul>
+          <li><h1>Agreements</h1></li>
+          <li></li>
+        </ul>
+      </div>
 
-    <% if ! @agreements.empty? %>
-      <table class="table table-striped" id="agreements_provider">
-        <thead>
-            <tr>
-              <td><h4>Status</h4></td>
-              <td><h4>Name</h4></td>
-              <td><h4>Description</h4></td>
-              <td><h4>Actions</h4></td>
-            </tr>
-        </thead>
-        <tbody>
-        <% @agreements.each do |agreement| %>
-            <%= render 'agreements/agreement', agreement: agreement %>
+      <% unless @agreements.empty? %>
+          <%= render 'agreements/agreements_table', agreements: @agreements %>
+      <% end %>
 
-        <% end %>
-        </tbody>
-      </table>
-     <% end %>
+    </div>
 
   </div>
-
-</div>
 
 
   <div class="row-fluid">

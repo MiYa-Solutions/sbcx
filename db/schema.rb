@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121223160904) do
+ActiveRecord::Schema.define(:version => 20121225213720) do
 
   create_table "accounts", :force => true do |t|
     t.integer "organization_id", :null => false
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(:version => 20121223160904) do
     t.integer "status"
     t.string "counterparty_type"
     t.string "type"
+    t.integer "creator_id"
+    t.integer "updater_id"
   end
 
   create_table "assignments", :force => true do |t|

@@ -3,33 +3,14 @@ class AgreementsController < ApplicationController
   filter_resource_access
 
   def new
-    @agreement = Agreement.new
-
-    @providers = Organization.find_all_by_subcontrax_member(true)
+    #@agreement = Agreement.new
+    #@providers = Organization.find_all_by_subcontrax_member(true)
   end
 
   def create
 
-    if !params[:agreement][:provider_id].nil? && !params[:agreement][:subcontractor_id].nil? # are we adding a member?
-      org = Organization.find(params[:agreement][:provider_id])
-      current_user.organization.reverse_agreements.new(provider_id: params[:agreement][:provider_id])
-      current_user.organization.agreements.new(subcontractor_id: org.id)
-
-    else
-      if params[:agreement][:subcontractor_id] # are we adding a provider?
-        org = Subcontractor.find(params[:agreement][:subcontractor_id])
-        current_user.organization.add_subcontractor(org)
-
-
-      else #
-        org = Provider.find(params[:agreement][:provider_id])
-        current_user.organization.add_provider(org)
-
-      end
-    end
-
-    if current_user.organization.save
-      redirect_to affiliate_path(org.id)
+    if @agreement.save
+      redirect_to agreement_path @agreement.becomes(Agreement)
     else
       raise "Can't save Agreement"
     end
@@ -50,7 +31,17 @@ class AgreementsController < ApplicationController
     end
   end
 
+  def show
+
+  end
+
   def new_agreement_from_params
-    @agreement ||= Agreement.new(params.permit)
+    if params[:agreement].nil? || params[:agreement][:organization_id].nil? || params[:agreement][:organization_id] == current_user.organization.id
+      org = current_user.organization
+    else
+      org = Organization.find(params[:agreement][:organization_id])
+    end
+    @agreement ||= org.send(params[:agreement][:agreement_type].pluralize).build(permitted_params(nil).send(params[:agreement][:agreement_type])) unless org.nil?
+
   end
 end

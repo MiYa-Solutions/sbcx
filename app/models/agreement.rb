@@ -18,6 +18,10 @@ class Agreement < ActiveRecord::Base
 
   belongs_to :organization
   belongs_to :counterparty, polymorphic: true
+  has_many :events, as: :eventable
+  has_many :notifications, as: :notifiable
+
+  stampable
 
 
   # State machine  for Organization status

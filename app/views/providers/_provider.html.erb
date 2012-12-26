@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <% if provider.subcontrax_member==true %>
+    <% if provider.subcontrax_member? %>
         <span class="member_label">
           <badge><i class="icon-user icon-white"></i></badge>
         </span>
@@ -12,21 +12,15 @@
   <td><%= provider.phone %></td>
   <td><%= provider.email %></td>
   <td>
-    <% if provider.subcontrax_member==true %>
-        <% if  provider.id.in? current_user.organization.provider_ids %>
-         <span class="miya_buttons_grid">
-              <%= link_to 'Archive', edit_provider_path(provider), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
-         </span>
-        <% else %>
+    <% if provider.subcontrax_member? %>
+        <% unless  provider.id.in? current_user.organization.provider_ids %>
             <div class="miya_buttons_grid">
               <ul>
                 <li>&nbsp;</li>
                 <li>&nbsp;</li>
+                <!--The provider invite form -->
                 <li>
-                  <%= form_for current_user.organization.agreements.build(provider_id: provider.id), :html => {:class => 'add_member'} do |f| %>
-                      <%= f.hidden_field :provider_id %>
-                      <%= f.submit "Add", class: "btn btn-mini btn-info", id: "#{provider.id}-add-sbcx-provider" %>
-                  <% end %>
+                  <%= render 'provider_agreement_form', provider: provider %>
                 </li>
               </ul>
 
@@ -42,8 +36,9 @@
             <li>
               <%= link_to 'Edit', edit_provider_path(provider), :class => 'btn btn-mini' %>
             </li>
+            <!--send  an invite to join SubConTraX-->
             <li>
-              <%= link_to 'Send Invite', new_provider_path, :class => 'btn btn-mini btn-info' %>
+              <%= link_to 'Send Invite', provider_path(provider), :class => 'btn btn-mini btn-info' %>
             </li>
 
           </ul>

@@ -51,7 +51,7 @@ describe Agreement do
     it "should trigger an event and notification to the counterparty" do
       expect {
         agreement.save
-      }.to change(AgrSubmittedEvent.count).by(1)
+      }.to change(AgrNewSubconEvent.count).by(1)
 
     end
   end

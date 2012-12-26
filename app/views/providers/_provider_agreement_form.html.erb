@@ -1,0 +1,7 @@
+<% button_class ||= "btn btn-mini btn-info" %>
+<%= form_for current_user.organization.subcontracting_agreements.build(organization_id: provider.id, counterparty_id: current_user.organization.id), as: "agreement", url: agreements_url, :html => { :class => 'add_member' } do |f| %>
+    <%= f.hidden_field :counterparty_id %>
+    <%= f.hidden_field :organization_id, value: provider.id %>
+    <%= f.hidden_field :agreement_type, value: "subcontracting_agreement" %>
+    <%= f.submit "Add", class: button_class, id: "#{provider.id}-add-sbcx-provider" %>
+<% end %>
