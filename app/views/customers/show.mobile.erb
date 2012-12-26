@@ -1,3 +1,89 @@
 <% provide(:title, @customer.name) %>
 
-Hello
+
+    <fieldset class="ui-grid-a ui-btn-inner-small">
+
+      <div class="ui-block-a">
+        <%= link_to 'Back', customers_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+      </div>
+
+      <div class="ui-block-b">
+        <div class="miya_blue_button">
+          <%= link_to 'Balance', '#', "data-role" => "button", :class => "ui-btn-up-b", "data-icon" => "email" %>
+        </div>
+      </div>
+
+    </fieldset>
+<br>
+
+<div class="customer_in_service_call">
+<ul data-role="listview">
+
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Name:</div>
+      <div class="ui-block-b"><%= @customer.name %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Company:</div>
+      <div class="ui-block-b"><%= @customer.company %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Address:</div>
+      <div class="ui-block-b" style= "display:inline !important"><%= @customer.address1 %> <%= @customer.address2 %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">City:</div>
+      <div class="ui-block-b"><%= @customer.city %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">State:</div>
+      <div class="ui-block-b"><%= @customer.state %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Country:</div>
+      <div class="ui-block-b"><%= @customer.country %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Zip:</div>
+      <div class="ui-block-b"><%= @customer.zip %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Phone:</div>
+      <div class="ui-block-b"><%= @customer.phone %></div>
+    </div>
+  </li>
+  <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Mobile:</div>
+      <div class="ui-block-b"><%= @customer.mobile_phone %></div>
+    </div>
+  </li>
+  <li class="ui-li">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Email:</div>
+      <div class="ui-block-b" data-type="email" ><%= @customer.email %></div>
+    </div>
+  </li>
+
+</ul>
+</div>
+
+<br>
+<%= link_to "Edit", edit_customer_path(@customer), "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
+<%= link_to 'Archive', customers_path(@customer), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete" %>
+

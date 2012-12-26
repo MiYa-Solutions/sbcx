@@ -38,12 +38,18 @@ class CustomersController < ApplicationController
 
   def update
     #@customer = current_user.organization.customers.find(params[:id])
-    if @customer.update_attributes(params[:customer])
-      flash[:success] = "Profile updated"
-      redirect_to @customer
-    else
-      render 'edit'
+
+  respond_to do |format|
+    format.js { }
+    format.any(:html, :mobile) do
+      if @customer.update_attributes(params[:customer])
+        flash[:success] = "Profile updated"
+        redirect_to customer_path @customer
+      else
+        render 'edit'
+      end
     end
+  end
 
   end
 

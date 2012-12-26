@@ -1,0 +1,70 @@
+<!--# Table name: customers-->
+<!--#-->
+<!--#  id              :integer         not null, primary key-->
+<!--#  name            :string(255)-->
+<!--#  organization_id :integer-->
+<!--#  company         :string(255)-->
+<!--#  address1        :string(255)-->
+<!--#  address2        :string(255)-->
+<!--#  city            :string(255)-->
+<!--#  state           :string(255)-->
+<!--#  zip             :string(255)-->
+<!--#  country         :string(255)-->
+<!--#  phone           :string(255)-->
+<!--#  mobile_phone    :string(255)-->
+<!--#  work_phone      :string(255)-->
+<!--#  email           :string(255)-->
+<!--#  created_at      :datetime        not null-->
+<!--#  updated_at      :datetime        not null-->
+
+
+<!--<#%= render 'subregion_select', object: f.object %>-->
+
+<div class="customer_contacts">
+
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Name:</div>
+    <div class="ui-block-b"><%= f.text_field :name %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Company:</div>
+    <div class="ui-block-b"><%= f.text_field :company %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Address 1:</div>
+    <div class="ui-block-b"><%= f.text_field :address1 %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Address 2:</div>
+    <div class="ui-block-b"><%= f.text_field :address2 %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">City:</div>
+    <div class="ui-block-b"><%= f.text_field :city %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">State:</div>
+    <div class="ui-block-b"> <%= render 'subregion_select', f: f %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Zip:</div>
+    <div class="ui-block-b"><%= f.text_field :zip %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Country:</div>
+    <div class="ui-block-b"><%= f.country_select :country, { priority: %w[US] }, id: 'country' %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Phone:</div>
+    <div class="ui-block-b"><%= f.text_field :phone, as: :phone %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Mobile:</div>
+    <div class="ui-block-b"><%= f.text_field :mobile_phone, as: :phone %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a">Email:</div>
+    <div class="ui-block-b"><%= f.text_field :email, as: :email %></div>
+  </div>
+
+</div>
