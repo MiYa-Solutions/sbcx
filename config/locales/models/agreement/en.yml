@@ -1,0 +1,33 @@
+en:
+  activerecord:
+    models:
+      agreement: "Agreement"
+
+    attributes:
+      agreement:
+
+      subcontracting_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Provider"
+        counterparty: "Subcontractor"
+      supplier_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Supplier"
+        counterparty: "Supplier Customer"
+
+  events:
+    agreement:
+      new_subcon_agreement:
+        name: "New Agreement"
+        description: '%{creator} has created a new  Subcontracting Agreement with %{counterparty} as the %{role}'
+      submitted:
+        name: "Submitted For Approval"
+        description: '%{originator} created a new agreement with %{otherparty}'
+  notifications:
+    agreement:
+      new_subcon_agreement:
+        html_message: '%{creator} has created %{link} with you as the %{role}. You should go to the agreement and accept it in order to be able to transfer jobs between one another. '
+        subject: '%{creator} has created a new Subcontracting Agreement with you as the %{role}'
+        content: 'Please go to the agreement, to review and accept it in order to be able to transfer jobs between one another.'

@@ -14,10 +14,12 @@ Sbcx::Application.routes.draw do
     end
   end
 
-  resources :agreements, only: [:new, :create, :edit, :show, :index]
+  resources :agreements, only: [:new, :create, :edit, :show, :index, :update]
 
-  resources :providers, only: [:new, :create, :edit, :show, :index, :update]
-  resources :subcontractors, only: [:new, :create, :edit, :show, :index, :update]
+  resources :providers, only: [:new, :create, :edit, :index, :update]
+  resources :providers, only: :show, :controller => 'affiliates'
+  resources :subcontractors, only: [:new, :create, :edit, :index, :update]
+  resources :subcontractors, only: :show, :controller => 'affiliates'
   resources :affiliates, only: [:new, :create, :edit, :show, :index, :update], controller: 'affiliates'
   resources :notifications, only: [:show, :index, :update, :destroy]
 
@@ -33,6 +35,7 @@ Sbcx::Application.routes.draw do
 
 
   get '/region_select/subregion_options' => 'region_select#subregion_options', as: :region_select
+  get '/agreements/agreement_roles' => 'agreements#agreement_roles', as: :agreement_roles
 
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   resources :customers, only: [:new, :create, :edit, :show, :index, :update]

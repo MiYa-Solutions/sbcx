@@ -22,7 +22,7 @@
                 <td>Started at</td>
                 <td>
                                   <span class="status_label_success">
-                                  <badge><%= @service_call.started_on_text %></badge>
+                                  <badge id="service_call_started_on_text"><%= @service_call.started_on_text %></badge>
                                   </span>
                 </td>
               </tr>
@@ -92,11 +92,11 @@
 </div>
 
 
+<%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
     <!--Job details-->
     <div class="span8" id="job_details">
-<%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
 
-    <div class="smart_label">
+      <div class="smart_label">
         <ul>
           <li><h1>Job Name</h1></li>
           <li></li>
@@ -275,7 +275,7 @@
     <h3 id="myModalLabel">Job History</h3>
   </div>
   <div class="modal-body">
-    <table class="table table-striped" id="job_history_in_show">
+    <table class="table table-striped" id="event_log_in_service_call">
       <thead>
       <tr>
         <th><%= Event.human_attribute_name(:name) %> </th>

@@ -91,6 +91,12 @@ class NotificationMailer < ActionMailer::Base
     mail to: user.email, subject: subject
   end
 
+  def agr_new_subcon_notification(subject, user, agreement)
+    @agreement = agreement
+    @user      = user
+    mail to: user.email, subject: subject
+  end
+
 
   # todo implement method_missing to make the mailer more DRY
   #def method_missing(method, *args, &block)

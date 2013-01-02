@@ -29,6 +29,7 @@ class RegistrationsController < Devise::RegistrationsController
 
     @user = build_resource
     @user.organization.make_sbcx_member
+    @organization  = @user.organization
     @user.role_ids = [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME).id]
 
 
@@ -58,14 +59,16 @@ class RegistrationsController < Devise::RegistrationsController
   # temporary session data to the newly created user.
   # From MiYa: need to override for strong parameters
   def build_resource(hash=nil)
-    hash          ||= params[resource_name].permit(*permitted_params(nil).new_user_attributes) || { }
+    #hash          ||= params[resource_name].permit(*permitted_params(nil).new_user_attributes) || { }
+    hash          ||= permitted_params(nil).registration || { }
     self.resource = resource_class.new_with_session(hash, session)
   end
 
   private
 
   def resource_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    permitted_params(nil).registration
+    #params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
 end

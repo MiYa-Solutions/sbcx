@@ -34,3 +34,8 @@ en:
   service_call_settled_event:
     name: "Subcontractor marked as settled"
     description: '%{subcontractor} has marked this service call as settled'
+
+  agreement_new_event:
+    name: "New Agreement"
+    description: '%{creator} has created a new %{agreement} with %{counterparty} as the counterparty'
+

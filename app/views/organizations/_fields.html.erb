@@ -20,7 +20,7 @@
 
 <%= render 'shared/error_messages', object: f.object %>
 
-<%= f.input :company, label: 'Company Name', autofocus: true %>
+<%= f.input :name, autofocus: true %>
 <!--<#%= f.association :organization_roles, :collection => OrganizationRole.all(:order => 'name'), as: :check_boxes %> -->
 
 <% if !f.object.new_record? %>
@@ -42,13 +42,14 @@
   <label class="string optional control-label" for="customer_country">Country</label>
 
   <div class="controls">
-    <%= f.country_select :country, {priority: %w[US]}, id: "country" %>
+    <%= f.country_select :country, { priority: %w[US] }, id: "country" %>
   </div>
 </div>
 
 <div class="control-group string mandatory">
   <label class="string optional control-label" for="customer_state">State</label>
-      <div class="controls">
+
+  <div class="controls">
     <%= render 'organizations/subregion_select', f: f %>
   </div>
 </div>

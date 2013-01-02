@@ -1,4 +1,26 @@
+<% agreement_type ||= "" %>
 <div id="agreement-fields">
+  <% if f.object.organization.nil? %>
+      <% f.input :organization, collection: f.object.providers %>
+
+  <% else %>
+      <%= f.hidden_field :organization_id %>
+  <% end %>
+
+  <% if f.object.counterparty.nil? %>
+      <%= f.input :counterparty, collection: Organization.subcontractor_search(current_user.organization.id, "") %>
+  <% else %>
+      <%= f.hidden_field :counterparty_id %>
+  <% end %>
+
+  <%= hidden_field_tag :agreement_type, agreement_type.underscore %>
+  <%= f.hidden_field :counterparty_type, value: "Organization" %>
+
+  <% unless f.object.new_record? %>
+      <%= f.input :status_event, label: f.object.class.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+      <%= f.input :change_reason %>
+  <% end %>
   <%= f.input :name %>
+
   <%= f.input :description %>
 </div>

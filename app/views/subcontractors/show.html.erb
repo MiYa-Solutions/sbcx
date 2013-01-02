@@ -8,14 +8,12 @@
         <ul>
           <li><h1><%= @subcontractor.name %></h1></li>
           <li>
-            <% if @subcontractor.subcontrax_member==true %>
+            <% if @subcontractor.subcontrax_member? %>
                 <% if  @subcontractor.id.in? current_user.organization.subcontractor_ids %>
                     <!--Archive is already at the bottom-->
                 <% else %>
-                    <%= form_for(current_user.organization.agreements.build(subcontractor_id: @subcontractor.id)) do |f| %>
-                        <div><%= f.hidden_field :subcontractor_id %></div>
-                        <%= f.submit "Add Member", class: "btn btn-large btn-primary" %>
-                    <% end %>
+                    <%= render 'subcontractor_agreement_form', subcontractor: @subcontractor, button_class: "btn btn-primary" %>
+
                 <% end %>
             <% else %>
                 <%= link_to 'Send Invite', subcontractor_path, :class => 'btn btn-large btn-info' %>
@@ -25,7 +23,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="row-fluid">
     <div class="span5">
@@ -109,6 +106,20 @@
         <%= link_to 'Edit', edit_subcontractor_path(@subcontractor), :class => 'btn btn-medium btn-primary' %>
         <%= link_to 'Archive', subcontractors_path(@subcontractor), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
     <% end %>
+
+
+    <div class="smart_label">
+      <ul>
+        <li><h1>Agreements</h1></li>
+        <li></li>
+      </ul>
+    </div>
+
+    <% unless @agreements.empty? %>
+        <%= render 'agreements/agreements_table', agreements: @agreements %>
+    <% end %>
+
+
   </div>
 
 

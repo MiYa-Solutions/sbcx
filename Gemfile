@@ -14,7 +14,7 @@ gem 'pg'
 
 gem 'devise', '2.0.0'
 gem 'simple_form', '2.0.2'
-gem 'declarative_authorization', '0.5.5'
+gem 'declarative_authorization', '0.5.6'
 
 gem 'state_machine'
 gem 'magiclabs-userstamp'
@@ -34,6 +34,7 @@ group :development, :test do
   gem 'annotate', '~> 2.4.1.beta'
   gem 'nifty-generators'
   gem 'quiet_assets'
+  gem 'ruby_parser'
 end
 
 # Gems used only for assets and not required
@@ -47,7 +48,7 @@ end
 
 group :test do
   gem 'capybara', '1.1.2'
-  gem 'factory_girl_rails', '1.4.0'
+  gem 'factory_girl_rails', '4.1.0'
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner', '0.7.0'
   gem 'rb-fsevent', '0.9.1', :require => false if RUBY_PLATFORM =~ /darwin/i

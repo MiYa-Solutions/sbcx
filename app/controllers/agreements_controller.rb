@@ -3,54 +3,51 @@ class AgreementsController < ApplicationController
   filter_resource_access
 
   def new
-    @agreement = Agreement.new
-
-    @providers = Organization.find_all_by_subcontrax_member(true)
+    #@agreement = Agreement.new
+    #@providers = Organization.find_all_by_subcontrax_member(true)
   end
 
   def create
 
-    if !params[:agreement][:provider_id].nil? && !params[:agreement][:subcontractor_id].nil? # are we adding a member?
-      org = Organization.find(params[:agreement][:provider_id])
-      current_user.organization.reverse_agreements.new(provider_id: params[:agreement][:provider_id])
-      current_user.organization.agreements.new(subcontractor_id: org.id)
-
+    if @agreement.save
+      redirect_to agreement_path @agreement
     else
-      if params[:agreement][:subcontractor_id] # are we adding a provider?
-        org = Subcontractor.find(params[:agreement][:subcontractor_id])
-        current_user.organization.add_subcontractor(org)
-
-
-      else #
-        org = Provider.find(params[:agreement][:provider_id])
-        current_user.organization.add_provider(org)
-
-      end
-    end
-
-    if current_user.organization.save
-      redirect_to affiliate_path(org.id)
-    else
-      raise "Can't save Agreement"
+      render :new
     end
 
 
   end
 
   def edit
-    @agreements = Agreements.find(params[:id])
+    #@agreement = Agreement.find(params[:id])
   end
 
   def update
-    @agreements = Agreements.find(params[:id])
-    if @agreements.update_attributes(params[:agreements])
-      redirect_to root_url, :notice => "Successfully updated agreements."
+    #@agreements = Agreements.find(params[:id])
+    if @agreement.update_attributes(permitted_params(@agreement).agreement)
+      redirect_to @agreement.becomes(Agreement), :notice => "Successfully updated agreements."
     else
       render :action => 'edit'
     end
   end
 
-  def new_agreement_from_params
-    @agreement ||= Agreement.new(params.permit)
+  def show
+
   end
+
+  def new_agreement_from_params
+
+    if params[:agreement].nil?
+      otherparty_id   = params[:otherparty_id]
+      otherparty_role = params[:otherparty_role]
+      type            = params[:agreement_type]
+
+      @agreement = Agreement.new_agreement(type, current_user.organization, otherparty_id, otherparty_role)
+    else
+      @agreement = Agreement.new_agreement_from_params(params[:agreement_type], permitted_params(nil).agreement)
+    end
+
+    @agreement
+  end
+
 end

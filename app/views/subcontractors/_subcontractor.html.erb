@@ -12,7 +12,7 @@
   <td><%= subcontractor.phone %></td>
   <td><%= subcontractor.email %></td>
   <td>
-    <% if subcontractor.subcontrax_member==true %>
+    <% if subcontractor.subcontrax_member? %>
         <% if  subcontractor.id.in? current_user.organization.subcontractor_ids %>
          <span class="miya_buttons_grid">
               <%= link_to 'Archive', edit_subcontractor_path(subcontractor), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
@@ -23,11 +23,7 @@
                 <li>&nbsp;</li>
                 <li>&nbsp;</li>
                 <li>
-                  <%= form_for current_user.organization.agreements.build(subcontractor_id: subcontractor.id), :html => {:class => 'add_member'} do |f| %>
-                      <%= f.hidden_field :subcontractor_id %>
-                      <%= f.submit "Add", class: "btn btn-mini btn-info", id: "#{subcontractor.id}-add-sbcx-subcontractor" %>
-                  <% end %>
-                </li>
+                  <%= render 'subcontractor_agreement_form', subcontractor: subcontractor %>                </li>
               </ul>
 
             </div>

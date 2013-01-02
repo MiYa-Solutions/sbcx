@@ -21,12 +21,25 @@ def create_agreements
   sub_ids = sub_ids.uniq
 
   members.each_with_index do |mem, index|
+    user = mem.org_admins.last
     prov_ids.each do |i|
-      mem.providers << members[i].becomes(Provider) unless index == i
+      unless index == i
+        SubcontractingAgreement.find_or_create_by_organization_id_and_counterparty_id(organization_id: members[i].id, counterparty_id: mem.id) do |agr|
+          agr.counterparty_type = "Organization"
+          agr.creator_id        = user.id
+        end
+      end
     end
+
     sub_ids.each do |i|
-      mem.subcontractors << members[i].becomes(Subcontractor) unless index == i
+      unless index == i
+        SubcontractingAgreement.find_or_create_by_organization_id_and_counterparty_id(organization_id: mem.id, counterparty_id: members[i].id) do |agr|
+          agr.counterparty_type = "Organization"
+          agr.creator_id        = user.id
+        end
+      end
     end
+
   end
 
 
@@ -82,6 +95,10 @@ def create_providers
     5.times do
       prov = new_provider([prov_role])
       mem.providers << prov
+      agreement         = mem.reverse_agreements.where(organization_id: prov.id).last
+      agreement.creator = mem.org_admins.last
+      agreement.save!
+      #prov.subcontracting_agreements.create(counterparty: mem, creator: User.find_by_email('system@subcontrax.com') )
     end
   end
 end
@@ -91,7 +108,14 @@ def create_subcontractors
   members  = Organization.members.all
 
   members.each do |mem|
-    5.times { mem.subcontractors << new_subcontractor([sub_role]) }
+    5.times do
+      subcon = new_subcontractor([sub_role])
+      mem.subcontractors << subcon
+      agreement         = mem.agreements.where(counterparty_id: subcon.id).last
+      agreement.creator = mem.org_admins.last
+      agreement.save!
+      #mem.subcontracting_agreements.create(counterparty: new_subcontractor([sub_role]), creator: User.find_by_email('system@subcontrax.com') )
+    end
   end
 end
 
