@@ -2,7 +2,8 @@ en:
   activerecord:
     models:
       my_service_call: "Service Call"
-
+      notification:
+        name: "Alert"
     attributes:
       my_service_call:
         provider: "Originator"

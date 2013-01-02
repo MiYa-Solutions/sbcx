@@ -1,3 +1,50 @@
 <% @agreement.attributes.each do |key, value| %>
-    <%= key.humanize %> : <%= value %> </br>
+    <% if value.is_a?(Organization) %>
+        <%= key.humanize %> : <%= value.name %> </br>
+    <% else %>
+        <%= key.humanize %> : <%= value %> </br>
+    <% end %>
 <% end %>
+
+<strong><%= @agreement.class.human_attribute_name(:organization) %> </strong>: <%= @agreement.organization.name %>
+<br>
+<strong><%= @agreement.class.human_attribute_name(:counterparty) %></strong> : <%= @agreement.counterparty.name %>
+<br>
+<strong><%= @agreement.class.human_attribute_name(:status) %></strong> : <%= @agreement.human_status_name %>
+<br>
+<strong><%= @agreement.class.human_attribute_name(:creator) %></strong> : <%= @agreement.creator.name %>
+
+<%= agreement_events(@agreement) %>
+<div>
+  <table class="table table-striped" id="event_log_in_service_call">
+    <thead>
+    <tr>
+      <th><%= Event.human_attribute_name(:name) %> </th>
+      <th><%= Event.human_attribute_name(:description) %></th>
+      <th><%= Event.human_attribute_name(:created_at) %></th>
+      <th><%= Event.human_attribute_name(:creator) %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @agreement.events.each do |event| %>
+        <tr>
+          <td>
+            <%= event.name %>
+          </td>
+          <td>
+            <%= event.description %>
+          </td>
+          <td>
+            <%= event.created_at %>
+          </td>
+          <td>
+            <%= event.creator.name %>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+
+</div>
+

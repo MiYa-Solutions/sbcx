@@ -1,0 +1,14 @@
+<% other_party_id ||= "" %>
+<%= form_tag new_agreement_url, remote: true, method: :get do %>
+
+    <%= hidden_field_tag 'otherparty_id', other_party_id %>
+    <%= select_tag 'agreement_type', options_for_select(organization_agreement_types), include_blank: true %>
+    <div id="agreement_role_wrapper">
+      <%= select_tag 'otherparty_role', "", id: "agreement_role_select" %>
+    </div>
+    <p><%= submit_tag "Create", class: 'btn btn-medium', :id => 'add-agreement-button' %></p>
+<% end %>
+
+<div id="agreement_form">
+
+</div>

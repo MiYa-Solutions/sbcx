@@ -14,7 +14,7 @@ gem 'pg'
 
 gem 'devise', '2.0.0'
 gem 'simple_form', '2.0.2'
-gem 'declarative_authorization', '0.5.5'
+gem 'declarative_authorization', '0.5.6'
 
 gem 'state_machine'
 gem 'magiclabs-userstamp'
@@ -34,6 +34,7 @@ group :development, :test do
   gem 'annotate', '~> 2.4.1.beta'
   gem 'nifty-generators'
   gem 'quiet_assets'
+  gem 'ruby_parser'
 end
 
 # Gems used only for assets and not required

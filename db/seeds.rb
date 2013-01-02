@@ -27,12 +27,16 @@ if owner_org.nil?
                               first_name: 'Ishay', last_name: 'Yaari')
   mark  = owner_org.users.new(email:      'mark@miyasolutions.com', password: '123456', :password_confirmation => '123456',
                               first_name: 'Mark', last_name: 'Milman')
+  sys   = owner_org.users.new(email:      'system@subcontrax.com', password: '123456', :password_confirmation => '123456',
+                              first_name: 'SubConTraX', last_name: '')
   ishay.roles << Role.find_by_name("Admin")
   mark.roles << Role.find_by_name("Admin")
+  sys.roles << Role.find_by_name("Admin")
 
   owner_org.save
   ishay.save
   mark.save
+  sys.save
 end
 
 

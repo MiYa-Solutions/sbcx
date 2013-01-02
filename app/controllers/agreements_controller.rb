@@ -10,22 +10,22 @@ class AgreementsController < ApplicationController
   def create
 
     if @agreement.save
-      redirect_to agreement_path @agreement.becomes(Agreement)
+      redirect_to agreement_path @agreement
     else
-      raise "Can't save Agreement"
+      render :new
     end
 
 
   end
 
   def edit
-    @agreements = Agreements.find(params[:id])
+    #@agreement = Agreement.find(params[:id])
   end
 
   def update
-    @agreements = Agreements.find(params[:id])
-    if @agreements.update_attributes(params[:agreements])
-      redirect_to root_url, :notice => "Successfully updated agreements."
+    #@agreements = Agreements.find(params[:id])
+    if @agreement.update_attributes(permitted_params(@agreement).agreement)
+      redirect_to @agreement.becomes(Agreement), :notice => "Successfully updated agreements."
     else
       render :action => 'edit'
     end
@@ -36,12 +36,18 @@ class AgreementsController < ApplicationController
   end
 
   def new_agreement_from_params
-    if params[:agreement].nil? || params[:agreement][:organization_id].nil? || params[:agreement][:organization_id] == current_user.organization.id
-      org = current_user.organization
-    else
-      org = Organization.find(params[:agreement][:organization_id])
-    end
-    @agreement ||= org.send(params[:agreement][:agreement_type].pluralize).build(permitted_params(nil).send(params[:agreement][:agreement_type])) unless org.nil?
 
+    if params[:agreement].nil?
+      otherparty_id   = params[:otherparty_id]
+      otherparty_role = params[:otherparty_role]
+      type            = params[:agreement_type]
+
+      @agreement = Agreement.new_agreement(type, current_user.organization, otherparty_id, otherparty_role)
+    else
+      @agreement = Agreement.new_agreement_from_params(params[:agreement_type], permitted_params(nil).agreement)
+    end
+
+    @agreement
   end
+
 end

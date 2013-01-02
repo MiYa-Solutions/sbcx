@@ -197,10 +197,27 @@ FactoryGirl.define do
   end
 
   factory :agreement do
-    association organization, factory: :member
-    association counterparty, factory: :subcontractor
     name Faker::Name.name
     description Faker::Lorem.paragraph(1)
+
+    after(:build) do |agr|
+      agr.organization = FactoryGirl.create(:member)
+      agr.counterparty = FactoryGirl.create(:member)
+      agr.creator      = FactoryGirl.create(:org_admin, organization: agr.organization)
+    end
+
+    factory :organization_agreement, class: OrganizationAgreement do
+    end
+    factory :organization_agreement_by_cparty, class: OrganizationAgreement do
+      after(:build) do |agr|
+        agr.creator = FactoryGirl.create(:org_admin, organization: agr.counterparty)
+      end
+    end
+
+    factory :subcontracting_agreement, class: SubcontractingAgreement do
+
+    end
+
   end
 
 

@@ -33,6 +33,8 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+
+  SYSTEM_USER_EMAIL = ENV["SYSTEM_USER_EMAIL"] ? ENV["SYSTEM_USER_EMAIL"] : "system@subcontrax.com"
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 

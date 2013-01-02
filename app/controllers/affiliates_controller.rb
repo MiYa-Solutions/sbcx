@@ -13,7 +13,7 @@ class AffiliatesController < ApplicationController
 
   def new
     # no need for the below as declarative_authorization filter_resource_access takes care of it
-    @affiliate = @affiliate.becomes(Affiliate)
+    #@affiliate = @affiliate.becomes(Affiliate)
   end
 
   def create

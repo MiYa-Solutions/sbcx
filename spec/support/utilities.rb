@@ -53,6 +53,6 @@ end
 def auto_complete(selector, value)
   val_selector = '.ui-menu-item a:contains(\"#{value}\")'
   fill_in selector, :with => value.chop
-  sleep(3)
+  sleep(5)
   page.execute_script " $('#{val_selector}').trigger(\"mouseenter\").click();"
 end

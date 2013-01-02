@@ -56,18 +56,20 @@ class Organization < ActiveRecord::Base
   has_many :reverse_agreements, class_name: "Agreement", :foreign_key => "counterparty_id"
   has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement'" do
     def << (subcontractor)
-      Agreement.with_scope(:create => { type: "SubcontractingAgreement" }) { self.concat subcontractor }
+      prov_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
+      Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: prov_creator }) { self.concat subcontractor }
       #Account.find_or_create_by_organization_id_and_accountable_id(organization_id: proxy_association.owner.id, accountable_id: subcontractor.id)
-      proxy_association.owner.affiliates << subcontractor unless proxy_association.owner.affiliates.include? subcontractor
+      #proxy_association.owner.affiliates << subcontractor unless proxy_association.owner.affiliates.include? subcontractor
     end
 
   end
   has_many :providers, class_name: "Organization", :through => :reverse_agreements, source: :organization, :conditions => "agreements.type = 'SubcontractingAgreement'" do
     def << (provider)
       unless provider.agreements.where(:counterparty_id => proxy_association.owner.id).first
-        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization" }) { self.concat provider }
+        prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
+        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator }) { self.concat provider }
       end
-      proxy_association.owner.affiliates << provider unless proxy_association.owner.affiliates.include? provider
+      #proxy_association.owner.affiliates << provider unless proxy_association.owner.affiliates.include? provider
       #Account.find_or_create_by_organization_id_and_accountable_id!(organization_id: proxy_association.owner.id, accountable_id: provider.id)
       provider
 
@@ -87,7 +89,7 @@ class Organization < ActiveRecord::Base
 
   includes :organization_roles
 
-  scope :members, -> { where("subcontrax_member = true") }
+  scope :members, -> { where(:subcontrax_member => true) }
   scope :providers, -> { includes(:organization_roles).where("organization_roles.id = ? ", OrganizationRole::PROVIDER_ROLE_ID) }
   scope :subcontractors, -> { includes(:organization_roles).where("organization_roles.id = ? ", OrganizationRole::SUBCONTRACTOR_ROLE_ID) }
 
@@ -110,6 +112,10 @@ class Organization < ActiveRecord::Base
 
   def technicians(columns = "")
     User.my_technicians(self.id, columns)
+  end
+
+  def org_admins
+    User.my_admins(self.id)
   end
 
   # State machine  for Organization status

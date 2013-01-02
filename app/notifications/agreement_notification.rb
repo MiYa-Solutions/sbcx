@@ -4,6 +4,6 @@ class AgreementNotification < Notification
   end
 
   def agreement_link
-    link_to SubcontractingAgreement.name.underscore.humanize.downcase, url_helpers.agreement_path(agreement)
+    link_to Agreement.name.underscore.humanize.downcase, url_helpers.agreement_path(agreement)
   end
 end
