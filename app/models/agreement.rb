@@ -32,6 +32,11 @@ class Agreement < ActiveRecord::Base
     state :draft, value: STATUS_DRAFT
   end
 
+  scope :org_agreements, ->(org_id) { where(:organization_id => org_id) }
+  scope :cparty_agreements, ->(org_id) { where(:counterparty_id => org_id) }
+  scope :my_agreements, ->(org_id) { (org_agreements(org_id) | (cparty_agreements(org_id))) }
+  scope :our_agreements, ->(org_id, otherparty_id) { (org_agreements(org_id).where(:counterparty_id => otherparty_id) | (cparty_agreements(org_id).where(:organization_id => otherparty_id))) }
+
   attr_accessor :change_reason
 
   def self.new_agreement(type, org, other_party_id = nil, other_party_role = nil)
