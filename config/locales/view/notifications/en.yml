@@ -1,4 +1,4 @@
 en:
   activerecord:
     models:
-      material: Part
+      notification: Alerts

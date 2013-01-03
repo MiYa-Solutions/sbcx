@@ -5,6 +5,25 @@ en:
 
     attributes:
       agreement:
+    state_machines:
+      organization_agreement:
+        status:
+          events:
+            submit_for_approval: "Submit"
+            activate: "Activate The Agreement"
+            submit_change: "Submit The Change"
+            accept: "Accept The Terms"
+            reject: "Reject The Agreement Terms"
+            cancel: "Cancel This Agreement"
+          states:
+            draft: "Draft"
+            active: "Active"
+            pending_org_approval: "Pending Provider Approval"
+            pending_cparty_approval: "Pending Subcontractor Approval"
+            rejected_by_org: "Rejected By The Provider"
+            rejected_by_cparty: "Rejected By The Subcontractor"
+            canceled: "Canceled"
+            canceled: "Replaced With Another Agreement"
 
       subcontracting_agreement:
         name: "Name"

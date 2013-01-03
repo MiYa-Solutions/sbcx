@@ -218,46 +218,46 @@
       </div>
       <!--end of status & Job details section-->
 <% end %>
-     <!--Parts-->
-      <div class="row-fluid">
-        <div class="smart_label">
-          <ul>
-            <li><h1>Parts</h1></li>
-            <li><%= link_to 'Add Parts', '#', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
-          </ul>
-        </div>
+<!--Parts-->
+<div class="row-fluid">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= Material.model_name.human.pluralize %></h1></li>
+      <li><%= link_to 'Add Parts', '#', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
+    </ul>
+  </div>
 
-        <div class="bom collapse" id="bom">
-          <%= render 'boms/in_line_form', ticket: @service_call.becomes(ServiceCall) %>
+  <div class="bom collapse" id="bom">
+    <%= render 'boms/in_line_form', ticket: @service_call.becomes(ServiceCall) %>
 
-        </div>
+  </div>
 
-        <table class="table table-striped" id="boms-table">
-          <thead>
-          <tr>
-            <th><%= Bom.human_attribute_name(:material_name) %></th>
-            <th><%= Bom.human_attribute_name(:quantity) %></th>
-            <th><%= Bom.human_attribute_name(:cost) %></th>
-            <th><%= Bom.human_attribute_name(:price) %></th>
-            <th><%= Bom.human_attribute_name(:total_cost) %></th>
-            <th><%= Bom.human_attribute_name(:total_price) %></th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody id="boms">
+  <table class="table table-striped" id="boms-table">
+    <thead>
+    <tr>
+      <th><%= Bom.human_attribute_name(:material_name) %></th>
+      <th><%= Bom.human_attribute_name(:quantity) %></th>
+      <th><%= Bom.human_attribute_name(:cost) %></th>
+      <th><%= Bom.human_attribute_name(:price) %></th>
+      <th><%= Bom.human_attribute_name(:total_cost) %></th>
+      <th><%= Bom.human_attribute_name(:total_price) %></th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="boms">
 
-          <% @service_call.boms.each do |bom| %>
-              <tr id="bom_<%= bom.id %>">
-                <%= render 'boms/bom', bom: bom %>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
+    <% @service_call.boms.each do |bom| %>
+        <tr id="bom_<%= bom.id %>">
+          <%= render 'boms/bom', bom: bom %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
 
 
-      </div>
+</div>
 
-    </div>
+</div>
 
 
 <!--Parts-->
