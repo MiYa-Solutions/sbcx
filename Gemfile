@@ -25,6 +25,8 @@ gem 'thin'
 gem 'figaro' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 
+gem 'roadie'
+
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'
 end

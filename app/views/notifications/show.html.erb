@@ -1,7 +1,25 @@
-<p id="notice"><%= @notification.subject %></p>
-<p><%= @notification.content %></p>
-<p><%= @notification.status %></p>
+<div class="row-fluid">
+  <div class="well">
+
+
+    <div class="smart_label" id="notice">
+      <ul>
+        <li><h1><%= @notification.subject %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+     <br>
+     <p>
+        <%= @notification.content.html_safe %>
+     </p>
+
+    <div class="form-actions">
+      <%= link_to "Back", notifications_path, class: "btn btn-medium" %>
+    </div>
 
 
 
-<%= link_to 'Back', notifications_path %>
+
+
+</div>
+</div>

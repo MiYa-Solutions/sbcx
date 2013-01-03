@@ -4,7 +4,7 @@ class StaticPagesController < ApplicationController
 
   def welcome
     if user_signed_in?
-      @notifications = current_user.notifications.where(:status => Notification::NOTIFICATION_UNREAD)
+      @notifications = current_user.notifications
       @service_calls = current_user.organization.service_calls
     else
       flash[:error] = "Please login first"

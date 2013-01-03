@@ -1,0 +1,46 @@
+en:
+  activerecord:
+    models:
+      notification: "Alert"
+    attributes:
+      notification:
+        subject: "Subject"
+
+  notifications:
+      received_service_call_notification:
+        html_message: 'New %{link} from %{prov_name}'
+        subject: 'New Service Call'
+        content: 'New service call was transferred to you. <br> Provider Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
+      sc_completed_notification:
+        html_message: 'The %{subcontractor} has completed the %{link}'
+      sc_complete_notification:
+        # subject goes to the web subject and email subject
+        subject: 'Service call %{ref} is completed'
+        # Contents goes to Tooltips and text messages
+        content: '%{technician} has completed the service call at: %{completed_at}'
+        # HTML goes to web messages
+        html_message: '%{technician} has completed the %{link}'
+      sc_accepted_notification:
+        html_message: '%{subcontractor} has accepted the %{link}'
+      sc_rejected_notification:
+        html_message: '%{subcontractor} has rejected the %{link}'
+      sc_canceled_notification:
+        html_message: '%{subcontractor} reported the customer has canceled the %{link}'
+      sc_dispatch_notification:
+        html_message: 'You got a new %{link} to work on!'
+      sc_dispatched_notification:
+        html_message: '%{subcontractor} has dispatched the %{link}'
+      sc_paid_notification:
+        html_message: '%{customer} has paid for the %{link}'
+      sc_settled_notification:
+        html_message: '%{subcontractor} has marked %{link} %{ref} as settled'
+      sc_cancel_notification:
+        html_message: 'The customer (%{customer}) has canceled for the %{link}'
+      sc_settle_notification:
+        html_message: '%{link} %{ref} has been settled'
+      sc_settled_notification:
+        html_message: 'The subcontractor (%{subcontractor}) has marked %{link} %{ref} as settled'
+      sc_started_notification:
+        html_message: 'The %{subcontractor} has started the %{link}'
+      sc_start_notification:
+        html_message: '%{technician} has started the %{link}'

@@ -1,5 +1,53 @@
-Dear <%= "#{@user.first_name} #{@user.last_name}" %>,
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title><%= I18n.t('notification_mailer.received_new_service_call.subject').html_safe %></title>
+  <%= render 'styling' %>
+</head>
+<body>
 
-<%= I18n.t('notification_mailer.received_new_service_call.content', provider: @service_call.provider.name, ref: @service_call.ref_id) %>
+<table width="100%" id="background" border="0" cellpadding="0" cellspacing="0">
+  <tr><td align="center" valign="top">
+    <table width="650" id="main" border="0" cellpadding="0" cellspacing="20">
 
-<%= link_to "#{ServiceCall.name.humanize} #{@service_call.ref_id}", @service_call.becomes(ServiceCall) %>
+      <tr class= "navbar-inner" bgcolor="#737373">
+        <td id="header" colspan="2" class="logo_header" margin-left="5%">
+          <a href="http://subcontrax.com/"><img src= "http://192.168.1.6:3000/assets/LogoImg.png" alt="SubConTrax"></a>
+          <!--<#%= image_tag("LogoImg.png", alt: "SubConTrax") %>-->
+        </td>
+      </tr>
+
+      <tr class="episode content_message">
+        <td width="100%">
+          <h2 text-align="center"><%= I18n.t('notification_mailer.received_new_service_call.title').html_safe %></h2>
+          <p>Dear <%= "#{@user.first_name} #{@user.last_name}" %>,
+            <br><br>
+            <%= I18n.t('notification_mailer.received_new_service_call.content', provider: @service_call.provider.name, ref: @service_call.ref_id).html_safe %>
+            <br>
+            <!---->
+            <% unless @service_call.started_on_text.blank? %>
+                <%= @service_call.class.human_attribute_name(:started_on) %>:&nbsp;<strong><%= @service_call.started_on_text %></strong>
+            <% end %>
+
+
+           <br><br>
+             <%= I18n.t('notification_mailer.received_new_service_call.bottom_content').html_safe %>
+
+          </p>
+         </td>
+        </tr>
+        <tr class="episode content_message">
+           <td>
+              <p><%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, service_call_url(@service_call) %></p>
+           </td>
+        </tr>
+
+            <%= render 'footer' %>
+
+    </table>
+  </td></tr>
+</table>
+
+</body>
+</html>

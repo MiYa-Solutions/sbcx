@@ -20,7 +20,7 @@
 
 <%= render 'shared/error_messages', object: f.object %>
 
-<%= f.input :company, label: 'Company Name', autofocus: true %>
+<%= f.input :name, autofocus: true %>
 <!--<#%= f.association :organization_roles, :collection => OrganizationRole.all(:order => 'name'), as: :check_boxes %> -->
 
 <% if !f.object.new_record? %>
