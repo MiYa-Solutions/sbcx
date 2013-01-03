@@ -54,7 +54,7 @@ class SubcontractorsController < ApplicationController
 
   def show
     #@subcontractor = current_user.organization.subcontractors.find(params[:id])
-
+    @agreements = current_user.organization.agreements.where(counterparty_id: @subcontractor.id)
   end
 
   def new_subcontractor_from_params

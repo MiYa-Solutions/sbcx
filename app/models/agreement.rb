@@ -2,67 +2,81 @@
 #
 # Table name: agreements
 #
-#  id               :integer         not null, primary key
-#  name             :string(255)
-#  subcontractor_id :integer
-#  provider_id      :integer
-#  description      :text
-#  created_at       :datetime        not null
-#  updated_at       :datetime        not null
-#  status           :integer
+#  id                :integer         not null, primary key
+#  name              :string(255)
+#  counterparty_id   :integer
+#  organization_id   :integer
+#  description       :text
+#  created_at        :datetime        not null
+#  updated_at        :datetime        not null
+#  status            :integer
+#  counterparty_type :string(255)
+#  type              :string(255)
 #
 
 class Agreement < ActiveRecord::Base
 
-  #attr_accessible :provider_id, :subcontractor_id, :provider, :subcontractor
+  belongs_to :organization
+  belongs_to :counterparty, polymorphic: true
+  has_many :events, as: :eventable
+  has_many :notifications, as: :notifiable
 
-  belongs_to :provider, class_name: "Provider"
-  belongs_to :subcontractor, class_name: "Subcontractor"
+  stampable
 
-  validates :provider, presence: true
-  validates :subcontractor, presence: true
+  validates_presence_of :organization, :counterparty, :creator
 
-  # State machine  for Organization status
+  # State machine  for Agreement status
+  STATUS_DRAFT = 0
 
-  # first we will define the organization state values
-  STATUS_NEW              = 0
-  STATUS_PENDING_APPROVAL = 1
-  STATUS_REJECTED         = 2
-  STATUS_ACTIVE           = 3
-  STATUS_DISABLED         = 4
+  state_machine :status, :initial => :draft do
+    state :draft, value: STATUS_DRAFT
+  end
 
-  # The state machine definitions
-  state_machine :status, :initial => :new do
-    state :new, value: STATUS_NEW
-    state :pending_approval, value: STATUS_PENDING_APPROVAL
-    state :rejected, value: STATUS_REJECTED
-    state :active, value: STATUS_ACTIVE
-    state :disabled, value: STATUS_DISABLED
+  scope :org_agreements, ->(org_id) { where(:organization_id => org_id) }
+  scope :cparty_agreements, ->(org_id) { where(:counterparty_id => org_id) }
+  scope :my_agreements, ->(org_id) { (org_agreements(org_id) | (cparty_agreements(org_id))) }
+  scope :our_agreements, ->(org_id, otherparty_id) { (org_agreements(org_id).where(:counterparty_id => otherparty_id) | (cparty_agreements(org_id).where(:organization_id => otherparty_id))) }
 
+  attr_accessor :change_reason
 
-    event :submit do
-      transition :new => :pending_approval
+  def self.new_agreement(type, org, other_party_id = nil, other_party_role = nil)
+
+    # create the agreement subclass which is expected to be underscored
+    unless type.nil?
+      agreement = type.camelize.constantize.new
+
+      if other_party_role.nil? # if the role of the other party is not specified, assume counterparty
+        org.agreements << agreement
+      else
+
+        case other_party_role
+          when "organization"
+            agreement.organization_id = other_party_id
+            agreement.counterparty    = org
+          #org.reverse_agreements << agreement
+          else
+            agreement.counterparty_id = other_party_id
+            agreement.organization    = org
+          #org.agreements << agreement
+        end
+
+      end
+
     end
 
-    event :approve do
-      transition [:pending_approval, :new] => :active
+    raise "the 'type' parameter was not provided when creating a new agreement" if agreement.nil?
+    agreement
+  end
+
+  def self.new_agreement_from_params(type, params)
+    unless type.nil?
+      agreement = type.camelize.constantize.new(params)
     end
 
-
-    event :reject do
-      transition :pending_approval => :rejected
-    end
-
-    event :disable do
-      transition [:new, :active, :pending_approval, :rejected] => :disabled
-    end
-
-    event :enable do
-      transition :disabled => :new
-
-    end
-
+    raise "the 'type' parameter was not provided when creating a new agreement" if agreement.nil?
+    agreement
 
   end
+
 
 end

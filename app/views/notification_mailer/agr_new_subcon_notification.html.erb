@@ -1,0 +1,5 @@
+Dear <%= "#{@user.first_name} #{@user.last_name}" %>,
+
+<%= I18n.t('notification_mailer.agr_new_subcon_notification.content') %>
+
+<%= link_to "#{Agreement.name.humanize} #{@agreement.name} ->", @agreement.becomes(Agreement) %>

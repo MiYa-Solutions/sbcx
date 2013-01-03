@@ -2,13 +2,14 @@
 #
 # Table name: boms
 #
-#  id         :integer         not null, primary key
-#  ticket_id  :integer
-#  price      :decimal(, )
-#  cost       :decimal(, )
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#  quantity   :decimal(, )
+#  id          :integer         not null, primary key
+#  ticket_id   :integer
+#  price       :decimal(, )
+#  cost        :decimal(, )
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
+#  quantity    :decimal(, )
+#  material_id :integer
 #
 
 class Bom < ActiveRecord::Base

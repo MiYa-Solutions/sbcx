@@ -31,65 +31,73 @@ describe Organization do
 
   subject { org }
 
-  it { should respond_to(:email) }
-  it { should respond_to(:name) }
-  it { should respond_to(:phone) }
-  it { should respond_to(:website) }
-  it { should respond_to(:company) }
-  it { should respond_to(:address1) }
-  it { should respond_to(:address2) }
-  it { should respond_to(:city) }
-  it { should respond_to(:state) }
-  it { should respond_to(:zip) }
-  it { should respond_to(:country) }
-  it { should respond_to(:mobile) }
-  it { should respond_to(:work_phone) }
-  it { should respond_to(:subcontrax_member) }
-  it { should respond_to(:status) }
-  it { should respond_to(:created_at) }
-  it { should respond_to(:updated_at) }
-  it { should respond_to(:users) }
-  it { should respond_to(:customers) }
-  it { should respond_to(:organization_roles) }
-  it { should respond_to(:service_calls) }
-  it { should respond_to(:subcontractors) }
-  it { should respond_to(:providers) }
-  it { should respond_to(:materials) }
+  it "should have the expected attributes and methods" do
+    should respond_to(:email)
+    should respond_to(:name)
+    should respond_to(:phone)
+    should respond_to(:website)
+    should respond_to(:company)
+    should respond_to(:address1)
+    should respond_to(:address2)
+    should respond_to(:city)
+    should respond_to(:state)
+    should respond_to(:zip)
+    should respond_to(:country)
+    should respond_to(:mobile)
+    should respond_to(:work_phone)
+    should respond_to(:subcontrax_member)
+    should respond_to(:status)
+    should respond_to(:created_at)
+    should respond_to(:updated_at)
+    should respond_to(:users)
+    should respond_to(:customers)
+    should respond_to(:organization_roles)
+    should respond_to(:service_calls)
+    should respond_to(:subcontractors)
+    should respond_to(:providers)
+    should respond_to(:materials)
+    should respond_to(:accounts)
+  end
 
   it { should be_valid }
 
-  describe "name should be unique across all members" do
-    let(:new_mem) { new_mem = org.dup }
-    it { new_mem.should_not be_valid }
+  describe "validation" do
+    # presance validation
+    [:name, :status].each do |attr|
+      it "must have a #{attr} populated" do
+        org.send("#{attr}=", "")
+        org.errors[attr].should_not be_nil
+      end
+    end
 
+    it "name should be unique across all members" do
+      new_mem = org.dup
+      new_mem.should_not be_valid
+      new_mem.errors[:name].should_not be_nil
+    end
+    it "organization_roles must be present" do
+      org.organization_roles = []
+      org.should_not be_valid
+      org.errors[:organization_roles].should_not be_nil
+    end
+
+  end
+
+  describe "associations" do
+    it { should have_many(:users) }
+    it { should have_many(:service_calls) }
+    it { should have_many(:customers) }
+    it { should have_many(:materials) }
+    it { should have_many(:accounts) }
+    it { should have_many(:organization_roles) }
+    it { should have_many(:subcontractors).through(:accounts) }
+    it { should have_many(:providers).through(:accounts) }
   end
 
   it "saved successfully" do
     expect {
       org.save
     }.to change { Organization.count }.by(1)
-  end
-
-
-  #describe "accessible attributes" do
-  #  it "should not allow access to subcontrax_member" do
-  #    expect do
-  #      Organization.new(subcontrax_member: true)
-  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-  #  end
-  #  it "should not allow access to status" do
-  #    expect do
-  #      Organization.new(status: 2)
-  #    end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
-  #  end
-  #end
-  describe "when name is not present" do
-    before { org.name = " " }
-    it { should_not be_valid }
-  end
-  describe "when there are no organization roles assigned" do
-    before { org.organization_roles = [] }
-    it { should_not be_valid }
   end
 
 

@@ -21,34 +21,34 @@
   <br>
 
   <table class="table table-striped" id="providers_search_results">
-      <% if ! @providers.empty? %>
+    <% if !@providers.empty? %>
         <br>
-            <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Company</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>Actions</th>
-            </tr>
-            </thead>
-     <% else %>
-              <span class="alert alert-info" id="empty_search_result_notice">No records, click "New Provider" to add new contact</span>
-                <br>
-                <br>
+        <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Company</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+    <% else %>
+        <span class="alert alert-info" id="empty_search_result_notice">No records, click "New Provider" to add new contact</span>
+        <br>
+        <br>
     <% end %>
 
 
-          <tbody id="new_providers">
-          <% @providers.each do |provider| %>
-              <%= render provider %>
-          <% end %>
+    <tbody id="new_providers">
+    <% @providers.each do |provider| %>
+        <%= render provider.becomes(Provider) %>
+    <% end %>
 
-          </tbody>
-          </table>
+    </tbody>
+  </table>
 
-          <%= will_paginate @providers, :class => 'pagination pagination-centered' %>
+  <%= will_paginate @providers, :class => 'pagination pagination-centered' %>
 
   <div class="row-fluid">
               <span class="member_label">

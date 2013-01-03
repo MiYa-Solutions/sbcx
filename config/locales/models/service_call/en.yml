@@ -2,6 +2,7 @@ en:
   activerecord:
     models:
       my_service_call: "Service Call"
+
     attributes:
       my_service_call:
         provider: "Originator"

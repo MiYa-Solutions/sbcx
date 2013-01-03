@@ -11,6 +11,10 @@ en:
       content: 'This is to inform you that %{technician} has completed service call %{ref}. Please click the blow link to view the service call'
     completed_transferred_service_call:
       content: 'This is to inform you that %{provider} has completed service call %{ref}. Please click the blow link to view the service call'
+    agr_new_subcon_notification:
+      subject: 'A SubconTraX member wants to add you as an affiliate'
+      content: 'CREATE THE CONTENT YA KHARA :-)'
+
 
   notifications:
     sc_completed_notification:

@@ -264,7 +264,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       # need this step to work around a declarative authorization problem with strong parameters
       params.permit
     else
-      params.require(:agreement).permit(agreement_attributes)
+      params.require(:agreement).permit(*agreement_attributes)
     end
 
   end
@@ -319,7 +319,15 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def agreement_attributes
-    [:name, :description, :subcontractor, :provider]
+    attr = []
+    if obj.nil?
+      attr = [:name, :description, :organization_id, :counterparty_id, :counterparty_type]
+    else
+      attr = [:status_event, :change_reason, :name, :description]
+    end
+
+    attr
+
   end
 
   def new_user_attributes
@@ -352,6 +360,30 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
   def notification_attributes
     [:status_event]
+  end
+
+  def registration
+    if params[:user].nil?
+      params.permit
+    else
+      params[:user].permit(*registration_attributes)
+    end
+  end
+
+  def registration_attributes
+    my_user_attributes.tap do |attributes|
+      attributes << { organization_attributes: organization_attributes }
+    end
+
+
+  end
+
+  def subcontracting_agreement
+    if params[:agreement].nil?
+      params.permit
+    else
+      params[:agreement].permit(*agreement_attributes)
+    end
   end
 
 end

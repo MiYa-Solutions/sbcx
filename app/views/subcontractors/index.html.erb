@@ -22,7 +22,7 @@
 
 
   <table class="table table-striped" id="subcontractors_search_results">
-  <% if ! @subcontractors.empty? %>
+    <% if !@subcontractors.empty? %>
         <br>
         <thead>
         <tr>
@@ -43,7 +43,7 @@
 
     <tbody id="new_subcontractors">
     <% @subcontractors.each do |subcontractor| %>
-        <%= render subcontractor %>
+        <%= render subcontractor.becomes(Subcontractor) %>
     <% end %>
 
     </tbody>

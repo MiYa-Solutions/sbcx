@@ -7,8 +7,7 @@ class StaticPagesController < ApplicationController
       @notifications = current_user.notifications
       @service_calls = current_user.organization.service_calls
     else
-      flash[:error] = "Please login first"
-      render 'index'
+      redirect_to new_user_session_path, notice: t('devise.failure.unauthenticated')
     end
   end
 
