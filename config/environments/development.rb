@@ -36,7 +36,7 @@ Sbcx::Application.configure do
   config.assets.debug                                    = true
 
   # devise install requirement for the mailer configuration
-  config.action_mailer.default_url_options               = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options               = { :host => 'localhost' , port: '3000' }
   config.action_mailer.delivery_method                   = :smtp
 
   #config.log_tags = [:uuid, :remote_ip, lambda { |req| Time.now }]

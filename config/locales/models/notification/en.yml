@@ -10,9 +10,11 @@ en:
       received_service_call_notification:
         html_message: 'New %{link} from %{prov_name}'
         subject: 'New Service Call'
-        content: 'New service call was transferred to you. <br> Provider Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
+        content: 'New service call was transferred to you by: <br> Provider Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
       sc_completed_notification:
         html_message: 'The %{subcontractor} has completed the %{link}'
+        subject: 'Service call %{ref} is completed'
+        content: '%{subcontractor} has completed the service call at: %{completed_at}'
       sc_complete_notification:
         # subject goes to the web subject and email subject
         subject: 'Service call %{ref} is completed'
@@ -22,25 +24,47 @@ en:
         html_message: '%{technician} has completed the %{link}'
       sc_accepted_notification:
         html_message: '%{subcontractor} has accepted the %{link}'
+        subject: 'Transferred service call %{ref} has been accepted '
+        content: '%{subcontractor} has accepted the service call'
       sc_rejected_notification:
         html_message: '%{subcontractor} has rejected the %{link}'
+        subject: 'Transferred service call %{ref} has been rejected '
+        content: '%{subcontractor} has rejected the service call'
       sc_canceled_notification:
         html_message: '%{subcontractor} reported the customer has canceled the %{link}'
+        subject: 'Transferred service call %{ref} has been canceled '
+        content: '%{subcontractor} has reported the service call as canceled by the customer accepted the service call'
       sc_dispatch_notification:
         html_message: 'You got a new %{link} to work on!'
+        subject: 'You got a new service call to work on'
+        content: 'Your dispatcher is requesting you to start working on service call %{ref}'
       sc_dispatched_notification:
         html_message: '%{subcontractor} has dispatched the %{link}'
+        subject: '%{subcontractor} has dispatched service call %{ref}'
+        content: 'Please note that %{subcontractor} has dispatched service call %{ref}'
       sc_paid_notification:
         html_message: '%{customer} has paid for the %{link}'
+        subject: '%{customer} has paid for service call %{ref}'
+        content: 'Please note that %{customer} has paid for service call %{ref}'
       sc_settled_notification:
         html_message: '%{subcontractor} has marked %{link} %{ref} as settled'
       sc_cancel_notification:
         html_message: 'The customer (%{customer}) has canceled for the %{link}'
+        subject: 'Service call %{ref} was canceled by the customer'
+        content: 'Please note that service call %{ref} was canceled by the customer (%{customer})'
       sc_settle_notification:
         html_message: '%{link} %{ref} has been settled'
+        subject: 'Service call %{ref} is settled'
+        content: 'Please note that service call %{ref} has been settled'
       sc_settled_notification:
-        html_message: 'The subcontractor (%{subcontractor}) has marked %{link} %{ref} as settled'
+        html_message: 'The subcontractor (%{subcontractor}) has marked %{link} %{ref} as settled'\
+        subject: 'Service call %{ref} was marked as settled by the subcontractor'
+        content: 'Please note that service call %{ref} was marked as settled by the subcontractor (%{subcontractor})'
       sc_started_notification:
         html_message: 'The %{subcontractor} has started the %{link}'
+        subject: 'Service call %{ref} is completed'
+        content: '%{subcontractor} has started the service call at: %{started_at}
       sc_start_notification:
         html_message: '%{technician} has started the %{link}'
+        subject: 'Service call %{ref} is completed'
+        content: '%{technician} has started the service call at: %{started_at}'
