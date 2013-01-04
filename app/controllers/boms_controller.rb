@@ -61,7 +61,7 @@ class BomsController < ApplicationController
         format.js { }
         format.json { render json: @bom, status: :created, location: @bom }
       else
-        format.html { render action: "new" }
+        format.html { render :new }
         format.json { render json: @bom.errors, status: :unprocessable_entity }
         format.js { }
       end

@@ -69,10 +69,12 @@ class MaterialsController < ApplicationController
         format.html { redirect_to @material, notice: t('activerecord.messages.material.created_successfully', material: @material.name) }
         format.json { render json: @material, status: :created, location: @material }
         format.js { }
+        format.mobile { redirect_to :back, notice: t('activerecord.messages.material.created_successfully', material: @material.name) }
       else
         format.html { render :new }
         format.json { render json: @material.errors, status: :unprocessable_entity }
         format.js { }
+        format.mobile { render :new }
       end
     end
   end
