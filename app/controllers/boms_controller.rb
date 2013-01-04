@@ -58,10 +58,12 @@ class BomsController < ApplicationController
     respond_to do |format|
       if @bom.save
         format.html { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
+        format.mobile { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
         format.js { }
         format.json { render json: @bom, status: :created, location: @bom }
       else
         format.html { render :new }
+        format.mobile { render :new }
         format.json { render json: @bom.errors, status: :unprocessable_entity }
         format.js { }
       end
@@ -76,9 +78,11 @@ class BomsController < ApplicationController
     respond_to do |format|
       if @bom.update_attributes(permitted_params(@bom).bom)
         format.html { redirect_to [@bom.ticket.becomes(@bom.ticket.class.superclass), @bom], notice: 'Bom was successfully updated.' }
+        format.mobile { redirect_to @bom.ticket.becomes(@bom.ticket.class.superclass), notice: 'Bom was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
+        format.mobile { redirect_to :back }
         format.json { render json: @bom.errors, status: :unprocessable_entity }
       end
     end
