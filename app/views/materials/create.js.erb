@@ -1,0 +1,42 @@
+<% if @material.errors.any? %>
+<% unless @material.errors[:name].empty? %>
+$('#material_name').wrap('<div class="control-group error" />')
+
+<% @material.errors[:name].each do |err| %>
+$('#material_name').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+<% unless @material.errors[:description].empty? %>
+$('#material_description').wrap('<div class="control-group error" />')
+
+<% @material.errors[:description].each do |err| %>
+$('#material_description').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+
+<% unless @material.errors[:cost].empty? %>
+$('#material_cost').wrap('<div class="control-group error" />')
+
+<% @material.errors[:cost].each do |err| %>
+$('#material_cost').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+
+<% unless @material.errors[:price].empty? %>
+$('#material_price').wrap('<div class="control-group error" />')
+
+<% @material.errors[:price].each do |err| %>
+$('#material_price').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+
+
+<% else %>
+$('#materials:last').append('<%= j render(@material) %>');
+$('#new_material').find('.error').removeClass('error');
+$('#new_material').find('.error-msg').remove();
+$('#material_name').val('');
+$('#material_description').val('');
+$('#material_cost').val('');
+$('#material_price').val('');
+<% end %>

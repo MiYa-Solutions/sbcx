@@ -1,5 +1,23 @@
 class PermittedParams < Struct.new(:params, :user, :obj)
 
+  def material
+    if params[:material].nil?
+      params.permit
+    else
+      params.require(:material).permit(*material_attributes)
+    end
+  end
+
+  def material_attributes
+    [
+        :name,
+        :description,
+        :cost,
+        :price,
+        :supplier_id
+    ]
+  end
+
   def bom
     if params[:bom].nil?
       params.permit

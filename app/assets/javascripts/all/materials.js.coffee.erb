@@ -1,0 +1,21 @@
+jQuery ->
+    old_val = $('#create-material-btn').val()
+    spinner = $("<span><img src='<%= asset_path('ajax-loader.gif') %>' alt='Ajax-loader'></span>")
+
+    $('#new_material').bind("ajax:before", ->
+        spinner.appendTo($('#create-material-btn').parent())
+        $('#create-material-btn').val("Wait...")
+    )
+
+    $('#new_material').bind("ajax:complete", ->
+        spinner.remove()
+        $('#create-material-btn').val(old_val)
+    )
+
+    $('#new_material').bind("ajax:success", ->
+        msg = $("<span class='green'>Saved!</span>").appendTo('#create-material-btn')
+        msg.fadeOut(2000)
+        msg.remove()
+    )
+
+

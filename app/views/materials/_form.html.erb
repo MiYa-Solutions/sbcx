@@ -1,22 +1,17 @@
+<% material ||= Material.new %>
+
 <div class="add_new_part">
 
-<!--<#%= simple_form_for(@material, :html => { :class => 'form-horizontal' }) do |f| %>  -->
-    <%= f.error_notification %>
+  <%= simple_form_for material, remote: true, :html => { :class => 'form-horizontal' } do |f| %>
+      <%= f.error_notification %>
 
-    <div class="form-inputs">
-      <%= f.input :name, :html => {:class => "string optional"}, label: "Part Name"  %>
-      <%= f.input :description  %>
-      <%= f.input :cost  %>
-      <%= f.input :price  %>
+      <%= render 'fields', f: f %>
 
-    </div>
+      <div class="form-actions">
+        <%= f.button :submit, class: "btn btn-medium btn-primary", id: 'create-material-btn' %>
 
-    <div class="form-actions">
-      <!--<#%= f.button :submit %>-->
-      <%= f.submit "Add Part", class: "btn btn-medium btn-primary", id: 'add_new_part' %>
+      </div>
 
-    </div>
-
-<!--<#% end %>-->
+  <% end %>
 
 </div>

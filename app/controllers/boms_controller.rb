@@ -55,7 +55,6 @@ class BomsController < ApplicationController
   # POST /boms.json
   def create
 
-    sleep 3
     respond_to do |format|
       if @bom.save
         format.html { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
