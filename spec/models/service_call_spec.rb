@@ -50,6 +50,7 @@ describe ServiceCall do
     should respond_to(:phone)
     should respond_to(:mobile_phone)
     should respond_to(:boms)
+    should respond_to(:scheduled_for)
   end
 
 
