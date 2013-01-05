@@ -81,10 +81,11 @@
                             </tr>
                             <tr>
                               <td valign="top" class="dataTableContent">
-                                Scheduled For:
+                                <%= @service_call.class.human_attribute_name(:scheduled_for) %>:
                               </td>
                               <td valign="top" class="dataTableContent">
-                                <strong>12/12/2012</strong>
+                                <strong><%= @service_call.scheduled_for %></strong>
+
                               </td>
                             </tr>
                             <tr>

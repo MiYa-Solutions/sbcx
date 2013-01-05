@@ -128,7 +128,7 @@
             <% if !@service_call.started_on_text.blank? %>
                 <li>
                   <div class="control-group select required">
-                    <label class="select optional control-label" for="completed_on_text">Completed On</label>
+                    <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:completed_on_text) %></label>
 
                     <div class="controls">
                       <%= f.text_field :completed_on_text, class: "datepicker", placeholder: 'Click to set date' %>
@@ -136,6 +136,17 @@
                   </div>
                 </li>
             <% end %>
+
+            <li>
+              <div class="control-group string ">
+                <label class="string  control-label" for="service_call_started_on"><%= @service_call.class.human_attribute_name(:scheduled_for) %></label>
+
+                <div class="controls">
+                  <%= f.text_field :scheduled_for, class: "datepicker", value: f.object.scheduled_for %>
+
+                </div>
+              </div>
+            </li>
 
             <li>
               <div id="customer_wrapper">

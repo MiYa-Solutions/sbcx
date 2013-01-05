@@ -13,10 +13,12 @@ en:
         address1: "The customer address"
 
       service_call:
-        provider: "המקור"
+        provider: "Provider"
         provider_id: "Originator"
         address1: "The customer address"
         started_on: "Job started on"
+        started_on_text: "Started on"
+        completed_on_text: "Completed on"
 
     state_machines:
       service_call:
