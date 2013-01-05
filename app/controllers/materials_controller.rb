@@ -64,15 +64,17 @@ class MaterialsController < ApplicationController
   # POST /materials
   # POST /materials.json
   def create
-    @material = Material.new(params[:material])
-
     respond_to do |format|
       if @material.save
-        format.html { redirect_to @material, notice: 'Material was successfully created.' }
+        format.html { redirect_to @material, notice: t('activerecord.messages.material.created_successfully', material: @material.name) }
         format.json { render json: @material, status: :created, location: @material }
+        format.js { }
+        format.mobile { redirect_to :back, notice: t('activerecord.messages.material.created_successfully', material: @material.name) }
       else
-        format.html { render action: "new" }
+        format.html { render :new }
         format.json { render json: @material.errors, status: :unprocessable_entity }
+        format.js { }
+        format.mobile { render :new }
       end
     end
   end
@@ -108,5 +110,16 @@ class MaterialsController < ApplicationController
   # This is required in order to ensure the user doesn't have access to materials of other organizations
   def autocomplete_material_name_where
     "organization_id = #{current_user.organization.id}"
+  end
+
+  def new_material_from_params
+    if params[:material].nil?
+      @material = current_user.organization.materials.new
+    else
+      @material = current_user.organization.materials.build(permitted_params(nil).material)
+    end
+    # todo change to support 3rd party suppliers
+    @material.supplier = current_user.organization.becomes(Supplier)
+
   end
 end

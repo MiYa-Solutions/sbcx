@@ -2,4 +2,6 @@ en:
   activerecord:
     models:
       material: Part
-
+    messages:
+      material:
+        created_successfully: '%{material} was created successfully'

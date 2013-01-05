@@ -24,6 +24,7 @@
 #  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
+#  scheduled_for        :datetime
 #
 
 class Ticket < ActiveRecord::Base

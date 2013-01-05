@@ -12,6 +12,8 @@
 #  status            :integer
 #  counterparty_type :string(255)
 #  type              :string(255)
+#  creator_id        :integer
+#  updater_id        :integer
 #
 
 require 'spec_helper'

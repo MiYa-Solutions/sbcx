@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: service_calls
+# Table name: tickets
 #
 #  id                   :integer         not null, primary key
 #  customer_id          :integer
@@ -24,6 +24,7 @@
 #  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
+#  scheduled_for        :datetime
 #
 
 require 'spec_helper'
@@ -50,6 +51,7 @@ describe ServiceCall do
     should respond_to(:phone)
     should respond_to(:mobile_phone)
     should respond_to(:boms)
+    should respond_to(:scheduled_for)
   end
 
 
