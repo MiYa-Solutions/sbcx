@@ -32,6 +32,9 @@ class Agreement < ActiveRecord::Base
 
   state_machine :status, :initial => :draft do
     state :draft, value: STATUS_DRAFT
+    after_failure do |agreement, transition|
+      Rails.logger.debug { "Organization Agreement status state machine failure. Agreement errors : \n" + agreement.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
   end
 
   scope :org_agreements, ->(org_id) { where(:organization_id => org_id) }

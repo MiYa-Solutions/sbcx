@@ -46,53 +46,79 @@ describe OrganizationAgreement do
 
     end
 
-    it "after submission only the cparty should be allowed to update" do
-      with_user org_user do
-        agreement_by_org.submit_for_approval
-        agreement_by_org.updater    = org_user
-        agreement_by_org.updated_at = Time.now
-      end
-
-      with_user org_user do
-        should_not_be_allowed_to :update, object: agreement_by_org, context: :agreements
-      end
-
-      with_user cparty_user do
-        should_be_allowed_to :update, object: agreement_by_org, context: :agreements
-      end
-
-    end
-
-    describe "after change by the cparty" do
+    describe "after submission only the cparty should be allowed to update" do
       before do
         with_user org_user do
-          agreement_by_org.updater    = org_user
-          agreement_by_org.updated_at = Time.now
+          agreement_by_org.updater       = org_user
+          agreement_by_org.updated_at    = Time.now
+          agreement_by_org.change_reason = "test"
           agreement_by_org.submit_for_approval
+        end
 
-        end
-        with_user cparty_user do
-          agreement_by_org.updater    = cparty_user
-          agreement_by_org.updated_at = Time.now
-          agreement_by_org.submit_change
-        end
       end
-      it "only the org should be allowed to update" do
 
+      it "status should be pending cparty approval" do
+        agreement_by_org.status.should be { OrganizationAgreement::STATUS_PENDING_CPARTY_APPROVAL }
+      end
+
+      it "after submission only the cparty should be allowed to update" do
         with_user org_user do
-          should_be_allowed_to :update, object: agreement_by_org, context: :agreements
-        end
-
-        with_user cparty_user do
           should_not_be_allowed_to :update, object: agreement_by_org, context: :agreements
         end
 
+        with_user cparty_user do
+          should_be_allowed_to :update, object: agreement_by_org, context: :agreements
+        end
 
       end
 
-      it "the status should be pending org approval" do
-        agreement_by_org.status.should be { OrganizationAgreement::STATUS_PENDING_ORG_APPROVAL }
+      it "change submission by cparty must include a reason" do
+        with_user cparty_user do
+          agreement_by_org.change_reason = nil
+          expect {
+            agreement_by_org.submit_change!
+          }.should raise_error { StateMachine::InvalidTransition }
+
+          agreement_by_org.change_reason = "change test"
+
+          expect {
+            agreement_by_org.submit_change!
+          }.should_not raise_error
+
+        end
       end
+
+      describe "after change by the cparty" do
+        before do
+          with_user cparty_user do
+            agreement_by_org.updater    = cparty_user
+            agreement_by_org.updated_at = Time.now
+            agreement_by_org.submit_change
+          end
+        end
+
+        it "the status should be pending organization approval" do
+          agreement_by_org.status.should be { OrganizationAgreement::STATUS_PENDING_ORG_APPROVAL }
+        end
+
+        it "only the org should be allowed to update" do
+
+          with_user org_user do
+            should_be_allowed_to :update, object: agreement_by_org, context: :agreements
+          end
+
+          with_user cparty_user do
+            should_not_be_allowed_to :update, object: agreement_by_org, context: :agreements
+          end
+
+
+        end
+
+        it "the status should be pending org approval" do
+          agreement_by_org.status.should be { OrganizationAgreement::STATUS_PENDING_ORG_APPROVAL }
+        end
+      end
+
     end
 
 
