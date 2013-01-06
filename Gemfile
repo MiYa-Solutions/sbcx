@@ -14,7 +14,7 @@ gem 'pg'
 
 gem 'devise', '2.0.0'
 gem 'simple_form', '2.0.2'
-gem 'declarative_authorization', '0.5.6'
+gem 'declarative_authorization', '0.5.5'
 
 gem 'state_machine'
 gem 'magiclabs-userstamp'
@@ -24,6 +24,8 @@ gem 'best_in_place'
 gem 'thin'
 gem 'figaro' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
+
+gem 'roadie'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'

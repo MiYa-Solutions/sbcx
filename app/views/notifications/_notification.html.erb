@@ -1,8 +1,22 @@
 <tr>
-  <td><%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %>  </td>
-  <td><%= notification.html_message %></td>
-  <td><%= notification.human_status_name %></td>
+  <% if notification.human_status_name == 'unread' %>
+  <td>  <span>
+          <badge><i class="icon-envelope"></i></badge>
+        </span></td>
+  <td><strong> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %> </strong>   </td>
+  <td><strong> <%= notification.html_message %></strong>  </td>
+  <!--<td><strong> <#%= notification.human_status_name %></strong>  </td>-->
 
+  <% else %>
+      <td>
+        <span>
+          <badge><i class="icon-folder-open"></i></badge>
+        </span>
+      </td>
+      <td> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %>    </td>
+      <td> <%= notification.html_message %>  </td>
+      <!--<td> <#%= notification.human_status_name %></td>-->
+   <% end %>
   <td>
 
     <!--<#%= link_to 'Show', notification_path(notification), :class => 'btn btn-mini btn-info' %>-->

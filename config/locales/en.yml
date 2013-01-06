@@ -4,10 +4,16 @@
 en:
   activerecord:
     models:
-      material: Part
+      material: "Part"
+    attributes:
+       customer:
+        phone: "Phone"
+        mobile_phone: "Mobile"
   messages:
     subcontractor:
-      subcontractor_created: " Subcontractor creates successfully!"
-
-
-
+      subcontractor_created: "Subcontractor creates successfully!"
+  general:
+    emails:
+      dear: "Dear"
+      job:  "Job Number"
+      set_date: "Click to set date"
