@@ -26,7 +26,7 @@ authorization do
     has_permission_on :my_users, to: [:index, :read]
     has_permission_on :providers, :to => :index
     has_permission_on :subcontractors, :to => :index
-    has_permission_on :affiliates, :to => [:index, :show]
+    has_permission_on :affiliates, :to => :index
     has_permission_on :service_calls, :to => [:index, :show, :edit, :update]
 
   end
@@ -59,13 +59,13 @@ authorization do
       if_attribute :id => is { user.organization.id }
     end
 
-    has_permission_on :providers, to: [:show] do
+    has_permission_on :providers, to: :show do
       if_attribute :subcontrax_member => true
       if_attribute :id => is_in { user.organization.provider_ids }
     end
 
     has_permission_on :providers, to: [:edit, :update] do
-      if_attribute :subcontractor_ids => contains { user.organization.id }
+      if_attribute :id => is_in { user.organization.provider_ids }, :subcontrax_member => is_not { true }
     end
     has_permission_on :subcontractors, to: [:show] do
       if_attribute :subcontrax_member => true
@@ -73,15 +73,15 @@ authorization do
     end
 
     has_permission_on :subcontractors, to: [:edit, :update] do
-      if_attribute :id => is_in { user.organization.subcontractor_ids }
+      if_attribute :id => is_in { user.organization.subcontractor_ids }, :subcontrax_member => is_not { true }
     end
-    has_permission_on :affiliates, to: [:show] do
+    has_permission_on :affiliates, to: :show do
       if_attribute :subcontrax_member => true
       if_attribute :id => is_in { user.organization.affiliate_ids }
     end
 
     has_permission_on :affiliates, to: [:edit, :update] do
-      if_attribute :id => is_in { user.organization.affiliate_ids }
+      if_attribute :id => is_in { user.organization.affiliate_ids }, :subcontrax_member => is_not { true }
     end
 
     has_permission_on :users, :to => [:index, :show, :new, :create, :edit, :update]
