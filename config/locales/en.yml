@@ -17,3 +17,9 @@ en:
       dear: "Dear"
       job:  "Job Number"
       set_date: "Click to set date"
+    general:
+      my_profile: "My Profile"
+      account_settings: "Account Settings"
+      miya_billing: "MiYa's Billing"
+      sign_out: "Sign Out"
+      see_all: "Show All"

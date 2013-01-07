@@ -12,7 +12,7 @@
   <% resource.build_organization %>
 
   <div class="sign-up">
-    <div class="row-fluid ">
+    <div class="row-fluid">
 
       <%= simple_form_for(resource, :html => { :class => 'form-horizontal' }, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
 
@@ -29,13 +29,13 @@
               <h4>Login Information:</h4>
               </br>
 
-              <%= f.input :email, hint: 'email address is also your new user name' %>
+              <%= f.input :email, hint: 'Email address is also your new user name' %>
               <%= f.input :password %>
               <%= f.input :password_confirmation, label: 'Confirm Password' %>
 
             </div>
 
-            <div class="alert alert-info">
+            <div class="alert alert-info bottom_block">
 
               <h4>User Information:</h4>  </br>
               <%= f.input :first_name %>
@@ -47,14 +47,14 @@
 
           </div>
 
-          <div class="span6">
+          <div class="span6 left_block">
             <div class="alert alert-info">
 
               <h4>Company/Organization Information:</h4>  </br>
               <%= f.simple_fields_for :organization_attributes, @organization do |fo| %>
                   <%= render 'organizations/fields', f: fo %>
               <% end %>
-              <br>
+
 
 
             </div>
@@ -65,6 +65,7 @@
 
 
           <div class="form-actions">
+            <%= link_to 'Back', root_path, :class => 'btn btn-large', id: 'back_from_sign_up' %>
             <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %> </br>
           </div>
 

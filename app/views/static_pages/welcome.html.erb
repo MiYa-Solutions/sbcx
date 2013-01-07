@@ -7,6 +7,8 @@
               <ul>
                 <li><h1><%= Notification.model_name.human  %></h1></li>
                 <li></li>
+                <li><%= link_to  I18n.t('general.general.see_all'), notifications_path, :class => 'btn btn-primary' %></li>
+
               </ul>
             </div>
 
@@ -24,7 +26,8 @@
               </tr>
               </thead>
               <tbody id="notifications">
-              <% @notifications.each do |notification| %>
+
+              <% @notifications.sort_by{|t| - t.created_at.to_i}.first(5).each do |notification| %>
                   <%= render 'notifications/notification', notification: notification %>
               <% end %>
               </tbody>
@@ -66,6 +69,8 @@
             <ul>
               <li><h1>Open Service Calls</h1></li>
               <li></li>
+              <li><%= link_to  I18n.t('general.general.see_all'), service_calls_path, :class => 'btn btn-primary' %></li>
+
             </ul>
           </div>
 
