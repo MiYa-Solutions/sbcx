@@ -63,6 +63,10 @@ class ServiceCall < Ticket
 
   state_machine :status, initial: :na do
     state :na, value: STATUS_NA
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "Service Call status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
+
   end
 
 

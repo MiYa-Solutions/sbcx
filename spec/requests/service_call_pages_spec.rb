@@ -12,7 +12,7 @@ describe "Service Call pages" do
   service_call_started_on   = '#service_call_started_on_text'
   service_call_completed_on = '#service_call_completed_on'
   subcontractor_select      = 'service_call_subcontractor_id'
-  provider_select           = 'service_call_provider_id'
+  provider_select           = 'select#service_call_provider_id'
   technician_select         = 'service_call_technician_id'
   status_select             = 'service_call_status_event'
   customer_select           = 'service_call_customer_id'
@@ -127,7 +127,7 @@ describe "Service Call pages" do
           before do
             in_browser(:org) do
               select org2.name, from: 'service_call_provider_id'
-              auto_complete('service_call_customer', customer.name.chop)
+              fill_in 'service_call_customer', with: customer.name
             end
           end
 
@@ -185,7 +185,7 @@ describe "Service Call pages" do
 
         before do
           in_browser(:org) do
-            auto_complete 'service_call_customer', customer.name
+            #auto_complete 'service_call_customer', customer.name
           end
         end
 
@@ -198,7 +198,7 @@ describe "Service Call pages" do
 
         it "should be created successfully" do
           expect do
-            auto_complete 'service_call_customer', customer.name.chop
+            fill_autocomplete 'service_call_customer', with: customer.name.chop, select: customer.name
             click_button create_btn
           end.to change(ServiceCall, :count).by(1)
         end
@@ -229,6 +229,17 @@ describe "Service Call pages" do
       it { should have_selector(transfer_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
 
       it { should have_selector(status) }
+
+      describe "with single user organization" do
+
+        it "should show start instead of dispatch" do
+          should have_selector(start_btn)
+        end
+
+        it "should not show dispatch" do
+          should_not have_selector(dispatch_btn)
+        end
+      end
 
       describe "multi user organization" do
 
@@ -293,7 +304,7 @@ describe "Service Call pages" do
           end
 
           it "should have the right provider " do
-            should have_selector(provider_select, text: org.name)
+            should have_selector(provider_select + " option[selected]", text: org.name)
           end
 
           it "should allow to accept the service call" do
@@ -792,16 +803,6 @@ describe "Service Call pages" do
 
       end
 
-      describe "with single user organization" do
-
-        it "should show start instead of dispatch" do
-          should have_selector(start_btn)
-        end
-
-        it "should not show dispatch" do
-          should_not have_selector(dispatch_btn)
-        end
-      end
 
     end
 
@@ -820,7 +821,7 @@ describe "Service Call pages" do
 
         end
         it "should have a provider select box" do
-          should have_selector("##{provider_select}")
+          should have_selector(provider_select)
         end
         it "should have a technician select box" do
           should have_selector("##{technician_select}")

@@ -15,7 +15,7 @@
   <div class="row-fluid">
     <div class="span10 ">
       <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' } do |f| %>
-
+          <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
           <%= render 'fields', f: f %>
 
           <div class="form-actions">

@@ -5,7 +5,7 @@ require 'capybara/rspec'
 # data elements to inspect
 # ==============================================================
 agreement_fields = 'div#agreement-fields'
-agreement_name   = 'provider_agreement_name'
+agreement_name   = 'affiliate_agreement_name'
 
 
 describe "Provider Pages" do
@@ -57,7 +57,7 @@ describe "Provider Pages" do
         it { should have_selector('#providers_search_results') }
         it { should have_selector('#new-provider-button') }
         # don't show members that are not associated with logged in org upon accessing the index
-        it { should_not have_selector('.member_label') }
+        it { should_not have_selector('#affiliates_search_results .member_label') }
 
         describe "search results", js: true do
           self.use_transactional_fixtures = false

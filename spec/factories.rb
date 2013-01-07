@@ -51,7 +51,7 @@ FactoryGirl.define do
     after(:build) do |member|
       member.make_member
       member.customers << Customer.new(name: Faker::Name.name)
-      FactoryGirl.create_list(:admin, 1, organization: member)
+      FactoryGirl.create_list(:admin, 1, organization: member) unless member.users.count > 0
       member.save
     end
   end

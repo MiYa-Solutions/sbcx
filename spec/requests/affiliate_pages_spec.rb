@@ -51,7 +51,7 @@ describe "Affiliate Pages" do
         it { should have_selector('#affiliates_search_results') }
         it { should have_selector('#new-affiliate-button') }
         # don't show members that are not associated with logged in org upon accessing the index
-        it { should_not have_selector('.member_label') }
+        it { should_not have_selector('#affiliates_search_results .member_label') }
 
         describe "search results", js: true do
           self.use_transactional_fixtures = false
@@ -75,8 +75,9 @@ describe "Affiliate Pages" do
               clean member
             end
 
-            it { should have_selector('table#affiliates_search_results tr', count: 2) }
-            it { should have_selector('table#affiliates_search_results td', text: member.name) }
+            it { should have_selector('table#affiliates_search_results.table tbody#affiliates tr', count: 2) }
+            it { should have_selector('table#affiliates_search_results.table tbody#affiliates td', text: member.name) }
+
 
           end
 
