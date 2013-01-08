@@ -10,8 +10,8 @@ class SubcontractingAgreementObserver < ActiveRecord::Observer
   def after_submit_for_approval(agreement, transition)
     change_reason = agreement.change_reason ? agreement.change_reason : ""
     other_party   = agreement.updater.organization == agreement.organization ? agreement.organization : agreement.counterparty
-    '%{originator} created a new agreement with %{otherparty}'
-    description_with_reason = I18n.t('events.agreement.submitted.description', originator: agreement.creator.organization.name, otherparty: other_party.name) +
+
+    description_with_reason = I18n.t('events.agreement.submitted.description', originator: agreement.creator.organization.name, counterparty: other_party.name) +
         ": " + change_reason
 
     agreement.events << AgrSubmittedEvent.new(description: description_with_reason)
