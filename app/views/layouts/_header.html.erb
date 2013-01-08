@@ -44,17 +44,19 @@
               <li>
                 <div class="btn-group">
                   <a href="#" data-toggle="dropdown" class="btn dropdown-toggle">
-                    <i class="icon-user"></i> My Account
+                    <i class="icon-user"></i> <%= I18n.t('general.general.my_profile') %>
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a><%= current_user.email %></a></li>
+                    <li class="login_info"><a><%= current_user.name %></a></li>
+                    <li class="login_info"><a><%= current_user.email %></a></li>
                     <li class="divider"></li>
                     <li><%= link_to "Profile", profile_path, id: 'profile_header_link' %></li>
-                    <li><%= link_to "Settings" %></li>
+                    <li><%= link_to I18n.t('general.general.account_settings') %></li>
+                    <li><%= link_to I18n.t('general.general.miya_billing') %></li>
                     <li class="divider"></li>
                     <li>
-                      <%= link_to "Sign out", destroy_user_session_path, method: "delete", id: "sign_out_header_link" %>
+                      <%= link_to I18n.t('general.general.sign_out'), destroy_user_session_path, method: "delete", id: "sign_out_header_link" %>
                     </li>
                   </ul>
           <% else %>

@@ -16,6 +16,12 @@ body {
 
 }
 
+.sidebar-nav-position {
+  //position: fixed;
+  //width: 27%;
+
+}
+
 @import "bootstrap-responsive";
 
 .navbar .brand {
@@ -40,8 +46,16 @@ body {
   padding-right: 5px;
 }
 
+.login_info {
+
+  a {
+    color: #003580;
+    font-weight: bold;
+  }
+}
+
 footer {
-  margin-top: 45px;
+  margin-top: 5px;
   padding-top: 5px;
   border-top: 1px solid #eaeaea;
   color: $grayLight;
@@ -92,6 +106,22 @@ footer {
   .alert {
     margin-bottom: 6px;
   }
+
+  input, textarea {
+      width: 70%;
+    }
+
+  select {
+    width: 71.5%;
+  }
+
+  .left_block {
+    padding-left: 15px;
+  }
+
+  .bottom_block {
+    margin-top: 25px;
+  }
 }
 
 .close {
@@ -124,7 +154,15 @@ footer {
 .navbar .nav > li > a {
 
   font-size: 14px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
+
+.navbar .nav > li > a:hover {
+
+  background-color: #0073CC;
+  background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);
+  background-repeat: repeat-x;}
 
 
   //.miya_buttons_grid {
@@ -751,4 +789,13 @@ hr {
     margin-left: 10%;
   }
 
-  }
+}
+
+#edit_org_well {
+  min-height: 575px;
+}
+
+.well_height {
+  min-height: 575px;
+  margin-left: -1.5%;
+}

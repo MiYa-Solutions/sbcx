@@ -1,6 +1,6 @@
 <% provide(:title, "Edit Profile") %>
 
-<div class="well">
+<div class="well well_height">
   <div class="row-fluid">
 
       <div class="smart_label">
@@ -12,7 +12,7 @@
               Reset Password
             </button>
             <% permitted_to? :edit, :organizations do %>
-                <button class="btn btn-info btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
+                <button class="btn btn-primary btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
                   Edit Organization
                 </button>
             <% end %>
@@ -60,9 +60,9 @@
               <br>
 
 
-          <p><strong>Unhappy?</strong>
-          <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete, class: "btn btn-medium btn-danger", :id => "cancel_my_account" %>
-            </p>
+          <!--<p><strong>Unhappy?</strong>-->
+          <!--<#%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete, class: "btn btn-medium btn-danger", :id => "cancel_my_account" %>-->
+          <!--</p>-->
 
 
 
@@ -76,7 +76,7 @@
               <%= simple_form_for @organization, :html => {:class => 'form-horizontal'}, :remote => true do |f| %>
                   <%= render 'organizations/fields', f: f %>
                   <div class="form-actions">
-                    <button class="btn btn-info btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
+                    <button class="btn btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
                       cancel
                     </button>
                     <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", :id => "save_org_from_edit_profile" %>
@@ -95,7 +95,7 @@
                    <%= f.input :current_password, :hint => "Enter your current password to confirm changes", :required => false %>
 
                    <div class="form-actions">
-                     <button class="btn btn-info btn-medium" data-toggle="collapse" data-target="#edit_password_in_edit_profile" id="edit_org_from_edit_profile">
+                     <button class="btn btn-medium" data-toggle="collapse" data-target="#edit_password_in_edit_profile" id="edit_org_from_edit_profile">
                        cancel
                      </button>
 

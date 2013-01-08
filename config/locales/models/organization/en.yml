@@ -13,7 +13,12 @@ en:
             enable_local: Disabled
             disable_sbcx_memeber: Disabled
             enable_sbcx_memeber:  Enabled
-
+    attributes:
+      organization:
+        name: "Company Name"
+        work_phone: "Other Phone"
+        phone: "Main Phone"
+        mobile: "Mobile Phone"
   errors:
     messages:
       one_system_owner: "There can be only one system owner"
