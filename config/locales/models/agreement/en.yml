@@ -48,6 +48,7 @@ en:
   notifications:
     agreement:
       new_subcon_agreement:
-        html_message: '%{creator} has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
+        html_message: '<strong>%{creator}</strong> has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
+        html_message2: '<strong>%{creator}</strong> has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
         subject: 'New Subcontractor Agreement'
         content: 'Please review and activate the agreement in order to receive new Service Calls.'

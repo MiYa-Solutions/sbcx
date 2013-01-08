@@ -39,7 +39,8 @@
 <br/>
 
     <div class="form-actions">
-      <%= link_to "Back", user_root_path, class: "btn btn-medium" %>
+      <%= link_to I18n.t('general.general.back'), user_root_path, "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_notification_btn' %>
+
     </div>
 
 

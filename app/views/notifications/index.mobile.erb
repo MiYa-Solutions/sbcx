@@ -1,0 +1,32 @@
+<% provide(:title, "All Alerts") %>
+
+<br>
+
+<ul data-role="listview">
+  <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= Notification.model_name.human  %>
+    <span class="alert_label_mobile">
+                <badge><%= @notification_count %></badge>
+        </span>
+  </li>
+  <% @notifications.sort_by{|t| - t.created_at.to_i}.reverse.each do |notification| %>
+      <li class="inline_mobile"><%= link_to notification.subject, notification.becomes(Notification), "data-transition" => "slide" %>
+        <% if notification.human_status_name == 'unread' %>
+            <span class="new_alert_label">
+                <img src="/assets/emails.png">
+            </span>
+        <% end %>
+      </li>
+  <% end %>
+</ul>
+
+<br/>
+
+<p>
+  <div class="ui-grid-solo">
+      <%= link_to I18n.t('general.general.back'), user_root_path, "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_notification_btn' %>
+  </div>
+</p>
+
+
+
+

@@ -14,4 +14,3 @@ $(function () {
         dateOrder:'mmD ddyy'
     });
 });
-

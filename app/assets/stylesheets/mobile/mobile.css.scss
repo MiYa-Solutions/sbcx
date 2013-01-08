@@ -3,8 +3,22 @@
   margin-right: 5px;
 }
 
+.ui-icon-emails {
+  background-image: url('emails.png');
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+}
+
+
 .ui-icon-sign-in-u {
   background-image: url("111-user.png");
+}
+.ui-collapsible {
+  .ui-btn-up-d {
+    background: linear-gradient(#DDDDDD, #BBBBBB) repeat scroll 0 0 #BBBBBB;
+    color: #333333;
+  }
 }
 
 footer {
@@ -144,6 +158,13 @@ input.ui-input-text, textarea.ui-input-text {
   position: relative;
 }
 
+.new_alert_label {
+  right: 10%;
+  margin-top: -10px;
+  position: absolute;
+  top: 50%;
+}
+
 .member_label_mobile {
   //position: absolute;
   //margin-right: -20px;
@@ -166,6 +187,48 @@ input.ui-input-text, textarea.ui-input-text {
     font-weight: bold;
     text-shadow: 0 1px 1px #194B7E;
     font-size: 10px;
+  }
+
+}
+
+.alert_label_mobile {
+
+  right: 5%;
+  margin-top: -10px;
+  position: absolute;
+  top: 50%;
+  background-color: #396B9E;
+  border-radius: 1em 1em 1em 1em;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
+  width: 60px;
+  height: 18px;
+
+  badge {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 0 1px 1px #194B7E;
+    font-size: 12px;
+  }
+
+}
+
+.show_all_notifications {
+
+   width: 100px;
+
+  .ui-btn {
+    cursor: pointer;
+    padding: 0;
+    text-align: center;
+    width: 100px;
+    height: 18px;
+    margin-top: -10px;
+    position: absolute;
+    right: 40%;
+    text-align: center;
+    top: 50%;
+
   }
 
 }
@@ -402,6 +465,16 @@ input.ui-input-text, textarea.ui-input-text {
     margin-right: 1px;
     margin-top: 5px;
     margin-bottom: 5px;
+
+  .ui-grid-a .ui-block-a {
+    width: 30%;
+    padding-top: 10px;
+  }
+
+  .ui-grid-a .ui-block-b {
+    width: 70%;
+    padding-top: 10px;
+  }
 
 }
 
