@@ -78,6 +78,8 @@ authorization do
     has_permission_on :affiliates, to: :show do
       if_attribute :subcontrax_member => true
       if_attribute :id => is_in { user.organization.affiliate_ids }
+      if_attribute :id => is_in { user.organization.provider_ids }
+      if_attribute :id => is_in { user.organization.subcontractor_ids }
     end
 
     has_permission_on :affiliates, to: [:edit, :update] do
