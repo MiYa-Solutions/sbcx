@@ -50,9 +50,21 @@ def clean(org)
 
 end
 
-def auto_complete(selector, value)
-  val_selector = '.ui-menu-item a:contains(\"#{value}\")'
-  fill_in selector, :with => value.chop
-  sleep(5)
-  page.execute_script " $('#{val_selector}').trigger(\"mouseenter\").click();"
+def fill_autocomplete(field, options = { })
+  fill_in field, :with => options[:with]
+
+  page.execute_script %Q{ $('##{field}').trigger("focus") }
+  page.execute_script %Q{ $('##{field}').trigger("keydown") }
+  selector = "ul.ui-autocomplete a:contains('#{options[:select]}')"
+
+  page.should have_selector selector
+  #page.driver.render('./tmp/capybara/auto_complete-' + Time.now.strftime("%Y-%m-%d-%H_%M_%S_%L") + '.png', full: true)
+
+  page.execute_script "$(\"#{selector}\").mouseenter().click()"
 end
+
+#def fill_in field, options
+#  super
+#  Rails.logger.debug { "In custom fill_in" }
+#  page.execute_script "$('#{field}').change();"
+#end

@@ -14,7 +14,7 @@ class ProvidersController < ApplicationController
   def create
     if @provider.save
       @provider.subcontractors << current_user.organization.becomes(Subcontractor)
-      redirect_to @provider.becomes(Provider), :notice => t('providers.flash.create_provider', name: @provider.name)
+      redirect_to edit_agreement_path(@provider.agreements.last), :notice => t('providers.flash.create_provider', name: @provider.name)
     else
       render 'new'
     end

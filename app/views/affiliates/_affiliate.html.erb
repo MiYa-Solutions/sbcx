@@ -19,12 +19,7 @@
                 <li>&nbsp;</li>
                 <li>&nbsp;</li>
                 <li>
-                  <%= form_for affiliate.agreements.new, :html => { :class => 'add_member' } do |f| %>
-
-                      <%= f.hidden_field :provider_id %>
-                      <%= f.hidden_field :subcontractor_id, value: current_user.organization.id %>
-                      <%= f.submit "Add", class: "btn btn-mini btn-info miya_add_member", id: "#{affiliate.id}-add-sbcx-member" %>
-                  <% end %>
+                  Click on the affiliate to add an agreement
                 </li>
               </ul>
 

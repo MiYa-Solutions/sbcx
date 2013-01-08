@@ -6,6 +6,16 @@ en:
       agreement:
         id: "Agreement Id"
         name: "Agreement Name"
+      subcontracting_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Provider"
+        counterparty: "Subcontractor"
+      supplier_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Supplier"
+        counterparty: "Supplier Customer"
     state_machines:
       organization_agreement:
         status:
@@ -25,18 +35,6 @@ en:
             rejected_by_cparty: "Rejected By The Subcontractor"
             canceled: "Canceled"
             canceled: "Replaced With Another Agreement"
-
-      subcontracting_agreement:
-        name: "Name"
-        description: "Description"
-        organization: "Provider"
-        counterparty: "Subcontractor"
-      supplier_agreement:
-        name: "Name"
-        description: "Description"
-        organization: "Supplier"
-        counterparty: "Supplier Customer"
-
   events:
     agreement:
       new_subcon_agreement:
@@ -48,7 +46,6 @@ en:
   notifications:
     agreement:
       new_subcon_agreement:
-        html_message: '<strong>%{creator}</strong> has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
-        html_message2: '<strong>%{creator}</strong> has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
+        html_message: '%{creator} has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
         subject: 'New Subcontractor Agreement'
         content: 'Please review and activate the agreement in order to receive new Service Calls.'

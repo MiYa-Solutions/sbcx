@@ -57,7 +57,7 @@
           <tr>
             <td>Billing Status</td>
             <td>
-                                              <span class="status_label">
+                                              <span class="status_label" id="service_call_billing_status">
                                               <badge><%= @service_call.human_billing_status_name %></badge>
                                               </span>
             </td>
@@ -93,11 +93,11 @@
 </div>
 
 
-    <!--Job details-->
-    <div class="span8" id="job_details">
-<%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
+<!--Job details-->
+<div class="span8" id="job_details">
+  <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
 
-    <div class="smart_label">
+      <div class="smart_label">
         <ul>
           <li><h1>Job Name</h1></li>
           <li></li>
@@ -117,7 +117,7 @@
               </li>
           <% end %>
         </ul>
-    </div>
+      </div>
       <br>
       <!--Update Job Info-->
       <div class="row-fluid">
@@ -179,19 +179,19 @@
                 </div>
               </address>
             </li>
-        <% unless current_user.organization.name == @service_call.subcontractor.try(:name)%>
-          <li>
-              <div class="control-group select required">
-                <label class="select optional control-label" for="completed_on_text">Subcontractor</label>
+            <% unless current_user.organization.name == @service_call.subcontractor.try(:name) %>
+                <li>
+                  <div class="control-group select required">
+                    <label class="select optional control-label" for="completed_on_text">Subcontractor</label>
 
-                <div class="controls">
-                  <div class="input-large uneditable-input" title="To change Subcontractor use the action section" rel='tooltip'>
-                    <%= f.object.subcontractor.try (:name) %>
+                    <div class="controls">
+                      <div class="input-large uneditable-input" title="To change Subcontractor use the action section" rel='tooltip'>
+                        <%= f.object.subcontractor.try (:name) %>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </li>
-       <% end %>
+                </li>
+            <% end %>
             <li>
               <div class="control-group select required">
                 <label class="select optional control-label" for="completed_on_text">Technician</label>
@@ -232,45 +232,45 @@
       </div>
       <!--end of status & Job details section-->
 
-<% end %>
-     <!--Parts-->
-      <div class="row-fluid">
-        <div class="smart_label">
-          <ul>
-            <li><h1><%= Material.model_name.human.pluralize %></h1></li>
-            <li><%= link_to 'Add Parts', '#', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
-          </ul>
-        </div>
+  <% end %>
+  <!--Parts-->
+  <div class="row-fluid">
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= Material.model_name.human.pluralize %></h1></li>
+        <li><%= link_to 'Add Parts', '#', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
+      </ul>
+    </div>
 
-        <div class="bom collapse" id="bom">
-          <%= render 'boms/in_line_form', ticket: @service_call.becomes(ServiceCall) %>
+    <div class="bom collapse" id="bom">
+      <%= render 'boms/in_line_form', ticket: @service_call.becomes(ServiceCall) %>
 
-        </div>
+    </div>
 
-        <table class="table table-striped" id="boms-table">
-          <thead>
-          <tr>
-            <th><%= Bom.human_attribute_name(:material_name) %></th>
-            <th><%= Bom.human_attribute_name(:quantity) %></th>
-            <th><%= Bom.human_attribute_name(:cost) %></th>
-            <th><%= Bom.human_attribute_name(:price) %></th>
-            <th><%= Bom.human_attribute_name(:total_cost) %></th>
-            <th><%= Bom.human_attribute_name(:total_price) %></th>
-            <th>Actions</th>
+    <table class="table table-striped" id="boms-table">
+      <thead>
+      <tr>
+        <th><%= Bom.human_attribute_name(:material_name) %></th>
+        <th><%= Bom.human_attribute_name(:quantity) %></th>
+        <th><%= Bom.human_attribute_name(:cost) %></th>
+        <th><%= Bom.human_attribute_name(:price) %></th>
+        <th><%= Bom.human_attribute_name(:total_cost) %></th>
+        <th><%= Bom.human_attribute_name(:total_price) %></th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody id="boms">
+
+      <% @service_call.boms.each do |bom| %>
+          <tr id="bom_<%= bom.id %>">
+            <%= render 'boms/bom', bom: bom %>
           </tr>
-          </thead>
-          <tbody id="boms">
-
-    <% @service_call.boms.each do |bom| %>
-        <tr id="bom_<%= bom.id %>">
-          <%= render 'boms/bom', bom: bom %>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
+      <% end %>
+      </tbody>
+    </table>
 
 
-</div>
+  </div>
 
 </div>
 

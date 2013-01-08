@@ -130,7 +130,7 @@ class ServiceCallsController < ApplicationController
 
   # TODO move autocomplete to CustomerController
   def autocomplete_customer_name_where
-
+    Rails.logger.debug { "Invoked #{self.class.name}#autocomplete_customer_name_where" }
     default = "organization_id = #{current_user.organization.id}"
 
     if params[:ref_id].nil? || params[:ref_id].blank?

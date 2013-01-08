@@ -11,6 +11,7 @@ describe AgrNewSubconEvent do
     let(:org_user) { agreement.organization.org_admins.first }
     before do
       agreement.change_reason = "Test reason"
+      agreement.updater       = org_user
       agreement.submit_for_approval
     end
 

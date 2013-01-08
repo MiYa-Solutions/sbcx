@@ -51,7 +51,7 @@ describe "Affiliate Pages" do
         it { should have_selector('#affiliates_search_results') }
         it { should have_selector('#new-affiliate-button') }
         # don't show members that are not associated with logged in org upon accessing the index
-        it { should_not have_selector('.member_label') }
+        it { should_not have_selector('#affiliates_search_results .member_label') }
 
         describe "search results", js: true do
           self.use_transactional_fixtures = false
@@ -75,31 +75,32 @@ describe "Affiliate Pages" do
               clean member
             end
 
-            it { should have_selector('table#affiliates_search_results tr', count: 2) }
-            it { should have_selector('table#affiliates_search_results td', text: member.name) }
+            it { should have_selector('table#affiliates_search_results tbody#affiliates tr', count: 1) }
+            it { should have_selector('table#affiliates_search_results tbody#affiliates td', text: member.name) }
+
 
           end
 
           describe "show a mix of local and similar public providers", js: true do
-            #pending "implementation"
-            let!(:member) { FactoryGirl.create(:member_admin).organization }
-
-            before do # the high level example
-              2.times { org.providers << FactoryGirl.create(:provider) }
-              visit affiliates_path
-              fill_in 'search', with: member.name
-              click_button 'affiliate-search-button'
-              click_button "#{member.id}-add-sbcx-member"
-              visit affiliates_path
-            end
-
-            after do
-              clean member
-            end
-
-            it { should have_selector('table#affiliates_search_results tr', count: 6) }
-            it { should have_selector('table#affiliates_search_results td', text: member.name) }
-            it { should have_selector('.member_label') }
+            pending "determine the behavior and implement test"
+            #let!(:member) { FactoryGirl.create(:member_admin).organization }
+            #
+            #before do # the high level example
+            #  2.times { org.providers << FactoryGirl.create(:provider) }
+            #  visit affiliates_path
+            #  fill_in 'search', with: member.name
+            #  click_button 'affiliate-search-button'
+            #  click_button "#{member.id}-add-sbcx-member"
+            #  visit affiliates_path
+            #end
+            #
+            #after do
+            #  clean member
+            #end
+            #
+            #it { should have_selector('table#affiliates_search_results tr', count: 6) }
+            #it { should have_selector('table#affiliates_search_results td', text: member.name) }
+            #it { should have_selector('.member_label') }
 
           end
 
