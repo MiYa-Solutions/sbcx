@@ -28,6 +28,9 @@
 <% unless @service_calls.empty? %>
 
     <ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
+      <div class= "show_all_notifications">
+        <%= link_to I18n.t('general.general.see_all'), '#', "data-role" => "button", id: 'show-all-notifications-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+      </div>
       <% @service_calls.each do |sc| %>
           <li class="inline_mobile service_calls_index">
             <p class="ui-li-aside-blue ui-li-desc-blue">
