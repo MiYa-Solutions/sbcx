@@ -1,39 +1,39 @@
-  <div data-role="navbar">
-    <% if user_signed_in? %>
-     
-       <ul>
-      <li>
-        <%= link_to user_root_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-icon" => "home", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "flow" do %>
-            <span>Home</span>
-        <% end %>
-      </li>
-      <li>
-        <%= link_to service_calls_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "type" => "button", "data-icon" => "star", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true", "data-transition" => "flow" do %>
-            <span>My Jobs</span>
-        <% end %>
-      </li>
-      <li>
-        <%= link_to affiliates_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-icon" => "grid", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
-            <span>Network</span>
-        <% end %>
+<div data-role="navbar">
+  <% if user_signed_in? %>
+           
+      <ul>
+        <li class="footer_image">
+          <%= link_to user_root_path, class: "ui-btn ui-btn-inline ui-btn-up-b text_footer", "data-icon" => "home2", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
+              <span>Home</span>
+          <% end %>
+        </li>
+        <li class="footer_image">
+          <%= link_to service_calls_path, class: "ui-btn ui-btn-inline ui-btn-up-b text_footer", "data-icon" => "star2", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
+                      <span>Jobs</span>
+          <% end %>
+        </li>
+        <li class="footer_image">
+          <%= link_to affiliates_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-icon" => "grid2", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
+              <span>Network</span>
+          <% end %>
 
-      </li>
-      <li>
-        <%= link_to profile_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-icon" => "gear", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
-            <span>More...</span>
-        <% end %>
+        </li>
+        <li class="footer_image">
+          <%= link_to profile_path, class: "ui-btn ui-btn-inline ui-btn-up-b", "data-icon" => "gear2", "data-corners" => "false", "data-shadow" => "false", "data-iconshadow" => "true", "data-wrapperels" => "span", "data-theme" => "a", "data-inline" => "true" do %>
+              <span>Menu</span>
+          <% end %>
 
-        <!--<a href="#mypanel">Open panel</a>-->
-      </li>
-    </ul>
-    <% else %>
+          <!--<a href="#mypanel">Open panel</a>-->
+        </li>
+      </ul>
+  <% else %>
 
-        <div class="miya_logo_footer">
-          <img src="/assets/logoM.png" id= "centered_image" alt="MiYa"/>
-        </div>
-    <% end %>
-  </div>
-    <!--<h5><#%= current_user.try(:email) %></h5>-->
+      <div class="miya_logo_footer">
+        <img src="/assets/logoM.png" id= "centered_image" alt="MiYa"/>
+      </div>
+  <% end %>
+</div>
+<!--<h5><#%= current_user.try(:email) %></h5>-->
 
 
 

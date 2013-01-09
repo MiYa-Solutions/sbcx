@@ -159,7 +159,7 @@ input.ui-input-text, textarea.ui-input-text {
 }
 
 .new_alert_label {
-  right: 10%;
+  right: 11%;
   margin-top: -10px;
   position: absolute;
   top: 50%;
@@ -287,12 +287,17 @@ input.ui-input-text, textarea.ui-input-text {
 
 .miya_logo_large {
 
+  text-align: center;
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+  width: 100%;
+
   img {
     border: 0;
     //float: center;
-    display: inline;
-    margin-left: 10%;
-    margin-right: 10%;
+    //display: inline;
+    //margin-left: 10%;
+    //margin-right: 10%;
   }
 
   .ui-btn-left, .ui-btn-right, .ui-input-clear, .ui-btn-inline, .ui-grid-a .ui-btn, .ui-grid-b .ui-btn, .ui-grid-c .ui-btn, .ui-grid-d .ui-btn, .ui-grid-e .ui-btn, .ui-grid-solo .ui-btn {
@@ -525,3 +530,176 @@ input.ui-input-text, textarea.ui-input-text {
 .table-stroke tbody th, .table-stroke tbody td {
   border-bottom: 1px solid rgba(0, 0, 0, .05);
 }
+
+
+.icon_grid {
+
+
+  .ui-grid-b {
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-top: -5px;
+  }
+
+  .ui-grid-a > *:nth-child(n) {
+    margin-left: 2%;
+    width: 33%;
+  }
+
+  .ui-grid-b > *:nth-child(n) {
+    width: 33%;
+  }
+
+  .ui-grid-c > *:nth-child(n) {
+    width: 33%;
+  }
+
+
+}
+
+.white {
+  //background-color: #F3F3F2;
+  //background: linear-gradient(#DDDDDD, #BBBBBB) repeat scroll 0 0 #BBBBBB;
+  height: 100px;
+  text-align: center;
+
+  //padding-left: 40px;
+  padding-top: 7px;
+
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+  width: 80%;
+}
+.imgTest {
+  text-align: center;
+  //font-weight: bold;
+  text-shadow: 0 1px 1px #111111;
+  font-size: 12px;
+
+}
+
+.icon_frame {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  border-image: none;
+  border-radius: 5px 5px 5px 5px;
+  //border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  float: left;
+  margin: 0 18px 18px 0;
+  overflow: hidden;
+}
+
+.footer_image {
+
+  height: 48px;
+
+  .ui-icon-home {
+    top: 1px;
+  }
+  .ui-btn-inner {
+    border-width: 0;
+    padding-top: 10px;
+    border: none;
+    box-shadow: none;
+  }
+
+  .ui-navbar li .ui-btn-icon-top .ui-btn-inner {
+
+    padding-top: -33px;
+  }
+
+
+  .ui-btn-text {
+    width: auto;
+  }
+
+
+  .ui-btn-inner, .ui-btn {
+    font-size: 12.5px;
+    text-align: left;
+
+  }
+
+  .ui-btn-inner .ui-icon-shadow {
+    border: none none;
+    box-shadow: none;
+  }
+}
+
+.image_in_footer {
+
+  .ui-mobile a img, .ui-mobile fieldset {
+    border-width: 0;
+    margin-top: -25px;
+  }
+
+
+}
+
+
+.ui-navbar li .ui-btn-icon-top .ui-btn-inner {
+  font-size: 9px;
+
+  //padding-top: 3px;
+  .ui-icon {
+    height: 48px;
+    width: 48px;
+    //margin-left: 3px;
+    //text-align: left;
+    //margin-left: -19%;
+
+  }
+  .ui-icon-shadow {
+    box-shadow: none;
+    border: none;
+  }
+
+}
+
+.imgTest {
+  //position: absolute;
+  //padding-top: -10px;
+
+}
+
+.ui-icon-home2 {
+  background: url("/assets/home.png");
+}
+
+.ui-icon-star2 {
+  background: url("/assets/jobs48.png");
+}
+
+.ui-icon-grid2 {
+  background: url("/assets/network48.png");
+}
+
+.ui-icon-gear2 {
+  background: url("/assets/menu48.png");
+}
+
+.ui-header .ui-btn-icon-top .ui-icon, .ui-footer .ui-btn-icon-top .ui-icon, .ui-mini.ui-btn-icon-top .ui-icon, .ui-mini .ui-btn-icon-top .ui-icon {
+  top: 2px;
+}
+.text_footer {
+
+  .ui-btn-text {
+   //height: 20px;
+  }
+
+}
+
+.ui-btn-inner .ui-icon-shadow {
+  box-shadow: none;
+}
+
+
+.ui-content .ui-listview {
+  margin: -20px -15px -15px;
+}
+
+

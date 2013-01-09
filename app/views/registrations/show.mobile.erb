@@ -1,13 +1,85 @@
-<% provide(:title, 'More') %>
+<% provide(:title, 'Menu') %>
+
+
+<br>
+
+
+<div class="icon_grid">
+  <div class="ui-grid-b">
+    <div class="ui-block-a white icon_frame">
+      <%= link_to image_tag("/assets/customer.png", :border => 0), customers_path %>
+      <div class="imgTest">Customers</div>
+
+    </div>
+    <div class="ui-block-b white icon_frame">
+      <img src="/assets/employees.png" alt="MiYa"/>
+      <div class="imgTest">Employees</div>
+    </div>
+    <div class="ui-block-c white icon_frame">
+      <img src="/assets/parts.png" alt="MiYa"/>
+      <div class="imgTest">Manage Parts</div>
+    </div>
+
+
+
+  </div>
+</div>
+
+
+<div class="icon_grid">
+  <div class="ui-grid-b">
+    <div class="ui-block-a white icon_frame">
+      <img src="/assets/balance.png" alt="MiYa"/>
+      <div class="imgTest">Balance</div>
+    </div>
+
+
+    <div class="ui-block-b white icon_frame">
+      <img src="/assets/alerts.png" alt="MiYa"/>
+      <div class="imgTest">Alerts</div>
+    </div>
+    <div class="ui-block-c white icon_frame">
+      <img src="/assets/profile.png" alt="MiYa"/>
+      <div class="imgTest">My Profile</div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="icon_grid">
+  <div class="ui-grid-b">
+    <div class="ui-block-a white icon_frame">
+      <img src="/assets/settings.png" alt="MiYa"/>
+      <div class="imgTest">Preferences</div>
+    </div>
+
+    <div class="ui-block-b white icon_frame">
+      <img src="/assets/support.png" alt="MiYa"/>
+      <div class="imgTest">Contact Us</div>
+    </div>
+
+    <div class="ui-block-c white icon_frame">
+      <img src="/assets/out.png" alt="MiYa"/>
+      <div class="imgTest">Sign Out</div>
+    </div>
+  </div>
+</div>
+
+
+<br>
+<br>
+
+
 
 
 <fieldset class="ui-grid-a">
   <div class="ui-block-a">
     <!--Place for additional button-->
   </div>
-    <div class="ui-block-b">
+  <div class="ui-block-b">
     <%= link_to destroy_user_session_path, method: :delete, "data-role" => "button", "data-icon" => "gear", "data-ajax" => "false", "data-theme" => "c", "class" => "ui-btn-up-c" do %>
-          <span class="ui-btn-text">Sign Out</span>
+        <span class="ui-btn-text">Sign Out</span>
     <% end %>
   </div>
 </fieldset>
@@ -18,7 +90,7 @@
 <ul data-role="listview" data-divider-theme="d">
   <li class="inline_mobile">
     <%= link_to 'Customers', customers_path, "data-transition" => "slide" %>
-   </li>
+  </li>
   <li class="inline_mobile">
     <%= link_to 'Employees', '#', "data-transition" => "slide" %>
   </li>
@@ -30,7 +102,6 @@
   </li>
 
 </ul>
-
 
 
 
