@@ -4,7 +4,7 @@
   <title><%= h(yield(:title) || "Untitled") %></title>
   <%= javascript_include_tag "application" %>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1 minimum-scale=1, maximum-scale=1">
   <%= stylesheet_link_tag "http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css", "mobile/mobile.css", "mobile/mobiscroll-2.3.custom.min.css" %>
   <%= javascript_include_tag "http://code.jquery.com/jquery-1.8.2.min.js", "http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js", "mobile/mobile", "mobile/mobiscroll-2.3.custom.min" %>
   <%= csrf_meta_tag %>

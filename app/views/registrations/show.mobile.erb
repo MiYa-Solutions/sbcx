@@ -1,67 +1,59 @@
-<% provide(:title, 'Menu') %>
-
+<% provide(:title, I18n.t('general.general.menu')) %>
 
 <br>
-
-
+<!--First line of icons-->
 <div class="icon_grid">
   <div class="ui-grid-b">
     <div class="ui-block-a white icon_frame">
       <%= link_to image_tag("/assets/customer.png", :border => 0), customers_path %>
-      <div class="imgTest">Customers</div>
-
-    </div>
+      <div><%= I18n.t('general.general.customers') %></div>
+     </div>
     <div class="ui-block-b white icon_frame">
       <img src="/assets/employees.png" alt="MiYa"/>
-      <div class="imgTest">Employees</div>
+      <div><%= I18n.t('general.general.employees') %></div>
     </div>
     <div class="ui-block-c white icon_frame">
       <img src="/assets/parts.png" alt="MiYa"/>
-      <div class="imgTest">Manage Parts</div>
+      <div><%= I18n.t('general.general.manage_parts') %></div>
     </div>
-
-
-
   </div>
 </div>
 
-
+<!--Second line of icons-->
 <div class="icon_grid">
   <div class="ui-grid-b">
     <div class="ui-block-a white icon_frame">
       <img src="/assets/balance.png" alt="MiYa"/>
-      <div class="imgTest">Balance</div>
+      <div><%= I18n.t('general.general.balance') %></div>
     </div>
-
-
     <div class="ui-block-b white icon_frame">
       <img src="/assets/alerts.png" alt="MiYa"/>
-      <div class="imgTest">Alerts</div>
+      <div><%= I18n.t('general.general.alerts') %></div>
     </div>
     <div class="ui-block-c white icon_frame">
-      <img src="/assets/profile.png" alt="MiYa"/>
-      <div class="imgTest">My Profile</div>
+      <%= link_to image_tag("/assets/profile.png", :border => 0), edit_user_registration_path %>
+      <div><%= I18n.t('general.general.my_profile') %></div>
     </div>
 
   </div>
 </div>
 
-
+<!--Third line of icons-->
 <div class="icon_grid">
   <div class="ui-grid-b">
     <div class="ui-block-a white icon_frame">
       <img src="/assets/settings.png" alt="MiYa"/>
-      <div class="imgTest">Preferences</div>
+      <div><%= I18n.t('general.general.preferences') %></div>
     </div>
 
     <div class="ui-block-b white icon_frame">
       <img src="/assets/support.png" alt="MiYa"/>
-      <div class="imgTest">Contact Us</div>
+      <div><%= I18n.t('general.general.contact_us') %></div>
     </div>
 
     <div class="ui-block-c white icon_frame">
-      <img src="/assets/out.png" alt="MiYa"/>
-      <div class="imgTest">Sign Out</div>
+      <%= link_to image_tag("/assets/out.png", :border => 0), destroy_user_session_path, method: :delete %>
+      <div><%= I18n.t('general.general.sign_out') %></div>
     </div>
   </div>
 </div>
@@ -69,48 +61,11 @@
 
 <br>
 <br>
-
-
-
-
-<fieldset class="ui-grid-a">
-  <div class="ui-block-a">
-    <!--Place for additional button-->
-  </div>
-  <div class="ui-block-b">
-    <%= link_to destroy_user_session_path, method: :delete, "data-role" => "button", "data-icon" => "gear", "data-ajax" => "false", "data-theme" => "c", "class" => "ui-btn-up-c" do %>
-        <span class="ui-btn-text">Sign Out</span>
-    <% end %>
-  </div>
-</fieldset>
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 
-
-<ul data-role="listview" data-divider-theme="d">
-  <li class="inline_mobile">
-    <%= link_to 'Customers', customers_path, "data-transition" => "slide" %>
-  </li>
-  <li class="inline_mobile">
-    <%= link_to 'Employees', '#', "data-transition" => "slide" %>
-  </li>
-  <li class="inline_mobile">
-    <%= link_to 'Manage Parts', '#', "data-transition" => "slide" %>
-  </li>
-  <li class="inline_mobile">
-    <%= link_to 'My Profile', edit_user_registration_path, "data-transition" => "slide" %>
-  </li>
-
-</ul>
-
-
-
-<!-- OLD Sign_out -->
-<!--
-<#%= link_to destroy_user_session_path, method: :delete, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-b", data: { ajax: "false", icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>
-    <span class="ui-btn-inner ui-btn-corner-all ui-btn-up-b">
-              <span class="ui-btn-text ">Sign Out</span>
-              <span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span>
-            </span></a>
-
-<#% end %> -->
