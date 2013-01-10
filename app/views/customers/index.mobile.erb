@@ -1,21 +1,4 @@
 <% provide(:title, 'My Customers') %>
-
-<fieldset class="ui-grid-a ui-btn-inner-small">
-
-  <div class="ui-block-a">
-    <%= link_to 'Back', profile_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
-  </div>
-
-  <div class="ui-block-b">
-    <div class="miya_blue_button">
-      <%= link_to 'New', new_customer_path, "data-role" => "button", :class => "ui-btn-up-b",  id: 'new-provider-button', "data-icon" => "email"%>
-    </div>
-  </div>
-
-</fieldset>
-
-
-
 <br>
 
 
@@ -24,6 +7,9 @@
   <%= form_tag customers_path, id: "agreement_search_form", :method => :get, :remote => true, :class => "ui-listview-filter ui-bar-c", "role" => "search" do %>
       <div class="ui-input-search ui-shadow-inset ui-btn-corner-all ui-btn-shadow ui-icon-searchfield ui-body-c">
         <%= text_field_tag :search, params[:search], "data-divider-theme" => "d", :placeholder => "Search Contacts", "class" => "ui-input-text ui-body-c" %>
+      </div>
+      <div class= "new_job_button">
+        <%= link_to I18n.t('general.general.new'), new_customer_path, "data-role" => "button", id: 'new-customer-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
       </div>
   <% end %>
 </div>
