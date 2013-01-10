@@ -14,12 +14,12 @@
 #
 
 class OrgToRole < ActiveRecord::Base
-  validates_presence_of :organization_id, :organization_role_id
+  #validates_presence_of :organization_id, :organization_role_id, message: "both organization_id and organization_role id must be valid"
   belongs_to :organization
   belongs_to :organization_role
 
   validates_uniqueness_of :organization_role_id, :scope => :organization_id,
-                          :message => "can only register once per organization"
+                          :message                      => "can only register once per organization"
 
 
 end
