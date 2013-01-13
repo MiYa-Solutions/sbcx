@@ -1,3 +1,65 @@
+.ui-body-d,.ui-overlay-d{
+  border:1px solid #444444 ;
+  color:#ffffff ;text-shadow:0  1px  1px  #080707 ;
+  background:#222222 ;
+  background-image:-webkit-gradient(linear,left top,left bottom,from(#a1a1a1 ),to( #575757 ));
+  background-image:-webkit-linear-gradient( #a1a1a1,#575757 );
+  background-image:   -moz-linear-gradient( #a1a1a1,#575757 );
+  background-image:    -ms-linear-gradient( #a1a1a1,#575757 );
+  background-image:     -o-linear-gradient( #a1a1a1,#575757 );
+  background-image:        linear-gradient( #a1a1a1,#575757 );
+}
+
+footer {
+  .ui-navbar ul {
+    margin: -16px 0 0;
+  }
+
+
+}
+
+//.ui-footer {
+//
+//}.ui-bar-a {
+//  background:#a1a1a1 ;
+//}
+
+
+.ui-navbar.ui-mini {
+  margin: -9px 0 0;
+}
+
+//.ui-body-a,.ui-overlay-a{
+//  border:1px solid #444444 ;
+//  color:#ffffff ;
+//  text-shadow:0  1px  1px  #080707 ;
+//  background:#222222 ;
+//  background-image:-webkit-gradient(linear,left top,left bottom,from( #a1a1a1 ),to( #575757 ));
+//  background-image:-webkit-linear-gradient( #a1a1a1,#575757 );
+//  background-image:   -moz-linear-gradient( #a1a1a1,#575757 );
+//  background-image:    -ms-linear-gradient( #a1a1a1,#575757 );
+//  background-image:     -o-linear-gradient( #a1a1a1,#575757 );
+//  background-image:        linear-gradient( #a1a1a1,#575757 );
+//}
+//
+//.ui-btn-up-a{
+//  border:1px solid #111111 ;
+//  background:#a1a1a1 ;
+//  font-weight:bold;color:#ffffff ;
+//  text-shadow:0  1px  1px  #111111 ;
+//  background-image:-webkit-gradient(linear,left top,left bottom,from( #a1a1a1 ),to( #a1a1a1 ));
+//  background-image:-webkit-linear-gradient( #a1a1a1,#a1a1a1 );
+//  background-image:   -moz-linear-gradient( #a1a1a1,#a1a1a1 );
+//  background-image:    -ms-linear-gradient( #a1a1a1,#a1a1a1 );
+//  background-image:     -o-linear-gradient( #a1a1a1,#a1a1a1 );
+//  background-image:        linear-gradient( #a1a1a1,#a1a1a1 );
+//}
+
+
+
+
+
+
 .ui-btn-left, .ui-btn-right, .ui-input-clear, .ui-btn-inline, .ui-grid-a .ui-btn, .ui-grid-b .ui-btn, .ui-grid-c .ui-btn, .ui-grid-d .ui-btn, .ui-grid-e .ui-btn, .ui-grid-solo .ui-btn {
   margin-left: 5px;
   margin-right: 5px;
@@ -14,18 +76,9 @@
 .ui-icon-sign-in-u {
   background-image: url("111-user.png");
 }
-.ui-collapsible {
-  .ui-btn-up-d {
-    background: linear-gradient(#DDDDDD, #BBBBBB) repeat scroll 0 0 #BBBBBB;
-    color: #333333;
-  }
-}
 
-footer {
-  .ui-navbar ul {
-   margin: -16px 0 0;
-  }
-}
+
+
 
 .red_button {
   .ui-btn-inner {
@@ -338,6 +391,41 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+.ui-collapsible-heading .ui-btn-up-d {
+  background: #A1A1A1;
+  color: #ffffff;
+  text-shadow: 0 1px 1px #080707;
+  border-width: 1px 0 0;
+  border-color: #000000;
+}
+
+.ui-collapsible-content .ui-btn-up-d {
+  background: linear-gradient(#FFFFFF, #F1F1F1) repeat scroll 0 0 #EEEEEE;
+  color: #333333;
+}
+
+.service_call_show_buttons {
+  margin-bottom: -10px;
+  margin-top: -4px;
+}
+
+//.ui-collapsible {
+//  .ui-btn-up-d {
+//    background: linear-gradient(#5F9CC5, #396B9E) repeat scroll 0 0 #396B9E;
+//  }
+//}
+
+//.ui-collapsible .ui-btn-up-d {
+//  background: linear-gradient(#5F9CC5, #396B9E) repeat scroll 0 0 #396B9E;
+//}
+
+//.ui-collapsible .ui-btn-up-d {
+//  background: linear-gradient(#DDDDDD, #BBBBBB) repeat scroll 0 0 #BBBBBB;
+//  color: #333333;
+//  text-shadow: 0 1px 0 #EEEEEE;
+//}
+
+
 .ui-header .ui-title {
   display: block;
   font-size: 16px;
@@ -350,6 +438,10 @@ input.ui-input-text, textarea.ui-input-text {
   padding-left:10%;
   width: 50%;
 }
+
+
+
+
 
 
 .header_sign_out {

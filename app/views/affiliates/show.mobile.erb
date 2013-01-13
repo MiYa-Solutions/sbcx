@@ -1,6 +1,7 @@
 <!--<#% provide(:title, "<span background-color=red>LALA</span> <div class='btn' >Li</div>".html_safe) %>-->
 <% provide(:title, @affiliate.name) %>
 
+<div class="service_call_show_buttons">
 <% if @affiliate.subcontrax_member? %>
    <% if  @affiliate.id.in? current_user.organization.provider_ids %>
 
@@ -37,13 +38,16 @@
       </div>
       <div class="ui-block-b">
         <div class="miya_blue_button">
-         <%= link_to 'Invite', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b", "data-icon" => "email" %>
+         <%= link_to 'Invite', new_affiliate_path, "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "email" %>
        </div>
       </div>
     </fieldset>
 
+
+
 <% end %>
 
+</div>
 
 <div data-role="collapsible-set" data-inset="false">
 
