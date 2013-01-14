@@ -1,11 +1,23 @@
 <% provide(:title, "Edit Part: " + @bom.material_name ) %>
 
 
-<%= render 'form' %>
+<%= render 'bom' %>
 <br>
 <!--
 <#%= link_to 'Back', :back %>-->
-<%= link_to "Back", :back, "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-l", "data-iconpos" => "left", "data-transition" => "slide" %>
-<%= link_to 'Delete', service_call_path, method: :delete, data: { confirm: 'Are you sure?' }, "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete" %>
+
+<p>
+<div class="ui-grid-solo">
+  <%= link_to I18n.t('general.general.back'), service_call_path(@bom.ticket_id, @bom), "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>
+</div>
+</p>
+
+<p>
+<div class="ui-grid-solo">
+  <%= link_to I18n.t('general.general.delete'), service_call_path(@bom.ticket_id), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete", id: 'dismiss_notification_btn' %>
+
+</div>
+</p>
+
 
 

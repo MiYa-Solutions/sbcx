@@ -153,7 +153,7 @@
           <% if ! @affiliate.subcontrax_member==true %>
               <li class="ui-li ui-li-static" >
                 <fieldset class="ui-grid-solo ui-btn-inner-small">
-                    <%= link_to "Edit", edit_affiliate_path(@affiliate), "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
+                  <%= link_to "Edit", edit_affiliate_path(@affiliate), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
                 </fieldset>
               </li>
           <% end %>
@@ -165,7 +165,8 @@
     <h3>More ...</h3>
     <p>
     <div class="ui-grid-solo">
-      <%= link_to 'Delete', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete" %>
+
+      <%= link_to I18n.t('general.general.delete'), affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete" %>
     </div>
     </p>
   </div>

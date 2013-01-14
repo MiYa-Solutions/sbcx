@@ -12,13 +12,13 @@
 
     <p>
     <div class="ui-grid-solo">
-      <%= link_to I18n.t('general.general.back'), user_root_path, "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_notification_btn' %>
+      <%= link_to I18n.t('general.general.back'), user_root_path, "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>
     </div>
     </p>
 
     <p>
     <div class="ui-grid-solo">
-      <%= link_to I18n.t('general.general.dismiss'), @notification.becomes(Notification), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete", id: 'dismiss_notification_btn' %>
+      <%= link_to I18n.t('general.general.dismiss'), @notification.becomes(Notification), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete", id: 'dismiss_notification_btn' %>
 
     </div>
     </p>

@@ -1,17 +1,35 @@
-<tr id="bom_<%= bom.id %>">
-  <td><%= bom.material_name %>
-    <!--<i class="icon-search" title="hello" rel='tooltip'></i>-->
-  </td>
-  <td><%= bom.quantity %></td>
-  <td><%= bom.cost %></td>
-  <td><%= bom.price %></td>
-  <td><%= bom.total_cost %></td>
-  <td><%= bom.total_price %></td>
-  <td>
-    <!--<#%= link_to 'Show', service_call_bom_path(@service_call, bom) %>-->
-    <!--<#%= link_to 'Edit', edit_service_call_bom_path(@service_call, bom) %>-->
-    <!--<#%= link_to 'Delete', material_path(material), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->
+<%= simple_form_for([@ticket, @bom], :html => { :class => 'form-horizontal' }) do |f| %>
+    <%= f.error_notification %>
 
-    <%= link_to 'Delete', service_call_bom_path(@service_call, bom), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, :class => 'btn btn-mini btn-danger' %>
-  </td>
-</tr>
+    <div class="form-inputs" id= "hi">
+      <!--<div class="control-group string ">-->
+      <!--<div class="controls">-->
+
+      <div class="customer_contacts">
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Part Name:</div>
+          <div class="ui-block-b"> <%= f.text_field :material_name, placeholder: 'material', data: { autocomplete_source: materials_path }, label: "Part Name:" %></div>
+        </div>
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Quantity:</div>
+          <div class="ui-block-b"> <%= f.text_field :quantity, placeholder: 'quantity' %></div>
+        </div>
+        <div class="ui-grid-a">
+          <div class="ui-block-a">List Price:</div>
+          <div class="ui-block-b"><%= f.text_field :price, placeholder: 'price' %></div>
+        </div>
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Cost:</div>
+          <div class="ui-block-b">  <%= f.text_field :cost, placeholder: 'cost' %></div>
+        </div>
+
+
+        <!--</div>-->
+      </div>
+    </div>
+
+    <div class="miya_blue_button">
+      <%= f.submit I18n.t('general.general.update_part') , "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
+    </div>
+<% end %>

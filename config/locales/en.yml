@@ -39,3 +39,6 @@ en:
       menu: "Menu"
       home: "Home"
       new: "New"
+      add_part: "Add Part"
+      update_part: "Update Part"
+      back: "Back"
