@@ -146,7 +146,7 @@ ul.unstyled, ol.unstyled {
 
 .miya_blue_button {
   .ui-btn-up-b {
-    height: 32px;
+    height: auto;
 
   }
 }
@@ -156,7 +156,7 @@ ul.unstyled, ol.unstyled {
   .miya_blue_button_bom {
     .ui-btn-up-b {
       //height: 32px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       //margin-left: 50%;
       margin-top: -1px;
       //width: 50%;
@@ -422,8 +422,8 @@ input.ui-input-text, textarea.ui-input-text {
 }
 
 .service_call_show_buttons {
-  margin-bottom: -10px;
-  margin-top: -4px;
+  margin-bottom: -8px;
+  margin-top: -2px;
 }
 
 //.ui-collapsible {
@@ -616,7 +616,7 @@ input.ui-input-text, textarea.ui-input-text {
   }
 
   .new_job_button .ui-btn {
-    margin-top: -35px;
+    margin-top: -34px;
 
   }
   .ui-shadow-inset {
@@ -876,7 +876,7 @@ footer .ui-navbar ul {
 
   .ui-btn {
     cursor: pointer;
-    height: 24px;
+    height: 22px;
     margin-top: -36px;
     padding-left: 0;
     padding-right: 0;
