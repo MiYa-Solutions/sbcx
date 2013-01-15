@@ -1,4 +1,5 @@
-<% provide(:title, "Edit " + @customer.name + "'s info") %>
+<% provide(:title, I18n.t('general.general.edit').html_safe + "&nbsp;".html_safe + @customer.name + "'s info") %>
+
 
 <%= simple_form_for @customer, :html => { :class => 'form-horizontal' } do |f| %>
 
@@ -16,5 +17,10 @@
 
 
     <%= render 'fields', f: f %>
+
+    <br>
+
+    <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+
 
 <% end %>

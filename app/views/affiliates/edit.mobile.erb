@@ -1,4 +1,4 @@
-<% provide(:title, "Edit " + @affiliate.name + "'s info") %>
+<% provide(:title, I18n.t('general.general.edit').html_safe + "&nbsp;".html_safe + @affiliate.name + "'s info") %>
 
 <%= simple_form_for @affiliate, url: affiliate_url(@affiliate), :html => { :class => 'form-horizontal' } do |f| %>
 

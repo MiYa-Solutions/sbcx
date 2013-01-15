@@ -1,0 +1,53 @@
+<%= f.error_notification %>
+
+<div class="customer_contacts">
+
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:name) %></div>
+    <div class="ui-block-b"><%= f.text_field :name %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:company) %></div>
+    <div class="ui-block-b"><%= f.text_field :company %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:address1) %></div>
+    <div class="ui-block-b"><%= f.text_field :address1 %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:address2) %></div>
+    <div class="ui-block-b"><%= f.text_field :address2 %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:city) %></div>
+    <div class="ui-block-b"><%= f.text_field :city %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:state) %></div>
+    <div class="ui-block-b"> <%= render 'subregion_select', f: f %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:zip) %></div>
+    <div class="ui-block-b"><%= f.text_field :zip %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:country) %></div>
+    <div class="ui-block-b"><%= f.country_select :country, { priority: %w[US] }, id: 'country' %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:phone) %></div>
+    <div class="ui-block-b" data-type= "phone"><%= f.text_field :phone, as: :phone %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:mobile_phone) %></div>
+    <div class="ui-block-b" data-type= "phone"><%= f.text_field :mobile_phone, as: :phone %></div>
+  </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:email) %></div>
+    <div class="ui-block-b"><%= f.text_field :email, as: :email %></div>
+  </div>
+
+</div>
+
+
+

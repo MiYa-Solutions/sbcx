@@ -1,0 +1,93 @@
+<% provide(:title, @my_user.name) %>
+
+<!--<div class="service_call_show_buttons">-->
+
+
+<fieldset class="ui-grid-a ui-btn-inner-small">
+
+  <div class="ui-block-a">
+    <%= link_to I18n.t('general.general.back'), my_users_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+  </div>
+
+  <div class="ui-block-b">
+    <div class="miya_blue_button">
+      <%= link_to I18n.t('general.general.balance'), '#', "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "email" %>
+    </div>
+  </div>
+
+</fieldset>
+<!--</div>-->
+<br>
+
+<div class="customer_in_service_call">
+  <ul data-role="listview">
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:first_name) %></div>
+        <div class="ui-block-b"><%= @my_user.first_name %> <%= @my_user.last_name %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:company) %></div>
+        <div class="ui-block-b"><%= @my_user.company %></div>
+
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:address1) %></div>
+        <div class="ui-block-b" style= "display:inline !important"><%= @my_user.address1 %> <%= @my_user.address2 %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:city) %></div>
+        <div class="ui-block-b"><%= @my_user.city %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:state) %></div>
+        <div class="ui-block-b"><%= @my_user.state %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:country) %></div>
+        <div class="ui-block-b"><%= @my_user.country %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:zip) %></div>
+        <div class="ui-block-b"><%= @my_user.zip %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:phone) %></div>
+        <div class="ui-block-b"><%= @my_user.phone %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:mobile_phone) %></div>
+        <div class="ui-block-b"><%= @my_user.mobile_phone %></div>
+      </div>
+    </li>
+    <li class="ui-li">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= User.human_attribute_name(:email) %></div>
+        <div class="ui-block-b" data-type="email" ><%= @my_user.email %></div>
+      </div>
+    </li>
+
+  </ul>
+</div>
+
+<br>
+<%= link_to I18n.t('general.general.edit'), edit_my_user_path(@my_user), "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
+<br>
+<%= link_to I18n.t('general.general.delete'), my_users_path(@my_user), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete" %>

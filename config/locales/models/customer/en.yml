@@ -1,4 +1,11 @@
 en:
+  activerecord:
+    models:
+
+    attributes:
+      customer:
+        address1: "Address"
+        mobile_phone: "Mobile"
   customer:
     crud_messages:
       success: 'The customer, %{customer_name}, was created successfully'

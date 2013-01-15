@@ -1,0 +1,25 @@
+<% provide(:title, I18n.t('general.general.edit').html_safe + "&nbsp;".html_safe  + @my_user.first_name + "'s info") %>
+
+<%= simple_form_for @my_user, url: my_user_url(@my_user), :html => { :class => 'form-horizontal' } do |f| %>
+
+        <fieldset class="ui-grid-a ui-btn-inner-small">
+      <div class="ui-block-a">
+        <%= link_to 'Back', my_user_path, "class" => "ui-btn-up-c", "data-role" => "button", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
+      </div>
+      <div class="ui-block-b">
+        <div class="miya_blue_button">
+          <%= f.submit t('affiliates.buttons.save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_user_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+        </div>
+      </div>
+    </fieldset>
+
+
+    <%= render 'fields', f: f %>
+
+    <br>
+
+    <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+
+
+
+<% end %>

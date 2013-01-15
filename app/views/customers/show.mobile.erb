@@ -1,19 +1,22 @@
 <% provide(:title, @customer.name) %>
 
+<!--<div class="service_call_show_buttons">-->
 
-    <fieldset class="ui-grid-a ui-btn-inner-small">
+
+<fieldset class="ui-grid-a ui-btn-inner-small">
 
       <div class="ui-block-a">
-        <%= link_to 'Back', customers_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
+        <%= link_to I18n.t('general.general.back'), customers_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
       </div>
 
       <div class="ui-block-b">
         <div class="miya_blue_button">
-          <%= link_to 'Balance', '#', "data-role" => "button", :class => "ui-btn-up-b", "data-icon" => "email" %>
+          <%= link_to I18n.t('general.general.balance'), '#', "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "email" %>
         </div>
       </div>
 
     </fieldset>
+<!--</div>-->
 <br>
 
 <div class="customer_in_service_call">
@@ -21,61 +24,61 @@
 
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">Name:</div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:name) %></div>
       <div class="ui-block-b"><%= @customer.name %></div>
     </div>
   </li>
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">Company:</div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:company) %></div>
       <div class="ui-block-b"><%= @customer.company %></div>
     </div>
   </li>
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">Address:</div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:address1) %></div>
       <div class="ui-block-b" style= "display:inline !important"><%= @customer.address1 %> <%= @customer.address2 %></div>
     </div>
   </li>
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">City:</div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:city) %></div>
       <div class="ui-block-b"><%= @customer.city %></div>
     </div>
   </li>
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">State:</div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:state) %></div>
       <div class="ui-block-b"><%= @customer.state %></div>
     </div>
   </li>
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">Country:</div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:country) %></div>
       <div class="ui-block-b"><%= @customer.country %></div>
     </div>
   </li>
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">Zip:</div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:zip) %></div>
       <div class="ui-block-b"><%= @customer.zip %></div>
     </div>
   </li>
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">Phone:</div>
-      <div class="ui-block-b"><%= @customer.phone %></div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:phone) %></div>
+      <div class="ui-block-b" data-type="phone"><%= @customer.phone %></div>
     </div>
   </li>
   <li class="ui-li ui-li-static">
     <div class="ui-grid-a">
-      <div class="ui-block-a">Mobile:</div>
-      <div class="ui-block-b"><%= @customer.mobile_phone %></div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:mobile_phone) %></div>
+      <div class="ui-block-b" data-type="phone"><%= @customer.mobile_phone %></div>
     </div>
   </li>
   <li class="ui-li">
     <div class="ui-grid-a">
-      <div class="ui-block-a">Email:</div>
+      <div class="ui-block-a"><%= Customer.human_attribute_name(:email) %></div>
       <div class="ui-block-b" data-type="email" ><%= @customer.email %></div>
     </div>
   </li>
@@ -84,6 +87,7 @@
 </div>
 
 <br>
-<%= link_to "Edit", edit_customer_path(@customer), "data-role" => "button", :class => "ui-btn-up-d", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
-<%= link_to 'Archive', customers_path(@customer), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "class" => "red_button", "data-mini" => "true", "data-icon" => "delete" %>
+<%= link_to I18n.t('general.general.edit'), edit_customer_path(@customer), "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
+<br>
+<%= link_to I18n.t('general.general.delete'), customers_path(@customer), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete" %>
 

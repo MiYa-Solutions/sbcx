@@ -1,10 +1,10 @@
-<% provide(:title, I18n.t('general.general.my_customers')) %>
+<% provide(:title, I18n.t('general.general.my_employees')) %>
+
 <br>
 
 
-
 <div class="search_network">
-  <%= form_tag customers_path, id: "agreement_search_form", :method => :get, :remote => true, :class => "ui-listview-filter ui-bar-c", "role" => "search" do %>
+  <%= form_tag my_users_path, id: "my_users_search_form", :method => :get, :remote => true, :class => "ui-listview-filter ui-bar-c", "role" => "search" do %>
       <div class="ui-input-search ui-shadow-inset ui-btn-corner-all ui-btn-shadow ui-icon-searchfield ui-body-c">
         <%= text_field_tag :search, params[:search], "data-divider-theme" => "d", :placeholder => "Search Contacts", "class" => "ui-input-text ui-body-c" %>
       </div>
@@ -15,12 +15,8 @@
 </div>
 
 <ul data-role="listview">
-  <% @customers.each do |customer| %>
-      <li class="inline_mobile"><%= link_to customer.name, customer, "data-transition" => "slide" %>
-
-      </li>
+  <% @users.each do |user| %>
+      <li class="inline_mobile"><%= link_to "#{user.first_name} #{user.last_name}", my_user_path(user), "data-transition" => "slide" %>
+     </li>
   <% end %>
 </ul>
-
-
-

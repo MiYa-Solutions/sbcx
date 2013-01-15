@@ -9,7 +9,7 @@
       <div><%= I18n.t('general.general.customers') %></div>
      </div>
     <div class="ui-block-b white icon_frame">
-      <img src="/assets/employees.png" alt="MiYa"/>
+      <%= link_to image_tag("/assets/employees.png", :border => 0), my_users_path %>
       <div><%= I18n.t('general.general.employees') %></div>
     </div>
     <div class="ui-block-c white icon_frame">
@@ -27,7 +27,7 @@
       <div><%= I18n.t('general.general.balance') %></div>
     </div>
     <div class="ui-block-b white icon_frame">
-      <img src="/assets/alerts.png" alt="MiYa"/>
+      <%= link_to image_tag("/assets/alerts.png", :border => 0), notifications_path %>
       <div><%= I18n.t('general.general.alerts') %></div>
     </div>
     <div class="ui-block-c white icon_frame">
