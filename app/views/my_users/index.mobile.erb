@@ -9,7 +9,7 @@
         <%= text_field_tag :search, params[:search], "data-divider-theme" => "d", :placeholder => "Search Contacts", "class" => "ui-input-text ui-body-c" %>
       </div>
       <div class= "new_job_button">
-        <%= link_to I18n.t('general.general.new'), new_customer_path, "data-role" => "button", id: 'new-customer-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+        <%= link_to I18n.t('general.general.new'), new_my_user_path, "data-role" => "button", id: 'new-customer-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
       </div>
   <% end %>
 </div>

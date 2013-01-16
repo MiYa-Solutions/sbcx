@@ -1,4 +1,4 @@
-<%= provide(:title, 'New Provider') %>
+<% provide(:title, I18n.t('general.general.new').html_safe + "&nbsp;".html_safe + @provider.class.human_attribute_name(:provider) ) %>
 <div class="well">
   <div class="edit_provider">
 

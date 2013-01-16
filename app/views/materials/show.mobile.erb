@@ -1,0 +1,51 @@
+<% provide(:title, @material.name) %>
+
+<fieldset class="ui-grid-a ui-btn-inner-small">
+
+  <div class="ui-block-a">
+    <%= link_to I18n.t('general.general.back'), materials_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+  </div>
+
+  <div class="ui-block-b">
+    <div class="miya_blue_button">
+      <%= link_to I18n.t('general.general.edit'), edit_material_path(@material), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "email" %>
+    </div>
+  </div>
+
+</fieldset>
+<br>
+
+<div class="customer_in_service_call">
+  <ul data-role="listview">
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Material.human_attribute_name(:name) %></div>
+        <div class="ui-block-b"><%= @material.name %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Material.human_attribute_name(:description) %></div>
+        <div class="ui-block-b"><%= @material.description %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Material.human_attribute_name(:cost) %></div>
+        <div class="ui-block-b"><%= @material.cost %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Material.human_attribute_name(:price) %></div>
+        <div class="ui-block-b"><%= @material.price %></div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<br>
+<%= link_to I18n.t('general.general.delete'), materials_path(@material), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete" %>
+
+

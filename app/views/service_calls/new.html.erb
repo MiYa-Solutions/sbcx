@@ -1,4 +1,5 @@
-<%= provide(:title, 'New Service Call') %>
+<% provide(:title, I18n.t('general.general.new').html_safe + "&nbsp;".html_safe + @service_call.class.human_attribute_name(:service_call) ) %>
+
 
 <div class="well">
 

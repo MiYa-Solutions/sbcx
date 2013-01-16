@@ -1,4 +1,4 @@
-<%= provide(:title, 'New Subcontractor') %>
+<% provide(:title, I18n.t('general.general.new').html_safe + "&nbsp;".html_safe + @subcontractor.class.human_attribute_name(:subcontractor) ) %>
 
 <div class="well">
 

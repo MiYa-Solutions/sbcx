@@ -1,4 +1,5 @@
-<%= provide(:title, 'New Provider') %>
+<% provide(:title, I18n.t('general.general.new').html_safe + "&nbsp;".html_safe + @provider.class.human_attribute_name(:provider) ) %>
+
 
 
 <%= simple_form_for @provider, url: providers_url, :html => { :class => 'form-horizontal' } do |f| %>

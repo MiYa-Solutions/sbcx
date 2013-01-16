@@ -1,4 +1,5 @@
-<%= provide(:title, 'New User') %>
+<% provide(:title, I18n.t('general.general.new').html_safe + "&nbsp;".html_safe + @my_user.class.human_attribute_name(:my_user) ) %>
+
 
 <div class="well">
 
