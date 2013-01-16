@@ -29,6 +29,9 @@ GEM
       activesupport (= 3.2.11)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
+    activerecord-postgres-hstore (0.5.2)
+      rails
+      rake
     activeresource (3.2.11)
       activemodel (= 3.2.11)
       activesupport (= 3.2.11)
@@ -157,6 +160,12 @@ GEM
     mime-types (1.19)
     mocha (0.10.5)
       metaclass (~> 0.0.1)
+    money (5.1.0)
+      i18n (~> 0.6.0)
+    money-rails (0.7.1)
+      activesupport (~> 3.0)
+      money (~> 5.1.0)
+      railties (~> 3.0)
     multi_json (1.5.0)
     nifty-generators (0.4.6)
     nokogiri (1.5.6)
@@ -293,6 +302,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  activerecord-postgres-hstore
   annotate (~> 2.4.1.beta)
   bcrypt-ruby (= 3.0.1)
   best_in_place
@@ -318,6 +328,7 @@ DEPENDENCIES
   launchy (= 2.1.0)
   magiclabs-userstamp
   mocha
+  money-rails
   nifty-generators
   pg
   poltergeist

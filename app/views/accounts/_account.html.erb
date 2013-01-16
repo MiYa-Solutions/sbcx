@@ -1,0 +1,11 @@
+<% unless accountable.nil? %>
+    <% account = Account.where("organization_id = ? AND accountable_id = ?", current_user.organization.id, accountable.id).first %>
+    <p>
+      Account: <%= account %>
+
+      <br>
+      Account owner: <%= account.organization.name %>
+      <br>
+      Account for: <%= account.accountable.name %>
+    </p>
+<% end %>

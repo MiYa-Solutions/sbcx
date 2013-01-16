@@ -16,7 +16,10 @@ class Bom < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :material
   validates_presence_of :ticket, :cost, :price, :quantity, :material
-  validates_numericality_of :cost, :price, :quantity
+  validates_numericality_of :quantity
+
+  monetize :cost_cents
+  monetize :price_cents
 
   before_validation :set_material
   before_validation :set_default_cost

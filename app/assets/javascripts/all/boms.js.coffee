@@ -18,4 +18,10 @@ jQuery ->
     $("#ajax-msg").html("<span class='green'>Saved!</span>").show().fadeOut(2000)
   )
 
+  $('#bom_material_name').bind('railsAutocomplete.select', (event, data) ->
+    $('#bom_cost').val(data["item"]["cost_cents"] / 100.0)
+    $('#bom_price').val(data["item"]["price_cents"] / 100.0)
+  )
+
+
 

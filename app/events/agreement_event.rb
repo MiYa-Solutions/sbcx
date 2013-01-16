@@ -1,5 +1,12 @@
+=begin
+AgreementEvent is an abstract class which extends the Event class with additional functionality specific to events
+related to agreements
+=end
+
 class AgreementEvent < Event
 
+  ##
+  # this is the standard event method which gets invoked by the EventObserver after the creation
   def process_event
 
     Rails.logger.debug { "Running #{self.class.name} process_event method" }
@@ -7,10 +14,10 @@ class AgreementEvent < Event
     if notify_other_party?
       notify notification_recipients, notification_class unless notification_recipients.nil?
     end
-
-
   end
 
+  ##
+  # return the agreement this event is associated with
   def agreement
     @agreement ||= self.eventable
   end
