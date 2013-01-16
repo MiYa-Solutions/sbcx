@@ -20,7 +20,11 @@
         <%= render 'shared/error_messages', object: f.object %>
     <% end %>
 
-    <%= render 'form', f: f %>
+    <%= render 'fields', f: f %>
+
+    <div class="miya_blue_button">
+      <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'create-material-btn', "data-icon" => "check", "data-iconpos" => "left" %>
+    </div>
 
 
 <% end %>
