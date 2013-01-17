@@ -28,6 +28,7 @@
 #  zip                    :string(255)
 #  mobile_phone           :string(255)
 #  work_phone             :string(255)
+#  preferences            :hstore
 #
 
 class User < ActiveRecord::Base
