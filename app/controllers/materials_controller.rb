@@ -27,6 +27,7 @@ class MaterialsController < ApplicationController
     end
   end
 
+  # todo - make method either private or move to controller
   def search
     @material = Material.search(current_user.organization.id, params[:name])
     respond_to do |format|
@@ -69,7 +70,7 @@ class MaterialsController < ApplicationController
         format.html { redirect_to @material, notice: t('activerecord.messages.material.created_successfully', material: @material.name) }
         format.json { render json: @material, status: :created, location: @material }
         format.js { }
-        format.mobile { redirect_to :back, notice: t('activerecord.messages.material.created_successfully', material: @material.name) }
+        format.mobile { redirect_to @material, notice: t('activerecord.messages.material.created_successfully', material: @material.name) }
       else
         format.html { render :new }
         format.json { render json: @material.errors, status: :unprocessable_entity }
@@ -85,12 +86,14 @@ class MaterialsController < ApplicationController
     @material = Material.find(params[:id])
 
     respond_to do |format|
-      if @material.update_attributes(params[:material])
+      if @material.update_attributes(permitted_params(nil).material)
         format.html { redirect_to @material, notice: 'Material was successfully updated.' }
         format.json { head :no_content }
+        format.mobile { redirect_to @material, notice: t('activerecord.messages.material.updated_successfully', material: @material.name) }
       else
         format.html { render action: "edit" }
         format.json { render json: @material.errors, status: :unprocessable_entity }
+        format.mobile { redirect_to :back }
       end
     end
   end
