@@ -68,3 +68,12 @@ en:
         html_message: '%{technician} has started the %{link}'
         subject: 'Service call %{ref} is completed'
         content: '%{technician} has started the service call at: %{started_at}'
+      agreement:
+        new_subcon_agreement:
+          html_message: '%{creator} has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
+          subject: 'New Subcontractor Agreement'
+          content: 'Please review and activate the agreement in order to receive new Service Calls.'
+        activated_subcon_agreement:
+          html_message: '%{updater} has activated the Subcontractor Agreement. You can click on %{link} to review it.'
+          subject: 'A Subcontractor Agreement Was Activated'
+          content: 'You can now transfer and/or receive jobs from %{otherparty}'

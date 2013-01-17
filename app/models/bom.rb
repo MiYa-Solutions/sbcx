@@ -2,21 +2,26 @@
 #
 # Table name: boms
 #
-#  id          :integer         not null, primary key
-#  ticket_id   :integer
-#  price       :decimal(, )
-#  cost        :decimal(, )
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
-#  quantity    :decimal(, )
-#  material_id :integer
+#  id             :integer         not null, primary key
+#  ticket_id      :integer
+#  created_at     :datetime        not null
+#  updated_at     :datetime        not null
+#  quantity       :decimal(, )
+#  material_id    :integer
+#  cost_cents     :integer         default(0), not null
+#  cost_currency  :string(255)     default("USD"), not null
+#  price_cents    :integer         default(0), not null
+#  price_currency :string(255)     default("USD"), not null
 #
 
 class Bom < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :material
   validates_presence_of :ticket, :cost, :price, :quantity, :material
-  validates_numericality_of :cost, :price, :quantity
+  validates_numericality_of :quantity
+
+  monetize :cost_cents
+  monetize :price_cents
 
   before_validation :set_material
   before_validation :set_default_cost

@@ -1,8 +1,11 @@
-<% other_party_id ||= "" %>
+<% other_party ||= "" %>
 <%= form_tag new_agreement_url, remote: true, method: :get do %>
 
-    <%= hidden_field_tag 'otherparty_id', other_party_id %>
+    <%= hidden_field_tag 'otherparty_id', other_party.id %>
+    <%= label_tag "agreement_type", "Agreement Type" %>
     <%= select_tag 'agreement_type', options_for_select(organization_agreement_types), include_blank: true %>
+
+    <%= label_tag "Where '#{other_party.name}' is the: " %>
     <div id="agreement_role_wrapper">
       <%= select_tag 'otherparty_role', "", id: "agreement_role_select" %>
     </div>

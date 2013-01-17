@@ -2,7 +2,7 @@ class MaterialsController < ApplicationController
   filter_access_to :autocomplete_material_name, :require => :index
   filter_resource_access
 
-  autocomplete :material, :name, extra_data: [:cost, :price], full: true, limit: 50
+  autocomplete :material, :name, extra_data: [:cost_cents, :price_cents], full: true, limit: 50
 
   # GET /materials
   # GET /materials.json

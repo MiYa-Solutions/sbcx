@@ -1,4 +1,4 @@
-<%= simple_form_for @agreement, as: :agreement, url: agreements_url do |f| %>
+<%= simple_form_for @agreement, as: :agreement, url: agreement_url(@agreement) do |f| %>
     <%= render 'agreements/fields', f: f, agreement_type: @agreement.class.name %>
     <p><%= f.submit %></p>
 <% end %>

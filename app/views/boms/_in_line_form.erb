@@ -8,7 +8,7 @@
         <ul>
           <li></li>
           <li class="part_field">
-            <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id", cost: "#bom_cost", price: "#bom_price" }, placeholder: 'Part Name' %>
+            <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" }, placeholder: 'Part Name' %>
             <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
             <%= f.hidden_field :material_id %>
             <%= f.hidden_field :ticket_id, value: @service_call.id %>
@@ -39,8 +39,8 @@
 
           </li>
           <li>
-            <a href="#" data-toggle= "collapse" data-target="#bom" class="close">×</a>
-              <!--<i class="icon-remove-sign"></i> </a>-->
+            <a href="#" data-toggle="collapse" data-target="#bom" class="close">×</a>
+            <!--<i class="icon-remove-sign"></i> </a>-->
           </li>
         </ul>
 

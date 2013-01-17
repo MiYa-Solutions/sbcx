@@ -60,15 +60,16 @@ def create_members
                                                 email: "testmem#{index}@testmem#{index}.com" })
     mem.save!
     mem.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "mem#{index}@mem#{index}.com" })
-    mem.users << new_user([dispatcher_role], { email: "disp#{index}@mem#{index}.com" })
-    mem.users << new_user([technician_role], { email: "tech#{index}@mem#{index}.com" })
+    # don't create dispatcher and technicians for test mem1 and mem2
+    #mem.users << new_user([dispatcher_role], { email: "disp#{index}@mem#{index}.com" })
+    #mem.users << new_user([technician_role], { email: "tech#{index}@mem#{index}.com" })
 
-    2.times do
-      mem.users << new_user([dispatcher_role], { })
-    end
-    2.times do
-      mem.users << new_user([technician_role], { })
-    end
+    #2.times do
+    #  mem.users << new_user([dispatcher_role], { })
+    #end
+    #2.times do
+    #  mem.users << new_user([technician_role], { })
+    #end
 
   end
   # create additional members as just test data

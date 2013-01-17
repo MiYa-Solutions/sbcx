@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 gem 'jquery-rails'
 gem 'bootstrap-sass', '2.0.4'
 gem 'bcrypt-ruby', '3.0.1'
@@ -11,6 +11,7 @@ gem 'bootstrap-datepicker-rails'
 gem 'carmen-rails', '~> 1.0.0.beta3'
 
 gem 'pg'
+gem 'activerecord-postgres-hstore'
 
 gem 'devise', '2.0.0'
 gem 'simple_form', '2.0.2'
@@ -26,6 +27,8 @@ gem 'figaro' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 
 gem 'roadie'
+
+gem 'money-rails'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'

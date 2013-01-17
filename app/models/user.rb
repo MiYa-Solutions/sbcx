@@ -28,11 +28,30 @@
 #  zip                    :string(255)
 #  mobile_phone           :string(255)
 #  work_phone             :string(255)
+#  preferences            :hstore
 #
 
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+
+  # *notification preferences*
+  serialize :preferences, ActiveRecord::Coders::Hstore
+
+  %w[alert1 alert2].each do |key|
+    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("preferences @> (? => ?)", key, value) }
+
+    define_method(key) do
+      preferences && preferences[key]
+    end
+
+    define_method("#{key}=") do |value|
+      self.preferences = (preferences || { }).merge(key => value)
+    end
+  end
+
+  # end of notification preferences
+
 
   SYSTEM_USER_EMAIL = ENV["SYSTEM_USER_EMAIL"] ? ENV["SYSTEM_USER_EMAIL"] : "system@subcontrax.com"
   devise :database_authenticatable, :registerable,

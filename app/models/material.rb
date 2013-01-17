@@ -7,13 +7,15 @@
 #  supplier_id     :integer
 #  name            :string(255)
 #  description     :text
-#  cost            :decimal(, )
-#  price           :decimal(, )
 #  creator_id      :integer
 #  updater_id      :integer
 #  status          :integer
 #  created_at      :datetime        not null
 #  updated_at      :datetime        not null
+#  cost_cents      :integer         default(0), not null
+#  cost_currency   :string(255)     default("USD"), not null
+#  price_cents     :integer         default(0), not null
+#  price_currency  :string(255)     default("USD"), not null
 #
 
 class Material < ActiveRecord::Base
@@ -24,7 +26,9 @@ class Material < ActiveRecord::Base
 
   validates_presence_of :supplier, :organization, :status, :name, :price, :cost, allow_blank: false
   validates_uniqueness_of :name, scope: [:organization_id, :supplier_id]
-  validates_numericality_of :price, :cost
+
+  monetize :cost_cents
+  monetize :price_cents
 
   before_validation :create_supplier, if: "supplier == nil"
 
