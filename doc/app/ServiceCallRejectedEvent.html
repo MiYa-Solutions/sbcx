@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+    <title>class ServiceCallRejectedEvent - Rails Application Documentation</title>
+
+    <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        var rdoc_rel_prefix = "./";
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+<nav id="home-section" class="section">
+    <h3 class="section-header">
+        <a href="./index.html">Home</a>
+        <a href="./table_of_contents.html#classes">Classes</a>
+        <a href="./table_of_contents.html#methods">Methods</a>
+    </h3>
+</nav>
+
+
+<nav id="search-section" class="section project-section" class="initially-hidden">
+    <form action="#" method="get" accept-charset="utf-8">
+        <h3 class="section-header">
+            <input type="text" name="search" placeholder="Search" id="search-field"
+                   title="Type to search, Up and Down to navigate, Enter to load">
+        </h3>
+    </form>
+
+    <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+<div id="file-metadata">
+    <nav id="file-list-section" class="section">
+        <h3 class="section-header">Defined In</h3>
+        <ul>
+            <li>app/events/service_call_rejected_event.rb
+        </ul>
+    </nav>
+
+
+</div>
+
+<div id="class-metadata">
+
+    <nav id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+
+        <p class="link"><a href="ServiceCallEvent.html">ServiceCallEvent</a>
+
+    </nav>
+
+
+    <!-- Method Quickref -->
+    <nav id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+
+        <ul class="link-list">
+
+            <li><a href="#method-i-init">#init</a>
+
+            <li><a href="#method-i-notification_class">#notification_class</a>
+
+            <li><a href="#method-i-notification_recipients">#notification_recipients</a>
+
+            <li><a href="#method-i-process_event">#process_event</a>
+
+            <li><a href="#method-i-update_provider">#update_provider</a>
+
+        </ul>
+    </nav>
+
+</div>
+
+<div id="project-metadata">
+<nav id="fileindex-section" class="section project-section">
+    <h3 class="section-header">Pages</h3>
+
+    <ul>
+
+        <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+
+    </ul>
+</nav>
+
+<nav id="classindex-section" class="section project-section">
+<h3 class="section-header">Class and Module Index</h3>
+
+<ul class="link-list">
+
+<li><a href="./Account.html">Account</a>
+
+<li><a href="./AdminMailer.html">AdminMailer</a>
+
+<li><a href="./Affiliate.html">Affiliate</a>
+
+<li><a href="./AffiliatesController.html">AffiliatesController</a>
+
+<li><a href="./AffiliatesHelper.html">AffiliatesHelper</a>
+
+<li><a href="./AgrActivatedEvent.html">AgrActivatedEvent</a>
+
+<li><a href="./AgrActivatedSubconNotification.html">AgrActivatedSubconNotification</a>
+
+<li><a href="./AgrNewSubconEvent.html">AgrNewSubconEvent</a>
+
+<li><a href="./AgrNewSubconNotification.html">AgrNewSubconNotification</a>
+
+<li><a href="./AgrSubmittedEvent.html">AgrSubmittedEvent</a>
+
+<li><a href="./Agreement.html">Agreement</a>
+
+<li><a href="./AgreementEvent.html">AgreementEvent</a>
+
+<li><a href="./AgreementNotification.html">AgreementNotification</a>
+
+<li><a href="./AgreementsController.html">AgreementsController</a>
+
+<li><a href="./AgreementsHelper.html">AgreementsHelper</a>
+
+<li><a href="./ApplicationController.html">ApplicationController</a>
+
+<li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+
+<li><a href="./Assignment.html">Assignment</a>
+
+<li><a href="./Bom.html">Bom</a>
+
+<li><a href="./BomsController.html">BomsController</a>
+
+<li><a href="./BomsHelper.html">BomsHelper</a>
+
+<li><a href="./Customer.html">Customer</a>
+
+<li><a href="./CustomersController.html">CustomersController</a>
+
+<li><a href="./CustomersHelper.html">CustomersHelper</a>
+
+<li><a href="./Event.html">Event</a>
+
+<li><a href="./EventObserver.html">EventObserver</a>
+
+<li><a href="./LayoutHelper.html">LayoutHelper</a>
+
+<li><a href="./Material.html">Material</a>
+
+<li><a href="./MaterialsController.html">MaterialsController</a>
+
+<li><a href="./MaterialsHelper.html">MaterialsHelper</a>
+
+<li><a href="./MyServiceCall.html">MyServiceCall</a>
+
+<li><a href="./MyServiceCallObserver.html">MyServiceCallObserver</a>
+
+<li><a href="./MyUsersController.html">MyUsersController</a>
+
+<li><a href="./MyUsersHelper.html">MyUsersHelper</a>
+
+<li><a href="./NewMemberEvent.html">NewMemberEvent</a>
+
+<li><a href="./Notification.html">Notification</a>
+
+<li><a href="./NotificationMailer.html">NotificationMailer</a>
+
+<li><a href="./NotificationsController.html">NotificationsController</a>
+
+<li><a href="./NotificationsHelper.html">NotificationsHelper</a>
+
+<li><a href="./OneOwnerValidator.html">OneOwnerValidator</a>
+
+<li><a href="./OrgToRole.html">OrgToRole</a>
+
+<li><a href="./Organization.html">Organization</a>
+
+<li><a href="./OrganizationAgreement.html">OrganizationAgreement</a>
+
+<li><a href="./OrganizationRole.html">OrganizationRole</a>
+
+<li><a href="./OrganizationsController.html">OrganizationsController</a>
+
+<li><a href="./OrganizationsHelper.html">OrganizationsHelper</a>
+
+<li><a href="./PasswordsController.html">PasswordsController</a>
+
+<li><a href="./PermittedParams.html">PermittedParams</a>
+
+<li><a href="./Provider.html">Provider</a>
+
+<li><a href="./ProvidersController.html">ProvidersController</a>
+
+<li><a href="./ProvidersHelper.html">ProvidersHelper</a>
+
+<li><a href="./RegionSelectController.html">RegionSelectController</a>
+
+<li><a href="./RegionSelectHelper.html">RegionSelectHelper</a>
+
+<li><a href="./RegistrationsController.html">RegistrationsController</a>
+
+<li><a href="./RegistrationsHelper.html">RegistrationsHelper</a>
+
+<li><a href="./Role.html">Role</a>
+
+<li><a href="./RoleValidator.html">RoleValidator</a>
+
+<li><a href="./ScAcceptedNotification.html">ScAcceptedNotification</a>
+
+<li><a href="./ScCancelNotification.html">ScCancelNotification</a>
+
+<li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
+
+<li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
+
+<li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+
+<li><a href="./ScDispatchNotification.html">ScDispatchNotification</a>
+
+<li><a href="./ScDispatchedNotification.html">ScDispatchedNotification</a>
+
+<li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+
+<li><a href="./ScReceivedNotification.html">ScReceivedNotification</a>
+
+<li><a href="./ScRejectedNotification.html">ScRejectedNotification</a>
+
+<li><a href="./ScSettleNotification.html">ScSettleNotification</a>
+
+<li><a href="./ScSettledNotification.html">ScSettledNotification</a>
+
+<li><a href="./ScStartNotification.html">ScStartNotification</a>
+
+<li><a href="./ScStartedNotification.html">ScStartedNotification</a>
+
+<li><a href="./ServiceCall.html">ServiceCall</a>
+
+<li><a href="./ServiceCallAcceptEvent.html">ServiceCallAcceptEvent</a>
+
+<li><a href="./ServiceCallAcceptedEvent.html">ServiceCallAcceptedEvent</a>
+
+<li><a href="./ServiceCallCancelEvent.html">ServiceCallCancelEvent</a>
+
+<li><a href="./ServiceCallCanceledEvent.html">ServiceCallCanceledEvent</a>
+
+<li><a href="./ServiceCallCompleteEvent.html">ServiceCallCompleteEvent</a>
+
+<li><a href="./ServiceCallCompletedEvent.html">ServiceCallCompletedEvent</a>
+
+<li><a href="./ServiceCallDispatchEvent.html">ServiceCallDispatchEvent</a>
+
+<li><a href="./ServiceCallDispatchedEvent.html">ServiceCallDispatchedEvent</a>
+
+<li><a href="./ServiceCallEvent.html">ServiceCallEvent</a>
+
+<li><a href="./ServiceCallNotification.html">ServiceCallNotification</a>
+
+<li><a href="./ServiceCallObserver.html">ServiceCallObserver</a>
+
+<li><a href="./ServiceCallPaidEvent.html">ServiceCallPaidEvent</a>
+
+<li><a href="./ServiceCallReceivedEvent.html">ServiceCallReceivedEvent</a>
+
+<li><a href="./ServiceCallRejectEvent.html">ServiceCallRejectEvent</a>
+
+<li><a href="./ServiceCallRejectedEvent.html">ServiceCallRejectedEvent</a>
+
+<li><a href="./ServiceCallSettleEvent.html">ServiceCallSettleEvent</a>
+
+<li><a href="./ServiceCallSettledEvent.html">ServiceCallSettledEvent</a>
+
+<li><a href="./ServiceCallStartEvent.html">ServiceCallStartEvent</a>
+
+<li><a href="./ServiceCallStartedEvent.html">ServiceCallStartedEvent</a>
+
+<li><a href="./ServiceCallTransferEvent.html">ServiceCallTransferEvent</a>
+
+<li><a href="./ServiceCallsController.html">ServiceCallsController</a>
+
+<li><a href="./ServiceCallsHelper.html">ServiceCallsHelper</a>
+
+<li><a href="./SessionsController.html">SessionsController</a>
+
+<li><a href="./StaticPagesController.html">StaticPagesController</a>
+
+<li><a href="./StaticPagesHelper.html">StaticPagesHelper</a>
+
+<li><a href="./SubcontractingAgreement.html">SubcontractingAgreement</a>
+
+<li><a href="./SubcontractingAgreementObserver.html">SubcontractingAgreementObserver</a>
+
+<li><a href="./Subcontractor.html">Subcontractor</a>
+
+<li><a href="./SubcontractorsController.html">SubcontractorsController</a>
+
+<li><a href="./SubcontractorsHelper.html">SubcontractorsHelper</a>
+
+<li><a href="./Supplier.html">Supplier</a>
+
+<li><a href="./SupplierAgreement.html">SupplierAgreement</a>
+
+<li><a href="./Ticket.html">Ticket</a>
+
+<li><a href="./TransferredServiceCall.html">TransferredServiceCall</a>
+
+<li><a href="./TransferredServiceCallObserver.html">TransferredServiceCallObserver</a>
+
+<li><a href="./User.html">User</a>
+
+</ul>
+</nav>
+
+</div>
+</nav>
+
+<div id="documentation">
+    <h1 class="class">class ServiceCallRejectedEvent</h1>
+
+    <div id="description" class="description">
+
+    </div>
+    <!-- description -->
+
+
+    <section id="5Buntitled-5D" class="documentation-section">
+
+
+        <!-- Methods -->
+
+        <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+            <h3 class="section-header">Public Instance Methods</h3>
+
+
+            <div id="method-i-init" class="method-detail ">
+
+                <div class="method-heading">
+                    <span class="method-name">init</span><span
+                        class="method-args">()</span>
+                    <span class="method-click-advice">click to toggle source</span>
+                </div>
+
+
+                <div class="method-description">
+
+
+                    <div class="method-source-code" id="init-source">
+            <pre><span class="ruby-comment"># File app/events/service_call_rejected_event.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">init</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>         = <span
+                        class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span
+                        class="ruby-string">'service_call_rejected_event.name'</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">description</span>  = <span
+                        class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span
+                        class="ruby-string">'service_call_rejected_event.description'</span>, <span
+                        class="ruby-identifier">subcon_name</span><span class="ruby-operator">:</span> <span
+                        class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">subcontractor</span>.<span class="ruby-identifier">name</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">reference_id</span> = <span
+                        class="ruby-value">12</span>
+<span class="ruby-keyword">end</span></pre>
+                    </div>
+                    <!-- init-source -->
+
+                </div>
+
+
+            </div>
+            <!-- init-method -->
+
+
+            <div id="method-i-notification_class" class="method-detail ">
+
+                <div class="method-heading">
+                    <span class="method-name">notification_class</span><span
+                        class="method-args">()</span>
+                    <span class="method-click-advice">click to toggle source</span>
+                </div>
+
+
+                <div class="method-description">
+
+
+                    <div class="method-source-code" id="notification_class-source">
+            <pre><span class="ruby-comment"># File app/events/service_call_rejected_event.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notification_class</span>
+  <span class="ruby-constant">ScRejectedNotification</span>
+<span class="ruby-keyword">end</span></pre>
+                    </div>
+                    <!-- notification_class-source -->
+
+                </div>
+
+
+            </div>
+            <!-- notification_class-method -->
+
+
+            <div id="method-i-notification_recipients" class="method-detail ">
+
+                <div class="method-heading">
+                    <span class="method-name">notification_recipients</span><span
+                        class="method-args">()</span>
+                    <span class="method-click-advice">click to toggle source</span>
+                </div>
+
+
+                <div class="method-description">
+
+
+                    <div class="method-source-code" id="notification_recipients-source">
+            <pre><span class="ruby-comment"># File app/events/service_call_rejected_event.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notification_recipients</span>
+  <span class="ruby-constant">User</span>.<span class="ruby-identifier">my_dispatchers</span>(<span
+                        class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">organization</span>.<span class="ruby-identifier">id</span>)
+<span class="ruby-keyword">end</span></pre>
+                    </div>
+                    <!-- notification_recipients-source -->
+
+                </div>
+
+
+            </div>
+            <!-- notification_recipients-method -->
+
+
+            <div id="method-i-process_event" class="method-detail ">
+
+                <div class="method-heading">
+                    <span class="method-name">process_event</span><span
+                        class="method-args">()</span>
+                    <span class="method-click-advice">click to toggle source</span>
+                </div>
+
+
+                <div class="method-description">
+
+
+                    <div class="method-source-code" id="process_event-source">
+            <pre><span class="ruby-comment"># File app/events/service_call_rejected_event.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_event</span>
+  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">reject_subcon</span>
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+                    </div>
+                    <!-- process_event-source -->
+
+                </div>
+
+
+            </div>
+            <!-- process_event-method -->
+
+
+            <div id="method-i-update_provider" class="method-detail ">
+
+                <div class="method-heading">
+                    <span class="method-name">update_provider</span><span
+                        class="method-args">()</span>
+                    <span class="method-click-advice">click to toggle source</span>
+                </div>
+
+
+                <div class="method-description">
+
+
+                    <div class="method-source-code" id="update_provider-source">
+            <pre><span class="ruby-comment"># File app/events/service_call_rejected_event.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_provider</span>
+  <span class="ruby-identifier">prov_service_call</span>.<span class="ruby-identifier">events</span> <span
+                        class="ruby-operator">&lt;&lt;</span> <span
+                        class="ruby-constant">ServiceCallRejectedEvent</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+                    </div>
+                    <!-- update_provider-source -->
+
+                </div>
+
+
+            </div>
+            <!-- update_provider-method -->
+
+
+        </section>
+        <!-- public-instance-method-details -->
+
+    </section>
+    <!-- 5Buntitled-5D -->
+
+</div>
+<!-- documentation -->
+
+
+<footer id="validator-badges">
+    <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+
+    <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+
+    <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

@@ -56,10 +56,11 @@ class Organization < ActiveRecord::Base
   has_many :reverse_agreements, class_name: "Agreement", :foreign_key => "counterparty_id"
   has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement'" do
     def << (subcontractor)
-      prov_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-      Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: prov_creator }) { self.concat subcontractor }
+      subcon_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
+      Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator }) { self.concat subcontractor }
       #Account.find_or_create_by_organization_id_and_accountable_id(organization_id: proxy_association.owner.id, accountable_id: subcontractor.id)
-      #proxy_association.owner.affiliates << subcontractor unless proxy_association.owner.affiliates.include? subcontractor
+      proxy_association.owner.affiliates << subcontractor unless proxy_association.owner.affiliates.include? subcontractor
+      subcontractor
     end
 
   end
@@ -69,7 +70,7 @@ class Organization < ActiveRecord::Base
         prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
         Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator }) { self.concat provider }
       end
-      #proxy_association.owner.affiliates << provider unless proxy_association.owner.affiliates.include? provider
+      proxy_association.owner.affiliates << provider unless proxy_association.owner.affiliates.include? provider
       #Account.find_or_create_by_organization_id_and_accountable_id!(organization_id: proxy_association.owner.id, accountable_id: provider.id)
       provider
 

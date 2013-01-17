@@ -18,5 +18,4 @@ class SubcontractingAgreementObserver < ActiveRecord::Observer
     Rails.logger.debug { "invoked observer after_submit_for_approval \n #{agreement.inspect} \n #{transition.inspect}" }
   end
 
-  # To change this template use File | Settings | File Templates.
 end

@@ -24,7 +24,9 @@ class Material < ActiveRecord::Base
 
   validates_presence_of :supplier, :organization, :status, :name, :price, :cost, allow_blank: false
   validates_uniqueness_of :name, scope: [:organization_id, :supplier_id]
-  validates_numericality_of :price, :cost
+
+  monetize :cost_cents
+  monetize :price_cents
 
   before_validation :create_supplier, if: "supplier == nil"
 

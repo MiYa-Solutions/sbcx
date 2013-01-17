@@ -121,6 +121,11 @@ describe OrganizationAgreement do
 
     end
 
+    describe "after activation" do
+      it "an account should be created"
+      it "cancel is the only avialable operation"
+    end
+
 
   end
 

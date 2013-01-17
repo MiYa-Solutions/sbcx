@@ -15,7 +15,7 @@ en:
             enable_sbcx_memeber:  Enabled
     attributes:
       organization:
-        name: "Company Name"
+        name: "Name"
         work_phone: "Other Phone"
         phone: "Main Phone"
         mobile: "Mobile Phone"

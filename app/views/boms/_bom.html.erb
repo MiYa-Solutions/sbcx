@@ -3,10 +3,10 @@
     <!--<i class="icon-search" title="hello" rel='tooltip'></i>-->
   </td>
   <td><%= bom.quantity %></td>
-  <td><%= bom.cost %></td>
-  <td><%= bom.price %></td>
-  <td><%= bom.total_cost %></td>
-  <td><%= bom.total_price %></td>
+  <td><%= humanized_money_with_symbol bom.cost %></td>
+  <td><%= humanized_money_with_symbol bom.price %></td>
+  <td><%= humanized_money_with_symbol bom.total_cost %></td>
+  <td><%= humanized_money_with_symbol bom.total_price %></td>
   <td>
     <!--<#%= link_to 'Show', service_call_bom_path(@service_call, bom) %>-->
     <!--<#%= link_to 'Edit', edit_service_call_bom_path(@service_call, bom) %>-->

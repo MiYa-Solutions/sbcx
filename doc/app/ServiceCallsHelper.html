@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+    <title>module ServiceCallsHelper - Rails Application Documentation</title>
+
+    <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        var rdoc_rel_prefix = "./";
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+<nav id="home-section" class="section">
+    <h3 class="section-header">
+        <a href="./index.html">Home</a>
+        <a href="./table_of_contents.html#classes">Classes</a>
+        <a href="./table_of_contents.html#methods">Methods</a>
+    </h3>
+</nav>
+
+
+<nav id="search-section" class="section project-section" class="initially-hidden">
+    <form action="#" method="get" accept-charset="utf-8">
+        <h3 class="section-header">
+            <input type="text" name="search" placeholder="Search" id="search-field"
+                   title="Type to search, Up and Down to navigate, Enter to load">
+        </h3>
+    </form>
+
+    <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+<div id="file-metadata">
+    <nav id="file-list-section" class="section">
+        <h3 class="section-header">Defined In</h3>
+        <ul>
+            <li>app/helpers/service_calls_helper.rb
+        </ul>
+    </nav>
+
+
+</div>
+
+<div id="class-metadata">
+
+
+    <!-- Method Quickref -->
+    <nav id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+
+        <ul class="link-list">
+
+            <li><a href="#method-i-accept_form">#accept_form</a>
+
+            <li><a href="#method-i-cancel_form">#cancel_form</a>
+
+            <li><a href="#method-i-cancel_transfer_form">#cancel_transfer_form</a>
+
+            <li><a href="#method-i-complete_form">#complete_form</a>
+
+            <li><a href="#method-i-dispatch_form">#dispatch_form</a>
+
+            <li><a href="#method-i-event_list">#event_list</a>
+
+            <li><a href="#method-i-paid_form">#paid_form</a>
+
+            <li><a href="#method-i-reject_form">#reject_form</a>
+
+            <li><a href="#method-i-settle_form">#settle_form</a>
+
+            <li><a href="#method-i-start_form">#start_form</a>
+
+            <li><a href="#method-i-transfer_form">#transfer_form</a>
+
+        </ul>
+    </nav>
+
+</div>
+
+<div id="project-metadata">
+<nav id="fileindex-section" class="section project-section">
+    <h3 class="section-header">Pages</h3>
+
+    <ul>
+
+        <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+
+    </ul>
+</nav>
+
+<nav id="classindex-section" class="section project-section">
+<h3 class="section-header">Class and Module Index</h3>
+
+<ul class="link-list">
+
+<li><a href="./Account.html">Account</a>
+
+<li><a href="./AdminMailer.html">AdminMailer</a>
+
+<li><a href="./Affiliate.html">Affiliate</a>
+
+<li><a href="./AffiliatesController.html">AffiliatesController</a>
+
+<li><a href="./AffiliatesHelper.html">AffiliatesHelper</a>
+
+<li><a href="./AgrActivatedEvent.html">AgrActivatedEvent</a>
+
+<li><a href="./AgrActivatedSubconNotification.html">AgrActivatedSubconNotification</a>
+
+<li><a href="./AgrNewSubconEvent.html">AgrNewSubconEvent</a>
+
+<li><a href="./AgrNewSubconNotification.html">AgrNewSubconNotification</a>
+
+<li><a href="./AgrSubmittedEvent.html">AgrSubmittedEvent</a>
+
+<li><a href="./Agreement.html">Agreement</a>
+
+<li><a href="./AgreementEvent.html">AgreementEvent</a>
+
+<li><a href="./AgreementNotification.html">AgreementNotification</a>
+
+<li><a href="./AgreementsController.html">AgreementsController</a>
+
+<li><a href="./AgreementsHelper.html">AgreementsHelper</a>
+
+<li><a href="./ApplicationController.html">ApplicationController</a>
+
+<li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+
+<li><a href="./Assignment.html">Assignment</a>
+
+<li><a href="./Bom.html">Bom</a>
+
+<li><a href="./BomsController.html">BomsController</a>
+
+<li><a href="./BomsHelper.html">BomsHelper</a>
+
+<li><a href="./Customer.html">Customer</a>
+
+<li><a href="./CustomersController.html">CustomersController</a>
+
+<li><a href="./CustomersHelper.html">CustomersHelper</a>
+
+<li><a href="./Event.html">Event</a>
+
+<li><a href="./EventObserver.html">EventObserver</a>
+
+<li><a href="./LayoutHelper.html">LayoutHelper</a>
+
+<li><a href="./Material.html">Material</a>
+
+<li><a href="./MaterialsController.html">MaterialsController</a>
+
+<li><a href="./MaterialsHelper.html">MaterialsHelper</a>
+
+<li><a href="./MyServiceCall.html">MyServiceCall</a>
+
+<li><a href="./MyServiceCallObserver.html">MyServiceCallObserver</a>
+
+<li><a href="./MyUsersController.html">MyUsersController</a>
+
+<li><a href="./MyUsersHelper.html">MyUsersHelper</a>
+
+<li><a href="./NewMemberEvent.html">NewMemberEvent</a>
+
+<li><a href="./Notification.html">Notification</a>
+
+<li><a href="./NotificationMailer.html">NotificationMailer</a>
+
+<li><a href="./NotificationsController.html">NotificationsController</a>
+
+<li><a href="./NotificationsHelper.html">NotificationsHelper</a>
+
+<li><a href="./OneOwnerValidator.html">OneOwnerValidator</a>
+
+<li><a href="./OrgToRole.html">OrgToRole</a>
+
+<li><a href="./Organization.html">Organization</a>
+
+<li><a href="./OrganizationAgreement.html">OrganizationAgreement</a>
+
+<li><a href="./OrganizationRole.html">OrganizationRole</a>
+
+<li><a href="./OrganizationsController.html">OrganizationsController</a>
+
+<li><a href="./OrganizationsHelper.html">OrganizationsHelper</a>
+
+<li><a href="./PasswordsController.html">PasswordsController</a>
+
+<li><a href="./PermittedParams.html">PermittedParams</a>
+
+<li><a href="./Provider.html">Provider</a>
+
+<li><a href="./ProvidersController.html">ProvidersController</a>
+
+<li><a href="./ProvidersHelper.html">ProvidersHelper</a>
+
+<li><a href="./RegionSelectController.html">RegionSelectController</a>
+
+<li><a href="./RegionSelectHelper.html">RegionSelectHelper</a>
+
+<li><a href="./RegistrationsController.html">RegistrationsController</a>
+
+<li><a href="./RegistrationsHelper.html">RegistrationsHelper</a>
+
+<li><a href="./Role.html">Role</a>
+
+<li><a href="./RoleValidator.html">RoleValidator</a>
+
+<li><a href="./ScAcceptedNotification.html">ScAcceptedNotification</a>
+
+<li><a href="./ScCancelNotification.html">ScCancelNotification</a>
+
+<li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
+
+<li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
+
+<li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+
+<li><a href="./ScDispatchNotification.html">ScDispatchNotification</a>
+
+<li><a href="./ScDispatchedNotification.html">ScDispatchedNotification</a>
+
+<li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+
+<li><a href="./ScReceivedNotification.html">ScReceivedNotification</a>
+
+<li><a href="./ScRejectedNotification.html">ScRejectedNotification</a>
+
+<li><a href="./ScSettleNotification.html">ScSettleNotification</a>
+
+<li><a href="./ScSettledNotification.html">ScSettledNotification</a>
+
+<li><a href="./ScStartNotification.html">ScStartNotification</a>
+
+<li><a href="./ScStartedNotification.html">ScStartedNotification</a>
+
+<li><a href="./ServiceCall.html">ServiceCall</a>
+
+<li><a href="./ServiceCallAcceptEvent.html">ServiceCallAcceptEvent</a>
+
+<li><a href="./ServiceCallAcceptedEvent.html">ServiceCallAcceptedEvent</a>
+
+<li><a href="./ServiceCallCancelEvent.html">ServiceCallCancelEvent</a>
+
+<li><a href="./ServiceCallCanceledEvent.html">ServiceCallCanceledEvent</a>
+
+<li><a href="./ServiceCallCompleteEvent.html">ServiceCallCompleteEvent</a>
+
+<li><a href="./ServiceCallCompletedEvent.html">ServiceCallCompletedEvent</a>
+
+<li><a href="./ServiceCallDispatchEvent.html">ServiceCallDispatchEvent</a>
+
+<li><a href="./ServiceCallDispatchedEvent.html">ServiceCallDispatchedEvent</a>
+
+<li><a href="./ServiceCallEvent.html">ServiceCallEvent</a>
+
+<li><a href="./ServiceCallNotification.html">ServiceCallNotification</a>
+
+<li><a href="./ServiceCallObserver.html">ServiceCallObserver</a>
+
+<li><a href="./ServiceCallPaidEvent.html">ServiceCallPaidEvent</a>
+
+<li><a href="./ServiceCallReceivedEvent.html">ServiceCallReceivedEvent</a>
+
+<li><a href="./ServiceCallRejectEvent.html">ServiceCallRejectEvent</a>
+
+<li><a href="./ServiceCallRejectedEvent.html">ServiceCallRejectedEvent</a>
+
+<li><a href="./ServiceCallSettleEvent.html">ServiceCallSettleEvent</a>
+
+<li><a href="./ServiceCallSettledEvent.html">ServiceCallSettledEvent</a>
+
+<li><a href="./ServiceCallStartEvent.html">ServiceCallStartEvent</a>
+
+<li><a href="./ServiceCallStartedEvent.html">ServiceCallStartedEvent</a>
+
+<li><a href="./ServiceCallTransferEvent.html">ServiceCallTransferEvent</a>
+
+<li><a href="./ServiceCallsController.html">ServiceCallsController</a>
+
+<li><a href="./ServiceCallsHelper.html">ServiceCallsHelper</a>
+
+<li><a href="./SessionsController.html">SessionsController</a>
+
+<li><a href="./StaticPagesController.html">StaticPagesController</a>
+
+<li><a href="./StaticPagesHelper.html">StaticPagesHelper</a>
+
+<li><a href="./SubcontractingAgreement.html">SubcontractingAgreement</a>
+
+<li><a href="./SubcontractingAgreementObserver.html">SubcontractingAgreementObserver</a>
+
+<li><a href="./Subcontractor.html">Subcontractor</a>
+
+<li><a href="./SubcontractorsController.html">SubcontractorsController</a>
+
+<li><a href="./SubcontractorsHelper.html">SubcontractorsHelper</a>
+
+<li><a href="./Supplier.html">Supplier</a>
+
+<li><a href="./SupplierAgreement.html">SupplierAgreement</a>
+
+<li><a href="./Ticket.html">Ticket</a>
+
+<li><a href="./TransferredServiceCall.html">TransferredServiceCall</a>
+
+<li><a href="./TransferredServiceCallObserver.html">TransferredServiceCallObserver</a>
+
+<li><a href="./User.html">User</a>
+
+</ul>
+</nav>
+
+</div>
+</nav>
+
+<div id="documentation">
+<h1 class="module">module ServiceCallsHelper</h1>
+
+<div id="description" class="description">
+
+</div>
+<!-- description -->
+
+
+<section id="5Buntitled-5D" class="documentation-section">
+
+
+<!-- Methods -->
+
+<section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+<h3 class="section-header">Public Instance Methods</h3>
+
+
+<div id="method-i-accept_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">accept_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="accept_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">accept_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'accept'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span class="ruby-value">:accept</span>).<span
+                        class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'accept_service_call_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large btn-primary&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click to indicate that you accept this Service Call'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- accept_form-source -->
+
+    </div>
+
+
+</div>
+<!-- accept_form-method -->
+
+
+<div id="method-i-cancel_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">cancel_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="cancel_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'cancel'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span class="ruby-value">:cancel</span>).<span
+                        class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'cancel_service_call_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large btn-danger&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'cancel this service call'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- cancel_form-source -->
+
+    </div>
+
+
+</div>
+<!-- cancel_form-method -->
+
+
+<div id="method-i-cancel_transfer_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">cancel_transfer_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="cancel_transfer_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 96</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_transfer_form</span>(<span
+                        class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'cancel_transfer'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span
+                        class="ruby-value">:cancel_transfer</span>).<span class="ruby-identifier">titleize</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large btn-danger&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click if you wish to cancel transferring this Service Call to another Subcontractor'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- cancel_transfer_form-source -->
+
+    </div>
+
+
+</div>
+<!-- cancel_transfer_form-method -->
+
+
+<div id="method-i-complete_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">complete_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="complete_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 107</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">complete_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'work_completed'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span
+                        class="ruby-value">:work_completed</span>).<span class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'complete_service_call_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large btn-primary&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click id work is completed'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- complete_form-source -->
+
+    </div>
+
+
+</div>
+<!-- complete_form-method -->
+
+
+<div id="method-i-dispatch_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">dispatch_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="dispatch_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dispatch_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">input</span> <span
+                        class="ruby-value">:technician_id</span>, <span class="ruby-identifier">collection</span><span
+                        class="ruby-operator">:</span> <span class="ruby-identifier">f</span>.<span
+                        class="ruby-identifier">object</span>.<span class="ruby-identifier">organization</span>.<span
+                        class="ruby-identifier">technicians</span>, <span
+                        class="ruby-identifier">label_method</span><span class="ruby-operator">:</span> <span
+                        class="ruby-value">:name</span>, <span class="ruby-identifier">value_method</span><span
+                        class="ruby-operator">:</span> <span class="ruby-value">:id</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'dispatch'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span class="ruby-value">:dispatch</span>).<span
+                        class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'service_call_dispatch_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click to Dispatch the Service Call'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- dispatch_form-source -->
+
+    </div>
+
+
+</div>
+<!-- dispatch_form-method -->
+
+
+<div id="method-i-event_list" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">event_list</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="event_list-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">event_list</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">content_tag_for</span> <span class="ruby-value">:ul</span>, <span
+                        class="ruby-identifier">service_call</span>, <span class="ruby-keyword">class</span><span
+                        class="ruby-operator">:</span> <span
+                        class="ruby-string">'service_call_events unstyled'</span> <span class="ruby-keyword">do</span>
+
+    <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">status_events</span>.<span
+                        class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span
+                        class="ruby-operator">|</span><span class="ruby-identifier">event</span><span
+                        class="ruby-operator">|</span>
+      <span class="ruby-keyword">case</span> <span class="ruby-identifier">event</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:transfer</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">transfer_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:dispatch</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">dispatch_form</span>(<span
+                        class="ruby-identifier">service_call</span>)) <span class="ruby-keyword">unless</span> <span
+                        class="ruby-identifier">current_user</span>.<span
+                        class="ruby-identifier">organization</span>.<span class="ruby-identifier">users</span>.<span
+                        class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span
+                        class="ruby-value">1</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:start</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">start_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:work_completed</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">complete_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:settle</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">settle_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:cancel_transfer</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">cancel_transfer_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:reject</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">reject_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:accept</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">accept_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:paid</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">paid_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:cancel</span>
+          <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">cancel_form</span>(<span
+                        class="ruby-identifier">service_call</span>))
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">concat</span>(<span class="ruby-identifier">content_tag</span> <span
+                        class="ruby-value">:li</span>, <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span
+                        class="ruby-identifier">event</span>))
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- event_list-source -->
+
+    </div>
+
+
+</div>
+<!-- event_list-method -->
+
+
+<div id="method-i-paid_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">paid_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="paid_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">paid_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'paid'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">input</span> <span
+                        class="ruby-value">:total_price</span>, <span class="ruby-identifier">placeholder</span><span
+                        class="ruby-operator">:</span> <span class="ruby-string">'Enter price'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span
+                        class="ruby-value">:paid</span>).<span class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'paid_service_call_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large btn-primary&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click if payment has received'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- paid_form-source -->
+
+    </div>
+
+
+</div>
+<!-- paid_form-method -->
+
+
+<div id="method-i-reject_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">reject_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="reject_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reject_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'reject'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span class="ruby-value">:reject</span>).<span
+                        class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'reject_service_call_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large btn-danger&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click to reject this Service Call'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- reject_form-source -->
+
+    </div>
+
+
+</div>
+<!-- reject_form-method -->
+
+
+<div id="method-i-settle_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">settle_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="settle_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">settle_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'settle'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span class="ruby-value">:settle</span>).<span
+                        class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'settle_service_call_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click to indicate that you have completed'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- settle_form-source -->
+
+    </div>
+
+
+</div>
+<!-- settle_form-method -->
+
+
+<div id="method-i-start_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">start_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="start_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'start'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span
+                        class="ruby-value">:start</span>).<span class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'start_service_call_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large btn-primary&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click to Start the Service Call'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- start_form-source -->
+
+    </div>
+
+
+</div>
+<!-- start_form-method -->
+
+
+<div id="method-i-transfer_form" class="method-detail ">
+
+    <div class="method-heading">
+        <span class="method-name">transfer_form</span><span
+            class="method-args">(service_call)</span>
+        <span class="method-click-advice">click to toggle source</span>
+    </div>
+
+
+    <div class="method-description">
+
+
+        <div class="method-source-code" id="transfer_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 144</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">transfer_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span
+                        class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span
+                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
+                        class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">input</span> <span
+                        class="ruby-value">:subcontractor_id</span>, <span
+                        class="ruby-identifier">collection</span><span class="ruby-operator">:</span> <span
+                        class="ruby-identifier">f</span>.<span class="ruby-identifier">object</span>.<span
+                        class="ruby-identifier">organization</span>.<span class="ruby-identifier">subcontractors</span>, <span
+                        class="ruby-identifier">label_method</span><span class="ruby-operator">:</span> <span
+                        class="ruby-value">:name</span>, <span class="ruby-identifier">value_method</span><span
+                        class="ruby-operator">:</span> <span class="ruby-value">:id</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span
+                        class="ruby-string">&quot;service_call[status_event]&quot;</span>, <span class="ruby-string">'transfer'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span
+                        class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span
+                        class="ruby-identifier">human_status_event_name</span>(<span class="ruby-value">:transfer</span>).<span
+                        class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span
+                        class="ruby-string">'service_call_transfer_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">&quot;btn btn-large&quot;</span>,
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span
+                        class="ruby-string">'Click to transfer the Service Call to the Subcontractor you selected'</span>,
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span
+                        class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+        </div>
+        <!-- transfer_form-source -->
+
+    </div>
+
+
+</div>
+<!-- transfer_form-method -->
+
+
+</section>
+<!-- public-instance-method-details -->
+
+</section>
+<!-- 5Buntitled-5D -->
+
+</div>
+<!-- documentation -->
+
+
+<footer id="validator-badges">
+    <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+
+    <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+
+    <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
