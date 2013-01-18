@@ -1,8 +1,11 @@
-<div class="well">
+<% provide(:title, Affiliate.name.humanize.pluralize) %>
+
+
+<div class="well well_height">
 
   <div class="smart_label">
     <ul>
-      <li><h1>My Affiliates</h1></li>
+      <li><h1><%= I18n.t('general.general.my_affiliates') %></h1></li>
       <li>
         <%= form_tag affiliates_path, id: "agreement_search_form", :method => :get do %>
             <%= text_field_tag :search, params[:search] %>
@@ -10,7 +13,7 @@
         <% end %>
       </li>
       <li>
-        <p>Search for private affiliates and SubConTraX members</p>
+        <p><%= I18n.t('general.general.search_affiliate') %></p>
       </li>
       <li>
         <%= link_to t('affiliates.buttons.new_affiliate'), new_affiliate_path, :class => 'btn btn-primary', id: 'new-affiliate-button' %>
@@ -26,11 +29,13 @@
         <thead>
         <tr>
           <th></th>
-          <th>Name</th>
-          <th>Company</th>
-          <th>Phone</th>
-          <th>Email</th>
-          <th>Actions</th>
+
+          <th><%= Affiliate.human_attribute_name(:name) %></th>
+          <th><%= I18n.t('general.general.phone') %></th>
+          <th><%= I18n.t('general.general.email') %></th>
+          <th><%= I18n.t('general.general.balance') %></th>
+          <th><%= Affiliate.human_attribute_name(:roles) %></th>
+          <th><%= I18n.t('general.general.actions') %></th>
         </tr>
         </thead>
   <% else %>
@@ -50,15 +55,21 @@
 
   <%= will_paginate @affiliates, :class => 'pagination pagination-centered' %>
 
-  <div class="row-fluid">
-    <!--<div class="miya_table_row">-->
-              <span class="member_label">
-                    <badge><i class="icon-user icon-white"></i></badge>
-               </span>
-    <!--<span>&nbsp;</span>-->
-    <span class="miya_blue_note">&nbsp; SubConTraX Member</span>
-  </div>
+   <br>
 
+  <p>
+  <%= image_tag("member.png", :title => I18n.t('general.messages.provider_icon'), :rel => 'tooltip') %>
+    <span class="miya_blue_note"><%= I18n.t('general.general.member') %></span>
+  </p>
+  <p>
+  <%= image_tag("sub24.png", :title => I18n.t('general.messages.provider_icon'), :rel => 'tooltip') %>
+  <span class="miya_blue_note"><%= I18n.t('general.general.subcontractor') %></span>
+</p>
+  <p>
+    <%= image_tag("prov24.png", :title => I18n.t('general.messages.provider_icon'), :rel => 'tooltip') %>
+    <span class="miya_blue_note"><%= I18n.t('general.general.provider') %></span>
+  </p>
+  <!--End Well-->
 </div>
 
 

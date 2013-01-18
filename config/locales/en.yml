@@ -13,6 +13,12 @@ en:
     subcontractor:
       subcontractor_created: "Subcontractor creates successfully!"
   general:
+    messages:
+      provider_icon: "This Affiliate is your Provider"
+      subco_icon: "This Affiliate is your Subcontractor"
+      member_icon: "This Affiliate is a member in the SubConTraX Network"
+      send_invite: "Send invitation to join the SubConTraX network. <br> See Promotion on the left"
+
     emails:
       dear: "Dear"
       job:  "Job Number"
@@ -23,7 +29,6 @@ en:
       miya_billing: "MiYa's Billing"
       sign_out: "Sign Out"
       see_all: "Show All"
-      back: "Back"
       dismiss: "Dismiss"
       delete: "Delete"
       Save: "Save"
@@ -46,3 +51,12 @@ en:
       my_customers: "My Customers"
       edit: "Edit"
       manage_parts: "Manage Parts"
+      my_affiliates: "My Affiliates"
+      name: "Name"
+      phone: "Phone"
+      email: "Email"
+      actions: "Actions"
+      search_affiliate: "Search for private affiliates and SubConTraX members"
+      provider: "Provider"
+      subcontractor: "Subcontractor"
+      member: "SubConTraX member"

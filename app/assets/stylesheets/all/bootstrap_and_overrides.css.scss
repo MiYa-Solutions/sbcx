@@ -160,9 +160,10 @@ footer {
 
 .navbar .nav > li > a:hover {
 
-  background-color: #0073CC;
-  background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);
-  background-repeat: repeat-x;}
+  //background-color: #0073CC;
+  //background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);
+  //background-repeat: repeat-x;
+}
 
 
   //.miya_buttons_grid {
@@ -172,7 +173,7 @@ footer {
 //}
 
 .miya_buttons_grid {
-  min-width: 160px;
+  //min-width: 160px;
 
   input[type="submit"] {
     margin-left: 10px;
@@ -206,6 +207,7 @@ footer {
   font-size: 14px;
   color: #3A87AD;
   font-weight: bold;
+  vertical-align: bottom;
 }
 
 .miya_table_row {
@@ -269,12 +271,7 @@ input, textarea {
 
 }
 
-.sign_in_controls {
 
-  .radio input[type="radio"], .checkbox input[type="checkbox"] {
-    margin-top: 8px;
-  }
-}
 
 .smart_label {
   background-color: $grayLight;
@@ -309,7 +306,7 @@ input, textarea {
   }
 
   p {
-    max-width: 250px;
+    max-width: 350px;
     font-style: italic;
     font-weight: bold;
     color: $white;
@@ -798,4 +795,25 @@ hr {
 .well_height {
   min-height: 575px;
   margin-left: -1.5%;
+}
+
+
+
+
+.sign_in_controls {
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    //margin-top: 7px;
+    //min-height: 12px;
+    -webkit-transform: scale(1.6,1.6);
+    -moz-transform: scale(1.6,1.6);
+    -o-transform: scale(1.6,1.6);
+    margin-left: -13px;
+    margin-top: 9px;
+  }
+}
+
+.member_logo {
+  width: 2%;
+
 }
