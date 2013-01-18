@@ -123,6 +123,11 @@ describe "Affiliate Pages" do
         end
       end
 
+      it "email in table should be a link to an email message"
+      it "should show name, phone, email, balance"
+      it "should not have 'Archive"
+      it "should have pagination"
+
     end
 
     describe "Add Affiliate" do

@@ -1,16 +1,37 @@
-<% material ||= Material.new %>
+<!--<#% material ||= Material.new %>
 
 <div class="add_new_part">
 
-  <%= simple_form_for material, :html => { :class => 'form-horizontal' } do |f| %>
-      <%= f.error_notification %>
+  <#%= simple_form_for material, :html => { :class => 'form-horizontal' } do |f| %>
+      <#%= f.error_notification %>
+    -->
+      <!--<#%= render 'fields', f: f %>-->
 
-      <%= render 'fields', f: f %>
+      <div class="customer_contacts">
 
-      <div class="miya_blue_button">
-        <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'create-material-btn', "data-icon" => "check", "data-iconpos" => "left" %>
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Material.human_attribute_name(:name) %></div>
+          <div class="ui-block-b"><%= f.text_field :name %></div>
+        </div>
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Material.human_attribute_name(:description) %></div>
+          <div class="ui-block-b"><%= f.text_field :description %></div>
+        </div>
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Material.human_attribute_name(:cost) %></div>
+          <div class="ui-block-b"><%= f.text_field :cost %></div>
+        </div>
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Material.human_attribute_name(:price) %></div>
+          <div class="ui-block-b"><%= f.text_field :price %></div>
+        </div>
+
       </div>
 
-  <% end %>
+      <!--<div class="miya_blue_button">-->
+        <!--<#%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'create-material-btn', "data-icon" => "check", "data-iconpos" => "left" %>-->
+      <!--</div>-->
 
-</div>
+  <!--<#% end %>-->
+
+<!--</div>-->

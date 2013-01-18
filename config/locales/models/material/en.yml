@@ -5,3 +5,4 @@ en:
     messages:
       material:
         created_successfully: '%{material} was created successfully'
+        updated_successfully: '%{material} was updated successfully'
