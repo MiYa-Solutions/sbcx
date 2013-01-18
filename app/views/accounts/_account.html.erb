@@ -4,8 +4,8 @@
       Account: <%= account %>
 
       <br>
-      Account owner: <%= account.organization.name %>
+      Account owner: <%= account.organization.name unless account.nil? %>
       <br>
-      Account for: <%= account.accountable.name %>
+      Account for: <%= account.accountable.name unless account.nil? %>
     </p>
 <% end %>
