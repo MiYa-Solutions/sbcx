@@ -18,6 +18,7 @@ en:
       subco_icon: "This Affiliate is your Subcontractor"
       member_icon: "This Affiliate is a member in the SubConTraX Network"
       send_invite: "Send invitation to join the SubConTraX network. <br> See Promotion on the left"
+      no_records: "No records, click 'New Affiliate' or search for affiliates to add new members to your network"
 
     emails:
       dear: "Dear"
