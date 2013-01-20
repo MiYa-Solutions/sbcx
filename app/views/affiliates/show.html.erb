@@ -4,94 +4,125 @@
 
   <div class="row-fluid">
     <div class="no_margins">
+       <div class="span5">
 
-        <div class="span5">
+              <div class="smart_label">
+                <ul>
+                  <li><h1><%= @affiliate.name %></h1></li>
+                  <li>
+                    <% if @affiliate.subcontrax_member==true %>
+                        <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
+                            <!--Archive is already at the bottom-->
+                        <% else %>
+                            <%= link_to "Add Member", "", class: "btn btn-large btn-primary" %>
+                        <% end %>
+                    <% else %>
+                        <%= link_to I18n.t('general.general.send_invite'), new_affiliate_path, :class => 'btn// btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
+                    <% end %>
+                  </li>
+                </ul>
+              </div>
 
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= @affiliate.name %></h1></li>
-          <li>
-            <% if @affiliate.subcontrax_member==true %>
-                <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
-                    <!--Archive is already at the bottom-->
-                <% else %>
-                    <%= link_to "Add Member", "", class: "btn btn-large btn-primary" %>
-                <% end %>
-            <% else %>
-                <%= link_to I18n.t('general.general.send_invite'), new_affiliate_path, :class => 'btn btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
-            <% end %>
-          </li>
-        </ul>
-      </div>
-
-      <table class="table table-striped table-condensed">
-        <tbody>
+             <table class="table table-striped table-condensed">
+                  <tbody>
         <tr>
-          <td><%= Affiliate.human_attribute_name(:status) %></td>
-          <td><h4><%= @affiliate.human_status_name %></h4></td>
-        </tr>
-
-        <tr>
-          <td>Company:</td>
+          <td><%= Affiliate.human_attribute_name(:company) %></td>
           <td><h4><%= @affiliate.company %></h4></td>
         </tr>
         <tr>
-          <td>Address:</td>
+          <td><%= I18n.t('general.general.address') %></td>
           <td><h4><%= @affiliate.address1 %> <%= @affiliate.address2 %></h4></td>
         </tr>
         <tr>
-          <td>City:</td>
+          <td><%= Affiliate.human_attribute_name(:city) %></td>
           <td><h4><%= @affiliate.city %></h4></td>
         </tr>
         <tr>
-          <td>State:</td>
+          <td><%= Affiliate.human_attribute_name(:state) %></td>
           <td><h4><%= @affiliate.state %></h4></td>
         </tr>
         <tr>
-          <td>Country:</td>
+          <td><%= Affiliate.human_attribute_name(:coubtry) %></td>
           <td><h4><%= @affiliate.country %></h4></td>
         </tr>
         <tr>
-          <td>Zip:</td>
+          <td><%= Affiliate.human_attribute_name(:zip) %></td>
           <td><h4><%= @affiliate.zip %></h4></td>
         </tr>
         <tr>
-          <td>Phone:</td>
+          <td><%= Affiliate.human_attribute_name(:phone) %></td>
           <td><h4><%= @affiliate.phone %></h4></td>
         </tr>
         <tr>
-          <td>Mobile Phone:</td>
+          <td><%= Affiliate.human_attribute_name(:mobile) %></td>
           <td><h4><%= @affiliate.mobile %></h4></td>
         </tr>
         <tr>
-          <td>Email:</td>
+          <td><%= Affiliate.human_attribute_name(:email) %></td>
           <td><h4><%= @affiliate.email %></h4></td>
         </tr>
         <tr>
-          <td>Website:</td>
+          <td><%= Affiliate.human_attribute_name(:website) %></td>
           <td><h4><%= @affiliate.website %></h4></td>
         </tr>
         <tr>
-          <td>Roles:</td>
-          <td>
-            <% for role in @affiliate.organization_roles %>
-                <table>
-                  <tbody>
-                  <tr>
-                    <span class="label label-info"><%= role.name %></span>
-                  </tr>
-                  </tbody>
-                </table>
-            <% end %>
+          <td><%= I18n.t('general.general.roles') %></td>
+           <td class="roles_table">
+                <% for role in @affiliate.organization_roles %>
+                    <ul>
+                      <li>
+                        <span class="label label-info"><%= role.name %></span>
+                      </li>
+                     </ul>
+                <% end %>
           </td>
         </tr>
-        </tbody>
-      </table>
+    </tbody>
+             </table>
+
+        </div>
+    </div>
+
+    <div class="span7">
+
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= I18n.t('general.general.balance') %></h1></li>
+          <li class="red-balance"><h1>Total: <span>-$199</span></h1></li>
+        </ul>
+      </div>
+
+<!--table of jobs-->
+    <br>
+    <% if @affiliate.service_calls.empty? %>
+      Empty
+    <% else %>
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th><%= I18n.t('general.general.jon_number') %></th>
+              <th><%= I18n.t('general.general.description') %></th>
+              <th><%= I18n.t('general.general.status') %></th>
+              <th><%= I18n.t('general.general.customer') %></th>
+              <th><%= I18n.t('general.general.balance') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @affiliate.service_calls.each do |sc| %>
+                <tr>
+                  <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
+                  <td><%= link_to sc.type , service_call_path(sc) %></td>
+                  <td><%= link_to sc.human_subcontractor_status_name, service_call_path(sc) %></td>
+                  <td><%= sc.customer.try(:name) %></td>
+                  <td>- $190</td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+    <% end  %>
+
 
     </div>
-    </div>
-
-    <div class="7"></div>
 
     </div>
 

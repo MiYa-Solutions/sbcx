@@ -1,0 +1,7 @@
+en:
+  activerecord:
+    models:
+      affiliate: "Affiliate"
+    attributes:
+      affiliate:
+        address1: "Address"

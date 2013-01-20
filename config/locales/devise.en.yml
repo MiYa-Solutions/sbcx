@@ -55,3 +55,11 @@ en:
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+  general:
+    general:
+      address: "Address"
+      roles: "Roles"
+      jon_number: "Job Number"
+      description: "Description"
+      status: "Status"
+      customer: "Customer"

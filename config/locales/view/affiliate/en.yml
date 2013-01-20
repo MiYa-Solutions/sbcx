@@ -18,6 +18,8 @@ en:
         agreement: "Agreement"
 
       attributes:
+        affiliate:
+          address1: "Address"
         agreement:
       state_machines:
         organization_agreement:

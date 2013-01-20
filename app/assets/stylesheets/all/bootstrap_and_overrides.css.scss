@@ -819,3 +819,30 @@ hr {
 .actions_affiliate_index {
   width: 14%;
 }
+
+.roles_table{
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: left;
+    margin-left: 0;
+
+  }
+}
+
+.red-balance {
+  span {
+    background-color: red;
+    letter-spacing: 0.1em;
+    padding: 3px;
+  }
+}
