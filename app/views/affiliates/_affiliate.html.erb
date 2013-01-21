@@ -21,11 +21,10 @@
         <% unless  affiliate.id.in? affiliate_ids %>
             <div class="miya_buttons_grid">
               <ul>
-                <li>&nbsp;</li>
-                <li>&nbsp;</li>
-                <li>
-                  Click on the affiliate to add an agreement
+                <li class="add_member">
+                  <%= link_to I18n.t('general.general.add_member'), affiliate_path(affiliate), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.invite_member').html_safe, :rel => 'tooltip' %>
                 </li>
+
               </ul>
 
             </div>
@@ -41,7 +40,7 @@
               <%= link_to I18n.t('general.general.edit'), edit_affiliate_path(affiliate), :class => 'btn btn-mini' %>
             </li>
             <li>
-              <%= link_to I18n.t('general.general.send_invite'), new_affiliate_path, :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
+              <%= link_to I18n.t('general.general.send_invite'), affiliate_path(affiliate), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
             </li>
 
           </ul>
