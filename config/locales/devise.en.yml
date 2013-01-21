@@ -63,3 +63,5 @@ en:
       description: "Description"
       status: "Status"
       customer: "Customer"
+    messages:
+      new_agreement: "Click to add new agreement"

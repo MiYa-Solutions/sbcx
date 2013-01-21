@@ -432,10 +432,10 @@ fieldset label {
 }
 
 .table th, .table td {
-  line-height: 12px;
-  padding: 4px;
   font-size: 13px;
-  padding-top: 8px;
+  line-height: 12px;
+  padding: 5px 4px 3px;
+  vertical-align: middle;
 }
 
 smart_alert {
@@ -639,6 +639,63 @@ smart_alert {
   }
 }
 
+.filter_affiliate_jobs {
+
+  form {
+    margin-top: 6px;
+  }
+
+
+  input, textarea, text_field {
+    height: 18px;
+    margin-left: -3px;
+    width: 25%;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 5px;
+    line-height: 16px;
+    width: 65%;
+  }
+
+  .input-prepend .add-on, .input-append .add-on {
+    height: 13px;
+    line-height: 13px;
+
+  }
+
+  .input-prepend, .input-append {
+    margin-bottom: 7px;
+    //width: 130%;
+  }
+
+  .input-prepend.input-append .add-on:last-child, .input-prepend.input-append .btn:last-child {
+    border-radius: 3px 3px 3px 3px;
+    height: 23px;
+    margin-left: 0;
+    width: 45px;
+  }
+
+  .label_filter {
+    width: 20%;
+    text-align: right;
+    padding-top: 3px;
+  }
+  .button_filter {
+    width: 15%;
+  }
+}
+
+.affiliate_balance {
+  min-height: 350px;
+}
+
 .add_part_service_call {
   input, textarea, text_field {
     width: 90%;
@@ -679,6 +736,10 @@ smart_alert {
   }
   .quantity_field {
     width: 10%;
+  }
+
+  .button_filter {
+    height: 16px;
   }
 
 }
