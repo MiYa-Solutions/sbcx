@@ -1,17 +1,41 @@
 <% other_party ||= "" %>
-<%= form_tag new_agreement_url, remote: true, method: :get do %>
+<div class="add_new_agreement">
+<%= form_tag new_agreement_url, :class => 'simple_form form-horizontal', remote: true, method: :get do %>
 
-    <%= hidden_field_tag 'otherparty_id', other_party.id %>
-    <%= label_tag "agreement_type", "Agreement Type" %>
-    <%= select_tag 'agreement_type', options_for_select(organization_agreement_types), include_blank: true %>
 
-    <%= label_tag "Where '#{other_party.name}' is the: " %>
-    <div id="agreement_role_wrapper">
-      <%= select_tag 'otherparty_role', "", id: "agreement_role_select" %>
-    </div>
-    <p><%= submit_tag "Create", class: 'btn btn-medium', :id => 'add-agreement-button' %></p>
-<% end %>
+     <fieldset>
 
-<div id="agreement_form">
+       <ul>
+           <li>
+           <%= hidden_field_tag 'otherparty_id', other_party.id %>
+           <%= hidden_field_tag :type, value: SubcontractingAgreement.name %>
+           </li>
+           <li>
+             <label class="string optional control-label" for="customer_country"><%= label_tag "Where #{other_party.name} is your: " %></label>
+           </li>
+           <li>
+             <div id="agreement_role_wrapper">
+                <%= select_tag 'otherparty_role', "", id: "agreement_role_select" %>
+             </div>
+           </li>
+           <!--<#%= label_tag "agreement_type", "Agreement Type" %>-->
+            <!--<#%= select_tag 'agreement_type', options_for_select(organization_agreement_types), include_blank: true %>-->
+            <!--<#%= label_tag "Where '#{other_party.name}' is the: " %>-->
+           <!--<div id="agreement_role_wrapper">-->
+            <!--<@%= label_tag "Where '#{other_party.name}' is the: " %></label>-->
+                        <!--<#%= select_tag 'otherparty_role', "", id: "agreement_role_select" %>-->
+            <!--</div>-->
+             <li>
+           <%= submit_tag "Create", class: 'btn btn-medium btn-primary', :id => 'add-agreement-button' %>
+             </li>
+
+       </ul>
+     </fieldset>
+  <% end %>
+
+  <div id="agreement_form">
+  </div>
+
+
 
 </div>

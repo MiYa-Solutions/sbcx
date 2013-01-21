@@ -639,6 +639,32 @@ smart_alert {
   }
 }
 
+.add_new_agreement {
+  select {
+    width: 220px;
+  }
+
+  .form-horizontal .control-label {
+    width: auto;
+  }
+
+  fieldset {
+    margin-top: 6px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 5px;
+    line-height: 16px;
+    //width: 65%;
+  }
+}
+
 .filter_affiliate_jobs {
 
   form {
@@ -694,6 +720,16 @@ smart_alert {
 
 .affiliate_balance {
   min-height: 350px;
+}
+
+.role_agreement {
+
+
+
+ span {
+    //width: 40%;
+   font-weight: normal;
+ }
 }
 
 .add_part_service_call {
@@ -907,3 +943,5 @@ hr {
     padding: 3px;
   }
 }
+
+

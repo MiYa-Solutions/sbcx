@@ -161,10 +161,41 @@
         <ul>
           <li><h1><%= Agreement.model_name.human.pluralize %></h1></li>
           <li>
-            <%= link_to I18n.t('general.general.new'), '#', :class => 'btn btn-primary', :title => I18n.t('general.messages.new_agreement').html_safe, :rel => 'tooltip' %>
-         </li>
+            <%= link_to I18n.t('general.general.new'), '#', :class => 'btn btn-primary', id: 'new-agreement-button', data: { toggle: "collapse", target: "#add_new_agreement" } %>
+          </li>
         </ul>
       </div>
+
+      <div class="bom collapse" id="add_new_agreement">
+        <%= render 'agreements/agreement_form', other_party: @affiliate %>
+
+      </div>
+
+      <% unless @agreements.empty? %>
+          <table class="table table-striped" id="agreements_table">
+
+
+            <% @agreements.each do |agreement| %>
+                <thead>
+                <tr>
+                  <td><h4><%= agreement.class.human_attribute_name(:status) %></h4></td>
+                  <td class="role_agreement"><h4><%= @affiliate.name %><span><%= "&nbsp;".html_safe + "is your" %></span></h4></td>
+                  <td><h4><%= agreement.class.human_attribute_name(:name) %></h4></td>
+                  <!--<td><h4><#%= agreement.class.human_attribute_name(:description) %></h4></td>-->
+                  <td><h4>Actions</h4></td>
+                </tr>
+                </thead>
+                <tbody>
+
+                <%= render 'agreements/agreement', agreement: agreement %>
+
+            <% end %>
+            </tbody>
+          </table>
+          <!--<#%= render 'agreements/agreements_table', agreements: @agreements %>-->
+      <% end %>
+
+
 
 
     </div>
@@ -181,12 +212,6 @@
  <div class="row">
 
     <div class="span8">
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= Agreement.model_name.human.pluralize %></h1></li>
-          <li></li>
-        </ul>
-      </div>
 
       <% unless @agreements.empty? %>
           <%= render 'agreements/agreements_table', agreements: @agreements %>
@@ -194,9 +219,9 @@
 
     </div>
 
+  </div>
 
 
-</div>
 <div class="row">
    <div id="account">
      <h1>Account</h1>

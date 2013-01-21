@@ -1,9 +1,16 @@
 <tr>
   <td><%= link_to agreement.human_status_name.titleize, agreement.becomes(Agreement) %></td>
-  <td><%= agreement.organization.name %></td>
-  <td><%= agreement.counterparty.name %></td>
+  <% if current_user.organization.name == agreement.class.human_attribute_name(:organization) %>
+      <td><%= agreement.class.human_attribute_name(:counterparty) %></td>
+  <% else %>
+      <td><%= agreement.class.human_attribute_name(:organization) %></td>
+  <% end %>
+
+  <!--<td><#%= agreement.organization.name %></td>-->
+  <!--<td><#%= agreement.counterparty.name %></td>-->
   <td><%= agreement.name %></td>
-  <td><%= agreement.description %></td>
+  <!--<td><#%= agreement.description %></td>-->
   <td>
+
   </td>
 <tr>
