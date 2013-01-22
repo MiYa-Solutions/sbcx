@@ -8,26 +8,36 @@
         <ul>
           <li></li>
           <li class="part_field">
-            <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" }, placeholder: 'Part Name' %>
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= I18n.t('general.general.part')%></span>
+            <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" } %>
             <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
             <%= f.hidden_field :material_id %>
             <%= f.hidden_field :ticket_id, value: @service_call.id %>
-
+            </div>
           </li>
           <li class="quantity_field">
-            <%= f.text_field :quantity, placeholder: 'Quantity' %>
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= I18n.t('general.general.qty')%></span>
+            <%= f.text_field :quantity %>
+                </div>
 
           </li>
           <li>
-            <%= f.text_field :price, placeholder: 'List Price' %>
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= I18n.t('general.general.price')%></span>
+               <%= f.text_field :price %>
+            </div>
 
           </li>
           <li>
-            <%= f.text_field :cost, placeholder: 'Cost' %>
-
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= I18n.t('general.general.cost')%></span>
+            <%= f.text_field :cost %>
+            </div>
           </li>
           <li>
-            <%= f.submit "Add", class: "btn btn-medium btn-primary", id: 'add_part' %>
+            <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary", id: 'add_part' %>
 
           </li>
           <li>

@@ -738,7 +738,8 @@ smart_alert {
 
 .add_part_service_call {
   input, textarea, text_field {
-    width: 90%;
+    width: 50%;
+    margin-left: -5px;
   }
   textarea {
     height: 18px;
@@ -752,7 +753,7 @@ smart_alert {
     float: left;
     margin: 0 5px;
     line-height: 16px;
-    width: 15%;
+    width: 18%;
   }
 
   li:last-child {
@@ -773,13 +774,21 @@ smart_alert {
 
   .part_field {
     width: 20%;
+    margin-right: -12px;
   }
   .quantity_field {
-    width: 10%;
+    width: 14%;
   }
 
   .button_filter {
     height: 16px;
+  }
+
+  .alert .close {
+    line-height: 18px;
+    position: relative;
+    right: -27px;
+    top: -32px;
   }
 
 }

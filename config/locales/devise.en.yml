@@ -65,6 +65,11 @@ en:
       customer: "Customer"
       role: "Role"
       add_member: "Add Member"
+      part: "Part"
+      cost: "Cost"
+      price: "Price"
+      qty: "Qty"
+      add: "Add"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"

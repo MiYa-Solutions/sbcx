@@ -1,1 +1,11 @@
 en:
+
+  agreement:
+
+  general:
+    agreement_id: "Agreement Id"
+    general:
+      agreement_id: "Agreement Id"
+      created_by: "Created by"
+      created_at: "Created at"
+      updated: "Last Update"
