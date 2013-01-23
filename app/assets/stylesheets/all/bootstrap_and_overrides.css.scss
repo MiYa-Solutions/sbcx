@@ -951,9 +951,40 @@ hr {
 
 .red-balance {
   span {
-    background-color: red;
+    //background-color: red;
     letter-spacing: 0.1em;
     padding: 3px;
+    background-color: #DA4E49;
+    background-image: -moz-linear-gradient(center top , #EE5F5B, #BD362F);
+    background-repeat: repeat-x;
+    border-color: #BD362F #BD362F #802420;
+
+  }
+}
+
+
+.cancel_agreement {
+
+  #agreement_change_reason {
+    margin-right: 5px;
+    margin-top: 10px;
+    max-width: 60%;
+  }
+}
+
+.agreement_events {
+  label {
+    //margin-top: 20px;
+  }
+
+  .title {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .subtitle {
+    font-style: italic;
+    margin-top: -20px;
   }
 }
 

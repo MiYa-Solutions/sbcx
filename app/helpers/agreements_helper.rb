@@ -24,17 +24,25 @@ module AgreementsHelper
         agreement.status_events.collect do |event|
           case event
             when :submit_for_approval
-              concat (content_tag :li, agr_submission_form(agreement))
+              concat (label_tag 'agr_submission_form', 'Submit Agreement for Approval', class: "title")
+              concat (content_tag :li, agr_submission_form(agreement),
+                     class: "cancel_agreement")
+              concat (label_tag 'agr_submission_form', 'Enter comments, if any, and click the Submit button', class: "subtitle")
             when :activate
               concat (content_tag :li, agr_activation_form(agreement))
             when :submit_change
-              concat (content_tag :li, agr_change_submission_form(agreement))
+              concat (label_tag 'agr_change_submission_form', 'Enter the reason you wish to cancel the agreement and click the Cancel button')
+              concat (content_tag :li, agr_change_submission_form(agreement),
+                     class: "cancel_agreement")
             when :accept
               concat (content_tag :li, agr_accept_form(agreement))
             when :reject
               concat (content_tag :li, agr_reject_form(agreement))
             when :cancel
-              concat (content_tag :li, agr_cancel_form(agreement))
+              concat (label_tag 'agr_cancel_form', 'Cancel Agreement', class: "title")
+              concat (content_tag :li, agr_cancel_form(agreement),
+                     class: "cancel_agreement")
+              concat (label_tag 'agr_cancel_form', 'Enter the reason you wish to cancel the agreement, and click the Cancel button', class: "subtitle")
             else
               concat(content_tag :li, agreement.class.human_status_event_name(event))
           end
@@ -62,8 +70,8 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'submit_for_approval')
       concat (f.submit agreement.class.human_status_event_name(:submit_for_approval).titleize,
                        id:    'agreement_submission_btn',
-                       class: "btn btn-large",
-                       title: 'Click to submit the agreement for the approval of your counterparty',
+                       class: "btn btn-primary",
+                       title: 'Click to submit the agreement for the approval',
                        rel:   'tooltip'
              )
     end
@@ -133,9 +141,9 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'cancel')
       concat (f.submit agreement.class.human_status_event_name(:cancel).titleize,
                        id:      'agreement_rejection_btn',
-                       class:   "btn btn-large",
-                       title:   'Click to cancel this relationship with the otherparty',
-                       confirm: 'Are you sure? This is an irreversible operation, and so this agreement will be permanently terminated ',
+                       class:   "btn btn-danger",
+                       title:   'Click to cancel this agreement',
+                       confirm: 'Are you sure?' + "\n" + 'Please note that this operation is irreversible, and this agreement will no longer be available',
                        rel:     'tooltip'
              )
 

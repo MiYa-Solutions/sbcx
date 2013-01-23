@@ -21,11 +21,11 @@ en:
         status:
           events:
             submit_for_approval: "Submit"
-            activate: "Activate The Agreement"
-            submit_change: "Submit The Change"
-            accept: "Accept The Terms"
-            reject: "Reject The Agreement Terms"
-            cancel: "Cancel This Agreement"
+            activate: "Activate Agreement"
+            submit_change: "Submit Change"
+            accept: "Accept Terms"
+            reject: "Reject Terms"
+            cancel: "Cancel Agreement"
           states:
             draft: "Draft"
             active: "Active"
@@ -39,11 +39,11 @@ en:
     agreement:
       new_subcon_agreement:
         name: "New Agreement"
-        description: '%{creator} has created a new  Subcontracting Agreement with %{counterparty} as the %{role}'
+        description: 'New Subcontracting Agreement agreement was created by %{creator}. The %{role} is  %{counterparty}'
       submitted:
         name: "Submitted For Approval"
         description: '%{originator} created a new agreement with %{counterparty}'
       activated:
         name: "Agreement Activated"
-        description: '%{originator} activated a the agreement with %{otherparty}'
+        description: '%{originator} activated the agreement with %{otherparty}'
   notifications:
