@@ -1,6 +1,6 @@
 <tr>
   <td><%= link_to agreement.human_status_name.titleize, agreement.becomes(Agreement) %></td>
-  <% if current_user.organization.name == agreement.class.human_attribute_name(:organization) %>
+  <% if current_user.organization.id == agreement.organization_id %>
       <td><%= agreement.class.human_attribute_name(:counterparty) %></td>
   <% else %>
       <td><%= agreement.class.human_attribute_name(:organization) %></td>

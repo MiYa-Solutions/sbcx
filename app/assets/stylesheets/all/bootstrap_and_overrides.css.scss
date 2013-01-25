@@ -909,14 +909,21 @@ hr {
 
 .sign_in_controls {
 
-  .radio input[type="radio"], .checkbox input[type="checkbox"] {
-    //margin-top: 7px;
-    //min-height: 12px;
-    -webkit-transform: scale(1.6,1.6);
-    -moz-transform: scale(1.6,1.6);
-    -o-transform: scale(1.6,1.6);
-    margin-left: -13px;
-    margin-top: 9px;
+  //.radio input[type="radio"], .checkbox input[type="checkbox"] {
+  //  margin-top: 7px;
+  //  min-height: 12px;
+  //  -webkit-transform: scale(1.6,1.6);
+  //  -moz-transform: scale(1.6,1.6);
+  //  -o-transform: scale(1.6,1.6);
+  //  margin-left: -13px;
+  //  margin-top: 9px;
+  //}
+
+
+  .radio, .checkbox {
+    min-height: 19px;
+    padding-left: 18px;
+    padding-top: 5px;
   }
 }
 
