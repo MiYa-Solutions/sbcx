@@ -1,6 +1,11 @@
 <% provide(:title, 'Welcome') %>
 
-<div class="row-fluid miya_hero">
+<% if user_signed_in? %>
+    <%= render 'static_pages/welcome' %>
+<% else %>
+
+
+    <div class="row-fluid miya_hero">
     <div class="well">
 
       <div class="row-fluid miya_hero">
@@ -181,7 +186,9 @@
     </div>
 </div>
 
- <!--<div class="miya-hero-bottom">-->
+    <% end %>
+
+    <!--<div class="miya-hero-bottom">-->
 <!--<div class="row-fluid ">-->
   <!--<div class="span4 well">-->
     <!--<#%= image_tag("screenshots.png", alt: "MiYa") %>-->
