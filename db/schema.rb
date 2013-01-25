@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130104150624) do
+ActiveRecord::Schema.define(:version => 20130113204959) do
 
   create_table "accounts", :force => true do |t|
     t.integer "organization_id", :null => false
@@ -47,12 +47,14 @@ ActiveRecord::Schema.define(:version => 20130104150624) do
 
   create_table "boms", :force => true do |t|
     t.integer "ticket_id"
-    t.decimal "price"
-    t.decimal "cost"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.decimal "quantity"
     t.integer "material_id"
+    t.integer "cost_cents", :default => 0, :null => false
+    t.string "cost_currency", :default => "USD", :null => false
+    t.integer "price_cents", :default => 0, :null => false
+    t.string "price_currency", :default => "USD", :null => false
   end
 
   add_index "boms", ["material_id"], :name => "index_boms_on_material_id"
@@ -96,13 +98,15 @@ ActiveRecord::Schema.define(:version => 20130104150624) do
     t.integer "supplier_id"
     t.string "name"
     t.text "description"
-    t.decimal "cost"
-    t.decimal "price"
     t.integer "creator_id"
     t.integer "updater_id"
     t.integer "status"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer "cost_cents", :default => 0, :null => false
+    t.string "cost_currency", :default => "USD", :null => false
+    t.integer "price_cents", :default => 0, :null => false
+    t.string "price_currency", :default => "USD", :null => false
   end
 
   add_index "materials", ["name"], :name => "index_materials_on_name"
@@ -216,9 +220,11 @@ ActiveRecord::Schema.define(:version => 20130104150624) do
     t.string "zip"
     t.string "mobile_phone"
     t.string "work_phone"
+    t.hstore "preferences"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["preferences"], :name => "users_preferences"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end
