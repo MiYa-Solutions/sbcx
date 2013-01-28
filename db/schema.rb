@@ -11,7 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130113204959) do
+ActiveRecord::Schema.define(:version => 20130126212838) do
+
+  create_table "accounting_entries", :force => true do |t|
+    t.integer "status"
+    t.integer "event_id"
+    t.integer "amount_cents", :default => 0, :null => false
+    t.string "amount_currency", :default => "USD", :null => false
+    t.integer "ticket_id"
+    t.integer "account_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string "type"
+    t.string "description"
+  end
 
   create_table "accounts", :force => true do |t|
     t.integer "organization_id", :null => false
@@ -220,11 +233,9 @@ ActiveRecord::Schema.define(:version => 20130113204959) do
     t.string "zip"
     t.string "mobile_phone"
     t.string "work_phone"
-    t.hstore "preferences"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["preferences"], :name => "users_preferences"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

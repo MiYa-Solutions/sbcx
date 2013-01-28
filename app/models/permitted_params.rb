@@ -1,5 +1,18 @@
 class PermittedParams < Struct.new(:params, :user, :obj)
 
+  def posting_rule
+    if params[:posting_rule].nil?
+      params.permit
+    else
+      params.require(:posting_rule).permit(*posting_rule_attributes)
+    end
+
+  end
+
+  def posting_rule_attributes
+    [:agreement_id, :rate, :rate_type]
+  end
+
   def material
     if params[:material].nil?
       params.permit
@@ -28,7 +41,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def bom_attributes
-    [:material_name, :cost, :price, :quantity]
+    [:material_name, :cost, :price, :quantity, :buyer, :buyer_type]
 
   end
 

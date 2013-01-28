@@ -20,4 +20,9 @@ class ServiceCallCompleteEvent < ServiceCallEvent
 
   end
 
+  def process_event
+    service_call.events << AccountingEvent.new
+    super
+  end
+
 end

@@ -1,0 +1,22 @@
+<p>
+  <b>Agreement:</b>
+  <%= @posting_rule.agreement_id %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%= @posting_rule.type %>
+</p>
+
+<p>
+  <b>Rate:</b>
+  <%= @posting_rule.rate %>
+</p>
+
+<p>
+  <b>Rate type:</b>
+  <%= @posting_rule.rate_type %>
+</p>
+
+
+<%= link_to 'Edit', edit_agreement_posting_rule_path(@posting_rule.agreement.id, @posting_rule) %> |

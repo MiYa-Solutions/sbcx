@@ -21,6 +21,7 @@ describe Account do
     should respond_to(:accountable_id)
     should respond_to(:accountable_type)
     should respond_to(:current_balance)
+    should respond_to(:balance)
   end
 
   describe "validation" do
@@ -35,7 +36,7 @@ describe Account do
   describe "associations" do
     it { should belong_to(:organization) }
     it { should belong_to(:accountable) }
-    it { should have_many(:entries) }
+    it { should have_many(:accounting_entries) }
   end
 
 

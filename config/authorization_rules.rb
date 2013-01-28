@@ -113,6 +113,9 @@ authorization do
       #if_attribute :status => is { OrganizationAgreement::STATUS_ACTIVE }, :counterparty_id => is { user.organization.id }
 
     end
+
+    # todo define proper permissions
+    has_permission_on :posting_rules, to: [:new, :create, :update, :edit, :show, :index, :destroy]
   end
 
 

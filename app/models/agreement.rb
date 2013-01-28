@@ -22,6 +22,7 @@ class Agreement < ActiveRecord::Base
   belongs_to :counterparty, polymorphic: true
   has_many :events, as: :eventable
   has_many :notifications, as: :notifiable
+  has_many :posting_rules
 
   stampable
 
@@ -81,6 +82,14 @@ class Agreement < ActiveRecord::Base
     raise "the 'type' parameter was not provided when creating a new agreement" if agreement.nil?
     agreement
 
+  end
+
+  def find_posting_rules(event)
+    rules = []
+    posting_rules.each do |rule|
+      rules << rule if rule.applicable?(event)
+    end
+    rules
   end
 
 

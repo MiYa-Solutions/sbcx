@@ -36,7 +36,20 @@ class Ticket < ActiveRecord::Base
   belongs_to :technician, class_name: User
   has_many :events, as: :eventable
   has_many :notifications, as: :notifiable
-  has_many :boms
+  has_many :boms do
+    def build(params)
+      unless params[:buyer].nil? || params[:buyer].empty?
+        buyer = params[:buyer_type].classify.constantize.find(params[:buyer])
+      end
+      params.delete(:buyer)
+      params.delete(:buyer_type)
+
+      bom        = Bom.new(params)
+      bom.buyer  = buyer
+      bom.ticket = proxy_association.owner
+      bom
+    end
+  end
 
   stampable
 
@@ -165,6 +178,55 @@ class Ticket < ActiveRecord::Base
 
   def before_create
     self.name = "#{customer.name} - #{address1}"
+  end
+
+  def total_cost
+
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_cost
+    end
+
+    total
+  end
+
+  def total_price
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_price
+    end
+    total
+  end
+
+  def total_profit
+    total_price - total_cost
+  end
+
+  def provider_cost
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_cost if bom.buyer.becomes(Provider) == provider
+    end
+    total
+
+  end
+
+  def subcontractor_cost
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_cost if bom.buyer.becomes(Subcontractor) == subcontractor
+    end
+    total
+
+  end
+
+  def technician_cost
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_cost if bom.buyer == technician
+    end
+    total
+
   end
 
   private

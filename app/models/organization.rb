@@ -78,6 +78,8 @@ class Organization < ActiveRecord::Base
 
   end
 
+  has_many :boms, as: :buyer
+
   accepts_nested_attributes_for :users, :agreements, :reverse_agreements
 
   validates :name, { presence: true, length: { maximum: 255 } }
