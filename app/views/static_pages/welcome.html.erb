@@ -27,6 +27,7 @@
               </thead>
               <tbody id="notifications">
 
+              <!--todo make this efficient-->
               <% @notifications.sort_by{|t| - t.created_at.to_i}.first(5).each do |notification| %>
                   <%= render 'notifications/notification', notification: notification %>
               <% end %>

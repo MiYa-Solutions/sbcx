@@ -904,6 +904,13 @@ hr {
   margin-left: -1.5%;
 }
 
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+  background-color: #555555;
+  color: white;
+  font-weight: bold;
+  height: 26px;
+  text-decoration: none;
+}
 
 
 

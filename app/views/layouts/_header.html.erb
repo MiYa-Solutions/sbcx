@@ -27,20 +27,16 @@
       <div class="nav-collapse ">
         <ul class="nav pull-right">
           <% if user_signed_in? %>
-              <li><%= link_to "Home", user_root_path %></li>
-              <li><%= link_to "Service Calls", service_calls_path %></li>
-              <li><%= link_to "Parts", materials_path %></li>
 
+              <li class="<%= 'active' if current_page?(user_root_path) %>"><%= link_to I18n.t('general.general.home'), user_root_path %></li>
+              <li class="<%= 'active' if current_page?(service_calls_path) %>"><%= link_to I18n.t('general.general.jobs'), service_calls_path %></li>
+              <li class="<%= 'active' if current_page?(materials_path) %>"><%= link_to I18n.t('general.general.parts'), materials_path %></li>
               <% permitted_to? :index, :organizations do %>
-                  <li><%= link_to "Organizations", organizations_path %></li>
+                  <li class="<%= 'active' if current_page?(organizations_path) %>"><%= link_to I18n.t('general.general.organization'), organizations_path %></li>
               <% end %>
-              <li><%= link_to "Affiliates", affiliates_path %></li>
-              <li><%= link_to "Employees", my_users_path %></li>
-              <li><%= link_to "Customers", customers_path %></li>
-              <!--<li><#%= link_to "Providers", providers_path %></li>-->
-              <!--<li><#%= link_to "Subcontractors", subcontractors_path %></li>-->
-
-
+              <li class="<%= 'active' if current_page?(affiliates_path) %>"><%= link_to I18n.t('general.general.network'), affiliates_path %></li>
+              <li class="<%= 'active' if current_page?(my_users_path) %>"><%= link_to I18n.t('general.general.employees'), my_users_path %></li>
+              <li class="<%= 'active' if current_page?(customers_path) %>"><%= link_to I18n.t('general.general.customers'), customers_path %></li>
               <li>
                 <div class="btn-group">
                   <a href="#" data-toggle="dropdown" class="btn dropdown-toggle">

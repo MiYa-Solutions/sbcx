@@ -178,6 +178,35 @@ describe "Affiliate Pages" do
 
     end
 
+    describe "Affilaite Show" do
+      it "should show a status"
+
+      it "should show the balance"
+      it "should show the agreements"
+      it "should show pending accounting entries"
+      it "should show open tickets"
+
+      it "should have an invite button in case the afiliate is not a member"
+    end
+
+    describe "Affiliate New" do
+      it "should not show the status"
+      it "should show the name as mandatory"
+      it "should show field: Name "
+      it "should show field: Organization roles "
+      it "should show field: ProviderSubcontractorSupplier "
+      it "should show field: Company "
+      it "should show field: Main Phone "
+      it "should show field: Mobile Phone "
+      it "should show field:Email "
+      it "should show field:Website "
+      it "should show field:Address "
+      it "should show field:Address2 "
+      it "should show field:State "
+      it "should show field:Zip "
+
+    end
+
   end
 
   describe "with dispatcher" do
