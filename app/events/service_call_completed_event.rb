@@ -6,6 +6,11 @@ class ServiceCallCompletedEvent < ServiceCallEvent
     self.description  = I18n.t('service_call_completed_event.description', subcontractor: service_call.provider.name)
   end
 
+  def process_event
+    super
+    BillingService.new(self).execute
+  end
+
   def update_provider
     prov_service_call.completed_on = service_call.completed_on
     prov_service_call.events << ServiceCallCompletedEvent.new

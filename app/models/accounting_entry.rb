@@ -21,4 +21,24 @@ class AccountingEntry < ActiveRecord::Base
 
   belongs_to :account
   belongs_to :ticket
+  belongs_to :event
+
+
+  # State machine  for ServiceCall status
+  # first we will define the service call state values
+
+  # common statuses for all service call types
+  # specific statuses will be setup in each sub-class by prefixing with an integer to avoid conflicts
+  # i.e. STATUS_SUBCLASS_STATUS = 41 (4 being the subclass status identifier)
+
+  STATUS_PENDING    = 0
+  STATUS_CLEARED    = 1
+  STATUS_RECONCILED = 2
+
+  state_machine :status, initial: :pending do
+    state :pending, value: STATUS_PENDING
+    state :cleared, value: STATUS_CLEARED
+    state :reconciled, value: STATUS_RECONCILED
+
+  end
 end

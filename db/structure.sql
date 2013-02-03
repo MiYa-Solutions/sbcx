@@ -484,7 +484,29 @@ CREATE TABLE posting_rules (
     rate_type character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    properties hstore
+    properties hstore,
+    time_bound boolean DEFAULT false,
+    sunday boolean DEFAULT false,
+    monday boolean DEFAULT false,
+    tuesday boolean DEFAULT false,
+    wednesday boolean DEFAULT false,
+    thursday boolean DEFAULT false,
+    friday boolean DEFAULT false,
+    saturday boolean DEFAULT false,
+    sunday_from time without time zone,
+    monday_from time without time zone,
+    tuesday_from time without time zone,
+    wednesday_from time without time zone,
+    thursday_from time without time zone,
+    friday_from time without time zone,
+    saturday_from time without time zone,
+    sunday_to time without time zone,
+    monday_to time without time zone,
+    tuesday_to time without time zone,
+    wednesday_to time without time zone,
+    thursday_to time without time zone,
+    friday_to time without time zone,
+    saturday_to time without time zone
 );
 
 
@@ -1100,3 +1122,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130126224950');
 INSERT INTO schema_migrations (version) VALUES ('20130127161311');
 
 INSERT INTO schema_migrations (version) VALUES ('20130127190806');
+
+INSERT INTO schema_migrations (version) VALUES ('20130202173614');

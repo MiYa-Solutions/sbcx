@@ -21,8 +21,9 @@ class ServiceCallCompleteEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.events << AccountingEvent.new
+    #service_call.events << AccountingEvent.new
     super
+    BillingService.new(self).execute
   end
 
 end

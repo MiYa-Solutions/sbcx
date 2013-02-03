@@ -43,4 +43,8 @@ Sbcx::Application.configure do
 
   #SubConTraX specific configurations
   #config.owner_emails = %w[mark@miyasolutions.com]
+
+  BetterErrors.editor                                    ='rubymine://open?url=file://%{file}&line=%{line}'
+
+
 end

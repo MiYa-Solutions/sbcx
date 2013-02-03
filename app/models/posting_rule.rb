@@ -15,7 +15,7 @@
 class PostingRule < ActiveRecord::Base
   serialize :properties, ActiveRecord::Coders::Hstore
 
-  validates_presence_of :agreement_id, :rate, :rate_type
+  validates_presence_of :agreement_id, :rate, :rate_type, :type
 
   belongs_to :agreement
 
@@ -28,7 +28,7 @@ class PostingRule < ActiveRecord::Base
       rule = type.classify.constantize.new(params)
     end
 
-    raise "the 'type' parameter was not provided when creating a new agreement" if rule.nil?
+    raise "the 'type' parameter was not provided when creating a new posting rule" if rule.nil?
     rule
 
   end

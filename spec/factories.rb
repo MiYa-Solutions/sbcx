@@ -134,6 +134,26 @@ FactoryGirl.define do
       service_call.customer = service_call.organization.customers.first
     end
 
+    factory :completed_service_call, class: MyServiceCall do
+
+      after(:build) do |service_call|
+        service_call.technician = FactoryGirl.create(:technician, organization: service_call.organization)
+
+        service_call.dispatch
+
+        service_call.start
+        service_call.work_completed
+      end
+
+      factory :paid_service_call, class: MyServiceCall do
+        after(:build) do |service_call|
+          service_call.paid
+        end
+      end
+
+
+    end
+
 
   end
 
@@ -218,6 +238,10 @@ FactoryGirl.define do
 
     end
 
+  end
+
+  factory :service_call_completed_event do
+    association :eventable, factory: :completed_service_call
   end
 
 

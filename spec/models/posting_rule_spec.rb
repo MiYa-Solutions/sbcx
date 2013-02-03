@@ -24,6 +24,33 @@ describe PostingRule do
     should respond_to(:type)
     should respond_to(:rate)
     should respond_to(:rate_type)
+
+    should respond_to(:time_bound)
+    should respond_to(:sunday)
+    should respond_to(:monday)
+    should respond_to(:tuesday)
+    should respond_to(:wednesday)
+    should respond_to(:thursday)
+    should respond_to(:friday)
+    should respond_to(:saturday)
+
+    should respond_to(:sunday_from)
+    should respond_to(:monday_from)
+    should respond_to(:tuesday_from)
+    should respond_to(:wednesday_from)
+    should respond_to(:thursday_from)
+    should respond_to(:friday_from)
+    should respond_to(:saturday_from)
+
+    should respond_to(:sunday_to)
+    should respond_to(:monday_to)
+    should respond_to(:tuesday_to)
+    should respond_to(:wednesday_to)
+    should respond_to(:thursday_to)
+    should respond_to(:friday_to)
+    should respond_to(:saturday_to)
+
+
   end
 
   describe "validation" do
