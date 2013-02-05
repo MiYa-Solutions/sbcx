@@ -49,117 +49,126 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     if params[:service_call].nil?
       params.permit
     else
+      # todo figure our a better place to set the default collector to be the user upon the paid event
+      if params[:service_call][:billing_status_event] == "paid"
+        obj.collector = user
+      end
       params[:service_call].permit(*service_call_attributes)
     end
 
   end
 
   def service_call_attributes
+    permitted_attributes = []
     case obj.class.name
       when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          [:status_event,
-           :provider_id,
-           :subcontractor_id,
-           :customer_id,
-           :technician_id,
-           :started_on_text,
-           :completed_on_text,
-           :new_customer,
-           :address1,
-           :address2,
-           :company,
-           :city,
-           :state,
-           :zip,
-           :country,
-           :phone,
-           :mobile_phone,
-           :work_phone,
-           :email,
-           :notes,
-           :total_price
-          ]
+          permitted_attributes = [:status_event, :billing_status_event,
+                                  :provider_id,
+                                  :subcontractor_id,
+                                  :customer_id,
+                                  :technician_id,
+                                  :started_on_text,
+                                  :completed_on_text,
+                                  :new_customer,
+                                  :address1,
+                                  :address2,
+                                  :company,
+                                  :city,
+                                  :state,
+                                  :zip,
+                                  :country,
+                                  :phone,
+                                  :mobile_phone,
+                                  :work_phone,
+                                  :email,
+                                  :notes,
+                                  :total_price]
         end
+
+        # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
+        permitted_attributes << :subcontractor_status unless obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?
       when TransferredServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          [:status_event,
-           :provider_id,
-           :subcontractor_id,
-           :customer_id,
-           :technician_id,
-           :started_on_text,
-           :completed_on_text,
-           :new_customer,
-           :address1,
-           :address2,
-           :company,
-           :city,
-           :state,
-           :zip,
-           :country,
-           :phone,
-           :mobile_phone,
-           :work_phone,
-           :email,
-           :notes]
+          permitted_attributes = [:status_event,
+                                  :provider_id,
+                                  :subcontractor_id,
+                                  :customer_id,
+                                  :technician_id,
+                                  :started_on_text,
+                                  :completed_on_text,
+                                  :new_customer,
+                                  :address1,
+                                  :address2,
+                                  :company,
+                                  :city,
+                                  :state,
+                                  :zip,
+                                  :country,
+                                  :phone,
+                                  :mobile_phone,
+                                  :work_phone,
+                                  :email,
+                                  :notes]
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
-          [:status_event,
-           :completed_on_text,
-           :address1,
-           :address2,
-           :company,
-           :city,
-           :state,
-           :zip,
-           :country,
-           :phone,
-           :mobile_phone,
-           :work_phone,
-           :email,
-           :notes]
+          permitted_attributes = [:status_event,
+                                  :completed_on_text,
+                                  :address1,
+                                  :address2,
+                                  :company,
+                                  :city,
+                                  :state,
+                                  :zip,
+                                  :country,
+                                  :phone,
+                                  :mobile_phone,
+                                  :work_phone,
+                                  :email,
+                                  :notes]
         elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
-          [:status_event,
-           :subcontractor_id,
-           :technician_id,
-           :started_on_text,
-           :completed_on_text,
-           :address1,
-           :address2,
-           :company,
-           :city,
-           :state,
-           :zip,
-           :country,
-           :phone,
-           :mobile_phone,
-           :work_phone,
-           :email,
-           :notes]
+          permitted_attributes = [:status_event,
+                                  :subcontractor_id,
+                                  :technician_id,
+                                  :started_on_text,
+                                  :completed_on_text,
+                                  :address1,
+                                  :address2,
+                                  :company,
+                                  :city,
+                                  :state,
+                                  :zip,
+                                  :country,
+                                  :phone,
+                                  :mobile_phone,
+                                  :work_phone,
+                                  :email,
+                                  :notes]
         end
+
+        permitted_attributes.concat [:billing_status_event, :collector_id] if obj.allow_collection?
 
       else # new service call
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          [:status_event,
-           :provider_id,
-           :subcontractor_id,
-           :customer_id,
-           :technician_id,
-           :started_on_text,
-           :completed_on_text,
-           :new_customer,
-           :address1,
-           :address2,
-           :company,
-           :city,
-           :state,
-           :zip,
-           :country,
-           :phone,
-           :mobile_phone,
-           :work_phone,
-           :email,
-           :notes]
+          permitted_attributes = [:status_event,
+                                  :provider_id,
+                                  :subcontractor_id,
+                                  :customer_id,
+                                  :technician_id,
+                                  :started_on_text,
+                                  :completed_on_text,
+                                  :new_customer,
+                                  :address1,
+                                  :address2,
+                                  :company,
+                                  :city,
+                                  :state,
+                                  :zip,
+                                  :country,
+                                  :phone,
+                                  :mobile_phone,
+                                  :work_phone,
+                                  :email,
+                                  :notes]
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
           [:status_event,
            :completed_on_text,
@@ -195,6 +204,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
            :notes]
         end
     end
+
+    permitted_attributes
   end
 
   def customer

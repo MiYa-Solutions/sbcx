@@ -21,10 +21,13 @@
 #  updater_id           :integer
 #  settled_on           :datetime
 #  billing_status       :integer
-#  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
+#  transferable         :boolean         default(FALSE)
+#  allow_collection     :boolean         default(TRUE)
+#  collector_id         :integer
+#  collector_type       :string(255)
 #
 
 class MyServiceCall < ServiceCall
@@ -70,9 +73,9 @@ class MyServiceCall < ServiceCall
       transition [:dispatched, :in_progress] => :work_done
     end
 
-    event :paid do
-      transition [:work_done, :in_progress] => :closed
-    end
+    #event :paid do
+    #  transition [:work_done, :in_progress] => :closed
+    #end
 
     event :transfer do
       transition :new => :transferred
@@ -83,7 +86,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :settle do
-      transition :transferred => :settled
+      transition :transferred => :settled, :if => lambda { |sc| sc.customer_invoiced? }
     end
 
   end

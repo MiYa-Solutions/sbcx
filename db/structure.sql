@@ -595,7 +595,11 @@ CREATE TABLE tickets (
     billing_status integer,
     settlement_date timestamp without time zone,
     name character varying(255),
-    scheduled_for timestamp without time zone
+    scheduled_for timestamp without time zone,
+    transferable boolean DEFAULT false,
+    allow_collection boolean DEFAULT true,
+    collector_id integer,
+    collector_type character varying(255)
 );
 
 
@@ -1124,3 +1128,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130127161311');
 INSERT INTO schema_migrations (version) VALUES ('20130127190806');
 
 INSERT INTO schema_migrations (version) VALUES ('20130202173614');
+
+INSERT INTO schema_migrations (version) VALUES ('20130204224230');
+
+INSERT INTO schema_migrations (version) VALUES ('20130204225944');

@@ -29,19 +29,26 @@ module ServiceCallsHelper
         end
       end
 
-    end
-  end
+      if service_call.allow_collection?
+        service_call.billing_status_events.collect do |event|
+          case event
+            when :invoice
+              concat(content_tag :li, invoice_form(service_call))
+            when :paid
+              concat(content_tag :li, paid_form(service_call))
+            when :overdue
+              concat(content_tag :li, overdue_form(service_call))
+            else
+              concat(content_tag :li, service_call.class.human_billing_status_event_name(event))
+          end
+        end
+      end
 
-  def paid_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall) do |f|
-      concat (hidden_field_tag "service_call[status_event]", 'paid')
-      concat (f.input :total_price, placeholder: 'Enter price')
-      concat (f.submit service_call.class.human_status_event_name(:paid).titleize,
-                       id:    'paid_service_call_btn',
-                       class: "btn btn-large btn-primary",
-                       title: 'Click if payment has received',
-                       rel:   'tooltip'
-             )
+      unless service_call.subcontractor.nil? || service_call.subcontractor.subcontrax_member?
+        service_call.subcontractor_status_events.collect do |event|
+          concat(content_tag :li, service_call.class.human_subcontractor_status_event_name(event))
+        end
+      end
     end
   end
 
@@ -144,6 +151,8 @@ module ServiceCallsHelper
   def transfer_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (f.input :subcontractor_id, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id)
+      concat (f.input :allow_collection)
+      concat (f.input :transferable)
       concat (hidden_field_tag "service_call[status_event]", 'transfer')
       concat (f.submit service_call.class.human_status_event_name(:transfer).titleize,
                        id:    'service_call_transfer_btn',
@@ -153,5 +162,43 @@ module ServiceCallsHelper
              )
     end
   end
+
+  def invoice_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (hidden_field_tag "service_call[billing_status_event]", 'invoice')
+      concat (f.submit service_call.class.human_billing_status_event_name(:invoice).titleize,
+                       id:    'settle_service_call_btn',
+                       class: "btn btn-large",
+                       title: 'Click to indicate that you have presented the invoice to the client - note you will not be able to add or remove parts after you invoice the customer',
+                       rel:   'tooltip'
+             )
+    end
+  end
+
+  def paid_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (hidden_field_tag "service_call[billing_status_event]", 'paid')
+      concat (hidden_field_tag "service_call[collector_id]", current_user.id)
+      concat (f.submit service_call.class.human_billing_status_event_name(:paid).titleize,
+                       id:    'settle_service_call_btn',
+                       class: "btn btn-large",
+                       title: 'Click to indicate that the customer has paid',
+                       rel:   'tooltip'
+             )
+    end
+  end
+
+  def overdue_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (hidden_field_tag "service_call[billing_status_event]", 'overdue')
+      concat (f.submit service_call.class.human_billing_status_event_name(:overdue).titleize,
+                       id:    'settle_service_call_btn',
+                       class: "btn btn-large",
+                       title: 'Click to indicate that the customer payment for this service call is overdue',
+                       rel:   'tooltip'
+             )
+    end
+  end
+
 
 end

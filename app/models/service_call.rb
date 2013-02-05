@@ -21,10 +21,13 @@
 #  updater_id           :integer
 #  settled_on           :datetime
 #  billing_status       :integer
-#  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
+#  transferable         :boolean         default(FALSE)
+#  allow_collection     :boolean         default(TRUE)
+#  collector_id         :integer
+#  collector_type       :string(255)
 #
 
 class ServiceCall < Ticket
@@ -95,25 +98,34 @@ class ServiceCall < Ticket
     state :na, value: SUBCON_STATUS_NA
   end
 
-  BILLING_STATUS_PENDING = 0
-  BILLING_STATUS_PAID    = 1
-  BILLING_STATUS_OVERDUE = 2
+  BILLING_STATUS_NA       = 0
+  BILLING_STATUS_PENDING  = 1
+  BILLING_STATUS_INVOICED = 2
+  BILLING_STATUS_PAID     = 3
+  BILLING_STATUS_OVERDUE  = 4
 
-  state_machine :billing_status, initial: :pending, namespace: 'customer' do
+  # if collection is not allowed for this service call, then the initial status is set to na - not applicable
+  state_machine :billing_status, initial: lambda { |sc| sc.allow_collection? ? :pending : :na }, namespace: 'customer' do
+    state :na, value: BILLING_STATUS_NA
     state :pending, value: BILLING_STATUS_PENDING
+    state :invoiced, value: BILLING_STATUS_INVOICED
     state :paid, value: BILLING_STATUS_PAID do
-      #validate :total_price_validation
+      validates_presence_of :collector
     end
     state :overdue, value: BILLING_STATUS_OVERDUE do
       #validates_numericality_of :total_price
     end
 
+    event :invoice do
+      transition [:pending] => :invoiced, :if => lambda { |sc| sc.work_done? || sc.transferred? }
+    end
+
     event :paid do
-      transition [:pending, :overdue] => :paid
+      transition [:overdue, :invoiced] => :paid
     end
 
     event :overdue do
-      transition :pending => :overdue
+      transition [:invoiced] => :overdue
     end
   end
 

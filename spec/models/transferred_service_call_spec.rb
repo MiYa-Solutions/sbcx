@@ -21,10 +21,13 @@
 #  updater_id           :integer
 #  settled_on           :datetime
 #  billing_status       :integer
-#  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
+#  transferable         :boolean         default(FALSE)
+#  allow_collection     :boolean         default(TRUE)
+#  collector_id         :integer
+#  collector_type       :string(255)
 #
 
 require 'spec_helper'

@@ -12,6 +12,8 @@
 #  cost_currency  :string(255)     default("USD"), not null
 #  price_cents    :integer         default(0), not null
 #  price_currency :string(255)     default("USD"), not null
+#  buyer_id       :integer
+#  buyer_type     :string(255)
 #
 
 class Bom < ActiveRecord::Base

@@ -114,4 +114,10 @@ en:
   service_call_paid_event:
     name: "Customer Paid"
     description: "Customer has paid for the service"
+  service_call_invoice_event:
+    name: "Customer Invoiced"
+    description: "The customer was presented with an invoice for the service call"
+  service_call_invoiced_event:
+    name: "Service Call Invoiced"
+    description: '%{subcontractor} has presented the customer with an invoice for the service call'
 

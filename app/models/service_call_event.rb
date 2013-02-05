@@ -39,4 +39,15 @@ class ServiceCallEvent < Event
     @prov_service_call ||= ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
   end
 
+  def copy_boms_to_provider
+    service_call.boms.each do |bom|
+      new_bom = bom.dup
+      # if the material buyer is the subcontractor or the technician make the buyer the owner of this service call
+      if new_bom.buyer.instance_of?(User) || new_bom.buyer == service_call.subcontractor
+        new_bom.buyer = service_call.organization
+      end
+      prov_service_call.boms << new_bom
+    end
+  end
+
 end

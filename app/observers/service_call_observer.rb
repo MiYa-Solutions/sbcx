@@ -22,6 +22,16 @@ class ServiceCallObserver < ActiveRecord::Observer
     Rails.logger.debug { "invoked observer after accept \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 
+  def after_invoice_customer(service_call, transition)
+    Rails.logger.debug { "invoked observer after invoice customer \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ServiceCallInvoiceEvent.new unless service_call.events.map(&:type).include?("ServiceCallInvoicedEvent")
+  end
+
+  def before_paid_customer(service_call, transition)
+    service_call.events << ServiceCallPaidEvent.new
+    Rails.logger.debug { "invoked observer before paid customer \n #{service_call.inspect} \n #{transition.inspect}" }
+  end
+
   #def before_subcontractor_accepted
   #  self.subcon_accept
   #end

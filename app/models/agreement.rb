@@ -47,8 +47,11 @@ class Agreement < ActiveRecord::Base
 
   def self.new_agreement(type, org, other_party_id = nil, other_party_role = nil)
 
-    # create the agreement subclass which is expected to be underscored
-    unless type.nil?
+    if type.nil? || type.empty?
+      agreement               = Agreement.new
+      agreement.errors[:type] = t('activerecord.errors.agreement.no_type')
+    else # create the agreement subclass which is expected to be underscored
+
       agreement = type.camelize.constantize.new
 
       if other_party_role.nil? # if the role of the other party is not specified, assume counterparty
@@ -69,8 +72,6 @@ class Agreement < ActiveRecord::Base
       end
 
     end
-
-    raise "the 'type' parameter was not provided when creating a new agreement" if agreement.nil?
     agreement
   end
 

@@ -36,8 +36,8 @@ class Organization < ActiveRecord::Base
   has_many :accounts
   has_many :affiliates, through: :accounts, source: :accountable, :source_type => "Organization" do
     def build(params)
-      affiliate = Affiliate.new(params)
-      proxy_association.owner.accounts.build(accountable: affiliate)
+      affiliate        = Affiliate.new(params)
+      #proxy_association.owner.accounts.build(accountable: affiliate)
       affiliate.status = STATUS_LOCAL_ENABLED
       proxy_association.owner.providers << affiliate if affiliate.organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
       proxy_association.owner.subcontractors << affiliate if affiliate.organization_role_ids.include? OrganizationRole::SUBCONTRACTOR_ROLE_ID

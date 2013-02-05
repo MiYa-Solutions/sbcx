@@ -66,9 +66,9 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ServiceCallCancelEvent.new
   end
 
-  def before_paid(service_call, transition)
-    service_call.events << ServiceCallPaidEvent.new
-  end
+  #def before_paid(service_call, transition)
+  #  service_call.events << ServiceCallPaidEvent.new
+  #end
 
 
 end

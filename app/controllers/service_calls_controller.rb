@@ -47,7 +47,7 @@ class ServiceCallsController < ApplicationController
 
     if @service_call.update_attributes(permitted_params(@service_call).service_call)
       respond_to do |format|
-        format.js { }
+        format.js {}
         format.html do
           flash[:success] = t('service_call.crud_messages.update.success')
           redirect_to service_call_path @service_call
@@ -59,7 +59,7 @@ class ServiceCallsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.js { }
+        format.js {}
         format.html do
           render :action => 'edit'
         end
@@ -116,8 +116,6 @@ class ServiceCallsController < ApplicationController
 
       when 'dispatch'
         @service_call.technician = User.find(params[:service_call][:technician]) unless params[:service_call][:technician].empty?
-      when 'paid'
-        @service_call.total_price = params[:service_call][:total_price] unless params[:service_call][:total_price].empty?
       else
         @service_call.send(params[:status_event].to_sym) #, recipient: subcontractor)
 

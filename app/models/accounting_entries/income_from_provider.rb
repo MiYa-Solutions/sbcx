@@ -15,6 +15,6 @@
 #  description     :string(255)
 #
 
-class SubcontractingJob < AccountingEntry
+class IncomeFromProvider < AccountingEntry
   # To change this template use File | Settings | File Templates.
 end
