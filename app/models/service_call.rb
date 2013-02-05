@@ -129,6 +129,34 @@ class ServiceCall < Ticket
     end
   end
 
+  def set_type
+    case my_role
+      when :prov
+        self.type = "MyServiceCall"
+        self.becomes(MyServiceCall).init_state_machines
+      when :subcon
+        self.type = "TransferredServiceCall"
+        self.becomes(TransferredServiceCall).init_state_machines
+      else
+        raise "Unexpected result received from service_call.my_role"
+    end
+  end
+
+  def self.new_from_params(org, params)
+    if params.empty?
+      sc = ServiceCall.new
+    else
+
+      if params[:provider_id].empty? || params[:provider_id] == org.id
+        sc = MyServiceCall.new(params)
+      else
+        sc = TransferredServiceCall.new(params)
+      end
+
+    end
+    sc.organization = org
+    sc
+  end
 
 end
 

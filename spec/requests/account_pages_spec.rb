@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe "Account Pages" do
 
-  # todo refactor service call controller to ticket controller
   # todo address the use case of a provider editing sc for a local subcontractor
   # todo create all entry types per the below
   # todo create all payment types
