@@ -1,1 +1,5 @@
 en:
+  headers:
+    subcontractor_actions: "Subcontractor Actions"
+    billing_actions: "Billing Actions"
+    work_actions: "Work Actions"

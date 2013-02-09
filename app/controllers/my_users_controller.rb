@@ -53,14 +53,13 @@ class MyUsersController < ApplicationController
 
         format.json { respond_with_bip @my_user }
 
-        format.js { }
+        format.js {}
       end
 
     else
       respond_to do |format|
         format.html do
           flash[:error] = t('user.flash.update_error')
-          redirect_to my_user_path
           render :edit
         end
 

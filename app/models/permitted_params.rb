@@ -1,5 +1,9 @@
 class PermittedParams < Struct.new(:params, :user, :obj)
 
+  def permitted_attribute?(resource, attribute)
+    send("#{resource}_attributes").include?(attribute)
+  end
+
   def posting_rule
     if params[:posting_rule].nil?
       params.permit
@@ -83,11 +87,12 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :work_phone,
                                   :email,
                                   :notes,
-                                  :total_price]
+                                  :total_price, :allow_collection, :re_transfer]
         end
 
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
-        permitted_attributes << :subcontractor_status unless obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?
+        permitted_attributes << :subcontractor_status_event unless obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?
+        permitted_attributes << :work_status_event unless obj.transferred? && obj.subcontractor.subcontrax_member?
       when TransferredServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
           permitted_attributes = [:status_event,
@@ -109,7 +114,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :mobile_phone,
                                   :work_phone,
                                   :email,
-                                  :notes]
+                                  :notes, :re_transfer]
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
           permitted_attributes = [:status_event,
                                   :completed_on_text,
@@ -142,11 +147,11 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :mobile_phone,
                                   :work_phone,
                                   :email,
-                                  :notes]
+                                  :notes, :re_transfer]
         end
 
         permitted_attributes.concat [:billing_status_event, :collector_id] if obj.allow_collection?
-
+        permitted_attributes << :work_status_event if obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?)
       else # new service call
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
           permitted_attributes = [:status_event,

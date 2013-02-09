@@ -3,18 +3,17 @@ class ServiceCallInvoicedEvent < ServiceCallEvent
   def init
     self.name         = I18n.t('service_call_invoiced_event.name')
     self.description  = I18n.t('service_call_invoiced_event.description', subcontractor: service_call.subcontractor.name)
-    self.reference_id = 35
+    self.reference_id = 100019
 
   end
 
   def process_event
-    service_call.invoice_customer
+    service_call.subcon_invoiced_payment if service_call.can_subcon_invoiced_payment?
     super
   end
 
   def update_provider
-    copy_boms_to_provider
-    prov_service_call.events << ServiceCallInvoicedEvent.new
+    prov_service_call.events << ServiceCallInvoicedEvent.new(triggering_event: self)
   end
 
   def notification_recipients

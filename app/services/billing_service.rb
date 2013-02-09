@@ -5,8 +5,10 @@ class BillingService
   end
 
   def execute
-    agreement     = find_affiliate_agreement
+    agreement = find_affiliate_agreement
+    Rails.logger.debug { "BillingService execution for agreement: #{agreement.inspect}" }
     posting_rules = agreement.find_posting_rules(@event)
+    Rails.logger.debug { "BillingService execution for posting rules: #{posting_rules.inspect}" }
 
     @accounting_entries = get_accounting_entries(posting_rules)
 

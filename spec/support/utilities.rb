@@ -50,7 +50,7 @@ def clean(org)
 
 end
 
-def fill_autocomplete(field, options = { })
+def fill_autocomplete(field, options = {})
   fill_in field, :with => options[:with]
 
   page.execute_script %Q{ $('##{field}').trigger("focus") }
@@ -61,6 +61,15 @@ def fill_autocomplete(field, options = { })
   #page.driver.render('./tmp/capybara/auto_complete-' + Time.now.strftime("%Y-%m-%d-%H_%M_%S_%L") + '.png', full: true)
 
   page.execute_script "$(\"#{selector}\").mouseenter().click()"
+end
+
+def setup_profit_split_agreement(prov, subcon)
+  prov.subcontractors << subcon
+  agreement = Agreement.where("organization_id = ? and counterparty_id = ?", prov.id, subcon.id).first
+  FactoryGirl.create(:profit_split, agreement: agreement)
+  agreement.status = OrganizationAgreement::STATUS_ACTIVE
+  agreement.save!
+  agreement
 end
 
 #def fill_in field, options

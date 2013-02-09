@@ -282,7 +282,8 @@ CREATE TABLE events (
     user_id integer,
     reference_id integer,
     creator_id integer,
-    updater_id integer
+    updater_id integer,
+    triggering_event_id integer
 );
 
 
@@ -599,7 +600,10 @@ CREATE TABLE tickets (
     transferable boolean DEFAULT false,
     allow_collection boolean DEFAULT true,
     collector_id integer,
-    collector_type character varying(255)
+    collector_type character varying(255),
+    provider_status integer,
+    work_status integer,
+    re_transfer boolean
 );
 
 
@@ -1132,3 +1136,9 @@ INSERT INTO schema_migrations (version) VALUES ('20130202173614');
 INSERT INTO schema_migrations (version) VALUES ('20130204224230');
 
 INSERT INTO schema_migrations (version) VALUES ('20130204225944');
+
+INSERT INTO schema_migrations (version) VALUES ('20130206161804');
+
+INSERT INTO schema_migrations (version) VALUES ('20130207021229');
+
+INSERT INTO schema_migrations (version) VALUES ('20130207211940');

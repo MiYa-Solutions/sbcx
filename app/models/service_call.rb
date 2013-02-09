@@ -28,6 +28,9 @@
 #  allow_collection     :boolean         default(TRUE)
 #  collector_id         :integer
 #  collector_type       :string(255)
+#  provider_status      :integer
+#  work_status          :integer
+#  re_transfer          :boolean
 #
 
 class ServiceCall < Ticket
@@ -51,27 +54,6 @@ class ServiceCall < Ticket
 # State machine  for ServiceCall status
 # first we will define the service call state values
 
-# common statuses for all service call types
-# specific statuses will be setup in each sub-class by prefixing with an integer to avoid conflicts
-# i.e. STATUS_SUBCLASS_STATUS = 41 (4 being the subclass status identifier)
-  STATUS_NA          = 0
-  STATUS_DISPATCHED  = 1
-  STATUS_TRANSFERRED = 2
-  STATUS_STARTED     = 3
-  STATUS_WORK_DONE   = 4
-  STATUS_SETTLED     = 5
-  STATUS_IN_PROGRESS = 6
-  STATUS_CANCELED    = 7
-
-
-  state_machine :status, initial: :na do
-    state :na, value: STATUS_NA
-    after_failure do |service_call, transition|
-      Rails.logger.debug { "Service Call status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
-    end
-
-  end
-
 
   def init_state_machines
     initialize_state_machines
@@ -81,53 +63,96 @@ class ServiceCall < Ticket
     my_role == :prov ? next_provider_events : next_subcontractor_events
   end
 
+
+  WORK_STATUS_PENDING     = 2000
+  WORK_STATUS_DISPATCHED  = 2001
+  WORK_STATUS_IN_PROGRESS = 2002
+  WORK_STATUS_ACCEPTED    = 2003
+  WORK_STATUS_REJECTED    = 2004
+  WORK_STATUS_DONE        = 2005
+
+  state_machine :work_status, initial: :pending, namespace: 'work' do
+    state :pending, value: WORK_STATUS_PENDING
+    state :dispatched, value: WORK_STATUS_DISPATCHED
+    state :in_progress, value: WORK_STATUS_IN_PROGRESS
+    state :accepted, value: WORK_STATUS_ACCEPTED
+    state :rejected, value: WORK_STATUS_REJECTED
+    state :done, value: WORK_STATUS_DONE
+
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "Service Call work status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
+
+    event :start do
+      transition [:pending] => :in_progress, if: lambda { |sc| !sc.organization.multi_user? }
+      transition [:accepted, :dispatched] => :in_progress
+    end
+
+    event :accept do
+      transition :pending => :accepted, if: lambda { |sc| sc.transferred? }
+    end
+
+    event :reject do
+      transition :pending => :rejected, if: lambda { |sc| sc.transferred? }
+    end
+    event :un_accept do
+      transition :accepted => :rejected, if: lambda { |sc| sc.transferred? }
+    end
+
+    event :dispatch do
+      transition :pending => :dispatched, if: lambda { |sc| sc.organization.multi_user? }
+    end
+
+    event :reset do
+      transition :rejected => :pending
+    end
+
+    event :complete do
+      transition :in_progress => :done
+    end
+
+  end
+
   # State machine for ServiceCall subcontractor_status
   # status constant list:
-  SUBCON_STATUS_NA          = 0
-  SUBCON_STATUS_PENDING     = 1
-  SUBCON_STATUS_ACCEPTED    = 2
-  SUBCON_STATUS_REJECTED    = 3
-  SUBCON_STATUS_TRANSFERRED = 4
-  SUBCON_STATUS_IN_PROGRESS = 5
-  SUBCON_STATUS_WORK_DONE   = 6
-  SUBCON_STATUS_SETTLED     = 7
-  SUBCON_STATUS_CANCELED    = 8
-  SUBCON_STATUS_PAID        = 9
+  SUBCON_STATUS_NA                 = 3000
+  SUBCON_STATUS_PENDING            = 3001
+  SUBCON_STATUS_CLAIM_SETTLED      = 3002
+  SUBCON_STATUS_CLAIMED_AS_SETTLED = 3003
+  SUBCON_STATUS_SETTLED            = 3004
 
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
-  end
+    state :pending, value: SUBCON_STATUS_PENDING
+    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED
+    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED
+    state :settled, value: SUBCON_STATUS_SETTLED
 
-  BILLING_STATUS_NA       = 0
-  BILLING_STATUS_PENDING  = 1
-  BILLING_STATUS_INVOICED = 2
-  BILLING_STATUS_PAID     = 3
-  BILLING_STATUS_OVERDUE  = 4
-
-  # if collection is not allowed for this service call, then the initial status is set to na - not applicable
-  state_machine :billing_status, initial: lambda { |sc| sc.allow_collection? ? :pending : :na }, namespace: 'customer' do
-    state :na, value: BILLING_STATUS_NA
-    state :pending, value: BILLING_STATUS_PENDING
-    state :invoiced, value: BILLING_STATUS_INVOICED
-    state :paid, value: BILLING_STATUS_PAID do
-      validates_presence_of :collector
-    end
-    state :overdue, value: BILLING_STATUS_OVERDUE do
-      #validates_numericality_of :total_price
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
-    event :invoice do
-      transition [:pending] => :invoiced, :if => lambda { |sc| sc.work_done? || sc.transferred? }
+    event :mark_as_settled do
+      transition :pending => :claim_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? }
     end
 
-    event :paid do
-      transition [:overdue, :invoiced] => :paid
+    event :subcon_confirmed do
+      transition :claim_settled => :settled
     end
 
-    event :overdue do
-      transition [:invoiced] => :overdue
+    event :subcon_marked_as_settled do
+      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? }
+    end
+
+    event :confirm_settled do
+      transition :claimed_as_settled => :settled
+    end
+
+    event :settle do
+      transition :pending => :settled, if: lambda { |sc| sc.work_done? && !sc.subcontractor.subcontrax_member? }
     end
   end
+
 
   def set_type
     case my_role

@@ -28,6 +28,9 @@
 #  allow_collection     :boolean         default(TRUE)
 #  collector_id         :integer
 #  collector_type       :string(255)
+#  provider_status      :integer
+#  work_status          :integer
+#  re_transfer          :boolean
 #
 
 class Ticket < ActiveRecord::Base
@@ -65,10 +68,10 @@ class Ticket < ActiveRecord::Base
   # transform the dates before saving
   before_save :save_started_on_text
   before_save :save_completed_on_text
-  # create a new customer in case one was asked for
+                                                            # create a new customer in case one was asked for
   before_validation :create_customer
 
-  validate :check_completed_on_text, :check_started_on_text, :customer_belongs_to_provider
+  validate :check_completed_on_text, :check_started_on_text #, :customer_belongs_to_provider
   validates_presence_of :organization, :provider
   validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
 

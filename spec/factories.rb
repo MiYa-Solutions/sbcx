@@ -51,8 +51,22 @@ FactoryGirl.define do
     after(:build) do |member|
       member.make_member
       member.customers << Customer.new(name: Faker::Name.name)
-      FactoryGirl.create_list(:admin, 1, organization: member) unless member.users.count > 0
+      FactoryGirl.create_list(:admin, 1, organization: member, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) unless member.users.count > 0
       member.save
+    end
+  end
+  factory :member_with_no_user, class: Organization do
+    sequence(:name) { |n| "Organization Member#{n}" }
+    sequence(:email) { |n| "member_person_#{n}@example.com" }
+
+    prov_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
+    sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
+    organization_roles [prov_role, sub_role]
+
+
+    after(:build) do |member|
+      member.make_member
+      member.customers << Customer.new(name: Faker::Name.name)
     end
   end
 
@@ -78,7 +92,7 @@ FactoryGirl.define do
   end
 
   factory :member_admin, class: User do
-    association :organization, factory: :member
+    association :organization, factory: :member_with_no_user
     sequence(:email) { |n| "mem_admin_#{n}@example.com" }
     first_name Faker::Name.name
     password "foobar"
@@ -226,6 +240,11 @@ FactoryGirl.define do
       agr.creator      = FactoryGirl.create(:org_admin, organization: agr.organization)
     end
 
+    after(:create) do |agr|
+      agr.posting_rules = FactoryGirl.create(:profit_split, agreement: agr)
+      agr.status        = OrganizationAgreement::STATUS_ACTIVE
+    end
+
     factory :organization_agreement, class: OrganizationAgreement do
     end
     factory :organization_agreement_by_cparty, class: OrganizationAgreement do
@@ -242,6 +261,16 @@ FactoryGirl.define do
 
   factory :service_call_completed_event do
     association :eventable, factory: :completed_service_call
+  end
+
+  factory :posting_rule do
+    association :agreement
+
+    factory :profit_split do
+      rate 50
+      rate_type "percentage"
+      type "ProfitSplit"
+    end
   end
 
 

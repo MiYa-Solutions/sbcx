@@ -14,26 +14,23 @@
 #  reference_id   :integer
 #
 
-class ServiceCallRejectEvent < Event
-  #todo refactor to inherit from ServiceCallEvent
+class ServiceCallRejectEvent < ServiceCallEvent
   def init
     self.name         = I18n.t('service_call_reject_event.name')
     self.description  = I18n.t('service_call_reject_event.description')
-    self.reference_id = 4
+    self.reference_id = 100011
   end
 
-  def process_event
-    Rails.logger.debug { "Running ServiceCallRejectEvent process" }
-
-    service_call = associated_object
-
-    prov_service_call = ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
-    prov_service_call.events << ServiceCallRejectedEvent.new(description: I18n.t('service_call_rejected_event.description', subcon_name: service_call.organization.name))
-    prov_service_call.reject_subcon
-
-    prov_service_call
-
+  def notification_recipients
+    nil
   end
 
+  def notification_class
+    nil
+  end
+
+  def update_provider
+    prov_service_call.events << ServiceCallRejectedEvent.new(triggering_event: self)
+  end
 
 end

@@ -60,7 +60,7 @@
       </tr>
       <tr>
         <td><%= Affiliate.human_attribute_name(:email) %></td>
-        <td><h4><%= link_to @affiliate.email, "mailto:" + @affiliate.email %></h4></td>
+        <td><h4><%= link_to @affiliate.email, "mailto:#{@affiliate.email}" %></h4></td>
       </tr>
       <tr>
         <td><%= Affiliate.human_attribute_name(:website) %></td>

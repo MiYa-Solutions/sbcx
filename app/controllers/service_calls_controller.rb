@@ -65,6 +65,10 @@ class ServiceCallsController < ApplicationController
     @service_call ||= ServiceCall.new_from_params(current_user.organization, permitted_params(nil).service_call)
   end
 
+  def load_service_call
+    @service_call = Ticket.find(params[:id])
+  end
+
   #def set_service_call_type
   #
   #  case @service_call.my_role

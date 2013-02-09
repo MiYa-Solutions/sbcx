@@ -28,6 +28,9 @@
 #  allow_collection     :boolean         default(TRUE)
 #  collector_id         :integer
 #  collector_type       :string(255)
+#  provider_status      :integer
+#  work_status          :integer
+#  re_transfer          :boolean
 #
 
 require 'spec_helper'
