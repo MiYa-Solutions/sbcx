@@ -724,8 +724,22 @@ smart_alert {
   }
 }
 
-.affiliate_balance {
+.affiliate_jobs {
   min-height: 350px;
+}
+.affiliate_info {
+  min-height: 350px;
+}
+
+.affiliate_draft_agreement {
+
+    border-radius: 4px 4px 4px 4px;
+    margin-bottom: 1px;
+    padding: 4px 40px 3px 14px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #F2DEDE;
+    border-color: #EED3D7;
+    color: #B94A48;
 }
 
 .role_agreement {
@@ -818,8 +832,134 @@ body .modal {
   //margin-right: 20%
 }
 
+.carousel .item > img {
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+  display: inline-block;
+  line-height: 1;
+}
 
-.miya_hero {
+.carousel-inner { text-align: center; }
+
+.index_slides {
+  align: center;
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+  width: 100%;
+
+  ul {
+    list-style: none;
+    //margin: 0;
+    align: center;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+    width: 100%;
+  }
+
+  li:first-child {
+    margin-left: 10%;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: right;
+
+  }
+}
+
+.modal-footer {
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 5px;
+    line-height: 16px;
+
+  }
+
+  li:last-child {
+    float: right;
+
+  }
+}
+
+.carousel-caption {
+  margin-left: 8.9%;
+  text-align: left;
+  width: 80%;
+  h2 {
+    color: #3A87AD;
+  }
+  h3 {
+    color: white;
+  }
+}
+
+
+.features {
+  background-color: #B9CDE5;
+  border-color: #385D8A;
+  color: #3A87AD;
+  border-radius: 4px 4px 4px 4px;
+  margin-bottom: 18px;
+  padding: 8px 35px 8px 14px;
+
+  border:1px solid #385D8A;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #385D8A;
+    font-family: inherit;
+    font-weight: bold;
+    margin: 0;
+    text-rendering: optimizelegibility;
+  }
+
+  h3, h4 {
+    //padding-top: 6px;
+    font-weight: normal;
+
+  }
+
+}
+
+.features_up {
+
+  .features {
+    min-height: 324px;
+  }
+}
+
+.features_down {
+
+  .features {
+    min-height: 180px;
+
+  }
+}
+
+.pricing_font {
+  color: #385D8A;
+  font-family: inherit;
+  font-weight: bold;
+  height: 32px;
+}
+
+.pricing_package {
+  color: #385D8A;
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+  .miya_hero {
 
   h3 {
     color: #003580;
@@ -853,12 +993,7 @@ body .modal {
       padding-left: 25%;
   }
 
-  .well {
-    width: 80%;
-    margin-left: 10%;
-  }
-
-  .btn-primary {
+ .btn-primary {
     margin-left: 48%;
   }
 
@@ -1001,5 +1136,7 @@ hr {
     margin-top: -20px;
   }
 }
+
+
 
 

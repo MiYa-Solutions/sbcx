@@ -54,6 +54,7 @@ $("a[rel=tooltip]").tooltip();
 $('.popover').popover();
 
 
+
 //$(function () {
 //    $('.i').scroller({
 //        preset:'date',

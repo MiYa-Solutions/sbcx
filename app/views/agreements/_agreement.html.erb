@@ -1,5 +1,7 @@
-<tr>
-  <td><%= link_to agreement.human_status_name.titleize, agreement.becomes(Agreement) %></td>
+<!--<tr>-->
+
+    <td><%= link_to agreement.human_status_name.titleize, agreement.becomes(Agreement) %></td>
+
   <% if current_user.organization.id == agreement.organization_id %>
       <td><%= agreement.class.human_attribute_name(:counterparty) %></td>
   <% else %>
@@ -14,4 +16,5 @@
     <%= link_to I18n.t('general.general.show'), agreement.becomes(Agreement), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_agreement').html_safe, :rel => 'tooltip' %>
 
   </td>
-<tr>
+<!--<tr>-->
+
