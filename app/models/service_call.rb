@@ -59,10 +59,6 @@ class ServiceCall < Ticket
     initialize_state_machines
   end
 
-  def next_events
-    my_role == :prov ? next_provider_events : next_subcontractor_events
-  end
-
 
   WORK_STATUS_PENDING     = 2000
   WORK_STATUS_DISPATCHED  = 2001
@@ -95,6 +91,7 @@ class ServiceCall < Ticket
     event :reject do
       transition :pending => :rejected, if: lambda { |sc| sc.transferred? }
     end
+
     event :un_accept do
       transition :accepted => :rejected, if: lambda { |sc| sc.transferred? }
     end

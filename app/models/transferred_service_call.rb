@@ -90,8 +90,7 @@ class TransferredServiceCall < ServiceCall
 
   end
 
-  state_machine :provider_status, :initial => :na, namespace: 'provider' do
-    state :na, value: SUBCON_STATUS_NA
+  state_machine :provider_status, :initial => :pending, namespace: 'provider' do
     state :pending, value: SUBCON_STATUS_PENDING
     state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED
     state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED
@@ -102,15 +101,15 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :mark_as_settled do
-      transition :pending => :claim_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? }
+      transition :pending => :claim_settled, if: lambda { |sc| sc.provider.subcontrax_member? }
     end
 
-    event :subcon_confirmed do
+    event :provider_confirmed do
       transition :claim_settled => :settled
     end
 
-    event :subcon_marked_as_settled do
-      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? }
+    event :provider_marked_as_settled do
+      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.provider.subcontrax_member? }
     end
 
     event :confirm_settled do
@@ -118,7 +117,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :settle do
-      transition :pending => :settled, if: lambda { |sc| !sc.subcontractor.subcontrax_member? }
+      transition :pending => :settled, if: lambda { |sc| !sc.provider.subcontrax_member? }
     end
   end
 
@@ -154,8 +153,9 @@ class TransferredServiceCall < ServiceCall
     event :invoice do
       transition :pending => :invoiced, if: lambda { |sc| sc.work_done? }
     end
+
     event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? }
+      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? && sc.subcontractor }
     end
 
     event :provider_invoiced do
@@ -179,7 +179,7 @@ class TransferredServiceCall < ServiceCall
       transition :collected_by_subcon => :subcon_claim_deposited
     end
 
-    event :confirm_deposited do
+    event :confirm_deposit do
       transition :subcon_claim_deposited => :collected
     end
 

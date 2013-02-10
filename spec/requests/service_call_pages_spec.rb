@@ -992,7 +992,7 @@ describe "Service Call pages" do
                     end
 
                     describe "subcontractor view" do
-                      before { in_browser(:org2) }
+                      before { in_browser(:org2) {} }
 
                       it 'should show invoiced by prov' do
                         should have_selector billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced')

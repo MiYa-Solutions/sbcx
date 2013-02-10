@@ -7,6 +7,7 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   def before_start_work(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE start \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    validate_technician_is_present(service_call)
     service_call.started_on = Time.zone.now unless service_call.started_on
 
   end
@@ -48,10 +49,6 @@ class TransferredServiceCallObserver < ServiceCallObserver
   def before_provider_invoiced_payment(service_call, transition)
     service_call.events << ScProviderInvoicedEvent.new
   end
-
-  #def before_paid(service_call, transition)
-  #  service_call.events << ServiceCallPaidEvent.new
-  #end
 
 
 end

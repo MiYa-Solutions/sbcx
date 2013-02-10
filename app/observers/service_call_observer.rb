@@ -55,5 +55,16 @@ class ServiceCallObserver < ActiveRecord::Observer
     service_call.events << ServiceCallInvoicedEvent.new unless service_call.events.last.instance_of?(ServiceCallInvoicedEvent)
   end
 
+  private
+
+  def validate_technician_is_present(service_call)
+    if service_call.organization.multi_user?
+      service_call.errors.add :technician, "You must specify a technician" unless service_call.technician
+    else
+      service_call.technician = service_call.organization.users.first
+    end
+
+  end
+
 
 end

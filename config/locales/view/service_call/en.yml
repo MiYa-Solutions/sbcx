@@ -1,5 +1,90 @@
 en:
   headers:
     subcontractor_actions: "Subcontractor Actions"
+    provider_actions: "Provider Actions"
     billing_actions: "Billing Actions"
     work_actions: "Work Actions"
+  service_call:
+    forms:
+      subcontractor_status:
+        mark_as_settled:
+          tooltip: "click to indicate this service call has settled with the subcontractor"
+        subcon_confirmed:
+          tooltip: "Click here to indicate the subcontractor has confirmed this service call as settled"
+        subcon_marked_as_settled:
+          tooltip: "click here if the subcontractor claims this is setteled"
+        confirm_settled:
+          tooltip: "Click to confirm this service call has been settled"
+        settle:
+          tooltip: "Click here to indicate the"
+      provider_status:
+        mark_as_settled:
+          tooltip: "click to indicate this service call has settled with the subcontractor"
+        subcon_confirmed:
+          tooltip: "Click here to indicate the subcontractor has confirmed this service call as settled"
+        subcon_marked_as_settled:
+          tooltip: "click here if the subcontractor claims this is setteled"
+        confirm_settled:
+          tooltip: "Click to confirm this service call has been settled"
+        settle:
+          tooltip: "Click here to indicate the"
+      status:
+        accept:
+          tooltip: "Click to accept the transferred service call"
+        un_accept:
+          tooltip: "Click if you changed your mind and would like to reject the service call"
+        reject:
+          tooltip: "Click to reject the service call"
+        transfer:
+          tooltip: "Click to outsource the service call to one of your providers the"
+        cancel_transfer:
+          tooltip: "Click cancel the outsourcing of this service call"
+        cancel:
+          tooltip: "Click to indicate the customer has canceled the service call"
+        close:
+          tooltip: "Click to close the service call - not this is an irreversible operation"
+        activate:
+          tooltip: "Click to make the service call active"
+        un_cancel:
+          tooltip: "Click in case you made a mistake and this service call should not be canceled"
+
+
+
+
+
+      work_status:
+        start:
+          tooltip: "Click to indicate the service has started"
+        accept:
+          tooltip: "Click to indicate the subcontractor accepted the service call"
+        reject:
+          tooltip: "Click to indicate the subcontractor rejected the service call"
+        un_accept:
+          tooltip: "Click to indicate the subcontractor changed his mind and therefore rejected the service call"
+        dispatch:
+          tooltip: "Click to assign the service call to a technician"
+        reset:
+          tooltip: "Click to reset the service call after rejected in order to dispatch or outsource to another subcontractor"
+        complete:
+          tooltip: "Click to indicate the service has completed"
+
+      billing_status:
+        invoice:
+          tooltip: "Click to indicate the client was presented with an invoice for the service"
+        subcon_invoiced:
+          tooltip: "Click to indicate the subcontractor has invoiced the customer"
+        overdue:
+          tooltip: "Click to indicate the payment for the service is overdue "
+        collect:
+          tooltip: "Click if the payment for the service was collected by an employee"
+        deposited:
+          tooltip: "Click to indicate the collected payment was deposited and so can be marked as paid"
+        paid:
+          tooltip: "Click to indicate the customer has paid for the service"
+        subcon_collected:
+          tooltip: "Click to indicate the subcontractor has collected the payment from the customer"
+        subcon_deposited:
+          tooltip: "Click to indicate the subcontractor has deposited the customer payment"
+        confirm_deposit:
+          tooltip: "Click to confirm the subcontractor has deposited the customer payment"
+

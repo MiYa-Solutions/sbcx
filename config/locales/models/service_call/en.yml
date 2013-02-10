@@ -5,11 +5,11 @@ en:
 
     attributes:
       my_service_call:
-        provider: "Originator"
+        provider: "Provider"
         address1: "The customer address"
 
       transferred_service_call:
-        provider: "Originator"
+        provider: "Provider"
         address1: "The customer address"
 
       service_call:
@@ -30,6 +30,7 @@ en:
             in_progress: "In Progress"
             dispatched: "Dispatched"
             done: "Completed"
+            pending: "Pending"
         subcontractor_status:
           events:
           states:

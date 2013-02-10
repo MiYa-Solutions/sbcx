@@ -27,7 +27,7 @@ describe "Account Pages" do
         it "customer's account should show service call charge entry"
         it "provider's view should show a payment to subcon entry (withdrawal)"
         it "subcontractor's view should show a payment from provider entry (income)"
-        it "technician's view should show a profit share entry (income)"
+        it "technician's view should show an employee commission (income)"
 
         describe "when paid" do
           describe "with cash payment" do
