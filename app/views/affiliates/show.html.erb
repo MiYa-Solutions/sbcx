@@ -224,7 +224,13 @@
 <div class="row">
   <div id="account">
     <h1>Account</h1>
-    <%= render 'accounts/account', accountable: @affiliate %>
+    <%= render 'accounts/account', account: @account %>
+  </div>
+</div>
+<div class="row">
+  <div id="accounting_entries">
+    <h1>Accounting Entries</h1>
+    <%= render 'accounting_entries/accounting_entries_table', account: @account %>
   </div>
 </div>
 

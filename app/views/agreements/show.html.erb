@@ -149,7 +149,7 @@
 
 <%= agreement_events(@agreement) %>
 <div>
-  <table class="table table-striped" id="event_log_in_service_call">
+  <table class="table table-striped" id="event_log_in_agreements">
     <thead>
     <tr>
       <th><%= Event.human_attribute_name(:name) %> </th>
@@ -221,6 +221,44 @@
           </td>
           <td>
             <%= rule.created_at %>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+
+</div>
+
+<h4> Payments</h4>
+<div id="payments">
+  <%= render 'payments/payment_form' %>
+</div>
+
+<div>
+  <table class="table table-striped" id="payment_types_table">
+    <thead>
+    <tr>
+      <th><%= Payment.human_attribute_name(:id) %> </th>
+      <th><%= Payment.human_attribute_name(:type) %> </th>
+      <th><%= Payment.human_attribute_name(:rate) %></th>
+      <th><%= Payment.human_attribute_name(:rate_type) %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @agreement.payments.each do |payment| %>
+        <tr>
+          <td>
+            <%= payment.id %>
+          </td>
+          <td>
+            <%= payment.type %>
+          </td>
+          <td>
+            <%= payment.rate %>
+          </td>
+          <td>
+            <%= payment.rate_type %>
           </td>
         </tr>
     <% end %>

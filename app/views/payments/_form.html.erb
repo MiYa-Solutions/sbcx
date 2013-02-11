@@ -1,0 +1,18 @@
+<%= simple_form_for @payment, as: :payment, url: agreement_payments_url(@payment.agreement), method: :post, :html => { :class => 'form-horizontal' } do |f| %>
+    <%= f.error_notification %>
+    <div class="form-inputs">
+
+      <%= f.hidden_field :agreement_id %>
+
+      <%= f.hidden_field :type, value: @payment.class.name.underscore %>
+
+      <%= f.input :rate %>
+
+      <%= f.input :rate_type %>
+
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit %>
+    </div>
+<% end %>

@@ -1,0 +1,16 @@
+<table class="table table-striped" id="accounting_entries_table">
+  <thead>
+  <th> <%= AccountingEntry.human_attribute_name(:ticket) %> </th>
+  <th><%= AccountingEntry.human_attribute_name(:type) %>          </th>
+  <th><%= AccountingEntry.human_attribute_name(:description) %>   </th>
+  <th><%= AccountingEntry.human_attribute_name(:status) %>        </th>
+  <th><%= AccountingEntry.human_attribute_name(:amount) %>        </th>
+  <th><%= AccountingEntry.human_attribute_name(:created_at) %>    </th>
+  </thead>
+  <tbody>
+  <% account.accounting_entries.each do |entry| %>
+      <%= render entry.becomes(AccountingEntry) %>
+  <% end %>
+  </tbody>
+
+</table>

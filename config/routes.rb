@@ -19,6 +19,7 @@ Sbcx::Application.routes.draw do
 
   resources :agreements, only: [:new, :create, :edit, :show, :index, :update] do
     resources :posting_rules
+    resources :payments
   end
 
   resources :providers, only: [:new, :create, :edit, :index, :update]

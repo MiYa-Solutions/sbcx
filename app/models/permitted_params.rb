@@ -17,6 +17,19 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     [:agreement_id, :rate, :rate_type]
   end
 
+  def payment
+    if params[:payment].nil?
+      params.permit
+    else
+      params.require(:payment).permit(*payment_attributes)
+    end
+
+  end
+
+  def payment_attributes
+    [:agreement_id, :rate, :rate_type]
+  end
+
   def material
     if params[:material].nil?
       params.permit

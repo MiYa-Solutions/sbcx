@@ -116,6 +116,7 @@ authorization do
 
     # todo define proper permissions
     has_permission_on :posting_rules, to: [:new, :create, :update, :edit, :show, :index, :destroy]
+    has_permission_on :payments, to: [:new, :create, :update, :edit, :show, :index, :destroy]
   end
 
 

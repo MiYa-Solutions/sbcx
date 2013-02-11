@@ -2,11 +2,8 @@ require 'spec_helper'
 
 describe "Account Pages" do
 
-  # todo create all entry types per the below
-  # todo create all payment types
-  # todo show payment type in the payment form
-  # todo add beneficiary for cheque payment upon completion
   # todo complete the profit split rule
+  # todo add beneficiary for cheque payment upon completion
   # todo create the fixed price rule
   # todo create correction ability using account entries controller
   # todo add collected_by to the payment event
@@ -30,25 +27,28 @@ describe "Account Pages" do
         it "technician's view should show an employee commission (income)"
 
         describe "when paid" do
+          it "should show all applicable payment types as per the agreement"
           describe "with cash payment" do
             it "customer's account should show cash payment entry"
             it "customer's account balance should be zero"
             it "provider's account should show cash collection from subcontractor with a pending status (income)"
             it "subcontractor's account should show cash collection to provider with pending status (withdrawal)"
-            it "technician's account should show cash collection to employer with pending status (withdrawal)"
+            it "technician's account should show cash collection for employer with pending status (withdrawal)"
           end
           describe "with credit card payment" do
-            it "should update provider's account"
-            it "should update subcontractor's account"
-            it "should update technician's account"
+            it "customer's account should show credit card payment entry"
+            it "customer's account balance should be zero"
+            it "provider's account should not have additional entries"
+            it "subcontractor's account should  not have additional entries"
+            it "technician's account should not have additional entries"
           end
           describe "with cheque payment" do
             describe "where the provider is the beneficiary" do
               describe "when collected by the technician" do
-                it "customer's account should show a service call payment entry"
+                it "customer's account should show a service call cheque payment entry"
                 it "provider's account should show a pending cheque collection by subcon entry"
                 it "subcontractor's account should show pending cheque collection for prov entry"
-                it "should update technician's account should show pending withdrawal"
+                it "technician's account should show pending check collection for employer withdrawal"
 
                 describe "when the cheque is marked as deposited by the subcontractor" do
                   it "provider's account should show the entry as deposited"

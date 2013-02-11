@@ -23,6 +23,9 @@ class Agreement < ActiveRecord::Base
   has_many :events, as: :eventable
   has_many :notifications, as: :notifiable
   has_many :posting_rules
+  has_many :payments
+
+  accepts_nested_attributes_for :payments
 
   stampable
 
