@@ -9,10 +9,24 @@ class AgreementsController < ApplicationController
 
   def create
 
+    type_err = @agreement.errors[:type]
+
     if @agreement.save
-      redirect_to agreement_path @agreement
+      respond_to do |format|
+        format.html { redirect_to agreement_path @agreement }
+        format.mobile { redirect_to agreement_path @agreement }
+        format.js {}
+
+      end
+
     else
-      render :new
+      @agreement.errors[:type].concat type_err if type_err.present?
+      respond_to do |format|
+        format.html { render :new }
+        format.mobile { render :new }
+        format.js {}
+      end
+
     end
 
 

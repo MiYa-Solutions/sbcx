@@ -12,13 +12,18 @@
 #  cost_currency  :string(255)     default("USD"), not null
 #  price_cents    :integer         default(0), not null
 #  price_currency :string(255)     default("USD"), not null
+#  buyer_id       :integer
+#  buyer_type     :string(255)
 #
 
 class Bom < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :material
+  belongs_to :buyer, :polymorphic => true
+
   validates_presence_of :ticket, :cost, :price, :quantity, :material
   validates_numericality_of :quantity
+  validate :buyer, :validate_buyer
 
   monetize :cost_cents
   monetize :price_cents
@@ -26,6 +31,7 @@ class Bom < ActiveRecord::Base
   before_validation :set_material
   before_validation :set_default_cost
   before_validation :set_default_price
+  before_validation :set_default_buyer
 
   # virtual attributes
   attr_accessor :material_name
@@ -70,6 +76,24 @@ class Bom < ActiveRecord::Base
 
   def material_name
     @material_name ||= material.try(:name)
+  end
+
+  def validate_buyer
+
+    unless ticket.nil? || ticket.invalid? # if there is no ticket associated this bom is invalid anyway
+      valid_values = [ticket.provider_id,
+                      ticket.subcontractor_id,
+                      ticket.technician_id].compact
+
+      errors.add(:buyer, I18n.t('activerecord.errors.models.bom.buyer')) unless valid_values.include? buyer_id
+    end
+
+  end
+
+  def set_default_buyer
+    if self.buyer.nil?
+      self.buyer = self.ticket.try(:organization)
+    end
   end
 end
 

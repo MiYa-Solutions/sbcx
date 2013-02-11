@@ -1,0 +1,77 @@
+  service_call:
+    forms:
+      subcontractor_status:
+        mark_as_settled:
+          button_classes: "btn btn-large"
+        subcon_confirmed:
+          button_classes: "btn btn-large"
+        subcon_marked_as_settled:
+          button_classes: "btn btn-large btn-danger"
+        confirm_settled:
+          button_classes: "btn btn-large btn-danger"
+        settle:
+          button_classes: "btn btn-large btn-info"
+      provider_status:
+        mark_as_settled:
+          button_classes: "btn btn-large btn-danger"
+        subcon_confirmed:
+          button_classes: "btn btn-large btn-danger"
+        subcon_marked_as_settled:
+          button_classes: "btn btn-large btn-danger"
+        confirm_settled:
+          button_classes: "btn btn-large btn-danger"
+        settle:
+          button_classes: "btn btn-large btn-info"
+      status:
+        accept:
+          button_classes: "btn btn-large btn-primary"
+        un_accept:
+          button_classes: "btn btn-large btn-danger"
+        reject:
+          button_classes: "btn btn-large btn-danger"
+        transfer:
+          button_classes: "btn btn-large btn-info"
+        cancel_transfer:
+          button_classes: "btn btn-large btn-info"
+        cancel:
+          button_classes: "btn btn-large btn-info"
+        close:
+          button_classes: "btn btn-large btn-info"
+        activate:
+          button_classes: "btn btn-large btn-info"
+        un_cancel:
+          button_classes: "btn btn-large btn-info"
+      work_status:
+        start:
+          button_classes: "btn btn-large"
+        accept:
+          button_classes: "btn btn-large"
+        reject:
+          button_classes: "btn btn-large"
+        un_accept:
+          button_classes: "btn btn-large"
+        dispatch:
+          button_classes: "btn btn-large"
+        reset:
+          button_classes: "btn btn-large"
+        complete:
+          button_classes: "btn btn-large"
+      billing_status:
+        invoice:
+          button_classes: "btn btn-large"
+        subcon_invoiced:
+          button_classes: "btn btn-large"
+        overdue:
+          button_classes: "btn btn-large"
+        collect:
+          button_classes: "btn btn-large"
+        deposited:
+          button_classes: "btn btn-large"
+        paid:
+          button_classes: "btn btn-large"
+        subcon_collected:
+          button_classes: "btn btn-large"
+        subcon_deposited:
+          button_classes: "btn btn-large"
+        confirm_deposit:
+          button_classes: "btn btn-large"

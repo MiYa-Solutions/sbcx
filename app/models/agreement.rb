@@ -22,6 +22,10 @@ class Agreement < ActiveRecord::Base
   belongs_to :counterparty, polymorphic: true
   has_many :events, as: :eventable
   has_many :notifications, as: :notifiable
+  has_many :posting_rules
+  has_many :payments
+
+  accepts_nested_attributes_for :payments
 
   stampable
 
@@ -46,8 +50,11 @@ class Agreement < ActiveRecord::Base
 
   def self.new_agreement(type, org, other_party_id = nil, other_party_role = nil)
 
-    # create the agreement subclass which is expected to be underscored
-    unless type.nil?
+    if type.nil? || type.empty?
+      agreement               = Agreement.new
+      agreement.errors[:type] = t('activerecord.errors.agreement.no_type')
+    else # create the agreement subclass which is expected to be underscored
+
       agreement = type.camelize.constantize.new
 
       if other_party_role.nil? # if the role of the other party is not specified, assume counterparty
@@ -68,8 +75,6 @@ class Agreement < ActiveRecord::Base
       end
 
     end
-
-    raise "the 'type' parameter was not provided when creating a new agreement" if agreement.nil?
     agreement
   end
 
@@ -81,6 +86,14 @@ class Agreement < ActiveRecord::Base
     raise "the 'type' parameter was not provided when creating a new agreement" if agreement.nil?
     agreement
 
+  end
+
+  def find_posting_rules(event)
+    rules = []
+    posting_rules.each do |rule|
+      rules << rule if rule.applicable?(event)
+    end
+    rules
   end
 
 

@@ -1,0 +1,5 @@
+agreement:
+  forms:
+    status:
+      cancel:
+        button_classes: "btn btn-large btn-danger"

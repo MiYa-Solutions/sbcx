@@ -6,3 +6,7 @@ en:
     attributes:
       bom:
         material_name: "Part Name"
+    errors:
+      models:
+        bom:
+          buyer: "The buyer must be either the provider, subcontractor or the technician"

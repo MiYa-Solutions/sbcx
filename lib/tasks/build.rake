@@ -11,7 +11,7 @@ end
 namespace :db do
   namespace :test do
     task build: :environment do
-      Rails.env = 'test'
+      ENV["RAILS_ENV"] = 'test'
       Rake::Task["db:test:prepare"].invoke
       Rake::Task["db:seed"].invoke
     end

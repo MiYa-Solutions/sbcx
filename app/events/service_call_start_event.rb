@@ -2,7 +2,7 @@ class ServiceCallStartEvent < ServiceCallEvent
   def init
     self.name         = I18n.t('service_call_start_event.name')
     self.description  = I18n.t('service_call_start_event.description', technician: service_call.technician.name)
-    self.reference_id = 6
+    self.reference_id = 100015
   end
 
   def notification_recipients
@@ -14,11 +14,7 @@ class ServiceCallStartEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.started_on = service_call.started_on
-    prov_service_call.start_subcon
-
-    prov_service_call.events << ServiceCallStartedEvent.new
-
+    prov_service_call.events << ServiceCallStartedEvent.new(triggering_event: self)
   end
 
 

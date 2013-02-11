@@ -103,7 +103,7 @@ class BomsController < ApplicationController
 
   def new_bom_from_params
     @service_call = ServiceCall.find(params[:service_call_id])
-    @bom          ||= @service_call.boms.new(permitted_params(nil).bom)
+    @bom          ||= @service_call.boms.build(permitted_params(nil).bom)
   end
 
 end

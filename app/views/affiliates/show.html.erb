@@ -3,205 +3,204 @@
 <div class="well well_height">
 
 <div class="row-fluid">
-   <div class="no_margins">
-<!--Contact Info-->
-       <div class="span5">
+<div class="no_margins">
+  <!--Contact Info-->
+  <div class="span5">
 
-              <div class="smart_label">
-                <ul>
-                  <li><h1><%= @affiliate.name %></h1></li>
-                  <li>
-                    <% if @affiliate.subcontrax_member==true %>
-                        <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
-                            <!--Archive is already at the bottom-->
-                        <% else %>
-                            <%= link_to I18n.t('general.general.add_member'), "", class: "btn btn-large btn-primary" %>
-                        <% end %>
-                    <% else %>
-                        <%= link_to I18n.t('general.general.send_invite'), new_affiliate_path, :class => 'btn btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
-                    <% end %>
-                  </li>
-                </ul>
-              </div>
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= @affiliate.name %></h1></li>
+        <li>
+          <% if @affiliate.subcontrax_member==true %>
+              <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
+                  <!--Archive is already at the bottom-->
+              <% else %>
+                  <%= link_to I18n.t('general.general.add_member'), "", class: "btn btn-large btn-primary" %>
+              <% end %>
+          <% else %>
+              <%= link_to I18n.t('general.general.send_invite'), new_affiliate_path, :class => 'btn btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
+          <% end %>
+        </li>
+      </ul>
+    </div>
 
-             <table class="table table-striped table-condensed">
-                  <tbody>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:company) %></td>
-                          <td><h4><%= @affiliate.company %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= I18n.t('general.general.address') %></td>
-                          <td><h4><%= @affiliate.address1 %> <%= @affiliate.address2 %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:city) %></td>
-                          <td><h4><%= @affiliate.city %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:state) %></td>
-                          <td><h4><%= @affiliate.state %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:coubtry) %></td>
-                          <td><h4><%= @affiliate.country %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:zip) %></td>
-                          <td><h4><%= @affiliate.zip %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:phone) %></td>
-                          <td><h4><%= @affiliate.phone %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:mobile) %></td>
-                          <td><h4><%= @affiliate.mobile %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:email) %></td>
-                          <td><h4><%= link_to @affiliate.email, "mailto:" + @affiliate.email %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= Affiliate.human_attribute_name(:website) %></td>
-                          <td><h4><%= link_to @affiliate.website, @affiliate.website %></h4></td>
-                        </tr>
-                        <tr>
-                          <td><%= I18n.t('general.general.roles') %></td>
-                           <td class="roles_table">
-                                <% for role in @affiliate.organization_roles %>
-                                    <ul>
-                                      <li>
-                                        <span class="label label-info"><%= role.name %></span>
-                                      </li>
-                                     </ul>
-                                <% end %>
-                          </td>
-                        </tr>
-                    </tbody>
-             </table>
+    <table class="table table-striped table-condensed">
+      <tbody>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:company) %></td>
+        <td><h4><%= @affiliate.company %></h4></td>
+      </tr>
+      <tr>
+        <td><%= I18n.t('general.general.address') %></td>
+        <td><h4><%= @affiliate.address1 %> <%= @affiliate.address2 %></h4></td>
+      </tr>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:city) %></td>
+        <td><h4><%= @affiliate.city %></h4></td>
+      </tr>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:state) %></td>
+        <td><h4><%= @affiliate.state %></h4></td>
+      </tr>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:coubtry) %></td>
+        <td><h4><%= @affiliate.country %></h4></td>
+      </tr>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:zip) %></td>
+        <td><h4><%= @affiliate.zip %></h4></td>
+      </tr>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:phone) %></td>
+        <td><h4><%= @affiliate.phone %></h4></td>
+      </tr>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:mobile) %></td>
+        <td><h4><%= @affiliate.mobile %></h4></td>
+      </tr>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:email) %></td>
+        <td><h4><%= link_to @affiliate.email, "mailto:#{@affiliate.email}" %></h4></td>
+      </tr>
+      <tr>
+        <td><%= Affiliate.human_attribute_name(:website) %></td>
+        <td><h4><%= link_to @affiliate.website, @affiliate.website %></h4></td>
+      </tr>
+      <tr>
+        <td><%= I18n.t('general.general.roles') %></td>
+        <td class="roles_table">
+          <% for role in @affiliate.organization_roles %>
+              <ul>
+                <li>
+                  <span class="label label-info"><%= role.name %></span>
+                </li>
+              </ul>
+          <% end %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-         <div class="form-actions">
-           <% if @affiliate.subcontrax_member==true %>
-               <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
-               <% if  @affiliate.id.in? affiliate_ids %>
-                   <%= link_to 'Archive', affiliate_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
-               <% end %>
+    <div class="form-actions">
+      <% if @affiliate.subcontrax_member==true %>
+          <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
+          <% if  @affiliate.id.in? affiliate_ids %>
+              <%= link_to 'Archive', affiliate_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
+          <% end %>
 
-           <% else %>
-               <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
-               <%= link_to 'Edit', edit_affiliate_path(@affiliate), :class => 'btn btn-medium btn-primary' %>
-               <%= link_to 'Archive', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
-           <% end %>
-         </div>
+      <% else %>
+          <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
+          <%= link_to 'Edit', edit_affiliate_path(@affiliate), :class => 'btn btn-medium btn-primary' %>
+          <%= link_to 'Archive', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
+      <% end %>
+    </div>
 
-        </div>
-   </div>
+  </div>
+</div>
 <!--End Contact Info-->
 
-    <div class="span7">
-<!-- Balance -->
- <% unless @affiliate.service_calls.empty? %>
-    <div class="affiliate_balance">
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= I18n.t('general.general.balance') %></h1></li>
-          <li class="red-balance"><h1>Total: <span>-$199.00</span></h1></li>
-        </ul>
+<div class="span7">
+  <!-- Balance -->
+  <% unless @affiliate.service_calls.empty? %>
+      <div class="affiliate_balance">
+        <div class="smart_label">
+          <ul>
+            <li><h1><%= I18n.t('general.general.balance') %></h1></li>
+            <li class="red-balance"><h1>Total: <span>-$199.00</span></h1></li>
+          </ul>
+        </div>
+        <!--Filter Jobs-->
+        <div class="row-fluid filter_affiliate_jobs">
+          <form>
+            <ul>
+              <li class="label_filter"><strong>Filter by Date:</strong></li>
+              <li>
+                <div class="input-prepend input-append">
+                  <span class="add-on">From</span>
+                  <input class="datepicker">
+                  <span class="add-on">To</span>
+                  <input class="datepicker">
+                  <button type="submit" class="btn btn-mini btn-primary">Filter</button>
+
+                </div>
+              </li>
+              <li class="button_filter"></li>
+            </ul>
+          </form>
+        </div>
+        <!--table of jobs-->
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th><%= I18n.t('general.general.jon_number') %></th>
+            <th><%= I18n.t('general.general.description') %></th>
+            <th><%= I18n.t('general.general.status') %></th>
+            <th><%= I18n.t('general.general.customer') %></th>
+            <th><%= I18n.t('general.general.balance') %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @affiliate.service_calls.each do |sc| %>
+              <tr>
+                <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
+                <td><%= link_to sc.type, service_call_path(sc) %></td>
+                <td><%= link_to sc.human_subcontractor_status_name, service_call_path(sc) %></td>
+                <td><%= sc.customer.try(:name) %></td>
+                <td>- $190</td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+
       </div>
- <!--Filter Jobs-->
-      <div class="row-fluid filter_affiliate_jobs">
-      <form>
-              <ul>
-                <li class="label_filter"><strong>Filter by Date:</strong></li>
-                <li>
-                    <div class="input-prepend input-append">
-                    <span class="add-on">From</span>
-                      <input class= "datepicker">
-                      <span class="add-on">To</span>
-                      <input class= "datepicker">
-                      <button type="submit" class="btn btn-mini btn-primary">Filter</button>
-
-                    </div>
-                </li>
-                <li class="button_filter"></li>
-              </ul>
-      </form>
-      </div>
- <!--table of jobs-->
-         <table class="table table-striped">
-            <thead>
-            <tr>
-              <th><%= I18n.t('general.general.jon_number') %></th>
-              <th><%= I18n.t('general.general.description') %></th>
-              <th><%= I18n.t('general.general.status') %></th>
-              <th><%= I18n.t('general.general.customer') %></th>
-              <th><%= I18n.t('general.general.balance') %></th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @affiliate.service_calls.each do |sc| %>
-                <tr>
-                  <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
-                  <td><%= link_to sc.type , service_call_path(sc) %></td>
-                  <td><%= link_to sc.human_subcontractor_status_name, service_call_path(sc) %></td>
-                  <td><%= sc.customer.try(:name) %></td>
-                  <td>- $190</td>
-                </tr>
-            <% end %>
-            </tbody>
-          </table>
-
-
+  <% end %>
+  <!--Agreements-->
+  <div class="affiliate_agreements">
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= Agreement.model_name.human.pluralize %></h1></li>
+        <li>
+          <%= link_to I18n.t('general.general.new_agreement'), '#', :class => 'btn btn-small btn-primary', id: 'new-agreement-button', data: { toggle: "collapse", target: "#add_new_agreement" } %>
+        </li>
+      </ul>
     </div>
-  <% end  %>
-<!--Agreements-->
-    <div class="affiliate_agreements">
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= Agreement.model_name.human.pluralize %></h1></li>
-          <li>
-            <%= link_to I18n.t('general.general.new_agreement'), '#', :class => 'btn btn-small btn-primary', id: 'new-agreement-button', data: { toggle: "collapse", target: "#add_new_agreement" } %>
-          </li>
-        </ul>
-      </div>
 
-      <div class="bom collapse" id="add_new_agreement">
-        <%= render 'agreements/agreement_form', other_party: @affiliate %>
-
-      </div>
-
-      <% unless @agreements.empty? %>
-          <table class="table table-striped" id="agreements_table">
-
-
-            <% @agreements.each do |agreement| %>
-                <thead>
-                <tr>
-                  <td><h4><%= agreement.class.human_attribute_name(:status) %></h4></td>
-                  <td class="role_agreement"><h4><%= @affiliate.name %><span><%= "&nbsp;".html_safe + "is your" %></span></h4></td>
-                  <td><h4><%= agreement.class.human_attribute_name(:name) %></h4></td>
-                  <!--<td><h4><#%= agreement.class.human_attribute_name(:description) %></h4></td>-->
-                  <td><h4>Actions</h4></td>
-                </tr>
-                </thead>
-                <tbody>
-
-                <%= render 'agreements/agreement', agreement: agreement %>
-
-            <% end %>
-            </tbody>
-          </table>
-          <!--<#%= render 'agreements/agreements_table', agreements: @agreements %>-->
-      <% end %>
-
-
-
+    <div class="bom collapse" id="add_new_agreement">
+      <%= render 'agreements/agreement_form', other_party: @affiliate %>
 
     </div>
 
+    <% unless @agreements.empty? %>
+        <table class="table table-striped" id="agreements_table">
 
-    </div>
+
+          <% @agreements.each do |agreement| %>
+              <thead>
+              <tr>
+                <td><h4><%= agreement.class.human_attribute_name(:status) %></h4></td>
+                <td class="role_agreement">
+                  <h4><%= @affiliate.name %><span><%= "&nbsp;".html_safe + "is your" %></span></h4></td>
+                <td><h4><%= agreement.class.human_attribute_name(:name) %></h4></td>
+                <!--<td><h4><#%= agreement.class.human_attribute_name(:description) %></h4></td>-->
+                <td><h4>Actions</h4></td>
+              </tr>
+              </thead>
+              <tbody>
+
+              <%= render 'agreements/agreement', agreement: agreement %>
+
+          <% end %>
+          </tbody>
+        </table>
+        <!--<#%= render 'agreements/agreements_table', agreements: @agreements %>-->
+    <% end %>
+
+
+  </div>
+
+
+</div>
 
 <!--End row-->
 </div>
@@ -209,28 +208,31 @@
 </div>
 
 
- <div class="row">
+<div class="row">
 
-    <div class="span8">
+  <div class="span8">
 
-      <% unless @agreements.empty? %>
-          <%= render 'agreements/agreements_table', agreements: @agreements %>
-      <% end %>
-
-    </div>
+    <% unless @agreements.empty? %>
+        <%= render 'agreements/agreements_table', agreements: @agreements %>
+    <% end %>
 
   </div>
 
+</div>
+
 
 <div class="row">
-   <div id="account">
-     <h1>Account</h1>
-     <%= render 'accounts/account', accountable: @affiliate %>
-   </div>
-   <div id="agreements">
-     <h1>New Agreement</h1>
-   </div>
+  <div id="account">
+    <h1>Account</h1>
+    <%= render 'accounts/account', account: @account %>
+  </div>
+</div>
+<div class="row">
 
+  <div id="accounting_entries">
+    <h1>Accounting Entries</h1>
+    <%= render 'accounting_entries/accounting_entries_table', account: @account %>
+  </div>
 </div>
 
 

@@ -6,11 +6,6 @@ class ServiceCallPaidEvent < ServiceCallEvent
     self.reference_id = 18
   end
 
-  def process_event
-    service_call.paid_customer
-    super
-  end
-
   def update_provider
     prov_service_call.paid_subcon
     prov_service_call.events << ServiceCallPaidEvent.new

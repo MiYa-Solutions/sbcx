@@ -21,10 +21,16 @@
 #  updater_id           :integer
 #  settled_on           :datetime
 #  billing_status       :integer
-#  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
+#  transferable         :boolean         default(FALSE)
+#  allow_collection     :boolean         default(TRUE)
+#  collector_id         :integer
+#  collector_type       :string(255)
+#  provider_status      :integer
+#  work_status          :integer
+#  re_transfer          :boolean
 #
 
 class Ticket < ActiveRecord::Base
@@ -36,7 +42,21 @@ class Ticket < ActiveRecord::Base
   belongs_to :technician, class_name: User
   has_many :events, as: :eventable
   has_many :notifications, as: :notifiable
-  has_many :boms
+  has_many :boms do
+    def build(params)
+      unless params[:buyer].nil? || params[:buyer].empty?
+        buyer = params[:buyer_type].classify.constantize.find(params[:buyer])
+      end
+      params.delete(:buyer)
+      params.delete(:buyer_type)
+
+      bom        = Bom.new(params)
+      bom.buyer  = buyer
+      bom.ticket = proxy_association.owner
+      bom
+    end
+  end
+  belongs_to :collector, :polymorphic => true
 
   stampable
 
@@ -48,10 +68,10 @@ class Ticket < ActiveRecord::Base
   # transform the dates before saving
   before_save :save_started_on_text
   before_save :save_completed_on_text
-  # create a new customer in case one was asked for
+                                                            # create a new customer in case one was asked for
   before_validation :create_customer
 
-  validate :check_completed_on_text, :check_started_on_text, :customer_belongs_to_provider
+  validate :check_completed_on_text, :check_started_on_text #, :customer_belongs_to_provider
   validates_presence_of :organization, :provider
   validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
 
@@ -165,6 +185,55 @@ class Ticket < ActiveRecord::Base
 
   def before_create
     self.name = "#{customer.name} - #{address1}"
+  end
+
+  def total_cost
+
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_cost
+    end
+
+    total
+  end
+
+  def total_price
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_price
+    end
+    total
+  end
+
+  def total_profit
+    total_price - total_cost
+  end
+
+  def provider_cost
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_cost if bom.buyer.becomes(Provider) == provider
+    end
+    total
+
+  end
+
+  def subcontractor_cost
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_cost if bom.buyer.becomes(Subcontractor) == subcontractor
+    end
+    total
+
+  end
+
+  def technician_cost
+    total = Money.new(0)
+    boms.each do |bom|
+      total += bom.total_cost if bom.buyer == technician
+    end
+    total
+
   end
 
   private

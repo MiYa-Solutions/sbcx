@@ -23,12 +23,12 @@ class ServiceCallCanceledEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ServiceCallCanceledEvent.new
+    prov_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self)
     prov_service_call
   end
 
   def process_event
-    service_call.cancel_subcon
+    service_call.cancel
     super
   end
 

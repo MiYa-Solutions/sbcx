@@ -1,7 +1,6 @@
-<% unless accountable.nil? %>
-    <% account = Account.where("organization_id = ? AND accountable_id = ?", current_user.organization.id, accountable.id).first %>
+<% unless account.nil? %>
     <p>
-      Account: <%= account %>
+      Account: <%= account.id %>
 
       <br>
       Account owner: <%= account.organization.name unless account.nil? %>

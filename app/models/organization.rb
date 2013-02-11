@@ -36,8 +36,8 @@ class Organization < ActiveRecord::Base
   has_many :accounts
   has_many :affiliates, through: :accounts, source: :accountable, :source_type => "Organization" do
     def build(params)
-      affiliate = Affiliate.new(params)
-      proxy_association.owner.accounts.build(accountable: affiliate)
+      affiliate        = Affiliate.new(params)
+      #proxy_association.owner.accounts.build(accountable: affiliate)
       affiliate.status = STATUS_LOCAL_ENABLED
       proxy_association.owner.providers << affiliate if affiliate.organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
       proxy_association.owner.subcontractors << affiliate if affiliate.organization_role_ids.include? OrganizationRole::SUBCONTRACTOR_ROLE_ID
@@ -77,6 +77,8 @@ class Organization < ActiveRecord::Base
     end
 
   end
+
+  has_many :boms, as: :buyer
 
   accepts_nested_attributes_for :users, :agreements, :reverse_agreements
 
@@ -215,6 +217,10 @@ class Organization < ActiveRecord::Base
   def one_of_my_local_providers?(org_id)
     !Organization.find(org_id).subcontrax_member? &&
         !Organization.my_providers(self.id).where("organizations.id = ?", org_id).limit(1).empty?
+  end
+
+  def multi_user?
+    self.users.size > 1
   end
 
   private

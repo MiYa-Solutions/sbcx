@@ -65,6 +65,7 @@ class User < ActiveRecord::Base
   has_many :roles, through: :assignments
   has_many :events, as: :eventable
   has_many :notifications
+  has_many :boms, as: :buyer
 
   accepts_nested_attributes_for :organization
 

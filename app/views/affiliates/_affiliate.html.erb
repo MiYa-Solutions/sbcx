@@ -1,18 +1,18 @@
 <tr xmlns="http://www.w3.org/1999/html">
   <td class="member_logo">
     <% if affiliate.subcontrax_member? %>
-          <!--<span class="member_label">-->
-          <!--<badge><i class="icon-user icon-white"></i></badge>-->
+        <!--<span class="member_label">-->
+        <!--<badge><i class="icon-user icon-white"></i></badge>-->
         <!--</span>-->
         <%= image_tag("member.png", :title => I18n.t('general.messages.member_icon'), :rel => 'tooltip') %>
 
-  <% end %>
+    <% end %>
 
   </td>
   <td><%= link_to affiliate.name, affiliate_path(affiliate) %></td>
 
   <td><%= affiliate.phone %></td>
-  <td><%= link_to affiliate.email, "mailto:" + affiliate.email %></td>
+  <td><%= link_to affiliate.email, "mailto:#{affiliate.email}" %></td>
   <td>
     <!--Balance-->
   </td>
@@ -34,7 +34,7 @@
         <div class="miya_buttons_grid">
           <ul>
             <!--<li>-->
-              <!--<#%= link_to 'Archive', affiliate_path(affiliate), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->
+            <!--<#%= link_to 'Archive', affiliate_path(affiliate), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->
             <!--</li>-->
             <li>
               <%= link_to I18n.t('general.general.edit'), edit_affiliate_path(affiliate), :class => 'btn btn-mini' %>

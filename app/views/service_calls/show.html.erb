@@ -37,13 +37,33 @@
             </td>
           </tr>
           <tr>
-            <td>Subcontractor</td>
+            <td>Work Status</td>
             <td>
-                                      <span class="status_label" id="service_call_subcontractor_status">
-                                      <badge><%= @service_call.human_subcontractor_status_name %></badge>
+                                      <span class="status_label" id="service_call_work_status">
+                                      <badge><%= @service_call.human_work_status_name %></badge>
                                       </span>
             </td>
           </tr>
+          <% unless @service_call.subcon_na? %>
+              <tr>
+                <td>Subcontractor</td>
+                <td>
+                                      <span class="status_label" id="service_call_subcontractor_status">
+                                      <badge><%= @service_call.human_subcontractor_status_name %></badge>
+                                      </span>
+                </td>
+              </tr>
+          <% end %>
+          <% unless @service_call.provider_status.nil? %>
+              <tr>
+                <td>Provider</td>
+                <td>
+                                      <span class="status_label" id="service_call_provider_status">
+                                      <badge><%= @service_call.human_provider_status_name %></badge>
+                                      </span>
+                </td>
+              </tr>
+          <% end %>
           <% if !@service_call.completed_on_text.blank? %>
               <tr>
                 <td>Completed at</td>

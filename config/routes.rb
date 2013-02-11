@@ -1,6 +1,9 @@
 Sbcx::Application.routes.draw do
 
 
+  resources :accounting_entries
+
+
   #resource :profile, controller: 'registrations', only: [:show]
 
   resources :my_users, only: [:new, :create, :edit, :show, :index, :update], controller: 'my_users'
@@ -14,7 +17,10 @@ Sbcx::Application.routes.draw do
     end
   end
 
-  resources :agreements, only: [:new, :create, :edit, :show, :index, :update]
+  resources :agreements, only: [:new, :create, :edit, :show, :index, :update] do
+    resources :posting_rules
+    resources :payments
+  end
 
   resources :providers, only: [:new, :create, :edit, :index, :update]
   resources :providers, only: :show, :controller => 'affiliates'

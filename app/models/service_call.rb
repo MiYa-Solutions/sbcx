@@ -21,10 +21,16 @@
 #  updater_id           :integer
 #  settled_on           :datetime
 #  billing_status       :integer
-#  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
+#  transferable         :boolean         default(FALSE)
+#  allow_collection     :boolean         default(TRUE)
+#  collector_id         :integer
+#  collector_type       :string(255)
+#  provider_status      :integer
+#  work_status          :integer
+#  re_transfer          :boolean
 #
 
 class ServiceCall < Ticket
@@ -48,75 +54,131 @@ class ServiceCall < Ticket
 # State machine  for ServiceCall status
 # first we will define the service call state values
 
-# common statuses for all service call types
-# specific statuses will be setup in each sub-class by prefixing with an integer to avoid conflicts
-# i.e. STATUS_SUBCLASS_STATUS = 41 (4 being the subclass status identifier)
-  STATUS_NA          = 0
-  STATUS_DISPATCHED  = 1
-  STATUS_TRANSFERRED = 2
-  STATUS_STARTED     = 3
-  STATUS_WORK_DONE   = 4
-  STATUS_SETTLED     = 5
-  STATUS_IN_PROGRESS = 6
-  STATUS_CANCELED    = 7
-
-
-  state_machine :status, initial: :na do
-    state :na, value: STATUS_NA
-    after_failure do |service_call, transition|
-      Rails.logger.debug { "Service Call status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
-    end
-
-  end
-
 
   def init_state_machines
     initialize_state_machines
   end
 
-  def next_events
-    my_role == :prov ? next_provider_events : next_subcontractor_events
+
+  WORK_STATUS_PENDING     = 2000
+  WORK_STATUS_DISPATCHED  = 2001
+  WORK_STATUS_IN_PROGRESS = 2002
+  WORK_STATUS_ACCEPTED    = 2003
+  WORK_STATUS_REJECTED    = 2004
+  WORK_STATUS_DONE        = 2005
+
+  state_machine :work_status, initial: :pending, namespace: 'work' do
+    state :pending, value: WORK_STATUS_PENDING
+    state :dispatched, value: WORK_STATUS_DISPATCHED
+    state :in_progress, value: WORK_STATUS_IN_PROGRESS
+    state :accepted, value: WORK_STATUS_ACCEPTED
+    state :rejected, value: WORK_STATUS_REJECTED
+    state :done, value: WORK_STATUS_DONE
+
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "Service Call work status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
+
+    event :start do
+      transition [:pending] => :in_progress, if: lambda { |sc| !sc.organization.multi_user? }
+      transition [:accepted, :dispatched] => :in_progress
+    end
+
+    event :accept do
+      transition :pending => :accepted, if: lambda { |sc| sc.transferred? }
+    end
+
+    event :reject do
+      transition :pending => :rejected, if: lambda { |sc| sc.transferred? }
+    end
+
+    event :un_accept do
+      transition :accepted => :rejected, if: lambda { |sc| sc.transferred? }
+    end
+
+    event :dispatch do
+      transition :pending => :dispatched, if: lambda { |sc| sc.organization.multi_user? }
+    end
+
+    event :reset do
+      transition :rejected => :pending
+    end
+
+    event :complete do
+      transition :in_progress => :done
+    end
+
   end
 
   # State machine for ServiceCall subcontractor_status
   # status constant list:
-  SUBCON_STATUS_NA          = 0
-  SUBCON_STATUS_PENDING     = 1
-  SUBCON_STATUS_ACCEPTED    = 2
-  SUBCON_STATUS_REJECTED    = 3
-  SUBCON_STATUS_TRANSFERRED = 4
-  SUBCON_STATUS_IN_PROGRESS = 5
-  SUBCON_STATUS_WORK_DONE   = 6
-  SUBCON_STATUS_SETTLED     = 7
-  SUBCON_STATUS_CANCELED    = 8
-  SUBCON_STATUS_PAID        = 9
+  SUBCON_STATUS_NA                 = 3000
+  SUBCON_STATUS_PENDING            = 3001
+  SUBCON_STATUS_CLAIM_SETTLED      = 3002
+  SUBCON_STATUS_CLAIMED_AS_SETTLED = 3003
+  SUBCON_STATUS_SETTLED            = 3004
 
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
+    state :pending, value: SUBCON_STATUS_PENDING
+    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED
+    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED
+    state :settled, value: SUBCON_STATUS_SETTLED
+
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
+
+    event :mark_as_settled do
+      transition :pending => :claim_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? }
+    end
+
+    event :subcon_confirmed do
+      transition :claim_settled => :settled
+    end
+
+    event :subcon_marked_as_settled do
+      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? }
+    end
+
+    event :confirm_settled do
+      transition :claimed_as_settled => :settled
+    end
+
+    event :settle do
+      transition :pending => :settled, if: lambda { |sc| sc.work_done? && !sc.subcontractor.subcontrax_member? }
+    end
   end
 
-  BILLING_STATUS_PENDING = 0
-  BILLING_STATUS_PAID    = 1
-  BILLING_STATUS_OVERDUE = 2
 
-  state_machine :billing_status, initial: :pending, namespace: 'customer' do
-    state :pending, value: BILLING_STATUS_PENDING
-    state :paid, value: BILLING_STATUS_PAID do
-      #validate :total_price_validation
-    end
-    state :overdue, value: BILLING_STATUS_OVERDUE do
-      #validates_numericality_of :total_price
-    end
-
-    event :paid do
-      transition [:pending, :overdue] => :paid
-    end
-
-    event :overdue do
-      transition :pending => :overdue
+  def set_type
+    case my_role
+      when :prov
+        self.type = "MyServiceCall"
+        self.becomes(MyServiceCall).init_state_machines
+      when :subcon
+        self.type = "TransferredServiceCall"
+        self.becomes(TransferredServiceCall).init_state_machines
+      else
+        raise "Unexpected result received from service_call.my_role"
     end
   end
 
+  def self.new_from_params(org, params)
+    if params.empty?
+      sc = ServiceCall.new
+    else
+
+      if params[:provider_id].empty? || params[:provider_id] == org.id
+        sc = MyServiceCall.new(params)
+      else
+        sc = TransferredServiceCall.new(params)
+      end
+
+    end
+    sc.organization = org
+    sc
+  end
 
 end
 
