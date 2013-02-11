@@ -53,39 +53,53 @@ def create_members
   dispatcher_role = Role.find_by_name(Role::DISPATCHER_ROLE_NAME)
   technician_role = Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)
 
+  mem = new_member([prov_role, sub_role], { name:  "Test Member1",
+                                            email: "testmem1@testmem1.com" })
+
+  mem.save!
+  mem.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "ishay.yaari@gmail.com" })
+
+
+  mem = new_member([prov_role, sub_role], { name:  "Test Member2",
+                                            email: "testmem2@testmem2.com" })
+
+  mem.save!
+  mem.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "markmilman@gmail.com" })
+
+
   # create two members for manual testing
-  2.times do |n = 1|
-    index = n+1
-    mem   = new_member([prov_role, sub_role], { name:  "Test Member#{index}",
-                                                email: "testmem#{index}@testmem#{index}.com" })
-    mem.save!
-    mem.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "mem#{index}@mem#{index}.com" })
-    # don't create dispatcher and technicians for test mem1 and mem2
-    #mem.users << new_user([dispatcher_role], { email: "disp#{index}@mem#{index}.com" })
-    #mem.users << new_user([technician_role], { email: "tech#{index}@mem#{index}.com" })
+  #2.times do |n = 1|
+  #  index = n+1
+  #  mem   = new_member([prov_role, sub_role], { name:  "Test Member#{index}",
+  #                                              email: "testmem#{index}@testmem#{index}.com" })
+  #  mem.save!
+  #  mem.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "mem#{index}@mem#{index}.com" })
+  #  # don't create dispatcher and technicians for test mem1 and mem2
+  #mem.users << new_user([dispatcher_role], { email: "disp#{index}@mem#{index}.com" })
+  #mem.users << new_user([technician_role], { email: "tech#{index}@mem#{index}.com" })
 
-    #2.times do
-    #  mem.users << new_user([dispatcher_role], { })
-    #end
-    #2.times do
-    #  mem.users << new_user([technician_role], { })
-    #end
+  #2.times do
+  #  mem.users << new_user([dispatcher_role], { })
+  #end
+  #2.times do
+  #  mem.users << new_user([technician_role], { })
+  #end
 
-  end
+  #end
   # create additional members as just test data
-  10.times do
-    mem = new_member([prov_role, sub_role])
-    mem.save
-    mem.users << new_user([org_admin_role])
-    2.times do
-      mem.users << new_user([dispatcher_role], { })
-    end
-    2.times do
-      mem.users << new_user([technician_role], { })
-    end
-
-    mem.save
-  end
+  #10.times do
+  #  mem = new_member([prov_role, sub_role])
+  #  mem.save
+  #  mem.users << new_user([org_admin_role])
+  #  2.times do
+  #    mem.users << new_user([dispatcher_role], { })
+  #  end
+  #  2.times do
+  #    mem.users << new_user([technician_role], { })
+  #  end
+  #
+  #  mem.save
+  #end
 end
 
 def create_providers
@@ -129,7 +143,7 @@ def create_customers
 
 end
 
-def new_customer(params = { })
+def new_customer(params = {})
 
   params[:email]        ||= Faker::Internet.email
   params[:name]         ||= Faker::Name.name
@@ -147,7 +161,7 @@ def new_customer(params = { })
   Customer.new(params)
 end
 
-def new_user(roles = [], params = { })
+def new_user(roles = [], params = {})
   params[:email]                 ||= Faker::Internet.email
   params[:password]              ||= "123456"
   params[:password_confirmation] ||= "123456"
@@ -159,14 +173,14 @@ def new_user(roles = [], params = { })
   user
 end
 
-def new_member(roles = [], params = { })
+def new_member(roles = [], params = {})
 
   mem = new_org(roles, params)
   mem.make_sbcx_member
   mem
 end
 
-def new_org(roles = [], params = { })
+def new_org(roles = [], params = {})
 
   params                 = set_org_attr(params)
   mem                    = Organization.new(params)
@@ -174,7 +188,7 @@ def new_org(roles = [], params = { })
   mem
 end
 
-def new_provider(roles = [], params = { })
+def new_provider(roles = [], params = {})
 
   params                 = set_org_attr(params)
   mem                    = Provider.new(params)
@@ -182,7 +196,7 @@ def new_provider(roles = [], params = { })
   mem
 end
 
-def new_subcontractor(roles = [], params = { })
+def new_subcontractor(roles = [], params = {})
   params                 = set_org_attr(params)
   mem                    = Subcontractor.new(params)
   mem.organization_roles = roles

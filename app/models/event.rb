@@ -40,28 +40,31 @@
 #
 # Table name: events
 #
-#  id             :integer         not null, primary key
-#  name           :string(255)
-#  type           :string(255)
-#  description    :string(255)
-#  eventable_type :string(255)
-#  eventable_id   :integer
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
-#  user_id        :integer
-#  reference_id   :integer
-#  creator_id     :integer
-#  updater_id     :integer
+#  id                  :integer         not null, primary key
+#  name                :string(255)
+#  type                :string(255)
+#  description         :string(255)
+#  eventable_type      :string(255)
+#  eventable_id        :integer
+#  created_at          :datetime        not null
+#  updated_at          :datetime        not null
+#  user_id             :integer
+#  reference_id        :integer
+#  creator_id          :integer
+#  updater_id          :integer
+#  triggering_event_id :integer
 #
 
 class Event < ActiveRecord::Base
-  attr_accessible :name, :description
   belongs_to :eventable, polymorphic: true
+  # todo - seems like the user is not needed instead a creator can be used
   belongs_to :user
+  has_one :triggering_event, class_name: "Event"
   stampable
 
   before_validation :init
 
+  # todo add a state machine to capture event status and processing times
   def process_event
     raise "Event base class was invoked instead of one of the sub-classes"
   end

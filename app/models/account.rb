@@ -15,4 +15,6 @@ class Account < ActiveRecord::Base
   belongs_to :organization
   belongs_to :accountable, :polymorphic => true
 
+  has_many :accounting_entries
+
 end

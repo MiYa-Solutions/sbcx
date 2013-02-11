@@ -43,6 +43,44 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: accounting_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE accounting_entries (
+    id integer NOT NULL,
+    status integer,
+    event_id integer,
+    amount_cents integer DEFAULT 0 NOT NULL,
+    amount_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    ticket_id integer,
+    account_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    type character varying(255),
+    description character varying(255)
+);
+
+
+--
+-- Name: accounting_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE accounting_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: accounting_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE accounting_entries_id_seq OWNED BY accounting_entries.id;
+
+
+--
 -- Name: accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -50,7 +88,7 @@ CREATE TABLE accounts (
     id integer NOT NULL,
     organization_id integer NOT NULL,
     accountable_id integer NOT NULL,
-    accountable_type character varying(255),
+    accountable_type character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -160,7 +198,9 @@ CREATE TABLE boms (
     cost_cents integer DEFAULT 0 NOT NULL,
     cost_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
     price_cents integer DEFAULT 0 NOT NULL,
-    price_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL
+    price_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    buyer_id integer,
+    buyer_type character varying(255)
 );
 
 
@@ -242,7 +282,8 @@ CREATE TABLE events (
     user_id integer,
     reference_id integer,
     creator_id integer,
-    updater_id integer
+    updater_id integer,
+    triggering_event_id integer
 );
 
 
@@ -433,6 +474,97 @@ ALTER SEQUENCE organizations_id_seq OWNED BY organizations.id;
 
 
 --
+-- Name: payments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE payments (
+    id integer NOT NULL,
+    agreement_id integer,
+    type character varying(255),
+    rate double precision,
+    rate_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
+
+
+--
+-- Name: posting_rules; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE posting_rules (
+    id integer NOT NULL,
+    agreement_id integer,
+    type character varying(255),
+    rate numeric,
+    rate_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    properties hstore,
+    time_bound boolean DEFAULT false,
+    sunday boolean DEFAULT false,
+    monday boolean DEFAULT false,
+    tuesday boolean DEFAULT false,
+    wednesday boolean DEFAULT false,
+    thursday boolean DEFAULT false,
+    friday boolean DEFAULT false,
+    saturday boolean DEFAULT false,
+    sunday_from time without time zone,
+    monday_from time without time zone,
+    tuesday_from time without time zone,
+    wednesday_from time without time zone,
+    thursday_from time without time zone,
+    friday_from time without time zone,
+    saturday_from time without time zone,
+    sunday_to time without time zone,
+    monday_to time without time zone,
+    tuesday_to time without time zone,
+    wednesday_to time without time zone,
+    thursday_to time without time zone,
+    friday_to time without time zone,
+    saturday_to time without time zone
+);
+
+
+--
+-- Name: posting_rules_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE posting_rules_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: posting_rules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE posting_rules_id_seq OWNED BY posting_rules.id;
+
+
+--
 -- Name: roles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -496,10 +628,16 @@ CREATE TABLE tickets (
     updater_id integer,
     settled_on timestamp without time zone,
     billing_status integer,
-    total_price numeric,
     settlement_date timestamp without time zone,
     name character varying(255),
-    scheduled_for timestamp without time zone
+    scheduled_for timestamp without time zone,
+    transferable boolean DEFAULT false,
+    allow_collection boolean DEFAULT true,
+    collector_id integer,
+    collector_type character varying(255),
+    provider_status integer,
+    work_status integer,
+    re_transfer boolean
 );
 
 
@@ -580,6 +718,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY accounting_entries ALTER COLUMN id SET DEFAULT nextval('accounting_entries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
 
 
@@ -650,6 +795,20 @@ ALTER TABLE ONLY organizations ALTER COLUMN id SET DEFAULT nextval('organization
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY posting_rules ALTER COLUMN id SET DEFAULT nextval('posting_rules_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
 
 
@@ -665,6 +824,14 @@ ALTER TABLE ONLY tickets ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq'::r
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: accounting_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY accounting_entries
+    ADD CONSTRAINT accounting_entries_pkey PRIMARY KEY (id);
 
 
 --
@@ -740,11 +907,35 @@ ALTER TABLE ONLY org_to_roles
 
 
 --
+-- Name: organization_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY organization_roles
+    ADD CONSTRAINT organization_roles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY organizations
     ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: posting_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY posting_rules
+    ADD CONSTRAINT posting_rules_pkey PRIMARY KEY (id);
 
 
 --
@@ -756,11 +947,11 @@ ALTER TABLE ONLY roles
 
 
 --
--- Name: tickets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: service_calls_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY tickets
-    ADD CONSTRAINT tickets_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT service_calls_pkey PRIMARY KEY (id);
 
 
 --
@@ -846,6 +1037,13 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: posting_rule_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX posting_rule_properties ON posting_rules USING gin (properties);
 
 
 --
@@ -966,204 +1164,32 @@ INSERT INTO schema_migrations (version) VALUES ('20130113015617');
 
 INSERT INTO schema_migrations (version) VALUES ('20130113204230');
 
-INSERT INTO schema_migrations (version) VALUES ('20130113204959');INSERT INTO schema_migrations (version) VALUES ('20120704151322');
-
-INSERT INTO schema_migrations (version) VALUES ('20120704181734');
-
-INSERT INTO schema_migrations (version) VALUES ('20120704190621');
-
-INSERT INTO schema_migrations (version) VALUES ('20120704223926');
-
-INSERT INTO schema_migrations (version) VALUES ('20120705230229');
-
-INSERT INTO schema_migrations (version) VALUES ('20120708222603');
-
-INSERT INTO schema_migrations (version) VALUES ('20120710230555');
-
-INSERT INTO schema_migrations (version) VALUES ('20120713004949');
-
-INSERT INTO schema_migrations (version) VALUES ('20120721211352');
-
-INSERT INTO schema_migrations (version) VALUES ('20120723001336');
-
-INSERT INTO schema_migrations (version) VALUES ('20120723001729');
-
-INSERT INTO schema_migrations (version) VALUES ('20120728234635');
-
-INSERT INTO schema_migrations (version) VALUES ('20120729004145');
-
-INSERT INTO schema_migrations (version) VALUES ('20120826165628');
-
-INSERT INTO schema_migrations (version) VALUES ('20120903170416');
-
-INSERT INTO schema_migrations (version) VALUES ('20120913012228');
-
-INSERT INTO schema_migrations (version) VALUES ('20120922191407');
-
-INSERT INTO schema_migrations (version) VALUES ('20120922203321');
-
-INSERT INTO schema_migrations (version) VALUES ('20120922222159');
-
-INSERT INTO schema_migrations (version) VALUES ('20120924135352');
-
-INSERT INTO schema_migrations (version) VALUES ('20120924181422');
-
-INSERT INTO schema_migrations (version) VALUES ('20120924223626');
-
-INSERT INTO schema_migrations (version) VALUES ('20120930003700');
-
-INSERT INTO schema_migrations (version) VALUES ('20121006193521');
-
-INSERT INTO schema_migrations (version) VALUES ('20121007000257');
-
-INSERT INTO schema_migrations (version) VALUES ('20121007001106');
-
-INSERT INTO schema_migrations (version) VALUES ('20121008215845');
-
-INSERT INTO schema_migrations (version) VALUES ('20121014024705');
-
-INSERT INTO schema_migrations (version) VALUES ('20121014025517');
-
-INSERT INTO schema_migrations (version) VALUES ('20121112203500');
-
-INSERT INTO schema_migrations (version) VALUES ('20121117234531');
-
-INSERT INTO schema_migrations (version) VALUES ('20121118203752');
-
-INSERT INTO schema_migrations (version) VALUES ('20121118205934');
-
-INSERT INTO schema_migrations (version) VALUES ('20121118210833');
-
-INSERT INTO schema_migrations (version) VALUES ('20121210210935');
-
-INSERT INTO schema_migrations (version) VALUES ('20121210212038');
-
-INSERT INTO schema_migrations (version) VALUES ('20121210223753');
-
-INSERT INTO schema_migrations (version) VALUES ('20121210231615');
-
-INSERT INTO schema_migrations (version) VALUES ('20121213020959');
-
-INSERT INTO schema_migrations (version) VALUES ('20121213023608');
-
-INSERT INTO schema_migrations (version) VALUES ('20121215190033');
-
-INSERT INTO schema_migrations (version) VALUES ('20121221212034');
-
-INSERT INTO schema_migrations (version) VALUES ('20121221213004');
-
-INSERT INTO schema_migrations (version) VALUES ('20121223160904');
-
-INSERT INTO schema_migrations (version) VALUES ('20121225213720');
-
-INSERT INTO schema_migrations (version) VALUES ('20130104150624');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113000418');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113015506');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113015617');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113204230');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113204959');INSERT INTO schema_migrations (version) VALUES ('20120704151322');
-
-INSERT INTO schema_migrations (version) VALUES ('20120704181734');
-
-INSERT INTO schema_migrations (version) VALUES ('20120704190621');
-
-INSERT INTO schema_migrations (version) VALUES ('20120704223926');
-
-INSERT INTO schema_migrations (version) VALUES ('20120705230229');
-
-INSERT INTO schema_migrations (version) VALUES ('20120708222603');
-
-INSERT INTO schema_migrations (version) VALUES ('20120710230555');
-
-INSERT INTO schema_migrations (version) VALUES ('20120713004949');
-
-INSERT INTO schema_migrations (version) VALUES ('20120721211352');
-
-INSERT INTO schema_migrations (version) VALUES ('20120723001336');
-
-INSERT INTO schema_migrations (version) VALUES ('20120723001729');
-
-INSERT INTO schema_migrations (version) VALUES ('20120728234635');
-
-INSERT INTO schema_migrations (version) VALUES ('20120729004145');
-
-INSERT INTO schema_migrations (version) VALUES ('20120826165628');
-
-INSERT INTO schema_migrations (version) VALUES ('20120903170416');
-
-INSERT INTO schema_migrations (version) VALUES ('20120913012228');
-
-INSERT INTO schema_migrations (version) VALUES ('20120922191407');
-
-INSERT INTO schema_migrations (version) VALUES ('20120922203321');
-
-INSERT INTO schema_migrations (version) VALUES ('20120922222159');
-
-INSERT INTO schema_migrations (version) VALUES ('20120924135352');
-
-INSERT INTO schema_migrations (version) VALUES ('20120924181422');
-
-INSERT INTO schema_migrations (version) VALUES ('20120924223626');
-
-INSERT INTO schema_migrations (version) VALUES ('20120930003700');
-
-INSERT INTO schema_migrations (version) VALUES ('20121006193521');
-
-INSERT INTO schema_migrations (version) VALUES ('20121007000257');
-
-INSERT INTO schema_migrations (version) VALUES ('20121007001106');
-
-INSERT INTO schema_migrations (version) VALUES ('20121008215845');
-
-INSERT INTO schema_migrations (version) VALUES ('20121014024705');
-
-INSERT INTO schema_migrations (version) VALUES ('20121014025517');
-
-INSERT INTO schema_migrations (version) VALUES ('20121112203500');
-
-INSERT INTO schema_migrations (version) VALUES ('20121117234531');
-
-INSERT INTO schema_migrations (version) VALUES ('20121118203752');
-
-INSERT INTO schema_migrations (version) VALUES ('20121118205934');
-
-INSERT INTO schema_migrations (version) VALUES ('20121118210833');
-
-INSERT INTO schema_migrations (version) VALUES ('20121210210935');
-
-INSERT INTO schema_migrations (version) VALUES ('20121210212038');
-
-INSERT INTO schema_migrations (version) VALUES ('20121210223753');
-
-INSERT INTO schema_migrations (version) VALUES ('20121210231615');
-
-INSERT INTO schema_migrations (version) VALUES ('20121213020959');
-
-INSERT INTO schema_migrations (version) VALUES ('20121213023608');
-
-INSERT INTO schema_migrations (version) VALUES ('20121215190033');
-
-INSERT INTO schema_migrations (version) VALUES ('20121221212034');
-
-INSERT INTO schema_migrations (version) VALUES ('20121221213004');
-
-INSERT INTO schema_migrations (version) VALUES ('20121223160904');
-
-INSERT INTO schema_migrations (version) VALUES ('20121225213720');
-
-INSERT INTO schema_migrations (version) VALUES ('20130104150624');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113000418');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113015506');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113015617');
-
-INSERT INTO schema_migrations (version) VALUES ('20130113204230');
-
 INSERT INTO schema_migrations (version) VALUES ('20130113204959');
+
+INSERT INTO schema_migrations (version) VALUES ('20130126202409');
+
+INSERT INTO schema_migrations (version) VALUES ('20130126212838');
+
+INSERT INTO schema_migrations (version) VALUES ('20130126222702');
+
+INSERT INTO schema_migrations (version) VALUES ('20130126224854');
+
+INSERT INTO schema_migrations (version) VALUES ('20130126224950');
+
+INSERT INTO schema_migrations (version) VALUES ('20130127161311');
+
+INSERT INTO schema_migrations (version) VALUES ('20130127190806');
+
+INSERT INTO schema_migrations (version) VALUES ('20130202173614');
+
+INSERT INTO schema_migrations (version) VALUES ('20130204224230');
+
+INSERT INTO schema_migrations (version) VALUES ('20130204225944');
+
+INSERT INTO schema_migrations (version) VALUES ('20130206161804');
+
+INSERT INTO schema_migrations (version) VALUES ('20130207021229');
+
+INSERT INTO schema_migrations (version) VALUES ('20130207211940');
+
+INSERT INTO schema_migrations (version) VALUES ('20130210220518');

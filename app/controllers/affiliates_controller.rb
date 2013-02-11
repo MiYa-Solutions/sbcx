@@ -67,10 +67,12 @@ class AffiliatesController < ApplicationController
     # no need for the below as declarative_authorization filter_resource_access takes care of it
     #@affiliate = Affiliate.find(params[:id])
     @agreements = Agreement.our_agreements(current_user.organization.id, @affiliate.id)
+    @account    = Account.where("organization_id = ? AND accountable_id = ?", current_user.organization.id, @affiliate.id).first
   end
 
   def new_affiliate_from_params
     @affiliate ||= current_user.organization.affiliates.build(permitted_params(nil).affiliate)
+
   end
 
 end

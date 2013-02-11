@@ -1,0 +1,3225 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_37" class="java.beans.XMLDecoder"> 
+ <object class="java.util.HashMap"/> 
+ <object class="java.util.ArrayList"> 
+  <void method="add"> 
+   <object class="edu.usfca.vas.data.DataWrapperFA"> 
+    <void property="graphicMachine"> 
+     <void property="elements"> 
+      <void method="add"> 
+       <object id="GElementFAState0" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Pending</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>60.23529411764706</double> 
+         </void> 
+         <void property="y"> 
+          <double>271.05882352941177</double> 
+         </void> 
+        </void> 
+        <void property="start"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void id="FAState0" property="state"> 
+         <void property="name"> 
+          <string>Pending</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object id="GElementFAState1" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Invoiced</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>180.70588235294116</double> 
+         </void> 
+         <void property="y"> 
+          <double>271.05882352941177</double> 
+         </void> 
+        </void> 
+        <void id="FAState1" property="state"> 
+         <void property="name"> 
+          <string>Invoiced</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object id="GElementFAState2" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Collected By Employee</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>301.1764705882353</double> 
+         </void> 
+         <void property="y"> 
+          <double>180.70588235294116</double> 
+         </void> 
+        </void> 
+        <void id="FAState2" property="state"> 
+         <void property="name"> 
+          <string>Collected By Employee</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object id="GElementFAState3" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Collected</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>481.8823529411765</double> 
+         </void> 
+         <void property="y"> 
+          <double>271.05882352941177</double> 
+         </void> 
+        </void> 
+        <void id="FAState3" property="state"> 
+         <void property="name"> 
+          <string>Collected</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object id="GElementFAState4" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Deposited To Prov</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>722.8235294117648</double> 
+         </void> 
+         <void property="y"> 
+          <double>271.05882352941177</double> 
+         </void> 
+        </void> 
+        <void id="FAState4" property="state"> 
+         <void property="name"> 
+          <string>Deposited To Prov</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object id="GElementFAState5" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Deposited</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>903.529411764706</double> 
+         </void> 
+         <void property="y"> 
+          <double>271.05882352941177</double> 
+         </void> 
+        </void> 
+        <void id="FAState5" property="state"> 
+         <void property="accepted"> 
+          <boolean>true</boolean> 
+         </void> 
+         <void property="name"> 
+          <string>Deposited</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object id="GElementFAState6" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Invocied By Subcon</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>179.0</double> 
+         </void> 
+         <void property="y"> 
+          <double>405.0</double> 
+         </void> 
+        </void> 
+        <void id="FAState6" property="state"> 
+         <void property="name"> 
+          <string>Invocied By Subcon</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object id="GElementFAState7" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Collected By Subcon</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>361.0</double> 
+         </void> 
+         <void property="y"> 
+          <double>408.0</double> 
+         </void> 
+        </void> 
+        <void id="FAState7" property="state"> 
+         <void property="name"> 
+          <string>Collected By Subcon</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object id="GElementFAState8" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Subcon Claim Deposited</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>541.0</double> 
+         </void> 
+         <void property="y"> 
+          <double>406.0</double> 
+         </void> 
+        </void> 
+        <void id="FAState8" property="state"> 
+         <void property="name"> 
+          <string>Subcon Claim Deposited</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>160.7182305268555</double> 
+             </void> 
+             <void property="y"> 
+              <double>270.3561326449009</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-60.235294117647044</double> 
+             </void> 
+             <void property="y"> 
+              <double>-2.117647058823536</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-53.70588235294116</double> 
+            </void> 
+            <void property="y"> 
+             <double>-1.058823529411768</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>180.70588235294116</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object id="Vector2D0" class="edu.usfca.xj.appkit.gview.base.Vector2D"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>2.117647058823536</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>120.47058823529412</double> 
+             </void> 
+             <void property="y"> 
+              <double>249.29730911548916</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Invoice</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>60.23529411764706</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Invoice</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState0"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState1"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>461.88235904468934</double> 
+             </void> 
+             <void property="y"> 
+              <double>271.04319853418014</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-150.58823529411768</double> 
+             </void> 
+             <void property="y"> 
+              <double>-0.1176470588235361</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-142.88235294117652</double> 
+            </void> 
+            <void property="y"> 
+             <double>-0.05882352941176805</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>481.8823529411765</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>0.11764705882353609</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>331.29411764705884</double> 
+             </void> 
+             <void property="y"> 
+              <double>250.98437500476837</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Collect</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>180.70588235294116</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Collect</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState1"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState3"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>883.5294287188945</double> 
+             </void> 
+             <void property="y"> 
+              <double>271.03278188482085</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-90.35294117647061</double> 
+             </void> 
+             <void property="y"> 
+              <double>-0.1176470588235361</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-85.52941176470597</double> 
+            </void> 
+            <void property="y"> 
+             <double>-0.05882352941176805</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>903.529411764706</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>0.1176470588235361</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>813.1764705882354</double> 
+             </void> 
+             <void property="y"> 
+              <double>250.97395835540908</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Prov Confirmed Deposit</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>722.8235294117648</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Prov Confirmed Deposit</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState4"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState5"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>166.06822636836353</double> 
+             </void> 
+             <void property="y"> 
+              <double>389.743223448575</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-57.887970962381345</double> 
+             </void> 
+             <void property="y"> 
+              <double>-68.29564630081336</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-43.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>-50.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>179.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>405.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>1.997237185600465</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>135.6631645246974</double> 
+             </void> 
+             <void property="y"> 
+              <double>323.8019634715134</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Subcon Invoiced</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>60.23529411764706</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Subcon Invoiced</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState0"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState6"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>463.4616633732737</double> 
+             </void> 
+             <void property="y"> 
+              <double>278.84844456274567</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-152.532805596816</double> 
+             </void> 
+             <void property="y"> 
+              <double>64.50207775178671</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-138.88235294117652</double> 
+            </void> 
+            <void property="y"> 
+             <double>59.94117647058823</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>481.8823529411765</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>2.6991106232265873</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>321.6747247298842</double> 
+             </void> 
+             <void property="y"> 
+              <double>318.20575782843656</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Collect</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>179.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>405.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Collect</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState6"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState3"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>341.00020527772597</double> 
+             </void> 
+             <void property="y"> 
+              <double>407.9093850624954</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-91.01792774575199</double> 
+             </void> 
+             <void property="y"> 
+              <double>-0.4123834243805504</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-33.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>361.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>408.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>-1.087764321730553</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>269.657471227708</double> 
+             </void> 
+             <void property="y"> 
+              <double>427.2800788523797</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Subcon Collected</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>179.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>405.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Subcon Collected</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState6"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState7"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>521.0015839743877</double> 
+             </void> 
+             <void property="y"> 
+              <double>405.74829289534216</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-90.02370077768177</double> 
+             </void> 
+             <void property="y"> 
+              <double>-1.1330699913590934</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-96.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>541.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>406.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>2.1332016582825464</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>450.76067606923505</double> 
+             </void> 
+             <void property="y"> 
+              <double>385.4608462311553</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Subcon Deposited</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>361.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>408.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Subcon Deposited</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState7"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState8"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>489.92978493169045</double> 
+             </void> 
+             <void property="y"> 
+              <double>289.368352151363</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>29.639283176749473</double> 
+             </void> 
+             <void property="y"> 
+              <double>67.435338912899</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>24.11764705882348</double> 
+            </void> 
+            <void property="y"> 
+             <double>54.94117647058823</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>481.8823529411765</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>-0.08784229948623754</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>529.8223643583987</double> 
+             </void> 
+             <void property="y"> 
+              <double>330.4766245688692</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Confirm Subcon Deposit</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>541.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>406.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Confirm Subcon Deposit</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState8"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState3"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>N/A</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>60.23529411764706</double> 
+         </void> 
+         <void property="y"> 
+          <double>145.0</double> 
+         </void> 
+        </void> 
+        <void id="FAState9" property="state"> 
+         <void property="accepted"> 
+          <boolean>true</boolean> 
+         </void> 
+         <void property="name"> 
+          <string>N/A</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>284.84182409757534</double> 
+             </void> 
+             <void property="y"> 
+              <double>192.2462170112243</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-61.51999999999998</double> 
+             </void> 
+             <void property="y"> 
+              <double>43.46352941176474</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-66.1764705882353</double> 
+            </void> 
+            <void property="y"> 
+             <double>48.29411764705884</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>301.1764705882353</double> 
+            </void> 
+            <void property="y"> 
+             <double>180.70588235294116</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>2.141176470588198</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>227.9577114287501</double> 
+             </void> 
+             <void property="y"> 
+              <double>208.57106621872563</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Collect</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>180.70588235294116</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Collect</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState1"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState2"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>291.9548665982116</double> 
+             </void> 
+             <void property="y"> 
+              <double>198.45305170050696</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-58.89382200020387</double> 
+             </void> 
+             <void property="y"> 
+              <double>113.34238964216541</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-77.1764705882353</double> 
+            </void> 
+            <void property="y"> 
+             <double>144.29411764705884</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>301.1764705882353</double> 
+            </void> 
+            <void property="y"> 
+             <double>180.70588235294116</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>-2.498852830897904</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>259.0924091341481</double> 
+             </void> 
+             <void property="y"> 
+              <double>303.2048082275441</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Collect</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>179.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>405.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Collect</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState6"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState2"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>464.0124818010509</double> 
+             </void> 
+             <void property="y"> 
+              <double>262.0773033109128</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-90.25882352941181</double> 
+             </void> 
+             <void property="y"> 
+              <double>-45.36470588235292</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-63.88235294117652</double> 
+            </void> 
+            <void property="y"> 
+             <double>-32.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>481.8823529411765</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>0.2104534567058237</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>400.53937635760894</double> 
+             </void> 
+             <void property="y"> 
+              <double>207.8624237553704</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Employee Deposit</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>301.1764705882353</double> 
+            </void> 
+            <void property="y"> 
+             <double>180.70588235294116</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Employee Deposit</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState2"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState3"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>702.8352016960172</double> 
+             </void> 
+             <void property="y"> 
+              <double>270.37562873443994</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-120.47058823529414</double> 
+             </void> 
+             <void property="y"> 
+              <double>-4.117647058823536</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-124.82352941176475</double> 
+            </void> 
+            <void property="y"> 
+             <double>-2.058823529411768</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>722.8235294117648</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>4.117647058823536</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>602.3529411764706</double> 
+             </void> 
+             <void property="y"> 
+              <double>248.31680520502817</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Deposited To Prov</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>481.8823529411765</double> 
+            </void> 
+            <void property="y"> 
+             <double>271.05882352941177</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Deposited To Prov</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState3"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState4"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+     </void> 
+     <void property="machine"> 
+      <void property="alphabet"> 
+       <void property="symbols"> 
+        <void method="clear"/> 
+        <void method="add"> 
+         <string>0</string> 
+        </void> 
+        <void method="add"> 
+         <string>1</string> 
+        </void> 
+       </void> 
+      </void> 
+      <void property="states"> 
+       <void property="states"> 
+        <void method="add"> 
+         <object idref="FAState0"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState1"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState2"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState3"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState4"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState5"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState6"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState7"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState8"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState9"/> 
+        </void> 
+       </void> 
+      </void> 
+      <void property="transitions"> 
+       <void property="transitions"> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>v</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>n</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>I</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>C</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>l</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>f</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>D</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string> </string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>d</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>C</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>n</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>m</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>v</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>s</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>P</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>r</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>p</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>v</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>d</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string> </string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>u</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>b</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>S</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>n</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>I</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Pending</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>C</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>l</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>d</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string> </string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>u</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>b</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>S</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>C</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>n</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>l</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>D</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>d</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string> </string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>b</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>n</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>u</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>s</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>S</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>p</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>f</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>D</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string> </string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>b</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>C</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>n</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>m</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>u</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>s</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>r</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>S</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Subcon Claim Deposited</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>p</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>C</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invoiced</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>l</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>c</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>C</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Invocied By Subcon</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>l</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>D</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>E</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string> </string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>s</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>p</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>l</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>m</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>y</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected By Employee</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>D</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>d</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string> </string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>T</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>v</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>t</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>s</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>P</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>r</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Collected</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Deposited To Prov</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>p</string> 
+          </void> 
+         </object> 
+        </void> 
+       </void> 
+      </void> 
+     </void> 
+    </void> 
+    <void property="horizontalMagnetics"> 
+     <int>16</int> 
+    </void> 
+    <void property="name"> 
+     <string>TransferredServiceCall Payment Collection</string> 
+    </void> 
+    <void property="verticalMagnetics"> 
+     <int>16</int> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+ <int>0</int> 
+</java> 

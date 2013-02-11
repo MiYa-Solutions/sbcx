@@ -1,0 +1,23 @@
+spinner = $("<span><img src='<%= asset_path('ajax-loader.gif') %>' alt='Ajax-loader'></span>")
+old_val = ""
+jQuery ->
+    $('.ajax-btn').click (e) ->
+        old_val = $(this).val()
+
+    $('.ajax-form').bind("ajax:before", ->
+        spinner.appendTo($('.ajax-btn').parent())
+        $('.ajax-btn').val("Wait...")
+    )
+
+    $('.ajax-form').bind("ajax:complete", ->
+        spinner.remove()
+        $('.ajax-btn').val(old_val)
+    )
+
+    $('.ajax-form').bind("ajax:success", ->
+        msg = $("<span class='green'>Saved!</span>").appendTo('.ajax-btn')
+        msg.fadeOut(2000)
+        msg.remove()
+    )
+
+

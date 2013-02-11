@@ -18,8 +18,8 @@ class ServiceCallCancelEvent < ServiceCallEvent
 
   def init
     self.name = I18n.t('service_call_cancel_event.name') if name.nil?
-    self.description = I18n.t('service_call_cancel_event.description', user: user) if description.nil?
-    self.reference_id = 9
+    self.description = I18n.t('service_call_cancel_event.description', user: creator.name.rstrip) if description.nil?
+    self.reference_id = 100003
   end
 
   def notification_recipients
@@ -31,7 +31,7 @@ class ServiceCallCancelEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ServiceCallCanceledEvent.new
+    prov_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self)
     prov_service_call
   end
 

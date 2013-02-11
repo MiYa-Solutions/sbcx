@@ -1,0 +1,14 @@
+<%= form_tag new_agreement_payment_url(@agreement), :class => 'simple_form form-horizontal', remote: true, method: :get do %>
+    <fieldset>
+      <ul>
+        <li>
+          <%= hidden_field_tag 'agreement_id', @agreement.id %>
+          <%= select_tag 'payment_type', options_for_select(payment_types), include_blank: true %>
+        </li>
+        <li>
+          <%= submit_tag "Add", class: 'btn btn-medium btn-primary', :id => 'add-posting-rule-button' %>
+        </li>
+
+      </ul>
+    </fieldset>
+<% end %>

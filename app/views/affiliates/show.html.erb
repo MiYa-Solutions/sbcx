@@ -103,66 +103,11 @@
            <div class="bom collapse" id="add_new_agreement">
              <%= render 'agreements/agreement_form', other_party: @affiliate %>
 
-           </div>
 
-           <% unless @agreements.empty? %>
-               <table class="table table-striped" id="agreements_table">
-                    <% if @agreements.any? { |i| i.human_status_name == "Draft" } %>
-                         <tbody>
-                         <% @agreements.each do |agreement| %>
-
-                             <tr >
-
-                               <td>
-                                 <div class="affiliate_draft_agreement">
-                                  Please
-                                 </div>
-                                </td>
-
-                               <td>
-                                 <%= link_to I18n.t('general.general.activate'), agreement.becomes(Agreement), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_agreement').html_safe, :rel => 'tooltip' %>
-                               </td>
-
-                             </tr>
-
-
-                         <% end %>
-                         </tbody>
-                    <% else %>
-                         <thead>
-                                 <tr>
-                                 <td><h4><%= I18n.t('general.general.status') %></h4></td>
-                                   <td class="role_agreement"><h4><%= @affiliate.name %><span><%= "&nbsp;".html_safe + "is your" %></span></h4></td>
-                                 <td><h4><%= I18n.t('general.general.name') %></h4></td>
-                                 <td><h4><%= I18n.t('general.general.actions') %></h4></td>
-                                 </tr>
-                            </thead>
-                         <tbody>
-                         <% @agreements.each do |agreement| %>
-                                 <tr>
-                                    <%= render 'agreements/agreement', agreement: agreement %>
-                                 </tr>
-
-                         <% end %>
-                           </tbody>
-                    <% end %>
-               </table>
-               <!--<#%= render 'agreements/agreements_table', agreements: @agreements %>-->
-           <% end %>
-
-
-
-
-         </div>
-
-
-        </div>
-   </div>
-<!--End Contact Info + Agreements-->
-
-    <div class="span6">
-<!--Jobs-->
-    <div class="affiliate_jobs">
+    </div>
+  <% end  %>
+<!--Agreements-->
+    <div class="affiliate_agreements">
       <div class="smart_label">
         <ul>
           <li><h1><%= Agreement.model_name.human.pluralize %></h1></li>
@@ -177,9 +122,7 @@
 
       </div>
 
-      <% unless @agreements.empty? %>
-          <table class="table table-striped" id="agreements_table">
-
+ 
 
             <% @agreements.each do |agreement| %>
                 <thead>
@@ -206,60 +149,6 @@
 
     </div>
 
-<!-- Balance -->
-      <!-- <#% unless @affiliate.service_calls.empty? %>-->
-      <div class="affiliate_balance">
-        <div class="smart_label">
-          <ul>
-            <li><h1><%= I18n.t('general.general.balance') %></h1></li>
-            <li class="red-balance"><h1>Total: <span>-$199.00</span></h1></li>
-          </ul>
-        </div>
-        <!--Filter Jobs-->
-        <div class="row-fluid filter_affiliate_jobs">
-          <form>
-            <ul>
-              <li class="label_filter"><strong>Filter by Date:</strong></li>
-              <li>
-                <div class="input-prepend input-append">
-                  <span class="add-on">From</span>
-                  <input class= "datepicker">
-                  <span class="add-on">To</span>
-                  <input class= "datepicker">
-                  <button type="submit" class="btn btn-mini btn-primary">Filter</button>
-
-                </div>
-              </li>
-              <li class="button_filter"></li>
-            </ul>
-          </form>
-        </div>
-        <!--table of jobs-->
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th><%= I18n.t('general.general.jon_number') %></th>
-            <th><%= I18n.t('general.general.description') %></th>
-            <th><%= I18n.t('general.general.status') %></th>
-            <th><%= I18n.t('general.general.customer') %></th>
-            <th><%= I18n.t('general.general.balance') %></th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @affiliate.service_calls.each do |sc| %>
-              <tr>
-                <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
-                <td><%= link_to sc.type , service_call_path(sc) %></td>
-                <td><%= link_to sc.human_subcontractor_status_name, service_call_path(sc) %></td>
-                <td><%= sc.customer.try(:name) %></td>
-                <td>- $190</td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
-
-      </div>
-      <!-- <#% end  %> -->
 
     </div>
 
@@ -269,13 +158,13 @@
 </div>
 
 
- <div class="row">
+<div class="row">
 
-    <div class="span8">
+  <div class="span8">
 
-      <% unless @agreements.empty? %>
-          <%= render 'agreements/agreements_table', agreements: @agreements %>
-      <% end %>
+    <% unless @agreements.empty? %>
+        <%= render 'agreements/agreements_table', agreements: @agreements %>
+    <% end %>
 
     </div>
 
@@ -283,14 +172,17 @@
 
 
 <div class="row">
-   <div id="account">
-     <h1>Account</h1>
-     <%= render 'accounts/account', accountable: @affiliate %>
-   </div>
-   <div id="agreements">
-     <h1>New Agreement</h1>
-   </div>
+  <div id="account">
+    <h1>Account</h1>
+    <%= render 'accounts/account', account: @account %>
+  </div>
+</div>
+<div class="row">
 
+  <div id="accounting_entries">
+    <h1>Accounting Entries</h1>
+    <%= render 'accounting_entries/accounting_entries_table', account: @account %>
+  </div>
 </div>
 
 

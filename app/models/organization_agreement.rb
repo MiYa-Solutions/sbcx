@@ -49,6 +49,16 @@ class OrganizationAgreement < Agreement
     end
     state :replaced, value: STATUS_REPLACED
 
+    # create the accounts after activating the agreement
+    after_transition any => :active do |agreement, transition|
+      unless Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'", agreement.organization_id, agreement.counterparty_id).present?
+        Account.create!(organization: agreement.organization, accountable: agreement.counterparty) if agreement.organization.subcontrax_member?
+      end
+      unless Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'", agreement.counterparty_id, agreement.organization_id).present?
+        Account.create!(organization: agreement.counterparty, accountable: agreement.organization) if agreement.counterparty.subcontrax_member?
+      end
+    end
+
 
     event :submit_for_approval do
       transition :draft => :pending_cparty_approval, if: ->(agreement) { agreement.creator.organization == agreement.organization && agreement.counterparty.subcontrax_member? }

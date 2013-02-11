@@ -9,31 +9,38 @@
           <li></li>
           <li class="part_field">
             <div class="input-prepend input-append">
-              <span class="add-on"><%= I18n.t('general.general.part')%></span>
-            <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" } %>
-            <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
-            <%= f.hidden_field :material_id %>
-            <%= f.hidden_field :ticket_id, value: @service_call.id %>
+              <span class="add-on"><%= I18n.t('general.general.part') %></span>
+              <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" } %>
+              <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
+              <%= f.hidden_field :material_id %>
+              <%= f.hidden_field :ticket_id, value: @service_call.id %>
             </div>
           </li>
           <li class="quantity_field">
             <div class="input-prepend input-append">
-              <span class="add-on"><%= I18n.t('general.general.qty')%></span>
-            <%= f.text_field :quantity %>
-                </div>
-
-          </li>
-          <li>
-            <div class="input-prepend input-append">
-              <span class="add-on"><%= I18n.t('general.general.price')%></span>
-               <%= f.text_field :price %>
+              <span class="add-on"><%= I18n.t('general.general.qty') %></span>
+              <%= f.text_field :quantity %>
             </div>
 
           </li>
           <li>
             <div class="input-prepend input-append">
-              <span class="add-on"><%= I18n.t('general.general.cost')%></span>
-            <%= f.text_field :cost %>
+              <span class="add-on"><%= I18n.t('general.general.price') %></span>
+              <%= f.text_field :price %>
+            </div>
+
+          </li>
+          <li>
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= I18n.t('general.general.cost') %></span>
+              <%= f.text_field :cost %>
+            </div>
+          </li>
+          <li>
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= Bom.human_attribute_name(:buyer) %></span>
+              <%= f.select :buyer, options_for_select(buyer_options(ticket)), include_blank: true %>
+              <%= f.hidden_field :buyer_type %>
             </div>
           </li>
           <li>

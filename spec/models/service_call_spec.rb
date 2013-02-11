@@ -21,10 +21,16 @@
 #  updater_id           :integer
 #  settled_on           :datetime
 #  billing_status       :integer
-#  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
+#  transferable         :boolean         default(FALSE)
+#  allow_collection     :boolean         default(TRUE)
+#  collector_id         :integer
+#  collector_type       :string(255)
+#  provider_status      :integer
+#  work_status          :integer
+#  re_transfer          :boolean
 #
 
 require 'spec_helper'
@@ -34,25 +40,56 @@ describe ServiceCall do
 
   subject { service_call }
 
-  it "should have the expected attributes" do
-    should respond_to(:customer_id)
-    should respond_to(:organization_id)
-    should respond_to(:technician_id)
-    should respond_to(:creator_id)
-    should respond_to(:updater_id)
-    should respond_to(:name)
-    should respond_to(:settlement_date)
-    should respond_to(:address1)
-    should respond_to(:address2)
-    should respond_to(:country)
-    should respond_to(:city)
-    should respond_to(:state)
-    should respond_to(:zip)
-    should respond_to(:phone)
-    should respond_to(:mobile_phone)
-    should respond_to(:boms)
-    should respond_to(:scheduled_for)
+  [:customer_id,
+   :organization_id,
+   :technician_id,
+   :creator_id,
+   :updater_id,
+   :name,
+   :settlement_date,
+   :address1,
+   :address2,
+   :country,
+   :city,
+   :state,
+   :zip,
+   :phone,
+   :mobile_phone,
+   :boms,
+   :scheduled_for,
+   :total_price,
+   :total_cost,
+   :total_profit,
+   :provider_cost,
+   :subcontractor_cost,
+   :technician_cost].each do |attr|
+    it { should respond_to attr }
   end
+  #it "should have the expected attributes" do
+  #  should respond_to(:customer_id)
+  #  should respond_to(:organization_id)
+  #  should respond_to(:technician_id)
+  #  should respond_to(:creator_id)
+  #  should respond_to(:updater_id)
+  #  should respond_to(:name)
+  #  should respond_to(:settlement_date)
+  #  should respond_to(:address1)
+  #  should respond_to(:address2)
+  #  should respond_to(:country)
+  #  should respond_to(:city)
+  #  should respond_to(:state)
+  #  should respond_to(:zip)
+  #  should respond_to(:phone)
+  #  should respond_to(:mobile_phone)
+  #  should respond_to(:boms)
+  #  should respond_to(:scheduled_for)
+  #  should respond_to(:total_price)
+  #  should respond_to(:total_cost)
+  #  should respond_to(:total_profit)
+  #  should respond_to(:provider_cost)
+  #  should respond_to(:subcontractor_cost)
+  #  should respond_to(:technician_cost)
+  #end
 
 
   it { should be_valid }

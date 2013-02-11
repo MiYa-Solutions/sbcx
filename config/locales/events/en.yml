@@ -25,7 +25,7 @@ en:
 
   service_call_complete_event:
     name: "Completed Service Call"
-    description: 'Service call completed by %{technician}'
+    description: 'Service call was reported as completed by %{user}'
 
   service_call_settle_event:
     name: "Settled Service Call"

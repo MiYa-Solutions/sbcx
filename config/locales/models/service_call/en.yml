@@ -5,11 +5,11 @@ en:
 
     attributes:
       my_service_call:
-        provider: "Originator"
+        provider: "Provider"
         address1: "The customer address"
 
       transferred_service_call:
-        provider: "Originator"
+        provider: "Provider"
         address1: "The customer address"
 
       service_call:
@@ -22,14 +22,27 @@ en:
 
     state_machines:
       service_call:
+        work_status:
+          events:
+          states:
+            accepted: "Accepted"
+            rejected: "Rejected"
+            in_progress: "In Progress"
+            dispatched: "Dispatched"
+            done: "Completed"
+            pending: "Pending"
+        subcontractor_status:
+          events:
+          states:
+            pending: "Pending"
         billing_status:
           states:
+            invoiced_by_subcon: "Invoiced (Subcontractor)"
+            invoiced: "Invoiced"
             paid: "Paid"
             pending: "Pending"
+
       my_service_call:
-        private_status:
-        states:
-          canceled: "Canceled"
         status:
           events:
             transfer: "Transfer"
@@ -53,6 +66,7 @@ en:
             settled: "Settled"
             na: "NA"
             canceled: "Canceled"
+
       transferred_service_call:
         status:
           events:
@@ -63,6 +77,7 @@ en:
 
           states:
             transferred: "Passed On"
+            new: "Received New"
             received_new: "התקבל חדש"
             accepted: "Accepted"
             dispatched: "Dispatched"
@@ -76,6 +91,8 @@ en:
             pending: "Pending"
             transferred: "Transferred"
             canceled: "Canceled"
+
+
   messages:
     service_call:
       event: 'The service call was %{event_name} successfully'
@@ -114,4 +131,10 @@ en:
   service_call_paid_event:
     name: "Customer Paid"
     description: "Customer has paid for the service"
+  service_call_invoice_event:
+    name: "Customer Invoiced"
+    description: "The customer was presented with an invoice for the service call"
+  service_call_invoiced_event:
+    name: "Service Call Invoiced"
+    description: '%{subcontractor} has presented the customer with an invoice for the service call'
 

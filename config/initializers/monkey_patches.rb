@@ -57,5 +57,7 @@ Rails.logger.formatter = Formatter.new
 if Rails.env == "development"
   Dir.glob("#{Rails.root}/app/notifications/*.rb").sort.each { |file| require_dependency file }
   Dir.glob("#{Rails.root}/app/events/*.rb").sort.each { |file| require_dependency file }
+  Dir.glob("#{Rails.root}/app/models/payments/*.rb").sort.each { |file| require_dependency file }
+  Dir.glob("#{Rails.root}/app/models/accounting_entries/*.rb").sort.each { |file| require_dependency file }
 end
 

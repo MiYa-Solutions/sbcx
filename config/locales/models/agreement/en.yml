@@ -35,6 +35,9 @@ en:
             rejected_by_cparty: "Rejected By The Subcontractor"
             canceled: "Canceled"
             canceled: "Replaced With Another Agreement"
+    errors:
+      agreement:
+        no_type: "you must specify a type of the agreement you wish to create"
   events:
     agreement:
       new_subcon_agreement:

@@ -19,7 +19,7 @@ class ServiceCallTransferEvent < ServiceCallEvent
   def init
     self.name = I18n.t('service_call_transfer_event.name')
     self.description = I18n.t('service_call_transfer_event.description', subcontractor_name: service_call.subcontractor.name) if description.nil?
-    self.reference_id = 2
+    self.reference_id = 100017
   end
 
 
@@ -32,12 +32,13 @@ class ServiceCallTransferEvent < ServiceCallEvent
       new_service_call = TransferredServiceCall.new
 
       new_service_call.organization = service_call.subcontractor.becomes(Organization)
-      new_service_call.provider     = service_call.provider
+      new_service_call.provider     = service_call.organization.becomes(Provider)
       new_service_call.customer     = service_call.customer
       new_service_call.ref_id       = service_call.ref_id
+      new_service_call.transferable = service_call.re_transfer
       new_service_call.events << ServiceCallReceivedEvent.new(description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
 
-      self.save!
+      #self.save!
       new_service_call.save!
       Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
 

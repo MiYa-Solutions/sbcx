@@ -21,10 +21,16 @@
 #  updater_id           :integer
 #  settled_on           :datetime
 #  billing_status       :integer
-#  total_price          :decimal(, )
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
+#  transferable         :boolean         default(FALSE)
+#  allow_collection     :boolean         default(TRUE)
+#  collector_id         :integer
+#  collector_type       :string(255)
+#  provider_status      :integer
+#  work_status          :integer
+#  re_transfer          :boolean
 #
 
 class TransferredServiceCall < ServiceCall
@@ -34,107 +40,164 @@ class TransferredServiceCall < ServiceCall
     self.subcontractor ||= self.organization.try(:becomes, Subcontractor)
   end
 
+  STATUS_NEW         = 1200
+  STATUS_ACCEPTED    = 1201
+  STATUS_REJECTED    = 1202
+  STATUS_TRANSFERRED = 1203
+  STATUS_CLOSED      = 1204
+  STATUS_CANCELED    = 1205
 
-  STATUS_RECEIVED_NEW = 20
-  STATUS_ACCEPTED     = 21
-  STATUS_REJECTED     = 22
-
-  state_machine :status, :initial => :received_new do
-    state :received_new, value: STATUS_RECEIVED_NEW
+  state_machine :status, :initial => :new do
+    state :new, value: STATUS_NEW
     state :accepted, value: STATUS_ACCEPTED
     state :rejected, value: STATUS_REJECTED
-    state :dispatched, value: STATUS_DISPATCHED do
-      validates_presence_of :technician
-    end
     state :transferred, value: STATUS_TRANSFERRED
-    state :in_progress, value: STATUS_STARTED do
-      validates_presence_of :technician
-    end
-    state :work_done, value: STATUS_WORK_DONE
-    state :settled, value: STATUS_SETTLED
+    state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED
 
-    event :cancel do
-      transition [:received_new, :accepted, :in_progress] => :canceled
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "Transferred Service Call status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
-    event :settle do
-      transition :work_done => :settled
+    event :accept do
+      transition :new => :accepted
     end
 
-    event :work_completed do
-      transition [:in_progress, :dispatched] => :work_done
-    end
-
-    event :paid do
-      transition [:in_progress, :work_done] => :work_done
-    end
-
-    event :start do
-      transition [:accepted, :received_new, :dispatched] => :in_progress
+    event :un_accept do
+      transition :accepted => :rejected
     end
 
     event :reject do
-      transition :received_new => :rejected
-    end
-
-    #before_transition :new => :transferred, :do => :transfer_service_call
-    #after_transition :new => :local_enabled, :do => :alert_local
-
-    event :accept do
-      transition :received_new => :accepted
-    end
-
-    event :dispatch do
-      transition [:accepted, :received_new] => :dispatched
+      transition :new => :rejected
     end
 
     event :transfer do
-      transition :received_new => :transferred
+      transition :accepted => :transferred, if: lambda { |sc| sc.work_pending? && sc.transferable? }
+    end
+
+    event :cancel_transfer do
+      transition :transferred => :new
+    end
+
+    event :cancel do
+      transition :accepted => :canceled
+    end
+
+    event :close do
+      transition :accepted => :closed, if: lambda { |sc| sc.work_done? && sc.provider_settled? }
+      transition :transferred => :closed, if: lambda { |sc| sc.work_done? && sc.provider_settled? && sc.subcon_settled? }
     end
 
   end
 
-
-  state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
-    state :na, value: SUBCON_STATUS_NA
+  state_machine :provider_status, :initial => :pending, namespace: 'provider' do
     state :pending, value: SUBCON_STATUS_PENDING
-    state :accepted, value: SUBCON_STATUS_ACCEPTED
-    state :rejected, value: SUBCON_STATUS_REJECTED
-    state :transferred, value: SUBCON_STATUS_TRANSFERRED
-    state :in_progress, value: SUBCON_STATUS_IN_PROGRESS
-    state :work_done, value: SUBCON_STATUS_WORK_DONE
+    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED
+    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED
     state :settled, value: SUBCON_STATUS_SETTLED
-    state :paid, value: SUBCON_STATUS_PAID
 
-    event :subcon_transfer do
-      transition [:na] => :pending
-    end
-
-    event :accept do
-      transition :pending => :accepted
-    end
-    event :reject do
-      transition :pending => :rejected
-    end
-    event :start do
-      transition [:pending, :accepted] => :in_progress
-    end
-    event :subcon_complete do
-      transition [:pending, :accepted, :in_progress] => :work_done
-    end
-    event :subcon_settle do
-      transition [:work_done] => :settled
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
-    event :paid do
-      transition [:accepted, :in_progress] => :paid
+    event :mark_as_settled do
+      transition :pending => :claim_settled, if: lambda { |sc| sc.provider.subcontrax_member? }
+    end
+
+    event :provider_confirmed do
+      transition :claim_settled => :settled
+    end
+
+    event :provider_marked_as_settled do
+      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.provider.subcontrax_member? }
+    end
+
+    event :confirm_settled do
+      transition :claimed_as_settled => :settled
+    end
+
+    event :settle do
+      transition :pending => :settled, if: lambda { |sc| !sc.provider.subcontrax_member? }
     end
   end
+
+  BILLING_STATUS_NA                     = 4200
+  BILLING_STATUS_PENDING                = 4201
+  BILLING_STATUS_INVOICED               = 4202
+  BILLING_STATUS_COLLECTED_BY_EMPLOYEE  = 4203
+  BILLING_STATUS_COLLECTED              = 4204
+  BILLING_STATUS_DEPOSITED_TO_PROV      = 4205
+  BILLING_STATUS_DEPOSITED              = 4206
+  BILLING_STATUS_INVOICED_BY_SUBCON     = 4207
+  BILLING_STATUS_COLLECTED_BY_SUBCON    = 4208
+  BILLING_STATUS_SUBCON_CLAIM_DEPOSITED = 4209
+  BILLING_STATUS_INVOICED_BY_PROV       = 4210
+  # if collection is not allowed for this service call, then the initial status is set to na - not applicable
+  state_machine :billing_status, initial: lambda { |sc| sc.allow_collection? ? :pending : :na }, namespace: 'payment' do
+    state :na, value: BILLING_STATUS_NA
+    state :pending, value: BILLING_STATUS_PENDING
+    state :invoiced, value: BILLING_STATUS_INVOICED
+    state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE
+    state :collected, value: BILLING_STATUS_COLLECTED
+    state :deposited_to_prov, value: BILLING_STATUS_DEPOSITED_TO_PROV
+    state :deposited, value: BILLING_STATUS_DEPOSITED
+    state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
+    state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON
+    state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
+    state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV
+
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "Transferred Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
+
+    event :invoice do
+      transition :pending => :invoiced, if: lambda { |sc| sc.work_done? }
+    end
+
+    event :subcon_invoiced do
+      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? && sc.subcontractor }
+    end
+
+    event :provider_invoiced do
+      transition :pending => :invoiced_by_prov, if: lambda { |sc| sc.work_done? && !sc.provider.subcontrax_member? }
+    end
+
+    event :collect do
+      transition [:invoiced, :invoiced_by_subcon] => :collected_by_employee, if: lambda { |sc| sc.organization.multi_user? }
+      transition [:invoiced, :invoiced_by_subcon] => :collected, if: lambda { |sc| !sc.organization.multi_user? }
+    end
+
+    event :employee_deposit do
+      transition :collected_by_employee => :collected
+    end
+
+    event :subcon_collected do
+      transition :invoiced_by_subcon => :collected_by_subcon
+    end
+
+    event :subcon_deposited do
+      transition :collected_by_subcon => :subcon_claim_deposited
+    end
+
+    event :confirm_deposit do
+      transition :subcon_claim_deposited => :collected
+    end
+
+    event :deposit_to_prov do
+      transition :collected => :deposited_to_prov
+    end
+
+    event :prov_confirmed_deposit do
+      transition :deposited_to_prov => :deposited
+    end
+
+  end
+
+
   private
   def provider_is_not_a_member
     if provider
-      if provider.subcontrax_member && ServiceCall.find_by_ref_id_and_organization_id(ref_id, provider_id).nil?
+      if provider_id != organization_id && provider.subcontrax_member && ServiceCall.find_by_ref_id_and_organization_id(ref_id, provider_id).nil?
         errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
       end
     else

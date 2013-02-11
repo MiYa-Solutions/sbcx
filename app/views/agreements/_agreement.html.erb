@@ -8,13 +8,9 @@
       <td><%= agreement.class.human_attribute_name(:organization) %></td>
   <% end %>
 
-  <!--<td><#%= agreement.organization.name %></td>-->
-  <!--<td><#%= agreement.counterparty.name %></td>-->
   <td><%= agreement.name %></td>
-  <!--<td><#%= agreement.description %></td>-->
   <td>
     <%= link_to I18n.t('general.general.show'), agreement.becomes(Agreement), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_agreement').html_safe, :rel => 'tooltip' %>
-
   </td>
 <!--<tr>-->
 

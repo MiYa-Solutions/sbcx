@@ -1,0 +1,13 @@
+<% if @agreement.errors.any? %>
+<% @agreement.errors.keys.each do |key| %>
+$("#agreement_<%= key %>").wrap('<div class="control-group error" />')
+<% @agreement.errors[key].each do |err| %>
+$('#agreement_<%= key %>').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end %>
+<% end %>
+
+<% else %>
+$('#agreements:last').append('<%= j render(@agreement.becomes(Agreement)) %>');
+$('#agreements').find('.error').removeClass('error');
+$('#agreements').find('.error-msg').remove();
+<% end %>

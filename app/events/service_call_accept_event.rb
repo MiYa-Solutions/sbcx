@@ -19,7 +19,7 @@ class ServiceCallAcceptEvent < ServiceCallEvent
   def init
     self.name         = I18n.t('service_call_accept_event.name')
     self.description  = I18n.t('service_call_accept_event.description')
-    self.reference_id = 3
+    self.reference_id = 100001
   end
 
   def notification_recipients
