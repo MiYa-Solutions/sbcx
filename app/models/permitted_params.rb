@@ -1,7 +1,15 @@
 class PermittedParams < Struct.new(:params, :user, :obj)
 
-  def permitted_attribute?(resource, attribute)
-    send("#{resource}_attributes").include?(attribute)
+  def permitted_attribute?(resource, attribute, attribute_val = nil)
+
+    unless attribute_val.nil?
+      old_val                  = params[attribute]
+      self[:params][attribute] = attribute_val
+    end
+
+    res = send("#{resource}_attributes").include?(attribute)
+    self[:params][attribute] = old_val unless attribute_val.nil?
+    res
   end
 
   def posting_rule
@@ -163,7 +171,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :notes, :re_transfer]
         end
 
-        permitted_attributes.concat [:billing_status_event, :collector_id] if obj.allow_collection?
+        permitted_attributes.concat [:billing_status_event, :collector_id] if billing_allowed?
         permitted_attributes << :work_status_event if obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?)
       else # new service call
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
@@ -444,6 +452,18 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     else
       params[:agreement].permit(*agreement_attributes)
     end
+  end
+
+  private
+
+  def billing_allowed?
+
+    res = false
+    res = true if obj.allow_collection?
+    res = false if params[:billing_status_event] == "provider_invoiced" && obj.provider.subcontrax_member?
+    res = false if params[:billing_status_event] == "subcon_invoiced" && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
+
+    res
   end
 
 end

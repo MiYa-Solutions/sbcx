@@ -28,7 +28,8 @@ class MyServiceCallObserver < ServiceCallObserver
     service_call.events << ServiceCallDispatchEvent.new
   end
 
-  def before_invoice_payment(service_call, transition)
+  # todo change to before callback after implementing background processing
+  def after_invoice_payment(service_call, transition)
     service_call.events << ServiceCallInvoiceEvent.new
   end
 

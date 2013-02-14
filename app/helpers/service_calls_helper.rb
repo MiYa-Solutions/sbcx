@@ -99,7 +99,7 @@ module ServiceCallsHelper
     if service_call.allow_collection?
       concat(content_tag :h3, t('headers.billing_actions')) unless service_call.billing_status_events.empty?
       service_call.billing_status_events.collect do |event|
-        concat(content_tag :li, send("billing_#{event}_form".to_sym, service_call))
+        concat(content_tag :li, send("billing_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :billing_status_event, event.to_s)
       end
     end
 

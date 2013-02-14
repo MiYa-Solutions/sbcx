@@ -46,8 +46,8 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ServiceCallInvoiceEvent.new
   end
 
-  def before_provider_invoiced_payment(service_call, transition)
-    service_call.events << ScProviderInvoicedEvent.new
+  def after_provider_invoiced_payment(service_call, transition)
+    service_call.events << ScProviderInvoicedEvent.new unless service_call.events.last.instance_of?(ScProviderInvoicedEvent)
   end
 
 

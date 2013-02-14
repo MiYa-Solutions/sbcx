@@ -54,6 +54,7 @@ describe "Service Call pages" do
   re_transfer_cbox               = '#service_call_re_transfer'
   re_transfer_cbox_selector      = 'service_call_re_transfer'
   invoice_btn_selector           = 'invoice_service_call_btn'
+  provider_invoiced_btn_selector = 'provider_invoiced_service_call_btn'
 
 
   describe "with Org Admin", js: true do
@@ -67,21 +68,10 @@ describe "Service Call pages" do
     let!(:org3) do
       setup_profit_split_agreement(org2, org_admin_user3.organization).counterparty
     end
-    #let(:org_admin_user) { FactoryGirl.create(:member).users.first }
-    #let(:org_admin_user2) { FactoryGirl.create(:member).users.first }
-    #let(:org_admin_user3) { FactoryGirl.create(:member).users.first }
-    #let(:org) { org_admin_user.organization }
-    #let(:org2) { org_admin_user2.organization }
-    #let!(:org3) do
-    #  setup_profit_split_agreement(org2, org_admin_user3.organization).counterparty
-    #end
-
 
     let(:provider) {
       prov = FactoryGirl.create(:provider)
-      org.providers << prov
-      org.save!
-      prov
+      setup_profit_split_agreement(provider, org).organization
     }
 
     let(:subcontractor) {
@@ -265,408 +255,32 @@ describe "Service Call pages" do
           should_not have_selector(dispatch_btn)
         end
 
-
-        describe "transfer my service call to a member subcontractor" do
-          # transfer the service call
+        describe "start the job" do
           before do
-            in_browser(:org) do
-              select subcontractor.name, from: subcontractor_select
-              check re_transfer_cbox_selector
-              click_button transfer_btn_selector
-            end
-            @subcon_service_call = ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id)
+            click_button start_btn_selector
           end
 
-          it "should change the status to transferred" do
-            should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+          it "start time is set" do
+            service_call.reload
+            service_call.started_on.should_not be_nil
+          end
+          it "start time is displayed" do
+            Time.parse(find(service_call_started_on).text) <= Time.current
           end
 
-          it "should change the subcontractor status to pending localized" do
-            should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.pending'))
-          end
-
-          it " service call should have a Transfer event associated " do
-            service_call.events.pluck(:reference_id).should include(100017)
-          end
-          it " transferred service call should have an Received event associated " do
-            @subcon_service_call.events.pluck(:reference_id).should include(100010)
-          end
-
-          describe "subcontractor browser" do
-            let(:subcon_service_call) { ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id) }
-
-            before(:each) do
-              in_browser(:org2) do
-                visit service_call_path subcon_service_call
-              end
-            end
-
-            it "notification counter should indicate a notice" do
-              should have_selector(notification_counter, text: "1")
-            end
-            it "notification should appear in the welcome" do
-              visit user_root_path
-              should have_selector(notifications, text: /#{service_call.provider.name}/)
-            end
-
-            it "should show up in the subcontractors gui with a locelized received_new status" do
-              should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.new'))
-            end
-
-            it "should not have a subcontractor status displayed" do
-              should_not have_selector(subcontractor_status)
-            end
-
-            it "should have the right provider " do
-              should have_selector(provider_select + " option[selected]", text: org.name)
-            end
-
-            it "should allow to accept the service call" do
-              should have_selector(accept_btn, value: I18n.t('activerecord.state_machines.transferred_service_call.status.events.accept'))
-            end
-          end
-
-          describe "subcontractor accepts the service call" do
-
-            # accept the service call
-            before do
-              in_browser(:org2) do
-                visit service_call_path @subcon_service_call
-                click_button accept_btn_selector
-              end
-
-              in_browser(:org) { visit service_call_path service_call }
-            end
-
-            it "status remains transferred" do
-              should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
-
-            end
-
-            it "work status changes to accepted" do
-              should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.accepted'))
-            end
-
-            it " service call should have an accepted event associated " do
-              service_call.events.pluck(:reference_id).should include(100002)
-            end
-            it " transferred service call should have an accept event associated " do
-              @subcon_service_call.events.pluck(:reference_id).should include(100001)
-            end
-
-
-            describe "subcontractor browser" do
-              before { in_browser(:org2) {} }
-
-              it " status changed to accepted" do
-                should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.accepted'))
-              end
-
-              it " subcontractor status remains na" do
-                should_not have_selector(subcontractor_status)
-              end
-
-            end
-
-
-            describe "subcontractor starts the service call" do
-              before do
-                in_browser(:org2) do
-                  visit service_call_path @subcon_service_call
-                  click_button start_btn_selector
-                end
-
-                in_browser(:org) { visit service_call_path service_call }
-              end
-
-              it "status remains transferred" do
-                should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
-
-              end
-              it "work status changes in progress" do
-                should have_selector(work_status, text: I18n.t('activerecord.state_machines.my_service_call.subcontractor_status.states.in_progress'))
-              end
-              it "start time is set to the same time as the subcontractor service call" do
-                Time.parse(find(service_call_started_on).text) == @subcon_service_call.started_on
-              end
-
-              it " service call should have a started event associated " do
-                service_call.events.pluck(:reference_id).should include(100016)
-              end
-              it " transferred service call should have a start event associated " do
-                @subcon_service_call.events.pluck(:reference_id).should include(100015)
-              end
-
-              describe "subcontractor view after start" do
-                before { in_browser(:org2) {} }
-                it "work status should change to in progress" do
-                  should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
-
-                end
-                it "subcontractor status should remain na" do
-                  should_not have_selector(subcontractor_status)
-                end
-
-                it "start date should be updated with the current time" do
-                  Time.parse(find(service_call_started_on).text) <= Time.current
-                end
-
-
-              end
-
-              describe "subcontractor cancels the service call" do
-
-                before do
-                  in_browser(:org2) do
-                    visit service_call_path @subcon_service_call
-                    click_button cancel_btn_selector
-                  end
-
-                  in_browser(:org) { visit service_call_path service_call }
-                end
-
-                it "should change the status to canceled" do
-                  should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.canceled'))
-                end
-
-                it "should have canceled event displayed" do
-                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', subcontractor: org2.name))
-                end
-
-                it "should have an un_cancel button" do
-                  should have_selector(un_cancel_btn)
-                end
-
-                it "subcontractor sc  should be canceled" do
-                  in_browser(:org2) do
-                    should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
-                  end
-
-                end
-
-                describe "un-cancel" do
-
-                  before do
-                    in_browser(:org) do
-                      visit service_call_path service_call
-                      click_button un_cancel_btn_selector
-                    end
-
-                  end
-
-                  it "should change the status to pending" do
-                    should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.new'))
-                  end
-
-                end
-
-              end
-
-              describe "subcontractor completes the service call" do
-                before do
-                  in_browser(:org2) do
-                    visit service_call_path @subcon_service_call
-                    click_button complete_btn_selector
-                  end
-
-                  in_browser(:org) { visit service_call_path service_call }
-                end
-
-                it "status remains transferred" do
-                  should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
-
-                end
-                it "work status changes to completed" do
-                  should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
-                end
-                it "completion time is equal to the subcontractor completion time" do
-                  Time.parse(find(service_call_completed_on).text) == @subcon_service_call.completed_on
-                end
-
-                it " service call should have a completed event associated " do
-                  service_call.events.pluck(:reference_id).should include(100006)
-                end
-                it " transferred service call should have a complete event associated " do
-                  @subcon_service_call.events.pluck(:reference_id).should include(100005)
-                end
-
-
-                describe "subcontractor view after complete" do
-                  before { in_browser(:org2) {} }
-                  it "status should change to completed" do
-                    should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
-
-                  end
-
-                  it "completed date should be updated with the current time" do
-                    Time.parse(find(service_call_completed_on).text) <= Time.current
-                  end
-
-
-                end
-
-                describe "customer billing" do
-
-                  describe 'subcontractor invoices the customer' do
-
-                    before do
-                      in_browser(:org2) do
-                        click_button invoice_btn_selector
-                      end
-
-                      in_browser(:org1) {}
-                    end
-
-                    it 'should have a customer billing status as invoiced by subcon' do
-                      should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.subcon_invoiced')
-                    end
-                  end
-
-                end
-
-                describe "settlement" do
-                  before do
-                    in_browser(:org2) do
-                      visit service_call_path @subcon_service_call
-                      click_button settle_btn_selector
-                    end
-
-                    in_browser(:org) { visit service_call_path service_call }
-                  end
-
-                  describe "subcontractor marks the service call as settled" do
-
-                    it "should show "
-
-                  end
-
-                  pending
-
-                end
-              end
-            end
+          it "work status should change to in progress" do
+            should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
 
           end
-
-          describe "subcontractor rejects the service call" do
-
-            before do
-              in_browser(:org2) do
-                visit service_call_path @subcon_service_call
-                click_button reject_btn_selector
-              end
-
-              in_browser(:org) { visit service_call_path service_call }
-            end
-
-            it "status remains transferred" do
-              should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
-
-            end
-
-            it "work status changes to rejected" do
-              should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.rejected'))
-            end
-
-            it " service call should have an rejected event associated " do
-              service_call.events.pluck(:reference_id).should include(100012)
-            end
-
-            it 'transferred service call should have a reject event associated' do
-              @subcon_service_call.events.pluck(:reference_id).should include(100011)
-            end
-
+          it "subcontractor status should not be displayed" do
+            should_not have_selector(subcontractor_status)
           end
 
-          describe "subcontractor transfers the service call to a local subcontractor" do
-            let!(:local_subcontractor) do
-              subcon                   = FactoryGirl.create(:subcontractor)
-              subcon.subcontrax_member = false
-              agr                      = setup_profit_split_agreement org2, subcon
-              agr.counterparty
-            end
-
-            let(:second_service_call) { ServiceCall.find_by_organization_id_and_ref_id(local_subcontractor.id, @subcon_service_call.ref_id) }
-
-            before do
-              in_browser(:org2) do
-                visit service_call_path @subcon_service_call
-                click_button accept_btn_selector
-                select local_subcontractor.name, from: subcontractor_select
-                click_button transfer_btn_selector
-              end
-            end
-
-            it "There should not be a service call for the local subcontractor" do
-              second_service_call.should be_nil
-            end
-
-            it "should change the status to transferred localized" do
-              should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
-            end
-
-            it "should show the subcontractor status with pending localized" do
-              should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.pending'))
-            end
-
-            it "should show the subcontractor work action buttons" do
-              Rails.logger.debug { "the subcon sc status is #{@subcon_service_call.status_name}" }
-              Rails.logger.debug { "the subcon sc subcontractor is local? #{!@subcon_service_call.subcontractor.subcontrax_member?}" }
-              should have_selector(accept_btn)
-            end
-
+          it " service call should have a started event associated " do
+            service_call.events.pluck(:reference_id).should include(100015)
+            should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_start_event.description', technician: service_call.technician.name))
+            #service_call.events.where(reference_id: 100015).first.description.should eq(I18n.t('service_call_start_event.description', technician: service_call.technician.name))
           end
-
-          describe "subcontractor transfers the service call to a member subcontractor" do
-            let(:third_service_call) { ServiceCall.find_by_organization_id_and_ref_id(org3.id, @subcon_service_call.ref_id) }
-
-            before do
-              in_browser(:org2) do
-                visit service_call_path @subcon_service_call
-                click_button accept_btn_selector
-                select org3.name, from: subcontractor_select
-
-              end
-              in_browser(:org3) do
-                sign_in org_admin_user3
-              end
-            end
-
-
-            it "created successfully" do
-              expect do
-                in_browser(:org2) do
-                  click_button transfer_btn_selector
-                end
-              end.to change(ServiceCall, :count).by(1)
-            end
-
-            describe "after transfer" do
-              before { in_browser(:org2) { click_button transfer_btn_selector } }
-              it "should find the service call for the member subcontractor" do
-                third_service_call.should_not be_nil
-              end
-
-              it "should change the status to passed" do
-                in_browser(:org2) do
-                  should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
-                end
-
-              end
-
-              it "should change the subcontractor status to pending localized" do
-                in_browser(:org2) do
-                  should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.pending'))
-                end
-              end
-            end
-
-          end
-
-          describe "verify there is no access to the provider's customer" do
-            before { visit service_call_path service_call }
-          end
-
         end
 
       end
@@ -959,6 +573,28 @@ describe "Service Call pages" do
                     Time.parse(find(service_call_completed_on).text) <= Time.current
                   end
 
+                  it "should NOT show the provider invoice button" do
+                    should_not have_selector provider_invoiced_btn_selector
+                  end
+
+                  describe "when provider is NOT a member" do
+                    before do
+                      org2.subcontrax_member = false
+                      org2.save
+                      visit service_call_path @subcon_service_call
+                    end
+
+                    after do
+                      org2.subcontrax_member = true
+                      org2.save
+                    end
+
+                    it "should show the provider invoice button" do
+                      should have_selector provider_invoiced_btn_selector
+                    end
+
+                  end
+
 
                 end
 
@@ -991,12 +627,25 @@ describe "Service Call pages" do
                       should have_selector billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced')
                     end
 
-                    describe "subcontractor view" do
-                      before { in_browser(:org2) {} }
+                    it " service call should have the invoice event associated " do
+                      service_call.events.pluck(:reference_id).should include(100018)
+                      should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_invoice_event.description'))
+                    end
 
-                      it 'should show invoiced by prov' do
-                        should have_selector billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced')
+
+                    describe "subcontractor view" do
+                      before { in_browser(:org2) { visit service_call_path @subcon_service_call } }
+
+                      it "should show invoiced by prov" do
+                        should have_selector billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced_by_prov')
                       end
+
+                      it " service call should have the provider invoiced event associated " do
+                        @subcon_service_call.events.pluck(:reference_id).should include(100020)
+                        should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_provider_invoiced_event.description', provider: @subcon_service_call.provider.name))
+                      end
+
+
                     end
                   end
 

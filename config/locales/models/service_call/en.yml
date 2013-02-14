@@ -42,6 +42,7 @@ en:
             paid: "Paid"
             pending: "Pending"
 
+            invoiced_by_prov: "Invoiced (Provider)"
       my_service_call:
         status:
           events:
@@ -137,4 +138,6 @@ en:
   service_call_invoiced_event:
     name: "Service Call Invoiced"
     description: '%{subcontractor} has presented the customer with an invoice for the service call'
-
+  service_call_provider_invoiced_event:
+    name: "Invoiced By The Provider"
+    description: 'Please note that you are no longer expected to collect the payment from the customer as the provider (%{provider}) has invoiced the client.'

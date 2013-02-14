@@ -81,3 +81,8 @@ en:
           html_message: '%{updater} has activated the Subcontractor Agreement. You can click on %{link} to review it.'
           subject: 'A Subcontractor Agreement Was Activated'
           content: 'You can now transfer and/or receive jobs from %{otherparty}'
+      sc_provider_invoiced_notification:
+        html_message: 'You should no longer handle the %{link} payment collection, as the %{provider} has invoiced the customer.'
+        subject: 'The provider invoiced job %{ref}'
+        content: '%{provider} has invoiced the customer, therefore you are no longer expeceted to handle the payment collection.'
+

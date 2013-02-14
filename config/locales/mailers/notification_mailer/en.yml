@@ -6,6 +6,11 @@ en:
       title: 'New Service Call'
       content: 'New service call was transferred to you by Provider Name: &nbsp; <strong>%{provider}</strong>'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the new service call'
+    provider_invoiced_service_call:
+      subject: 'The Provider Has Invoiced The Customer'
+      title: 'The Provider Has Invoiced The Customer'
+      content: '%{provider} has invoiced the customer for job %{ref}'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the service call'
 
     completed_service_call:
       content: 'This is to inform you that %{technician} has completed service call %{ref}. Please click the blow link to view the service call'

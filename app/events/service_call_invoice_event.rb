@@ -10,6 +10,10 @@ class ServiceCallInvoiceEvent < ServiceCallEvent
     prov_service_call.events << ServiceCallInvoicedEvent.new(triggering_event: self)
   end
 
+  def update_subcontractor
+    subcon_service_call.events << ScProviderInvoicedEvent.new(triggering_event: self) if subcon_service_call.present?
+  end
+
   def notification_recipients
     nil
   end

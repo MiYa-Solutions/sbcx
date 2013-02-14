@@ -159,7 +159,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :provider_invoiced do
-      transition :pending => :invoiced_by_prov, if: lambda { |sc| sc.work_done? && !sc.provider.subcontrax_member? }
+      transition :pending => :invoiced_by_prov, if: lambda { |sc| sc.work_done? }
     end
 
     event :collect do

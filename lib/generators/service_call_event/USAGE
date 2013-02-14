@@ -1,0 +1,8 @@
+Description:
+    creates a service call event as well as it's associated notification
+
+Example:
+    rails generate service_call_event completed
+
+    This will create:
+        ScCompletedEvent/ScCompletedNotification

@@ -59,7 +59,7 @@ class Event < ActiveRecord::Base
   belongs_to :eventable, polymorphic: true
   # todo - seems like the user is not needed instead a creator can be used
   belongs_to :user
-  has_one :triggering_event, class_name: "Event"
+  belongs_to :triggering_event, class_name: "Event"
   stampable
 
   before_validation :init
