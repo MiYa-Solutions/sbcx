@@ -647,7 +647,7 @@ smart_alert {
 
 .add_new_agreement {
   select {
-    width: 220px;
+    width: 160px;
   }
 
   .form-horizontal .control-label {
@@ -724,11 +724,29 @@ smart_alert {
   }
 }
 
-.affiliate_jobs {
+.affiliate_balance {
   min-height: 350px;
 }
 .affiliate_info {
   min-height: 350px;
+
+  //
+  //.table-striped tbody tr:nth-child(2n) td, .table-striped tbody tr:nth-child(2n) th {
+  //  width: 20%;
+  //}
+
+  .first_td {
+       width: 15%;
+  }
+  .second_td {
+    width: 35%;
+  }
+  .third_td {
+    width: 10%;
+  }
+  .forth_td {
+    width: 40%;
+  }
 }
 
 .affiliate_draft_agreement {
@@ -905,7 +923,8 @@ body .modal {
 
 
 .features {
-  background-color: #B9CDE5;
+  background-color: #d9d9d9;
+  //background-color: #B9CDE5;
   border-color: #385D8A;
   color: #3A87AD;
   border-radius: 4px 4px 4px 4px;
