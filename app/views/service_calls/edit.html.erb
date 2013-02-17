@@ -15,7 +15,17 @@
   <div class="row-fluid">
     <div class="span10 ">
       <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' } do |f| %>
-          <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+          <%= f.input :status_event, label: ServiceCall.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
+          <%= f.input :work_status_event, label: ServiceCall.human_attribute_name(:work_status), collection: f.object.work_status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_work_status_name %>
+          <%= f.input :billing_status_event, label: ServiceCall.human_attribute_name(:billing_status), collection: f.object.billing_status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_billing_status_name %>
+          <% unless f.object.subcon_na? %>
+              <%= f.input :subcontractor_status_event, label: ServiceCall.human_attribute_name(:subcontractor_status), collection: f.object.billing_status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_subcontractor_status_name %>
+
+          <% end %>
+          <% if f.object.provider_status %>
+              <%= f.input :provider_status_event, label: ServiceCall.human_attribute_name(:provider_status), collection: f.object.billing_status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_provider_status_name %>
+
+          <% end %>
           <%= render 'fields', f: f %>
 
           <div class="form-actions">

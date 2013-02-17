@@ -6,14 +6,22 @@ class MyServiceCallObserver < ServiceCallObserver
 
   end
 
-  def before_start_work(service_call, transition)
-    Rails.logger.debug { "invoked after BEFORE start \n #{service_call.inspect} \n #{transition.args.inspect}" }
+  def after_start_work(service_call, transition)
+    Rails.logger.debug { "invoked AFTER start_work \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
     unless service_call.transferred?
-      validate_technician_is_present(service_call)
-      service_call.started_on = Time.zone.now unless service_call.started_on
       service_call.activate unless service_call.open?
       service_call.events << ServiceCallStartEvent.new
+    end
+
+  end
+
+  def before_start_work(service_call, transition)
+    Rails.logger.debug { "invoked BEFORE start_work \n #{service_call.inspect} \n #{transition.args.inspect}" }
+
+    unless service_call.transferred?
+      #validate_technician_is_present(service_call)
+      service_call.started_on = Time.zone.now unless service_call.started_on
     end
 
   end

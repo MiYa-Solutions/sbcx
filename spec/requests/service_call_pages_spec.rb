@@ -16,6 +16,7 @@ describe "Service Call pages" do
   provider_select                = 'select#service_call_provider_id'
   technician_select              = 'service_call_technician_id'
   status_select                  = 'service_call_status_event'
+  work_status_select             = 'service_call_work_status_event'
   customer_select                = 'service_call_customer_id'
   new_customer_fld               = 'service_call_new_customer'
   notification_counter           = '#notification-counter'
@@ -55,34 +56,37 @@ describe "Service Call pages" do
   re_transfer_cbox_selector      = 'service_call_re_transfer'
   invoice_btn_selector           = 'invoice_service_call_btn'
   provider_invoiced_btn_selector = 'provider_invoiced_service_call_btn'
+  provider_invoiced_btn          = '#provider_invoiced_service_call_btn'
 
 
   describe "with Org Admin", js: true do
     self.use_transactional_fixtures = false
 
-    let(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-    let(:org_admin_user2) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-    let(:org_admin_user3) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-    let(:org) { org_admin_user.organization }
-    let(:org2) { org_admin_user2.organization }
+    let!(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+    let!(:org_admin_user2) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+    let!(:org_admin_user3) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+    let!(:org) { org_admin_user.organization }
+    let!(:org2) {
+      setup_profit_split_agreement(org_admin_user2.organization, org.becomes(Subcontractor))
+      setup_profit_split_agreement(org, org_admin_user2.organization.becomes(Subcontractor)).counterparty
+    }
     let!(:org3) do
-      setup_profit_split_agreement(org2, org_admin_user3.organization).counterparty
+      setup_profit_split_agreement(org2, org_admin_user3.organization.becomes(Subcontractor)).counterparty
     end
 
-    let(:provider) {
+    # local provider of org
+    let!(:provider) {
       prov = FactoryGirl.create(:provider)
-      setup_profit_split_agreement(provider, org).organization
+      setup_profit_split_agreement(prov, org.becomes(Subcontractor)).organization
     }
 
-    let(:subcontractor) {
-      subcontractor = org2.becomes(Subcontractor)
-      setup_profit_split_agreement(org, subcontractor).counterparty
+    let!(:subcontractor) {
+      org2.becomes(Subcontractor)
     }
 
-    let(:customer) { FactoryGirl.create(:customer, organization: org) }
+    let!(:customer) { FactoryGirl.create(:customer, organization: org) }
 
     before do
-      org.providers << org2.becomes(Provider)
       in_browser(:org) do
         sign_in org_admin_user
       end
@@ -107,8 +111,9 @@ describe "Service Call pages" do
 
       #initialize orgs provider, customer, etc.
       before do
-        provider.save!
-        customer.save!
+        #provider.save!
+        #customer.save!
+        #org2 # initialize org2 to ensure it is avilable in the select box
         in_browser(:org) do
           with_user(org_admin_user) do
             visit new_service_call_path
@@ -144,7 +149,7 @@ describe "Service Call pages" do
           #let(:local_provider) { FactoryGirl.build(:provider) }
 
           before do
-            org.providers << provider
+            #org.providers << provider
             in_browser(:org) do
               visit new_service_call_path
               select provider.name, from: 'service_call_provider_id'
@@ -191,11 +196,11 @@ describe "Service Call pages" do
           end
         end
 
-        after do
-          clean(org)
-          clean(org2)
-          clean(org3)
-        end
+        #after do
+        #  clean(org)
+        #  clean(org2)
+        #  clean(org3)
+        #end
 
 
         it "should be created successfully" do
@@ -217,7 +222,7 @@ describe "Service Call pages" do
     end
 
 
-    describe "show service call" do
+    describe "my service call" do
       #self.use_transactional_fixtures = false
       let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil) }
 
@@ -278,7 +283,7 @@ describe "Service Call pages" do
 
           it " service call should have a started event associated " do
             service_call.events.pluck(:reference_id).should include(100015)
-            should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_start_event.description', technician: service_call.technician.name))
+            should have_selector('table#event_log_in_service_call td', content: I18n.t('service_call_start_event.description', technician: service_call.technician.name))
             #service_call.events.where(reference_id: 100015).first.description.should eq(I18n.t('service_call_start_event.description', technician: service_call.technician.name))
           end
         end
@@ -337,7 +342,7 @@ describe "Service Call pages" do
           end
           it "notification should appear in the welcome" do
             visit user_root_path
-            should have_selector(notifications, text: /#{service_call.provider.name}/)
+            should have_selector(notifications, content: /#{service_call.provider.name}/)
           end
 
           it "should show up in the subcontractors gui with a locelized received_new status" do
@@ -576,25 +581,6 @@ describe "Service Call pages" do
                   it "should NOT show the provider invoice button" do
                     should_not have_selector provider_invoiced_btn_selector
                   end
-
-                  describe "when provider is NOT a member" do
-                    before do
-                      org2.subcontrax_member = false
-                      org2.save
-                      visit service_call_path @subcon_service_call
-                    end
-
-                    after do
-                      org2.subcontrax_member = true
-                      org2.save
-                    end
-
-                    it "should show the provider invoice button" do
-                      should have_selector provider_invoiced_btn_selector
-                    end
-
-                  end
-
 
                 end
 
@@ -873,7 +859,7 @@ describe "Service Call pages" do
             end
 
             it "should have canceled event displayed" do
-              should have_selector("table#event_log_in_service_call td", I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+              should have_selector("table#event_log_in_service_call td", content: I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
             end
 
 
@@ -933,7 +919,7 @@ describe "Service Call pages" do
         before { in_browser(:org) {} }
         describe "edit my service call" do
           let(:service_call) { FactoryGirl.create(:my_service_call, organization: org, customer: customer, subcontractor: nil, provider: org.becomes(Provider)) }
-
+          let!(:technician) { FactoryGirl.create(:technician, organization: org) }
           before do
             visit edit_service_call_path service_call
           end
@@ -954,8 +940,9 @@ describe "Service Call pages" do
           end
 
           describe "dispatch without a technician specified should show an error" do
+
             before do
-              select I18n.t('activerecord.state_machines.my_service_call.status.states.dispatched'), from: status_select
+              select I18n.t('activerecord.state_machines.service_call.work_status.states.dispatched'), from: work_status_select
               click_button save_btn_selector
             end
 
@@ -994,6 +981,61 @@ describe "Service Call pages" do
 
         end
 
+      end
+    end
+
+    describe "transferred service call from a local provider" do
+
+
+      before do
+        in_browser(:org) {
+          visit new_service_call_path
+          select provider.name, from: 'service_call_provider_id'
+          fill_in new_customer_fld, with: customer.name
+          click_button create_btn_selector
+
+        }
+      end
+
+      it "should show the subcon accept button" do
+        should have_button accept_btn_selector
+      end
+
+      describe "accept the service call" do
+        before do
+          click_button accept_btn_selector
+        end
+
+        it "should show a success message" do
+          should have_selector('.alert-success')
+        end
+
+        describe "start the service call" do
+          before do
+            click_button start_btn_selector
+          end
+
+          it "should show a success message" do
+            should have_selector('.alert-success')
+          end
+
+
+          describe "complete service call" do
+
+            before do
+              click_button complete_btn_selector
+            end
+
+            it "should show a success message" do
+              should have_selector('.alert-success')
+            end
+
+            it "should show the provider invoice button" do
+              should have_button provider_invoiced_btn_selector
+            end
+
+          end
+        end
       end
     end
 

@@ -70,7 +70,9 @@ class ServiceCall < Ticket
   state_machine :work_status, initial: :pending, namespace: 'work' do
     state :pending, value: WORK_STATUS_PENDING
     state :dispatched, value: WORK_STATUS_DISPATCHED
-    state :in_progress, value: WORK_STATUS_IN_PROGRESS
+    state :in_progress, value: WORK_STATUS_IN_PROGRESS do
+      validates_presence_of :technician
+    end
     state :accepted, value: WORK_STATUS_ACCEPTED
     state :rejected, value: WORK_STATUS_REJECTED
     state :done, value: WORK_STATUS_DONE

@@ -70,6 +70,7 @@ class Ticket < ActiveRecord::Base
   before_save :save_completed_on_text
                                                             # create a new customer in case one was asked for
   before_validation :create_customer
+  before_validation :init_technician
 
   validate :check_completed_on_text, :check_started_on_text #, :customer_belongs_to_provider
   validates_presence_of :organization, :provider
@@ -180,6 +181,15 @@ class Ticket < ActiveRecord::Base
                                                       phone:        phone,
                                                       mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
     end
+  end
+
+  def init_technician
+    if organization.multi_user?
+      self.errors.add :technician, "You must specify a technician" unless self.technician
+    else
+      self.technician = organization.users.first
+    end
+
   end
 
 

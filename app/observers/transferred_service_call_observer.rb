@@ -1,5 +1,8 @@
 class TransferredServiceCallObserver < ServiceCallObserver
 
+  def before_deposit_to_prov(service_call, transition)
+    service_call.events << ScDepositEvent.new
+  end
   def before_accept(service_call, transition)
     service_call.events << ServiceCallAcceptEvent.new
     Rails.logger.debug { "invoked observer before accept \n #{service_call.inspect} \n #{transition.inspect}" }
@@ -7,7 +10,6 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   def before_start_work(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE start \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    validate_technician_is_present(service_call)
     service_call.started_on = Time.zone.now unless service_call.started_on
 
   end
