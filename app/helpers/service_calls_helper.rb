@@ -156,14 +156,14 @@ module ServiceCallsHelper
     end
   end
 
-  def collect_form(service_call)
+  def billing_collect_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[billing_status_event]", 'collect')
       concat (collector_tag(service_call))
       concat (f.submit service_call.class.human_billing_status_event_name(:collect).titleize,
-                       id:    'settle_service_call_btn',
-                       class: "btn btn-large",
-                       title: 'Click to indicate that the payment was collected',
+                       id:    'collect_service_call_btn',
+                       class: StylingService.instance.get_style("service_call.forms.billing_status.collect.button_classes"),
+                       title: I18n.t("service_call.forms.billing_status.collect.tooltip"),
                        rel:   'tooltip'
              )
     end

@@ -55,16 +55,9 @@ class ServiceCallObserver < ActiveRecord::Observer
     service_call.events << ServiceCallInvoicedEvent.new unless service_call.events.last.instance_of?(ServiceCallInvoicedEvent)
   end
 
-  private
-
-  #def validate_technician_is_present(service_call)
-  #  if service_call.organization.multi_user?
-  #    service_call.errors.add :technician, "You must specify a technician" unless service_call.technician
-  #  else
-  #    service_call.technician = service_call.organization.users.first
-  #  end
-  #
-  #end
-
+  def before_confirm_deposit_payment(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE confirm_deposit \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ScConfirmDepositEvent.new
+  end
 
 end

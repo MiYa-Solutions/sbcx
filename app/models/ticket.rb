@@ -70,7 +70,6 @@ class Ticket < ActiveRecord::Base
   before_save :save_completed_on_text
                                                             # create a new customer in case one was asked for
   before_validation :create_customer
-  before_validation :init_technician
 
   validate :check_completed_on_text, :check_started_on_text #, :customer_belongs_to_provider
   validates_presence_of :organization, :provider
@@ -183,11 +182,27 @@ class Ticket < ActiveRecord::Base
     end
   end
 
-  def init_technician
+  def validate_collector
     if organization.multi_user?
+      self.errors.add :collector, "You must specify who collected the payment" unless self.collector
+    else
+      self.collector = organization.users.first
+    end
+
+  end
+
+  # this validator runs only for a specific state of a service call
+  def validate_subcontractor
+    self.errors.add :subcontractor, "You must specify a subcontractor when transferring" unless subcontractor
+    self.errors.add :subcontractor, "a provider can't transfer a ticket to himself" if subcontractor_id == organization_id
+  end
+
+  # this validator runs only for a specific state of a service call
+  def validate_technician
+    if organization.multi_user? && !transferred?
       self.errors.add :technician, "You must specify a technician" unless self.technician
     else
-      self.technician = organization.users.first
+      self.technician = organization.users.first unless transferred?
     end
 
   end

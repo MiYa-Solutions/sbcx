@@ -47,10 +47,10 @@ en:
         status:
           events:
             transfer: "Transfer"
-            dispatch: "הזנק"
+            dispatch: "Dispatch"
           states:
-            new: "HADASH"
-            transferred: "הועבר"
+            new: "New"
+            transferred: "Transferred"
             dispatched: "Dispatched"
             in_progress: "In Progress"
             work_done: "Done"
@@ -68,12 +68,17 @@ en:
             na: "NA"
             canceled: "Canceled"
 
+        billing_status:
+          states:
+            collected_by_subcon: "Collected (Subcontractor)"
+            subcon_claim_deposited: "Subcontractor Deposited?"
+            paid: "Paid"
       transferred_service_call:
         status:
           events:
-            transfer: "העבר שוב"
-            accept: "קבל"
-            dispatch: "הזנק"
+            transfer: "Transfer Again"
+            accept: "Accept"
+            dispatch: "Dispatch"
             work_done: "Completed"
 
           states:
@@ -94,6 +99,11 @@ en:
             canceled: "Canceled"
 
 
+        billing_status:
+          states:
+            collected: "Collected"
+            deposited_to_prov: "Deposited"
+            deposited: "Deposit Confirmed"
   messages:
     service_call:
       event: 'The service call was %{event_name} successfully'
@@ -141,3 +151,24 @@ en:
   service_call_provider_invoiced_event:
     name: "Invoiced By The Provider"
     description: 'Please note that you are no longer expected to collect the payment from the customer as the provider (%{provider}) has invoiced the client.'
+  service_call_deposit_event:
+    name: "Deposit Payment To Provider"
+    description: 'The payment was deposited to the %{provider}'
+  service_call_subcon_deposited_event:
+    name: "Subcontractor Deposited Payment"
+    description: '%{subcontractor} claims to have deposited the payment for this service call'
+  service_call_collect_event:
+    name: "Payment Collected"
+    description: "The payment for this service call was collected"
+  service_call_collected_event:
+    name: "Subcontractor Collected The Payment"
+    description: 'The subcontractor (%{subcontractor}), has collected the payment from the customer'
+  service_call_deposit_confirmed_event:
+    name: "Provider Confirmed Deposit"
+    description: 'The provider (%{provider}) has confirmed receiving the payment for this service call'
+  service_call_confirm_deposit_event:
+    name: "Deposit Confirmed"
+    description: 'You have confirmed receiving the customer payment from the subcontractor %{subcontractor}'
+  service_call_provider_collected_event:
+    name: "Payment Collected By Provider"
+    description: "The provider (%{provider}) has collected the payment from the customer"

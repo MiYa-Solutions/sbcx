@@ -1,20 +1,31 @@
 class TransferredServiceCallObserver < ServiceCallObserver
 
-  def before_deposit_to_prov(service_call, transition)
+
+  def before_deposit_to_prov_payment(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE deposit_to_prov \n #{service_call.inspect} \n #{transition.inspect}" }
     service_call.events << ScDepositEvent.new
   end
+
   def before_accept(service_call, transition)
-    service_call.events << ServiceCallAcceptEvent.new
     Rails.logger.debug { "invoked observer before accept \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ServiceCallAcceptEvent.new
   end
 
+  def before_collect_payment(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE collect \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ScCollectEvent.new
+  end
+
+  def after_collect_payment(service_call, transition)
+    Rails.logger.debug { "invoked observer AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
+  end
   def before_start_work(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE start \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.started_on = Time.zone.now unless service_call.started_on
-
   end
 
   def after_start_work(service_call, transition)
+    Rails.logger.debug { "invoked observer AFTER start \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.events << ServiceCallStartEvent.new unless service_call.events.last.instance_of?(ServiceCallStartedEvent)
   end
 

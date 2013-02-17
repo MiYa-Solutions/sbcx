@@ -88,7 +88,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     case obj.class.name
       when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :billing_status_event,
+          permitted_attributes = [:status_event, :billing_status_event, :collector_id,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -459,9 +459,12 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   def billing_allowed?
 
     res = false
-    res = true if obj.allow_collection?
-    res = false if params[:billing_status_event] == "provider_invoiced" && obj.provider.subcontrax_member?
-    res = false if params[:billing_status_event] == "subcon_invoiced" && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
+    if obj.allow_collection?
+      res = true
+      res = false if params[:billing_status_event] == "provider_invoiced" && obj.provider.subcontrax_member?
+      res = false if params[:billing_status_event] == "provider_collected" && obj.provider.subcontrax_member?
+      res = false if params[:billing_status_event] == "subcon_invoiced" && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
+    end
 
     res
   end

@@ -1,3 +1,15 @@
+# == Creating a New Service Call Event
+# 1. Define the event in one of the state machines in ServiceCall, MyServiceCall or TransferredServiceCall
+# 2. Add the appropriate before and after callbacks in the applicable observer: ServiceCallObserver, MyServiceCallObserver, TransferredServiceCallObserver
+# 3. Ensure the event is properly permissioned in PermittedParams
+# 4. If invoking the event requires additional information (i.e. technician for a dispatch) create the appropriate form method in ServiceCallHelper
+# 5. use the service_call_event generator to create the service call event class as well as the corresponding notification
+# 6. define an event id in the Events spreadsheet to get a number for the event and update the ref attribute in the init method
+# 7. update the locale yml files with the notification and event name, description, subject etc.
+# 8. instantiate the event in the observer call backs created in step 2.
+# 9. update the service_call_pages_spec.rb with tests for the new functionality
+# 10. implement the event behavior to get the tests to pass
+#
 # == Schema Information
 #
 # Table name: events

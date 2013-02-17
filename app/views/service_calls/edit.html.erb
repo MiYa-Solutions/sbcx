@@ -15,6 +15,13 @@
   <div class="row-fluid">
     <div class="span10 ">
       <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' } do |f| %>
+          <% if f.object.errors.any? %>
+              <div class="alert alert-block alert-error">
+                <a class="close" data-dismiss="alert" href="#">√ó</a>
+                <%= render 'shared/error_messages', object: f.object %>
+              </div>
+          <% end %>
+
           <%= f.input :status_event, label: ServiceCall.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
           <%= f.input :work_status_event, label: ServiceCall.human_attribute_name(:work_status), collection: f.object.work_status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_work_status_name %>
           <%= f.input :billing_status_event, label: ServiceCall.human_attribute_name(:billing_status), collection: f.object.billing_status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_billing_status_name %>

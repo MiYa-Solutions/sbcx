@@ -3,12 +3,12 @@ class ServiceCallPaidEvent < ServiceCallEvent
   def init
     self.name         = I18n.t('service_call_paid_event.name')
     self.description  = I18n.t('service_call_paid_event.description')
-    self.reference_id = 18
+    self.reference_id = 100009
   end
 
-  def update_provider
-    prov_service_call.paid_subcon
-    prov_service_call.events << ServiceCallPaidEvent.new
+
+  def update_subcontractor
+    subcon_service_call.events << ScProviderCollectedEvent.new(triggering_event: self) if subcon_service_call.allow_collection?
   end
 
   def notification_recipients

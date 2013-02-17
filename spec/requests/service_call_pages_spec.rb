@@ -15,6 +15,8 @@ describe "Service Call pages" do
   subcontractor_select           = 'service_call_subcontractor_id'
   provider_select                = 'select#service_call_provider_id'
   technician_select              = 'service_call_technician_id'
+  collector_select               = 'select#service_call_collector_id'
+  collector_select_selector      = 'service_call_collector_id'
   status_select                  = 'service_call_status_event'
   work_status_select             = 'service_call_work_status_event'
   customer_select                = 'service_call_customer_id'
@@ -57,6 +59,16 @@ describe "Service Call pages" do
   invoice_btn_selector           = 'invoice_service_call_btn'
   provider_invoiced_btn_selector = 'provider_invoiced_service_call_btn'
   provider_invoiced_btn          = '#provider_invoiced_service_call_btn'
+  collect_btn_selector           = 'collect_service_call_btn'
+  collect_btn                    = '#collect_service_call_btn'
+  deposit_btn_selector           = 'deposit_service_call_btn'
+  deposit_btn                    = '#desposit_service_call_btn'
+  employee_deposit_btn_selector  = 'employee_deposit_service_call_btn'
+  employee_deposit_btn           = '#employee_desposit_service_call_btn'
+  deposit_to_prov_btn_selector   = 'deposit_to_prov_service_call_btn'
+  deposit_to_prov_btn            = '#deposit_to_prov_service_call_btn'
+  confirm_deposit_btn_selector   = 'confirm_deposit_service_call_btn'
+  confirm_deposit_btn            = '#confirm_deposit_service_call_btn'
 
 
   describe "with Org Admin", js: true do
@@ -308,6 +320,7 @@ describe "Service Call pages" do
           in_browser(:org) do
             select subcontractor.name, from: subcontractor_select
             check re_transfer_cbox_selector
+            check allow_collection_cbox_selector
             click_button transfer_btn_selector
           end
           @subcon_service_call = ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id)
@@ -598,6 +611,236 @@ describe "Service Call pages" do
 
                     it 'should have a customer billing status as invoiced by subcon' do
                       should have_selector billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced_by_subcon')
+                    end
+
+                    it 'the provider should be able to collect the payment' do
+                      in_browser(:org) do
+                        should have_button paid_btn_selector
+                      end
+                    end
+
+                    describe 'subcontractor collects the payment' do
+
+                      before { in_browser(:org2) { visit service_call_path(@subcon_service_call) } }
+
+                      describe 'multi user organization subcontractor' do
+
+                        it 'should have a collector select box with the technician as one of the values' do
+                          should have_selector collector_select, content: @subcon_service_call.technician.name
+                        end
+
+                        it 'should not allow collection without specifying a collector' do
+                          click_button collect_btn_selector
+                          should have_selector 'div.alert-error'
+                        end
+
+                        describe 'successful collection' do
+                          before do
+                            select @subcon_service_call.technician.name.rstrip, from: collector_select_selector
+                            click_button collect_btn_selector
+
+                          end
+
+                          it 'should mark as collected successfully when specifying a collector' do
+                            should have_selector 'div.alert-success'
+                          end
+
+                          it 'should have an employee deposit button' do
+                            should have_button employee_deposit_btn_selector
+                          end
+
+                          describe 'provider view' do
+                            before do
+                              in_browser(:org) { visit service_call_path(service_call) }
+                            end
+
+                            it 'the status should indicate the subcontractor has collected the payment' do
+                              should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.collected_by_subcon')
+
+                            end
+
+                            it " service call should have the collected event associated " do
+                              service_call.reload
+                              service_call.events.pluck(:reference_id).should include(100024)
+                              should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_collected_event.description', subcontractor: service_call.subcontractor.name))
+                            end
+
+                          end
+
+                          describe 'subcontractor deposits the payment' do
+
+                            before do
+                              click_button employee_deposit_btn_selector
+                            end
+
+                            it 'clicking deposit should update the billing status to claimed deposited' do
+                              should have_selector billing_status, text: I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.collected')
+                            end
+
+                            it 'should show the deposit to prov button' do
+                              should have_button deposit_to_prov_btn_selector
+                            end
+
+                            describe 'successful deposit to provider' do
+                              before do
+                                click_button deposit_to_prov_btn_selector
+                              end
+
+                              it 'should change the billing status to deposited' do
+                                should have_selector billing_status, text: I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited_to_prov')
+                              end
+
+                              it 'service call should have the deposit_to_prov event associated ' do
+                                @subcon_service_call.reload.events.pluck(:reference_id).should include(100022)
+                                should have_selector('table#event_log_in_service_call td', content: I18n.t('service_call_deposit_event.description', provider: @subcon_service_call.provider.name))
+                              end
+
+                              describe 'provider view' do
+                                before { in_browser(:org) { visit service_call_path(service_call) } }
+
+                                it 'billing status should be subcon claimed deposit' do
+                                  should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.subcon_claim_deposited')
+                                end
+
+                                it 'should have confirm deposited button' do
+                                  should have_button confirm_deposit_btn_selector
+                                end
+
+                              end
+
+                              describe 'provider confirms deposit' do
+                                before do
+                                  in_browser(:org) do
+                                    visit service_call_path(service_call)
+                                    click_button confirm_deposit_btn_selector
+                                  end
+                                end
+
+                                it 'should show a success message' do
+                                  should have_selector '.alert-success'
+                                end
+
+                                it 'should change the status to paid' do
+                                  should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.paid')
+                                end
+
+                                describe 'subcontractor view' do
+                                  before do
+                                    in_browser(:org2) do
+                                      visit service_call_path(@subcon_service_call)
+                                    end
+                                  end
+
+                                  it 'should show a billing status of deposit confirmed' do
+                                    should have_selector billing_status, text: I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited')
+                                  end
+
+
+                                end
+
+                              end
+
+
+                            end
+
+                          end
+                        end
+                      end
+
+                      describe 'single user organization subcontractor' do
+                        before do
+                          until org2.users.size == 1
+                            org2.users.last.destroy
+                          end
+                          visit service_call_path(@subcon_service_call)
+                        end
+
+                        it 'should not display a collector select box' do
+                          should_not have_selector collector_select
+                        end
+
+                        describe 'successful collection' do
+                          before do
+                            click_button collect_btn_selector
+                          end
+
+                          it 'should mark as collected successfully' do
+                            should have_selector 'div.alert-success'
+                          end
+
+                          describe 'provider view' do
+                            before { in_browser(:org) { visit service_call_path(service_call) } }
+
+                            it 'the status should indicate the subcontractor has collected the payment' do
+                              should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.collected_by_subcon')
+                            end
+                          end
+                        end
+
+
+                      end
+
+
+                    end
+
+                    describe 'the provider collects the payment' do
+
+                      describe 'multi user provider organization' do
+                        let!(:org_technician) { FactoryGirl.create(:technician, organization: org) }
+                        before do
+                          in_browser(:org) do
+                            visit service_call_path(service_call)
+                          end
+                        end
+
+                        it 'should show the collect button with a user select' do
+                          should have_button collect_btn_selector
+                          should have_select collector_select_selector
+                        end
+
+                        it 'should not allow to collect without specifying a user' do
+                          click_button collect_btn_selector
+                          should have_selector '.alert-error'
+                        end
+
+
+                        describe 'successful collection' do
+                          before do
+                            select org_technician.name, from: collector_select_selector
+                            click_button collect_btn_selector
+                          end
+
+                          it 'should show a success flash' do
+                            should have_selector 'div.alert-success'
+                          end
+                        end
+                      end
+
+                      describe 'single user provider organization' do
+                        before do
+                          in_browser(:org) do
+                            visit service_call_path(service_call)
+                            click_button paid_btn_selector
+                          end
+                        end
+
+                        it 'should show a success message' do
+                          should have_selector '.alert-success'
+                        end
+
+                        describe 'subcontractor view' do
+                          before do
+                            in_browser(:org2) do
+                              visit service_call_path(@subcon_service_call)
+                            end
+                          end
+
+                          it 'should show a confirmed deposit status' do
+                            should have_selector billing_status, text: I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited')
+                          end
+                        end
+                      end
+
                     end
                   end
 
