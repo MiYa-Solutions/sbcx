@@ -24,11 +24,6 @@ class ServiceCallObserver < ActiveRecord::Observer
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 
-  #def before_transfer(service_call, transition)
-  #  service_call.subcon_transfer_subcon
-  #  Rails.logger.debug { "invoked observer BEFORE transfer \n #{service_call.inspect} \n #{transition.args.inspect}" }
-  #end
-
   def before_accept(service_call, transition)
     service_call.events << ServiceCallAcceptEvent.new
 
@@ -58,6 +53,17 @@ class ServiceCallObserver < ActiveRecord::Observer
   def before_confirm_deposit_payment(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE confirm_deposit \n #{service_call.inspect} \n #{transition.inspect}" }
     service_call.events << ScConfirmDepositEvent.new
+  end
+
+  def before_settle_subcon(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE settle_subcon \n #{service_call.inspect} \n #{transition.args.inspect}" }
+
+    service_call.settled_on = Time.zone.now
+    service_call.events << ScSubconSettleEvent.new
+  end
+
+  def after_settle_subcon(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE settle_subcon \n #{service_call.inspect} \n #{transition.args.inspect}" }
   end
 
 end

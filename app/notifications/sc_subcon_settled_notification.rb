@@ -1,4 +1,4 @@
-class ScSettledNotification < ServiceCallNotification
+class ScSubconSettledNotification < ServiceCallNotification
   def html_message
     I18n.t('notifications.sc_settled_notification.html_message', customer: service_call.customer.name, link: service_call_link).html_safe
   end

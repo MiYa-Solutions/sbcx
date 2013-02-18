@@ -18,10 +18,7 @@ class MyServiceCallObserver < ServiceCallObserver
   def before_start_work(service_call, transition)
     Rails.logger.debug { "invoked BEFORE start_work \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
-    unless service_call.transferred?
-      #validate_technician_is_present(service_call)
-      service_call.started_on = Time.zone.now unless service_call.started_on
-    end
+    service_call.started_on = Time.zone.now unless service_call.started_on
 
   end
 
@@ -47,11 +44,13 @@ class MyServiceCallObserver < ServiceCallObserver
 
     service_call.events << ServiceCallPaidEvent.new
   end
+
   def before_collect_payment(service_call, transition)
     Rails.logger.debug { "invoked BEFORE collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.collector_type = "User"
 
   end
+
   def before_overdue_payment(service_call, transition)
     Rails.logger.debug { "invoked BEFORE overdue \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.events << ScPaymentOverdueEvent.new

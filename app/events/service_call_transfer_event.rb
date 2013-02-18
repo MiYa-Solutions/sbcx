@@ -31,14 +31,14 @@ class ServiceCallTransferEvent < ServiceCallEvent
 
       new_service_call = TransferredServiceCall.new
 
-      new_service_call.organization = service_call.subcontractor.becomes(Organization)
-      new_service_call.provider     = service_call.organization.becomes(Provider)
-      new_service_call.customer     = service_call.customer
-      new_service_call.ref_id       = service_call.ref_id
-      new_service_call.transferable = service_call.re_transfer
-      new_service_call.events << ServiceCallReceivedEvent.new(description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
+      new_service_call.organization     = service_call.subcontractor.becomes(Organization)
+      new_service_call.provider         = service_call.organization.becomes(Provider)
+      new_service_call.customer         = service_call.customer
+      new_service_call.ref_id           = service_call.ref_id
+      new_service_call.transferable     = service_call.re_transfer
+      new_service_call.allow_collection = service_call.allow_collection
+      new_service_call.events << ServiceCallReceivedEvent.new(triggering_event: self, description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
 
-      #self.save!
       new_service_call.save!
       Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
 

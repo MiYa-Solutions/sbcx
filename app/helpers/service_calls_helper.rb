@@ -96,7 +96,7 @@ module ServiceCallsHelper
   end
 
   def billing_status_forms(service_call)
-    if service_call.allow_collection?
+    if service_call.allow_collection? || service_call.instance_of?(MyServiceCall)
       concat(content_tag :h3, t('headers.billing_actions')) unless service_call.billing_status_events.empty?
       service_call.billing_status_events.collect do |event|
         concat(content_tag :li, send("billing_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :billing_status_event, event.to_s)
@@ -116,9 +116,9 @@ module ServiceCallsHelper
   end
 
   def provider_status_forms(service_call)
-    unless service_call.provider.nil? || service_call.provider.subcontrax_member?
+    if service_call.instance_of?(TransferredServiceCall) && service_call.provider_settlement_allowed?
       concat(content_tag :h3, t('headers.provider_actions')) unless service_call.provider_status_events.empty?
-      service_call.subcontractor_status_events.collect do |event|
+      service_call.provider_status_events.collect do |event|
         concat(content_tag :li, send("provider_#{event}_form".to_sym, service_call))
       end
     end

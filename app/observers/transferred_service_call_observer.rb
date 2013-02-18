@@ -30,17 +30,6 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ServiceCallStartEvent.new unless service_call.events.last.instance_of?(ServiceCallStartedEvent)
   end
 
-
-  def before_settle(service_call, transition)
-    service_call.settled_on = Time.now
-    Rails.logger.debug { "invoked observer BEFORE settle \n #{service_call.inspect} \n #{transition.args.inspect}" }
-  end
-
-  def after_settle(service_call, transition)
-    service_call.events << ServiceCallSettleEvent.new
-    Rails.logger.debug { "invoked observer BEFORE settle \n #{service_call.inspect} \n #{transition.args.inspect}" }
-  end
-
   def before_subcontractor_accepted(service_call, transition)
     service_call.accept_subcon
   end
@@ -62,6 +51,10 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   def after_provider_invoiced_payment(service_call, transition)
     service_call.events << ScProviderInvoicedEvent.new unless service_call.events.last.instance_of?(ScProviderInvoicedEvent)
+  end
+
+  def before_settle_provider(service_call, transition)
+    service_call.events << ScProviderSettleEvent.new
   end
 
 

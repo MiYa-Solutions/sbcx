@@ -92,32 +92,35 @@ class TransferredServiceCall < ServiceCall
 
   state_machine :provider_status, :initial => :pending, namespace: 'provider' do
     state :pending, value: SUBCON_STATUS_PENDING
-    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED
-    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED
-    state :settled, value: SUBCON_STATUS_SETTLED
+    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED do
+      validate { |sc| sc.provider_settlement_allowed? }
+    end
+    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED do
+      validate { |sc| sc.provider_settlement_allowed? }
+    end
+    state :settled, value: SUBCON_STATUS_SETTLED do
+      validate { |sc| sc.provider_settlement_allowed? }
+    end
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
-    event :mark_as_settled do
-      transition :pending => :claim_settled, if: lambda { |sc| sc.provider.subcontrax_member? }
-    end
-
     event :provider_confirmed do
-      transition :claim_settled => :settled
+      transition :claim_settled => :settled, if: lambda {|sc| sc.provider_settlement_allowed?}
     end
 
     event :provider_marked_as_settled do
-      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.provider.subcontrax_member? }
+      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? }
     end
 
     event :confirm_settled do
-      transition :claimed_as_settled => :settled
+      transition :claimed_as_settled => :settled, if: lambda {|sc| sc.provider_settlement_allowed?}
     end
 
     event :settle do
-      transition :pending => :settled, if: lambda { |sc| !sc.provider.subcontrax_member? }
+      transition :pending => :settled, if: lambda { |sc| sc.provider_settlement_allowed? && !sc.provider.subcontrax_member? }
+      transition :pending => :claim_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? }
     end
   end
 
@@ -206,6 +209,10 @@ class TransferredServiceCall < ServiceCall
   end
 
 
+  def provider_settlement_allowed?
+    (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
+  end
+
   private
   def provider_is_not_a_member
     if provider
@@ -220,4 +227,7 @@ class TransferredServiceCall < ServiceCall
     #  errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
     #end
   end
+
+
+
 end

@@ -84,7 +84,7 @@ class ServiceCall < Ticket
     end
 
     event :start do
-      transition [:pending] => :in_progress, if: lambda { |sc| !sc.organization.multi_user? }
+      transition [:pending] => :in_progress, if: lambda { |sc| !sc.organization.multi_user? && !sc.transferred? }
       transition [:accepted, :dispatched] => :in_progress
     end
 
@@ -125,32 +125,35 @@ class ServiceCall < Ticket
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
     state :pending, value: SUBCON_STATUS_PENDING
-    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED
-    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED
-    state :settled, value: SUBCON_STATUS_SETTLED
+    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED do
+      validate { |sc| sc.subcon_settlement_allowed? }
+    end
+    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED do
+      validate { |sc| sc.subcon_settlement_allowed? }
+    end
+    state :settled, value: SUBCON_STATUS_SETTLED do
+      validate { |sc| sc.subcon_settlement_allowed? }
+    end
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
-    event :mark_as_settled do
-      transition :pending => :claim_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? }
-    end
-
     event :subcon_confirmed do
-      transition :claim_settled => :settled
+      transition :claim_settled => :settled , if: lambda {|sc| sc.subcon_settlement_allowed?}
     end
 
     event :subcon_marked_as_settled do
-      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? }
+      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? }
     end
 
     event :confirm_settled do
-      transition :claimed_as_settled => :settled
+      transition :claimed_as_settled => :settled, if: lambda {|sc| sc.subcon_settlement_allowed?}
     end
 
     event :settle do
-      transition :pending => :settled, if: lambda { |sc| sc.work_done? && !sc.subcontractor.subcontrax_member? }
+      transition :pending => :settled, if: lambda { |sc| sc.subcon_settlement_allowed? && sc.work_done? && !sc.subcontractor.subcontrax_member? }
+      transition :pending => :claim_settled, if: lambda { |sc| sc.subcon_settlement_allowed? && sc.work_done? && sc.subcontractor.subcontrax_member? }
     end
   end
 
@@ -182,6 +185,14 @@ class ServiceCall < Ticket
     end
     sc.organization = org
     sc
+  end
+
+
+  def subcon_settlement_allowed?
+
+    (subcontractor.subcontrax_member? && !allow_collection?) ||
+        (subcontractor.subcontrax_member? && allow_collection? && payment_paid?) ||
+        ( !subcontractor.subcontrax_member? && work_done?)
   end
 
 end

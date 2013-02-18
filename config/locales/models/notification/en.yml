@@ -51,6 +51,8 @@ en:
       content: 'Please note that %{customer} has paid for service call %{ref}'
     sc_settled_notification:
       html_message: '%{subcontractor} has marked %{link} %{ref} as settled'
+      subject: 'Job %{ref} was marked as settled by the subcontractor'
+      content: 'The subcontractor (%{subcontractor}) has marked job %{ref} as settled. If you agree please confirm by clicking the appropriate button in the job page, otherwise please contact the the subcontractor.'
     sc_cancel_notification:
       html_message: 'The customer (%{customer}) has canceled for the %{link}'
       subject: 'Service call %{ref} was canceled by the customer'
@@ -101,3 +103,7 @@ en:
       html_message: 'The provider (%{provider}) has collected the payment for %{link} %{ref]'
       subject: 'The provider collected the payment for job %{ref}'
       content: 'Please note that the provider (%{provider}) has collected the payment for job %{ref}'
+    sc_provider_settled_notification:
+      html_message: 'The provider (%{provider}) claims the fees for this %{link} (%{ref}) have been settled. If you agree please confirm.'
+      subject: 'The Provider Claims Job %{ref} Is Settled'
+      content: 'The provider (%{provider}) claims you have settled the fees for commissions for this job %{ref}. You should confirm you agree with this statment by cicking ont the applicable button. If you disagree, please contact your provider to resolve the issue.'

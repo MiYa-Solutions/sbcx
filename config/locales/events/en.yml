@@ -27,11 +27,11 @@ en:
     name: "Completed Service Call"
     description: 'Service call was reported as completed by %{user}'
 
-  service_call_settle_event:
-    name: "Settled Service Call"
-    description: "The balance for this service call was settled between the provider and subcontractor"
+  service_call_subcon_settle_event:
+    name: "Settled With Subcontractor"
+    description: "The subcontractor balance for this service call was settled"
 
-  service_call_settled_event:
+  service_call_subcon_settled_event:
     name: "Subcontractor marked as settled"
     description: '%{subcontractor} has marked this service call as settled'
 

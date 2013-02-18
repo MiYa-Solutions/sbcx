@@ -35,6 +35,7 @@ en:
           events:
           states:
             pending: "Pending"
+            claimed_as_settled: "Claimed As Settled"
         billing_status:
           states:
             invoiced_by_subcon: "Invoiced (Subcontractor)"
@@ -59,8 +60,8 @@ en:
         subcontractor_status:
           states:
             pending: "Pending"
-            accepted: "התקבל"
-            rejected: "נדחה"
+            accepted: "Accepted"
+            rejected: "Rejected"
             dispatched: "Dispatched"
             in_progress: "In Progress"
             work_done: "Completed"
@@ -176,3 +177,9 @@ en:
   service_call_payment_overdue_event:
     name: "Payment Overdue"
     description: "The payment for this service was marked as overdue"
+  service_call_provider_settled_event:
+    name: "Provider Marked As Settled"
+    description: 'The provider (%{provider}) has indicated that the subcontracting fee for this service call has been settled. If you agree please click the confirm button'
+  service_call_provider_settle_event:
+    name: "Settled With Provider"
+    description: "You have indicated that the commissions and fees have been settled with the provider"
