@@ -13,6 +13,7 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   def before_collect_payment(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE collect \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.collector_type = "User" unless service_call.collector_type
     service_call.events << ScCollectEvent.new
   end
 

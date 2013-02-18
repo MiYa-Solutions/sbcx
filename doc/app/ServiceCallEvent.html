@@ -281,9 +281,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -294,6 +306,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -433,9 +451,15 @@ a dispatch) create the appropriate form method in ServiceCallHelper</p>
 <p>use the service_call_event generator to create the service call event class
 as well as the corresponding notification</p>
 </li><li>
-<p>update the service_call_pages_spec.rb with tests for the new functionality</p>
+<p>define an event id in the Events spreadsheet to get a number for the event
+and update the ref attribute in the init method</p>
+</li><li>
+<p>update the locale yml files with the notification and event name,
+description, subject etc.</p>
 </li><li>
 <p>instantiate the event in the observer call backs created in step 2.</p>
+</li><li>
+<p>update the service_call_pages_spec.rb with tests for the new functionality</p>
 </li><li>
 <p>implement the event behavior to get the tests to pass</p>
 </li></ol>
@@ -494,7 +518,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="copy_boms_to_provider-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 66</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 68</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">copy_boms_to_provider</span>
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">new_bom</span> = <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">dup</span>
@@ -531,7 +555,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="notify_provider-3F-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 46</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_provider?</span>
   <span class="ruby-keyword">begin</span>
 
@@ -569,7 +593,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="notify_subcontractor-3F-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 77</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_subcontractor?</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">subcontractor</span>.<span class="ruby-identifier">subcontrax_member?</span> <span class="ruby-operator">&amp;&amp;</span>
@@ -606,7 +630,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="process_event-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 31</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">process_event</span>
 
   <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;Running #{self.class.name} process_event method&quot;</span> }
@@ -643,7 +667,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="prov_service_call-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 58</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">prov_service_call</span>
   <span class="ruby-ivar">@prov_service_call</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Ticket</span>.<span class="ruby-identifier">find_by_ref_id_and_organization_id</span>(<span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">ref_id</span>, <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">provider_id</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -673,7 +697,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="service_call-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 42</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">service_call</span>
   <span class="ruby-ivar">@service_call</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">eventable</span>
 <span class="ruby-keyword">end</span></pre>
@@ -703,7 +727,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="subcon_service_call-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 62</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">subcon_service_call</span>
   <span class="ruby-ivar">@subcon_service_call</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Ticket</span>.<span class="ruby-identifier">find_by_ref_id_and_organization_id</span>(<span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">ref_id</span>, <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">subcontractor_id</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -733,7 +757,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="update_provider-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 92</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 94</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_provider</span>
   <span class="ruby-keyword">nil</span> <span class="ruby-comment"># should be implemented in the subclass in case the subcontractor needs to be notified</span>
 <span class="ruby-keyword">end</span></pre>
@@ -763,7 +787,7 @@ triggering_event_id :integer</pre>
 
           
           <div class="method-source-code" id="update_subcontractor-source">
-            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 88</span>
+            <pre><span class="ruby-comment"># File app/models/service_call_event.rb, line 90</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_subcontractor</span>
   <span class="ruby-keyword">nil</span> <span class="ruby-comment"># should be implemented in the subclass in case the subcontractor needs to be notified</span>
 <span class="ruby-keyword">end</span></pre>

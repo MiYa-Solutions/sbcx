@@ -70,6 +70,8 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-i-after_collect_payment">#after_collect_payment</a>
+    
     <li><a href="#method-i-after_dispatch_work">#after_dispatch_work</a>
     
     <li><a href="#method-i-after_provider_invoiced_payment">#after_provider_invoiced_payment</a>
@@ -82,7 +84,9 @@
     
     <li><a href="#method-i-before_accept">#before_accept</a>
     
-    <li><a href="#method-i-before_deposit_to_prov">#before_deposit_to_prov</a>
+    <li><a href="#method-i-before_collect_payment">#before_collect_payment</a>
+    
+    <li><a href="#method-i-before_deposit_to_prov_payment">#before_deposit_to_prov_payment</a>
     
     <li><a href="#method-i-before_invoice_payment">#before_invoice_payment</a>
     
@@ -285,9 +289,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -298,6 +314,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -436,6 +458,36 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-after_collect_payment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">after_collect_payment</span><span
+            class="method-args">(service_call, transition)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="after_collect_payment-source">
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">after_collect_payment</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}&quot;</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- after_collect_payment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- after_collect_payment-method -->
+
+    
       <div id="method-i-after_dispatch_work" class="method-detail ">
         
         <div class="method-heading">
@@ -452,7 +504,7 @@
 
           
           <div class="method-source-code" id="after_dispatch_work-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 36</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">after_dispatch_work</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
   <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer before dispatch \n #{service_call.inspect} \n #{transition.inspect}&quot;</span> }
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ServiceCallDispatchEvent</span>.<span class="ruby-identifier">new</span>
@@ -483,7 +535,7 @@
 
           
           <div class="method-source-code" id="after_provider_invoiced_payment-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 51</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 63</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">after_provider_invoiced_payment</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ScProviderInvoicedEvent</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">ScProviderInvoicedEvent</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -513,7 +565,7 @@
 
           
           <div class="method-source-code" id="after_reject-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 41</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 53</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">after_reject</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
   <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer after reject \n #{service_call.inspect} \n #{transition.inspect}&quot;</span> }
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ServiceCallRejectEvent</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">ServiceCallRejectedEvent</span>)
@@ -544,7 +596,7 @@
 
           
           <div class="method-source-code" id="after_settle-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 27</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">after_settle</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ServiceCallSettleEvent</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer BEFORE settle \n #{service_call.inspect} \n #{transition.args.inspect}&quot;</span> }
@@ -575,8 +627,9 @@
 
           
           <div class="method-source-code" id="after_start_work-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 17</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">after_start_work</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer AFTER start \n #{service_call.inspect} \n #{transition.args.inspect}&quot;</span> }
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ServiceCallStartEvent</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">ServiceCallStartedEvent</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- after_start_work-source -->
@@ -605,10 +658,10 @@
 
           
           <div class="method-source-code" id="before_accept-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 6</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">before_accept</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
-  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ServiceCallAcceptEvent</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer before accept \n #{service_call.inspect} \n #{transition.inspect}&quot;</span> }
+  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ServiceCallAcceptEvent</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- before_accept-source -->
           
@@ -620,10 +673,10 @@
       </div><!-- before_accept-method -->
 
     
-      <div id="method-i-before_deposit_to_prov" class="method-detail ">
+      <div id="method-i-before_collect_payment" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">before_deposit_to_prov</span><span
+          <span class="method-name">before_collect_payment</span><span
             class="method-args">(service_call, transition)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
@@ -635,19 +688,52 @@
           
 
           
-          <div class="method-source-code" id="before_deposit_to_prov-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 3</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">before_deposit_to_prov</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
-  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ScDepositEvent</span>.<span class="ruby-identifier">new</span>
+          <div class="method-source-code" id="before_collect_payment-source">
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">before_collect_payment</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer BEFORE collect \n #{service_call.inspect} \n #{transition.inspect}&quot;</span> }
+  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">collector_type</span> = <span class="ruby-string">&quot;User&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">collector_type</span>
+  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ScCollectEvent</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- before_deposit_to_prov-source -->
+          </div><!-- before_collect_payment-source -->
           
         </div>
 
         
 
         
-      </div><!-- before_deposit_to_prov-method -->
+      </div><!-- before_collect_payment-method -->
+
+    
+      <div id="method-i-before_deposit_to_prov_payment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">before_deposit_to_prov_payment</span><span
+            class="method-args">(service_call, transition)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="before_deposit_to_prov_payment-source">
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">before_deposit_to_prov_payment</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer BEFORE deposit_to_prov \n #{service_call.inspect} \n #{transition.inspect}&quot;</span> }
+  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ScDepositEvent</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- before_deposit_to_prov_payment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- before_deposit_to_prov_payment-method -->
 
     
       <div id="method-i-before_invoice_payment" class="method-detail ">
@@ -666,7 +752,7 @@
 
           
           <div class="method-source-code" id="before_invoice_payment-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 46</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">before_invoice_payment</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
   <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer before invoice \n #{service_call.inspect} \n #{transition.inspect}&quot;</span> }
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ServiceCallInvoiceEvent</span>.<span class="ruby-identifier">new</span>
@@ -697,7 +783,7 @@
 
           
           <div class="method-source-code" id="before_settle-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">before_settle</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">settled_on</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
   <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer BEFORE settle \n #{service_call.inspect} \n #{transition.args.inspect}&quot;</span> }
@@ -728,11 +814,10 @@
 
           
           <div class="method-source-code" id="before_start_work-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 11</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">before_start_work</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
   <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer BEFORE start \n #{service_call.inspect} \n #{transition.args.inspect}&quot;</span> }
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">started_on</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">now</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">started_on</span>
-
 <span class="ruby-keyword">end</span></pre>
           </div><!-- before_start_work-source -->
           
@@ -760,7 +845,7 @@
 
           
           <div class="method-source-code" id="before_subcontractor_accepted-source">
-            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 32</span>
+            <pre><span class="ruby-comment"># File app/observers/transferred_service_call_observer.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">before_subcontractor_accepted</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
   <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">accept_subcon</span>
 <span class="ruby-keyword">end</span></pre>

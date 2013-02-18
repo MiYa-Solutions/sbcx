@@ -69,6 +69,8 @@ describe "Service Call pages" do
   deposit_to_prov_btn            = '#deposit_to_prov_service_call_btn'
   confirm_deposit_btn_selector   = 'confirm_deposit_service_call_btn'
   confirm_deposit_btn            = '#confirm_deposit_service_call_btn'
+  payment_overdue_btn_selector   = 'overdue_service_call_btn'
+  payment_overdue_btn            = '#overdue_service_call_btn'
 
 
   describe "with Org Admin", js: true do
@@ -295,8 +297,8 @@ describe "Service Call pages" do
 
           it " service call should have a started event associated " do
             service_call.events.pluck(:reference_id).should include(100015)
+            service_call.reload
             should have_selector('table#event_log_in_service_call td', content: I18n.t('service_call_start_event.description', technician: service_call.technician.name))
-            #service_call.events.where(reference_id: 100015).first.description.should eq(I18n.t('service_call_start_event.description', technician: service_call.technician.name))
           end
         end
 
@@ -619,6 +621,26 @@ describe "Service Call pages" do
                       end
                     end
 
+                    it 'should show an overdue button' do
+                      should have_button payment_overdue_btn_selector
+                    end
+
+                    describe 'payment overdue' do
+
+                      before do
+                        click_button payment_overdue_btn_selector
+                      end
+
+                      it 'should show the billing status as overdue' do
+                        should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.overdue')
+                      end
+
+                      it 'should show the overdue event' do
+                        should have_selector('table#event_log_in_service_call td', content: I18n.t('service_call_payment_overdue_event.description'))
+                      end
+
+                    end
+
                     describe 'subcontractor collects the payment' do
 
                       before { in_browser(:org2) { visit service_call_path(@subcon_service_call) } }
@@ -626,16 +648,20 @@ describe "Service Call pages" do
                       describe 'multi user organization subcontractor' do
 
                         it 'should have a collector select box with the technician as one of the values' do
+                          @subcon_service_call.reload
                           should have_selector collector_select, content: @subcon_service_call.technician.name
                         end
 
                         it 'should not allow collection without specifying a collector' do
+                          #page.driver.render("#{Rails.root}/tmp/capybara/before_collect_#{Time.now}.png", :full => true)
+                          #page.save_page
                           click_button collect_btn_selector
                           should have_selector 'div.alert-error'
                         end
 
                         describe 'successful collection' do
                           before do
+                            @subcon_service_call.reload
                             select @subcon_service_call.technician.name.rstrip, from: collector_select_selector
                             click_button collect_btn_selector
 
@@ -1141,8 +1167,13 @@ describe "Service Call pages" do
             end
 
 
-            describe "customer paid" do
-              pending
+            describe "customer payment" do
+
+              describe 'payment overdue' do
+
+              end
+
+
             end
 
 

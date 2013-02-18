@@ -96,8 +96,6 @@
     
     <li><a href="#method-i-email">#email</a>
     
-    <li><a href="#method-i-init_technician">#init_technician</a>
-    
     <li><a href="#method-i-mobile_phone">#mobile_phone</a>
     
     <li><a href="#method-i-phone">#phone</a>
@@ -123,6 +121,12 @@
     <li><a href="#method-i-total_price_validation">#total_price_validation</a>
     
     <li><a href="#method-i-total_profit">#total_profit</a>
+    
+    <li><a href="#method-i-validate_collector">#validate_collector</a>
+    
+    <li><a href="#method-i-validate_subcontractor">#validate_subcontractor</a>
+    
+    <li><a href="#method-i-validate_technician">#validate_technician</a>
     
     <li><a href="#method-i-work_phone">#work_phone</a>
     
@@ -321,9 +325,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -334,6 +350,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -711,7 +733,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="address1-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 86</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">address1</span>
   <span class="ruby-ivar">@address1</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:address1</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -741,7 +763,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="address2-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 90</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 89</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">address2</span>
   <span class="ruby-ivar">@address2</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:address2</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -771,7 +793,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="before_create-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 196</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 211</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">before_create</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> = <span class="ruby-node">&quot;#{customer.name} - #{address1}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -840,7 +862,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="check_completed_on_text-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 136</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">check_completed_on_text</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@completed_on_text</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@completed_on_text</span>).<span class="ruby-identifier">nil?</span>
     <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@completed_on_text</span>, <span class="ruby-string">&quot;cannot be parsed&quot;</span>
@@ -874,7 +896,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="check_started_on_text-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 153</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 152</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">check_started_on_text</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@started_on_text</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@started_on_text</span>).<span class="ruby-identifier">nil?</span>
     <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@started_on_text</span>, <span class="ruby-string">&quot;cannot be parsed&quot;</span>
@@ -908,7 +930,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="city-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 94</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 93</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">city</span>
   <span class="ruby-ivar">@city</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:city</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -938,7 +960,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="company-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 82</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 81</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">company</span>
   <span class="ruby-ivar">@company</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:company</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -968,7 +990,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="completed_on_text-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 127</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 126</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">completed_on_text</span>
   <span class="ruby-ivar">@completed_on_text</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">completed_on</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:strftime</span>, <span class="ruby-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
 
@@ -999,7 +1021,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="country-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 106</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 105</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">country</span>
   <span class="ruby-ivar">@country</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:country</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -1029,7 +1051,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="create_customer-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 161</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 160</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_customer</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">provider</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">customer</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">provider</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span>         <span class="ruby-identifier">new_customer</span>,
@@ -1080,7 +1102,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="customer_belongs_to_provider-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 250</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 265</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">customer_belongs_to_provider</span>
   <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:customer</span>, <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">'service_call.errors.customer_does_not_belong_to_provider'</span>)) <span class="ruby-keyword">unless</span> <span class="ruby-operator">!</span><span class="ruby-identifier">customer</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">organization_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">provider_id</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1110,7 +1132,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="email-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 123</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">email</span>
   <span class="ruby-ivar">@email</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:email</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -1122,41 +1144,6 @@ re_transfer          :boolean</pre>
 
         
       </div><!-- email-method -->
-
-    
-      <div id="method-i-init_technician" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">init_technician</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-          <div class="method-source-code" id="init_technician-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 186</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">init_technician</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">multi_user?</span>
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:technician</span>, <span class="ruby-string">&quot;You must specify a technician&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">technician</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">technician</span> = <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">first</span>
-  <span class="ruby-keyword">end</span>
-
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- init_technician-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- init_technician-method -->
 
     
       <div id="method-i-mobile_phone" class="method-detail ">
@@ -1175,7 +1162,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="mobile_phone-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 114</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 113</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">mobile_phone</span>
   <span class="ruby-ivar">@mobile_phone</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:mobile_phone</span>)
 
@@ -1206,7 +1193,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="phone-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 110</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">phone</span>
   <span class="ruby-ivar">@phone</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:phone</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -1236,7 +1223,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="provider_cost-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 222</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 237</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">provider_cost</span>
   <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
   <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
@@ -1271,7 +1258,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="save_completed_on_text-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 132</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 131</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save_completed_on_text</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">completed_on</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@completed_on_text</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@completed_on_text</span>.<span class="ruby-identifier">present?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1301,7 +1288,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="save_started_on_text-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 149</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save_started_on_text</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">started_on</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@started_on_text</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@started_on_text</span>.<span class="ruby-identifier">present?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1331,7 +1318,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="started_on_text-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 144</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 143</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">started_on_text</span>
   <span class="ruby-ivar">@started_on_text</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">started_on</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:strftime</span>, <span class="ruby-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
 
@@ -1362,7 +1349,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="state-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 98</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 97</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">state</span>
   <span class="ruby-ivar">@state</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:city</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -1392,7 +1379,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="subcontractor_cost-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 231</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 246</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">subcontractor_cost</span>
   <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
   <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
@@ -1427,7 +1414,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="technician_cost-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 240</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 255</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">technician_cost</span>
   <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
   <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
@@ -1462,7 +1449,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="total_cost-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 200</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 215</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">total_cost</span>
 
   <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
@@ -1498,7 +1485,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="total_price-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 210</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 225</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">total_price</span>
   <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
   <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
@@ -1532,7 +1519,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="total_price_validation-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 254</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 269</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">total_price_validation</span>
   <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:total_price</span>, <span class="ruby-string">&quot;is not a number&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-operator">!</span><span class="ruby-identifier">total_price</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">total_price</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">BigDecimal</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -1562,7 +1549,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="total_profit-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 218</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 233</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">total_profit</span>
   <span class="ruby-identifier">total_price</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">total_cost</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1574,6 +1561,107 @@ re_transfer          :boolean</pre>
 
         
       </div><!-- total_profit-method -->
+
+    
+      <div id="method-i-validate_collector" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">validate_collector</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="validate_collector-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 185</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_collector</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">multi_user?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:collector</span>, <span class="ruby-string">&quot;You must specify who collected the payment&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">collector</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">collector</span> = <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- validate_collector-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- validate_collector-method -->
+
+    
+      <div id="method-i-validate_subcontractor" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">validate_subcontractor</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>this validator runs only for a specific state of a service call</p>
+          
+
+          
+          <div class="method-source-code" id="validate_subcontractor-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 195</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_subcontractor</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:subcontractor</span>, <span class="ruby-string">&quot;You must specify a subcontractor when transferring&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">subcontractor</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:subcontractor</span>, <span class="ruby-string">&quot;a provider can't transfer a ticket to himself&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">subcontractor_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">organization_id</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- validate_subcontractor-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- validate_subcontractor-method -->
+
+    
+      <div id="method-i-validate_technician" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">validate_technician</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>this validator runs only for a specific state of a service call</p>
+          
+
+          
+          <div class="method-source-code" id="validate_technician-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 201</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_technician</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">multi_user?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">transferred?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:technician</span>, <span class="ruby-string">&quot;You must specify a technician&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">technician</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">technician</span> = <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">transferred?</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- validate_technician-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- validate_technician-method -->
 
     
       <div id="method-i-work_phone" class="method-detail ">
@@ -1592,7 +1680,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="work_phone-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 119</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 118</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">work_phone</span>
   <span class="ruby-ivar">@work_phone</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:work_phone</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -1622,7 +1710,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="zip-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 102</span>
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 101</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">zip</span>
   <span class="ruby-ivar">@zip</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:zip</span>)
 <span class="ruby-keyword">end</span></pre>

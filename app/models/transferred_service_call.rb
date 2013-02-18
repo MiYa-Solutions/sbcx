@@ -137,17 +137,19 @@ class TransferredServiceCall < ServiceCall
     state :na, value: BILLING_STATUS_NA
     state :pending, value: BILLING_STATUS_PENDING
     state :invoiced, value: BILLING_STATUS_INVOICED
-    state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE
+    state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE do
+      validate { |sc| sc.validate_collector }
+    end
     state :collected, value: BILLING_STATUS_COLLECTED do
-      validate :validate_collector
+      validate { |sc| sc.validate_collector }
     end
     state :deposited_to_prov, value: BILLING_STATUS_DEPOSITED_TO_PROV
     state :deposited, value: BILLING_STATUS_DEPOSITED do
-      validate :validate_collector
+      validate { |sc| sc.validate_collector }
     end
     state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
     state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
-      validate :validate_collector
+      validate { |sc| sc.validate_collector }
     end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV

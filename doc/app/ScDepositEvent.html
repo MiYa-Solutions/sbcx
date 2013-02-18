@@ -271,9 +271,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -284,6 +296,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -441,7 +459,7 @@
             <pre><span class="ruby-comment"># File app/events/sc_deposit_event.rb, line 3</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">init</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>         = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">'service_call_deposit_event.name'</span>)
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">description</span>  = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">'service_call_deposit_event.description'</span>)
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">description</span>  = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">'service_call_deposit_event.description'</span>, <span class="ruby-identifier">provider</span><span class="ruby-operator">:</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">provider</span>.<span class="ruby-identifier">name</span>)
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">reference_id</span> = <span class="ruby-value">100022</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- init-source -->

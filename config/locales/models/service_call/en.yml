@@ -73,6 +73,7 @@ en:
             collected_by_subcon: "Collected (Subcontractor)"
             subcon_claim_deposited: "Subcontractor Deposited?"
             paid: "Paid"
+            overdue: "Overdue"
       transferred_service_call:
         status:
           events:
@@ -172,3 +173,6 @@ en:
   service_call_provider_collected_event:
     name: "Payment Collected By Provider"
     description: "The provider (%{provider}) has collected the payment from the customer"
+  service_call_payment_overdue_event:
+    name: "Payment Overdue"
+    description: "The payment for this service was marked as overdue"

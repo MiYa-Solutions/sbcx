@@ -52,6 +52,10 @@ class MyServiceCallObserver < ServiceCallObserver
     service_call.collector_type = "User"
 
   end
+  def before_overdue_payment(service_call, transition)
+    Rails.logger.debug { "invoked BEFORE overdue \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    service_call.events << ScPaymentOverdueEvent.new
+  end
 
 
 end

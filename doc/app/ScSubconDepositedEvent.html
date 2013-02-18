@@ -76,6 +76,8 @@
     
     <li><a href="#method-i-notification_recipients">#notification_recipients</a>
     
+    <li><a href="#method-i-process_event">#process_event</a>
+    
     <li><a href="#method-i-update_provider">#update_provider</a>
     
   </ul>
@@ -271,9 +273,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -284,6 +298,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -440,9 +460,11 @@
           <div class="method-source-code" id="init-source">
             <pre><span class="ruby-comment"># File app/events/sc_subcon_deposited_event.rb, line 3</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">init</span>
+
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>         = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">'service_call_subcon_deposited_event.name'</span>)
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">description</span>  = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">'service_call_subcon_deposited_event.description'</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">description</span>  = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">'service_call_subcon_deposited_event.description'</span>, <span class="ruby-identifier">subcontractor</span><span class="ruby-operator">:</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">subcontractor</span>.<span class="ruby-identifier">name</span>)
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">reference_id</span> = <span class="ruby-value">100021</span>
+
 <span class="ruby-keyword">end</span></pre>
           </div><!-- init-source -->
           
@@ -470,7 +492,7 @@
 
           
           <div class="method-source-code" id="notification_class-source">
-            <pre><span class="ruby-comment"># File app/events/sc_subcon_deposited_event.rb, line 13</span>
+            <pre><span class="ruby-comment"># File app/events/sc_subcon_deposited_event.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notification_class</span>
   <span class="ruby-constant">ScSubconDepositedNotification</span>
 <span class="ruby-keyword">end</span></pre>
@@ -500,7 +522,7 @@
 
           
           <div class="method-source-code" id="notification_recipients-source">
-            <pre><span class="ruby-comment"># File app/events/sc_subcon_deposited_event.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/events/sc_subcon_deposited_event.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">notification_recipients</span>
   <span class="ruby-constant">User</span>.<span class="ruby-identifier">my_admins</span>(<span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">organization</span>.<span class="ruby-identifier">id</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -512,6 +534,37 @@
 
         
       </div><!-- notification_recipients-method -->
+
+    
+      <div id="method-i-process_event" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process_event</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="process_event-source">
+            <pre><span class="ruby-comment"># File app/events/sc_subcon_deposited_event.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_event</span>
+  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">subcon_deposited_payment</span>
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- process_event-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- process_event-method -->
 
     
       <div id="method-i-update_provider" class="method-detail ">
@@ -530,10 +583,9 @@
 
           
           <div class="method-source-code" id="update_provider-source">
-            <pre><span class="ruby-comment"># File app/events/sc_subcon_deposited_event.rb, line 17</span>
+            <pre><span class="ruby-comment"># File app/events/sc_subcon_deposited_event.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_provider</span>
-
-  <span class="ruby-identifier">prov_service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ScSubconDepositedEvent</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">triggering_event</span><span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>)
+  <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- update_provider-source -->
           

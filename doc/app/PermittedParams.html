@@ -321,9 +321,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -334,6 +346,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -1456,7 +1474,7 @@
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span>
     <span class="ruby-keyword">when</span> <span class="ruby-constant">MyServiceCall</span>.<span class="ruby-identifier">name</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">roles</span>.<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:name</span>).<span class="ruby-identifier">include?</span> <span class="ruby-constant">Role</span><span class="ruby-operator">::</span><span class="ruby-constant">ORG_ADMIN_ROLE_NAME</span>
-        <span class="ruby-identifier">permitted_attributes</span> = [<span class="ruby-value">:status_event</span>, <span class="ruby-value">:billing_status_event</span>,
+        <span class="ruby-identifier">permitted_attributes</span> = [<span class="ruby-value">:status_event</span>, <span class="ruby-value">:billing_status_event</span>, <span class="ruby-value">:collector_id</span>,
                                 <span class="ruby-value">:provider_id</span>,
                                 <span class="ruby-value">:subcontractor_id</span>,
                                 <span class="ruby-value">:customer_id</span>,

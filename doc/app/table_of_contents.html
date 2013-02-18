@@ -469,10 +469,28 @@
     <a href="ScCanceledNotification.html">ScCanceledNotification</a>
   </li>
     <li class="class">
+    <a href="ScCollectEvent.html">ScCollectEvent</a>
+  </li>
+    <li class="class">
+    <a href="ScCollectedEvent.html">ScCollectedEvent</a>
+  </li>
+    <li class="class">
+    <a href="ScCollectedNotification.html">ScCollectedNotification</a>
+  </li>
+    <li class="class">
     <a href="ScCompleteNotification.html">ScCompleteNotification</a>
   </li>
     <li class="class">
     <a href="ScCompletedNotification.html">ScCompletedNotification</a>
+  </li>
+    <li class="class">
+    <a href="ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  </li>
+    <li class="class">
+    <a href="ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  </li>
+    <li class="class">
+    <a href="ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   </li>
     <li class="class">
     <a href="ScDepositEvent.html">ScDepositEvent</a>
@@ -488,6 +506,15 @@
   </li>
     <li class="class">
     <a href="ScPaidNotification.html">ScPaidNotification</a>
+  </li>
+    <li class="class">
+    <a href="ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  </li>
+    <li class="class">
+    <a href="ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  </li>
+    <li class="class">
+    <a href="ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   </li>
     <li class="class">
     <a href="ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
@@ -735,9 +762,9 @@
 <h2 id="methods">Methods</h2>
 <ul>
   
-    <li class="method"><a href="BillingService.html#method-c-new">::new &mdash; BillingService</a>
-  
     <li class="method"><a href="StylingService.html#method-c-new">::new &mdash; StylingService</a>
+  
+    <li class="method"><a href="BillingService.html#method-c-new">::new &mdash; BillingService</a>
   
     <li class="method"><a href="Agreement.html#method-c-new_agreement">::new_agreement &mdash; Agreement</a>
   
@@ -773,6 +800,8 @@
   
     <li class="method"><a href="AffiliatesHelper.html#method-i-affiliates">#affiliates &mdash; AffiliatesHelper</a>
   
+    <li class="method"><a href="TransferredServiceCallObserver.html#method-i-after_collect_payment">#after_collect_payment &mdash; TransferredServiceCallObserver</a>
+  
     <li class="method"><a href="ServiceCallObserver.html#method-i-after_complete_work">#after_complete_work &mdash; ServiceCallObserver</a>
   
     <li class="method"><a href="SubcontractingAgreementObserver.html#method-i-after_create">#after_create &mdash; SubcontractingAgreementObserver</a>
@@ -783,9 +812,9 @@
   
     <li class="method"><a href="MyServiceCallObserver.html#method-i-after_dispatch">#after_dispatch &mdash; MyServiceCallObserver</a>
   
-    <li class="method"><a href="MyServiceCallObserver.html#method-i-after_dispatch_work">#after_dispatch_work &mdash; MyServiceCallObserver</a>
-  
     <li class="method"><a href="TransferredServiceCallObserver.html#method-i-after_dispatch_work">#after_dispatch_work &mdash; TransferredServiceCallObserver</a>
+  
+    <li class="method"><a href="MyServiceCallObserver.html#method-i-after_dispatch_work">#after_dispatch_work &mdash; MyServiceCallObserver</a>
   
     <li class="method"><a href="MyServiceCallObserver.html#method-i-after_invoice_payment">#after_invoice_payment &mdash; MyServiceCallObserver</a>
   
@@ -825,9 +854,9 @@
   
     <li class="method"><a href="AgreementNotification.html#method-i-agreement">#agreement &mdash; AgreementNotification</a>
   
-    <li class="method"><a href="PermittedParams.html#method-i-agreement">#agreement &mdash; PermittedParams</a>
-  
     <li class="method"><a href="AgreementEvent.html#method-i-agreement">#agreement &mdash; AgreementEvent</a>
+  
+    <li class="method"><a href="PermittedParams.html#method-i-agreement">#agreement &mdash; PermittedParams</a>
   
     <li class="method"><a href="PermittedParams.html#method-i-agreement_attributes">#agreement_attributes &mdash; PermittedParams</a>
   
@@ -859,13 +888,23 @@
   
     <li class="method"><a href="ServiceCallObserver.html#method-i-before_cancel">#before_cancel &mdash; ServiceCallObserver</a>
   
+    <li class="method"><a href="TransferredServiceCallObserver.html#method-i-before_collect_payment">#before_collect_payment &mdash; TransferredServiceCallObserver</a>
+  
+    <li class="method"><a href="MyServiceCallObserver.html#method-i-before_collect_payment">#before_collect_payment &mdash; MyServiceCallObserver</a>
+  
     <li class="method"><a href="ServiceCallObserver.html#method-i-before_complete_work">#before_complete_work &mdash; ServiceCallObserver</a>
+  
+    <li class="method"><a href="ServiceCallObserver.html#method-i-before_confirm_deposit_payment">#before_confirm_deposit_payment &mdash; ServiceCallObserver</a>
   
     <li class="method"><a href="Ticket.html#method-i-before_create">#before_create &mdash; Ticket</a>
   
-    <li class="method"><a href="TransferredServiceCallObserver.html#method-i-before_deposit_to_prov">#before_deposit_to_prov &mdash; TransferredServiceCallObserver</a>
+    <li class="method"><a href="TransferredServiceCallObserver.html#method-i-before_deposit_to_prov_payment">#before_deposit_to_prov_payment &mdash; TransferredServiceCallObserver</a>
   
     <li class="method"><a href="TransferredServiceCallObserver.html#method-i-before_invoice_payment">#before_invoice_payment &mdash; TransferredServiceCallObserver</a>
+  
+    <li class="method"><a href="MyServiceCallObserver.html#method-i-before_overdue_payment">#before_overdue_payment &mdash; MyServiceCallObserver</a>
+  
+    <li class="method"><a href="MyServiceCallObserver.html#method-i-before_paid_payment">#before_paid_payment &mdash; MyServiceCallObserver</a>
   
     <li class="method"><a href="ServiceCallObserver.html#method-i-before_reject_work">#before_reject_work &mdash; ServiceCallObserver</a>
   
@@ -879,19 +918,21 @@
   
     <li class="method"><a href="ServiceCallObserver.html#method-i-before_transfer">#before_transfer &mdash; ServiceCallObserver</a>
   
+    <li class="method"><a href="ServiceCallsHelper.html#method-i-billing_collect_form">#billing_collect_form &mdash; ServiceCallsHelper</a>
+  
     <li class="method"><a href="ServiceCallsHelper.html#method-i-billing_status_forms">#billing_status_forms &mdash; ServiceCallsHelper</a>
   
     <li class="method"><a href="PermittedParams.html#method-i-bom">#bom &mdash; PermittedParams</a>
   
     <li class="method"><a href="PermittedParams.html#method-i-bom_attributes">#bom_attributes &mdash; PermittedParams</a>
   
-    <li class="method"><a href="Organization.html#method-i-build">#build &mdash; Organization</a>
-  
     <li class="method"><a href="Ticket.html#method-i-build">#build &mdash; Ticket</a>
   
-    <li class="method"><a href="RegistrationsController.html#method-i-build_resource">#build_resource &mdash; RegistrationsController</a>
+    <li class="method"><a href="Organization.html#method-i-build">#build &mdash; Organization</a>
   
     <li class="method"><a href="PasswordsController.html#method-i-build_resource">#build_resource &mdash; PasswordsController</a>
+  
+    <li class="method"><a href="RegistrationsController.html#method-i-build_resource">#build_resource &mdash; RegistrationsController</a>
   
     <li class="method"><a href="SessionsController.html#method-i-build_resource">#build_resource &mdash; SessionsController</a>
   
@@ -905,8 +946,6 @@
   
     <li class="method"><a href="Ticket.html#method-i-city">#city &mdash; Ticket</a>
   
-    <li class="method"><a href="ServiceCallsHelper.html#method-i-collect_form">#collect_form &mdash; ServiceCallsHelper</a>
-  
     <li class="method"><a href="Ticket.html#method-i-company">#company &mdash; Ticket</a>
   
     <li class="method"><a href="Ticket.html#method-i-completed_on_text">#completed_on_text &mdash; Ticket</a>
@@ -915,35 +954,35 @@
   
     <li class="method"><a href="Ticket.html#method-i-country">#country &mdash; Ticket</a>
   
-    <li class="method"><a href="MyUsersController.html#method-i-create">#create &mdash; MyUsersController</a>
-  
-    <li class="method"><a href="PostingRulesController.html#method-i-create">#create &mdash; PostingRulesController</a>
-  
-    <li class="method"><a href="AccountingEntriesController.html#method-i-create">#create &mdash; AccountingEntriesController</a>
-  
-    <li class="method"><a href="AffiliatesController.html#method-i-create">#create &mdash; AffiliatesController</a>
-  
     <li class="method"><a href="RegistrationsController.html#method-i-create">#create &mdash; RegistrationsController</a>
+  
+    <li class="method"><a href="OrganizationsController.html#method-i-create">#create &mdash; OrganizationsController</a>
   
     <li class="method"><a href="SubcontractorsController.html#method-i-create">#create &mdash; SubcontractorsController</a>
   
-    <li class="method"><a href="ProvidersController.html#method-i-create">#create &mdash; ProvidersController</a>
+    <li class="method"><a href="CustomersController.html#method-i-create">#create &mdash; CustomersController</a>
+  
+    <li class="method"><a href="AffiliatesController.html#method-i-create">#create &mdash; AffiliatesController</a>
   
     <li class="method"><a href="AgreementsController.html#method-i-create">#create &mdash; AgreementsController</a>
   
+    <li class="method"><a href="BomsController.html#method-i-create">#create &mdash; BomsController</a>
+  
+    <li class="method"><a href="MyUsersController.html#method-i-create">#create &mdash; MyUsersController</a>
+  
     <li class="method"><a href="PaymentsController.html#method-i-create">#create &mdash; PaymentsController</a>
   
-    <li class="method"><a href="MaterialsController.html#method-i-create">#create &mdash; MaterialsController</a>
-  
-    <li class="method"><a href="ServiceCallsController.html#method-i-create">#create &mdash; ServiceCallsController</a>
-  
-    <li class="method"><a href="CustomersController.html#method-i-create">#create &mdash; CustomersController</a>
+    <li class="method"><a href="AccountingEntriesController.html#method-i-create">#create &mdash; AccountingEntriesController</a>
   
     <li class="method"><a href="SessionsController.html#method-i-create">#create &mdash; SessionsController</a>
   
-    <li class="method"><a href="BomsController.html#method-i-create">#create &mdash; BomsController</a>
+    <li class="method"><a href="ProvidersController.html#method-i-create">#create &mdash; ProvidersController</a>
   
-    <li class="method"><a href="OrganizationsController.html#method-i-create">#create &mdash; OrganizationsController</a>
+    <li class="method"><a href="MaterialsController.html#method-i-create">#create &mdash; MaterialsController</a>
+  
+    <li class="method"><a href="PostingRulesController.html#method-i-create">#create &mdash; PostingRulesController</a>
+  
+    <li class="method"><a href="ServiceCallsController.html#method-i-create">#create &mdash; ServiceCallsController</a>
   
     <li class="method"><a href="Ticket.html#method-i-create_customer">#create_customer &mdash; Ticket</a>
   
@@ -959,127 +998,139 @@
   
     <li class="method"><a href="Ticket.html#method-i-customer_belongs_to_provider">#customer_belongs_to_provider &mdash; Ticket</a>
   
+    <li class="method"><a href="ScDispatchNotification.html#method-i-default_content">#default_content &mdash; ScDispatchNotification</a>
+  
+    <li class="method"><a href="ScCollectedNotification.html#method-i-default_content">#default_content &mdash; ScCollectedNotification</a>
+  
+    <li class="method"><a href="ScDepositConfirmedNotification.html#method-i-default_content">#default_content &mdash; ScDepositConfirmedNotification</a>
+  
+    <li class="method"><a href="Notification.html#method-i-default_content">#default_content &mdash; Notification</a>
+  
+    <li class="method"><a href="ScStartNotification.html#method-i-default_content">#default_content &mdash; ScStartNotification</a>
+  
     <li class="method"><a href="ScCompleteNotification.html#method-i-default_content">#default_content &mdash; ScCompleteNotification</a>
   
     <li class="method"><a href="ScCompletedNotification.html#method-i-default_content">#default_content &mdash; ScCompletedNotification</a>
   
-    <li class="method"><a href="ScStartNotification.html#method-i-default_content">#default_content &mdash; ScStartNotification</a>
-  
-    <li class="method"><a href="ScSubconDepositedNotification.html#method-i-default_content">#default_content &mdash; ScSubconDepositedNotification</a>
-  
-    <li class="method"><a href="ScDispatchNotification.html#method-i-default_content">#default_content &mdash; ScDispatchNotification</a>
+    <li class="method"><a href="ScSettledNotification.html#method-i-default_content">#default_content &mdash; ScSettledNotification</a>
   
     <li class="method"><a href="ScStartedNotification.html#method-i-default_content">#default_content &mdash; ScStartedNotification</a>
   
-    <li class="method"><a href="Notification.html#method-i-default_content">#default_content &mdash; Notification</a>
-  
-    <li class="method"><a href="ScDispatchedNotification.html#method-i-default_content">#default_content &mdash; ScDispatchedNotification</a>
-  
-    <li class="method"><a href="ScCanceledNotification.html#method-i-default_content">#default_content &mdash; ScCanceledNotification</a>
-  
-    <li class="method"><a href="ScCancelNotification.html#method-i-default_content">#default_content &mdash; ScCancelNotification</a>
-  
-    <li class="method"><a href="AgrActivatedSubconNotification.html#method-i-default_content">#default_content &mdash; AgrActivatedSubconNotification</a>
+    <li class="method"><a href="ScSubconDepositedNotification.html#method-i-default_content">#default_content &mdash; ScSubconDepositedNotification</a>
   
     <li class="method"><a href="ScSettleNotification.html#method-i-default_content">#default_content &mdash; ScSettleNotification</a>
   
-    <li class="method"><a href="ScInvoicedNotification.html#method-i-default_content">#default_content &mdash; ScInvoicedNotification</a>
+    <li class="method"><a href="ScCanceledNotification.html#method-i-default_content">#default_content &mdash; ScCanceledNotification</a>
   
-    <li class="method"><a href="ScPaidNotification.html#method-i-default_content">#default_content &mdash; ScPaidNotification</a>
+    <li class="method"><a href="ScDispatchedNotification.html#method-i-default_content">#default_content &mdash; ScDispatchedNotification</a>
   
     <li class="method"><a href="ScRejectedNotification.html#method-i-default_content">#default_content &mdash; ScRejectedNotification</a>
   
-    <li class="method"><a href="ScAcceptedNotification.html#method-i-default_content">#default_content &mdash; ScAcceptedNotification</a>
+    <li class="method"><a href="AgrActivatedSubconNotification.html#method-i-default_content">#default_content &mdash; AgrActivatedSubconNotification</a>
+  
+    <li class="method"><a href="ScInvoicedNotification.html#method-i-default_content">#default_content &mdash; ScInvoicedNotification</a>
+  
+    <li class="method"><a href="ScCancelNotification.html#method-i-default_content">#default_content &mdash; ScCancelNotification</a>
   
     <li class="method"><a href="AgrNewSubconNotification.html#method-i-default_content">#default_content &mdash; AgrNewSubconNotification</a>
   
     <li class="method"><a href="ScReceivedNotification.html#method-i-default_content">#default_content &mdash; ScReceivedNotification</a>
   
+    <li class="method"><a href="ScPaidNotification.html#method-i-default_content">#default_content &mdash; ScPaidNotification</a>
+  
+    <li class="method"><a href="ScProviderCollectedNotification.html#method-i-default_content">#default_content &mdash; ScProviderCollectedNotification</a>
+  
     <li class="method"><a href="ScProviderInvoicedNotification.html#method-i-default_content">#default_content &mdash; ScProviderInvoicedNotification</a>
   
-    <li class="method"><a href="ScSettledNotification.html#method-i-default_content">#default_content &mdash; ScSettledNotification</a>
-  
-    <li class="method"><a href="ScProviderInvoicedNotification.html#method-i-default_subject">#default_subject &mdash; ScProviderInvoicedNotification</a>
+    <li class="method"><a href="ScAcceptedNotification.html#method-i-default_content">#default_content &mdash; ScAcceptedNotification</a>
   
     <li class="method"><a href="ScReceivedNotification.html#method-i-default_subject">#default_subject &mdash; ScReceivedNotification</a>
   
     <li class="method"><a href="ScAcceptedNotification.html#method-i-default_subject">#default_subject &mdash; ScAcceptedNotification</a>
   
-    <li class="method"><a href="ScRejectedNotification.html#method-i-default_subject">#default_subject &mdash; ScRejectedNotification</a>
-  
-    <li class="method"><a href="AgrNewSubconNotification.html#method-i-default_subject">#default_subject &mdash; AgrNewSubconNotification</a>
-  
-    <li class="method"><a href="ScPaidNotification.html#method-i-default_subject">#default_subject &mdash; ScPaidNotification</a>
+    <li class="method"><a href="ScProviderCollectedNotification.html#method-i-default_subject">#default_subject &mdash; ScProviderCollectedNotification</a>
   
     <li class="method"><a href="ScCancelNotification.html#method-i-default_subject">#default_subject &mdash; ScCancelNotification</a>
   
-    <li class="method"><a href="ScSettleNotification.html#method-i-default_subject">#default_subject &mdash; ScSettleNotification</a>
+    <li class="method"><a href="ScProviderInvoicedNotification.html#method-i-default_subject">#default_subject &mdash; ScProviderInvoicedNotification</a>
+  
+    <li class="method"><a href="ScPaidNotification.html#method-i-default_subject">#default_subject &mdash; ScPaidNotification</a>
+  
+    <li class="method"><a href="AgrNewSubconNotification.html#method-i-default_subject">#default_subject &mdash; AgrNewSubconNotification</a>
+  
+    <li class="method"><a href="ScRejectedNotification.html#method-i-default_subject">#default_subject &mdash; ScRejectedNotification</a>
   
     <li class="method"><a href="ScInvoicedNotification.html#method-i-default_subject">#default_subject &mdash; ScInvoicedNotification</a>
   
-    <li class="method"><a href="AgrActivatedSubconNotification.html#method-i-default_subject">#default_subject &mdash; AgrActivatedSubconNotification</a>
+    <li class="method"><a href="ScCanceledNotification.html#method-i-default_subject">#default_subject &mdash; ScCanceledNotification</a>
   
-    <li class="method"><a href="ScSettledNotification.html#method-i-default_subject">#default_subject &mdash; ScSettledNotification</a>
+    <li class="method"><a href="AgrActivatedSubconNotification.html#method-i-default_subject">#default_subject &mdash; AgrActivatedSubconNotification</a>
   
     <li class="method"><a href="ScDispatchedNotification.html#method-i-default_subject">#default_subject &mdash; ScDispatchedNotification</a>
   
-    <li class="method"><a href="ScCanceledNotification.html#method-i-default_subject">#default_subject &mdash; ScCanceledNotification</a>
+    <li class="method"><a href="ScSettleNotification.html#method-i-default_subject">#default_subject &mdash; ScSettleNotification</a>
+  
+    <li class="method"><a href="ScSettledNotification.html#method-i-default_subject">#default_subject &mdash; ScSettledNotification</a>
   
     <li class="method"><a href="ScStartNotification.html#method-i-default_subject">#default_subject &mdash; ScStartNotification</a>
   
-    <li class="method"><a href="ScDispatchNotification.html#method-i-default_subject">#default_subject &mdash; ScDispatchNotification</a>
-  
-    <li class="method"><a href="ScSubconDepositedNotification.html#method-i-default_subject">#default_subject &mdash; ScSubconDepositedNotification</a>
+    <li class="method"><a href="ScCollectedNotification.html#method-i-default_subject">#default_subject &mdash; ScCollectedNotification</a>
   
     <li class="method"><a href="Notification.html#method-i-default_subject">#default_subject &mdash; Notification</a>
+  
+    <li class="method"><a href="ScDepositConfirmedNotification.html#method-i-default_subject">#default_subject &mdash; ScDepositConfirmedNotification</a>
+  
+    <li class="method"><a href="ScStartedNotification.html#method-i-default_subject">#default_subject &mdash; ScStartedNotification</a>
+  
+    <li class="method"><a href="ScSubconDepositedNotification.html#method-i-default_subject">#default_subject &mdash; ScSubconDepositedNotification</a>
   
     <li class="method"><a href="ScCompletedNotification.html#method-i-default_subject">#default_subject &mdash; ScCompletedNotification</a>
   
     <li class="method"><a href="ScCompleteNotification.html#method-i-default_subject">#default_subject &mdash; ScCompleteNotification</a>
   
-    <li class="method"><a href="ScStartedNotification.html#method-i-default_subject">#default_subject &mdash; ScStartedNotification</a>
+    <li class="method"><a href="ScDispatchNotification.html#method-i-default_subject">#default_subject &mdash; ScDispatchNotification</a>
   
     <li class="method"><a href="Notification.html#method-i-deliver">#deliver &mdash; Notification</a>
   
     <li class="method"><a href="PaymentsController.html#method-i-destroy">#destroy &mdash; PaymentsController</a>
   
-    <li class="method"><a href="BomsController.html#method-i-destroy">#destroy &mdash; BomsController</a>
-  
     <li class="method"><a href="MaterialsController.html#method-i-destroy">#destroy &mdash; MaterialsController</a>
-  
-    <li class="method"><a href="AccountingEntriesController.html#method-i-destroy">#destroy &mdash; AccountingEntriesController</a>
-  
-    <li class="method"><a href="NotificationsController.html#method-i-destroy">#destroy &mdash; NotificationsController</a>
   
     <li class="method"><a href="PostingRulesController.html#method-i-destroy">#destroy &mdash; PostingRulesController</a>
   
-    <li class="method"><a href="BomsController.html#method-i-edit">#edit &mdash; BomsController</a>
+    <li class="method"><a href="AccountingEntriesController.html#method-i-destroy">#destroy &mdash; AccountingEntriesController</a>
   
-    <li class="method"><a href="PostingRulesController.html#method-i-edit">#edit &mdash; PostingRulesController</a>
+    <li class="method"><a href="BomsController.html#method-i-destroy">#destroy &mdash; BomsController</a>
+  
+    <li class="method"><a href="NotificationsController.html#method-i-destroy">#destroy &mdash; NotificationsController</a>
   
     <li class="method"><a href="ProvidersController.html#method-i-edit">#edit &mdash; ProvidersController</a>
   
     <li class="method"><a href="AccountingEntriesController.html#method-i-edit">#edit &mdash; AccountingEntriesController</a>
   
-    <li class="method"><a href="MyUsersController.html#method-i-edit">#edit &mdash; MyUsersController</a>
-  
-    <li class="method"><a href="AffiliatesController.html#method-i-edit">#edit &mdash; AffiliatesController</a>
-  
-    <li class="method"><a href="AgreementsController.html#method-i-edit">#edit &mdash; AgreementsController</a>
-  
-    <li class="method"><a href="RegistrationsController.html#method-i-edit">#edit &mdash; RegistrationsController</a>
+    <li class="method"><a href="PostingRulesController.html#method-i-edit">#edit &mdash; PostingRulesController</a>
   
     <li class="method"><a href="PaymentsController.html#method-i-edit">#edit &mdash; PaymentsController</a>
   
-    <li class="method"><a href="MaterialsController.html#method-i-edit">#edit &mdash; MaterialsController</a>
-  
-    <li class="method"><a href="CustomersController.html#method-i-edit">#edit &mdash; CustomersController</a>
-  
-    <li class="method"><a href="OrganizationsController.html#method-i-edit">#edit &mdash; OrganizationsController</a>
+    <li class="method"><a href="RegistrationsController.html#method-i-edit">#edit &mdash; RegistrationsController</a>
   
     <li class="method"><a href="SubcontractorsController.html#method-i-edit">#edit &mdash; SubcontractorsController</a>
   
+    <li class="method"><a href="OrganizationsController.html#method-i-edit">#edit &mdash; OrganizationsController</a>
+  
+    <li class="method"><a href="AffiliatesController.html#method-i-edit">#edit &mdash; AffiliatesController</a>
+  
+    <li class="method"><a href="MaterialsController.html#method-i-edit">#edit &mdash; MaterialsController</a>
+  
+    <li class="method"><a href="MyUsersController.html#method-i-edit">#edit &mdash; MyUsersController</a>
+  
+    <li class="method"><a href="BomsController.html#method-i-edit">#edit &mdash; BomsController</a>
+  
     <li class="method"><a href="ServiceCallsController.html#method-i-edit">#edit &mdash; ServiceCallsController</a>
+  
+    <li class="method"><a href="AgreementsController.html#method-i-edit">#edit &mdash; AgreementsController</a>
+  
+    <li class="method"><a href="CustomersController.html#method-i-edit">#edit &mdash; CustomersController</a>
   
     <li class="method"><a href="Ticket.html#method-i-email">#email &mdash; Ticket</a>
   
@@ -1103,131 +1154,147 @@
   
     <li class="method"><a href="Organization.html#method-i-has_at_least_one_role">#has_at_least_one_role &mdash; Organization</a>
   
+    <li class="method"><a href="ScRejectedNotification.html#method-i-html_message">#html_message &mdash; ScRejectedNotification</a>
+  
     <li class="method"><a href="ScCompletedNotification.html#method-i-html_message">#html_message &mdash; ScCompletedNotification</a>
-  
-    <li class="method"><a href="ScStartedNotification.html#method-i-html_message">#html_message &mdash; ScStartedNotification</a>
-  
-    <li class="method"><a href="ScCompleteNotification.html#method-i-html_message">#html_message &mdash; ScCompleteNotification</a>
-  
-    <li class="method"><a href="ScDispatchNotification.html#method-i-html_message">#html_message &mdash; ScDispatchNotification</a>
-  
-    <li class="method"><a href="ScDispatchedNotification.html#method-i-html_message">#html_message &mdash; ScDispatchedNotification</a>
-  
-    <li class="method"><a href="ScCanceledNotification.html#method-i-html_message">#html_message &mdash; ScCanceledNotification</a>
-  
-    <li class="method"><a href="ScStartNotification.html#method-i-html_message">#html_message &mdash; ScStartNotification</a>
-  
-    <li class="method"><a href="ScInvoicedNotification.html#method-i-html_message">#html_message &mdash; ScInvoicedNotification</a>
-  
-    <li class="method"><a href="ScSettledNotification.html#method-i-html_message">#html_message &mdash; ScSettledNotification</a>
   
     <li class="method"><a href="ScSubconDepositedNotification.html#method-i-html_message">#html_message &mdash; ScSubconDepositedNotification</a>
   
+    <li class="method"><a href="ScCompleteNotification.html#method-i-html_message">#html_message &mdash; ScCompleteNotification</a>
+  
+    <li class="method"><a href="ScStartedNotification.html#method-i-html_message">#html_message &mdash; ScStartedNotification</a>
+  
+    <li class="method"><a href="ScStartNotification.html#method-i-html_message">#html_message &mdash; ScStartNotification</a>
+  
+    <li class="method"><a href="ScDepositConfirmedNotification.html#method-i-html_message">#html_message &mdash; ScDepositConfirmedNotification</a>
+  
+    <li class="method"><a href="ScSettledNotification.html#method-i-html_message">#html_message &mdash; ScSettledNotification</a>
+  
     <li class="method"><a href="AgrActivatedSubconNotification.html#method-i-html_message">#html_message &mdash; AgrActivatedSubconNotification</a>
   
-    <li class="method"><a href="AgrNewSubconNotification.html#method-i-html_message">#html_message &mdash; AgrNewSubconNotification</a>
+    <li class="method"><a href="ScDispatchNotification.html#method-i-html_message">#html_message &mdash; ScDispatchNotification</a>
   
     <li class="method"><a href="ScSettleNotification.html#method-i-html_message">#html_message &mdash; ScSettleNotification</a>
   
+    <li class="method"><a href="AgrNewSubconNotification.html#method-i-html_message">#html_message &mdash; AgrNewSubconNotification</a>
+  
+    <li class="method"><a href="ScCollectedNotification.html#method-i-html_message">#html_message &mdash; ScCollectedNotification</a>
+  
+    <li class="method"><a href="ScDispatchedNotification.html#method-i-html_message">#html_message &mdash; ScDispatchedNotification</a>
+  
+    <li class="method"><a href="ScInvoicedNotification.html#method-i-html_message">#html_message &mdash; ScInvoicedNotification</a>
+  
+    <li class="method"><a href="ScCanceledNotification.html#method-i-html_message">#html_message &mdash; ScCanceledNotification</a>
+  
     <li class="method"><a href="ScPaidNotification.html#method-i-html_message">#html_message &mdash; ScPaidNotification</a>
   
-    <li class="method"><a href="ScRejectedNotification.html#method-i-html_message">#html_message &mdash; ScRejectedNotification</a>
+    <li class="method"><a href="ScProviderCollectedNotification.html#method-i-html_message">#html_message &mdash; ScProviderCollectedNotification</a>
   
     <li class="method"><a href="ScCancelNotification.html#method-i-html_message">#html_message &mdash; ScCancelNotification</a>
+  
+    <li class="method"><a href="ScReceivedNotification.html#method-i-html_message">#html_message &mdash; ScReceivedNotification</a>
   
     <li class="method"><a href="ScProviderInvoicedNotification.html#method-i-html_message">#html_message &mdash; ScProviderInvoicedNotification</a>
   
     <li class="method"><a href="ScAcceptedNotification.html#method-i-html_message">#html_message &mdash; ScAcceptedNotification</a>
   
-    <li class="method"><a href="ScReceivedNotification.html#method-i-html_message">#html_message &mdash; ScReceivedNotification</a>
+    <li class="method"><a href="MaterialsController.html#method-i-index">#index &mdash; MaterialsController</a>
+  
+    <li class="method"><a href="PaymentsController.html#method-i-index">#index &mdash; PaymentsController</a>
+  
+    <li class="method"><a href="ProvidersController.html#method-i-index">#index &mdash; ProvidersController</a>
   
     <li class="method"><a href="OrganizationsController.html#method-i-index">#index &mdash; OrganizationsController</a>
   
-    <li class="method"><a href="AffiliatesController.html#method-i-index">#index &mdash; AffiliatesController</a>
+    <li class="method"><a href="ServiceCallsController.html#method-i-index">#index &mdash; ServiceCallsController</a>
+  
+    <li class="method"><a href="SubcontractorsController.html#method-i-index">#index &mdash; SubcontractorsController</a>
   
     <li class="method"><a href="PostingRulesController.html#method-i-index">#index &mdash; PostingRulesController</a>
   
     <li class="method"><a href="NotificationsController.html#method-i-index">#index &mdash; NotificationsController</a>
   
-    <li class="method"><a href="PaymentsController.html#method-i-index">#index &mdash; PaymentsController</a>
-  
-    <li class="method"><a href="ServiceCallsController.html#method-i-index">#index &mdash; ServiceCallsController</a>
+    <li class="method"><a href="AffiliatesController.html#method-i-index">#index &mdash; AffiliatesController</a>
   
     <li class="method"><a href="BomsController.html#method-i-index">#index &mdash; BomsController</a>
   
+    <li class="method"><a href="CustomersController.html#method-i-index">#index &mdash; CustomersController</a>
+  
     <li class="method"><a href="MyUsersController.html#method-i-index">#index &mdash; MyUsersController</a>
-  
-    <li class="method"><a href="SubcontractorsController.html#method-i-index">#index &mdash; SubcontractorsController</a>
-  
-    <li class="method"><a href="MaterialsController.html#method-i-index">#index &mdash; MaterialsController</a>
   
     <li class="method"><a href="StaticPagesController.html#method-i-index">#index &mdash; StaticPagesController</a>
   
-    <li class="method"><a href="CustomersController.html#method-i-index">#index &mdash; CustomersController</a>
-  
-    <li class="method"><a href="ProvidersController.html#method-i-index">#index &mdash; ProvidersController</a>
-  
     <li class="method"><a href="AccountingEntriesController.html#method-i-index">#index &mdash; AccountingEntriesController</a>
-  
-    <li class="method"><a href="AgrActivatedEvent.html#method-i-init">#init &mdash; AgrActivatedEvent</a>
-  
-    <li class="method"><a href="ServiceCallSettledEvent.html#method-i-init">#init &mdash; ServiceCallSettledEvent</a>
-  
-    <li class="method"><a href="ServiceCallDispatchEvent.html#method-i-init">#init &mdash; ServiceCallDispatchEvent</a>
-  
-    <li class="method"><a href="ServiceCallInvoiceEvent.html#method-i-init">#init &mdash; ServiceCallInvoiceEvent</a>
-  
-    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-init">#init &mdash; ServiceCallCompletedEvent</a>
-  
-    <li class="method"><a href="ServiceCallStartEvent.html#method-i-init">#init &mdash; ServiceCallStartEvent</a>
-  
-    <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-init">#init &mdash; ServiceCallCompleteEvent</a>
-  
-    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-init">#init &mdash; ServiceCallInvoicedEvent</a>
-  
-    <li class="method"><a href="ServiceCallCanceledEvent.html#method-i-init">#init &mdash; ServiceCallCanceledEvent</a>
-  
-    <li class="method"><a href="ServiceCallStartedEvent.html#method-i-init">#init &mdash; ServiceCallStartedEvent</a>
-  
-    <li class="method"><a href="ServiceCallCancelEvent.html#method-i-init">#init &mdash; ServiceCallCancelEvent</a>
-  
-    <li class="method"><a href="Event.html#method-i-init">#init &mdash; Event</a>
-  
-    <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-init">#init &mdash; ServiceCallAcceptedEvent</a>
-  
-    <li class="method"><a href="ServiceCallAcceptEvent.html#method-i-init">#init &mdash; ServiceCallAcceptEvent</a>
-  
-    <li class="method"><a href="ServiceCallTransferEvent.html#method-i-init">#init &mdash; ServiceCallTransferEvent</a>
   
     <li class="method"><a href="ScSubconDepositedEvent.html#method-i-init">#init &mdash; ScSubconDepositedEvent</a>
   
-    <li class="method"><a href="ServiceCallPaidEvent.html#method-i-init">#init &mdash; ServiceCallPaidEvent</a>
-  
-    <li class="method"><a href="ScProviderInvoicedEvent.html#method-i-init">#init &mdash; ScProviderInvoicedEvent</a>
-  
-    <li class="method"><a href="ScDepositEvent.html#method-i-init">#init &mdash; ScDepositEvent</a>
-  
-    <li class="method"><a href="NewMemberEvent.html#method-i-init">#init &mdash; NewMemberEvent</a>
+    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-init">#init &mdash; ServiceCallCompletedEvent</a>
   
     <li class="method"><a href="AgrSubmittedEvent.html#method-i-init">#init &mdash; AgrSubmittedEvent</a>
   
-    <li class="method"><a href="ServiceCallSettleEvent.html#method-i-init">#init &mdash; ServiceCallSettleEvent</a>
+    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-init">#init &mdash; ServiceCallRejectedEvent</a>
+  
+    <li class="method"><a href="ServiceCallCanceledEvent.html#method-i-init">#init &mdash; ServiceCallCanceledEvent</a>
+  
+    <li class="method"><a href="ServiceCallPaidEvent.html#method-i-init">#init &mdash; ServiceCallPaidEvent</a>
+  
+    <li class="method"><a href="Event.html#method-i-init">#init &mdash; Event</a>
   
     <li class="method"><a href="ServiceCallReceivedEvent.html#method-i-init">#init &mdash; ServiceCallReceivedEvent</a>
   
-    <li class="method"><a href="AgrNewSubconEvent.html#method-i-init">#init &mdash; AgrNewSubconEvent</a>
+    <li class="method"><a href="ServiceCallSettleEvent.html#method-i-init">#init &mdash; ServiceCallSettleEvent</a>
   
-    <li class="method"><a href="AccountingEvent.html#method-i-init">#init &mdash; AccountingEvent</a>
+    <li class="method"><a href="ServiceCallAcceptEvent.html#method-i-init">#init &mdash; ServiceCallAcceptEvent</a>
   
-    <li class="method"><a href="ServiceCallRejectEvent.html#method-i-init">#init &mdash; ServiceCallRejectEvent</a>
+    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-init">#init &mdash; ServiceCallInvoicedEvent</a>
   
-    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-init">#init &mdash; ServiceCallRejectedEvent</a>
+    <li class="method"><a href="ScDepositEvent.html#method-i-init">#init &mdash; ScDepositEvent</a>
+  
+    <li class="method"><a href="ServiceCallSettledEvent.html#method-i-init">#init &mdash; ServiceCallSettledEvent</a>
   
     <li class="method"><a href="ServiceCallDispatchedEvent.html#method-i-init">#init &mdash; ServiceCallDispatchedEvent</a>
   
-    <li class="method"><a href="ServiceCall.html#method-i-init_state_machines">#init_state_machines &mdash; ServiceCall</a>
+    <li class="method"><a href="ServiceCallCancelEvent.html#method-i-init">#init &mdash; ServiceCallCancelEvent</a>
   
-    <li class="method"><a href="Ticket.html#method-i-init_technician">#init_technician &mdash; Ticket</a>
+    <li class="method"><a href="ScPaymentOverdueEvent.html#method-i-init">#init &mdash; ScPaymentOverdueEvent</a>
+  
+    <li class="method"><a href="ServiceCallStartEvent.html#method-i-init">#init &mdash; ServiceCallStartEvent</a>
+  
+    <li class="method"><a href="ScDepositConfirmedEvent.html#method-i-init">#init &mdash; ScDepositConfirmedEvent</a>
+  
+    <li class="method"><a href="ServiceCallDispatchEvent.html#method-i-init">#init &mdash; ServiceCallDispatchEvent</a>
+  
+    <li class="method"><a href="NewMemberEvent.html#method-i-init">#init &mdash; NewMemberEvent</a>
+  
+    <li class="method"><a href="ServiceCallStartedEvent.html#method-i-init">#init &mdash; ServiceCallStartedEvent</a>
+  
+    <li class="method"><a href="ScCollectEvent.html#method-i-init">#init &mdash; ScCollectEvent</a>
+  
+    <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-init">#init &mdash; ServiceCallAcceptedEvent</a>
+  
+    <li class="method"><a href="ScCollectedEvent.html#method-i-init">#init &mdash; ScCollectedEvent</a>
+  
+    <li class="method"><a href="AgrNewSubconEvent.html#method-i-init">#init &mdash; AgrNewSubconEvent</a>
+  
+    <li class="method"><a href="ServiceCallTransferEvent.html#method-i-init">#init &mdash; ServiceCallTransferEvent</a>
+  
+    <li class="method"><a href="ScProviderInvoicedEvent.html#method-i-init">#init &mdash; ScProviderInvoicedEvent</a>
+  
+    <li class="method"><a href="ScConfirmDepositEvent.html#method-i-init">#init &mdash; ScConfirmDepositEvent</a>
+  
+    <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-init">#init &mdash; ServiceCallCompleteEvent</a>
+  
+    <li class="method"><a href="ServiceCallInvoiceEvent.html#method-i-init">#init &mdash; ServiceCallInvoiceEvent</a>
+  
+    <li class="method"><a href="ServiceCallRejectEvent.html#method-i-init">#init &mdash; ServiceCallRejectEvent</a>
+  
+    <li class="method"><a href="AgrActivatedEvent.html#method-i-init">#init &mdash; AgrActivatedEvent</a>
+  
+    <li class="method"><a href="AccountingEvent.html#method-i-init">#init &mdash; AccountingEvent</a>
+  
+    <li class="method"><a href="ScProviderCollectedEvent.html#method-i-init">#init &mdash; ScProviderCollectedEvent</a>
+  
+    <li class="method"><a href="ServiceCall.html#method-i-init_state_machines">#init_state_machines &mdash; ServiceCall</a>
   
     <li class="method"><a href="LayoutHelper.html#method-i-javascript">#javascript &mdash; LayoutHelper</a>
   
@@ -1253,33 +1320,33 @@
   
     <li class="method"><a href="User.html#method-i-name">#name &mdash; User</a>
   
-    <li class="method"><a href="PostingRulesController.html#method-i-new">#new &mdash; PostingRulesController</a>
-  
-    <li class="method"><a href="AgreementsController.html#method-i-new">#new &mdash; AgreementsController</a>
-  
     <li class="method"><a href="OrganizationsController.html#method-i-new">#new &mdash; OrganizationsController</a>
-  
-    <li class="method"><a href="BomsController.html#method-i-new">#new &mdash; BomsController</a>
   
     <li class="method"><a href="ProvidersController.html#method-i-new">#new &mdash; ProvidersController</a>
   
     <li class="method"><a href="AccountingEntriesController.html#method-i-new">#new &mdash; AccountingEntriesController</a>
   
-    <li class="method"><a href="SubcontractorsController.html#method-i-new">#new &mdash; SubcontractorsController</a>
+    <li class="method"><a href="PostingRulesController.html#method-i-new">#new &mdash; PostingRulesController</a>
   
-    <li class="method"><a href="MyUsersController.html#method-i-new">#new &mdash; MyUsersController</a>
+    <li class="method"><a href="AffiliatesController.html#method-i-new">#new &mdash; AffiliatesController</a>
+  
+    <li class="method"><a href="AgreementsController.html#method-i-new">#new &mdash; AgreementsController</a>
   
     <li class="method"><a href="PaymentsController.html#method-i-new">#new &mdash; PaymentsController</a>
+  
+    <li class="method"><a href="BomsController.html#method-i-new">#new &mdash; BomsController</a>
   
     <li class="method"><a href="ServiceCallsController.html#method-i-new">#new &mdash; ServiceCallsController</a>
   
     <li class="method"><a href="CustomersController.html#method-i-new">#new &mdash; CustomersController</a>
   
-    <li class="method"><a href="RegistrationsController.html#method-i-new">#new &mdash; RegistrationsController</a>
-  
     <li class="method"><a href="MaterialsController.html#method-i-new">#new &mdash; MaterialsController</a>
   
-    <li class="method"><a href="AffiliatesController.html#method-i-new">#new &mdash; AffiliatesController</a>
+    <li class="method"><a href="SubcontractorsController.html#method-i-new">#new &mdash; SubcontractorsController</a>
+  
+    <li class="method"><a href="MyUsersController.html#method-i-new">#new &mdash; MyUsersController</a>
+  
+    <li class="method"><a href="RegistrationsController.html#method-i-new">#new &mdash; RegistrationsController</a>
   
     <li class="method"><a href="AffiliatesController.html#method-i-new_affiliate_from_params">#new_affiliate_from_params &mdash; AffiliatesController</a>
   
@@ -1311,105 +1378,129 @@
   
     <li class="method"><a href="PermittedParams.html#method-i-notification_attributes">#notification_attributes &mdash; PermittedParams</a>
   
-    <li class="method"><a href="ServiceCallAcceptEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallAcceptEvent</a>
-  
-    <li class="method"><a href="ServiceCallCancelEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallCancelEvent</a>
+    <li class="method"><a href="ScDepositConfirmedEvent.html#method-i-notification_class">#notification_class &mdash; ScDepositConfirmedEvent</a>
   
     <li class="method"><a href="ScProviderInvoicedEvent.html#method-i-notification_class">#notification_class &mdash; ScProviderInvoicedEvent</a>
   
-    <li class="method"><a href="ServiceCallCanceledEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallCanceledEvent</a>
-  
-    <li class="method"><a href="ServiceCallStartEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallStartEvent</a>
-  
-    <li class="method"><a href="ServiceCallTransferEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallTransferEvent</a>
-  
-    <li class="method"><a href="ScDepositEvent.html#method-i-notification_class">#notification_class &mdash; ScDepositEvent</a>
-  
-    <li class="method"><a href="ServiceCallInvoiceEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallInvoiceEvent</a>
-  
-    <li class="method"><a href="ScSubconDepositedEvent.html#method-i-notification_class">#notification_class &mdash; ScSubconDepositedEvent</a>
-  
-    <li class="method"><a href="ServiceCallStartedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallStartedEvent</a>
-  
-    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallInvoicedEvent</a>
-  
     <li class="method"><a href="AgrSubmittedEvent.html#method-i-notification_class">#notification_class &mdash; AgrSubmittedEvent</a>
-  
-    <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallCompleteEvent</a>
-  
-    <li class="method"><a href="ServiceCallPaidEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallPaidEvent</a>
   
     <li class="method"><a href="AgrNewSubconEvent.html#method-i-notification_class">#notification_class &mdash; AgrNewSubconEvent</a>
   
-    <li class="method"><a href="ServiceCallSettledEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallSettledEvent</a>
-  
-    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallCompletedEvent</a>
-  
-    <li class="method"><a href="ServiceCallReceivedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallReceivedEvent</a>
+    <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallCompleteEvent</a>
   
     <li class="method"><a href="AgrActivatedEvent.html#method-i-notification_class">#notification_class &mdash; AgrActivatedEvent</a>
   
-    <li class="method"><a href="ServiceCallDispatchedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallDispatchedEvent</a>
+    <li class="method"><a href="ScCollectEvent.html#method-i-notification_class">#notification_class &mdash; ScCollectEvent</a>
   
-    <li class="method"><a href="ServiceCallRejectEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallRejectEvent</a>
+    <li class="method"><a href="ScSubconDepositedEvent.html#method-i-notification_class">#notification_class &mdash; ScSubconDepositedEvent</a>
+  
+    <li class="method"><a href="ServiceCallInvoiceEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallInvoiceEvent</a>
+  
+    <li class="method"><a href="ScProviderCollectedEvent.html#method-i-notification_class">#notification_class &mdash; ScProviderCollectedEvent</a>
   
     <li class="method"><a href="ServiceCallDispatchEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallDispatchEvent</a>
   
-    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallRejectedEvent</a>
+    <li class="method"><a href="ServiceCallDispatchedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallDispatchedEvent</a>
+  
+    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallInvoicedEvent</a>
+  
+    <li class="method"><a href="ServiceCallCanceledEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallCanceledEvent</a>
+  
+    <li class="method"><a href="ServiceCallPaidEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallPaidEvent</a>
+  
+    <li class="method"><a href="ServiceCallReceivedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallReceivedEvent</a>
+  
+    <li class="method"><a href="ServiceCallTransferEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallTransferEvent</a>
+  
+    <li class="method"><a href="ScCollectedEvent.html#method-i-notification_class">#notification_class &mdash; ScCollectedEvent</a>
+  
+    <li class="method"><a href="ServiceCallAcceptEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallAcceptEvent</a>
+  
+    <li class="method"><a href="ServiceCallStartedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallStartedEvent</a>
+  
+    <li class="method"><a href="ScConfirmDepositEvent.html#method-i-notification_class">#notification_class &mdash; ScConfirmDepositEvent</a>
+  
+    <li class="method"><a href="ServiceCallStartEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallStartEvent</a>
+  
+    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallCompletedEvent</a>
   
     <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallAcceptedEvent</a>
   
+    <li class="method"><a href="ScPaymentOverdueEvent.html#method-i-notification_class">#notification_class &mdash; ScPaymentOverdueEvent</a>
+  
+    <li class="method"><a href="ServiceCallCancelEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallCancelEvent</a>
+  
+    <li class="method"><a href="ServiceCallSettledEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallSettledEvent</a>
+  
     <li class="method"><a href="ServiceCallSettleEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallSettleEvent</a>
   
-    <li class="method"><a href="ServiceCallDispatchedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallDispatchedEvent</a>
+    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallRejectedEvent</a>
   
-    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallInvoicedEvent</a>
+    <li class="method"><a href="ServiceCallRejectEvent.html#method-i-notification_class">#notification_class &mdash; ServiceCallRejectEvent</a>
   
-    <li class="method"><a href="ScSubconDepositedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScSubconDepositedEvent</a>
+    <li class="method"><a href="ScDepositEvent.html#method-i-notification_class">#notification_class &mdash; ScDepositEvent</a>
   
-    <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallAcceptedEvent</a>
-  
-    <li class="method"><a href="ServiceCallCancelEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallCancelEvent</a>
-  
-    <li class="method"><a href="ScProviderInvoicedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScProviderInvoicedEvent</a>
-  
-    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallRejectedEvent</a>
+    <li class="method"><a href="ServiceCallRejectEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallRejectEvent</a>
   
     <li class="method"><a href="ScDepositEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScDepositEvent</a>
   
-    <li class="method"><a href="ServiceCallSettledEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallSettledEvent</a>
+    <li class="method"><a href="ScPaymentOverdueEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScPaymentOverdueEvent</a>
   
-    <li class="method"><a href="ServiceCallStartEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallStartEvent</a>
+    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallCompletedEvent</a>
   
-    <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallCompleteEvent</a>
+    <li class="method"><a href="ScConfirmDepositEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScConfirmDepositEvent</a>
   
-    <li class="method"><a href="AgrSubmittedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; AgrSubmittedEvent</a>
-  
-    <li class="method"><a href="ServiceCallStartedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallStartedEvent</a>
-  
-    <li class="method"><a href="ServiceCallPaidEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallPaidEvent</a>
+    <li class="method"><a href="ScProviderCollectedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScProviderCollectedEvent</a>
   
     <li class="method"><a href="ServiceCallDispatchEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallDispatchEvent</a>
   
+    <li class="method"><a href="ScCollectedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScCollectedEvent</a>
+  
+    <li class="method"><a href="ScCollectEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScCollectEvent</a>
+  
+    <li class="method"><a href="ScProviderInvoicedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScProviderInvoicedEvent</a>
+  
+    <li class="method"><a href="AgrSubmittedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; AgrSubmittedEvent</a>
+  
+    <li class="method"><a href="ServiceCallDispatchedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallDispatchedEvent</a>
+  
+    <li class="method"><a href="ScSubconDepositedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScSubconDepositedEvent</a>
+  
     <li class="method"><a href="AgrNewSubconEvent.html#method-i-notification_recipients">#notification_recipients &mdash; AgrNewSubconEvent</a>
   
-    <li class="method"><a href="ServiceCallReceivedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallReceivedEvent</a>
+    <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallCompleteEvent</a>
   
     <li class="method"><a href="AgrActivatedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; AgrActivatedEvent</a>
   
     <li class="method"><a href="ServiceCallInvoiceEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallInvoiceEvent</a>
   
-    <li class="method"><a href="ServiceCallRejectEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallRejectEvent</a>
+    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallInvoicedEvent</a>
   
-    <li class="method"><a href="ServiceCallTransferEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallTransferEvent</a>
-  
-    <li class="method"><a href="ServiceCallSettleEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallSettleEvent</a>
+    <li class="method"><a href="ServiceCallPaidEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallPaidEvent</a>
   
     <li class="method"><a href="ServiceCallAcceptEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallAcceptEvent</a>
   
-    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallCompletedEvent</a>
+    <li class="method"><a href="ServiceCallReceivedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallReceivedEvent</a>
+  
+    <li class="method"><a href="ServiceCallTransferEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallTransferEvent</a>
   
     <li class="method"><a href="ServiceCallCanceledEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallCanceledEvent</a>
+  
+    <li class="method"><a href="ServiceCallStartedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallStartedEvent</a>
+  
+    <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallAcceptedEvent</a>
+  
+    <li class="method"><a href="ServiceCallStartEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallStartEvent</a>
+  
+    <li class="method"><a href="ServiceCallSettledEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallSettledEvent</a>
+  
+    <li class="method"><a href="ServiceCallSettleEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallSettleEvent</a>
+  
+    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallRejectedEvent</a>
+  
+    <li class="method"><a href="ServiceCallCancelEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ServiceCallCancelEvent</a>
+  
+    <li class="method"><a href="ScDepositConfirmedEvent.html#method-i-notification_recipients">#notification_recipients &mdash; ScDepositConfirmedEvent</a>
   
     <li class="method"><a href="ApplicationHelper.html#method-i-notifications">#notifications &mdash; ApplicationHelper</a>
   
@@ -1431,11 +1522,11 @@
   
     <li class="method"><a href="PermittedParams.html#method-i-organization_attributes">#organization_attributes &mdash; PermittedParams</a>
   
-    <li class="method"><a href="AgrNewSubconNotification.html#method-i-other_party">#other_party &mdash; AgrNewSubconNotification</a>
-  
     <li class="method"><a href="AgreementEvent.html#method-i-other_party">#other_party &mdash; AgreementEvent</a>
   
     <li class="method"><a href="AgrActivatedSubconNotification.html#method-i-other_party">#other_party &mdash; AgrActivatedSubconNotification</a>
+  
+    <li class="method"><a href="AgrNewSubconNotification.html#method-i-other_party">#other_party &mdash; AgrNewSubconNotification</a>
   
     <li class="method"><a href="AgrNewSubconNotification.html#method-i-other_party_role">#other_party_role &mdash; AgrNewSubconNotification</a>
   
@@ -1465,35 +1556,43 @@
   
     <li class="method"><a href="PostingRulesHelper.html#method-i-posting_rule_types">#posting_rule_types &mdash; PostingRulesHelper</a>
   
-    <li class="method"><a href="NewMemberEvent.html#method-i-process_event">#process_event &mdash; NewMemberEvent</a>
+    <li class="method"><a href="ServiceCallTransferEvent.html#method-i-process_event">#process_event &mdash; ServiceCallTransferEvent</a>
   
-    <li class="method"><a href="AgreementEvent.html#method-i-process_event">#process_event &mdash; AgreementEvent</a>
-  
-    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallInvoicedEvent</a>
+    <li class="method"><a href="ScSubconDepositedEvent.html#method-i-process_event">#process_event &mdash; ScSubconDepositedEvent</a>
   
     <li class="method"><a href="ServiceCallStartedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallStartedEvent</a>
   
-    <li class="method"><a href="AccountingEvent.html#method-i-process_event">#process_event &mdash; AccountingEvent</a>
-  
     <li class="method"><a href="ServiceCallDispatchedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallDispatchedEvent</a>
+  
+    <li class="method"><a href="NewMemberEvent.html#method-i-process_event">#process_event &mdash; NewMemberEvent</a>
   
     <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-process_event">#process_event &mdash; ServiceCallCompleteEvent</a>
   
-    <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallAcceptedEvent</a>
+    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallRejectedEvent</a>
   
     <li class="method"><a href="ScProviderInvoicedEvent.html#method-i-process_event">#process_event &mdash; ScProviderInvoicedEvent</a>
   
-    <li class="method"><a href="ServiceCallTransferEvent.html#method-i-process_event">#process_event &mdash; ServiceCallTransferEvent</a>
-  
-    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallCompletedEvent</a>
-  
-    <li class="method"><a href="Event.html#method-i-process_event">#process_event &mdash; Event</a>
-  
-    <li class="method"><a href="ServiceCallCanceledEvent.html#method-i-process_event">#process_event &mdash; ServiceCallCanceledEvent</a>
+    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallInvoicedEvent</a>
   
     <li class="method"><a href="ServiceCallEvent.html#method-i-process_event">#process_event &mdash; ServiceCallEvent</a>
   
-    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallRejectedEvent</a>
+    <li class="method"><a href="ScCollectedEvent.html#method-i-process_event">#process_event &mdash; ScCollectedEvent</a>
+  
+    <li class="method"><a href="ScProviderCollectedEvent.html#method-i-process_event">#process_event &mdash; ScProviderCollectedEvent</a>
+  
+    <li class="method"><a href="AgreementEvent.html#method-i-process_event">#process_event &mdash; AgreementEvent</a>
+  
+    <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallAcceptedEvent</a>
+  
+    <li class="method"><a href="Event.html#method-i-process_event">#process_event &mdash; Event</a>
+  
+    <li class="method"><a href="ScDepositConfirmedEvent.html#method-i-process_event">#process_event &mdash; ScDepositConfirmedEvent</a>
+  
+    <li class="method"><a href="AccountingEvent.html#method-i-process_event">#process_event &mdash; AccountingEvent</a>
+  
+    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-process_event">#process_event &mdash; ServiceCallCompletedEvent</a>
+  
+    <li class="method"><a href="ServiceCallCanceledEvent.html#method-i-process_event">#process_event &mdash; ServiceCallCanceledEvent</a>
   
     <li class="method"><a href="ServiceCallEvent.html#method-i-prov_service_call">#prov_service_call &mdash; ServiceCallEvent</a>
   
@@ -1523,11 +1622,11 @@
   
     <li class="method"><a href="MaterialsController.html#method-i-search">#search &mdash; MaterialsController</a>
   
-    <li class="method"><a href="ServiceCallEvent.html#method-i-service_call">#service_call &mdash; ServiceCallEvent</a>
-  
     <li class="method"><a href="PermittedParams.html#method-i-service_call">#service_call &mdash; PermittedParams</a>
   
     <li class="method"><a href="ServiceCallNotification.html#method-i-service_call">#service_call &mdash; ServiceCallNotification</a>
+  
+    <li class="method"><a href="ServiceCallEvent.html#method-i-service_call">#service_call &mdash; ServiceCallEvent</a>
   
     <li class="method"><a href="PermittedParams.html#method-i-service_call_attributes">#service_call_attributes &mdash; PermittedParams</a>
   
@@ -1545,35 +1644,35 @@
   
     <li class="method"><a href="ServiceCall.html#method-i-set_type">#set_type &mdash; ServiceCall</a>
   
-    <li class="method"><a href="MyUsersController.html#method-i-show">#show &mdash; MyUsersController</a>
-  
-    <li class="method"><a href="RegistrationsController.html#method-i-show">#show &mdash; RegistrationsController</a>
-  
-    <li class="method"><a href="NotificationsController.html#method-i-show">#show &mdash; NotificationsController</a>
-  
-    <li class="method"><a href="OrganizationsController.html#method-i-show">#show &mdash; OrganizationsController</a>
-  
-    <li class="method"><a href="PaymentsController.html#method-i-show">#show &mdash; PaymentsController</a>
-  
-    <li class="method"><a href="AffiliatesController.html#method-i-show">#show &mdash; AffiliatesController</a>
-  
-    <li class="method"><a href="SubcontractorsController.html#method-i-show">#show &mdash; SubcontractorsController</a>
-  
-    <li class="method"><a href="AgreementsController.html#method-i-show">#show &mdash; AgreementsController</a>
-  
     <li class="method"><a href="PostingRulesController.html#method-i-show">#show &mdash; PostingRulesController</a>
-  
-    <li class="method"><a href="AccountingEntriesController.html#method-i-show">#show &mdash; AccountingEntriesController</a>
-  
-    <li class="method"><a href="MaterialsController.html#method-i-show">#show &mdash; MaterialsController</a>
-  
-    <li class="method"><a href="ProvidersController.html#method-i-show">#show &mdash; ProvidersController</a>
   
     <li class="method"><a href="BomsController.html#method-i-show">#show &mdash; BomsController</a>
   
-    <li class="method"><a href="CustomersController.html#method-i-show">#show &mdash; CustomersController</a>
+    <li class="method"><a href="RegistrationsController.html#method-i-show">#show &mdash; RegistrationsController</a>
+  
+    <li class="method"><a href="AgreementsController.html#method-i-show">#show &mdash; AgreementsController</a>
+  
+    <li class="method"><a href="ProvidersController.html#method-i-show">#show &mdash; ProvidersController</a>
+  
+    <li class="method"><a href="MyUsersController.html#method-i-show">#show &mdash; MyUsersController</a>
   
     <li class="method"><a href="ServiceCallsController.html#method-i-show">#show &mdash; ServiceCallsController</a>
+  
+    <li class="method"><a href="AffiliatesController.html#method-i-show">#show &mdash; AffiliatesController</a>
+  
+    <li class="method"><a href="NotificationsController.html#method-i-show">#show &mdash; NotificationsController</a>
+  
+    <li class="method"><a href="PaymentsController.html#method-i-show">#show &mdash; PaymentsController</a>
+  
+    <li class="method"><a href="AccountingEntriesController.html#method-i-show">#show &mdash; AccountingEntriesController</a>
+  
+    <li class="method"><a href="OrganizationsController.html#method-i-show">#show &mdash; OrganizationsController</a>
+  
+    <li class="method"><a href="CustomersController.html#method-i-show">#show &mdash; CustomersController</a>
+  
+    <li class="method"><a href="SubcontractorsController.html#method-i-show">#show &mdash; SubcontractorsController</a>
+  
+    <li class="method"><a href="MaterialsController.html#method-i-show">#show &mdash; MaterialsController</a>
   
     <li class="method"><a href="LayoutHelper.html#method-i-show_title-3F">#show_title? &mdash; LayoutHelper</a>
   
@@ -1627,91 +1726,105 @@
   
     <li class="method"><a href="ServiceCallsHelper.html#method-i-transfer_form">#transfer_form &mdash; ServiceCallsHelper</a>
   
+    <li class="method"><a href="SubcontractorsController.html#method-i-update">#update &mdash; SubcontractorsController</a>
+  
+    <li class="method"><a href="PaymentsController.html#method-i-update">#update &mdash; PaymentsController</a>
+  
+    <li class="method"><a href="BomsController.html#method-i-update">#update &mdash; BomsController</a>
+  
+    <li class="method"><a href="NotificationsController.html#method-i-update">#update &mdash; NotificationsController</a>
+  
     <li class="method"><a href="OrganizationsController.html#method-i-update">#update &mdash; OrganizationsController</a>
   
     <li class="method"><a href="PostingRulesController.html#method-i-update">#update &mdash; PostingRulesController</a>
   
-    <li class="method"><a href="AccountingEntriesController.html#method-i-update">#update &mdash; AccountingEntriesController</a>
-  
-    <li class="method"><a href="MaterialsController.html#method-i-update">#update &mdash; MaterialsController</a>
+    <li class="method"><a href="RegistrationsController.html#method-i-update">#update &mdash; RegistrationsController</a>
   
     <li class="method"><a href="MyUsersController.html#method-i-update">#update &mdash; MyUsersController</a>
   
-    <li class="method"><a href="PaymentsController.html#method-i-update">#update &mdash; PaymentsController</a>
-  
-    <li class="method"><a href="ProvidersController.html#method-i-update">#update &mdash; ProvidersController</a>
+    <li class="method"><a href="AgreementsController.html#method-i-update">#update &mdash; AgreementsController</a>
   
     <li class="method"><a href="AffiliatesController.html#method-i-update">#update &mdash; AffiliatesController</a>
   
-    <li class="method"><a href="NotificationsController.html#method-i-update">#update &mdash; NotificationsController</a>
-  
-    <li class="method"><a href="CustomersController.html#method-i-update">#update &mdash; CustomersController</a>
-  
-    <li class="method"><a href="RegistrationsController.html#method-i-update">#update &mdash; RegistrationsController</a>
-  
-    <li class="method"><a href="AgreementsController.html#method-i-update">#update &mdash; AgreementsController</a>
-  
-    <li class="method"><a href="BomsController.html#method-i-update">#update &mdash; BomsController</a>
+    <li class="method"><a href="MaterialsController.html#method-i-update">#update &mdash; MaterialsController</a>
   
     <li class="method"><a href="ServiceCallsController.html#method-i-update">#update &mdash; ServiceCallsController</a>
   
-    <li class="method"><a href="SubcontractorsController.html#method-i-update">#update &mdash; SubcontractorsController</a>
+    <li class="method"><a href="AccountingEntriesController.html#method-i-update">#update &mdash; AccountingEntriesController</a>
   
-    <li class="method"><a href="ServiceCallRejectEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallRejectEvent</a>
+    <li class="method"><a href="CustomersController.html#method-i-update">#update &mdash; CustomersController</a>
   
-    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallInvoicedEvent</a>
-  
-    <li class="method"><a href="ScSubconDepositedEvent.html#method-i-update_provider">#update_provider &mdash; ScSubconDepositedEvent</a>
-  
-    <li class="method"><a href="ServiceCallAcceptEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallAcceptEvent</a>
-  
-    <li class="method"><a href="ServiceCallDispatchEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallDispatchEvent</a>
-  
-    <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallAcceptedEvent</a>
-  
-    <li class="method"><a href="ServiceCallSettledEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallSettledEvent</a>
-  
-    <li class="method"><a href="ServiceCallCancelEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallCancelEvent</a>
-  
-    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallCompletedEvent</a>
-  
-    <li class="method"><a href="ServiceCallStartedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallStartedEvent</a>
+    <li class="method"><a href="ProvidersController.html#method-i-update">#update &mdash; ProvidersController</a>
   
     <li class="method"><a href="ServiceCallReceivedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallReceivedEvent</a>
   
-    <li class="method"><a href="ScDepositEvent.html#method-i-update_provider">#update_provider &mdash; ScDepositEvent</a>
-  
-    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallRejectedEvent</a>
-  
-    <li class="method"><a href="ServiceCallStartEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallStartEvent</a>
+    <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallCompleteEvent</a>
   
     <li class="method"><a href="ServiceCallEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallEvent</a>
   
-    <li class="method"><a href="ServiceCallCompleteEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallCompleteEvent</a>
+    <li class="method"><a href="ServiceCallRejectedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallRejectedEvent</a>
   
-    <li class="method"><a href="ServiceCallDispatchedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallDispatchedEvent</a>
+    <li class="method"><a href="ScDepositEvent.html#method-i-update_provider">#update_provider &mdash; ScDepositEvent</a>
   
-    <li class="method"><a href="ServiceCallSettleEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallSettleEvent</a>
+    <li class="method"><a href="ScSubconDepositedEvent.html#method-i-update_provider">#update_provider &mdash; ScSubconDepositedEvent</a>
+  
+    <li class="method"><a href="ServiceCallCompletedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallCompletedEvent</a>
+  
+    <li class="method"><a href="ServiceCallDispatchEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallDispatchEvent</a>
+  
+    <li class="method"><a href="ServiceCallRejectEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallRejectEvent</a>
+  
+    <li class="method"><a href="ServiceCallAcceptEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallAcceptEvent</a>
   
     <li class="method"><a href="ServiceCallCanceledEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallCanceledEvent</a>
   
+    <li class="method"><a href="ServiceCallAcceptedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallAcceptedEvent</a>
+  
+    <li class="method"><a href="ServiceCallStartedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallStartedEvent</a>
+  
+    <li class="method"><a href="ScCollectedEvent.html#method-i-update_provider">#update_provider &mdash; ScCollectedEvent</a>
+  
+    <li class="method"><a href="ScCollectEvent.html#method-i-update_provider">#update_provider &mdash; ScCollectEvent</a>
+  
+    <li class="method"><a href="ServiceCallStartEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallStartEvent</a>
+  
+    <li class="method"><a href="ServiceCallSettledEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallSettledEvent</a>
+  
+    <li class="method"><a href="ServiceCallDispatchedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallDispatchedEvent</a>
+  
+    <li class="method"><a href="ServiceCallInvoicedEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallInvoicedEvent</a>
+  
     <li class="method"><a href="ServiceCallInvoiceEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallInvoiceEvent</a>
   
-    <li class="method"><a href="ServiceCallPaidEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallPaidEvent</a>
+    <li class="method"><a href="ServiceCallSettleEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallSettleEvent</a>
   
-    <li class="method"><a href="ServiceCallEvent.html#method-i-update_subcontractor">#update_subcontractor &mdash; ServiceCallEvent</a>
+    <li class="method"><a href="ServiceCallCancelEvent.html#method-i-update_provider">#update_provider &mdash; ServiceCallCancelEvent</a>
+  
+    <li class="method"><a href="ServiceCallPaidEvent.html#method-i-update_subcontractor">#update_subcontractor &mdash; ServiceCallPaidEvent</a>
   
     <li class="method"><a href="ServiceCallInvoiceEvent.html#method-i-update_subcontractor">#update_subcontractor &mdash; ServiceCallInvoiceEvent</a>
   
+    <li class="method"><a href="ScConfirmDepositEvent.html#method-i-update_subcontractor">#update_subcontractor &mdash; ScConfirmDepositEvent</a>
+  
+    <li class="method"><a href="ScProviderCollectedEvent.html#method-i-update_subcontractor">#update_subcontractor &mdash; ScProviderCollectedEvent</a>
+  
     <li class="method"><a href="ScProviderInvoicedEvent.html#method-i-update_subcontractor">#update_subcontractor &mdash; ScProviderInvoicedEvent</a>
+  
+    <li class="method"><a href="ServiceCallEvent.html#method-i-update_subcontractor">#update_subcontractor &mdash; ServiceCallEvent</a>
   
     <li class="method"><a href="Notification.html#method-i-url_helpers">#url_helpers &mdash; Notification</a>
   
-    <li class="method"><a href="OneOwnerValidator.html#method-i-validate">#validate &mdash; OneOwnerValidator</a>
-  
     <li class="method"><a href="RoleValidator.html#method-i-validate">#validate &mdash; RoleValidator</a>
   
+    <li class="method"><a href="OneOwnerValidator.html#method-i-validate">#validate &mdash; OneOwnerValidator</a>
+  
     <li class="method"><a href="Bom.html#method-i-validate_buyer">#validate_buyer &mdash; Bom</a>
+  
+    <li class="method"><a href="Ticket.html#method-i-validate_collector">#validate_collector &mdash; Ticket</a>
+  
+    <li class="method"><a href="Ticket.html#method-i-validate_subcontractor">#validate_subcontractor &mdash; Ticket</a>
+  
+    <li class="method"><a href="Ticket.html#method-i-validate_technician">#validate_technician &mdash; Ticket</a>
   
     <li class="method"><a href="StaticPagesController.html#method-i-welcome">#welcome &mdash; StaticPagesController</a>
   

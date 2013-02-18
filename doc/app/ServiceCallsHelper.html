@@ -64,9 +64,9 @@
 
   <ul class="link-list">
     
-    <li><a href="#method-i-billing_status_forms">#billing_status_forms</a>
+    <li><a href="#method-i-billing_collect_form">#billing_collect_form</a>
     
-    <li><a href="#method-i-collect_form">#collect_form</a>
+    <li><a href="#method-i-billing_status_forms">#billing_status_forms</a>
     
     <li><a href="#method-i-event_list">#event_list</a>
     
@@ -275,9 +275,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -288,6 +300,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -426,6 +444,45 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-billing_collect_form" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">billing_collect_form</span><span
+            class="method-args">(service_call)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="billing_collect_form-source">
+            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 159</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">billing_collect_form</span>(<span class="ruby-identifier">service_call</span>)
+  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span class="ruby-string">&quot;service_call[billing_status_event]&quot;</span>, <span class="ruby-string">'collect'</span>)
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">collector_tag</span>(<span class="ruby-identifier">service_call</span>))
+    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">human_billing_status_event_name</span>(<span class="ruby-value">:collect</span>).<span class="ruby-identifier">titleize</span>,
+                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span class="ruby-string">'collect_service_call_btn'</span>,
+                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span class="ruby-constant">StylingService</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">get_style</span>(<span class="ruby-string">&quot;service_call.forms.billing_status.collect.button_classes&quot;</span>),
+                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&quot;service_call.forms.billing_status.collect.tooltip&quot;</span>),
+                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span class="ruby-string">'tooltip'</span>
+           )
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- billing_collect_form-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- billing_collect_form-method -->
+
+    
       <div id="method-i-billing_status_forms" class="method-detail ">
         
         <div class="method-heading">
@@ -460,45 +517,6 @@
 
         
       </div><!-- billing_status_forms-method -->
-
-    
-      <div id="method-i-collect_form" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">collect_form</span><span
-            class="method-args">(service_call)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-          <div class="method-source-code" id="collect_form-source">
-            <pre><span class="ruby-comment"># File app/helpers/service_calls_helper.rb, line 159</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">collect_form</span>(<span class="ruby-identifier">service_call</span>)
-  <span class="ruby-identifier">simple_form_for</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">becomes</span>(<span class="ruby-constant">ServiceCall</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">hidden_field_tag</span> <span class="ruby-string">&quot;service_call[billing_status_event]&quot;</span>, <span class="ruby-string">'collect'</span>)
-    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">collector_tag</span>(<span class="ruby-identifier">service_call</span>))
-    <span class="ruby-identifier">concat</span> (<span class="ruby-identifier">f</span>.<span class="ruby-identifier">submit</span> <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">human_billing_status_event_name</span>(<span class="ruby-value">:collect</span>).<span class="ruby-identifier">titleize</span>,
-                     <span class="ruby-identifier">id</span><span class="ruby-operator">:</span>    <span class="ruby-string">'settle_service_call_btn'</span>,
-                     <span class="ruby-keyword">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-large&quot;</span>,
-                     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-string">'Click to indicate that the payment was collected'</span>,
-                     <span class="ruby-identifier">rel</span><span class="ruby-operator">:</span>   <span class="ruby-string">'tooltip'</span>
-           )
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- collect_form-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- collect_form-method -->
 
     
       <div id="method-i-event_list" class="method-detail ">

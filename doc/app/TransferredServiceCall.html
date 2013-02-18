@@ -265,9 +265,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -278,6 +290,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -559,7 +577,7 @@ re_transfer          :boolean</pre>
 
           
           <div class="method-source-code" id="provider_is_not_a_member-source">
-            <pre><span class="ruby-comment"># File app/models/transferred_service_call.rb, line 198</span>
+            <pre><span class="ruby-comment"># File app/models/transferred_service_call.rb, line 210</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">provider_is_not_a_member</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">provider</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">provider_id</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">organization_id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">provider</span>.<span class="ruby-identifier">subcontrax_member</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">ServiceCall</span>.<span class="ruby-identifier">find_by_ref_id_and_organization_id</span>(<span class="ruby-identifier">ref_id</span>, <span class="ruby-identifier">provider_id</span>).<span class="ruby-identifier">nil?</span>

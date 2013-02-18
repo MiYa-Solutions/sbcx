@@ -49,7 +49,9 @@ class MyServiceCall < ServiceCall
   state_machine :status, :initial => :new do
 
     state :new, value: STATUS_NEW
-    state :open, value: STATUS_OPEN
+    state :open, value: STATUS_OPEN do
+      validate { |sc| sc.validate_technician }
+    end
     state :transferred, value: STATUS_TRANSFERRED do
       validate { |sc| sc.validate_subcontractor }
     end

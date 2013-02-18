@@ -84,6 +84,8 @@
     
     <li><a href="#method-i-before_complete_work">#before_complete_work</a>
     
+    <li><a href="#method-i-before_confirm_deposit_payment">#before_confirm_deposit_payment</a>
+    
     <li><a href="#method-i-before_reject_work">#before_reject_work</a>
     
     <li><a href="#method-i-before_transfer">#before_transfer</a>
@@ -281,9 +283,21 @@
   
     <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
   
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
     <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
   
     <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
   
     <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
   
@@ -294,6 +308,12 @@
     <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
   
     <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
   
     <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
   
@@ -657,6 +677,37 @@ Rails.logger.debug { &quot;invoked observer BEFORE transfer \n #{service_call.in
 
         
       </div><!-- before_complete_work-method -->
+
+    
+      <div id="method-i-before_confirm_deposit_payment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">before_confirm_deposit_payment</span><span
+            class="method-args">(service_call, transition)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="before_confirm_deposit_payment-source">
+            <pre><span class="ruby-comment"># File app/observers/service_call_observer.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">before_confirm_deposit_payment</span>(<span class="ruby-identifier">service_call</span>, <span class="ruby-identifier">transition</span>)
+  <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> { <span class="ruby-node">&quot;invoked observer BEFORE confirm_deposit \n #{service_call.inspect} \n #{transition.inspect}&quot;</span> }
+  <span class="ruby-identifier">service_call</span>.<span class="ruby-identifier">events</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">ScConfirmDepositEvent</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- before_confirm_deposit_payment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- before_confirm_deposit_payment-method -->
 
     
       <div id="method-i-before_reject_work" class="method-detail ">
