@@ -5,3 +5,5 @@ en:
     attributes:
       affiliate:
         address1: "Address"
+        phone: "Phone"
+        mobile: "Mobile"
