@@ -1156,6 +1156,26 @@ hr {
   }
 }
 
+.agreement_new_rule {
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: left;
+    margin-left: 0;
+
+  }
+}
+
+
 
 
 

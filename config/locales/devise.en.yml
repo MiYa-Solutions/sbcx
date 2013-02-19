@@ -72,6 +72,7 @@ en:
       add: "Add"
       parts: "Parts"
       activate: "Activate"
+      add_rule: "Add Rule"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"

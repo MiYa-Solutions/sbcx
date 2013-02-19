@@ -73,8 +73,16 @@
       <div class="smart_label">
         <ul>
           <li><h1><%= I18n.t('general.general.actions') %></h1></li>
-          <li></li>
+          <li>
+          <li>
+            <%= link_to I18n.t('general.general.add_rule'), '#', :class => 'btn btn-small btn-primary', id: 'new-rule-button', data: { toggle: "collapse", target: "#posting_rules" } %>
+          </li>
+          </li>
         </ul>
+      </div>
+      <br>
+      <div id="posting_rules" class="collapse agreement_new_rule">
+        <%= render 'posting_rules/posting_rule_form' %>
       </div>
       <br>
       <%= agreement_events(@agreement) %>
@@ -181,7 +189,7 @@
 
 </div>
 
-<div id="posting_rules">
+<div id="posting_rules_mark">
   <%= render 'posting_rules/posting_rule_form' %>
 </div>
 
