@@ -7,6 +7,7 @@
       <!--<#%= f.input :status_event, label: ServiceCall.human_attribute_name(:status), collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>-->
       <!--#<#% end %> -->
       <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+      <%= f.input :allow_collection %>
       <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
       <div id="customer_wrapper" class="control-group select optional">
         <label class="string  control-label" for="service_call_customer"> <%= @service_call.class.human_attribute_name(:customer) %></label>

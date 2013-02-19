@@ -6,95 +6,14 @@ class NotificationMailer < ActionMailer::Base
   #
   #   en.admin_mailer.sign_up_alert.subject
   #
-  def sc_received_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
+  Dir.glob("#{Rails.root}/app/notifications/*.rb").sort.each { |file| require_dependency file } if Rails.env == "development"
+  ServiceCallNotification.subclasses.each do |subclass|
+    define_method subclass.name.underscore do |subject, user, service_call|
+      @service_call = service_call
+      @user         = user
 
-    mail to: user.email, subject: subject
-  end
-
-  def sc_completed_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_complete_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_accepted_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_cancel_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_canceled_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_dispatch_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_dispatched_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_paid_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_rejected_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_settle_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_invoiced_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_start_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_started_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
-  end
-
-  def sc_settled_notification(subject, user, service_call)
-    @service_call = service_call
-    @user         = user
-    mail to: user.email, subject: subject
+      mail to: user.email, subject: subject
+    end
   end
 
   def agr_new_subcon_notification(subject, user, agreement)

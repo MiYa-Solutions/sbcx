@@ -1,3 +1,15 @@
+# == Creating a New Service Call Event
+# 1. Define the event in one of the state machines in ServiceCall, MyServiceCall or TransferredServiceCall
+# 2. Add the appropriate before and after callbacks in the applicable observer: ServiceCallObserver, MyServiceCallObserver, TransferredServiceCallObserver
+# 3. Ensure the event is properly permissioned in PermittedParams
+# 4. If invoking the event requires additional information (i.e. technician for a dispatch) create the appropriate form method in ServiceCallHelper
+# 5. use the service_call_event generator to create the service call event class as well as the corresponding notification
+# 6. define an event id in the Events spreadsheet to get a number for the event and update the ref attribute in the init method
+# 7. update the locale yml files with the notification and event name, description, subject etc.
+# 8. instantiate the event in the observer call backs created in step 2.
+# 9. update the service_call_pages_spec.rb with tests for the new functionality
+# 10. implement the event behavior to get the tests to pass
+#
 # == Schema Information
 #
 # Table name: events
@@ -23,6 +35,7 @@ class ServiceCallEvent < Event
     Rails.logger.debug { "Running #{self.class.name} process_event method" }
 
     update_provider if notify_provider?
+    update_subcontractor if notify_subcontractor?
 
     notify notification_recipients, notification_class unless notification_recipients.nil?
 
@@ -33,11 +46,23 @@ class ServiceCallEvent < Event
   end
 
   def notify_provider?
-    service_call.provider.subcontrax_member? && service_call.provider.id != service_call.organization.id
+    begin
+
+      service_call.provider.subcontrax_member? &&
+          service_call.provider_id != service_call.organization_id &&
+          !prov_service_call.events.include?(self.triggering_event)
+    rescue
+      Rails.logger.error { "Error in  ServiceCallEvent#notify_provider" }
+    end
+
   end
 
   def prov_service_call
-    @prov_service_call ||= ServiceCall.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
+    @prov_service_call ||= Ticket.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.provider_id)
+  end
+
+  def subcon_service_call
+    @subcon_service_call ||= Ticket.find_by_ref_id_and_organization_id(service_call.ref_id, service_call.subcontractor_id)
   end
 
   def copy_boms_to_provider
@@ -51,4 +76,22 @@ class ServiceCallEvent < Event
     end
   end
 
+  def notify_subcontractor?
+    begin
+      service_call.subcontractor.subcontrax_member? &&
+          service_call.subcontractor.id != service_call.organization.id &&
+          !subcon_service_call.events.include?(self.triggering_event)
+    rescue
+      Rails.logger.error { "Error in  ServiceCallEvent#notify_subcontractor?" }
+    end
+
+  end
+
+  def update_subcontractor
+    nil # should be implemented in the subclass in case the subcontractor needs to be notified
+  end
+
+  def update_provider
+    nil # should be implemented in the subclass in case the subcontractor needs to be notified
+  end
 end

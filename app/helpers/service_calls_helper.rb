@@ -96,17 +96,17 @@ module ServiceCallsHelper
   end
 
   def billing_status_forms(service_call)
-    if service_call.allow_collection?
+    if service_call.allow_collection? || service_call.instance_of?(MyServiceCall)
       concat(content_tag :h3, t('headers.billing_actions')) unless service_call.billing_status_events.empty?
       service_call.billing_status_events.collect do |event|
-        concat(content_tag :li, send("billing_#{event}_form".to_sym, service_call))
+        concat(content_tag :li, send("billing_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :billing_status_event, event.to_s)
       end
     end
 
   end
 
   def subcontractor_status_forms(service_call)
-    unless service_call.subcontractor.nil? || service_call.subcontractor.subcontrax_member?
+    unless service_call.subcontractor_status_events.empty?
       concat(content_tag :h3, t('headers.subcontractor_actions')) unless service_call.subcontractor_status_events.empty?
 
       service_call.subcontractor_status_events.collect do |event|
@@ -116,9 +116,9 @@ module ServiceCallsHelper
   end
 
   def provider_status_forms(service_call)
-    unless service_call.provider.nil? || service_call.provider.subcontrax_member?
+    if service_call.instance_of?(TransferredServiceCall) && service_call.provider_settlement_allowed?
       concat(content_tag :h3, t('headers.provider_actions')) unless service_call.provider_status_events.empty?
-      service_call.subcontractor_status_events.collect do |event|
+      service_call.provider_status_events.collect do |event|
         concat(content_tag :li, send("provider_#{event}_form".to_sym, service_call))
       end
     end
@@ -156,14 +156,14 @@ module ServiceCallsHelper
     end
   end
 
-  def collect_form(service_call)
+  def billing_collect_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (hidden_field_tag "service_call[billing_status_event]", 'collect')
       concat (collector_tag(service_call))
       concat (f.submit service_call.class.human_billing_status_event_name(:collect).titleize,
-                       id:    'settle_service_call_btn',
-                       class: "btn btn-large",
-                       title: 'Click to indicate that the payment was collected',
+                       id:    'collect_service_call_btn',
+                       class: StylingService.instance.get_style("service_call.forms.billing_status.collect.button_classes"),
+                       title: I18n.t("service_call.forms.billing_status.collect.tooltip"),
                        rel:   'tooltip'
              )
     end

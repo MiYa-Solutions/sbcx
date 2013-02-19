@@ -24,9 +24,17 @@ class AccountingEvent < Event
       end
 
       agreement.transaction do
-        accounting_entries.each do |entry|
-          entry.save
+        begin
+          accounting_entries.each do |entry|
+            entry.save
+          end
+        rescue ActiveRecord::StatementInvalid => e
+
+          Rails.logger.error { "Error during the save of account entries: #{e.inspect}" }
+
         end
+
+
       end
     end
 

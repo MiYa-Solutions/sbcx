@@ -72,6 +72,16 @@ def setup_profit_split_agreement(prov, subcon)
   agreement
 end
 
+def add_bom(name, cost, price, qty)
+  click_link 'new-bom-button'
+  fill_in 'bom_material_name', with: name
+  fill_in 'bom_cost', with: cost
+  fill_in 'bom_price', with: price
+  fill_in 'bom_quantity', with: qty
+  click_button 'add_part'
+  click_link 'new-bom-button'
+end
+
 #def fill_in field, options
 #  super
 #  Rails.logger.debug { "In custom fill_in" }

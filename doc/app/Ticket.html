@@ -2,445 +2,481 @@
 
 <html>
 <head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 
-    <title>class Ticket - Rails Application Documentation</title>
+<title>class Ticket - Rails Application Documentation</title>
 
-    <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
-    <script type="text/javascript">
-        var rdoc_rel_prefix = "./";
-    </script>
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
 
-    <script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
-    <script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
-    <script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
-    <script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
-    <script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
-    <script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
 
 
 <body id="top" class="class">
 <nav id="metadata">
-<nav id="home-section" class="section">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
     <h3 class="section-header">
-        <a href="./index.html">Home</a>
-        <a href="./table_of_contents.html#classes">Classes</a>
-        <a href="./table_of_contents.html#methods">Methods</a>
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
     </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
 </nav>
 
 
-<nav id="search-section" class="section project-section" class="initially-hidden">
-    <form action="#" method="get" accept-charset="utf-8">
-        <h3 class="section-header">
-            <input type="text" name="search" placeholder="Search" id="search-field"
-                   title="Type to search, Up and Down to navigate, Enter to load">
-        </h3>
-    </form>
-
-    <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
-
-<div id="file-metadata">
+  <div id="file-metadata">
     <nav id="file-list-section" class="section">
-        <h3 class="section-header">Defined In</h3>
-        <ul>
-            <li>app/models/ticket.rb
-        </ul>
-    </nav>
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/models/ticket.rb
+  </ul>
+</nav>
 
+    
+  </div>
 
-</div>
-
-<div id="class-metadata">
-
+  <div id="class-metadata">
+    
     <nav id="parent-class-section" class="section">
-        <h3 class="section-header">Parent</h3>
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">ActiveRecord::Base
+  
+</nav>
 
-        <p class="link">ActiveRecord::Base
-
-    </nav>
-
-
+    
     <!-- Method Quickref -->
-    <nav id="method-list-section" class="section">
-        <h3 class="section-header">Methods</h3>
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
 
-        <ul class="link-list">
-
-            <li><a href="#method-i-address1">#address1</a>
-
-            <li><a href="#method-i-address2">#address2</a>
-
-            <li><a href="#method-i-before_create">#before_create</a>
-
-            <li><a href="#method-i-build">#build</a>
-
-            <li><a href="#method-i-check_completed_on_text">#check_completed_on_text</a>
-
-            <li><a href="#method-i-check_started_on_text">#check_started_on_text</a>
-
-            <li><a href="#method-i-city">#city</a>
-
-            <li><a href="#method-i-company">#company</a>
-
-            <li><a href="#method-i-completed_on_text">#completed_on_text</a>
-
-            <li><a href="#method-i-country">#country</a>
-
-            <li><a href="#method-i-create_customer">#create_customer</a>
-
-            <li><a href="#method-i-customer_belongs_to_provider">#customer_belongs_to_provider</a>
-
-            <li><a href="#method-i-email">#email</a>
-
-            <li><a href="#method-i-mobile_phone">#mobile_phone</a>
-
-            <li><a href="#method-i-phone">#phone</a>
-
-            <li><a href="#method-i-provider_cost">#provider_cost</a>
-
-            <li><a href="#method-i-save_completed_on_text">#save_completed_on_text</a>
-
-            <li><a href="#method-i-save_started_on_text">#save_started_on_text</a>
-
-            <li><a href="#method-i-started_on_text">#started_on_text</a>
-
-            <li><a href="#method-i-state">#state</a>
-
-            <li><a href="#method-i-subcontractor_cost">#subcontractor_cost</a>
-
-            <li><a href="#method-i-technician_cost">#technician_cost</a>
-
-            <li><a href="#method-i-total_cost">#total_cost</a>
-
-            <li><a href="#method-i-total_price">#total_price</a>
-
-            <li><a href="#method-i-total_price_validation">#total_price_validation</a>
-
-            <li><a href="#method-i-total_profit">#total_profit</a>
-
-            <li><a href="#method-i-work_phone">#work_phone</a>
-
-            <li><a href="#method-i-zip">#zip</a>
-
-        </ul>
-    </nav>
-
-</div>
-
-<div id="project-metadata">
-<nav id="fileindex-section" class="section project-section">
-    <h3 class="section-header">Pages</h3>
-
-    <ul>
-
-        <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
-
-    </ul>
+  <ul class="link-list">
+    
+    <li><a href="#method-i-address1">#address1</a>
+    
+    <li><a href="#method-i-address2">#address2</a>
+    
+    <li><a href="#method-i-before_create">#before_create</a>
+    
+    <li><a href="#method-i-build">#build</a>
+    
+    <li><a href="#method-i-check_completed_on_text">#check_completed_on_text</a>
+    
+    <li><a href="#method-i-check_started_on_text">#check_started_on_text</a>
+    
+    <li><a href="#method-i-city">#city</a>
+    
+    <li><a href="#method-i-company">#company</a>
+    
+    <li><a href="#method-i-completed_on_text">#completed_on_text</a>
+    
+    <li><a href="#method-i-country">#country</a>
+    
+    <li><a href="#method-i-create_customer">#create_customer</a>
+    
+    <li><a href="#method-i-customer_belongs_to_provider">#customer_belongs_to_provider</a>
+    
+    <li><a href="#method-i-email">#email</a>
+    
+    <li><a href="#method-i-mobile_phone">#mobile_phone</a>
+    
+    <li><a href="#method-i-phone">#phone</a>
+    
+    <li><a href="#method-i-provider_cost">#provider_cost</a>
+    
+    <li><a href="#method-i-save_completed_on_text">#save_completed_on_text</a>
+    
+    <li><a href="#method-i-save_started_on_text">#save_started_on_text</a>
+    
+    <li><a href="#method-i-started_on_text">#started_on_text</a>
+    
+    <li><a href="#method-i-state">#state</a>
+    
+    <li><a href="#method-i-subcontractor_cost">#subcontractor_cost</a>
+    
+    <li><a href="#method-i-technician_cost">#technician_cost</a>
+    
+    <li><a href="#method-i-total_cost">#total_cost</a>
+    
+    <li><a href="#method-i-total_price">#total_price</a>
+    
+    <li><a href="#method-i-total_price_validation">#total_price_validation</a>
+    
+    <li><a href="#method-i-total_profit">#total_profit</a>
+    
+    <li><a href="#method-i-validate_collector">#validate_collector</a>
+    
+    <li><a href="#method-i-validate_subcontractor">#validate_subcontractor</a>
+    
+    <li><a href="#method-i-validate_technician">#validate_technician</a>
+    
+    <li><a href="#method-i-work_phone">#work_phone</a>
+    
+    <li><a href="#method-i-zip">#zip</a>
+    
+  </ul>
 </nav>
 
-<nav id="classindex-section" class="section project-section">
-<h3 class="section-header">Class and Module Index</h3>
-
-<ul class="link-list">
-
-<li><a href="./Account.html">Account</a>
-
-<li><a href="./AccountingEntriesController.html">AccountingEntriesController</a>
-
-<li><a href="./AccountingEntriesHelper.html">AccountingEntriesHelper</a>
-
-<li><a href="./AccountingEntry.html">AccountingEntry</a>
-
-<li><a href="./AccountingEvent.html">AccountingEvent</a>
-
-<li><a href="./AdminMailer.html">AdminMailer</a>
-
-<li><a href="./Affiliate.html">Affiliate</a>
-
-<li><a href="./AffiliatesController.html">AffiliatesController</a>
-
-<li><a href="./AffiliatesHelper.html">AffiliatesHelper</a>
-
-<li><a href="./AgrActivatedEvent.html">AgrActivatedEvent</a>
-
-<li><a href="./AgrActivatedSubconNotification.html">AgrActivatedSubconNotification</a>
-
-<li><a href="./AgrNewSubconEvent.html">AgrNewSubconEvent</a>
-
-<li><a href="./AgrNewSubconNotification.html">AgrNewSubconNotification</a>
-
-<li><a href="./AgrSubmittedEvent.html">AgrSubmittedEvent</a>
-
-<li><a href="./Agreement.html">Agreement</a>
-
-<li><a href="./AgreementEvent.html">AgreementEvent</a>
-
-<li><a href="./AgreementNotification.html">AgreementNotification</a>
-
-<li><a href="./AgreementsController.html">AgreementsController</a>
-
-<li><a href="./AgreementsHelper.html">AgreementsHelper</a>
-
-<li><a href="./ApplicationController.html">ApplicationController</a>
-
-<li><a href="./ApplicationHelper.html">ApplicationHelper</a>
-
-<li><a href="./Assignment.html">Assignment</a>
-
-<li><a href="./BillingService.html">BillingService</a>
-
-<li><a href="./Bom.html">Bom</a>
-
-<li><a href="./BomsController.html">BomsController</a>
-
-<li><a href="./BomsHelper.html">BomsHelper</a>
-
-<li><a href="./Cash.html">Cash</a>
-
-<li><a href="./CashCollectionForEmployer.html">CashCollectionForEmployer</a>
-
-<li><a href="./CashCollectionForProvider.html">CashCollectionForProvider</a>
-
-<li><a href="./CashCollectionFromSubcon.html">CashCollectionFromSubcon</a>
-
-<li><a href="./CashPayment.html">CashPayment</a>
-
-<li><a href="./Cheque.html">Cheque</a>
-
-<li><a href="./ChequeCollectionForEmployer.html">ChequeCollectionForEmployer</a>
-
-<li><a href="./ChequeCollectionForProvider.html">ChequeCollectionForProvider</a>
-
-<li><a href="./ChequeCollectionFromSubcon.html">ChequeCollectionFromSubcon</a>
-
-<li><a href="./ChequePayment.html">ChequePayment</a>
-
-<li><a href="./CreditCard.html">CreditCard</a>
-
-<li><a href="./Customer.html">Customer</a>
-
-<li><a href="./CustomersController.html">CustomersController</a>
-
-<li><a href="./CustomersHelper.html">CustomersHelper</a>
-
-<li><a href="./EmployeeCommission.html">EmployeeCommission</a>
-
-<li><a href="./Event.html">Event</a>
-
-<li><a href="./EventObserver.html">EventObserver</a>
-
-<li><a href="./IncomeFromProvider.html">IncomeFromProvider</a>
-
-<li><a href="./LayoutHelper.html">LayoutHelper</a>
-
-<li><a href="./Material.html">Material</a>
-
-<li><a href="./MaterialsController.html">MaterialsController</a>
-
-<li><a href="./MaterialsHelper.html">MaterialsHelper</a>
-
-<li><a href="./MyServiceCall.html">MyServiceCall</a>
-
-<li><a href="./MyServiceCallObserver.html">MyServiceCallObserver</a>
-
-<li><a href="./MyUsersController.html">MyUsersController</a>
-
-<li><a href="./MyUsersHelper.html">MyUsersHelper</a>
-
-<li><a href="./NewMemberEvent.html">NewMemberEvent</a>
-
-<li><a href="./Notification.html">Notification</a>
-
-<li><a href="./NotificationMailer.html">NotificationMailer</a>
-
-<li><a href="./NotificationsController.html">NotificationsController</a>
-
-<li><a href="./NotificationsHelper.html">NotificationsHelper</a>
-
-<li><a href="./OneOwnerValidator.html">OneOwnerValidator</a>
-
-<li><a href="./OrgToRole.html">OrgToRole</a>
-
-<li><a href="./Organization.html">Organization</a>
-
-<li><a href="./OrganizationAgreement.html">OrganizationAgreement</a>
-
-<li><a href="./OrganizationRole.html">OrganizationRole</a>
-
-<li><a href="./OrganizationsController.html">OrganizationsController</a>
-
-<li><a href="./OrganizationsHelper.html">OrganizationsHelper</a>
-
-<li><a href="./PasswordsController.html">PasswordsController</a>
-
-<li><a href="./Payment.html">Payment</a>
-
-<li><a href="./PaymentHelper.html">PaymentHelper</a>
-
-<li><a href="./PaymentToSubcontractor.html">PaymentToSubcontractor</a>
-
-<li><a href="./PaymentsController.html">PaymentsController</a>
-
-<li><a href="./PermittedParams.html">PermittedParams</a>
-
-<li><a href="./PostingRule.html">PostingRule</a>
-
-<li><a href="./PostingRulesController.html">PostingRulesController</a>
-
-<li><a href="./PostingRulesHelper.html">PostingRulesHelper</a>
-
-<li><a href="./ProfitSplit.html">ProfitSplit</a>
-
-<li><a href="./Provider.html">Provider</a>
-
-<li><a href="./ProvidersController.html">ProvidersController</a>
-
-<li><a href="./ProvidersHelper.html">ProvidersHelper</a>
-
-<li><a href="./RegionSelectController.html">RegionSelectController</a>
-
-<li><a href="./RegionSelectHelper.html">RegionSelectHelper</a>
-
-<li><a href="./RegistrationsController.html">RegistrationsController</a>
-
-<li><a href="./RegistrationsHelper.html">RegistrationsHelper</a>
-
-<li><a href="./Role.html">Role</a>
-
-<li><a href="./RoleValidator.html">RoleValidator</a>
-
-<li><a href="./ScAcceptedNotification.html">ScAcceptedNotification</a>
-
-<li><a href="./ScCancelNotification.html">ScCancelNotification</a>
-
-<li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
-
-<li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
-
-<li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
-
-<li><a href="./ScDispatchNotification.html">ScDispatchNotification</a>
-
-<li><a href="./ScDispatchedNotification.html">ScDispatchedNotification</a>
-
-<li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
-
-<li><a href="./ScPaidNotification.html">ScPaidNotification</a>
-
-<li><a href="./ScReceivedNotification.html">ScReceivedNotification</a>
-
-<li><a href="./ScRejectedNotification.html">ScRejectedNotification</a>
-
-<li><a href="./ScSettleNotification.html">ScSettleNotification</a>
-
-<li><a href="./ScSettledNotification.html">ScSettledNotification</a>
-
-<li><a href="./ScStartNotification.html">ScStartNotification</a>
-
-<li><a href="./ScStartedNotification.html">ScStartedNotification</a>
-
-<li><a href="./ServiceCall.html">ServiceCall</a>
-
-<li><a href="./ServiceCallAcceptEvent.html">ServiceCallAcceptEvent</a>
-
-<li><a href="./ServiceCallAcceptedEvent.html">ServiceCallAcceptedEvent</a>
-
-<li><a href="./ServiceCallCancelEvent.html">ServiceCallCancelEvent</a>
-
-<li><a href="./ServiceCallCanceledEvent.html">ServiceCallCanceledEvent</a>
-
-<li><a href="./ServiceCallCharge.html">ServiceCallCharge</a>
-
-<li><a href="./ServiceCallCompleteEvent.html">ServiceCallCompleteEvent</a>
-
-<li><a href="./ServiceCallCompletedEvent.html">ServiceCallCompletedEvent</a>
-
-<li><a href="./ServiceCallDispatchEvent.html">ServiceCallDispatchEvent</a>
-
-<li><a href="./ServiceCallDispatchedEvent.html">ServiceCallDispatchedEvent</a>
-
-<li><a href="./ServiceCallEvent.html">ServiceCallEvent</a>
-
-<li><a href="./ServiceCallInvoiceEvent.html">ServiceCallInvoiceEvent</a>
-
-<li><a href="./ServiceCallInvoicedEvent.html">ServiceCallInvoicedEvent</a>
-
-<li><a href="./ServiceCallNotification.html">ServiceCallNotification</a>
-
-<li><a href="./ServiceCallObserver.html">ServiceCallObserver</a>
-
-<li><a href="./ServiceCallPaidEvent.html">ServiceCallPaidEvent</a>
-
-<li><a href="./ServiceCallReceivedEvent.html">ServiceCallReceivedEvent</a>
-
-<li><a href="./ServiceCallRejectEvent.html">ServiceCallRejectEvent</a>
-
-<li><a href="./ServiceCallRejectedEvent.html">ServiceCallRejectedEvent</a>
-
-<li><a href="./ServiceCallSettleEvent.html">ServiceCallSettleEvent</a>
-
-<li><a href="./ServiceCallSettledEvent.html">ServiceCallSettledEvent</a>
-
-<li><a href="./ServiceCallStartEvent.html">ServiceCallStartEvent</a>
-
-<li><a href="./ServiceCallStartedEvent.html">ServiceCallStartedEvent</a>
-
-<li><a href="./ServiceCallTransferEvent.html">ServiceCallTransferEvent</a>
-
-<li><a href="./ServiceCallsController.html">ServiceCallsController</a>
-
-<li><a href="./ServiceCallsHelper.html">ServiceCallsHelper</a>
-
-<li><a href="./SessionsController.html">SessionsController</a>
-
-<li><a href="./StaticPagesController.html">StaticPagesController</a>
-
-<li><a href="./StaticPagesHelper.html">StaticPagesHelper</a>
-
-<li><a href="./StylingService.html">StylingService</a>
-
-<li><a href="./SubcontractingAgreement.html">SubcontractingAgreement</a>
-
-<li><a href="./SubcontractingAgreementObserver.html">SubcontractingAgreementObserver</a>
-
-<li><a href="./SubcontractingJob.html">SubcontractingJob</a>
-
-<li><a href="./Subcontractor.html">Subcontractor</a>
-
-<li><a href="./SubcontractorsController.html">SubcontractorsController</a>
-
-<li><a href="./SubcontractorsHelper.html">SubcontractorsHelper</a>
-
-<li><a href="./Supplier.html">Supplier</a>
-
-<li><a href="./SupplierAgreement.html">SupplierAgreement</a>
-
-<li><a href="./Ticket.html">Ticket</a>
-
-<li><a href="./TransferredServiceCall.html">TransferredServiceCall</a>
-
-<li><a href="./TransferredServiceCallObserver.html">TransferredServiceCallObserver</a>
-
-<li><a href="./User.html">User</a>
-
-</ul>
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
 </nav>
 
-</div>
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Account.html">Account</a>
+  
+    <li><a href="./AccountingEntriesController.html">AccountingEntriesController</a>
+  
+    <li><a href="./AccountingEntriesHelper.html">AccountingEntriesHelper</a>
+  
+    <li><a href="./AccountingEntry.html">AccountingEntry</a>
+  
+    <li><a href="./AccountingEvent.html">AccountingEvent</a>
+  
+    <li><a href="./AdminMailer.html">AdminMailer</a>
+  
+    <li><a href="./Affiliate.html">Affiliate</a>
+  
+    <li><a href="./AffiliatesController.html">AffiliatesController</a>
+  
+    <li><a href="./AffiliatesHelper.html">AffiliatesHelper</a>
+  
+    <li><a href="./AgrActivatedEvent.html">AgrActivatedEvent</a>
+  
+    <li><a href="./AgrActivatedSubconNotification.html">AgrActivatedSubconNotification</a>
+  
+    <li><a href="./AgrNewSubconEvent.html">AgrNewSubconEvent</a>
+  
+    <li><a href="./AgrNewSubconNotification.html">AgrNewSubconNotification</a>
+  
+    <li><a href="./AgrSubmittedEvent.html">AgrSubmittedEvent</a>
+  
+    <li><a href="./Agreement.html">Agreement</a>
+  
+    <li><a href="./AgreementEvent.html">AgreementEvent</a>
+  
+    <li><a href="./AgreementNotification.html">AgreementNotification</a>
+  
+    <li><a href="./AgreementsController.html">AgreementsController</a>
+  
+    <li><a href="./AgreementsHelper.html">AgreementsHelper</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./Assignment.html">Assignment</a>
+  
+    <li><a href="./BillingService.html">BillingService</a>
+  
+    <li><a href="./Bom.html">Bom</a>
+  
+    <li><a href="./BomsController.html">BomsController</a>
+  
+    <li><a href="./BomsHelper.html">BomsHelper</a>
+  
+    <li><a href="./Cash.html">Cash</a>
+  
+    <li><a href="./CashCollectionForEmployer.html">CashCollectionForEmployer</a>
+  
+    <li><a href="./CashCollectionForProvider.html">CashCollectionForProvider</a>
+  
+    <li><a href="./CashCollectionFromSubcon.html">CashCollectionFromSubcon</a>
+  
+    <li><a href="./CashPayment.html">CashPayment</a>
+  
+    <li><a href="./Cheque.html">Cheque</a>
+  
+    <li><a href="./ChequeCollectionForEmployer.html">ChequeCollectionForEmployer</a>
+  
+    <li><a href="./ChequeCollectionForProvider.html">ChequeCollectionForProvider</a>
+  
+    <li><a href="./ChequeCollectionFromSubcon.html">ChequeCollectionFromSubcon</a>
+  
+    <li><a href="./ChequePayment.html">ChequePayment</a>
+  
+    <li><a href="./CreditCard.html">CreditCard</a>
+  
+    <li><a href="./Customer.html">Customer</a>
+  
+    <li><a href="./CustomersController.html">CustomersController</a>
+  
+    <li><a href="./CustomersHelper.html">CustomersHelper</a>
+  
+    <li><a href="./EmployeeCommission.html">EmployeeCommission</a>
+  
+    <li><a href="./Event.html">Event</a>
+  
+    <li><a href="./EventObserver.html">EventObserver</a>
+  
+    <li><a href="./IncomeFromProvider.html">IncomeFromProvider</a>
+  
+    <li><a href="./LayoutHelper.html">LayoutHelper</a>
+  
+    <li><a href="./Material.html">Material</a>
+  
+    <li><a href="./MaterialsController.html">MaterialsController</a>
+  
+    <li><a href="./MaterialsHelper.html">MaterialsHelper</a>
+  
+    <li><a href="./MyServiceCall.html">MyServiceCall</a>
+  
+    <li><a href="./MyServiceCallObserver.html">MyServiceCallObserver</a>
+  
+    <li><a href="./MyUsersController.html">MyUsersController</a>
+  
+    <li><a href="./MyUsersHelper.html">MyUsersHelper</a>
+  
+    <li><a href="./NewMemberEvent.html">NewMemberEvent</a>
+  
+    <li><a href="./Notification.html">Notification</a>
+  
+    <li><a href="./NotificationMailer.html">NotificationMailer</a>
+  
+    <li><a href="./NotificationsController.html">NotificationsController</a>
+  
+    <li><a href="./NotificationsHelper.html">NotificationsHelper</a>
+  
+    <li><a href="./OneOwnerValidator.html">OneOwnerValidator</a>
+  
+    <li><a href="./OrgToRole.html">OrgToRole</a>
+  
+    <li><a href="./Organization.html">Organization</a>
+  
+    <li><a href="./OrganizationAgreement.html">OrganizationAgreement</a>
+  
+    <li><a href="./OrganizationRole.html">OrganizationRole</a>
+  
+    <li><a href="./OrganizationsController.html">OrganizationsController</a>
+  
+    <li><a href="./OrganizationsHelper.html">OrganizationsHelper</a>
+  
+    <li><a href="./PasswordsController.html">PasswordsController</a>
+  
+    <li><a href="./Payment.html">Payment</a>
+  
+    <li><a href="./PaymentHelper.html">PaymentHelper</a>
+  
+    <li><a href="./PaymentToSubcontractor.html">PaymentToSubcontractor</a>
+  
+    <li><a href="./PaymentsController.html">PaymentsController</a>
+  
+    <li><a href="./PermittedParams.html">PermittedParams</a>
+  
+    <li><a href="./PostingRule.html">PostingRule</a>
+  
+    <li><a href="./PostingRulesController.html">PostingRulesController</a>
+  
+    <li><a href="./PostingRulesHelper.html">PostingRulesHelper</a>
+  
+    <li><a href="./ProfitSplit.html">ProfitSplit</a>
+  
+    <li><a href="./Provider.html">Provider</a>
+  
+    <li><a href="./ProvidersController.html">ProvidersController</a>
+  
+    <li><a href="./ProvidersHelper.html">ProvidersHelper</a>
+  
+    <li><a href="./RegionSelectController.html">RegionSelectController</a>
+  
+    <li><a href="./RegionSelectHelper.html">RegionSelectHelper</a>
+  
+    <li><a href="./RegistrationsController.html">RegistrationsController</a>
+  
+    <li><a href="./RegistrationsHelper.html">RegistrationsHelper</a>
+  
+    <li><a href="./Role.html">Role</a>
+  
+    <li><a href="./RoleValidator.html">RoleValidator</a>
+  
+    <li><a href="./ScAcceptedNotification.html">ScAcceptedNotification</a>
+  
+    <li><a href="./ScCancelNotification.html">ScCancelNotification</a>
+  
+    <li><a href="./ScCanceledNotification.html">ScCanceledNotification</a>
+  
+    <li><a href="./ScCollectEvent.html">ScCollectEvent</a>
+  
+    <li><a href="./ScCollectedEvent.html">ScCollectedEvent</a>
+  
+    <li><a href="./ScCollectedNotification.html">ScCollectedNotification</a>
+  
+    <li><a href="./ScCompleteNotification.html">ScCompleteNotification</a>
+  
+    <li><a href="./ScCompletedNotification.html">ScCompletedNotification</a>
+  
+    <li><a href="./ScConfirmDepositEvent.html">ScConfirmDepositEvent</a>
+  
+    <li><a href="./ScDepositConfirmedEvent.html">ScDepositConfirmedEvent</a>
+  
+    <li><a href="./ScDepositConfirmedNotification.html">ScDepositConfirmedNotification</a>
+  
+    <li><a href="./ScDepositEvent.html">ScDepositEvent</a>
+  
+    <li><a href="./ScDispatchNotification.html">ScDispatchNotification</a>
+  
+    <li><a href="./ScDispatchedNotification.html">ScDispatchedNotification</a>
+  
+    <li><a href="./ScInvoicedNotification.html">ScInvoicedNotification</a>
+  
+    <li><a href="./ScPaidNotification.html">ScPaidNotification</a>
+  
+    <li><a href="./ScPaymentOverdueEvent.html">ScPaymentOverdueEvent</a>
+  
+    <li><a href="./ScProviderCollectedEvent.html">ScProviderCollectedEvent</a>
+  
+    <li><a href="./ScProviderCollectedNotification.html">ScProviderCollectedNotification</a>
+  
+    <li><a href="./ScProviderInvoicedEvent.html">ScProviderInvoicedEvent</a>
+  
+    <li><a href="./ScProviderInvoicedNotification.html">ScProviderInvoicedNotification</a>
+  
+    <li><a href="./ScReceivedNotification.html">ScReceivedNotification</a>
+  
+    <li><a href="./ScRejectedNotification.html">ScRejectedNotification</a>
+  
+    <li><a href="./ScSettleNotification.html">ScSettleNotification</a>
+  
+    <li><a href="./ScSettledNotification.html">ScSettledNotification</a>
+  
+    <li><a href="./ScStartNotification.html">ScStartNotification</a>
+  
+    <li><a href="./ScStartedNotification.html">ScStartedNotification</a>
+  
+    <li><a href="./ScSubconDepositedEvent.html">ScSubconDepositedEvent</a>
+  
+    <li><a href="./ScSubconDepositedNotification.html">ScSubconDepositedNotification</a>
+  
+    <li><a href="./ServiceCall.html">ServiceCall</a>
+  
+    <li><a href="./ServiceCallAcceptEvent.html">ServiceCallAcceptEvent</a>
+  
+    <li><a href="./ServiceCallAcceptedEvent.html">ServiceCallAcceptedEvent</a>
+  
+    <li><a href="./ServiceCallCancelEvent.html">ServiceCallCancelEvent</a>
+  
+    <li><a href="./ServiceCallCanceledEvent.html">ServiceCallCanceledEvent</a>
+  
+    <li><a href="./ServiceCallCharge.html">ServiceCallCharge</a>
+  
+    <li><a href="./ServiceCallCompleteEvent.html">ServiceCallCompleteEvent</a>
+  
+    <li><a href="./ServiceCallCompletedEvent.html">ServiceCallCompletedEvent</a>
+  
+    <li><a href="./ServiceCallDispatchEvent.html">ServiceCallDispatchEvent</a>
+  
+    <li><a href="./ServiceCallDispatchedEvent.html">ServiceCallDispatchedEvent</a>
+  
+    <li><a href="./ServiceCallEvent.html">ServiceCallEvent</a>
+  
+    <li><a href="./ServiceCallEventGenerator.html">ServiceCallEventGenerator</a>
+  
+    <li><a href="./ServiceCallInvoiceEvent.html">ServiceCallInvoiceEvent</a>
+  
+    <li><a href="./ServiceCallInvoicedEvent.html">ServiceCallInvoicedEvent</a>
+  
+    <li><a href="./ServiceCallNotification.html">ServiceCallNotification</a>
+  
+    <li><a href="./ServiceCallObserver.html">ServiceCallObserver</a>
+  
+    <li><a href="./ServiceCallPaidEvent.html">ServiceCallPaidEvent</a>
+  
+    <li><a href="./ServiceCallReceivedEvent.html">ServiceCallReceivedEvent</a>
+  
+    <li><a href="./ServiceCallRejectEvent.html">ServiceCallRejectEvent</a>
+  
+    <li><a href="./ServiceCallRejectedEvent.html">ServiceCallRejectedEvent</a>
+  
+    <li><a href="./ServiceCallSettleEvent.html">ServiceCallSettleEvent</a>
+  
+    <li><a href="./ServiceCallSettledEvent.html">ServiceCallSettledEvent</a>
+  
+    <li><a href="./ServiceCallStartEvent.html">ServiceCallStartEvent</a>
+  
+    <li><a href="./ServiceCallStartedEvent.html">ServiceCallStartedEvent</a>
+  
+    <li><a href="./ServiceCallTransferEvent.html">ServiceCallTransferEvent</a>
+  
+    <li><a href="./ServiceCallsController.html">ServiceCallsController</a>
+  
+    <li><a href="./ServiceCallsHelper.html">ServiceCallsHelper</a>
+  
+    <li><a href="./SessionsController.html">SessionsController</a>
+  
+    <li><a href="./StaticPagesController.html">StaticPagesController</a>
+  
+    <li><a href="./StaticPagesHelper.html">StaticPagesHelper</a>
+  
+    <li><a href="./StylingService.html">StylingService</a>
+  
+    <li><a href="./SubcontractingAgreement.html">SubcontractingAgreement</a>
+  
+    <li><a href="./SubcontractingAgreementObserver.html">SubcontractingAgreementObserver</a>
+  
+    <li><a href="./SubcontractingJob.html">SubcontractingJob</a>
+  
+    <li><a href="./Subcontractor.html">Subcontractor</a>
+  
+    <li><a href="./SubcontractorsController.html">SubcontractorsController</a>
+  
+    <li><a href="./SubcontractorsHelper.html">SubcontractorsHelper</a>
+  
+    <li><a href="./Supplier.html">Supplier</a>
+  
+    <li><a href="./SupplierAgreement.html">SupplierAgreement</a>
+  
+    <li><a href="./Ticket.html">Ticket</a>
+  
+    <li><a href="./TransferredServiceCall.html">TransferredServiceCall</a>
+  
+    <li><a href="./TransferredServiceCallObserver.html">TransferredServiceCallObserver</a>
+  
+    <li><a href="./User.html">User</a>
+  
+  </ul>
+</nav>
+
+  </div>
 </nav>
 
 <div id="documentation">
-<h1 class="class">class Ticket</h1>
+  <h1 class="class">class Ticket</h1>
 
-<div id="description" class="description">
+  <div id="description" class="description">
+    
+<h2 id="label-Schema+Information">Schema Information</h2>
 
-    <h2 id="label-Schema+Information">Schema Information</h2>
-
-    <p>Table name: tickets</p>
+<p>Table name: tickets</p>
 
 <pre>id                   :integer         not null, primary key
 customer_id          :integer
@@ -472,1167 +508,1232 @@ provider_status      :integer
 work_status          :integer
 re_transfer          :boolean</pre>
 
-</div>
-<!-- description -->
+  </div><!-- description -->
 
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
 
-<section id="5Buntitled-5D" class="documentation-section">
+    
 
+    
 
-<!-- Attributes -->
-<section id="attribute-method-details" class="method-section section">
-    <h3 class="section-header">Attributes</h3>
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
 
-
-    <div id="attribute-i-address1" class="method-detail">
+      
+      <div id="attribute-i-address1" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">address1</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">address1</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-address2" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-address2" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">address2</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">address2</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-city" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-city" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">city</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">city</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-company" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-company" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">company</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">company</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-completed_on_text" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-completed_on_text" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">completed_on_text</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">completed_on_text</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-country" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-country" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">country</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">country</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-email" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-email" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">email</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">email</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-mobile_phone" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-mobile_phone" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">mobile_phone</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">mobile_phone</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-new_customer" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-new_customer" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">new_customer</span><span
-                class="attribute-access-type">[RW]</span>
+          <span class="method-name">new_customer</span><span
+            class="attribute-access-type">[RW]</span>
         </div>
 
         <div class="method-description">
-
-
+        
+        
+        
         </div>
-    </div>
-
-    <div id="attribute-i-phone" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-phone" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">phone</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">phone</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-started_on_text" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-started_on_text" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">started_on_text</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">started_on_text</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-state" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-state" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">state</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">state</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-work_phone" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-work_phone" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">work_phone</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">work_phone</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
-
-    <div id="attribute-i-zip" class="method-detail">
+      </div>
+      
+      <div id="attribute-i-zip" class="method-detail">
         <div class="method-heading attribute-method-heading">
-            <span class="method-name">zip</span><span
-                class="attribute-access-type">[W]</span>
+          <span class="method-name">zip</span><span
+            class="attribute-access-type">[W]</span>
         </div>
 
         <div class="method-description">
-
-            <p>virtual attributes</p>
-
+        
+        <p>virtual attributes</p>
+        
         </div>
-    </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
 
-</section>
-<!-- attribute-method-details -->
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
 
-
-<!-- Methods -->
-
-<section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-<h3 class="section-header">Public Instance Methods</h3>
-
-
-<div id="method-i-address1" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">address1</span><span
+    
+      <div id="method-i-address1" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">address1</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="address1-source">
+          
+          <div class="method-source-code" id="address1-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">address1</span>
-  <span class="ruby-ivar">@address1</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:address1</span>)
+  <span class="ruby-ivar">@address1</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:address1</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- address1-source -->
+          
         </div>
-        <!-- address1-source -->
 
-    </div>
+        
 
+        
+      </div><!-- address1-method -->
 
-</div>
-<!-- address1-method -->
-
-
-<div id="method-i-address2" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">address2</span><span
+    
+      <div id="method-i-address2" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">address2</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="address2-source">
+          
+          <div class="method-source-code" id="address2-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 89</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">address2</span>
-  <span class="ruby-ivar">@address2</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:address2</span>)
+  <span class="ruby-ivar">@address2</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:address2</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- address2-source -->
+          
         </div>
-        <!-- address2-source -->
 
-    </div>
+        
 
+        
+      </div><!-- address2-method -->
 
-</div>
-<!-- address2-method -->
-
-
-<div id="method-i-before_create" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">before_create</span><span
+    
+      <div id="method-i-before_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">before_create</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="before_create-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 186</span>
+          
+          <div class="method-source-code" id="before_create-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 211</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">before_create</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> = <span class="ruby-node">&quot;#{customer.name} - #{address1}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- before_create-source -->
+          
         </div>
-        <!-- before_create-source -->
 
-    </div>
+        
 
+        
+      </div><!-- before_create-method -->
 
-</div>
-<!-- before_create-method -->
-
-
-<div id="method-i-build" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">build</span><span
+    
+      <div id="method-i-build" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">build</span><span
             class="method-args">(params)</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="build-source">
+          
+          <div class="method-source-code" id="build-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 46</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">build</span>(<span
-                        class="ruby-identifier">params</span>)
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span
-                        class="ruby-value">:buyer</span>].<span class="ruby-identifier">nil?</span> <span
-                        class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span
-                        class="ruby-value">:buyer</span>].<span class="ruby-identifier">empty?</span>
-    <span class="ruby-identifier">buyer</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:buyer_type</span>].<span
-                        class="ruby-identifier">classify</span>.<span class="ruby-identifier">constantize</span>.<span
-                        class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span
-                        class="ruby-value">:buyer</span>])
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:buyer</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:buyer</span>].<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">buyer</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:buyer_type</span>].<span class="ruby-identifier">classify</span>.<span class="ruby-identifier">constantize</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:buyer</span>])
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">params</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:buyer</span>)
   <span class="ruby-identifier">params</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:buyer_type</span>)
 
-  <span class="ruby-identifier">bom</span>        = <span class="ruby-constant">Bom</span>.<span
-                        class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-identifier">bom</span>        = <span class="ruby-constant">Bom</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>)
   <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">buyer</span>  = <span class="ruby-identifier">buyer</span>
-  <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">ticket</span> = <span class="ruby-identifier">proxy_association</span>.<span
-                        class="ruby-identifier">owner</span>
+  <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">ticket</span> = <span class="ruby-identifier">proxy_association</span>.<span class="ruby-identifier">owner</span>
   <span class="ruby-identifier">bom</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- build-source -->
+          
         </div>
-        <!-- build-source -->
 
-    </div>
+        
 
+        
+      </div><!-- build-method -->
 
-</div>
-<!-- build-method -->
-
-
-<div id="method-i-check_completed_on_text" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">check_completed_on_text</span><span
+    
+      <div id="method-i-check_completed_on_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check_completed_on_text</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="check_completed_on_text-source">
+          
+          <div class="method-source-code" id="check_completed_on_text-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">check_completed_on_text</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@completed_on_text</span>.<span class="ruby-identifier">present?</span> <span
-                        class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Time</span>.<span
-                        class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span
-                        class="ruby-ivar">@completed_on_text</span>).<span class="ruby-identifier">nil?</span>
-    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@completed_on_text</span>, <span
-                        class="ruby-string">&quot;cannot be parsed&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@completed_on_text</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@completed_on_text</span>).<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@completed_on_text</span>, <span class="ruby-string">&quot;cannot be parsed&quot;</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
-  <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@completed_on_text</span>, <span
-                        class="ruby-string">&quot;is out of range&quot;</span>
+  <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@completed_on_text</span>, <span class="ruby-string">&quot;is out of range&quot;</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- check_completed_on_text-source -->
+          
         </div>
-        <!-- check_completed_on_text-source -->
 
-    </div>
+        
 
+        
+      </div><!-- check_completed_on_text-method -->
 
-</div>
-<!-- check_completed_on_text-method -->
-
-
-<div id="method-i-check_started_on_text" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">check_started_on_text</span><span
+    
+      <div id="method-i-check_started_on_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check_started_on_text</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="check_started_on_text-source">
+          
+          <div class="method-source-code" id="check_started_on_text-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 152</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">check_started_on_text</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@started_on_text</span>.<span class="ruby-identifier">present?</span> <span
-                        class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Time</span>.<span
-                        class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span
-                        class="ruby-ivar">@started_on_text</span>).<span class="ruby-identifier">nil?</span>
-    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@started_on_text</span>, <span
-                        class="ruby-string">&quot;cannot be parsed&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@started_on_text</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@started_on_text</span>).<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@started_on_text</span>, <span class="ruby-string">&quot;cannot be parsed&quot;</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
-  <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@started_on_text</span>, <span
-                        class="ruby-string">&quot;is out of range&quot;</span>
+  <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-ivar">@started_on_text</span>, <span class="ruby-string">&quot;is out of range&quot;</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- check_started_on_text-source -->
+          
         </div>
-        <!-- check_started_on_text-source -->
 
-    </div>
+        
 
+        
+      </div><!-- check_started_on_text-method -->
 
-</div>
-<!-- check_started_on_text-method -->
-
-
-<div id="method-i-city" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">city</span><span
+    
+      <div id="method-i-city" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">city</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="city-source">
+          
+          <div class="method-source-code" id="city-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 93</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">city</span>
-  <span class="ruby-ivar">@city</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:city</span>)
+  <span class="ruby-ivar">@city</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:city</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- city-source -->
+          
         </div>
-        <!-- city-source -->
 
-    </div>
+        
 
+        
+      </div><!-- city-method -->
 
-</div>
-<!-- city-method -->
-
-
-<div id="method-i-company" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">company</span><span
+    
+      <div id="method-i-company" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">company</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="company-source">
+          
+          <div class="method-source-code" id="company-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 81</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">company</span>
-  <span class="ruby-ivar">@company</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:company</span>)
+  <span class="ruby-ivar">@company</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:company</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- company-source -->
+          
         </div>
-        <!-- company-source -->
 
-    </div>
+        
 
+        
+      </div><!-- company-method -->
 
-</div>
-<!-- company-method -->
-
-
-<div id="method-i-completed_on_text" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">completed_on_text</span><span
+    
+      <div id="method-i-completed_on_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">completed_on_text</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="completed_on_text-source">
+          
+          <div class="method-source-code" id="completed_on_text-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 126</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">completed_on_text</span>
-  <span class="ruby-ivar">@completed_on_text</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">completed_on</span>.<span
-                        class="ruby-identifier">try</span>(<span class="ruby-value">:strftime</span>, <span
-                        class="ruby-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
+  <span class="ruby-ivar">@completed_on_text</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">completed_on</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:strftime</span>, <span class="ruby-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
 
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- completed_on_text-source -->
+          
         </div>
-        <!-- completed_on_text-source -->
 
-    </div>
+        
 
+        
+      </div><!-- completed_on_text-method -->
 
-</div>
-<!-- completed_on_text-method -->
-
-
-<div id="method-i-country" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">country</span><span
+    
+      <div id="method-i-country" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">country</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="country-source">
+          
+          <div class="method-source-code" id="country-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 105</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">country</span>
-  <span class="ruby-ivar">@country</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:country</span>)
+  <span class="ruby-ivar">@country</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:country</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- country-source -->
+          
         </div>
-        <!-- country-source -->
 
-    </div>
+        
 
+        
+      </div><!-- country-method -->
 
-</div>
-<!-- country-method -->
-
-
-<div id="method-i-create_customer" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">create_customer</span><span
+    
+      <div id="method-i-create_customer" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_customer</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="create_customer-source">
+          
+          <div class="method-source-code" id="create_customer-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 160</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_customer</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">provider</span>
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">customer</span> = <span class="ruby-keyword">self</span>.<span
-                        class="ruby-identifier">provider</span>.<span class="ruby-identifier">customers</span>.<span
-                        class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span><span
-                        class="ruby-operator">:</span>         <span class="ruby-identifier">new_customer</span>,
-                                                <span class="ruby-identifier">address1</span><span
-                        class="ruby-operator">:</span>     <span class="ruby-identifier">address1</span>,
-                                                <span class="ruby-identifier">address2</span><span
-                        class="ruby-operator">:</span>     <span class="ruby-identifier">address2</span>,
-                                                <span class="ruby-identifier">country</span><span class="ruby-operator">:</span>      <span
-                        class="ruby-identifier">country</span>,
-                                                <span class="ruby-identifier">city</span><span
-                        class="ruby-operator">:</span>         <span class="ruby-identifier">city</span>,
-                                                <span class="ruby-identifier">state</span><span
-                        class="ruby-operator">:</span>        <span class="ruby-identifier">state</span>,
-                                                <span class="ruby-identifier">zip</span><span
-                        class="ruby-operator">:</span>          <span class="ruby-identifier">zip</span>,
-                                                <span class="ruby-identifier">phone</span><span
-                        class="ruby-operator">:</span>        <span class="ruby-identifier">phone</span>,
-                                                <span class="ruby-identifier">mobile_phone</span><span
-                        class="ruby-operator">:</span> <span class="ruby-identifier">mobile_phone</span>) <span
-                        class="ruby-keyword">if</span> <span class="ruby-identifier">new_customer</span>.<span
-                        class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">customer</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">provider</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span>         <span class="ruby-identifier">new_customer</span>,
+                                                <span class="ruby-identifier">address1</span><span class="ruby-operator">:</span>     <span class="ruby-identifier">address1</span>,
+                                                <span class="ruby-identifier">address2</span><span class="ruby-operator">:</span>     <span class="ruby-identifier">address2</span>,
+                                                <span class="ruby-identifier">country</span><span class="ruby-operator">:</span>      <span class="ruby-identifier">country</span>,
+                                                <span class="ruby-identifier">city</span><span class="ruby-operator">:</span>         <span class="ruby-identifier">city</span>,
+                                                <span class="ruby-identifier">state</span><span class="ruby-operator">:</span>        <span class="ruby-identifier">state</span>,
+                                                <span class="ruby-identifier">zip</span><span class="ruby-operator">:</span>          <span class="ruby-identifier">zip</span>,
+                                                <span class="ruby-identifier">phone</span><span class="ruby-operator">:</span>        <span class="ruby-identifier">phone</span>,
+                                                <span class="ruby-identifier">mobile_phone</span><span class="ruby-operator">:</span> <span class="ruby-identifier">mobile_phone</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">new_customer</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">nil?</span>
 
   <span class="ruby-keyword">else</span>
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">customer</span> = <span class="ruby-keyword">self</span>.<span
-                        class="ruby-identifier">organization</span>.<span class="ruby-identifier">customers</span>.<span
-                        class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span><span
-                        class="ruby-operator">:</span>         <span class="ruby-identifier">new_customer</span>,
-                                                    <span class="ruby-identifier">address1</span><span
-                        class="ruby-operator">:</span>     <span class="ruby-identifier">address1</span>,
-                                                    <span class="ruby-identifier">address2</span><span
-                        class="ruby-operator">:</span>     <span class="ruby-identifier">address2</span>,
-                                                    <span class="ruby-identifier">country</span><span
-                        class="ruby-operator">:</span>      <span class="ruby-identifier">country</span>,
-                                                    <span class="ruby-identifier">city</span><span
-                        class="ruby-operator">:</span>         <span class="ruby-identifier">city</span>,
-                                                    <span class="ruby-identifier">state</span><span
-                        class="ruby-operator">:</span>        <span class="ruby-identifier">state</span>,
-                                                    <span class="ruby-identifier">zip</span><span class="ruby-operator">:</span>          <span
-                        class="ruby-identifier">zip</span>,
-                                                    <span class="ruby-identifier">phone</span><span
-                        class="ruby-operator">:</span>        <span class="ruby-identifier">phone</span>,
-                                                    <span class="ruby-identifier">mobile_phone</span><span
-                        class="ruby-operator">:</span> <span class="ruby-identifier">mobile_phone</span>) <span
-                        class="ruby-keyword">if</span> <span class="ruby-identifier">new_customer</span>.<span
-                        class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">customer</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">organization</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span>         <span class="ruby-identifier">new_customer</span>,
+                                                    <span class="ruby-identifier">address1</span><span class="ruby-operator">:</span>     <span class="ruby-identifier">address1</span>,
+                                                    <span class="ruby-identifier">address2</span><span class="ruby-operator">:</span>     <span class="ruby-identifier">address2</span>,
+                                                    <span class="ruby-identifier">country</span><span class="ruby-operator">:</span>      <span class="ruby-identifier">country</span>,
+                                                    <span class="ruby-identifier">city</span><span class="ruby-operator">:</span>         <span class="ruby-identifier">city</span>,
+                                                    <span class="ruby-identifier">state</span><span class="ruby-operator">:</span>        <span class="ruby-identifier">state</span>,
+                                                    <span class="ruby-identifier">zip</span><span class="ruby-operator">:</span>          <span class="ruby-identifier">zip</span>,
+                                                    <span class="ruby-identifier">phone</span><span class="ruby-operator">:</span>        <span class="ruby-identifier">phone</span>,
+                                                    <span class="ruby-identifier">mobile_phone</span><span class="ruby-operator">:</span> <span class="ruby-identifier">mobile_phone</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">new_customer</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- create_customer-source -->
+          
         </div>
-        <!-- create_customer-source -->
 
-    </div>
+        
 
+        
+      </div><!-- create_customer-method -->
 
-</div>
-<!-- create_customer-method -->
-
-
-<div id="method-i-customer_belongs_to_provider" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">customer_belongs_to_provider</span><span
+    
+      <div id="method-i-customer_belongs_to_provider" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">customer_belongs_to_provider</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="customer_belongs_to_provider-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 240</span>
+          
+          <div class="method-source-code" id="customer_belongs_to_provider-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 265</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">customer_belongs_to_provider</span>
-  <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:customer</span>, <span
-                        class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span
-                        class="ruby-string">'service_call.errors.customer_does_not_belong_to_provider'</span>)) <span
-                        class="ruby-keyword">unless</span> <span class="ruby-operator">!</span><span
-                        class="ruby-identifier">customer</span> <span class="ruby-operator">||</span> <span
-                        class="ruby-identifier">customer</span>.<span
-                        class="ruby-identifier">organization_id</span> <span class="ruby-operator">==</span> <span
-                        class="ruby-identifier">provider_id</span>
+  <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:customer</span>, <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">'service_call.errors.customer_does_not_belong_to_provider'</span>)) <span class="ruby-keyword">unless</span> <span class="ruby-operator">!</span><span class="ruby-identifier">customer</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">organization_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">provider_id</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- customer_belongs_to_provider-source -->
+          
         </div>
-        <!-- customer_belongs_to_provider-source -->
 
-    </div>
+        
 
+        
+      </div><!-- customer_belongs_to_provider-method -->
 
-</div>
-<!-- customer_belongs_to_provider-method -->
-
-
-<div id="method-i-email" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">email</span><span
+    
+      <div id="method-i-email" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">email</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="email-source">
+          
+          <div class="method-source-code" id="email-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">email</span>
-  <span class="ruby-ivar">@email</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:email</span>)
+  <span class="ruby-ivar">@email</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:email</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- email-source -->
+          
         </div>
-        <!-- email-source -->
 
-    </div>
+        
 
+        
+      </div><!-- email-method -->
 
-</div>
-<!-- email-method -->
-
-
-<div id="method-i-mobile_phone" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">mobile_phone</span><span
+    
+      <div id="method-i-mobile_phone" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">mobile_phone</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="mobile_phone-source">
+          
+          <div class="method-source-code" id="mobile_phone-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 113</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">mobile_phone</span>
-  <span class="ruby-ivar">@mobile_phone</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span
-                        class="ruby-identifier">try</span>(<span class="ruby-value">:mobile_phone</span>)
+  <span class="ruby-ivar">@mobile_phone</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:mobile_phone</span>)
 
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- mobile_phone-source -->
+          
         </div>
-        <!-- mobile_phone-source -->
 
-    </div>
+        
 
+        
+      </div><!-- mobile_phone-method -->
 
-</div>
-<!-- mobile_phone-method -->
-
-
-<div id="method-i-phone" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">phone</span><span
+    
+      <div id="method-i-phone" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">phone</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="phone-source">
+          
+          <div class="method-source-code" id="phone-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">phone</span>
-  <span class="ruby-ivar">@phone</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:phone</span>)
+  <span class="ruby-ivar">@phone</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:phone</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- phone-source -->
+          
         </div>
-        <!-- phone-source -->
 
-    </div>
+        
 
+        
+      </div><!-- phone-method -->
 
-</div>
-<!-- phone-method -->
-
-
-<div id="method-i-provider_cost" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">provider_cost</span><span
+    
+      <div id="method-i-provider_cost" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">provider_cost</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="provider_cost-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 212</span>
+          
+          <div class="method-source-code" id="provider_cost-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 237</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">provider_cost</span>
-  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span
-                        class="ruby-value">0</span>)
-  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span
-                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
-                        class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span
-                        class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_cost</span> <span
-                        class="ruby-keyword">if</span> <span class="ruby-identifier">bom</span>.<span
-                        class="ruby-identifier">buyer</span>.<span class="ruby-identifier">becomes</span>(<span
-                        class="ruby-constant">Provider</span>) <span class="ruby-operator">==</span> <span
-                        class="ruby-identifier">provider</span>
+  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_cost</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">buyer</span>.<span class="ruby-identifier">becomes</span>(<span class="ruby-constant">Provider</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">provider</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">total</span>
 
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- provider_cost-source -->
+          
         </div>
-        <!-- provider_cost-source -->
 
-    </div>
+        
 
+        
+      </div><!-- provider_cost-method -->
 
-</div>
-<!-- provider_cost-method -->
-
-
-<div id="method-i-save_completed_on_text" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">save_completed_on_text</span><span
+    
+      <div id="method-i-save_completed_on_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save_completed_on_text</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="save_completed_on_text-source">
+          
+          <div class="method-source-code" id="save_completed_on_text-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 131</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save_completed_on_text</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">completed_on</span> = <span
-                        class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span
-                        class="ruby-identifier">parse</span>(<span class="ruby-ivar">@completed_on_text</span>) <span
-                        class="ruby-keyword">if</span> <span class="ruby-ivar">@completed_on_text</span>.<span
-                        class="ruby-identifier">present?</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">completed_on</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@completed_on_text</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@completed_on_text</span>.<span class="ruby-identifier">present?</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- save_completed_on_text-source -->
+          
         </div>
-        <!-- save_completed_on_text-source -->
 
-    </div>
+        
 
+        
+      </div><!-- save_completed_on_text-method -->
 
-</div>
-<!-- save_completed_on_text-method -->
-
-
-<div id="method-i-save_started_on_text" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">save_started_on_text</span><span
+    
+      <div id="method-i-save_started_on_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save_started_on_text</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="save_started_on_text-source">
+          
+          <div class="method-source-code" id="save_started_on_text-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save_started_on_text</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">started_on</span> = <span class="ruby-constant">Time</span>.<span
-                        class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span
-                        class="ruby-ivar">@started_on_text</span>) <span class="ruby-keyword">if</span> <span
-                        class="ruby-ivar">@started_on_text</span>.<span class="ruby-identifier">present?</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">started_on</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">zone</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@started_on_text</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@started_on_text</span>.<span class="ruby-identifier">present?</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- save_started_on_text-source -->
+          
         </div>
-        <!-- save_started_on_text-source -->
 
-    </div>
+        
 
+        
+      </div><!-- save_started_on_text-method -->
 
-</div>
-<!-- save_started_on_text-method -->
-
-
-<div id="method-i-started_on_text" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">started_on_text</span><span
+    
+      <div id="method-i-started_on_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">started_on_text</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="started_on_text-source">
+          
+          <div class="method-source-code" id="started_on_text-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 143</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">started_on_text</span>
-  <span class="ruby-ivar">@started_on_text</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">started_on</span>.<span
-                        class="ruby-identifier">try</span>(<span class="ruby-value">:strftime</span>, <span
-                        class="ruby-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
+  <span class="ruby-ivar">@started_on_text</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">started_on</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:strftime</span>, <span class="ruby-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
 
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- started_on_text-source -->
+          
         </div>
-        <!-- started_on_text-source -->
 
-    </div>
+        
 
+        
+      </div><!-- started_on_text-method -->
 
-</div>
-<!-- started_on_text-method -->
-
-
-<div id="method-i-state" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">state</span><span
+    
+      <div id="method-i-state" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">state</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="state-source">
+          
+          <div class="method-source-code" id="state-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 97</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">state</span>
-  <span class="ruby-ivar">@state</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:city</span>)
+  <span class="ruby-ivar">@state</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:city</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- state-source -->
+          
         </div>
-        <!-- state-source -->
 
-    </div>
+        
 
+        
+      </div><!-- state-method -->
 
-</div>
-<!-- state-method -->
-
-
-<div id="method-i-subcontractor_cost" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">subcontractor_cost</span><span
+    
+      <div id="method-i-subcontractor_cost" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subcontractor_cost</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="subcontractor_cost-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 221</span>
+          
+          <div class="method-source-code" id="subcontractor_cost-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 246</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">subcontractor_cost</span>
-  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span
-                        class="ruby-value">0</span>)
-  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span
-                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
-                        class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span
-                        class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_cost</span> <span
-                        class="ruby-keyword">if</span> <span class="ruby-identifier">bom</span>.<span
-                        class="ruby-identifier">buyer</span>.<span class="ruby-identifier">becomes</span>(<span
-                        class="ruby-constant">Subcontractor</span>) <span class="ruby-operator">==</span> <span
-                        class="ruby-identifier">subcontractor</span>
+  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_cost</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">buyer</span>.<span class="ruby-identifier">becomes</span>(<span class="ruby-constant">Subcontractor</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">subcontractor</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">total</span>
 
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- subcontractor_cost-source -->
+          
         </div>
-        <!-- subcontractor_cost-source -->
 
-    </div>
+        
 
+        
+      </div><!-- subcontractor_cost-method -->
 
-</div>
-<!-- subcontractor_cost-method -->
-
-
-<div id="method-i-technician_cost" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">technician_cost</span><span
+    
+      <div id="method-i-technician_cost" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">technician_cost</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="technician_cost-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 230</span>
+          
+          <div class="method-source-code" id="technician_cost-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 255</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">technician_cost</span>
-  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span
-                        class="ruby-value">0</span>)
-  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span
-                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
-                        class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span
-                        class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_cost</span> <span
-                        class="ruby-keyword">if</span> <span class="ruby-identifier">bom</span>.<span
-                        class="ruby-identifier">buyer</span> <span class="ruby-operator">==</span> <span
-                        class="ruby-identifier">technician</span>
+  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_cost</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">buyer</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">technician</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">total</span>
 
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- technician_cost-source -->
+          
         </div>
-        <!-- technician_cost-source -->
 
-    </div>
+        
 
+        
+      </div><!-- technician_cost-method -->
 
-</div>
-<!-- technician_cost-method -->
-
-
-<div id="method-i-total_cost" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">total_cost</span><span
+    
+      <div id="method-i-total_cost" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">total_cost</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="total_cost-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 190</span>
+          
+          <div class="method-source-code" id="total_cost-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 215</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">total_cost</span>
 
-  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span
-                        class="ruby-value">0</span>)
-  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span
-                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
-                        class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span
-                        class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_cost</span>
+  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_cost</span>
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-identifier">total</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- total_cost-source -->
+          
         </div>
-        <!-- total_cost-source -->
 
-    </div>
+        
 
+        
+      </div><!-- total_cost-method -->
 
-</div>
-<!-- total_cost-method -->
-
-
-<div id="method-i-total_price" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">total_price</span><span
+    
+      <div id="method-i-total_price" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">total_price</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="total_price-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 200</span>
+          
+          <div class="method-source-code" id="total_price-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 225</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">total_price</span>
-  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span
-                        class="ruby-value">0</span>)
-  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span
-                        class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span
-                        class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span
-                        class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_price</span>
+  <span class="ruby-identifier">total</span> = <span class="ruby-constant">Money</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">boms</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">bom</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">bom</span>.<span class="ruby-identifier">total_price</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">total</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- total_price-source -->
+          
         </div>
-        <!-- total_price-source -->
 
-    </div>
+        
 
+        
+      </div><!-- total_price-method -->
 
-</div>
-<!-- total_price-method -->
-
-
-<div id="method-i-total_price_validation" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">total_price_validation</span><span
+    
+      <div id="method-i-total_price_validation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">total_price_validation</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="total_price_validation-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 244</span>
+          
+          <div class="method-source-code" id="total_price_validation-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 269</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">total_price_validation</span>
-  <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:total_price</span>, <span
-                        class="ruby-string">&quot;is not a number&quot;</span> <span class="ruby-keyword">unless</span> <span
-                        class="ruby-operator">!</span><span class="ruby-identifier">total_price</span>.<span
-                        class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span
-                        class="ruby-identifier">total_price</span>.<span
-                        class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">BigDecimal</span>)
+  <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:total_price</span>, <span class="ruby-string">&quot;is not a number&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-operator">!</span><span class="ruby-identifier">total_price</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">total_price</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">BigDecimal</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- total_price_validation-source -->
+          
         </div>
-        <!-- total_price_validation-source -->
 
-    </div>
+        
 
+        
+      </div><!-- total_price_validation-method -->
 
-</div>
-<!-- total_price_validation-method -->
-
-
-<div id="method-i-total_profit" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">total_profit</span><span
+    
+      <div id="method-i-total_profit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">total_profit</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="total_profit-source">
-            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 208</span>
+          
+          <div class="method-source-code" id="total_profit-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 233</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">total_profit</span>
   <span class="ruby-identifier">total_price</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">total_cost</span>
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- total_profit-source -->
+          
         </div>
-        <!-- total_profit-source -->
 
-    </div>
+        
 
+        
+      </div><!-- total_profit-method -->
 
-</div>
-<!-- total_profit-method -->
-
-
-<div id="method-i-work_phone" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">work_phone</span><span
+    
+      <div id="method-i-validate_collector" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">validate_collector</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
+          
+          <div class="method-source-code" id="validate_collector-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 185</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_collector</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">multi_user?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:collector</span>, <span class="ruby-string">&quot;You must specify who collected the payment&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">collector</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">collector</span> = <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">end</span>
 
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- validate_collector-source -->
+          
+        </div>
 
-        <div class="method-source-code" id="work_phone-source">
+        
+
+        
+      </div><!-- validate_collector-method -->
+
+    
+      <div id="method-i-validate_subcontractor" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">validate_subcontractor</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>this validator runs only for a specific state of a service call</p>
+          
+
+          
+          <div class="method-source-code" id="validate_subcontractor-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 195</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_subcontractor</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:subcontractor</span>, <span class="ruby-string">&quot;You must specify a subcontractor when transferring&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">subcontractor</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:subcontractor</span>, <span class="ruby-string">&quot;a provider can't transfer a ticket to himself&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">subcontractor_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">organization_id</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- validate_subcontractor-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- validate_subcontractor-method -->
+
+    
+      <div id="method-i-validate_technician" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">validate_technician</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>this validator runs only for a specific state of a service call</p>
+          
+
+          
+          <div class="method-source-code" id="validate_technician-source">
+            <pre><span class="ruby-comment"># File app/models/ticket.rb, line 201</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">validate_technician</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">multi_user?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">transferred?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span> <span class="ruby-value">:technician</span>, <span class="ruby-string">&quot;You must specify a technician&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">technician</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">technician</span> = <span class="ruby-identifier">organization</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">transferred?</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- validate_technician-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- validate_technician-method -->
+
+    
+      <div id="method-i-work_phone" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">work_phone</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="work_phone-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 118</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">work_phone</span>
-  <span class="ruby-ivar">@work_phone</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span
-                        class="ruby-identifier">try</span>(<span class="ruby-value">:work_phone</span>)
+  <span class="ruby-ivar">@work_phone</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:work_phone</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- work_phone-source -->
+          
         </div>
-        <!-- work_phone-source -->
 
-    </div>
+        
 
+        
+      </div><!-- work_phone-method -->
 
-</div>
-<!-- work_phone-method -->
-
-
-<div id="method-i-zip" class="method-detail ">
-
-    <div class="method-heading">
-        <span class="method-name">zip</span><span
+    
+      <div id="method-i-zip" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">zip</span><span
             class="method-args">()</span>
-        <span class="method-click-advice">click to toggle source</span>
-    </div>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
 
+        <div class="method-description">
+          
+          
+          
 
-    <div class="method-description">
-
-
-        <div class="method-source-code" id="zip-source">
+          
+          <div class="method-source-code" id="zip-source">
             <pre><span class="ruby-comment"># File app/models/ticket.rb, line 101</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">zip</span>
-  <span class="ruby-ivar">@zip</span> <span class="ruby-operator">||=</span> <span
-                        class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span
-                        class="ruby-value">:zip</span>)
+  <span class="ruby-ivar">@zip</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">try</span>(<span class="ruby-value">:zip</span>)
 <span class="ruby-keyword">end</span></pre>
+          </div><!-- zip-source -->
+          
         </div>
-        <!-- zip-source -->
 
-    </div>
+        
 
+        
+      </div><!-- zip-method -->
 
-</div>
-<!-- zip-method -->
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
 
-
-</section>
-<!-- public-instance-method-details -->
-
-</section>
-<!-- 5Buntitled-5D -->
-
-</div>
-<!-- documentation -->
+</div><!-- documentation -->
 
 
 <footer id="validator-badges">
-    <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-
-    <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
-
-    <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

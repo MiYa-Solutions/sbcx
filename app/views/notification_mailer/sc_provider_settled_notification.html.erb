@@ -1,0 +1,7 @@
+Dear <%= "#{@user.first_name} #{@user.last_name}" %>,
+
+# TODO PENDING IMPLEMENTATION PROVIDER MARKED AS SETTLED
+
+<%= I18n.t('notification_mailer.provider_settled_service_call.content', provider: @service_call.provider.name, ref: @service_call.ref_id) %>
+
+<%= link_to "#{ServiceCall.name.humanize} #{@service_call.ref_id}", @service_call.becomes(ServiceCall) %>

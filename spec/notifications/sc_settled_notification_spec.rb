@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ScSettledNotification do
+describe ScSubconSettledNotification do
   let(:service_call) { FactoryGirl.create(:my_service_call, subcontractor: FactoryGirl.create(:member).becomes(Subcontractor)) }
 
 
@@ -16,7 +16,7 @@ describe ScSettledNotification do
         subcon_sc.paid
         subcon_sc.settle
 
-      }.to change { ScSettledNotification.count }.by (1) # should notify both provider and subcontractor
+      }.to change { ScSubconSettledNotification.count }.by (1) # should notify both provider and subcontractor
 
     end
   end

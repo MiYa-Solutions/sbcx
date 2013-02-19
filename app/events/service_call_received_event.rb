@@ -12,8 +12,4 @@ class ServiceCallReceivedEvent < ServiceCallEvent
     ScReceivedNotification
   end
 
-  def update_provider
-    # no need to update the provider for this event
-  end
-
 end

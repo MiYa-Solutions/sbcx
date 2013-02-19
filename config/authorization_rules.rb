@@ -27,7 +27,10 @@ authorization do
     has_permission_on :providers, :to => :index
     has_permission_on :subcontractors, :to => :index
     has_permission_on :affiliates, :to => :index
-    has_permission_on :service_calls, :to => [:index, :show, :edit, :update]
+    has_permission_on :service_calls, :to => :index
+    has_permission_on :service_calls, :to => [:show, :edit, :update] do
+      if_attribute :organization_id => is { user.organization_id }
+    end
 
   end
 
@@ -41,9 +44,6 @@ authorization do
       if_attribute :organization => { :subcontrax_member => is_not { true } }, :organization_id => is_in { user.organization.providers.pluck('organizations.id') }
     end
     has_permission_on :service_calls, :to => [:new, :create] do
-    end
-    has_permission_on :service_calls, :to => [:edit, :index, :show, :update] do
-      if_attribute :organization_id => is { user.organization.id }
     end
 
   end

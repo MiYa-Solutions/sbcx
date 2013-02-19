@@ -49,8 +49,12 @@ class MyServiceCall < ServiceCall
   state_machine :status, :initial => :new do
 
     state :new, value: STATUS_NEW
-    state :open, value: STATUS_OPEN
-    state :transferred, value: STATUS_TRANSFERRED
+    state :open, value: STATUS_OPEN do
+      validate { |sc| sc.validate_technician }
+    end
+    state :transferred, value: STATUS_TRANSFERRED do
+      validate { |sc| sc.validate_subcontractor }
+    end
     state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED
 
@@ -98,11 +102,15 @@ class MyServiceCall < ServiceCall
   state_machine :billing_status, initial: :pending, namespace: 'payment' do
     state :pending, value: BILLING_STATUS_PENDING
     state :invoiced, value: BILLING_STATUS_INVOICED
-    state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE
+    state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE do
+      validate { |sc| sc.validate_collector }
+    end
     state :overdue, value: BILLING_STATUS_OVERDUE
     state :paid, value: BILLING_STATUS_PAID
     state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
-    state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON
+    state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
+      validate { |sc| sc.validate_collector }
+    end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
 
     after_failure do |service_call, transition|
@@ -114,7 +122,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? }
+      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? && sc.allow_collection? }
     end
 
     event :overdue do
