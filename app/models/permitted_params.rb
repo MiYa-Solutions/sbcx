@@ -288,7 +288,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :website,
      :work_phone,
      :zip,
-     :organization_role_ids,
+     {:organization_role_ids => []},
      :provider_id,
      :users_attributes,
      :provider_attributes,
