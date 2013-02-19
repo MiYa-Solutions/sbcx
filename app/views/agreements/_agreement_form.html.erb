@@ -10,6 +10,8 @@
             <%= hidden_field_tag 'otherparty_id', other_party.id %>
             <%= hidden_field_tag :type, value: SubcontractingAgreement.name %>
             <!--<#%= select_tag SubcontractingAgreement.name, :as => :hidden %>-->
+            <!--<#%= hidden_field_tag :agreement_type, value: "subcontracting_agreement" %>-->
+
             <%= select_tag 'agreement_type', options_for_select(organization_agreement_types), include_blank: true %>
 
             <!--@browser.hidden(value: 'BS').parent.checkboxes.first.set-->
