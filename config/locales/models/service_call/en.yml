@@ -36,6 +36,8 @@ en:
           states:
             pending: "Pending"
             claimed_as_settled: "Claimed As Settled"
+            settled: "Settled"
+            claim_settled: "Settled?"
         billing_status:
           states:
             invoiced_by_subcon: "Invoiced (Subcontractor)"
@@ -56,17 +58,6 @@ en:
             in_progress: "In Progress"
             work_done: "Done"
             closed: "Closed"
-            canceled: "Canceled"
-        subcontractor_status:
-          states:
-            pending: "Pending"
-            accepted: "Accepted"
-            rejected: "Rejected"
-            dispatched: "Dispatched"
-            in_progress: "In Progress"
-            work_done: "Completed"
-            settled: "Settled"
-            na: "NA"
             canceled: "Canceled"
 
         billing_status:
@@ -106,6 +97,10 @@ en:
             collected: "Collected"
             deposited_to_prov: "Deposited"
             deposited: "Deposit Confirmed"
+        provider_status:
+          states:
+            settled: "Settled"
+            claim_settled: "Settled?"
   messages:
     service_call:
       event: 'The service call was %{event_name} successfully'
@@ -183,3 +178,6 @@ en:
   service_call_provider_settle_event:
     name: "Settled With Provider"
     description: "You have indicated that the commissions and fees have been settled with the provider"
+  service_call_provider_confirmed_settled_event:
+    name: "Provider Confirmed Settlement"
+    description: "The provider agrees with you that this the commissions and fees for this service call have been settled"

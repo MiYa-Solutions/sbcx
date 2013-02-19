@@ -106,7 +106,7 @@ module ServiceCallsHelper
   end
 
   def subcontractor_status_forms(service_call)
-    unless service_call.subcontractor.nil? || service_call.subcontractor.subcontrax_member?
+    unless service_call.subcontractor_status_events.empty?
       concat(content_tag :h3, t('headers.subcontractor_actions')) unless service_call.subcontractor_status_events.empty?
 
       service_call.subcontractor_status_events.collect do |event|

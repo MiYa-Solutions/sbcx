@@ -63,7 +63,13 @@ class ServiceCallObserver < ActiveRecord::Observer
   end
 
   def after_settle_subcon(service_call, transition)
-    Rails.logger.debug { "invoked observer BEFORE settle_subcon \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    Rails.logger.debug { "invoked observer AFTER settle_subcon \n #{service_call.inspect} \n #{transition.args.inspect}" }
+  end
+
+  def before_confirm_settled_subcon(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE confirm_settled_subcon \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    service_call.events << ScConfirmSettledSubconEvent.new
+
   end
 
 end

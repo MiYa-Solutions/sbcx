@@ -107,3 +107,7 @@ en:
       html_message: 'The provider (%{provider}) claims the fees for this %{link} (%{ref}) have been settled. If you agree please confirm.'
       subject: 'The Provider Claims Job %{ref} Is Settled'
       content: 'The provider (%{provider}) claims you have settled the fees for commissions for this job %{ref}. You should confirm you agree with this statment by cicking ont the applicable button. If you disagree, please contact your provider to resolve the issue.'
+    sc_provider_confirmed_settled_notification:
+      html_message: 'The provider (%{provider}) has confirmed %{link} (%{ref}) has been settled'
+      subject: 'Settlement With The Provider Has Been Confirmed For %{ref}'
+      content: 'The provider (%{provider}) agrees with your indication that job %{ref} has been settled'

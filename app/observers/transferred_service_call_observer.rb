@@ -57,5 +57,12 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ScProviderSettleEvent.new
   end
 
+  def before_confirm_settled_provider(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE confirm_settled_provider \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    service_call.events << ScConfirmSettledProviderEvent.new
+
+  end
+
+
 
 end

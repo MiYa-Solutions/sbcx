@@ -88,7 +88,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     case obj.class.name
       when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :billing_status_event, :collector_id,
+          permitted_attributes = [:status_event, :billing_status_event, :collector_id, :subcontractor_status_event,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -113,6 +113,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
         permitted_attributes << :work_status_event unless obj.transferred? && obj.subcontractor.subcontrax_member?
+
       when TransferredServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
           permitted_attributes = [:status_event,
