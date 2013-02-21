@@ -198,12 +198,22 @@ footer {
   }
 
   .add_member {
-    margin-left: 45px;
+    //margin-left: 45px;
     width: 100%;
   }
 
 
 }
+
+#new-agreement-button {
+  margin-left: 80px;
+}
+
+#empty_agreement_notice {
+  margin-left: -30px;
+}
+
+
 
 .miya_blue_note {
 
@@ -559,7 +569,8 @@ smart_alert {
 
 .action_buttons_service_call {
 
-  margin-left: 15%;
+  padding-left: 15%;
+
 
   .btn-large {
     width: 70%;
@@ -579,6 +590,12 @@ smart_alert {
   input, textarea {
     width: 68%;
   }
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    float: right;
+    margin-right: 30%;
+    margin-top: -1.499em;
+  }
 }
 
 .success {
@@ -590,6 +607,20 @@ smart_alert {
 
   .form-actions {
     padding-left: 20%;
+  }
+}
+
+#posting_rule_type {
+  width: 120px;
+}
+
+#payment_type {
+  width: 120px;
+}
+
+#new_posting_rule {
+  input, textarea {
+    width: 30%;
   }
 }
 
@@ -727,10 +758,20 @@ smart_alert {
 .affiliate_balance {
   min-height: 350px;
 }
+
+.agreement_rules {
+  min-height: 148px;
+}
+
+.agreement_payment {
+  min-height: 84px;
+
+}
+
+
 .affiliate_info {
   min-height: 350px;
 
-  //
   //.table-striped tbody tr:nth-child(2n) td, .table-striped tbody tr:nth-child(2n) th {
   //  width: 20%;
   //}

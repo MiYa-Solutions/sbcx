@@ -73,6 +73,11 @@ en:
       parts: "Parts"
       activate: "Activate"
       add_rule: "Add Rule"
+      total: "Total"
+      agreement_rules: "Agreement Rules"
+      payment_methods: "Payment Methods"
+      add_payment: "Add Payment"
+      agreement_history: "Agreement History"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"

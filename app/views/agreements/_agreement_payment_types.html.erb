@@ -1,0 +1,53 @@
+<div class="agreement_payment">
+<div class="smart_label">
+  <ul>
+    <li><h1><%= I18n.t('general.general.payment_methods') %></h1></li>
+    <li>
+      <%= link_to I18n.t('general.general.add_payment'), '#', :class => 'btn btn-small btn-primary', id: 'new-rule-button', data: { toggle: "collapse", target: "#payments" } %>
+    </li>
+  </ul>
+</div>
+
+<br>
+
+<div id="payments" class="collapse agreement_new_rule">
+  <%= render 'payments/payment_form'%>
+</div>
+
+
+<% unless @agreement.payments.empty? %>
+
+    <table class="table table-striped" id="payment_types_table">
+      <thead>
+      <tr>
+        <th><%= Payment.human_attribute_name(:id) %> </th>
+        <th><%= Payment.human_attribute_name(:type) %> </th>
+        <th><%= Payment.human_attribute_name(:rate) %></th>
+        <th><%= Payment.human_attribute_name(:rate_type) %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @agreement.payments.each do |payment| %>
+          <tr>
+            <td>
+              <%= payment.id %>
+            </td>
+            <td>
+              <%= payment.type %>
+            </td>
+            <td>
+              <%= payment.rate %>
+            </td>
+            <td>
+              <%= payment.rate_type %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+<% end %>
+
+
+</div>
+

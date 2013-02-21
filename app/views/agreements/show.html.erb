@@ -19,260 +19,40 @@
 <div class="well well_height">
 
   <div class="row-fluid">
-    <div class="span5">
-
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= I18n.t('general.general.agreement_id').html_safe + "&nbsp;".html_safe %><%= @agreement.id %></h1>
-          </li>
-          <li></li>
-        </ul>
-      </div>
-
-      <table class="table table-striped table-condensed">
-        <tbody>
-        <tr>
-          <td><%= I18n.t('general.general.name') %></td>
-          <td><h4><%= @agreement.name %></h4></td>
-        </tr>
-        <tr>
-          <td><%= @agreement.class.human_attribute_name(:status) %></td>
-          <td><h4><%= @agreement.human_status_name %></h4></td>
-        </tr>
-        <tr>
-          <td><%= @agreement.class.human_attribute_name(:organization) %></td>
-          <td><h4><%= @agreement.organization.name %></h4></td>
-        </tr>
-        <tr>
-          <td><%= @agreement.class.human_attribute_name(:counterparty) %></td>
-          <td><h4><%= @agreement.counterparty.name %></h4></td>
-        </tr>
-        <tr>
-          <td><%= I18n.t('general.general.created_by') %></td>
-          <td><h4><%= @agreement.creator.name %></h4></td>
-        </tr>
-        <tr>
-          <td><%= I18n.t('general.general.created_at') %></td>
-          <td><h4><%= l @agreement.created_at, :format => :long %></h4></td>
-        </tr>
-        <tr>
-          <td><%= I18n.t('general.general.updated') %></td>
-          <td><h4><%= l @agreement.updated_at, :format => :long %></h4></td>
-        </tr>
-
-        </tbody>
-      </table>
-
-      <div class="form-actions">
-        <%= link_to 'Back', affiliate_path(@agreement), :class => 'btn btn-medium' %>
-      </div>
-
-    </div>
+    <%= render :partial => 'agreement_info' %>
 
     <div class="span7">
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= I18n.t('general.general.actions') %></h1></li>
-          <li>
-          <li>
-            <%= link_to I18n.t('general.general.add_rule'), '#', :class => 'btn btn-small btn-primary', id: 'new-rule-button', data: { toggle: "collapse", target: "#posting_rules" } %>
-          </li>
-          </li>
-        </ul>
-      </div>
-      <br>
-      <div id="posting_rules" class="collapse agreement_new_rule">
-        <%= render 'posting_rules/posting_rule_form' %>
-      </div>
-      <br>
-      <%= agreement_events(@agreement) %>
-
+      <%= render :partial => 'agreement_rules' %>
+      <br><br>
+      <%= render :partial => 'agreement_payment_types' %><br>
+      <br><br>
     </div>
   </div>
 
-  <br>
-  <br>
-  <br>
-  <br>
-
-  <!--History-->
   <div class="row-fluid">
-
     <div class="smart_label">
       <ul>
-        <li><h1><%= I18n.t('general.general.actions_history') %></h1></li>
+        <li><h1><%= I18n.t('general.general.actions') %></h1></li>
         <li></li>
       </ul>
     </div>
+
     <br>
+    <%= agreement_events(@agreement) %>
 
-    <table class="table table-striped table-condensed">
-      <thead>
-      <tr>
-        <th><%= Event.human_attribute_name(:name) %> </th>
-        <th><%= Event.human_attribute_name(:description) %></th>
-        <th><%= Event.human_attribute_name(:created_at) %></th>
-        <th><%= Event.human_attribute_name(:creator) %></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @agreement.events.each do |event| %>
-          <tr>
-            <td>
-              <%= event.name %>
-            </td>
-            <td>
-              <%= event.description %>
-            </td>
-            <td>
-              <%= l event.created_at, :format => :long %>
-            </td>
-            <td>
-              <%= event.creator.name %>
-            </td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
   </div>
-  <!--End of Well-->
+
+
+  <div class="row-fluid">
+      <div class="form-actions">
+        <%= link_to 'Back', affiliate_path(@agreement), :class => 'btn btn-medium' %>
+      </div>
+  </div>
+
+<!--End of Well-->
 </div>
 
-<!--Mark-->
-<% @agreement.attributes.each do |key, value| %>
-    <% if value.is_a?(Organization) %>
-        <%= key.humanize %> : <%= value.name %> </br>
-    <% else %>
-        <%= key.humanize %> : <%= value %> </br>
-    <% end %>
-<% end %>
-
-<strong><%= @agreement.class.human_attribute_name(:organization) %> </strong>: <%= @agreement.organization.name %>
-<br>
-<strong><%= @agreement.class.human_attribute_name(:counterparty) %></strong> : <%= @agreement.counterparty.name %>
-<br>
-<strong><%= @agreement.class.human_attribute_name(:status) %></strong> : <%= @agreement.human_status_name %>
-<br>
-<strong><%= @agreement.class.human_attribute_name(:creator) %></strong> : <%= @agreement.creator.name %>
-
-<%= agreement_events(@agreement) %>
-<div>
-  <table class="table table-striped" id="event_log_in_agreements">
-    <thead>
-    <tr>
-      <th><%= Event.human_attribute_name(:name) %> </th>
-      <th><%= Event.human_attribute_name(:description) %></th>
-      <th><%= Event.human_attribute_name(:created_at) %></th>
-      <th><%= Event.human_attribute_name(:creator) %></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @agreement.events.each do |event| %>
-        <tr>
-          <td>
-            <%= event.name %>
-          </td>
-          <td>
-            <%= event.description %>
-          </td>
-          <td>
-            <%= event.created_at %>
-          </td>
-          <td>
-            <%= event.creator.name %>
-          </td>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
-
-
-</div>
-
-<div id="posting_rules_mark">
-  <%= render 'posting_rules/posting_rule_form' %>
-</div>
-
-<div>
-  <table class="table table-striped" id="posting_rules_table">
-    <thead>
-    <tr>
-      <th><%= PostingRule.human_attribute_name(:id) %> </th>
-      <th><%= PostingRule.human_attribute_name(:type) %> </th>
-      <th><%= PostingRule.human_attribute_name(:agreement) %></th>
-      <th><%= PostingRule.human_attribute_name(:rate) %></th>
-      <th><%= PostingRule.human_attribute_name(:rate_type) %></th>
-      <th><%= PostingRule.human_attribute_name(:properties) %></th>
-      <th><%= PostingRule.human_attribute_name(:created_at) %></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @agreement.posting_rules.each do |rule| %>
-        <tr>
-          <td>
-            <%= rule.id %>
-          </td>
-          <td>
-            <%= rule.type %>
-          </td>
-          <td>
-            <%= rule.agreement %>
-          </td>
-          <td>
-            <%= rule.rate %>
-          </td>
-          <td>
-            <%= rule.rate_type %>
-          </td>
-          <td>
-            <%= rule.properties %>
-          </td>
-          <td>
-            <%= rule.created_at %>
-          </td>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
-
-
-</div>
-
-<h4> Payments</h4>
-<div id="payments">
-  <%= render 'payments/payment_form' %>
-</div>
-
-<div>
-  <table class="table table-striped" id="payment_types_table">
-    <thead>
-    <tr>
-      <th><%= Payment.human_attribute_name(:id) %> </th>
-      <th><%= Payment.human_attribute_name(:type) %> </th>
-      <th><%= Payment.human_attribute_name(:rate) %></th>
-      <th><%= Payment.human_attribute_name(:rate_type) %></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @agreement.payments.each do |payment| %>
-        <tr>
-          <td>
-            <%= payment.id %>
-          </td>
-          <td>
-            <%= payment.type %>
-          </td>
-          <td>
-            <%= payment.rate %>
-          </td>
-          <td>
-            <%= payment.rate_type %>
-          </td>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
-
-
+<div id="showHistory" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <%= render :partial => 'agreement_history' %>
 </div>
 
