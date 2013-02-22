@@ -35,7 +35,8 @@
         <% @service_calls.each do |sc| %>
             <tr>
               <td class="member_logo">
-                <% if sc.payment_overdue? %>
+                <!--<#% if sc.billing_status_name == 'Overdue' %>-->
+                <% if sc.respond_to?(:payment_overdue?) && sc.payment_overdue? %>
                    <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
                 <% end %>
               </td>
@@ -54,6 +55,9 @@
   <% end %>
 
 </div>
+
+
+  <% unless @service_calls.nil? %>
 
 <div class="row-fluid transferred_jobs">
 
@@ -85,9 +89,10 @@
           <% @service_calls.each do |sc| %>
               <tr>
                 <td class="member_logo">
-                  <% if sc.payment_overdue? %>
-                      <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
-                  <% end %>
+                  <!--<#% if sc.payment_overdue? %>-->
+                <% if sc.respond_to?(:payment_overdue?) && sc.payment_overdue? %>
+                     <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+                <% end %>
                 </td>
                 <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
                 <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
@@ -103,6 +108,6 @@
 
 
   </div>
-
+  <% end %>
   <!--End of Well-->
 </div>

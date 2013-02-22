@@ -138,14 +138,8 @@
               </address>
             </li>
 
-                    <div class="controls">
-                      <div class="input-large uneditable-input" title="To change Subcontractor use the action section" rel='tooltip'>
-                        <%= f.object.subcontractor.try (:name) %>
-                      </div>
-                    </div>
-                  </div>
                 </li>
-            <% end %>
+
             <li>
               <div class="control-group select required">
                 <label class="select optional control-label" for="completed_on_text">Technician</label>
@@ -273,4 +267,43 @@
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
   </div>
+</div>
+
+
+<div><%= render 'appointments/add_appointment', appointable: @service_call %></div>
+
+<div class="row-fluid">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= Appointment.model_name.human.pluralize %></h1></li>
+      <li><%= link_to 'Add Appointment', '#', :class => 'btn btn-primary', id: 'new-appointment-button', data: { toggle: "collapse", target: "#appointment" } %></li>
+    </ul>
+  </div>
+
+  <div class="appointment collapse" id="appointment">
+    <%= render 'appointments/in_line_form', appointment: @service_call.appointments.build %>
+
+  </div>
+
+  <table class="table table-striped" id="appointments-table">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Starts At</th>
+      <th>Ends At</th>
+
+    </tr>
+    </thead>
+    <tbody id="appointments">
+
+    <% @service_call.appointments.each do |appointment| %>
+        <tr id="appointment_<%= appointment.id %>">
+          <%= render 'appointments/appointment', appointment: appointment %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+
 </div>
