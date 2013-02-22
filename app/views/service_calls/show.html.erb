@@ -1,4 +1,5 @@
-<div class="well">
+<% provide(:title, I18n.t('general.general.job_number').html_safe + "#{@service_call.ref_id}" )%>
+<div class="well well_height">
 
 <div class="row-fluid">
 
@@ -9,7 +10,7 @@
       <li>
         <div class="smart_label">
           <ul>
-            <li><h1>Job Status</h1></li>
+            <li><h1><%=I18n.t('general.general.job_number').html_safe + ": " + "#{@service_call.ref_id}" %></h1></li>
             <li></li>
           </ul>
         </div>

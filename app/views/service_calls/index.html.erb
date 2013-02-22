@@ -1,59 +1,108 @@
-<div class="well">
+<% provide(:title, I18n.t('general.general.jobs')) %>
+
+
+<div class="well well_height">
+
+<div class="row-fluid my_jobs">
 
   <div class="smart_label">
     <ul>
-      <li><h1>Service Calls</h1></li>
-      <li>
-        <!--search placement-->
-      </li>
-      <li>
-        <%= link_to 'New Service Call', new_service_call_path, :class => 'btn btn-primary' %>
-      </li>
+      <li><h1><%= I18n.t('general.general.my_jobs') %></h1></li>
+      <li><%= link_to 'New Service Call', new_service_call_path, :class => 'btn btn-primary' %></li>
     </ul>
   </div>
 
   <br>
 
-
   <% if @service_calls.nil? %>
-      <span class="alert alert-info">No records, click "New Service Call" to add new contact</span>
+      <span class="alert alert-info"><%= I18n.t('general.messages.no_job_records') %></span>
   <% else %>
-
 
       <table class="table table-striped">
         <thead>
         <tr>
-          <!--<th>ID</th>-->
-          <th>Ref</th>
-          <th>Status</th>
-          <!--<th>Subcontractor Status</th>-->
-          <th>Provider</th>
-          <th>Subcontractor</th>
-          <th>Customer</th>
-          <th>Actions</th>
+          <th></th>
+          <th><%= ServiceCall.human_attribute_name(:id) %></th>
+          <th><%= ServiceCall.human_attribute_name(:status) %></th>
+          <th><%= I18n.t('general.general.address') %></th>
+          <th><%= I18n.t('general.general.description') %></th>
+          <th><%= I18n.t('general.general.scheduled_for') %></th>
+          <th><%= I18n.t('general.general.customer') %></th>
+          <th><%= I18n.t('general.general.actions') %></th>
         </tr>
         </thead>
         <tbody>
         <% @service_calls.each do |sc| %>
             <tr>
-
-              <!--<td><#%= link_to sc.id, service_call_path(sc) %></td>-->
+              <td class="member_logo">
+                <% if sc.payment_overdue? %>
+                   <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+                <% end %>
+              </td>
               <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
               <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
-              <!--<td><#%= sc.human_subcontractor_status_name %></td>-->
-              <td><%= sc.provider.try(:name) %></td>
-              <td><%= sc.subcontractor.try(:name) %></td>
+              <td><%= sc.customer.try(:address1) %></td>
+              <td><%= link_to sc.try(:notes), service_call_path(sc) %></td>
+              <td><%= sc.try(:scheduled_for) %></td>
               <td><%= sc.customer.try(:name) %></td>
-              <td>
-                <!--<#%= link_to 'Edit', edit_service_call_path(sc), :class => 'btn btn-mini' %>-->
-                <%= link_to 'Show', sc.becomes(ServiceCall), :class => 'btn btn-mini btn-info' %>
-              </td>
+              <td><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
             </tr>
         <% end %>
         </tbody>
       </table>
 
-
   <% end %>
 
+</div>
+
+<div class="row-fluid transferred_jobs">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.transferred_jobs') %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+
+    <br>
+
+
+
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th><%= ServiceCall.human_attribute_name(:id) %></th>
+            <th><%= ServiceCall.human_attribute_name(:status) %></th>
+            <th><%= I18n.t('general.general.address') %></th>
+            <th><%= I18n.t('general.general.description') %></th>
+            <th><%= I18n.t('general.general.scheduled_for') %></th>
+            <th><%= I18n.t('general.general.customer') %></th>
+            <th><%= I18n.t('general.general.actions') %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @service_calls.each do |sc| %>
+              <tr>
+                <td class="member_logo">
+                  <% if sc.payment_overdue? %>
+                      <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+                  <% end %>
+                </td>
+                <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
+                <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
+                <td><%= sc.customer.try(:address1) %></td>
+                <td><%= link_to sc.try(:notes), service_call_path(sc) %></td>
+                <td><%= sc.try(:scheduled_for) %></td>
+                <td><%= sc.customer.try(:name) %></td>
+                <td><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+
+  </div>
+
+  <!--End of Well-->
 </div>

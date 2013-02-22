@@ -19,7 +19,10 @@ en:
       member_icon: "This Affiliate is a member in the SubConTraX Network"
       send_invite: "Send invitation to join the SubConTraX network. <br> See Promotion on the left"
       no_records: "No records, click 'New Affiliate' or search for affiliates to add new members to your network"
+      no_job_records: "No records, click 'New Service Call' to add new contact"
+      show_job: "Click to open Job ticket"
 
+      overdue: "This Job is overdue"
     emails:
       dear: "Dear"
       job:  "Job Number"
@@ -62,3 +65,7 @@ en:
       subcontractor: "Subcontractor"
       member: "SubConTraX member"
       send_invite: "Send Invite"
+      my_jobs: "My Jobs"
+      scheduled_for: "Scheduled for"
+      transferred_jobs: "Transferred Jobs"
+      job_number: "Job Number"

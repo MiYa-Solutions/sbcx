@@ -1134,6 +1134,10 @@ hr {
 
 }
 
+.my_jobs {
+  min-height: 320px;
+}
+
 
 .actions_affiliate_index {
   width: 16%;
@@ -1177,7 +1181,21 @@ hr {
   #agreement_change_reason {
     margin-right: 5px;
     margin-top: 10px;
-    max-width: 60%;
+    max-width: 42%;
+  }
+}
+
+#agreement_change_reason {
+  margin-right: 5px;
+  margin-top: 10px;
+  max-width: 42%;
+}
+
+.agreement_fields {
+  #agreement_change_reason {
+    margin-right: 5px;
+    margin-top: 10px;
+    max-width: 42%;
   }
 }
 

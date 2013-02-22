@@ -29,9 +29,9 @@ module AgreementsHelper
                      class: "cancel_agreement")
               concat (label_tag 'agr_submission_form', 'Enter comments, if any, and click the Submit button', class: "subtitle")
             when :activate
-              concat (content_tag :li, agr_activation_form(agreement))
+              concat (content_tag :li, agr_activation_form(agreement), class: "agreement_fields")
             when :submit_change
-              concat (label_tag 'agr_change_submission_form', 'Enter the reason you wish to cancel the agreement and click the Cancel button')
+              concat (label_tag 'agr_change_submission_form', 'Enter comments, if any, and click the Submit Change button', class: "title")
               concat (content_tag :li, agr_change_submission_form(agreement),
                      class: "cancel_agreement")
             when :accept
@@ -83,7 +83,7 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'activate')
       concat (f.submit agreement.class.human_status_event_name(:activate).titleize,
                        id:    'agreement_activate_btn',
-                       class: "btn btn-large",
+                       class: "btn btn-primary",
                        title: 'Click to activate the agreement',
                        rel:   'tooltip'
              )
@@ -97,7 +97,7 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'submit_change')
       concat (f.submit agreement.class.human_status_event_name(:submit_change).titleize,
                        id:    'agreement_submission_btn',
-                       class: "btn btn-large",
+                       class: "btn btn-primary",
                        title: 'Click to submit the agreement for the approval of your counterparty',
                        rel:   'tooltip'
              )
@@ -112,7 +112,7 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'accept')
       concat (f.submit agreement.class.human_status_event_name(:accept).titleize,
                        id:    'agreement_accept_btn',
-                       class: "btn btn-large",
+                       class: "btn btn-primary",
                        title: 'Click to accept the agreement as defined by the other party',
                        rel:   'tooltip'
              )
@@ -127,7 +127,7 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'reject')
       concat (f.submit agreement.class.human_status_event_name(:reject).titleize,
                        id:    'agreement_rejection_btn',
-                       class: "btn btn-large",
+                       class: "btn btn-danger",
                        title: 'Click to reject the changes made by the other party',
                        rel:   'tooltip'
              )
