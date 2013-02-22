@@ -386,7 +386,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :city,
      :zip,
      :mobile_phone,
-     :work_phone]
+     :work_phone, :time_zone, :current_password]
 
   end
 
@@ -456,6 +456,30 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     else
       params[:agreement].permit(*agreement_attributes)
     end
+  end
+
+  def appointment
+    if params[:appointment].nil?
+      # need this step to work around a declarative authorization problem with strong parameters
+      params.permit
+    else
+      params.require(:appointment).permit(*appointment_attributes)
+      #params.require(:provider).permit!
+    end
+
+  end
+
+  def appointment_attributes
+    [
+        :title,
+        :description,
+        :starts_at,
+        :ends_at,
+        :appointable_id,
+        :appointable_type,
+        :recurring,
+        :all_day
+    ]
   end
 
   private

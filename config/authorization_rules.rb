@@ -12,6 +12,7 @@ authorization do
   role :technician do
 
     has_permission_on :static_pages, to: [:index, :read]
+    has_permission_on :appointments, :to => [:index, :show, :new, :create, :edit, :update, :destroy, :read]
     has_permission_on :notifications, to: [:index, :show, :read, :update, :destroy] do
       if_attribute :user => is { user }
     end

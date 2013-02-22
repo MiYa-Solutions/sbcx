@@ -57,6 +57,7 @@ class Ticket < ActiveRecord::Base
     end
   end
   belongs_to :collector, :polymorphic => true
+  has_many :appointments, as: :appointable
 
   stampable
 

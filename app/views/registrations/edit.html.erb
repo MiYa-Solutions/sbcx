@@ -37,6 +37,8 @@
                   <%= f.input :phone %>
                   <%= f.input :mobile_phone %>
                   <%= f.input :work_phone %>
+                  <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones %>
+                  <%= f.input :current_password %>
 
                 <div class="form-actions">
                   <%= link_to 'Back', profile_path, :class => 'btn btn-medium', id: 'back_from_edit_profile' %>

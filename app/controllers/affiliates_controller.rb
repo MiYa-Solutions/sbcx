@@ -18,18 +18,6 @@ class AffiliatesController < ApplicationController
 
   def create
 
-    #params[:affiliate][:status_event] = :make_local
-    #if params[:affiliate][:organization_role_ids] &&
-    #    params[:affiliate][:organization_role_ids].include?(OrganizationRole::PROVIDER_ROLE_ID.to_s)
-    #
-    #
-    #  @affiliate.agreements.build(subcontractor_id: current_user.organization.id, provider: @affiliate.becomes(Provider))
-    #end
-    #
-    #if params[:affiliate][:organization_role_ids] && params[:affiliate][:organization_role_ids].include?(OrganizationRole::SUBCONTRACTOR_ROLE_ID.to_s)
-    #  @affiliate.reverse_agreements.build(provider_id: current_user.organization.id, subcontractor: @affiliate.becomes(Subcontractor))
-    #end
-
     if @affiliate.save
       redirect_to @affiliate.becomes(Affiliate), :notice => t('affiliates.flash.create_affiliate_success', name: @affiliate.name)
     else
