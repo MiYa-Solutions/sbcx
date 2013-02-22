@@ -84,6 +84,9 @@ class AppointmentsController < ApplicationController
   end
 
   def new_appointment_from_params
+    if params[:appointment].nil?
+      redirect_to user_root_path
+    end
     @appointment = Appointment.new(permitted_params(@appointment).appointment)
     @appointment.organization_id = current_user.organization_id
   end

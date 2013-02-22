@@ -2,7 +2,10 @@
 
 <div class="row-fluid">
   <div class="span4">
+    <%= render 'appointments/add_appointment', appointable: @appointment.appointable %>
+
     <%= render 'appointments/in_line_form', appointment: @appointment %>
+
     <span id="loading"> Loading.... </span>
   </div>
 
@@ -17,6 +20,7 @@
     <h3>New Appointment</h3>
   </div>
   <div class="modal-body">
+    <%= render 'appointments/add_appointment', appointable: @appointment.appointable %>
     <%= render 'appointments/in_line_form', appointment: @appointment %>
   </div>
   <div class="modal-footer">
