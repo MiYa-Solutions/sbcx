@@ -39,6 +39,8 @@ Sbcx::Application.configure do
   config.action_mailer.default_url_options               = { :host => 'localhost' , port: '3000' }
   config.action_mailer.delivery_method                   = :file
 
+  BetterErrors.editor='rubymine://open?url=file://%{file}&line=%{line}'
+
   #config.log_tags = [:uuid, :remote_ip, lambda { |req| Time.now }]
 
   #SubConTraX specific configurations

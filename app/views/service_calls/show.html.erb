@@ -138,6 +138,14 @@
               </address>
             </li>
 
+                    <div class="controls">
+                      <div class="input-large uneditable-input" title="To change Subcontractor use the action section" rel='tooltip'>
+                        <%= f.object.subcontractor.try (:name) %>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+            <% end %>
             <li>
               <div class="control-group select required">
                 <label class="select optional control-label" for="completed_on_text">Technician</label>

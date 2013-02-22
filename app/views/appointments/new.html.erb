@@ -1,0 +1,30 @@
+<h1>New Appointment For <%= link_to "#{@appointment.appointable.class.model_name.human} #{ @appointment.appointable.id }" , @appointment.appointable  %></h1>
+
+<div class="row-fluid">
+  <div class="span4">
+    <%= render 'appointments/add_appointment', appointable: @appointment.appointable %>
+
+    <%= render 'appointments/in_line_form', appointment: @appointment %>
+
+    <span id="loading"> Loading.... </span>
+  </div>
+
+  <div class="span8 fc" id="calendar"></div>
+</div>
+
+<a href="#form" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+
+<div class="modal hide fade" id="form">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>New Appointment</h3>
+  </div>
+  <div class="modal-body">
+    <%= render 'appointments/add_appointment', appointable: @appointment.appointable %>
+    <%= render 'appointments/in_line_form', appointment: @appointment %>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn">Close</a>
+    <a href="#" class="btn btn-primary">Save changes</a>
+  </div>
+</div>
