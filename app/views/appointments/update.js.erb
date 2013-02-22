@@ -1,0 +1,6 @@
+event = $('#calendar').fullCalendar('clientEvents', <%= @appointment.id %>);
+event[0].title = "<%= @appointment.title %>";
+event[0].start = "<%= @appointment.starts_at.rfc822 %>";
+event[0].end = "<%= @appointment.ends_at.rfc822 %>";
+event[0].description = "<%= @appointment.description %>";
+$('#calendar').fullCalendar( 'updateEvent', event[0]);

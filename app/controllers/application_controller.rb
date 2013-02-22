@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   include Userstamp
 
+  around_filter :user_time_zone, if: :current_user
+
   before_filter { |c| Authorization.current_user = c.current_user }
   # todo make counting more efficient
   before_filter { |c| @notification_count = Notification.where(user_id: c.current_user.id).where(status: Notification::NOTIFICATION_UNREAD).count unless current_user.nil? }
@@ -39,6 +41,10 @@ class ApplicationController < ActionController::Base
   def prepare_for_mobile
     session[:mobile_param] = params[:mobile] if params[:mobile]
     request.format = :mobile if mobile_device?
+  end
+
+  def user_time_zone(&block)
+    Time.use_zone(current_user.time_zone, &block)
   end
 
 end

@@ -1,8 +1,10 @@
 Sbcx::Application.routes.draw do
 
 
-  resources :accounting_entries
+  resource :calendar, only: :show
+  resources :appointments
 
+  resources :accounting_entries
 
   #resource :profile, controller: 'registrations', only: [:show]
 
@@ -16,6 +18,9 @@ Sbcx::Application.routes.draw do
       get :autocomplete_material_name, :on => :collection
     end
   end
+
+  resources :my_service_calls, controller: :service_calls
+  resources :transferred_service_calls, controller: :service_calls
 
   resources :agreements, only: [:new, :create, :edit, :show, :index, :update] do
     resources :posting_rules
@@ -50,7 +55,6 @@ Sbcx::Application.routes.draw do
   end
 
   match 'welcome' => 'static_pages#welcome', :as => :user_root
-  match 'calendar' => 'static_pages#calendar', :as => :calendar
 
 
   # The priority is based upon order of creation:
