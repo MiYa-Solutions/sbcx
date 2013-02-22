@@ -485,10 +485,58 @@ smart_alert {
 
 }
 
+.status_blue {
+
+  h3 {
+    color: #3A87AD;
+    font-size: 14px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 12px;
+  }
+}
+
+.status_green {
+  h3 {
+    color: #44ad3f;
+    font-size: 14px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 12px;
+  }
+}
+
+.status_grey {
+  h3 {
+    color: #696969;
+    font-size: 14px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 12px;
+  }
+}
+
+.status_red {
+  h3 {
+    color: #DA4E49;
+    font-size: 14px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 12px;
+  }
+}
+
+
 .table_unstyled {
 
   td {
     border-top: 0px;
+  }
+}
+
+.job_type_show {
+  #service_call_type {
+    vertical-align: -6px;
   }
 }
 
@@ -807,6 +855,12 @@ smart_alert {
     //width: 40%;
    font-weight: normal;
  }
+}
+
+#service_call_type {
+
+    mrgin-top: 10px;
+
 }
 
 .add_part_service_call {

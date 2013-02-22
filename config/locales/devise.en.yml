@@ -78,6 +78,8 @@ en:
       payment_methods: "Payment Methods"
       add_payment: "Add Payment"
       agreement_history: "Agreement History"
+      my_job: "My Job"
+      transferred_job: "Transferred Job"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"

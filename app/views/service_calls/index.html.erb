@@ -35,7 +35,7 @@
         <% @service_calls.each do |sc| %>
             <tr>
               <td class="member_logo">
-                <% if sc.payment_overdue? %>
+                <% if sc.human_billing_status_name == 'Overdue' %>
                    <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
                 <% end %>
               </td>
@@ -85,8 +85,10 @@
           <% @service_calls.each do |sc| %>
               <tr>
                 <td class="member_logo">
-                  <% if sc.payment_overdue? %>
-                      <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+                  <!--<#% if sc.payment_overdue? %>-->
+                  <% if sc.human_billing_status_name == 'Overdue' %>
+
+                <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
                   <% end %>
                 </td>
                 <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
