@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ScSettleNotification do
+describe "ScSettleNotification" do
   let(:service_call) { FactoryGirl.create(:my_service_call, subcontractor: FactoryGirl.create(:member).becomes(Subcontractor)) }
 
 

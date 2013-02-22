@@ -35,7 +35,7 @@
         <% @service_calls.each do |sc| %>
             <tr>
               <td class="member_logo">
-                <% if sc.payment_overdue? %>
+                <% if sc.respond_to?(:payment_overdue?) && sc.payment_overdue? %>
                    <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
                 <% end %>
               </td>
@@ -85,7 +85,7 @@
           <% @service_calls.each do |sc| %>
               <tr>
                 <td class="member_logo">
-                  <% if sc.payment_overdue? %>
+                  <% if sc.respond_to?(:payment_overdue?) && sc.payment_overdue? %>
                       <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
                   <% end %>
                 </td>
