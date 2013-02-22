@@ -1,0 +1,52 @@
+<div class="affiliate_jobs">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.jobs') %></h1></li>
+      <li>
+      </li>
+    </ul>
+  </div>
+  <!--Filter Jobs-->
+  <div class="row-fluid filter_affiliate_jobs">
+    <form>
+      <ul>
+        <li class="label_filter"><strong>Filter by Date:</strong></li>
+        <li>
+          <div class="input-prepend input-append">
+            <span class="add-on">From</span>
+            <input class= "datepicker">
+            <span class="add-on">To</span>
+            <input class= "datepicker">
+            <button type="submit" class="btn btn-mini btn-primary">Filter</button>
+
+          </div>
+        </li>
+        <li class="button_filter"></li>
+      </ul>
+    </form>
+  </div>
+  <!--table of jobs-->
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th><%= I18n.t('general.general.jon_number') %></th>
+      <th><%= I18n.t('general.general.description') %></th>
+      <th><%= I18n.t('general.general.status') %></th>
+      <th><%= I18n.t('general.general.customer') %></th>
+      <th><%= I18n.t('general.general.balance') %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @affiliate.service_calls.each do |sc| %>
+        <tr>
+          <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
+          <td><%= link_to sc.type , service_call_path(sc) %></td>
+          <td><%= link_to sc.human_subcontractor_status_name, service_call_path(sc) %></td>
+          <td><%= sc.customer.try(:name) %></td>
+          <td>- $190</td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+</div>

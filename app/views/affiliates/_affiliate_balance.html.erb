@@ -1,0 +1,12 @@
+<div class="affiliate_balance">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.balance') %></h1></li>
+      <li class="red-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span>-$199.00</span></h1></li>
+    </ul>
+  </div>
+
+  <div id="accounting_entries">
+    <%= render 'accounting_entries/accounting_entries_table', account: @account %>
+  </div>
+</div>

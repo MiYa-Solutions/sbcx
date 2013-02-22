@@ -1,0 +1,37 @@
+<div class="affiliate_agreements">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= Agreement.model_name.human.pluralize %></h1></li>
+      <li>
+        <%= link_to I18n.t('general.general.new_agreement'), '#', :class => 'btn btn-small btn-primary', id: 'new-agreement-button', data: { toggle: "collapse", target: "#add_new_agreement" } %>
+      </li>
+    </ul>
+  </div>
+<!---->
+  <div class="bom collapse" id="add_new_agreement">
+    <%= render 'agreements/agreement_form', other_party: @affiliate %>
+  </div>
+
+  <% unless @agreements.empty? %>
+      <table class="table table-striped table-condensed">
+        <thead>
+        <tr>
+          <td><h4><%= Agreement.human_attribute_name (:status) %></h4></td>
+          <td class="role_agreement"><h4><%= @affiliate.name %><span><%= "&nbsp;".html_safe + "is your" %></span></h4></td>
+          <td><h4><%= Agreement.human_attribute_name (:name) %></h4></td>
+          <td><h4><%= I18n.t('general.general.actions') %></h4></td>
+        </tr>
+        </thead>
+        <tbody>
+        <% @agreements.each do |agreement| %>
+           <tr>
+            <%= render 'agreements/agreement', agreement: agreement %>
+           </tr>
+        <% end %>
+        </tbody>
+      </table>
+  <% end %>
+
+  <!--<#%= render 'agreements/agreements_table', agreements: @agreements %>-->
+  <!--End Agreements-->
+</div>
