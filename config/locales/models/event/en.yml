@@ -4,7 +4,7 @@ en:
         event: "Subcontracting Agreement"
       attributes:
         event:
-          name: "Agreement Name"
-          description: "Action Description"
-          create_at: "Create At"
+          name: "Event"
+          description: "Description"
+          create_at: "When"
           creator: "Created By"

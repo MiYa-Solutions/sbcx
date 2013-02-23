@@ -69,3 +69,7 @@ en:
       scheduled_for: "Scheduled for"
       transferred_jobs: "Transferred Jobs"
       job_number: "Job Number"
+      job_history: "Job History"
+      job_type: "Job Type"
+      mobile: "Mobile"
+      save_changes: "Save Changes"

@@ -1,0 +1,31 @@
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel"><%= I18n.t('general.general.job_history') %></h3>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped" id="event_log_in_service_call">
+      <thead>
+      <tr>
+        <th><%= Event.human_attribute_name(:name) %> </th>
+        <th><%= Event.human_attribute_name(:description) %></th>
+        <th><%= Event.human_attribute_name(:created_at) %></th>
+        <th><%= Event.human_attribute_name(:creator) %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @service_call.events.each do |event| %>
+          <tr>
+            <td><%= event.name %></td>
+            <td><%= event.description %></td>
+            <td><%= l event.created_at, :format => :long %></td>
+            <td><%= event.creator.name %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>

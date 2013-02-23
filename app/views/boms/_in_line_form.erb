@@ -23,27 +23,27 @@
             </div>
 
           </li>
-          <li>
+          <li class="price_field">
             <div class="input-prepend input-append">
               <span class="add-on"><%= I18n.t('general.general.price') %></span>
               <%= f.text_field :price %>
             </div>
 
           </li>
-          <li>
+          <li class="cost_field">
             <div class="input-prepend input-append">
               <span class="add-on"><%= I18n.t('general.general.cost') %></span>
               <%= f.text_field :cost %>
             </div>
           </li>
-          <li>
+          <li class="buyer_field">
             <div class="input-prepend input-append">
               <span class="add-on"><%= Bom.human_attribute_name(:buyer) %></span>
               <%= f.select :buyer, options_for_select(buyer_options(ticket)), include_blank: true %>
               <%= f.hidden_field :buyer_type %>
             </div>
           </li>
-          <li>
+          <li class="add_button">
             <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary", id: 'add_part' %>
 
           </li>

@@ -234,24 +234,41 @@ footer {
     height: 210px;
   }
 
-  .control-label {
-    //width: 70px;
-    //padding-left: 65px;
-    padding-left: 15px;
-    width: 35px;
-    margin-right: 10px;
-
-  }
-
   .controls {
-    margin-left: 15px;
+    margin-left: 85px;
   }
 
+  .control-label {
+    width: 60px;
+    //padding-left: 65px;
+    //padding-left: 15px;
+    //width: 35px;
+    //margin-right: 10px;
+
+  }
+  //
+  //.controls {
+  //  margin-left: 15px;
+  //}
+  //
   label {
     font-weight: bold;
   }
 
 }
+
+#bom_price {
+  width: 30%;
+}
+
+#bom_quantity {
+  width: 30%;
+}
+
+#bom_cost {
+  width: 30%;
+}
+
 
 select {
   -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
@@ -865,7 +882,7 @@ smart_alert {
 
 .add_part_service_call {
   input, textarea, text_field {
-    width: 50%;
+    width: 60%;
     margin-left: -5px;
   }
   textarea {
@@ -878,7 +895,7 @@ smart_alert {
 
   li {
     float: left;
-    margin: 0 5px;
+
     line-height: 16px;
     width: 18%;
   }
@@ -905,6 +922,33 @@ smart_alert {
   }
   .quantity_field {
     width: 14%;
+    margin-left: 15px;
+  }
+
+  .price_field {
+    width: 14%;
+    margin-left: -10px;
+  }
+
+  .cost_field {
+    width: 14%;
+    margin-left: 1px;
+  }
+
+  .buyer_field {
+    width: 25%;
+    margin-left: -4px;
+
+  }
+
+  .add_button {
+    width: 14%;
+    margin-left: 1px;
+   .add_part_service_call input, .add_part_service_call textarea, .add_part_service_call text_field {
+      margin-left: -5px;
+      width: 80%;
+    }
+
   }
 
   .button_filter {
@@ -916,6 +960,11 @@ smart_alert {
     position: relative;
     right: -27px;
     top: -32px;
+  }
+
+  select {
+    width: 60%;
+    margin-left: -4px;
   }
 
 }
