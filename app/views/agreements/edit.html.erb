@@ -1,4 +1,22 @@
-<% title "Edit Agreements" %>
+<% provide(:title, I18n.t('general.general.edit').html_safe + "&nbsp;".html_safe +  I18n.t('general.general.agreement').html_safe ) %>
 
-<%= render 'form' %>
+<div class="well well_height">
+  <div class="row-fluid">
+    <div class="no_margins">
+      <div class="span6">
 
+        <div class="smart_label">
+          <ul>
+            <li><h1><%= I18n.t('general.general.agreement_id').html_safe + "&nbsp;".html_safe %><%= @agreement.id %></h1></li>
+            <li></li>
+          </ul>
+        </div>
+        <br>
+
+        <%= render 'form' %>
+
+
+      </div>
+    </div>
+  </div>
+</div>

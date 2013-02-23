@@ -80,6 +80,8 @@ en:
       agreement_history: "Agreement History"
       my_job: "My Job"
       transferred_job: "Transferred Job"
+      agreement: "Aggrement"
+      update_agreement: "Update Agreement"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"

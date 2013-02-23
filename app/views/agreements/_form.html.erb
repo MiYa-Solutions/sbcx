@@ -1,4 +1,11 @@
-<%= simple_form_for @agreement, as: :agreement, url: agreement_url(@agreement) do |f| %>
+<%= simple_form_for @agreement, as: :agreement, url: agreement_url(@agreement), :html => { :class => 'form-horizontal' } do |f| %>
+
     <%= render 'agreements/fields', f: f, agreement_type: @agreement.class.name %>
-    <p><%= f.submit %></p>
+
+
+    <div class="form-actions">
+      <%= link_to I18n.t('general.general.back'), agreement_path, :class => 'btn btn-medium' %>
+      <%= f.submit I18n.t('general.general.update_agreement'), class: "btn btn-medium btn-primary", id: 'update_agreement_btn' %>
+    </div>
+    <!--<p><#%= f.submit %></p>-->
 <% end %>
