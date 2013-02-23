@@ -14,8 +14,8 @@ jQuery ->
     defaultView: "agendaWeek"
     height: 500
     slotMinutes: 30
-    minTime: 7
-    maxTime: 22
+    minTime: 0
+    maxTime: 24
     firstHour: 8
     loading: (bool) ->
       if bool

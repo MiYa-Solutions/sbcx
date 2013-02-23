@@ -31,6 +31,10 @@ describe Agreement do
     should respond_to(:name)
     should respond_to(:status)
     should respond_to(:change_reason)
+    should respond_to(:starts_at)
+    should respond_to(:ends_at)
+    should respond_to(:payment_methods)
+    should respond_to(:payment_terms)
   end
 
   describe "associations" do
