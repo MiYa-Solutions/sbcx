@@ -205,6 +205,15 @@ footer {
 
 }
 
+.job_new_fields {
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    float: left;
+    margin-left: -18px;
+    margin-top: 0.701em;
+  }
+}
+
 #new-agreement-button {
   margin-left: 80px;
 }
