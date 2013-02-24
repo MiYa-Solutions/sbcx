@@ -15,7 +15,7 @@
       <%= simple_form_for @affiliate, url: affiliates_url, :html => { :class => 'form-horizontal' } do |f| %>
           <% if f.object.errors.any? %>
               <div class="alert alert-block alert-error">
-                <a class="close" data-dismiss="alert" href="#">√ó</a>
+                <a class="close" data-dismiss="alert" href="#">x</a>
                 <%= render 'shared/error_messages', object: f.object %>
               </div>
           <% end %>
