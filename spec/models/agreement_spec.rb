@@ -23,9 +23,9 @@ require 'spec_helper'
 
 describe Agreement do
 
-  let!(:new_agreement) { Agreement.new }
+  let(:agreement) { FactoryGirl.build(:agreement) }
 
-  subject { new_agreement }
+  subject { agreement }
 
   it "should have the expected attributes and methods" do
     should respond_to(:organization)
@@ -50,27 +50,23 @@ describe Agreement do
 
 
   describe "validation" do
-    [:organization, :counterparty, :creator, :starts_at].each do |attr|
-      it { should validate_presence_of(attr)}
+
+    it { should validate_presence_of(:organization) }
+    it { should validate_presence_of(:counterparty) }
+    it { should validate_presence_of(:creator) }
+
+    it "an agreement can't be active if there are no posting rules" do
+
+    end
+
+    it "starts_at is set when activated"
+
+    it "should have an initial status of draft" do
+      agreement.status_name.should be (:draft)
     end
 
 
   end
 
-  it "an agreement can't be active if there are no posting rules" do
-
-  end
-
-  let(:agreement) { FactoryGirl.build(:agreement) }
-
-  it "should have an initial status of draft" do
-    agreement.status_name.should be (:draft)
-  end
-
-  it "only one active agreement should be allowed in a specific period" do
-    new_agr = FactoryGirl.build(:new_agreement, organization: agreement.organization, counterparty: agreement.counterparty)
-    new_agr.should_not be_valid
-    new_agr.errors[:starts_at].should_not be_nil
-  end
 
 end

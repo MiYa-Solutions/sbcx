@@ -35,14 +35,20 @@ class Agreement < ActiveRecord::Base
   validates_presence_of :organization, :counterparty, :creator
 
 
-
   # State machine  for Agreement status
-  STATUS_DRAFT = 0
+  STATUS_DRAFT            = 10000
+  STATUS_APPROVED_PENDING = 10001
+  STATUS_ACTIVE           = 10002
+  STATUS_CANCELED         = 10003
+  STATUS_REPLACED         = 10004
 
   state_machine :status, :initial => :draft do
     state :draft, value: STATUS_DRAFT
+    state :approved_pending, value: STATUS_APPROVED_PENDING do
+      validate { |agr| agr.check_replacement_agreement }
+    end
     after_failure do |agreement, transition|
-      Rails.logger.debug { "Organization Agreement status state machine failure. Agreement errors : \n" + agreement.errors.messages.inspect + "\n The transition: " +transition.inspect }
+      Rails.logger.debug { "#{agreement.class.name} status state machine failure. Agreement errors : \n" + agreement.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
   end
 
@@ -50,14 +56,14 @@ class Agreement < ActiveRecord::Base
   scope :cparty_agreements, ->(org_id) { where(:counterparty_id => org_id) }
   scope :my_agreements, ->(org_id) { (org_agreements(org_id) | (cparty_agreements(org_id))) }
   scope :our_agreements, ->(org_id, otherparty_id) { (org_agreements(org_id).where(:counterparty_id => otherparty_id) | (cparty_agreements(org_id).where(:organization_id => otherparty_id))) }
-
+  scope :sibling_active_agreements, ->(agreement) { our_agreements(agreement.organization_id, agreement.counterparty_id).where("type = '#{agreement.type}' AND status = #{Agreement::STATUS_ACTIVE}") }
   attr_accessor :change_reason
 
   def self.new_agreement(type, org, other_party_id = nil, other_party_role = nil)
 
     if type.nil? || type.empty?
       agreement               = Agreement.new
-      agreement.errors[:type] = t('activerecord.errors.agreement.no_type')
+      agreement.errors[:type] = t('activerecord.errors.agreement.attributes.type.blank')
     else # create the agreement subclass which is expected to be underscored
 
       agreement = type.camelize.constantize.new
@@ -99,6 +105,14 @@ class Agreement < ActiveRecord::Base
       rules << rule if rule.applicable?(event)
     end
     rules
+  end
+
+  def check_replacement_agreement
+    Agreement.sibling_active_agreements(self).each do |agr|
+      errors.add  :starts_at, "you must set an end date for your active agreement before approving this agreement" if agr.ends_at.nil?
+      errors.add  :starts_at, "The end date of the current has to be set prior to the start date of this agreement" if agr.ends_at.present? && agr.ends_at >= self.starts_at
+
+    end
   end
 
 

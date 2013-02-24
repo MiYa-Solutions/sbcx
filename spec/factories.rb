@@ -246,9 +246,11 @@ FactoryGirl.define do
     end
 
     after(:create) do |agr|
-      agr.posting_rules = FactoryGirl.create(:profit_split, agreement: agr)
+      agr.posting_rules = [FactoryGirl.create(:profit_split, agreement: agr)]
     end
 
+    factory :organization_agreement, class: OrganizationAgreement do
+    end
 
 
   end
@@ -268,9 +270,6 @@ FactoryGirl.define do
     after(:create) do |agr|
       agr.posting_rules = [FactoryGirl.create(:profit_split, agreement: agr)]
       #agr.status        = OrganizationAgreement::STATUS_ACTIVE
-    end
-
-    factory :organization_agreement, class: OrganizationAgreement do
     end
 
 

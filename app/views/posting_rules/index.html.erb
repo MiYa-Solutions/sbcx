@@ -9,6 +9,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
 
   <% @posting_rules.each do |posting_rule| %>
@@ -17,13 +18,14 @@
         <td><%= posting_rule.type %></td>
         <td><%= posting_rule.rate %></td>
         <td><%= posting_rule.rate_type %></td>
-        <td><%= link_to 'Show', posting_rule %></td>
-        <td><%= link_to 'Edit', edit_posting_rule_path(posting_rule) %></td>
-        <td><%= link_to 'Destroy', posting_rule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', agreement_posting_rule_path(posting_rule.agreement, posting_rule) %></td>
+        <td><%= link_to 'Edit', edit_agreement_posting_rule_path(posting_rule.agreement, posting_rule) %></td>
+        <td><%= link_to 'Destroy', agreement_posting_rule_path(posting_rule.agreement, posting_rule), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'New Posting rule', new_agreement_posting_rule_path(posting_rule.agreement) %></td>
       </tr>
   <% end %>
 </table>
 
 <br/>
 
-<%= link_to 'New Posting rule', new_posting_rule_path %>
+

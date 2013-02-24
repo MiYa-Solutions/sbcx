@@ -22,16 +22,13 @@
 class OrganizationAgreement < Agreement
 
   # first we will define the organization state values
-  STATUS_PENDING_ORG_APPROVAL    = 1
-  STATUS_PENDING_CPARTY_APPROVAL = 2
-  STATUS_REJECTED_BY_ORG         = 3
-  STATUS_REJECTED_BY_CPARTY      = 4
-  STATUS_ACTIVE                  = 5
-  STATUS_CANCELED                = 6
-  STATUS_REPLACED                = 7
+  STATUS_PENDING_ORG_APPROVAL    = 11000
+  STATUS_PENDING_CPARTY_APPROVAL = 11001
+  STATUS_REJECTED_BY_ORG         = 11002
+  STATUS_REJECTED_BY_CPARTY      = 11003
 
   validate :ensure_state_before_change
-  validate :end_date_validation, if: ->(agr) { agr.ends_at_changed? }
+  validate :end_date_validation#, if: ->(agr) { agr.ends_at_changed? }
 
   # The state machine definitions
   state_machine :status, :initial => :draft do
@@ -75,6 +72,7 @@ class OrganizationAgreement < Agreement
     end
 
     event :activate do
+      transition :draft => :approved_pending, if: ->(agreement) { Agreement.sibling_active_agreements(agreement).size > 0 }
       transition :draft => :active, if: ->(agreement) { !agreement.organization.subcontrax_member? }
       transition :draft => :active, if: ->(agreement) { !agreement.counterparty.subcontrax_member? }
     end
@@ -85,7 +83,9 @@ class OrganizationAgreement < Agreement
     end
 
     event :accept do
-      transition [:pending_org_approval, :pending_cparty_approval] => :active
+      transition [:pending_org_approval, :pending_cparty_approval] => :approved_pending, if: ->(agreement) { Agreement.sibling_active_agreements(agreement).size > 0 }
+      transition [:pending_org_approval, :pending_cparty_approval] => :active, if: ->(agreement) { Agreement.sibling_active_agreements(agreement).size == 0 }
+
     end
 
     event :reject do
@@ -114,7 +114,7 @@ class OrganizationAgreement < Agreement
       res = true if changed_other_than?(%w('status', 'ends_at')) && self.status_was == OrganizationAgreement::STATUS_ACTIVE
       res = true if changed_other_than?(%w('status')) && self.status_was == OrganizationAgreement::STATUS_CANCELED
     else
-      res = true if (self.active? && changed_other_than?(%w('ends_at'))) || self.canceled? || self.replaced?
+      res = true if (self.active? && changed_other_than?(%w(ends_at))) || self.canceled? || self.replaced?
     end
     res
   end
