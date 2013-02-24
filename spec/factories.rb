@@ -230,9 +230,34 @@ FactoryGirl.define do
 
   end
 
+  factory :new_agreement, class: Agreement do
+
+    name Faker::Name.name
+    description Faker::Lorem.paragraph(1)
+    association :organization, factory: :member
+    association :counterparty, factory: :member
+
+    starts_at Time.zone.now
+    ends_at 1.year.from_now
+
+
+    after(:build) do |agr|
+      agr.creator = FactoryGirl.create(:org_admin, organization: agr.organization)
+    end
+
+    after(:create) do |agr|
+      agr.posting_rules = FactoryGirl.create(:profit_split, agreement: agr)
+    end
+
+
+
+  end
+
   factory :agreement do
     name Faker::Name.name
     description Faker::Lorem.paragraph(1)
+    starts_at Time.zone.now
+    ends_at 1.year.from_now
 
     after(:build) do |agr|
       agr.organization = FactoryGirl.create(:member)
@@ -241,12 +266,14 @@ FactoryGirl.define do
     end
 
     after(:create) do |agr|
-      agr.posting_rules = FactoryGirl.create(:profit_split, agreement: agr)
-      agr.status        = OrganizationAgreement::STATUS_ACTIVE
+      agr.posting_rules = [FactoryGirl.create(:profit_split, agreement: agr)]
+      #agr.status        = OrganizationAgreement::STATUS_ACTIVE
     end
 
     factory :organization_agreement, class: OrganizationAgreement do
     end
+
+
     factory :organization_agreement_by_cparty, class: OrganizationAgreement do
       after(:build) do |agr|
         agr.creator = FactoryGirl.create(:org_admin, organization: agr.counterparty)

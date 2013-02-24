@@ -38,6 +38,8 @@ en:
     errors:
       agreement:
         no_type: "you must specify a type of the agreement you wish to create"
+        change_when_active: "You can't change an active agreement. You need to create a new agreement that will replace the current one"
+        ends_at_invalid: 'You can not set the date to be %{date}, as there are tickets in the system created after this date and therefore associated with this agreement'
   events:
     agreement:
       new_subcon_agreement:

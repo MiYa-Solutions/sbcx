@@ -14,6 +14,9 @@
 #  type              :string(255)
 #  creator_id        :integer
 #  updater_id        :integer
+#  starts_at         :datetime
+#  ends_at           :datetime
+#  payment_terms     :integer
 #
 
 require 'spec_helper'
@@ -33,7 +36,7 @@ describe Agreement do
     should respond_to(:change_reason)
     should respond_to(:starts_at)
     should respond_to(:ends_at)
-    should respond_to(:payment_methods)
+    should respond_to(:payments)
     should respond_to(:payment_terms)
   end
 
@@ -47,18 +50,27 @@ describe Agreement do
 
 
   describe "validation" do
-    [:organization, :counterparty, :creator].each do |attr|
-      it "must have a #{attr} populated" do
-        new_agreement.should_not be_valid
-        new_agreement.errors[attr].should_not be_empty
-      end
+    [:organization, :counterparty, :creator, :starts_at].each do |attr|
+      it { should validate_presence_of(attr)}
     end
+
+
+  end
+
+  it "an agreement can't be active if there are no posting rules" do
+
   end
 
   let(:agreement) { FactoryGirl.build(:agreement) }
 
   it "should have an initial status of draft" do
     agreement.status_name.should be (:draft)
+  end
+
+  it "only one active agreement should be allowed in a specific period" do
+    new_agr = FactoryGirl.build(:new_agreement, organization: agreement.organization, counterparty: agreement.counterparty)
+    new_agr.should_not be_valid
+    new_agr.errors[:starts_at].should_not be_nil
   end
 
 end

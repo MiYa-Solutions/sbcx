@@ -59,6 +59,8 @@ class Ticket < ActiveRecord::Base
   belongs_to :collector, :polymorphic => true
   has_many :appointments, as: :appointable
 
+  scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov} AND subcontractor_id = #{subcon} and created_at > '#{after}'") }
+
   stampable
 
   # virtual attributes
@@ -194,8 +196,9 @@ class Ticket < ActiveRecord::Base
 
   # this validator runs only for a specific state of a service call
   def validate_subcontractor
-    self.errors.add :subcontractor, "You must specify a subcontractor when transferring" unless subcontractor
-    self.errors.add :subcontractor, "a provider can't transfer a ticket to himself" if subcontractor_id == organization_id
+    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.attributes.subcontractor.blank') unless subcontractor
+    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.self_transfer') if subcontractor_id == organization_id
+    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if subcontractor_id != organization_id && Ticket.where("ref_id = #{ref_id} AND organization_id = #{subcontractor_id}").size > 0
   end
 
   # this validator runs only for a specific state of a service call

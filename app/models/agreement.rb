@@ -14,6 +14,9 @@
 #  type              :string(255)
 #  creator_id        :integer
 #  updater_id        :integer
+#  starts_at         :datetime
+#  ends_at           :datetime
+#  payment_terms     :integer
 #
 
 class Agreement < ActiveRecord::Base
@@ -30,6 +33,8 @@ class Agreement < ActiveRecord::Base
   stampable
 
   validates_presence_of :organization, :counterparty, :creator
+
+
 
   # State machine  for Agreement status
   STATUS_DRAFT = 0

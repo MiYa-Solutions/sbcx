@@ -1,4 +1,7 @@
 <%= simple_form_for @agreement, as: :agreement, url: agreement_url(@agreement) do |f| %>
+    <p>
+      <%= render 'shared/error_messages', object: f.object %>
+    </p>
     <%= render 'agreements/fields', f: f, agreement_type: @agreement.class.name %>
     <p><%= f.submit %></p>
 <% end %>
