@@ -19,13 +19,6 @@
         </div>
       </div>
 
-      <%= f.input :allow_collection %>
-      <%= f.input :transferable %>
-      <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
-      <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
-      <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
-
-
 
       <div id="new_customer_in_service_call" class="collapse">
         <address>
@@ -47,6 +40,15 @@
           </div>
         </address>
       </div>
+
+
+      <%= f.input :allow_collection %>
+      <%= f.input :transferable %>
+      <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+      <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
+      <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
+
+
 
       <div class="control-group string ">
         <label class="string  control-label" for="service_call_started_on"><%= @service_call.class.human_attribute_name(:scheduled_for) %></label>

@@ -94,7 +94,23 @@
                   </div>
 
                 </li>
-            <% end %>
+             <% end %>
+
+                <% permitted_to? :edit, @service_call do %>
+                    <li>
+                      <div class="control-group select required">
+                        <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:subcontractor) %></label>
+                        <div class="controls">
+                          <div class="input-large uneditable-input" title="To change Technician use the action section" rel='tooltip'>
+                            <%= f.text_field :subcontractor %>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </li>
+                <% end %>
           </ul>
 
         </div>
@@ -123,7 +139,7 @@
     <div class="smart_label">
       <ul>
         <li><h1><%= Material.model_name.human.pluralize %></h1></li>
-        <li><%= link_to 'Add Parts', '#', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
+        <li><%= button_tag 'Add Parts', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
       </ul>
     </div>
 

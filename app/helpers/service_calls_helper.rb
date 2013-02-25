@@ -143,7 +143,7 @@ module ServiceCallsHelper
 
   def transfer_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
-      concat (f.input :subcontractor_id, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id)
+      concat (f.input :subcontractor_id, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id )
       concat (f.input :allow_collection)
       concat (f.input :re_transfer)
       concat (hidden_field_tag "service_call[status_event]", 'transfer')

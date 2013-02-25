@@ -1,5 +1,12 @@
 en:
   activerecord:
+    errors:
+      models:
+        service_call:
+          attributes:
+            customer:
+              blank: "name field can't be blank"
+
     models:
       my_service_call: "Service Call"
 
@@ -7,10 +14,13 @@ en:
       my_service_call:
         provider: "Provider"
         address1: "The customer address"
+        transferable: "Allow Transfer"
 
       transferred_service_call:
         provider: "Provider"
         address1: "The customer address"
+        transferable: "Allow Transfer"
+
 
       service_call:
         provider: "Provider"
@@ -19,6 +29,8 @@ en:
         started_on: "Job started on"
         started_on_text: "Started on"
         completed_on_text: "Completed on"
+        transferable: "Allow Transfer"
+
 
     state_machines:
       service_call:
@@ -109,6 +121,7 @@ en:
       cant_create_for_member: "You can't create a transferred service call when the provider is a memeber. Please contact the provider and ask him to create the service call"
       missing_provider: "Please specify a provider for this transferred service call"
       customer_does_not_belong_to_provider: "The customer must belong to the provider"
+
     crud_messages:
       success: "The service call was created successfully"
       update:

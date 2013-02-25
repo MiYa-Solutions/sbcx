@@ -22,7 +22,7 @@
 	
 html .fc,
 .fc table {
-	font-size: 1em;
+	font-size: 0.9em;
 	}
 	
 .fc td,
@@ -62,6 +62,7 @@ html .fc,
 .fc-header-title h2 {
 	margin-top: 0;
 	white-space: nowrap;
+    font-size: 18px;
 	}
 	
 .fc .fc-header-space {

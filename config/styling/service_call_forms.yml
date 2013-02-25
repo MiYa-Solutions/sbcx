@@ -34,7 +34,7 @@
         cancel_transfer:
           button_classes: "btn btn-large btn-info"
         cancel:
-          button_classes: "btn btn-large btn-danger"
+          button_classes: "btn btn-large btn-danger red-button"
         close:
           button_classes: "btn btn-large btn-info"
         activate:

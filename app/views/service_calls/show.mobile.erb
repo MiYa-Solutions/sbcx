@@ -1,14 +1,23 @@
-<% provide(:title, "Service Call: #{@service_call.ref_id}" )%>
-
-
-<!--<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d">ac</li>-->
+<% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}" )%>
 
 <div data-role="collapsible-set" data-inset="false">
 
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
-    <h3>Actions</h3>
-    <p class="service-call-actions"><%= event_list(@service_call) %></p>
+    <h3><%= I18n.t('general.general.actions')%></h3>
+    <div class="service-call-actions" data-theme="d">
+
+      <%= event_list(@service_call) %>
+    </div>
   </div>
+
+
+
+
+
+
+
+
+
 
 <!--Job Details-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
@@ -105,6 +114,7 @@
   <div data-role="collapsible" data-theme="d">
     <h3>Job Status</h3>
 
+    <div class="job_status_list">
     <ul data-role="listview">
       <% if !@service_call.started_on_text.blank? %>
           <li class="ui-li ui-li-static">
@@ -142,6 +152,9 @@
       </li>
 
     </ul>
+    </div>
+
+
   </div>
 
 <!--Parts-->
