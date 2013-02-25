@@ -80,7 +80,7 @@ class ServiceCall < Ticket
     state :done, value: WORK_STATUS_DONE
 
     after_failure do |service_call, transition|
-      Rails.logger.debug { "Service Call work status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+      Rails.logger.debug { "#{service_call.class.name} work status state machine failure. errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect + "\n The Service Call:" + service_call.inspect}
     end
 
     event :start do

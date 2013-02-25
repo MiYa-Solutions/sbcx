@@ -51,7 +51,9 @@ class TransferredServiceCall < ServiceCall
     state :new, value: STATUS_NEW
     state :accepted, value: STATUS_ACCEPTED
     state :rejected, value: STATUS_REJECTED
-    state :transferred, value: STATUS_TRANSFERRED
+    state :transferred, value: STATUS_TRANSFERRED do
+      validate { |sc| sc.validate_subcon }
+    end
     state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED
 
@@ -211,6 +213,11 @@ class TransferredServiceCall < ServiceCall
 
   def provider_settlement_allowed?
     (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
+  end
+
+
+  def payment_paid?
+    payment_collected?
   end
 
   private

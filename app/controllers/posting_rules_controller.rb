@@ -45,9 +45,10 @@ class PostingRulesController < ApplicationController
 
     respond_to do |format|
       if @posting_rule.save
-        format.html { redirect_to agreement_posting_rule_path(@agreement, @posting_rule), notice: 'Posting rule was successfully created.' }
+        format.html { redirect_to @agreement.becomes(Agreement), notice: 'Posting rule was successfully created.' }
       else
-        format.html { render action: "new" }
+        format.html { redirect_to @agreement.becomes(Agreement), alert: @posting_rule.errors.messages }
+        format.js { render :new }
       end
     end
   end
@@ -75,7 +76,7 @@ class PostingRulesController < ApplicationController
     @posting_rule.destroy
 
     respond_to do |format|
-      format.html { redirect_to posting_rules_url }
+      format.html { redirect_to @posting_rule.agreement.becomes(Agreement) }
       format.json { head :no_content }
     end
   end

@@ -88,6 +88,7 @@ describe "Service Call pages" do
       setup_profit_split_agreement(org, org_admin_user2.organization.becomes(Subcontractor)).counterparty
     }
     let!(:org3) do
+      setup_profit_split_agreement(org_admin_user3.organization, org_admin_user.organization.becomes(Subcontractor))
       setup_profit_split_agreement(org2, org_admin_user3.organization.becomes(Subcontractor)).counterparty
     end
 
@@ -945,7 +946,7 @@ describe "Service Call pages" do
                     end
 
                     describe 'subcontractor view' do
-                      before {in_browser(:org2){}}
+                      before { in_browser(:org2) {} }
                       it 'provider status should be claim_settled' do
                         should have_selector provider_status, text: I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled')
                       end
@@ -1095,11 +1096,15 @@ describe "Service Call pages" do
           end
 
           describe "after transfer" do
-            before { in_browser(:org2) { click_button transfer_btn_selector } }
+            before do
+               in_browser(:org2) do
+                 check re_transfer_cbox_selector
+                 click_button transfer_btn_selector
+               end
+            end
             it "should find the service call for the member subcontractor" do
               third_service_call.should_not be_nil
             end
-
             it "should change the status to passed" do
               in_browser(:org2) do
                 should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
@@ -1112,6 +1117,27 @@ describe "Service Call pages" do
                 should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.pending'))
               end
             end
+
+            describe "third transfer to the originator" do
+
+              before do
+                in_browser(:org3) do
+                  visit service_call_path(third_service_call)
+                  click_button accept_btn_selector
+                  select org.name, from: subcontractor_select
+                  click_button transfer_btn_selector
+                  page.driver.render("#{Rails.root}/tmp/capybara/after_click_sc_#{Time.now}.png", :full => true)
+                end
+              end
+
+              it "should not allow the transfer" do
+                should have_selector '.alert-error', text: I18n.t('activerecord.errors.ticket.circular_transfer')
+                #should have_text I18n.t('activerecord.errors.ticket.circular_transfer')
+
+              end
+
+            end
+
           end
 
         end

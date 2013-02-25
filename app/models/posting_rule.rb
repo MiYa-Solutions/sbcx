@@ -39,6 +39,8 @@ class PostingRule < ActiveRecord::Base
 
   validates_presence_of :agreement_id, :rate, :rate_type, :type
 
+  validate :ensure_state_before_change
+
   belongs_to :agreement
 
   def applicable?(event)
@@ -64,5 +66,10 @@ class PostingRule < ActiveRecord::Base
     raise "the 'type' parameter was not provided when creating a new posting rule" if posting_rule.nil?
     posting_rule
 
+  end
+
+  protected
+  def ensure_state_before_change
+    errors.add :agreement, I18n.t('activerecord.errors.posting_rule.change_active_project') if agreement.active? || agreement.canceled?
   end
 end

@@ -29,6 +29,7 @@
 #  mobile_phone           :string(255)
 #  work_phone             :string(255)
 #  preferences            :hstore
+#  time_zone              :string(255)
 #
 
 class User < ActiveRecord::Base

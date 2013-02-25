@@ -20,14 +20,13 @@ class ServiceCallObserver < ActiveRecord::Observer
   # todo move the event association to before transfer after implementing background processing for events.
   # the reason is because with background processing the service call will be saved with the new subcontractor
   def after_transfer(service_call, transition)
-    service_call.events << ServiceCallTransferEvent.new
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ServiceCallTransferEvent.new
   end
 
   def before_accept(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE accept \n #{service_call.inspect} \n #{transition.inspect}" }
     service_call.events << ServiceCallAcceptEvent.new
-
-    Rails.logger.debug { "invoked observer after accept \n #{service_call.inspect} \n #{transition.inspect}" }
   end
 
   def before_complete_work(service_call, transition)

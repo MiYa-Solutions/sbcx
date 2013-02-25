@@ -12,6 +12,12 @@ module AgreementsHelper
     ]
 
   end
+  def role_options_for_agreement(klass)
+    [
+            [klass.human_attribute_name(:organization), 'organization'],
+            [klass.human_attribute_name(:counterparty), 'counterparty']
+    ]
+  end
 
   def organization_agreement_types
     Rails.logger.debug { "Need to reload all subclasses in dev mode" + SubcontractingAgreement.name + SupplierAgreement.name }
