@@ -34,6 +34,8 @@ class Agreement < ActiveRecord::Base
 
   validates_presence_of :organization, :counterparty, :creator
 
+  attr_writer :ends_at_text
+  before_save :save_ends_on_text
 
   # State machine  for Agreement status
   STATUS_DRAFT            = 10000
@@ -44,11 +46,16 @@ class Agreement < ActiveRecord::Base
 
   state_machine :status, :initial => :draft do
     state :draft, value: STATUS_DRAFT
+    state :active, value: STATUS_ACTIVE
     state :approved_pending, value: STATUS_APPROVED_PENDING do
       validate { |agr| agr.check_replacement_agreement }
     end
     after_failure do |agreement, transition|
       Rails.logger.debug { "#{agreement.class.name} status state machine failure. Agreement errors : \n" + agreement.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
+
+    after_transition :all => :active do |agr|
+      agr.starts_at = Time.zone.now unless agr.starts_at
     end
   end
 
@@ -113,6 +120,16 @@ class Agreement < ActiveRecord::Base
       errors.add  :starts_at, "The end date of the current has to be set prior to the start date of this agreement" if agr.ends_at.present? && agr.ends_at >= self.starts_at
 
     end
+  end
+
+  def ends_at_text
+    @ends_at_text ||  ends_at.nil? ? "" : I18n.l( ends_at)
+  end
+
+  private
+  def save_ends_on_text
+      self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?
+
   end
 
 

@@ -17,17 +17,30 @@
       <td><%= I18n.t('general.general.name') %></td>
       <td><h4><%= @agreement.name %></h4></td>
     </tr>
+    <% unless @agreement.starts_at.blank? %>
+        <tr>
+          <td><%= @agreement.class.human_attribute_name(:starts_at) %></td>
+
+          <td><h4><%= I18n.l @agreement.starts_at, format: :default %></h4></td>
+
+        </tr>
+    <% end %>
+
+    <tr>
+      <td><%= @agreement.class.human_attribute_name(:ends_at) %></td>
+      <td><h4><%= best_in_place @agreement.becomes(Agreement), :ends_at_text, :type => :date %></h4></td>
+    </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:status) %></td>
       <td><h4><%= @agreement.human_status_name %></h4></td>
     </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:organization) %></td>
-      <td><h4><%= @agreement.organization.name %></h4></td>
+      <td><h4><%= link_to @agreement.organization.name, affiliate_path(@agreement.organization) %></h4></td>
     </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:counterparty) %></td>
-      <td><h4><%= @agreement.counterparty.name %></h4></td>
+      <td><h4><%= link_to @agreement.counterparty.name, affiliate_path(@agreement.counterparty) %></h4></td>
     </tr>
     <tr>
       <td><%= I18n.t('general.general.created_by') %></td>
@@ -44,7 +57,6 @@
 
     </tbody>
   </table>
-
 
 
 </div>

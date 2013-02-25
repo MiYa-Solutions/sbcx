@@ -52,7 +52,7 @@ class TransferredServiceCall < ServiceCall
     state :accepted, value: STATUS_ACCEPTED
     state :rejected, value: STATUS_REJECTED
     state :transferred, value: STATUS_TRANSFERRED do
-      validate { |sc| sc.validate_subcontractor }
+      validate { |sc| sc.validate_subcon }
     end
     state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED

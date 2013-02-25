@@ -195,10 +195,17 @@ class Ticket < ActiveRecord::Base
   end
 
   # this validator runs only for a specific state of a service call
-  def validate_subcontractor
+  def validate_subcon
     self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.attributes.subcontractor.blank') unless subcontractor
     self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.self_transfer') if subcontractor_id == organization_id
-    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if subcontractor_id != organization_id && Ticket.where("ref_id = #{ref_id} AND organization_id = #{subcontractor_id}").size > 0
+    # todo fix circular
+    #self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if validate_circular_transfer
+  end
+
+  def validate_circular_transfer
+    status_changed? && transferred?
+        subcontractor_id != organization_id &&
+        Ticket.where("ref_id = #{ref_id} AND organization_id = #{subcontractor_id}").size > 0
   end
 
   # this validator runs only for a specific state of a service call

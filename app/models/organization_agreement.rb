@@ -55,6 +55,7 @@ class OrganizationAgreement < Agreement
     end
     state :replaced, value: STATUS_REPLACED
 
+
     # create the accounts after activating the agreement
     after_transition any => :active do |agreement, transition|
       unless Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'", agreement.organization_id, agreement.counterparty_id).present?
@@ -63,6 +64,9 @@ class OrganizationAgreement < Agreement
       unless Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'", agreement.counterparty_id, agreement.organization_id).present?
         Account.create!(organization: agreement.counterparty, accountable: agreement.organization) if agreement.counterparty.subcontrax_member?
       end
+
+      agreement.starts_at = Time.zone.now unless agreement.starts_at.present?
+      agreement.save
     end
 
 
@@ -101,7 +105,7 @@ class OrganizationAgreement < Agreement
 
   private
   def end_date_validation
-    errors.add :ends_at, I18n.t('activerecord.errors.agreement.ends_at_invalid', date: ends_at.strftime('%b, %d, %Y')) if Ticket.created_after(self.organization_id, self.counterparty_id, self.ends_at).size > 0
+    errors.add :ends_at, I18n.t('activerecord.errors.agreement.ends_at_invalid', date: ends_at.strftime('%b, %d, %Y')) if self.ends_at && Ticket.created_after(self.organization_id, self.counterparty_id, self.ends_at).size > 0
   end
 
   def ensure_state_before_change
