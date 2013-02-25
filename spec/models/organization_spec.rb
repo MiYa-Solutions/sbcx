@@ -90,8 +90,8 @@ describe Organization do
     it { should have_many(:materials) }
     it { should have_many(:accounts) }
     it { should have_many(:organization_roles) }
-    it { should have_many(:subcontractors).through(:accounts) }
-    it { should have_many(:providers).through(:accounts) }
+    it { should have_many(:subcontractors).through(:agreements).conditions("agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}") }
+    it { should have_many(:providers).through(:reverse_agreements).conditions("agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}") }
   end
 
   it "saved successfully" do

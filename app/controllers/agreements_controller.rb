@@ -37,12 +37,17 @@ class AgreementsController < ApplicationController
   end
 
   def update
-    #@agreements = Agreements.find(params[:id])
-    if @agreement.update_attributes(permitted_params(@agreement).agreement)
-      redirect_to @agreement.becomes(Agreement), :notice => "Successfully updated agreements."
-    else
-      render :action => 'edit'
+    respond_to do |format|
+
+      if @agreement.update_attributes(permitted_params(@agreement).agreement)
+        format.html { redirect_to @agreement.becomes(Agreement), :notice => "Successfully updated agreements." }
+        format.json { head :no_content }
+      else
+        format.html {render :action => 'edit'}
+        format.json { render json: @agreement.errors, status: :unprocessable_entity }
+      end
     end
+
   end
 
   def show

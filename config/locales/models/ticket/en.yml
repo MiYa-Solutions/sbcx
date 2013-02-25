@@ -1,0 +1,9 @@
+en:
+  activerecord:
+    errors:
+      ticket:
+        circular_transfer: "this subcontractor is already part of the outsourcing chain"
+        self_transfer: "You can't transfer a ticket to yourself"
+        attributes:
+          subcontractor:
+            blank: "You must specify a subcontractor when transferring"

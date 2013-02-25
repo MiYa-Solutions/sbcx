@@ -129,7 +129,10 @@ CREATE TABLE agreements (
     counterparty_type character varying(255),
     type character varying(255),
     creator_id integer,
-    updater_id integer
+    updater_id integer,
+    starts_at timestamp without time zone,
+    ends_at timestamp without time zone,
+    payment_terms integer
 );
 
 
@@ -1264,3 +1267,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130221022202');
 INSERT INTO schema_migrations (version) VALUES ('20130221200612');
 
 INSERT INTO schema_migrations (version) VALUES ('20130221224346');
+
+INSERT INTO schema_migrations (version) VALUES ('20130223155928');

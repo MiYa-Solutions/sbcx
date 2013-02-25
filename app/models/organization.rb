@@ -54,7 +54,7 @@ class Organization < ActiveRecord::Base
     end
   end
   has_many :reverse_agreements, class_name: "Agreement", :foreign_key => "counterparty_id"
-  has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement'" do
+  has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}" do
     def << (subcontractor)
       subcon_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
       Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator }) { self.concat subcontractor }
@@ -64,7 +64,7 @@ class Organization < ActiveRecord::Base
     end
 
   end
-  has_many :providers, class_name: "Organization", :through => :reverse_agreements, source: :organization, :conditions => "agreements.type = 'SubcontractingAgreement'" do
+  has_many :providers, class_name: "Organization", :through => :reverse_agreements, source: :organization, :conditions => "agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}" do
     def << (provider)
       unless provider.agreements.where(:counterparty_id => proxy_association.owner.id).first
         prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)

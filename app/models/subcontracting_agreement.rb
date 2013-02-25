@@ -14,6 +14,9 @@
 #  type              :string(255)
 #  creator_id        :integer
 #  updater_id        :integer
+#  starts_at         :datetime
+#  ends_at           :datetime
+#  payment_terms     :integer
 #
 
 class SubcontractingAgreement < OrganizationAgreement

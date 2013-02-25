@@ -53,7 +53,7 @@ class MyServiceCall < ServiceCall
       validate { |sc| sc.validate_technician }
     end
     state :transferred, value: STATUS_TRANSFERRED do
-      validate { |sc| sc.validate_subcontractor }
+      validate { |sc| sc.validate_subcon }
     end
     state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED
