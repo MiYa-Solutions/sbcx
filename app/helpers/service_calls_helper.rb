@@ -1,12 +1,19 @@
 module ServiceCallsHelper
 
+
+
+  def style(path)
+    StylingService.instance.get_style(path)
+  end
+
+
   ServiceCall.state_machine(:work_status).events.map(&:name).each do |event|
     define_method("work_#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall) do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.work_status.#{event}.form_classes")} do |f|
         concat (hidden_field_tag "service_call[work_status_event]", "#{event}")
         concat (f.submit service_call.class.human_work_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
-                         class: StylingService.instance.get_style("service_call.forms.work_status.#{event}.button_classes"),
+                         class: style("service_call.forms.work_status.#{event}.button_classes"),
                          title: I18n.t("service_call.forms.work_status.#{event}.tooltip"),
                          rel:   'tooltip'
                )
@@ -16,11 +23,11 @@ module ServiceCallsHelper
 
   ServiceCall.state_machine(:subcontractor_status).events.map(&:name).each do |event|
     define_method("subcon_#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall) do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.work_status.#{event}.form_classes")}  do |f|
         concat (hidden_field_tag "service_call[subcontractor_status_event]", "#{event}")
         concat (f.submit service_call.class.human_subcontractor_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
-                         class: StylingService.instance.get_style("service_call.forms.subcontractor_status.#{event}.button_classes"),
+                         class: style("service_call.forms.subcontractor_status.#{event}.button_classes"),
                          title: I18n.t("service_call.forms.subcontractor_status.#{event}.tooltip"),
                          rel:   'tooltip'
                )
@@ -30,11 +37,11 @@ module ServiceCallsHelper
 
   TransferredServiceCall.state_machine(:provider_status).events.map(&:name).each do |event|
     define_method("provider_#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall) do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.provider_status.#{event}.form_classes")} do |f|
         concat (hidden_field_tag "service_call[provider_status_event]", "#{event}")
         concat (f.submit service_call.class.human_provider_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
-                         class: StylingService.instance.get_style("service_call.forms.provider_status.#{event}.button_classes"),
+                         class: style("service_call.forms.provider_status.#{event}.button_classes"),
                          title: I18n.t("service_call.forms.provider_status.#{event}.tooltip"),
                          rel:   'tooltip'
                )
@@ -44,7 +51,7 @@ module ServiceCallsHelper
 
   (TransferredServiceCall.state_machine(:status).events.map(&:name) | MyServiceCall.state_machine(:status).events.map(&:name)).each do |event|
     define_method("#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall) do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.status.#{event}.form_classes")} do |f|
         concat (hidden_field_tag "service_call[status_event]", "#{event}")
         concat (f.submit service_call.class.human_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
@@ -58,7 +65,7 @@ module ServiceCallsHelper
 
   (TransferredServiceCall.state_machine(:billing_status).events.map(&:name) | MyServiceCall.state_machine(:billing_status).events.map(&:name)).each do |event|
     define_method("billing_#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall) do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.billing_status.#{event}.form_classes")} do |f|
         concat (hidden_field_tag "service_call[billing_status_event]", "#{event}")
         concat (f.submit service_call.class.human_billing_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
@@ -129,7 +136,7 @@ module ServiceCallsHelper
   # forms that require more than just a button are overridden  below
   #
   def work_dispatch_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall) do |f|
+    simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.work_status.dispatch.form_classes")} do |f|
       concat (f.input :technician_id, collection: f.object.organization.technicians, label_method: :name, value_method: :id)
       concat (hidden_field_tag "service_call[work_status_event]", 'dispatch')
       concat (f.submit service_call.class.human_work_status_event_name(:dispatch).titleize,
@@ -142,7 +149,7 @@ module ServiceCallsHelper
   end
 
   def transfer_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall) do |f|
+    simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.status.transfer.form_classes")} do |f|
       concat (f.input :subcontractor_id, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id )
       concat (f.input :allow_collection)
       concat (f.input :re_transfer)
@@ -157,7 +164,7 @@ module ServiceCallsHelper
   end
 
   def billing_collect_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall) do |f|
+    simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.billing_status.collect.form_classes")} do |f|
       concat (hidden_field_tag "service_call[billing_status_event]", 'collect')
       concat (collector_tag(service_call))
       concat (f.submit service_call.class.human_billing_status_event_name(:collect).titleize,

@@ -1,77 +1,156 @@
-  service_call:
-    forms:
-      subcontractor_status:
-        mark_as_settled:
-          button_classes: "btn btn-large"
-        subcon_confirmed:
-          button_classes: "btn btn-large"
-        subcon_marked_as_settled:
-          button_classes: "btn btn-large btn-danger"
-        confirm_settled:
-          button_classes: "btn btn-large btn-danger"
-        settle:
-          button_classes: "btn btn-large btn-info"
-      provider_status:
-        mark_as_settled:
-          button_classes: "btn btn-large btn-danger"
-        subcon_confirmed:
-          button_classes: "btn btn-large btn-danger"
-        subcon_marked_as_settled:
-          button_classes: "btn btn-large btn-danger"
-        confirm_settled:
-          button_classes: "btn btn-large btn-danger"
-        settle:
-          button_classes: "btn btn-large btn-info"
-      status:
-        accept:
-          button_classes: "btn btn-large btn-success"
-        un_accept:
-          button_classes: "btn btn-large btn-danger"
-        reject:
-          button_classes: "btn btn-large btn-danger"
-        transfer:
-          button_classes: "btn btn-primary btn-large red-button"
-        cancel_transfer:
-          button_classes: "btn btn-large btn-danger"
-        cancel:
-          button_classes: "btn btn-large btn-danger red-button"
-        close:
-          button_classes: "btn btn-large btn-info"
-        activate:
-          button_classes: "btn btn-large btn-info"
-        un_cancel:
-          button_classes: "btn btn-large btn-danger"
-      work_status:
-        start:
-          button_classes: "btn btn-large btn-success"
-        accept:
-          button_classes: "btn btn-large btn-success"
-        reject:
-          button_classes: "btn btn-large btn-danger"
-        un_accept:
-          button_classes: "btn btn-large btn-danger"
-        dispatch:
-          button_classes: "btn btn-large btn-primary"
-        reset:
-          button_classes: "btn btn-large btn-info"
-        complete:
-          button_classes: "btn btn-large btn-success"
-      billing_status:
-        invoice:
-          button_classes: "btn btn-large btn-primary"
-        subcon_invoiced:
-          button_classes: "btn btn-large btn-primary"
-        overdue:
-          button_classes: "btn btn-large btn-primary"
-        collect:
-          button_classes: "btn btn-large btn-primary"
-        deposited:
-          button_classes: "btn btn-large btn-primary"
-        paid:
-          button_classes: "btn btn-large btn-primary"
-        subcon_collected:
-          button_classes: "btn btn-large btn-primary"
-        subcon_deposited:
-          button_classes: "btn btn-large btn-primary"
-        confirm_deposit:
-          button_classes: "btn btn-large btn-success"
+service_call:
+  forms:
+    subcontractor_status:
+      mark_as_settled:
+        form_classes: ""
+        button_classes: "btn btn-large"
+      subcon_confirmed:
+        form_classes: ""
+        button_classes: "btn btn-large"
+      subcon_marked_as_settled:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      confirm_settled:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      settle:
+        form_classes: ""
+        button_classes: "btn btn-large btn-info"
+    provider_status:
+      mark_as_settled:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      subcon_confirmed:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      subcon_marked_as_settled:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      confirm_settled:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      settle:
+        form_classes: ""
+        button_classes: "btn btn-large btn-info"
+    status:
+      accept:
+        form_classes: ""
+        button_classes: "btn btn-large btn-success"
+      un_accept:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      reject:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      transfer:
+        form_classes: ""
+        button_classes: "btn btn-primary btn-large red-button"
+      cancel_transfer:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      cancel:
+        form_classes: "btn-large btn-danger"
+        button_classes: "btn btn-large btn-danger red-button"
+      close:
+        form_classes: ""
+        button_classes: "btn btn-large btn-info"
+      activate:
+        form_classes: ""
+        button_classes: "btn btn-large btn-info"
+      un_cancel:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+    work_status:
+      start:
+        form_classes: ""
+        button_classes: "btn btn-large btn-success"
+      accept:
+        form_classes: ""
+        button_classes: "btn btn-large btn-success"
+      reject:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      un_accept:
+        form_classes: ""
+        button_classes: "btn btn-large btn-danger"
+      dispatch:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      reset:
+        form_classes: ""
+        button_classes: "btn btn-large btn-info"
+      complete:
+        form_classes: ""
+        button_classes: "btn btn-large btn-success"
+    billing_status:
+      invoice:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      subcon_invoiced:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      overdue:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      collect:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      deposited:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      paid:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      subcon_collected:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      subcon_deposited:
+        form_classes: ""
+        button_classes: "btn btn-large btn-primary"
+      confirm_deposit:
+        form_classes: ""
+        button_classes: "btn btn-large btn-success"
+
+  states:
+    status:
+      new:
+      open: "status_blue"
+      transferred: "status_blue"
+      closed: "status_grey"
+      canceled:
+      accepted:
+      rejected:
+      closed:
+    work_status:
+      pending: "status_grey"
+      dispatched:
+      in_progress: "status_green"
+      accepted:
+      rejected:
+      done:
+    subcontractor_status:
+      na: "status_grey"
+      pending: "status_grey"
+      claim_settled:
+      claimed_as_settled:
+      settled:
+    provider_status:
+      pending:
+      claim_settled:
+      claimed_as_settled:
+      settled: "status_green"
+    billing_status:
+      na:
+      pending: status_grey
+      invoiced:
+      collected_by_employee:
+      collected:
+      deposited_to_prov:
+      deposited:
+      invoiced_by_subcon:
+      collected_by_subcon:
+      subcon_claim_deposited:
+      invoiced_by_prov:
+      overdue:
+      paid:
+

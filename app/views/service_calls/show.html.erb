@@ -48,7 +48,7 @@
   <div class="smart_label">
     <ul>
       <li><h1><%= Appointment.model_name.human.pluralize %></h1></li>
-      <li><%= link_to 'Add Appointment', '#', :class => 'btn btn-primary', id: 'new-appointment-button', data: { toggle: "collapse", target: "#appointment" } %></li>
+      <li><%= button_to 'Add Appointment', :class => 'btn btn-primary', id: 'new-appointment-button', data: { toggle: "collapse", target: "#appointment" } %></li>
     </ul>
   </div>
 

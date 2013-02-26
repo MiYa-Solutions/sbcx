@@ -2,7 +2,8 @@
   <li>
     <div class="smart_label">
       <ul>
-        <li><h1><%=I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1></li>
+        <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1>
+        </li>
         <li class="job_type_show">
                <span class="status_label" id="service_call_type">
                <badge>
@@ -24,18 +25,17 @@
       <tr>
         <td><strong> <%= @service_call.class.human_attribute_name(:status) %></strong></td>
         <td>
-                                          <span class="status_blue" id="service_call_status">
-                                          <h3><%= @service_call.human_status_name %></h3>
-                                          </span>
+          <span class="<%= StylingService.instance.get_style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
+          <h3><%= @service_call.human_status_name %></h3>
+          </span>
         </td>
       </tr>
       <tr>
         <td><strong> <%= @service_call.class.human_attribute_name(:work_status) %></strong></td>
         <td>
-                                          <span class="status_green" id="service_call_work_status">
-                                          <h3><%= @service_call.human_work_status_name %></h3>
-                                          </span>
-
+          <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.work_status_name}") %>" id="service_call_work_status">
+          <h3><%= @service_call.human_work_status_name %></h3>
+          </span>
         </td>
       </tr>
       </tbody>
@@ -49,18 +49,18 @@
           <tr>
             <td><%= @service_call.class.human_attribute_name(:subcontractor) %></td>
             <td>
-                                              <span class="status_grey" id="service_call_subcontractor_name">
-                                              <h3><%= @service_call.subcontractor.try(:name)  %></h3>
-                                              </span>
+              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_name">
+              <h3><%= @service_call.subcontractor.try(:name) %></h3>
+              </span>
             </td>
           </tr>
           </tr>
           <tr>
             <td> <%= @service_call.class.human_attribute_name(:subcontractor_status) %></td>
             <td>
-                                                  <span class="status_green" id="service_call_subcontractor_status">
-                                                  <h3><%= @service_call.human_subcontractor_status_name %></h3>
-                                                  </span>
+              <span class="<%= StylingService.instance.get_style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_status">
+              <h3><%= @service_call.human_subcontractor_status_name %></h3>
+              </span>
             </td>
           </tr>
           </tbody>
@@ -75,18 +75,18 @@
           <tr>
             <td><%= @service_call.class.human_attribute_name(:provider) %></td>
             <td>
-                                              <span class="status_grey" id="service_call_provider_name">
-                                              <h3><%= @service_call.provider.try(:name)  %></h3>
-                                              </span>
+              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
+              <h3><%= @service_call.provider.try(:name) %></h3>
+              </span>
             </td>
           </tr>
           </tr>
           <tr>
             <td> <%= @service_call.class.human_attribute_name(:provider_status) %></td>
             <td>
-                                                  <span class="status_green" id="service_call_provider_status">
-                                                  <h3><%= @service_call.human_provider_status_name %></h3>
-                                                  </span>
+              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
+                  <h3><%= @service_call.human_provider_status_name %></h3>
+              </span>
             </td>
           </tr>
           </tbody>
@@ -98,9 +98,9 @@
       <tr>
         <td><strong><%= @service_call.class.human_attribute_name(:billing_status) %></strong></td>
         <td>
-                                              <span class="status_red" id="service_call_billing_status">
-                                              <h3><%= @service_call.human_billing_status_name %></h3>
-                                              </span>
+          <span class="<%= StylingService.instance.get_style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
+              <h3><%= @service_call.human_billing_status_name %></h3>
+          </span>
         </td>
       </tr>
       </tbody>

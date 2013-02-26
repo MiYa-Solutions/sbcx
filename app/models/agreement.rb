@@ -63,7 +63,7 @@ class Agreement < ActiveRecord::Base
   scope :cparty_agreements, ->(org_id) { where(:counterparty_id => org_id) }
   scope :my_agreements, ->(org_id) { (org_agreements(org_id) | (cparty_agreements(org_id))) }
   scope :our_agreements, ->(org_id, otherparty_id) { (org_agreements(org_id).where(:counterparty_id => otherparty_id) | (cparty_agreements(org_id).where(:organization_id => otherparty_id))) }
-  scope :sibling_active_agreements, ->(agreement) { our_agreements(agreement.organization_id, agreement.counterparty_id).where("type = '#{agreement.type}' AND status = #{Agreement::STATUS_ACTIVE}") }
+  scope :sibling_active_agreements, ->(agreement) { org_agreements(agreement.organization_id).where("counterparty_id = #{agreement.counterparty_id} AND type = '#{agreement.type}' AND status = #{Agreement::STATUS_ACTIVE}") - where(id: agreement.organization_id) }
   attr_accessor :change_reason
 
   def self.new_agreement(type, org, other_party_id = nil, other_party_role = nil)
@@ -116,19 +116,19 @@ class Agreement < ActiveRecord::Base
 
   def check_replacement_agreement
     Agreement.sibling_active_agreements(self).each do |agr|
-      errors.add  :starts_at, "you must set an end date for your active agreement before approving this agreement" if agr.ends_at.nil?
-      errors.add  :starts_at, "The end date of the current has to be set prior to the start date of this agreement" if agr.ends_at.present? && agr.ends_at >= self.starts_at
+      errors.add :starts_at, "you must set an end date for your active agreement before approving this agreement" if agr.ends_at.nil?
+      errors.add :starts_at, "The end date of the current has to be set prior to the start date of this agreement" if agr.ends_at.present? && agr.ends_at >= self.starts_at
 
     end
   end
 
   def ends_at_text
-    @ends_at_text ||  ends_at.nil? ? "" : I18n.l( ends_at)
+    @ends_at_text || ends_at.nil? ? "" : I18n.l(ends_at)
   end
 
   private
   def save_ends_on_text
-      self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?
+    self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?
 
   end
 
