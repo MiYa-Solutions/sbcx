@@ -21,4 +21,14 @@ en:
       subject: 'New Subcontractor Agreement'
       content: 'New Subcontractor Agreement was submitted to you by:'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from '
+    sc_accepted_notification:
+      title: 'Transferred Job has been Accepted'
+      subject: 'Transferred Job has been Accepted'
+      content: '%{subcontractor} has accepted your Job'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview Job statuses'
+    sc_cancel_notification:
+      title: 'Transferred Job has been Accepted'
+      subject: 'Transferred Job has been Accepted'
+      content: '%{subcontractor} has accepted your Job'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview Job statuses'
 

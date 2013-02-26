@@ -24,15 +24,15 @@
           button_classes: "btn btn-large btn-info"
       status:
         accept:
-          button_classes: "btn btn-large btn-primary"
+          button_classes: "btn btn-large btn-success"
         un_accept:
           button_classes: "btn btn-large btn-danger"
         reject:
           button_classes: "btn btn-large btn-danger"
         transfer:
-          button_classes: "btn btn-large btn-info"
+          button_classes: "btn btn-primary btn-large red-button"
         cancel_transfer:
-          button_classes: "btn btn-large btn-info"
+          button_classes: "btn btn-large btn-danger"
         cancel:
           button_classes: "btn btn-large btn-danger red-button"
         close:
@@ -40,38 +40,38 @@
         activate:
           button_classes: "btn btn-large btn-info"
         un_cancel:
-          button_classes: "btn btn-large btn-info"
+          button_classes: "btn btn-large btn-danger"
       work_status:
         start:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-success"
         accept:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-success"
         reject:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-danger"
         un_accept:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-danger"
         dispatch:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         reset:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-info"
         complete:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-success"
       billing_status:
         invoice:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         subcon_invoiced:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         overdue:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         collect:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         deposited:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         paid:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         subcon_collected:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         subcon_deposited:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-primary"
         confirm_deposit:
-          button_classes: "btn btn-large"
+          button_classes: "btn btn-large btn-success"

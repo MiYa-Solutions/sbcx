@@ -134,7 +134,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[work_status_event]", 'dispatch')
       concat (f.submit service_call.class.human_work_status_event_name(:dispatch).titleize,
                        id:    'service_call_dispatch_btn',
-                       class: "btn btn-large",
+                       class: "btn btn-large btn-primary",
                        title: 'Click to Dispatch the Service Call',
                        rel:   'tooltip'
              )
@@ -149,7 +149,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[status_event]", 'transfer')
       concat (f.submit service_call.class.human_status_event_name(:transfer).titleize,
                        id:    'service_call_transfer_btn',
-                       class: "btn btn-large",
+                       class: "btn btn-large btn-primary red-button",
                        title: 'Click to transfer the Service Call to the Subcontractor you selected',
                        rel:   'tooltip'
              )
