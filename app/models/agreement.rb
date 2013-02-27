@@ -128,7 +128,7 @@ class Agreement < ActiveRecord::Base
 
   private
   def save_ends_on_text
-    self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?
+    self.ends_at = DateTime.strptime(@ends_at_text, "%m/%d/%Y ") if @ends_at_text.present?
 
   end
 

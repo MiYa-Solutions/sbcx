@@ -1,51 +1,51 @@
 <div class="agreement_rules">
-<div class="smart_label">
-  <ul>
-    <li><h1><%= I18n.t('general.general.agreement_rules') %></h1></li>
-    <li>
-      <%= link_to I18n.t('general.general.add_rule'), '#', :class => 'btn btn-small btn-primary', id: 'new-rule-button', data: { toggle: "collapse", target: "#posting_rules" } %>
-    </li>
-   </ul>
-</div>
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.agreement_rules') %></h1></li>
+      <li>
+        <%= link_to I18n.t('general.general.add_rule'), '#', :class => 'btn btn-small btn-primary', id: 'new-rule-button', data: { toggle: "collapse", target: "#posting_rules" } unless @agreement.posting_rules.size >0 %>
+      </li>
+    </ul>
+  </div>
 
-<br>
+  <br>
 
-<div id="posting_rules" class="collapse agreement_new_rule">
-  <%= render 'posting_rules/posting_rule_form' %>
-</div>
+  <div id="posting_rules" class="collapse agreement_new_rule">
+    <%= render 'posting_rules/posting_rule_form' %>
+  </div>
 
-<% unless @agreement.posting_rules.empty? %>
+  <% unless @agreement.posting_rules.empty? %>
 
-    <table class="table table-striped" id="posting_rules_table">
-      <thead>
-      <tr>
-        <th><%= PostingRule.human_attribute_name(:id) %> </th>
-        <th><%= PostingRule.human_attribute_name(:type) %> </th>
-        <!--<th><#%= PostingRule.human_attribute_name(:agreement) %></th>-->
-        <th><%= PostingRule.human_attribute_name(:rate) %></th>
-        <th><%= PostingRule.human_attribute_name(:rate_type) %></th>
-        <th><%= PostingRule.human_attribute_name(:properties) %></th>
-        <th><%= PostingRule.human_attribute_name(:created_at) %></th>
-        <th><%= I18n.t('general.general.actions')  %></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @agreement.posting_rules.each do |rule| %>
-          <tr>
-            <td><%= rule.id %></td>
-            <td><%= rule.type %></td>
-            <!--<td><#%= rule.agreement %></td>-->
-            <td><%= rule.rate %></td>
-            <td><%= rule.rate_type %></td>
-            <td><%= rule.properties %></td>
-            <td><%= l rule.created_at, :format => :long %></td>
-            <td></td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
+      <table class="table table-striped" id="posting_rules_table">
+        <thead>
+        <tr>
+          <th><%= PostingRule.human_attribute_name(:id) %> </th>
+          <th><%= PostingRule.human_attribute_name(:type) %> </th>
+          <!--<th><#%= PostingRule.human_attribute_name(:agreement) %></th>-->
+          <th><%= PostingRule.human_attribute_name(:rate) %></th>
+          <th><%= PostingRule.human_attribute_name(:rate_type) %></th>
+          <th><%= PostingRule.human_attribute_name(:properties) %></th>
+          <th><%= PostingRule.human_attribute_name(:created_at) %></th>
+          <th><%= I18n.t('general.general.actions') %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @agreement.posting_rules.each do |rule| %>
+            <tr>
+              <td><%= rule.id %></td>
+              <td><%= rule.type %></td>
+              <!--<td><#%= rule.agreement %></td>-->
+              <td><%= rule.rate %></td>
+              <td><%= rule.rate_type %></td>
+              <td><%= rule.properties %></td>
+              <td><%= l rule.created_at, :format => :long %></td>
+              <td></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
 
-<% end %>
+  <% end %>
 
 
 </div>

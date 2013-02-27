@@ -34,46 +34,23 @@
 #  saturday_to    :time
 #
 
-class PostingRule < ActiveRecord::Base
-  serialize :properties, ActiveRecord::Coders::Hstore
+require 'spec_helper'
 
-  validates_presence_of :agreement_id, :rate, :rate_type, :type
+describe ProfitSplit do
 
-  validate :ensure_state_before_change
+  let(:rule) { FactoryGirl.create(:profit_split) }
+  subject { rule }
 
-  belongs_to :agreement
-
-  def applicable?(event)
-    true
+  it "should have only percentage as an option" do
+    rate_types.should == [ :percentage ]
   end
 
-  def self.new_rule_from_params(type, params)
-    unless type.nil?
-      rule = type.classify.constantize.new(params)
-    end
-
-    raise "the 'type' parameter was not provided when creating a new posting rule" if rule.nil?
-    rule
+  describe "validation" do
 
   end
 
-  def self.new_posting_rule(type, agreement_id = nil)
-    unless type.nil?
-      posting_rule              = type.classify.constantize.new
-      posting_rule.agreement_id = agreement_id
-    end
-
-    raise "the 'type' parameter was not provided when creating a new posting rule" if posting_rule.nil?
-    posting_rule
-
+  describe "associations" do
+    it { should belong_to(:agreement) }
   end
 
-  def rate_types
-    [:percentage]
-  end
-
-  protected
-  def ensure_state_before_change
-    errors.add :agreement, I18n.t('activerecord.errors.posting_rule.change_active_project') if agreement.try(:active?) || agreement.try(:canceled?)
-  end
 end
