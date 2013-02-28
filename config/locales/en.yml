@@ -40,6 +40,7 @@ en:
       dear: "Dear"
       job:  "Job Number"
       set_date: "Click to set date"
+      jobs: "Jobs"
     general:
       my_profile: "My Profile"
       account_settings: "Account Settings"
@@ -86,3 +87,4 @@ en:
       job_type: "Job Type"
       mobile: "Mobile"
       save_changes: "Save Changes"
+      appointments: "Appointments"

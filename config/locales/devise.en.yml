@@ -83,6 +83,9 @@ en:
       agreement: "Aggrement"
       update_agreement: "Update Agreement"
       new_job: "New Job"
+      job_statuses: "Job Stauses"
+      job_details: "Job Details"
+      appointments: "Appointment"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"

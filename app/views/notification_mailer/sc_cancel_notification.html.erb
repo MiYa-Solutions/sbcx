@@ -5,7 +5,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title><%= I18n.t('notification_mailer.sc_accepted_notification.subject').html_safe %></title>
+  <title><%= I18n.t('notification_mailer.sc_cancel_notification.subject').html_safe %></title>
   <%= render 'styling' %>
 </head>
 
@@ -44,10 +44,10 @@
                     <tr>
                       <td valign="top" class="bodyContent">
                         <div>
-                          <h4 class="h4"><%= I18n.t('notification_mailer.sc_accepted_notification.title').html_safe %></h4>
+                          <h4 class="h4"><%= I18n.t('notification_mailer.sc_cancel_notification.title').html_safe %></h4>
                           <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>
                           ,<br>
-                          <%= I18n.t('notification_mailer.sc_accepted_notification.content', subcontractor: @service_call.subcontractor.name, ref: @service_call.ref_id).html_safe %>
+                          <%= I18n.t('notification_mailer.sc_cancel_notification.content') %>
                           <br>
                         </div>
                       </td>

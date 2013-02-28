@@ -122,41 +122,127 @@ footer {
   .ui-corner-tl, .ui-corner-tr, .ui-corner-bl, .ui-corner-br, .ui-corner-top, .ui-corner-bottom, .ui-corner-right, .ui-corner-left, .ui-corner-all, .ui-btn-corner-tl, .ui-btn-corner-tr, .ui-btn-corner-bl, .ui-btn-corner-br, .ui-btn-corner-top, .ui-btn-corner-bottom, .ui-btn-corner-right, .ui-btn-corner-left, .ui-btn-corner-all {
     //background-color: transparent;
 
-    background: linear-gradient(#5F9CC5, #396B9E) repeat scroll 0 0 #396B9E;
+    //background: linear-gradient(#5F9CC5, #396B9E) repeat scroll 0 0 #396B9E;
     //border: 1px solid #044062;
     border: none;
-    color: #FFFFFF;
+    color: #000000;
     font-weight: bold;
-    text-shadow: 0 1px 0 #194B7E;
+    //text-shadow: 0 1px 0 #194B7E;
     text-transform: uppercase;
     min-height: 11px;
 
 
   }
 
-  //.red-button > .ui-corner-tl, .ui-corner-tr, .ui-corner-bl, .ui-corner-br, .ui-corner-top, .ui-corner-bottom, .ui-corner-right, .ui-corner-left, .ui-corner-all, .ui-btn-corner-tl, .ui-btn-corner-tr, .ui-btn-corner-bl, .ui-btn-corner-br, .ui-btn-corner-top, .ui-btn-corner-bottom, .ui-btn-corner-right, .ui-btn-corner-left, .ui-btn-corner-all {
-  //  background: linear-gradient(red, #396B9E) repeat scroll 0 0 #9e1e43;
-  //
-  //}
+  .red-button {
+    span > .ui-btn-text {
+      color: #DA4E49;
 
-  //.red-button > span {
-  //  //background: linear-gradient(red, #396B9E) repeat scroll 0 0 #9e1e43;
-  //
-  //  //z-index: 1;
-  //  background: linear-gradient(#5F9CC5, #396B9E) repeat scroll 0 0 #396B9E;
-  //  //border: 1px solid #044062;
-  //  border: none;
-  //  color: #ff6167;
-  //  font-weight: bold;
-  //  text-shadow: 0 1px 0 #194B7E;
-  //  text-transform: uppercase;
-  //  min-height: 11px;
-  //
-  //}
-  //
+
+    }
+  }
+
+  .blue-button {
+    span > .ui-btn-text {
+      color: #3A87AD;
+
+    }
+  }
+
+  .green-button {
+    span > .ui-btn-text {
+      color: #44ad3f;
+
+
+    }
+  }
+
 
 
 }
+
+.job_index_divider{
+  text-align: center;
+  font-size: 14px;
+}
+
+.jobs_index_address {
+  width: 70%;
+}
+//
+
+
+.status_blue, .ui-collapsible-content .ui-btn-up-d {
+
+    color: #3A87AD;
+    font-size: 14px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 12px;
+}
+
+.status_blue {
+
+    text-align: right;
+
+}
+
+
+.status_green, .ui-collapsible-content .ui-btn-up-d {
+
+    color: #44ad3f;
+    font-size: 14px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 12px;
+}
+
+.status_green {
+
+    text-align: right;
+
+}
+
+
+.status_grey, .ui-collapsible-content .ui-btn-up-d  {
+
+    color: #696969;
+    font-size: 14px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 12px;
+}
+
+.status_grey {
+
+    text-align: right;
+
+}
+
+
+.status_red, .ui-collapsible-content .ui-btn-up-d {
+    color: #DA4E49;
+    font-size: 14px;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 12px;
+}
+
+.status_red {
+
+    text-align: right;
+
+}
+
+
+.ui-collapsible-content .ui-btn-up-d {
+  background: linear-gradient(#FFFFFF, #F1F1F1) repeat scroll 0 0 #EEEEEE;
+  color: #333333;
+  text-transform: capitalize;
+}
+
+
+
 
   //.red-button {
   //  //background: linear-gradient(white, #F1F1F1) repeat scroll 0 0 #EEEEEE;
@@ -168,6 +254,26 @@ footer {
 
 .job_status_list {
   margin-top: 10px;
+
+  .ui-bar-b {
+    background: linear-gradient(#6FACD5, #497BAE) repeat scroll 0 0 #5E87B0;
+    color: #FFFFFF;
+    text-shadow: 0 1px 1px #3E6790;
+    border-radius: 0 2em 2em 0;
+    width: 50%;
+  }
+}
+
+.job_info_list {
+  margin-top: 12px;
+
+  //.ui-bar-b {
+  //  background: linear-gradient(#6FACD5, #497BAE) repeat scroll 0 0 #5E87B0;
+  //  color: #FFFFFF;
+  //  text-shadow: 0 1px 1px #3E6790;
+  //  border-radius: 0 2em 2em 0;
+  //  width: 50%;
+  //}
 }
 
 .service-call-actions {
@@ -491,10 +597,6 @@ input.ui-input-text, textarea.ui-input-text {
   border-color: #000000;
 }
 
-.ui-collapsible-content .ui-btn-up-d {
-  background: linear-gradient(#FFFFFF, #F1F1F1) repeat scroll 0 0 #EEEEEE;
-  color: #333333;
-}
 
 .service_call_show_buttons {
   margin-bottom: -8px;
@@ -573,13 +675,28 @@ input.ui-input-text, textarea.ui-input-text {
   }
 }
 
+
 .service_calls_index {
+
+  .service_call_status {
+    margin-left: 70%;
+    margin-top: -24px;
+    font-size: 10px;
+    text-align: left;
+    color: #3A87AD;
+    text-transform: uppercase;
+    line-height: 12px;
+
+
+
+  }
 
   .ui-btn-text {
     border: 0;
     display: inline-block;
     vertical-align: middle;
     position: relative;
+
   }
 
   .ui-li-aside {
@@ -603,7 +720,7 @@ input.ui-input-text, textarea.ui-input-text {
 
   .ui-li-desc {
     display: block;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: normal;
     //margin: -0.5em 0 0.6em;
     overflow: hidden;
@@ -659,12 +776,12 @@ input.ui-input-text, textarea.ui-input-text {
 
   .ui-grid-a .ui-block-a {
     width: 30%;
-    padding-top: 10px;
+    padding-top: 5px;
   }
 
   .ui-grid-a .ui-block-b {
     width: 70%;
-    padding-top: 10px;
+    padding-top: 5px;
   }
 
 }

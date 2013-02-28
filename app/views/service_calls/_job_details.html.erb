@@ -5,7 +5,7 @@
         <ul>
           <li><h1><%= I18n.t('general.general.job_type') %></h1></li>
           <li></li>
-          <% if !@service_call.events.empty? %>
+          <% unless @service_call.events.empty? %>
               <li>
                 <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#myModal">
                   <%= I18n.t('general.general.job_history') %>
@@ -21,7 +21,7 @@
         <div class="span6">
           <ul class="unstyled list_service_calls">
 
-            <% if !@service_call.started_on_text.blank? %>
+            <% unless @service_call.started_on_text.blank? %>
 
                 <li>
                   <div class="control-group select required">
@@ -36,7 +36,7 @@
 
             <% end %>
 
-            <% if !@service_call.started_on_text.blank? %>
+            <% unless @service_call.completed_on_text.blank? %>
                 <li>
                   <div class="control-group select required">
                     <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:completed_on_text) %></label>
@@ -81,7 +81,7 @@
                 <br>
               </address>
             </li>
-            <% if !@service_call.technician.blank? %>
+            <% unless @service_call.technician.blank? %>
                 <li>
                   <div class="control-group select required">
                     <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:technician) %></label>

@@ -1,0 +1,88 @@
+<h3><%= I18n.t('general.general.job_statuses')%></h3>
+
+<div class="job_status_list">
+  <ul data-role="listview">
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:status) %></div>
+        <div class="ui-block-b">
+            <span class="<%= StylingService.instance.get_style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
+                <%= @service_call.human_status_name %>
+          </span>
+        </div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:work_status) %></div>
+        <div class="ui-block-b">
+           <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.work_status_name}") %>" id="service_call_work_status">
+                <%= @service_call.human_work_status_name %>
+          </span>
+        </div>
+      </div>
+    </li>
+    <% unless @service_call.subcon_na? %>
+        <li data-role="list-divider"><%= @service_call.class.human_attribute_name(:subcontractor_status) %></li>
+
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor) %></div>
+            <div class="ui-block-b">
+              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_name">
+                    <%= @service_call.subcontractor.try(:name) %>
+              </span>
+            </div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor_status) %></div>
+            <div class="ui-block-b">
+              <span class="<%= StylingService.instance.get_style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_status">
+                    <%= @service_call.human_subcontractor_status_name %>
+              </span>
+            </div>
+          </div>
+        </li>
+    <% end %>
+    <% unless @service_call.class == MyServiceCall %>
+        <li data-role="list-divider"><%= @service_call.class.human_attribute_name(:provider_status) %></li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
+            <div class="ui-block-b">
+              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
+                    <%= @service_call.provider.try(:name) %>
+              </span>
+            </div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider_status) %></div>
+            <div class="ui-block-b">
+              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
+                    <%= @service_call.human_provider_status_name %>
+              </span>
+            </div>
+          </div>
+        </li>
+    <% end %>
+
+    <li data-role="list-divider"><%= @service_call.class.human_attribute_name(:billing_status) %></li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider_status) %></div>
+        <div class="ui-block-b">
+          <span class="<%= StylingService.instance.get_style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
+                <%= @service_call.human_billing_status_name %>
+          </span>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+
+</div>

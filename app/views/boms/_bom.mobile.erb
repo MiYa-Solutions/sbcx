@@ -8,20 +8,29 @@
       <div class="customer_contacts">
 
         <div class="ui-grid-a">
-          <div class="ui-block-a">Part Name:</div>
-          <div class="ui-block-b"> <%= f.text_field :material_name, placeholder: 'material', data: { autocomplete_source: materials_path }, label: "Part Name:" %></div>
+          <div class="ui-block-a"><%= @bom.class.human_attribute_name(:material_name) %></div>
+          <div class="ui-block-b">
+            <%= f.text_field :material_name, placeholder: 'material', data: { autocomplete_source: materials_path }, label: "Part Name:" %>
+          </div>
         </div>
         <div class="ui-grid-a">
-          <div class="ui-block-a">Quantity:</div>
+          <div class="ui-block-a"><%= @bom.class.human_attribute_name(:quantity) %></div>
           <div class="ui-block-b"> <%= f.text_field :quantity, placeholder: 'quantity' %></div>
         </div>
         <div class="ui-grid-a">
-          <div class="ui-block-a">List Price:</div>
+          <div class="ui-block-a"><%= @bom.class.human_attribute_name(:price) %></div>
           <div class="ui-block-b"><%= f.text_field :price, placeholder: 'price' %></div>
         </div>
         <div class="ui-grid-a">
-          <div class="ui-block-a">Cost:</div>
+          <div class="ui-block-a"><%= @bom.class.human_attribute_name(:cost) %></div>
           <div class="ui-block-b">  <%= f.text_field :cost, placeholder: 'cost' %></div>
+        </div>
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= @bom.class.human_attribute_name(:buyer) %></div>
+          <div class="ui-block-b">
+            <%= f.select :buyer, options_for_select(buyer_options(@ticket)), include_blank: true  %>
+            <%= f.hidden_field :buyer_type %>
+          </div>
         </div>
 
 

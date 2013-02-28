@@ -1,0 +1,58 @@
+<h3><%= I18n.t('general.general.job_details')%></h3>
+
+<div class="job_info_list">
+  <ul data-role="listview">
+    <% unless @service_call.started_on_text.blank? %>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:started_on_text) %></div>
+            <div class="ui-block-b"><%= @service_call.started_on_text  %></div>
+          </div>
+        </li>
+    <% end %>
+    <% unless @service_call.completed_on_text.blank? %>
+        <li>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:completed_on_text) %></div>
+            <div class="ui-block-b"> <%= @service_call.completed_on  %> </div>
+          </div>
+        </li>
+    <% end %>
+
+    <li>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
+        <div class="ui-block-b"> <%= @service_call.scheduled_for  %> </div>
+      </div>
+    </li>
+    <li>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
+        <div class="ui-block-b"> <%= @service_call.customer.name  %> </div>
+      </div>
+    </li>
+    <% unless @service_call.technician.blank? %>
+        <li>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
+            <div class="ui-block-b"><%= @service_call.technician.try (:name)  %></div>
+          </div>
+        </li>
+    <% end %>
+
+
+    <!--<#% permitted_to? :update, @service_call do %>-->
+    <li class="ui-li ui-li-static">
+      <fieldset class="ui-grid-solo ui-btn-inner-small">
+
+        <%= link_to I18n.t('general.general.edit'), edit_service_call_path, "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" %>
+      </fieldset>
+
+    </li>
+    <!--<#% end %>-->
+
+
+
+  </ul>
+
+</div>

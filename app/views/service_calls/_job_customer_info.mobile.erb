@@ -1,0 +1,63 @@
+<h3>Customer info</h3>
+
+
+<div class="customer_in_service_call">
+  <ul data-role="listview">
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
+        <div class="ui-block-b"><%= @service_call.customer.name %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address) %></div>
+        <div class="ui-block-b"><%= @service_call.customer.address1 %>
+          <% if !@service_call.customer.address2.blank? %>
+              <br> <%= @service_call.customer.address2 %>
+          <% end %>
+        </div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:city) %></div>
+        <div class="ui-block-b"><%= @service_call.customer.city %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:state) %></div>
+        <div class="ui-block-b"><%= @service_call.customer.state %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:zip) %></div>
+        <div class="ui-block-b"><%= @service_call.customer.zip %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:phone) %></div>
+        <div class="ui-block-b"><%= @service_call.customer.phone %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:mobile) %></div>
+        <div class="ui-block-b"><%= @service_call.customer.mobile_phone %></div>
+      </div>
+    </li>
+    <% permitted_to? :edit, @customers do %>
+        <!--<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d">Subcontractor: <#%= @service_call.subcontractor.try (:name) %></li>-->
+        <li class="ui-li ui-li-static">
+          <fieldset class="ui-grid-solo ui-btn-inner-small">
+
+            <%= link_to I18n.t('general.general.edit'), edit_service_call_path, "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" %>
+          </fieldset>
+
+        </li>
+    <% end %>
+  </ul>
+</div>
