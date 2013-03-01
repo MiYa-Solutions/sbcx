@@ -56,14 +56,52 @@
 </div>
 
 <ul data-role="listview">
+  <% unless @affiliates.empty? %>
   <% @affiliates.each do |affiliate| %>
-      <li class="inline_mobile"><%= link_to affiliate.name, affiliate, "data-transition" => "slide" %>
-        <% if affiliate.subcontrax_member==true %>
+          <li class="inline_mobile service_calls_index affiliate_index_line">
+            <p class="ui-li-aside-affiliate ui-li-desc-affiliate">
+              <% if affiliate.subcontrax_member==true %>
+                    <span class="member_logo">
+                            <img src="/assets/member.png">
+                    </span>
+
+              <% end %>
+            </p>
+
+            <%= link_to affiliate.name, affiliate, "data-transition" => "slide" %>
+
+         <span class="subcon_label">
+            <% if affiliate.subcontractor? %>
+                <%= image_tag("sub24.png", :title => I18n.t('general.messages.provider_icon').html_safe, :rel => 'tooltip') %>
+
+            <% end %>
+         </span>
+
+            <span class="provider_label">
+                <% if affiliate.provider? %>
+                <%= image_tag("prov24.png", :title => I18n.t('general.messages.provider_icon').html_safe, :rel => 'tooltip') %>
+                <% end %>
+            </span>
+
+
+
+
+          </li>
+  <% end %>
+  <% end %>
+</ul>
+
+
+
+
+
+<!--<li class="inline_mobile"><#%= link_to affiliate.name, affiliate, "data-transition" => "slide" %>
+  <#% if affiliate.subcontrax_member==true %>
             <span class="member_label_mobile">
               <badge>Member</badge>
              </span>
-        <% end %>
-      </li>
-  <% end %>
-</ul>
+  <#% end %>
+</li>
+
+-->
 

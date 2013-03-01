@@ -757,7 +757,53 @@ input.ui-input-text, textarea.ui-input-text {
     padding-right: 10px;
   }
 
+  .member_logo {
+    //background-color: red;
+  }
 
+  .ui-li-desc-affiliate {
+    background: none repeat scroll 0 0 transparent;
+    color: white;
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    height: auto;
+    overflow: hidden;
+    padding-bottom: 1px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-li-aside-affiliate {
+    border-radius: 1em 1em 1em 1em;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    float: left;
+    margin-bottom: -1px;
+    margin-top: 5px;
+    width: 30px;
+  }
+
+
+  .subcon_label {
+    margin-top: -10px;
+    position: absolute;
+    right: 21%;
+    top: 42%;
+  }
+
+  .provider_label {
+    margin-top: -10px;
+    position: absolute;
+    right: 11%;
+    top: 42%;
+  }
+
+
+}
+
+.affiliate_index_line {
+  min-height: 12px;
 }
 
 .ui-li-has-arrow .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow {
