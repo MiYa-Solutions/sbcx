@@ -3,7 +3,7 @@ class ServiceCallCompletedEvent < ServiceCallEvent
   def init
     self.name         = I18n.t('service_call_completed_event.name')
     self.reference_id = 100006
-    self.description  = I18n.t('service_call_completed_event.description', subcontractor: service_call.provider.name)
+    self.description  = I18n.t('service_call_completed_event.description', subcontractor: service_call.subcontractor.name)
   end
 
   def process_event

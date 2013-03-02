@@ -79,7 +79,7 @@
 
             <span class="provider_label">
                 <% if affiliate.provider? %>
-                <%= image_tag("prov24.png", :title => I18n.t('general.messages.provider_icon').html_safe, :rel => 'tooltip') %>
+                <%= image_tag("prov24.png", "data-target" => "#popupInfo", "data-transition" => "pop", "data-rel" => "popup") %>
                 <% end %>
             </span>
 
@@ -91,17 +91,7 @@
   <% end %>
 </ul>
 
-
-
-
-
-<!--<li class="inline_mobile"><#%= link_to affiliate.name, affiliate, "data-transition" => "slide" %>
-  <#% if affiliate.subcontrax_member==true %>
-            <span class="member_label_mobile">
-              <badge>Member</badge>
-             </span>
-  <#% end %>
-</li>
-
--->
+<div data-role="popup" id="popupInfo" class="ui-content" data-theme="e" style="max-width:350px;">
+  <p>Here is a <strong>tiny popup</strong> being used like a tooltip</p>
+</div>
 

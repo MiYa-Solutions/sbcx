@@ -4,36 +4,36 @@ en:
     description: '%{name}, congratulations and welcome to SubConTraX'
 
   service_call_accept_event:
-    name: "Service Call Accepted"
+    name: "Job has been Accepted"
     description: "You have accepted the the transferred service call"
 
   service_call_reject_event:
-    name: "Reject Service Call"
+    name: "Job has been Rejected"
     description: "You have rejected this service call"
 
   service_call_transfer_event:
-    name: "Transferred Service Call"
-    description: 'Transferred the service call to %{subcontractor_name}'
+    name: "Job has been Transferred"
+    description: 'Transferred the Job to %{subcontractor_name}'
 
   service_call_dispatch_event:
-    description: 'Dispatched to %{technician}'
-    name: "Service Call Dispatched"
+    description: 'Job has been Dispatched to %{technician}'
+    name: "Job has been Dispatched"
 
   service_call_start_event:
-    name: "Service call started"
+    name: "Job has been Started"
     description: '%{technician} started the job'
 
   service_call_complete_event:
-    name: "Completed Service Call"
+    name: "Job has been Completed"
     description: 'Service call was reported as completed by %{user}'
 
   service_call_subcon_settle_event:
-    name: "Settled With Subcontractor"
-    description: "The subcontractor balance for this service call was settled"
+    name: "Job Balance has been Settled with Subcontractor"
+    description: "The subcontractor balance for this Job has been settled"
 
   service_call_subcon_settled_event:
-    name: "Subcontractor marked as settled"
-    description: '%{subcontractor} has marked this service call as settled'
+    name: "Job Balance has been marked as Settled by Subcontractor"
+    description: '%{subcontractor} has marked this Job as settled'
 
   agreement_new_event:
     name: "New Agreement"

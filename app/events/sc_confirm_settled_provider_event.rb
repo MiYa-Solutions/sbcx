@@ -1,8 +1,8 @@
 class ScConfirmSettledProviderEvent < ServiceCallEvent
 
     def init
-        self.name         = I18n.t('service_call_confirm_settled_event.name')
-        self.description  = I18n.t('service_call_confirm_settled_event.description')
+        self.name         = I18n.t('service_call_provider_confirmed_settled_event.name')
+        self.description  = I18n.t('service_call_provider_confirmed_settled_event.description')
         self.reference_id = 100032
     end
 
