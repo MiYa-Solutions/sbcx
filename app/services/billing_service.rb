@@ -1,7 +1,11 @@
 class BillingService
   def initialize(event)
-    @event  = event
-    @ticket = event.eventable
+    @event   = event
+    @ticket  = event.eventable
+    @account = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'",
+                             @ticket.organization_id,
+                             @ticket.counterparty.id,
+                             ).first
   end
 
   def execute
@@ -14,7 +18,7 @@ class BillingService
 
     AccountingEntry.transaction(:requires_new => true) do
       @accounting_entries.each do |entry|
-        entry.save!
+        @account.entries << entry
       end
     end
   end
@@ -30,7 +34,7 @@ class BillingService
   def get_accounting_entries(posting_rules)
     entries = []
     posting_rules.each do |rule|
-      entries.concat rule.get_entries(@event)
+      entries.concat rule.get_entries(@event) if rule.applicable?(@event)
     end
     entries
   end

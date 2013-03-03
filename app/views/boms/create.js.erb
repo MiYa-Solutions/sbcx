@@ -36,4 +36,6 @@ $('#bom_cost').val('');
 $('#bom_price').val('');
 $('#bom_material_name').val('');
 $('#bom_quantity').val('');
+$('#job_total_cost').html('<%= j(humanized_money_with_symbol @bom.ticket.total_cost) %>');
+$('#job_total_price').html('<%= j(humanized_money_with_symbol @bom.ticket.total_price) %>');
 <% end %>

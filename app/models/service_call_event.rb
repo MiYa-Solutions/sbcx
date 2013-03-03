@@ -30,6 +30,7 @@
 #
 
 class ServiceCallEvent < Event
+  before_create :set_default_creator
   def process_event
 
     Rails.logger.debug { "Running #{self.class.name} process_event method" }

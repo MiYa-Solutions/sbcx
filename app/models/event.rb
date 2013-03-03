@@ -62,7 +62,7 @@ class Event < ActiveRecord::Base
   belongs_to :triggering_event, class_name: "Event"
   stampable
 
-  before_validation :init
+  before_validation :set_default_creator, :init
 
   # todo add a state machine to capture event status and processing times
   def process_event
@@ -88,6 +88,11 @@ class Event < ActiveRecord::Base
 
     end
 
+  end
+
+
+  def set_default_creator
+    self.creator ||= User.find_by_email('system@subcontrax.com')
   end
 
 

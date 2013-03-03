@@ -269,6 +269,17 @@ class Ticket < ActiveRecord::Base
 
   end
 
+  def counterparty
+    case my_role
+      when :prov
+        subcontractor
+      when :subcon
+        provider
+      else
+        raise "Unexpected role for #{self.class.name} id: #{self.id}"
+    end
+  end
+
   private
   def customer_belongs_to_provider
     errors.add(:customer, I18n.t('service_call.errors.customer_does_not_belong_to_provider')) unless !customer || customer.organization_id == provider_id

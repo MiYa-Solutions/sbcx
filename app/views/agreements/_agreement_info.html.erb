@@ -17,6 +17,11 @@
       <td><%= I18n.t('general.general.name') %></td>
       <td><h4><%= @agreement.name %></h4></td>
     </tr>
+    <tr>
+      <td><%= @agreement.class.human_attribute_name(:payment_terms) %></td>
+      <td><h4><%= best_in_place @agreement.becomes(Agreement), :ends_at_text, :type => :select, collection: agreement_payment_options %></h4></td>
+    </tr>
+
     <% unless @agreement.starts_at.blank? %>
         <tr>
           <td><%= @agreement.class.human_attribute_name(:starts_at) %></td>

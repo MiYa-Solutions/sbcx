@@ -16,7 +16,7 @@
 #  updater_id        :integer
 #  starts_at         :datetime
 #  ends_at           :datetime
-#  payment_terms     :integer
+#  payment_terms     :string(255)
 #
 
 class Agreement < ActiveRecord::Base
@@ -26,6 +26,7 @@ class Agreement < ActiveRecord::Base
   has_many :events, as: :eventable
   has_many :notifications, as: :notifiable
   has_many :posting_rules
+  alias_method :rules, :posting_rules
   has_many :payments
 
   accepts_nested_attributes_for :payments
@@ -47,6 +48,7 @@ class Agreement < ActiveRecord::Base
   state_machine :status, :initial => :draft do
     state :draft, value: STATUS_DRAFT
     state :active, value: STATUS_ACTIVE
+    state :canceled, value: STATUS_CANCELED
     state :approved_pending, value: STATUS_APPROVED_PENDING do
       validate { |agr| agr.check_replacement_agreement }
     end
@@ -128,7 +130,7 @@ class Agreement < ActiveRecord::Base
 
   private
   def save_ends_on_text
-    self.ends_at = DateTime.strptime(@ends_at_text, "%m/%d/%Y ") if @ends_at_text.present?
+    self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?
 
   end
 

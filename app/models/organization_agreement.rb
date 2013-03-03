@@ -16,7 +16,7 @@
 #  updater_id        :integer
 #  starts_at         :datetime
 #  ends_at           :datetime
-#  payment_terms     :integer
+#  payment_terms     :string(255)
 #
 
 class OrganizationAgreement < Agreement
@@ -28,7 +28,7 @@ class OrganizationAgreement < Agreement
   STATUS_REJECTED_BY_CPARTY      = 11003
 
   validate :ensure_state_before_change
-  validate :end_date_validation#, if: ->(agr) { agr.ends_at_changed? }
+  validate :end_date_validation #, if: ->(agr) { agr.ends_at_changed? }
 
   # The state machine definitions
   state_machine :status, :initial => :draft do
@@ -101,6 +101,10 @@ class OrganizationAgreement < Agreement
       transition :active => :canceled
     end
 
+  end
+
+  def self.payment_options
+    { cod: 0, net_10: 10, net_15: 15, net_30: 30, net_60: 60, net_90: 90 }
   end
 
   private

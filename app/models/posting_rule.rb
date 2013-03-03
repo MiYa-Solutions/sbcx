@@ -38,6 +38,7 @@ class PostingRule < ActiveRecord::Base
   serialize :properties, ActiveRecord::Coders::Hstore
 
   validates_presence_of :agreement_id, :rate, :rate_type, :type
+  validates_numericality_of :rate
 
   validate :ensure_state_before_change
 

@@ -54,45 +54,46 @@ class ProfitSplit < PostingRule
   end
 
   def get_entries(event)
-    entries = []
-
-    entries = entries + organization_entries(event)
-    entries + counterparty_entries(event)
+    @ticket = event.eventable
+    @event = event
+    case @ticket.my_role
+      when :prov
+        organization_entries
+      when :subcon
+        counterparty_entries
+      else
+        raise "Unrecognized role when creting profit split entries"
+    end
 
   end
 
   # todo implement timebound check
   def applicable?(event)
-    if event.instance_of?(ServiceCallCompletedEvent) || event.instance_of?(ServiceCallCompleteEvent)
-      true
-    else
-      false
-    end
+    event.instance_of?(ServiceCallCompletedEvent) ||
+        (event.instance_of?(ServiceCallCompleteEvent) &&
+            event.eventable.instance_of?(MyServiceCall) &&
+            event.eventable.transferred?) ||
+        (event.instance_of?(ServiceCallCompleteEvent) && event.eventable.instance_of?(TransferredServiceCall))
   end
 
   private
-  def organization_entries(event)
+
+  def counterparty_cut
+    @ticket.total_profit * (rate / 100.0)
+  end
+
+  def organization_entries
+
     entries = []
 
-    account = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = ?",
-                            agreement.organization_id,
-                            agreement.counterparty_id,
-                            agreement.counterparty_type).first
-    unless account.nil?
-      entries << SubcontractingJob.new(event: event, ticket: event.eventable, account: account, amount: (event.eventable.total_profit * ((100.0 - rate) / 100.0)), description: "Entry to provider owned account")
-    end
+
+    entries << PaymentToSubcontractor.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to provider owned account")
     entries
   end
 
-  def counterparty_entries(event)
+  def counterparty_entries
     entries = []
-    account = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = ?",
-                            agreement.counterparty_id,
-                            agreement.organization_id,
-                            agreement.counterparty_type).first
-    unless account.nil?
-      entries << SubcontractingJob.new(event: event, ticket: event.eventable, account: account, amount: (event.eventable.total_profit * (rate / 100.0)), description: "Entry to subcontractor owned account")
-    end
+    entries << IncomeFromProvider.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to subcontractor owned account")
     entries
   end
 
