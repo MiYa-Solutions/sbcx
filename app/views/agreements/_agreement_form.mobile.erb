@@ -1,0 +1,33 @@
+<% other_party ||= "" %>
+<div class="add_new_agreement">
+  <%= form_tag agreements_url, :class => 'simple_form form-horizontal ajax-form' do %>
+
+
+      <fieldset>
+
+        <ul>
+          <li>
+            <%= hidden_field_tag 'otherparty_id', other_party.id %>
+            <%= hidden_field_tag 'agreement_type', 'subcontracting_agreement' %>
+          </li>
+          <li>
+            <label class="string optional control-label" for="customer_country"><%= label_tag "Where #{other_party.name} is your: " %></label>
+          </li>
+          <li>
+            <div id="agreement_role_wrapper">
+              <%= select_tag 'otherparty_role', options_for_select(role_options_for_agreement(SubcontractingAgreement), include_blank: true) %>
+            </div>
+          </li>
+          <li>
+            <%= submit_tag "Create", class: 'btn btn-medium btn-primary ajax-btn', :id => 'add-agreement-button' %>
+          </li>
+
+        </ul>
+      </fieldset>
+  <% end %>
+
+  <div id="agreement_form">
+  </div>
+
+
+</div>

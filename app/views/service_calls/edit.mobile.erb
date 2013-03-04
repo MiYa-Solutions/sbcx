@@ -10,12 +10,15 @@
       </div>
       <div class="ui-block-b">
         <div class="miya_blue_button">
-          <%= f.submit "Save Changes", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_job_info_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+          <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_job_info_btn', "data-icon" => "check", "data-iconpos" => "left" %>
         </div>
       </div>
     </fieldset>
 
     <%= render 'service', f: f %>
 
+    <div class="miya_blue_button">
+      <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_job_info_btn2', "data-icon" => "check", "data-iconpos" => "left" %>
     </div>
+
 <% end %>

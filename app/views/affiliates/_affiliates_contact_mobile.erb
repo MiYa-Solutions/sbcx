@@ -1,0 +1,97 @@
+<h3><%= t('general.general.contact_Info') %></h3>
+<div class="customer_in_service_call">
+  <ul data-role="listview">
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:status) %></div>
+        <div class="ui-block-b"><%= @affiliate.human_status_name %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:name) %></div>
+        <div class="ui-block-b"><%= @affiliate.name %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:company) %></div>
+        <div class="ui-block-b"><%= @affiliate.company %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:address1) %></div>
+        <div class="ui-block-b" style= "display:inline !important"><%= @affiliate.address1 %> <%= @affiliate.address2 %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:city) %></div>
+        <div class="ui-block-b"><%= @affiliate.city %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:state) %></div>
+        <div class="ui-block-b"><%= @affiliate.state %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:country) %></div>
+        <div class="ui-block-b"><%= @affiliate.country %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:zip) %></div>
+        <div class="ui-block-b"><%= @affiliate.zip %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:phone) %></div>
+        <div class="ui-block-b"><%= @affiliate.phone %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:mobile) %></div>
+        <div class="ui-block-b"><%= @affiliate.mobile %></div>
+      </div>
+    </li>
+    <li class="ui-li">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:email) %></div>
+        <div class="ui-block-b" data-type="email" ><%= @affiliate.email %></div>
+      </div>
+    </li>
+    <li class="ui-li">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:website) %></div>
+        <div class="ui-block-b" data-type="email" ><%= @affiliate.website %></div>
+      </div>
+      <!--Website:-->
+      <!--<br>-->
+      <!--<#%= @affiliate.website %>-->
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Affiliate.human_attribute_name(:roles) %></div>
+        <div class="ui-block-b">
+          <% for role in @affiliate.organization_roles %>
+              <span><%= role.name %></span>
+          <% end %>
+        </div>
+      </div>
+    </li>
+    <% if ! @affiliate.subcontrax_member==true %>
+        <li class="ui-li ui-li-static" >
+          <fieldset class="ui-grid-solo ui-btn-inner-small">
+            <%= link_to "Edit", edit_affiliate_path(@affiliate), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
+          </fieldset>
+        </li>
+    <% end %>
+  </ul>
+</div>

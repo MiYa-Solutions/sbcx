@@ -6,7 +6,7 @@ en:
       search: "Search"
       new_affiliate: "New Affiliate"
       create: "Create"
-      save: "Save Changes"
+      save: "Save"
     flash:
       create_affiliate_success: '%{name} was created successfully!'
     index:

@@ -86,6 +86,7 @@ en:
       job_statuses: "Job Stauses"
       job_details: "Job Details"
       appointments: "Appointment"
+      contact_Info: "Contact Information"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"

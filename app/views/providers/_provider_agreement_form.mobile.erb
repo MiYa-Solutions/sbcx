@@ -1,0 +1,13 @@
+<% prov_id = provider ? provider.id : nil %>
+<% button_class ||= "btn btn-mini btn-info" %>
+<%= simple_form_for current_user.organization.subcontracting_agreements.build(organization_id: prov_id, counterparty_id: current_user.organization.id), as: "agreement", url: agreements_url, :html => { :class => 'add_member' } do |f| %>
+    <%= f.hidden_field :counterparty_id %>
+    <% if prov_id.nil? %>
+        <%= f.input :organization, collection: current_user.organization.providers %>
+    <% else %>
+        <%= f.hidden_field :organization_id, value: prov_id %>
+    <% end %>
+
+    <%= f.hidden_field :agreement_type, value: "subcontracting_agreement" %>
+    <%= f.submit "Add", class: button_class, id: "#{prov_id}-add-sbcx-provider" %>
+<% end %>
