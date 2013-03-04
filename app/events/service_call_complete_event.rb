@@ -20,7 +20,8 @@ class ServiceCallCompleteEvent < ServiceCallEvent
 
   def process_event
     copy_boms_to_provider if notify_provider?
-    BillingService.new(self).execute if service_call.subcontractor.present?
+    AffiliateBillingService.new(self).execute if service_call.subcontractor.present?
+    CustomerBillingService.new(self).execute
     super
   end
 

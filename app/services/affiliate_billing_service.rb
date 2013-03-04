@@ -1,4 +1,4 @@
-class BillingService
+class AffiliateBillingService
   def initialize(event)
     @event   = event
     @ticket  = event.eventable

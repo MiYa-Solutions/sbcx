@@ -55,7 +55,7 @@ class ProfitSplit < PostingRule
 
   def get_entries(event)
     @ticket = event.eventable
-    @event = event
+    @event  = event
     case @ticket.my_role
       when :prov
         organization_entries
@@ -88,12 +88,25 @@ class ProfitSplit < PostingRule
 
 
     entries << PaymentToSubcontractor.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to provider owned account")
+
+    @ticket.boms.each do |bom|
+      if bom.buyer == agreement.counterparty
+        entries << MaterialReimbursementToCparty.new(event: @event, ticket: @ticket, amount: bom.cost, description: "Material Reimbursement to subcon")
+      end
+    end
+
     entries
   end
 
   def counterparty_entries
     entries = []
     entries << IncomeFromProvider.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to subcontractor owned account")
+    @ticket.boms.each do |bom|
+      if bom.buyer == agreement.counterparty
+        entries << MaterialReimbursement.new(event: @event, ticket: @ticket, amount: bom.cost, description: "Material Reimbursement to subcon")
+      end
+    end
+
     entries
   end
 

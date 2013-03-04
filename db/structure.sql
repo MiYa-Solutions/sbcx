@@ -291,7 +291,9 @@ CREATE TABLE customers (
     work_phone character varying(255),
     email character varying(255),
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    creator_id integer,
+    updater_id integer
 );
 
 
@@ -1279,3 +1281,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130228034538');
 INSERT INTO schema_migrations (version) VALUES ('20130303025912');
 
 INSERT INTO schema_migrations (version) VALUES ('20130303030100');
+
+INSERT INTO schema_migrations (version) VALUES ('20130303232630');

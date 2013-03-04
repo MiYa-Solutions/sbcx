@@ -30,6 +30,8 @@ class Account < ActiveRecord::Base
 
   alias_method :entries, :accounting_entries
 
+  scope :for_affiliate, ->(org, affiliate) { where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'", org.id, affiliate.id) }
+
   def current_balance
     balance_for Time.now.utc
   end

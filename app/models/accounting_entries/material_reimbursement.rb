@@ -17,7 +17,7 @@
 #  balance_currency :string(255)     default("USD"), not null
 #
 
-class ServiceCallCharge < AccountingEntry
+class MaterialReimbursement < AccountingEntry
   def amount_direction
     1
   end

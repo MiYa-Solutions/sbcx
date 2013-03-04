@@ -63,12 +63,29 @@ def clean(org)
 
 end
 
+def setup_standard_orgs
+  let!(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  let!(:org_admin_user2) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  let!(:org_admin_user3) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  let!(:org) { org_admin_user.organization }
+  let!(:org2) {
+    setup_profit_split_agreement(org_admin_user2.organization, org.becomes(Subcontractor))
+    setup_profit_split_agreement(org, org_admin_user2.organization.becomes(Subcontractor)).counterparty
+  }
+  let!(:org3) do
+    setup_profit_split_agreement(org_admin_user3.organization, org_admin_user.organization.becomes(Subcontractor))
+    setup_profit_split_agreement(org2, org_admin_user3.organization.becomes(Subcontractor)).counterparty
+  end
+  let!(:customer) { FactoryGirl.create(:customer, organization: org) }
+
+end
+
 def fill_autocomplete(field, options = {})
   fill_in field, :with => options[:with]
 
   page.execute_script %Q{ $('##{field}').trigger("focus") }
   page.execute_script %Q{ $('##{field}').trigger("keydown") }
-  selector = "ul.ui-autocomplete a:contains('#{options[:select]}')"
+  selector = "ul.ui-autocomplete a:contains('#{options[:select].gsub("'", "\\\\'")}')"
 
   page.should have_selector selector
   #page.driver.render('./tmp/capybara/auto_complete-' + Time.now.strftime("%Y-%m-%d-%H_%M_%S_%L") + '.png', full: true)

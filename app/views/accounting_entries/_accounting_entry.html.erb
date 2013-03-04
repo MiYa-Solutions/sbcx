@@ -1,4 +1,4 @@
-<tr>
+<tr id="accounting_entry_<%= accounting_entry.id %>">
   <td>
     <%= link_to "#{accounting_entry.ticket.type} (#{accounting_entry.ticket.id})", accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %>
   </td>

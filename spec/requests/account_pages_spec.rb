@@ -1,43 +1,31 @@
 require 'spec_helper'
-require 'money-rails/helpers/action_view_extension'
-
 include MoneyRails::ActionViewExtension
 
 describe "Account Pages", js: true do
   self.use_transactional_fixtures = false
 
+  setup_standard_orgs
 
-  let!(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-  let!(:org_admin_user2) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-  let!(:org_admin_user3) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-  let!(:org) { org_admin_user.organization }
-  let!(:org2) {
-    setup_profit_split_agreement(org_admin_user2.organization, org.becomes(Subcontractor))
-    setup_profit_split_agreement(org, org_admin_user2.organization.becomes(Subcontractor)).counterparty
-  }
-  let!(:org3) do
-    setup_profit_split_agreement(org_admin_user3.organization, org_admin_user.organization.becomes(Subcontractor))
-    setup_profit_split_agreement(org2, org_admin_user3.organization.becomes(Subcontractor)).counterparty
-  end
-  let!(:customer) { FactoryGirl.create(:customer, organization: org) }
   let(:job) { create_my_job(org_admin_user, customer, :org) }
   let(:profit_split) { Agreement.our_agreements(org.id, org2.id).first.rules.first }
 
   let(:bom1) {
-    params = { name: "material1", price: 59.99, cost: 13.67, quantity: 1 }
-    params[:total_cost] = params[:cost] * params[:quantity] # expected to be 13.67
-    params[:total_price] = params[:price] * params[:price] # expeceted to be 119.98
+    params                = { name: "material1", price: 59.99, cost: 13.67, quantity: 1 }
+    params[:total_cost]   = params[:cost] * params[:quantity]          # expected to be 13.67
+    params[:total_price]  = params[:price] * params[:price]            # expeceted to be 119.98
     params[:total_profit] = params[:total_price] - params[:total_cost] # expected to be 106.31
     params
   }
   let(:bom2) {
-    params = { name: "material2", price: 100, cost: 10, quantity: 2 }
-    params[:total_cost] = params[:cost] * params[:quantity]  # expected to be 20
-    params[:total_price] = params[:price] * params[:price] # expected to be 200
+    params                = { name: "material2", price: 100, cost: 10, quantity: 2 }
+    params[:total_cost]   = params[:cost] * params[:quantity]          # expected to be 20
+    params[:total_price]  = params[:price] * params[:price]            # expected to be 200
     params[:total_profit] = params[:total_price] - params[:total_cost] # expected to be 180
     params
 
   }
+  let(:org1_org2_acc) { Account.for_affiliate(org, org2).first }
+  let(:org2_org1_acc) { Account.for_affiliate(org2, org).first }
 
   before do
     in_browser(:org) do
@@ -119,25 +107,85 @@ describe "Account Pages", js: true do
             click_button JOB_BTN_COMPLETE
           end
         end
-        it "customer's account should show service call charge entry" do
+
+        it 'customers account should show the correct balance' do
           in_browser(:org) do
+            expected_balance = job.total_price * 2
             visit customer_path customer
-            should have_selector '.balance', text: "#{bom1[:total_price] + bom2[:total_price]}"
+            #should have_selector '.balance', text: "#{bom1[:total_price] + bom2[:total_price]}"
+            should have_customer_balance(expected_balance)
           end
 
         end
-        it "provider's view should show a payment to subcon entry (withdrawal)" do
+
+        it 'provider view should show a payment to subcon entry (withdrawal)' do
           job.reload
+          org1_org2_acc.entries.map(&:class).should include(PaymentToSubcontractor)
+          accounting_entry      = org1_org2_acc.entries.where(type: 'PaymentToSubcontractor', ticket_id: job.id).first
+          expected_entry_amount = (job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+
           in_browser(:org) do
             visit affiliate_path org2
-            should have_selector AFF_SPAN_BALANCE, text: "#{humanized_money_with_symbol -(job.total_profit * (profit_split.rate / 100.0))}"
+
+            should have_entry(accounting_entry, expected_entry_amount)
           end
 
         end
-        it "subcontractor's view should show a payment from provider entry (income)" do
+
+        it 'provider view should show reimbursement for the parts' do
+          org1_org2_acc.entries.map(&:class).should include(MaterialReimbursementToCparty)
+          entries = org1_org2_acc.entries.where(type: MaterialReimbursementToCparty)
+          entries.should have(2).items
+
+          in_browser(:org) do
+            visit affiliate_path org2
+            entries.each do |entry|
+              should have_entry(entry, entry.amount)
+            end
+
+          end
+        end
+
+        it 'provider view should show the correct balance' do
+          job.reload
+          expected_balance = -(job.total_profit * (profit_split.rate / 100.0))
+          in_browser(:org) do
+            visit affiliate_path org2
+            should have_affiliate_balance(expected_balance)
+          end
+
+        end
+
+        it 'subcontractor view should show a payment from provider entry (income)' do
+          accounting_entry = org2_org1_acc.entries.last
+          expected_amount  = (subcon_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
           in_browser(:org2) do
             visit affiliate_path org
-            should have_selector AFF_SPAN_BALANCE, text: "#{(subcon_job.total_profit * (profit_split.rate / 100.0))}"
+            should have_entry(accounting_entry, expected_amount)
+          end
+
+        end
+
+        it 'subcontractor view should show reimbursement for the parts' do
+          org2_org1_acc.entries.map(&:class).should include(MaterialReimbursement)
+          entries = org2_org1_acc.entries.where(type: MaterialReimbursement)
+          entries.should have(2).items
+
+          in_browser(:org2) do
+            visit affiliate_path org
+            entries.each do |entry|
+              should have_entry(entry, entry.amount)
+            end
+
+          end
+
+        end
+
+        it 'subcontractor view should show the correct balance' do
+          in_browser(:org2) do
+            expected_balance = (subcon_job.total_profit * (profit_split.rate / 100.0))
+            visit affiliate_path org
+            should have_affiliate_balance(expected_balance)
           end
 
         end

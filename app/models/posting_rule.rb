@@ -73,6 +73,11 @@ class PostingRule < ActiveRecord::Base
     [:percentage]
   end
 
+  def get_amount(ticket)
+    raise "Did you forget to implement the get_amount method for #{self.class}?"
+  end
+
+
   protected
   def ensure_state_before_change
     errors.add :agreement, I18n.t('activerecord.errors.posting_rule.change_active_project') if agreement.try(:active?) || agreement.try(:canceled?)

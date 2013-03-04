@@ -24,7 +24,14 @@
 
 class Organization < ActiveRecord::Base
   has_many :users
-  has_many :customers, inverse_of: :organization
+  has_many :customers, inverse_of: :organization do
+    #def << (customer)
+    #  customer.build_account(organization: proxy_association.owner)
+    #  customer.agreements << CustomerAgreement.new(organization: proxy_association.owner, creator: User.find_by_email('system@subcontrax.com'))
+    #  customer.save!
+    #end
+
+  end
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
 
