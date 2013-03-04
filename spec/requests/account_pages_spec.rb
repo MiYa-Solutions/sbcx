@@ -1,6 +1,50 @@
 require 'spec_helper'
+include MoneyRails::ActionViewExtension
 
-describe "Account Pages" do
+describe "Account Pages", js: true do
+  self.use_transactional_fixtures = false
+
+  setup_standard_orgs
+
+  let(:job) { create_my_job(org_admin_user, customer, :org) }
+  let(:profit_split) { Agreement.our_agreements(org.id, org2.id).first.rules.first }
+
+  let(:bom1) {
+    params                = { name: "material1", price: 59.99, cost: 13.67, quantity: 1 }
+    params[:total_cost]   = params[:cost] * params[:quantity]          # expected to be 13.67
+    params[:total_price]  = params[:price] * params[:price]            # expeceted to be 119.98
+    params[:total_profit] = params[:total_price] - params[:total_cost] # expected to be 106.31
+    params
+  }
+  let(:bom2) {
+    params                = { name: "material2", price: 100, cost: 10, quantity: 2 }
+    params[:total_cost]   = params[:cost] * params[:quantity]          # expected to be 20
+    params[:total_price]  = params[:price] * params[:price]            # expected to be 200
+    params[:total_profit] = params[:total_price] - params[:total_cost] # expected to be 180
+    params
+
+  }
+  let(:org1_org2_acc) { Account.for_affiliate(org, org2).first }
+  let(:org2_org1_acc) { Account.for_affiliate(org2, org).first }
+
+  before do
+    in_browser(:org) do
+      sign_in org_admin_user
+    end
+
+    in_browser(:org2) do
+      sign_in org_admin_user2
+    end
+  end
+
+  after do
+    clean org unless org.nil?
+    clean org2 unless org2.nil?
+    clean org3 unless org3.nil?
+  end
+
+  subject { page }
+
 
   # todo complete the profit split rule
   # todo add beneficiary for cheque payment upon completion
@@ -12,18 +56,140 @@ describe "Account Pages" do
 
 
   describe "not transferred service call" do
+    before do
+      in_browser(:org) do
+        visit service_call_path(job)
+        add_bom bom1[:name], bom1[:cost], bom1[:price], bom1[:quantity]
+        add_bom bom2[:name], bom2[:cost], bom2[:price], bom2[:quantity]
+        click_button JOB_BTN_START
+      end
+    end
+
     describe "completed" do
+      before do
+        click_button JOB_BTN_COMPLETE
+      end
+      it 'the customer account should be updated with the amount' do
+        visit customer_path customer
+        should have_selector '.balance', text: "#{bom1[:price]*bom1[:quantity] + bom2[:price]*bom1[:quantity]}"
+      end
+
 
     end
 
   end
 
   describe "transferred service call" do
+    let(:subcon_job) { Ticket.last }
+    before do
+      in_browser(:org) do
+        visit service_call_path(job)
+        select org2.name, from: JOB_SELECT_SUBCONTRACTOR
+        check JOB_CBOX_RE_TRANSFER
+        check JOB_CBOX_ALLOW_COLLECTION
+        click_button JOB_BTN_TRANSFER
+      end
+
+      in_browser(:org2) do
+        visit service_call_path(subcon_job)
+        click_button JOB_BTN_ACCEPT
+        click_button JOB_BTN_START
+        add_bom bom1[:name], bom1[:cost], bom1[:price], bom1[:quantity]
+        add_bom bom2[:name], bom2[:cost], bom2[:price], bom2[:quantity]
+
+      end
+
+    end
     describe "with profit share" do
       describe "when completed" do
-        it "customer's account should show service call charge entry"
-        it "provider's view should show a payment to subcon entry (withdrawal)"
-        it "subcontractor's view should show a payment from provider entry (income)"
+        before do
+          in_browser(:org2) do
+            click_button JOB_BTN_COMPLETE
+          end
+        end
+
+        it 'customers account should show the correct balance' do
+          in_browser(:org) do
+            expected_balance = job.total_price * 2
+            visit customer_path customer
+            #should have_selector '.balance', text: "#{bom1[:total_price] + bom2[:total_price]}"
+            should have_customer_balance(expected_balance)
+          end
+
+        end
+
+        it 'provider view should show a payment to subcon entry (withdrawal)' do
+          job.reload
+          org1_org2_acc.entries.map(&:class).should include(PaymentToSubcontractor)
+          accounting_entry      = org1_org2_acc.entries.where(type: 'PaymentToSubcontractor', ticket_id: job.id).first
+          expected_entry_amount = (job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+
+          in_browser(:org) do
+            visit affiliate_path org2
+
+            should have_entry(accounting_entry, expected_entry_amount)
+          end
+
+        end
+
+        it 'provider view should show reimbursement for the parts' do
+          org1_org2_acc.entries.map(&:class).should include(MaterialReimbursementToCparty)
+          entries = org1_org2_acc.entries.where(type: MaterialReimbursementToCparty)
+          entries.should have(2).items
+
+          in_browser(:org) do
+            visit affiliate_path org2
+            entries.each do |entry|
+              should have_entry(entry, entry.amount)
+            end
+
+          end
+        end
+
+        it 'provider view should show the correct balance' do
+          job.reload
+          expected_balance = -(job.total_profit * (profit_split.rate / 100.0))
+          in_browser(:org) do
+            visit affiliate_path org2
+            should have_affiliate_balance(expected_balance)
+          end
+
+        end
+
+        it 'subcontractor view should show a payment from provider entry (income)' do
+          accounting_entry = org2_org1_acc.entries.last
+          expected_amount  = (subcon_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+          in_browser(:org2) do
+            visit affiliate_path org
+            should have_entry(accounting_entry, expected_amount)
+          end
+
+        end
+
+        it 'subcontractor view should show reimbursement for the parts' do
+          org2_org1_acc.entries.map(&:class).should include(MaterialReimbursement)
+          entries = org2_org1_acc.entries.where(type: MaterialReimbursement)
+          entries.should have(2).items
+
+          in_browser(:org2) do
+            visit affiliate_path org
+            entries.each do |entry|
+              should have_entry(entry, entry.amount)
+            end
+
+          end
+
+        end
+
+        it 'subcontractor view should show the correct balance' do
+          in_browser(:org2) do
+            expected_balance = (subcon_job.total_profit * (profit_split.rate / 100.0))
+            visit affiliate_path org
+            should have_affiliate_balance(expected_balance)
+          end
+
+        end
+
         it "technician's view should show an employee commission (income)"
 
         describe "when paid" do

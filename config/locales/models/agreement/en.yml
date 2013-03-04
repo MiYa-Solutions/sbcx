@@ -52,3 +52,11 @@ en:
         name: "Agreement Activated"
         description: '%{originator} activated the agreement with %{otherparty}'
   notifications:
+  agreement:
+    payment_options:
+      cod: Collect On Delivery
+      net_10: Net + 10
+      net_15: Net + 15
+      net_30: Net + 30
+      net_60: Net + 60
+      net_90: Net + 90

@@ -17,6 +17,8 @@
 #  balance_currency :string(255)     default("USD"), not null
 #
 
-class CashCollectionForProvider < AccountingEntry
-  # To change this template use File | Settings | File Templates.
+class MaterialReimbursement < AccountingEntry
+  def amount_direction
+    1
+  end
 end

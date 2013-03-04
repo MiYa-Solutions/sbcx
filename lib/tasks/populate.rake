@@ -60,12 +60,26 @@ def create_members
   mem.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "ishay.yaari@gmail.com" })
 
 
-  mem = new_member([prov_role, sub_role], { name:  "Test Member2",
-                                            email: "testmem2@testmem2.com" })
+  mem2 = new_member([prov_role, sub_role], { name:  "Test Member2",
+                                             email: "testmem2@testmem2.com" })
 
-  mem.save!
-  mem.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "markmilman@gmail.com" })
+  mem2.save!
+  mem2.users << new_user([org_admin_role, dispatcher_role, technician_role], { email: "markmilman@gmail.com" })
 
+  mem.providers << mem2.becomes(Provider)
+  mem.subcontractors << mem2.becomes(Subcontractor)
+  mem2.accounts.create(accountable: mem)
+
+
+  agr1 = Agreement.where("organization_id = #{mem2.id} AND counterparty_id =  #{mem.id}").first
+  agr2 = Agreement.where("organization_id = #{mem.id} AND counterparty_id =  #{mem2.id}").first
+
+  agr1.rules << ProfitSplit.new(agreement: agr1, rate: 50, rate_type: :percentage)
+  agr1.status = Agreement::STATUS_ACTIVE
+  agr1.save!
+  agr2.rules << ProfitSplit.new(agreement: agr1, rate: 50, rate_type: :percentage)
+  agr2.status = Agreement::STATUS_ACTIVE
+  agr2.save!
 
   # create two members for manual testing
   #2.times do |n = 1|

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe BillingService do
+describe AffiliateBillingService do
 
-  let(:billing_service) { BillingService.new(FactoryGirl.create(:service_call_completed_event)) }
+  let(:billing_service) { AffiliateBillingService.new(FactoryGirl.create(:service_call_completed_event)) }
 
   subject { billing_service }
 

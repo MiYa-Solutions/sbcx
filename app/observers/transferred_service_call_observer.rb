@@ -20,6 +20,7 @@ class TransferredServiceCallObserver < ServiceCallObserver
   def after_collect_payment(service_call, transition)
     Rails.logger.debug { "invoked observer AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
   end
+
   def before_start_work(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE start \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.started_on = Time.zone.now unless service_call.started_on
@@ -63,6 +64,12 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   end
 
+  def before_transfer(service_call, transition)
+    super
+    if service_call.validate_circular_transfer
+      service_call.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer')
+    end
+  end
 
 
 end

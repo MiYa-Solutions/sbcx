@@ -139,6 +139,9 @@
     <div class="smart_label">
       <ul>
         <li><h1><%= Material.model_name.human.pluralize %></h1></li>
+        <li><span id='job_total_cost'><%= humanized_money_with_symbol @service_call.total_cost %></span></li>
+        <li><span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span></li>
+
         <li><%= button_tag 'Add Parts', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
       </ul>
     </div>

@@ -5,9 +5,11 @@
 #  id               :integer         not null, primary key
 #  organization_id  :integer         not null
 #  accountable_id   :integer         not null
-#  accountable_type :string(255)
+#  accountable_type :string(255)     not null
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
+#  balance_cents    :integer         default(0), not null
+#  balance_currency :string(255)     default("USD"), not null
 #
 
 require 'spec_helper'

@@ -1,5 +1,9 @@
 module AgreementsHelper
 
+  def agreement_payment_options
+    @agreement.class.payment_options.keys.map {|key| [key, t("agreement.payment_options.#{key}")]}
+  end
+
   def agreement_option(klass)
 
     [

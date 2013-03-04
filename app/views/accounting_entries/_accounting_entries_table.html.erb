@@ -7,10 +7,11 @@
       <th><%= AccountingEntry.human_attribute_name(:status) %>        </th>
       <th><%= AccountingEntry.human_attribute_name(:amount) %>        </th>
       <th><%= AccountingEntry.human_attribute_name(:created_at) %>    </th>
+      <th> Balance    </th>
       </thead>
       <tbody>
       <% account.accounting_entries.each do |entry| %>
-          <%= render entry.becomes(AccountingEntry) %>
+          <%= render 'accounting_entries/accounting_entry', accounting_entry: entry %>
       <% end %>
       </tbody>
 

@@ -10,7 +10,7 @@ class ServiceCallCompletedEvent < ServiceCallEvent
     service_call.completed_on = self.triggering_event.service_call.completed_on
     service_call.complete_work
     super
-    BillingService.new(self).execute
+    AffiliateBillingService.new(self).execute
   end
 
   def update_provider

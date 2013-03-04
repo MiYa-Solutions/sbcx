@@ -18,28 +18,32 @@
 #  email           :string(255)
 #  created_at      :datetime        not null
 #  updated_at      :datetime        not null
+#  creator_id      :integer
+#  updater_id      :integer
 #
 
 class Customer < ActiveRecord::Base
-  #attr_accessible :address1,
-  #                :address2,
-  #                :city,
-  #                :company,
-  #                :country,
-  #                :email,
-  #                :mobile_phone,
-  #                :name,
-  #                :phone,
-  #                :state,
-  #                :work_phone,
-  #                :zip
-
   belongs_to :organization, inverse_of: :customers
+  has_many :service_calls, :inverse_of => :customer
+  has_many :agreements, as: :counterparty
+  has_one :account, as: :accountable
+  stampable
+
   validates_presence_of :organization
   validates_presence_of :name
-  has_many :service_calls, :inverse_of => :customer
+
+  after_create :set_default_agreement
+
 
   scope :search, ->(query, org_id) { fellow_customers(org_id).where(arel_table[:name].matches("%#{query}%")) }
   scope :fellow_customers, ->(org_id) { where(:organization_id => org_id) }
+  private
+  def set_default_agreement
+      cus_agreement = CustomerAgreement.create(counterparty: self, organization: self.organization, creator: User.find_by_email('system@subcontrax.com'))
+      cus_agreement.posting_rules = [JobCharge.new(agreement: cus_agreement, rate: 0, rate_type: :percentage)]
+      self.create_account(organization: self.organization)
+      self.agreements = [cus_agreement]
+      self
+  end
 
 end

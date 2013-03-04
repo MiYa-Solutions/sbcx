@@ -9,7 +9,7 @@
 
       <%= f.input :rate %>
 
-      <%= f.input :rate_type %>
+      <%= f.hidden_field :rate_type, value: @posting_rule.rate_types.first %>
 
     </div>
 

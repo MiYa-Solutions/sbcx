@@ -13,4 +13,12 @@ module PostingRulesHelper
     PostingRule.subclasses.map { |subclass| posting_rule_option(subclass) }
   end
 
+  def rate_types
+    res = []
+    @posting_rule.rate_types.each do |type|
+      res << [t("posting_rule.rate_types.#{type}"), type]
+    end
+    res
+  end
+
 end

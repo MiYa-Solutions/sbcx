@@ -152,11 +152,11 @@ FactoryGirl.define do
 
       after(:build) do |service_call|
         service_call.technician = FactoryGirl.create(:technician, organization: service_call.organization)
-
-        service_call.dispatch
-
-        service_call.start
-        service_call.work_completed
+        service_call.creator  = service_call.organization.users.first
+        service_call.dispatch_work if defined? service_call.dispatch_work
+        service_call.start_work
+        add_bom_to_ticket(service_call)
+        service_call.complete_work
       end
 
       factory :paid_service_call, class: MyServiceCall do
