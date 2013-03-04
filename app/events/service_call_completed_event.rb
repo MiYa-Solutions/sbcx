@@ -11,6 +11,7 @@ class ServiceCallCompletedEvent < ServiceCallEvent
     service_call.complete_work
     super
     AffiliateBillingService.new(self).execute
+    CustomerBillingService.new(self).execute  if service_call.organization.my_customer?(service_call.customer)
   end
 
   def update_provider

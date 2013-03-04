@@ -230,6 +230,10 @@ class Organization < ActiveRecord::Base
     self.users.size > 1
   end
 
+  def my_customer?(customer)
+    Customer.where("id = ? AND organization_id = ?", customer.id, self.id).size > 0
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0
