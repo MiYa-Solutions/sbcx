@@ -395,7 +395,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     if obj.nil?
       attr = [:name, :description, :organization_id, :counterparty_id, :counterparty_type]
     else
-      attr = [:status_event, :change_reason, :name, :description, :starts_at, :ends_at_text]
+      attr = [:status_event, :change_reason, :name, :description, :starts_at, :ends_at_text, :payment_terms]
     end
 
     attr

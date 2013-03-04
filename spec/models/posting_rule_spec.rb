@@ -46,6 +46,7 @@ describe PostingRule do
     should respond_to(:type)
     should respond_to(:rate)
     should respond_to(:rate_type)
+    should respond_to(:properties)
 
     should respond_to(:time_bound)
     should respond_to(:sunday)

@@ -16,7 +16,7 @@
 #  updater_id        :integer
 #  starts_at         :datetime
 #  ends_at           :datetime
-#  payment_terms     :integer
+#  payment_terms     :string(255)
 #
 
 require 'spec_helper'
@@ -29,6 +29,15 @@ describe OrganizationAgreement do
   subject { new_agreement }
 
   before do
+
+  end
+
+  describe 'payment terms' do
+
+    it 'the available payment terms' do
+      new_agreement.class.payment_options.should == [ :cod, :net_10, :net_15, :net_30, :net_60, :net_90 ]
+    end
+
 
   end
 
@@ -48,7 +57,6 @@ describe OrganizationAgreement do
 
 
     end
-
 
 
     describe "after submission validation" do
@@ -168,11 +176,11 @@ describe OrganizationAgreement do
       end
 
       it "acceptance should fail as only one active agreement should be allowed in a specific period" do
-        new_agr = FactoryGirl.create(:organization_agreement, organization: agreement_by_org.organization, counterparty: agreement_by_org.counterparty)
+        new_agr               = FactoryGirl.create(:organization_agreement, organization: agreement_by_org.organization, counterparty: agreement_by_org.counterparty)
         new_agr.change_reason = "Stam"
         new_agr.submit_for_approval
         new_agr.accept
-        Rails.logger.debug {"The status of new_agr is: #{new_agr.status_name}"}
+        Rails.logger.debug { "The status of new_agr is: #{new_agr.status_name}" }
         new_agr.errors[:starts_at].should_not be_nil
       end
 
@@ -201,7 +209,7 @@ describe OrganizationAgreement do
       describe 'changing the end date' do
         before do
           FactoryGirl.create(:my_service_call, organization: agreement_by_org.organization, subcontractor: agreement_by_org.counterparty.becomes(Subcontractor))
-          agreement_by_org.update_attributes( ends_at: 1.day.ago)
+          agreement_by_org.update_attributes(ends_at: 1.day.ago)
         end
         it "ends_at can't be set to a date earlier than the last job" do
 

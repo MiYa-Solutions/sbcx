@@ -18,6 +18,8 @@
 #  email           :string(255)
 #  created_at      :datetime        not null
 #  updated_at      :datetime        not null
+#  creator_id      :integer
+#  updater_id      :integer
 #
 
 require 'spec_helper'
@@ -57,6 +59,11 @@ describe Customer do
 
       it { should_not be_valid }
     end
+  end
+
+  describe 'associations' do
+    it { should have_one(:account) }
+    it { should have_many(:agreements) }
   end
 
   describe "authorization" do

@@ -16,7 +16,7 @@
 #  updater_id        :integer
 #  starts_at         :datetime
 #  ends_at           :datetime
-#  payment_terms     :integer
+#  payment_terms     :string(255)
 #
 
 class SupplierAgreement < OrganizationAgreement

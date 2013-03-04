@@ -292,7 +292,7 @@ describe "Service Call pages" do
           end
 
           it "work status should change to in progress" do
-            should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
+            should have_selector(work_status, text: /#{I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress')}/i)
 
           end
           it "subcontractor status should not be displayed" do

@@ -19,13 +19,24 @@
 #  payment_terms     :string(255)
 #
 
-class SubcontractingAgreement < OrganizationAgreement
+class CustomerAgreement < Agreement
 
-  after_initialize :set_cparty_type
+  before_create :set_default_rule
+  state_machine :status, initial: :draft do
+    state :draft, value: STATUS_DRAFT
+    state :active, value: STATUS_ACTIVE
+    state :canceled, value: STATUS_CANCELED
 
-  def set_cparty_type
-    self.counterparty_type="Organization"
+    event :cancel do
+      transition :active => :canceled
+    end
+
+    event :activate do
+      transition [:canceled, :draft] => :active
+    end
   end
-
-
+  private
+  def set_default_rule
+    rules << JobCharge.new(rate: 0, rate_type: :percentage)
+  end
 end
