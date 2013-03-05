@@ -12,4 +12,9 @@ class AdminMailer < ActionMailer::Base
 
     mail to: ENV["NEW_MEMBER_EVENT_EMAILS"], subject: "#{ENV["APP_NAME"]}: We have a new member!!!"
   end
+
+  def new_message(message)
+    @message = message
+    mail to: ENV["NEW_MEMBER_EVENT_EMAILS"], subject: "#{ENV["APP_NAME"]}: New Message From a Web Visitor"
+  end
 end

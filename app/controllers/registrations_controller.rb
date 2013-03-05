@@ -33,6 +33,11 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def new
+    if ENV['LOCK_SBCX_REG'].present?
+
+      redirect_to contact_us_path, notice: "SubConTraX is in closed BETA mode. If you would like to join our beta user group please contact us using the form below."
+
+    end
     resource      = build_resource({ })
     @user         = User.new
     @organization = @user.build_organization
