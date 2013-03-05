@@ -48,6 +48,7 @@ Sbcx::Application.routes.draw do
   get '/region_select/subregion_options' => 'region_select#subregion_options', as: :region_select
   get '/agreements/agreement_roles' => 'agreements#agreement_roles', as: :agreement_roles
 
+
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   resources :customers, only: [:new, :create, :edit, :show, :index, :update]
   resources :materials, only: [:new, :create, :edit, :show, :index, :update] do
@@ -55,6 +56,8 @@ Sbcx::Application.routes.draw do
   end
 
   match 'welcome' => 'static_pages#welcome', :as => :user_root
+  match 'contact_us' => 'contact_us#new', as: :contact_us, via: :get
+  match 'contact_us' => 'contact_us#create', as: :contact_us, via: :post
 
 
   # The priority is based upon order of creation:

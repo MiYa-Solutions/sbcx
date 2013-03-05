@@ -1,0 +1,8 @@
+<%= simple_form_for @message, :url => contact_us_path do |form| %>
+    <%= form.input :name %>
+    <%= form.input :email %>
+    <%= form.input :phone %>
+    <%= form.input :subject %>
+    <%= form.input :content %>
+    <%= form.submit "Send" %>
+<% end %>
