@@ -12,7 +12,7 @@
 
       <div class="carousel slide" id="myCarousel">
               <div class="carousel-inner">
-                <div class="item">
+                <div class="item active">
                   <!--<#%= image_tag("welcome_slide1.png", alt: "MiYa") %>-->
                   <%= image_tag "slide1.png" %>
                   <div class="carousel-caption">
@@ -48,11 +48,14 @@
     <div class="span10 index_slides">
       <ul>
         <li><h2>Sign Up Today and Get a 1-Month Free!</h2></li>
+        <% unless ENV['LOCK_SBCX_REG'].present? %>
         <li><button type="button" class="btn btn-large" data-toggle="modal" data-target="#miyaPricing">Learn More</button></li>
+        <% end %>
         <li><a class="btn btn-large btn-primary" href="/users/sign_up">Sign Up &raquo;</a></li>
         <li></li>
 
-     </ul>
+
+      </ul>
    </div>
   <div class="span1"></div>
  </div>
@@ -175,8 +178,8 @@
       <tbody>
           <tr>
             <td>Search & Add Affiliates</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <tr>
             <td>Add local Affiliates</td>
@@ -185,8 +188,8 @@
           </tr>
           <tr>
             <td>Transfer Jobs</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <td>Receive & Manage Alerts</td>
           <td class="pricing_font">Up to 10</td>
@@ -194,18 +197,18 @@
           </tr>
           <tr>
             <td>Track Job Statuses</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <tr>
             <td>Track Billing Statuses</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <tr>
             <td>Track Agreements Statuses</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <tr>
             <td>Manage Employees</td>
@@ -214,28 +217,28 @@
           </tr>
           <tr>
             <td>Manage Customers</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <tr>
             <td>Manage Parts</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <tr>
             <td>Reports</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <tr>
             <td>Mobile Version</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
           <tr>
             <td>Manage Suppliers</td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
-            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
           </tr>
       </tbody>
     </table>
