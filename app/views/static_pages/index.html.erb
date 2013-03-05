@@ -12,7 +12,7 @@
 
       <div class="carousel slide" id="myCarousel">
               <div class="carousel-inner">
-                <div class="item active">
+                <div class="item">
                   <!--<#%= image_tag("welcome_slide1.png", alt: "MiYa") %>-->
                   <%= image_tag "slide1.png" %>
                   <div class="carousel-caption">
@@ -47,9 +47,9 @@
     <div class="span1"></div>
     <div class="span10 index_slides">
       <ul>
-        <li><h2>Sign Up Today and Get a 1-Month Free!</h2></li>
         <% unless ENV['LOCK_SBCX_REG'].present? %>
-        <li><button type="button" class="btn btn-large" data-toggle="modal" data-target="#miyaPricing">Learn More</button></li>
+            <li><h2>Sign Up Today and Get a 1-Month Free!</h2></li>
+            <li><button type="button" class="btn btn-large" data-toggle="modal" data-target="#miyaPricing">Learn More</button></li>
         <% end %>
         <li><a class="btn btn-large btn-primary" href="/users/sign_up">Sign Up &raquo;</a></li>
         <li></li>
@@ -178,8 +178,8 @@
       <tbody>
           <tr>
             <td>Search & Add Affiliates</td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
           </tr>
           <tr>
             <td>Add local Affiliates</td>
@@ -202,8 +202,8 @@
           </tr>
           <tr>
             <td>Track Billing Statuses</td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
           </tr>
           <tr>
             <td>Track Agreements Statuses</td>
@@ -217,8 +217,8 @@
           </tr>
           <tr>
             <td>Manage Customers</td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
           </tr>
           <tr>
             <td>Manage Parts</td>
@@ -227,18 +227,18 @@
           </tr>
           <tr>
             <td>Reports</td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
           </tr>
           <tr>
             <td>Mobile Version</td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
           </tr>
           <tr>
             <td>Manage Suppliers</td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
-            <td><%= image_tag("index/Supported.png", alt: "MiYa") %></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
+            <td><img alt="" src="http://localhost:3000/assets/index/Supported.png"></td>
           </tr>
       </tbody>
     </table>
