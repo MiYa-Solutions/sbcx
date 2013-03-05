@@ -18,6 +18,10 @@ footer {
 
 }
 
+#message_content {
+  min-height: 100px;
+}
+
 //.ui-footer {
 //
 //}.ui-bar-a {
@@ -913,6 +917,12 @@ input.ui-input-text, textarea.ui-input-text {
   }
 }
 
+.contact_us {
+
+  p {
+    padding-top: 5px;
+  }
+}
 
 .table-stroke thead th {
   border-bottom: 1px solid rgba(0, 0, 0, .1);

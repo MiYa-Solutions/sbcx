@@ -1,8 +1,51 @@
-<%= simple_form_for @message, :url => contact_us_path do |form| %>
-    <%= form.input :name %>
-    <%= form.input :email %>
-    <%= form.input :phone %>
-    <%= form.input :subject %>
-    <%= form.input :content %>
-    <%= form.submit "Send" %>
-<% end %>
+<div class="row-fluid">
+  <div class="well well_height">
+
+    <div class="smart_label"  >
+      <ul>
+        <li><h1>Contact Us</h1></li>
+        <li>
+        </li>
+      </ul>
+    </div>
+    <br>
+    <h4>SubConTraX is in closed BETA mode. If you would like to join our beta user group please contact us using the form below.</h4>
+
+    <br>
+
+    <div class="contact_us">
+      <div class="row-fluid">
+
+             <div class="span6">
+
+                <%= simple_form_for @message, :url => contact_us_path, :html => { :class => 'form-horizontal' } do |form| %>
+                    <%= form.input :name %>
+                    <%= form.input :email, "type" => "email"%>
+                    <%= form.input :phone %>
+                    <%= form.input :subject %>
+                    <%= form.input :content %>
+
+
+                    <div class="form-actions">
+                      <%= link_to 'Back', root_path, :class => 'btn btn-large', id: 'back_from_sign_up' %>
+                      <%= form.submit "Send", :class => 'btn btn-large btn-primary' %> </br>
+                    </div>
+
+              <% end %>
+
+
+           </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+ </div>
+</div>
+
+
+

@@ -1,0 +1,49 @@
+<%= provide(:title, 'Contact Us') %>
+
+
+<div class="contact_us">
+  <p>SubConTraX is in closed BETA mode. If you would like to join our beta user group please contact us using the form below.</p>
+
+</div>
+
+
+
+
+<%= simple_form_for @message, :url => contact_us_path, :html => { :class => 'form-horizontal' } do |form| %>
+
+    <!--div class="customer_contacts">-->
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Name</div>
+      <div class="ui-block-b"><%= form.text_field :name %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Email</div>
+      <div class="ui-block-b"><%= form.text_field :email, "type" => "email" %></div>
+    </div>
+
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Phone</div>
+      <div class="ui-block-b"><%= form.text_field :phone %></div>
+    </div>
+
+    <div class="ui-grid-a">
+      <div class="ui-block-a">Subject</div>
+      <div class="ui-block-b"><%= form.text_field :subject %></div>
+    </div>
+
+    <%= form.input :content %>
+
+    <%= form.button :submit, "Send", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", "data-icon" => "check", "data-iconpos" => "left" %>
+    <%= link_to "Back", root_path, "class" => "ui-btn-up-d", "data-role" => "button", "data-theme" => "b", "data-icon" => "check", "data-iconpos" => "left" %>
+
+
+
+    <br>
+    <br>
+
+<% end %>
+
+
+
+
+
