@@ -16,19 +16,10 @@ body {
 
 }
 
-.nav-list > li > a {
-  text-decoration: none;
-}
-
 .sidebar-nav-position {
   //position: fixed;
   //width: 27%;
 
-}
-
-a {
-  color: #003580;
-  text-decoration: underline;
 }
 
 @import "bootstrap-responsive";
@@ -62,10 +53,6 @@ a {
   background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);
   background-repeat: repeat-x;
   border-color: #0055CC #0055CC #003580;
-}
-
-.btn {
-  text-decoration: none;
 }
 
 .login_info {
@@ -119,9 +106,7 @@ footer {
 
 }
 
-#message_content {
-  min-height: 100px;
-}
+
 
 .sign-up {
 
@@ -153,10 +138,7 @@ footer {
 .close {
   margin-right: 5px;
   margin-top: 5px;
-  text-decoration: none;
 }
-
-
 
 .member_label {
 
@@ -675,24 +657,6 @@ smart_alert {
 .action_buttons_service_call {
 
   padding-left: 15%;
-  background-color: #EEEEEE;
-  padding-bottom: 2px;
-  padding-left: 15%;
-  padding-top: 8px;
-
-  h3 {
-    background-color: #999999;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    letter-spacing: 0.01em;
-    line-height: 27px;
-    margin-bottom: 10px;
-    margin-left: 0;
-    text-align: center;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    width: 70%;
-  }
 
 
   .btn-large {
@@ -720,8 +684,6 @@ smart_alert {
     margin-right: 30%;
     margin-top: -1.499em;
   }
-
-
 }
 
 .success {
@@ -1028,13 +990,6 @@ smart_alert {
     margin-left: -4px;
   }
 
-}
-
-.add_part_frame {
-  background-color: #EEEEEE;
-  border-color: black;
-  border-width: 1px;
-  color: #3A87AD;
 }
 
 .edit_provider {
