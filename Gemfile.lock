@@ -326,7 +326,7 @@ DEPENDENCIES
   mocha
   money-rails (= 0.8.0)
   nifty-generators
-  pg (= 0.14.1)
+  pg
   poltergeist
   quiet_assets
   rails (= 3.2.12)
