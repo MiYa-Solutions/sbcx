@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rails', '3.2.12'
 gem 'jquery-rails', '2.1.4'
@@ -7,13 +7,13 @@ gem 'bcrypt-ruby', '3.0.1'
 gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.5'
-gem 'bootstrap-datepicker-rails'
+gem 'bootstrap-datepicker-rails', '1.0.0'
 gem 'carmen-rails', '~> 1.0.0.beta3'
 gem 'active_attr', '0.7.0'
 
 gem 'american_date', '1.0.0'
 
-gem 'pg'
+gem 'pg', '0.14.1'
 gem 'activerecord-postgres-hstore', '0.7.5'
 
 gem 'devise', '2.0.0'

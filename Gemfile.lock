@@ -319,7 +319,7 @@ DEPENDENCIES
   best_in_place (= 2.0.3)
   better_errors
   binding_of_caller
-  bootstrap-datepicker-rails
+  bootstrap-datepicker-rails (= 1.0.0)
   bootstrap-sass (= 2.0.4.1)
   bootstrap-will_paginate (= 0.0.5)
   capybara (= 1.1.2)
@@ -345,7 +345,7 @@ DEPENDENCIES
   mocha
   money-rails (= 0.8.0)
   nifty-generators
-  pg
+  pg (= 0.14.1)
   poltergeist
   quiet_assets
   rails (= 3.2.12)
