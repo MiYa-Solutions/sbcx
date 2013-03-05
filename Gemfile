@@ -10,6 +10,7 @@ gem 'bootstrap-will_paginate', '0.0.5'
 gem 'bootstrap-datepicker-rails', '1.0.0'
 gem 'carmen-rails', '~> 1.0.0.beta3'
 gem 'active_attr', '0.7.0'
+gem 'queue_classic', '2.1.2'
 
 gem 'american_date', '1.0.0'
 
