@@ -88,3 +88,5 @@ en:
       mobile: "Mobile"
       save_changes: "Save Changes"
       appointments: "Appointments"
+      total_price: 'Total Price: &nbsp;'
+      total_cost: 'Total Cost: &nbsp;'

@@ -1301,6 +1301,35 @@ hr {
   }
 }
 
+.green-balance {
+  span {
+    //background-color: red;
+    letter-spacing: 0.1em;
+    padding: 3px;
+    background-color: #5BB75B;
+    background-image: linear-gradient(to bottom, #62C462, #51A351);
+    background-repeat: repeat-x;
+    //border-color: #BD362F #BD362F #802420;
+
+  }
+}
+
+.total_bom {
+  width: 25%;
+  padding-top: 3px;
+
+  h4 {
+    float: left;
+    font-size: 14px;
+    margin-top: -1px;
+  }
+
+  span {
+    float: right;
+  }
+}
+
+
 
 .cancel_agreement {
 
