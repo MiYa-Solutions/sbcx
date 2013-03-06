@@ -141,13 +141,18 @@
         <li><h1><%= Material.model_name.human.pluralize %></h1></li>
 
         <% if @service_call.total_price > 0 %>
-            <li class="total_bom green-balance"><h4><%= t('general.general.total_price').html_safe %></h4><span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span></li>
+            <div class="total_bom">
+            <li class="total_price"><badge><%= t('general.general.total_price').html_safe %><span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span></badge></li>
+            </div>
         <% end %>
 
         <% if  @service_call.total_cost > 0 %>
-            <li class="total_bom green-balance"><span id='job_total_cost'><h4><%= t('general.general.total_cost').html_safe %></h4>
-              <%= humanized_money_with_symbol @service_call.total_cost %></span></li>
-        <% end %>
+            <div class="total_bom">
+            <li class="total_price"><badge><%= t('general.general.total_cost').html_safe %><span id='job_total_cost'> <%= humanized_money_with_symbol @service_call.total_cost %></span></badge></li>
+            </div>
+
+      <% end %>
+
 
         <li><%= button_tag 'Add Parts', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
       </ul>

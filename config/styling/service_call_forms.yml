@@ -89,6 +89,9 @@ service_call:
       subcon_invoiced:
         form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
+      provider_invoiced:
+        form_classes: "blue-button"
+        button_classes: "btn btn-large btn-primary"
       overdue:
         form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
