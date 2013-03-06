@@ -62,7 +62,7 @@ en:
       menu: "Menu"
       home: "Home"
       new: "New"
-      add_part: "Add Part"
+      add_part: "Add Item"
       update_part: "Update Part"
       back: "Back"
       my_employees: "My Employees"
@@ -90,3 +90,4 @@ en:
       appointments: "Appointments"
       total_price: 'Total Price: &nbsp;'
       total_cost: 'Total Cost: &nbsp;'
+      billing: "Billing"

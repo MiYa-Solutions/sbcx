@@ -1,7 +1,7 @@
 en:
   activerecord:
     models:
-      material: Part
+      material: "Billing"
     messages:
       material:
         created_successfully: '%{material} was created successfully'
