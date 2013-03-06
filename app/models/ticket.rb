@@ -64,17 +64,18 @@ class Ticket < ActiveRecord::Base
   stampable
 
   # virtual attributes
-  attr_writer :started_on_text, :completed_on_text, :company, :address1, :address2,
+  attr_writer :started_on_text, :completed_on_text, :scheduled_for_text, :company, :address1, :address2,
               :city, :state, :zip, :country, :phone, :mobile_phone, :work_phone, :email
   attr_accessor :new_customer
 
   # transform the dates before saving
   before_save :save_started_on_text
   before_save :save_completed_on_text
+  before_save :save_scheduled_for_text
                                                             # create a new customer in case one was asked for
   before_validation :create_customer
 
-  validate :check_completed_on_text, :check_started_on_text #, :customer_belongs_to_provider
+  validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
   validates_presence_of :organization, :provider
   validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
 
@@ -127,7 +128,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def completed_on_text
-    @completed_on_text || completed_on.try(:strftime, "%Y-%m-%d %H:%M:%S")
+    @completed_on_text || completed_on.try(:strftime, "%B %d, %Y %H:%M")
 
   end
 
@@ -144,8 +145,16 @@ class Ticket < ActiveRecord::Base
   end
 
   def started_on_text
-    @started_on_text || started_on.try(:strftime, "%Y-%m-%d %H:%M:%S")
+    @started_on_text || started_on.try(:strftime, "%B %d, %Y %H:%M")
 
+  end
+  def scheduled_for_text
+    @scheduled_for_text || started_on.try(:strftime, "%B %d, %Y %H:%M")
+
+  end
+
+  def save_scheduled_for_text
+    self.scheduled_for = Time.zone.parse(@scheduled_for_text) if @scheduled_for_text.present?
   end
 
   def save_started_on_text
@@ -158,6 +167,14 @@ class Ticket < ActiveRecord::Base
     end
   rescue ArgumentError
     errors.add @started_on_text, "is out of range"
+  end
+
+  def check_scheduled_for_text
+    if @scheduled_for_text.present? && Time.zone.parse(@scheduled_for_text).nil?
+      errors.add @scheduled_for_text, "cannot be parsed"
+    end
+  rescue ArgumentError
+    errors.add @scheduled_for_text, "is out of range"
   end
 
   def create_customer
