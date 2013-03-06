@@ -30,13 +30,14 @@
 
               <li class="<%= 'active' if current_page?(user_root_path) %>"><%= link_to I18n.t('general.general.home'), user_root_path %></li>
               <li class="<%= 'active' if current_page?(service_calls_path) %>"><%= link_to I18n.t('general.general.jobs'), service_calls_path %></li>
+              <li class="<%= 'active' if current_page?(affiliates_path) %>"><%= link_to Affiliate.model_name.pluralize, affiliates_path %></li>
+              <li class="<%= 'active' if current_page?(customers_path) %>"><%= link_to Customer.model_name.pluralize, customers_path %></li>
               <li class="<%= 'active' if current_page?(materials_path) %>"><%= link_to I18n.t('general.general.parts'), materials_path %></li>
               <% permitted_to? :index, :organizations do %>
-                  <li class="<%= 'active' if current_page?(organizations_path) %>"><%= link_to I18n.t('general.general.organization'), organizations_path %></li>
+                  <li class="<%= 'active' if current_page?(organizations_path) %>"><%= link_to Organization.model_name.pluralize, organizations_path %></li>
               <% end %>
-              <li class="<%= 'active' if current_page?(affiliates_path) %>"><%= link_to I18n.t('general.general.network'), affiliates_path %></li>
               <li class="<%= 'active' if current_page?(my_users_path) %>"><%= link_to I18n.t('general.general.employees'), my_users_path %></li>
-              <li class="<%= 'active' if current_page?(customers_path) %>"><%= link_to I18n.t('general.general.customers'), customers_path %></li>
+
               <li>
                 <div class="btn-group">
                   <a href="#" data-toggle="dropdown" class="btn dropdown-toggle">
