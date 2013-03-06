@@ -85,12 +85,28 @@ describe OrganizationAgreement do
 
       end
 
-      it "change submission by cparty must include a reason" do
+      # change reason should not be mandatory anymore
+      #it "change submission by cparty must include a reason" do
+      #  with_user cparty_user do
+      #    agreement_by_org.change_reason = nil
+      #    expect {
+      #      agreement_by_org.submit_change!
+      #    }.should raise_error { StateMachine::InvalidTransition }
+      #
+      #    agreement_by_org.change_reason = "change test"
+      #
+      #    expect {
+      #      agreement_by_org.submit_change!
+      #    }.should_not raise_error
+      #
+      #  end
+      #end
+      it "change submission by cparty should not force a reason " do
         with_user cparty_user do
           agreement_by_org.change_reason = nil
           expect {
             agreement_by_org.submit_change!
-          }.should raise_error { StateMachine::InvalidTransition }
+          }.should_not raise_error { StateMachine::InvalidTransition }
 
           agreement_by_org.change_reason = "change test"
 

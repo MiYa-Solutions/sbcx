@@ -57,6 +57,7 @@ describe Organization do
     should respond_to(:providers)
     should respond_to(:materials)
     should respond_to(:accounts)
+    should respond_to(:my_user?)
   end
 
   it { should be_valid }
