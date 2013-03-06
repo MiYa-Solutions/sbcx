@@ -6,7 +6,7 @@ GIT
       rails (~> 3.0)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     actionmailer (3.2.12)
       actionpack (= 3.2.12)
@@ -227,6 +227,7 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     rake (10.0.3)
+    rb-fsevent (0.9.1)
     rdoc (3.12.2)
       json (~> 1.4)
     rspec (2.9.0)
@@ -318,7 +319,7 @@ DEPENDENCIES
   best_in_place (= 2.0.3)
   better_errors
   binding_of_caller
-  bootstrap-datepicker-rails
+  bootstrap-datepicker-rails (= 1.0.0)
   bootstrap-sass (= 2.0.4)
   bootstrap-will_paginate (= 0.0.5)
   capybara (= 1.1.2)
@@ -344,11 +345,12 @@ DEPENDENCIES
   mocha
   money-rails (= 0.8.0)
   nifty-generators
-  pg
+  pg (= 0.14.1)
   poltergeist
   quiet_assets
   rails (= 3.2.12)
   rails3-jquery-autocomplete!
+  rb-fsevent (= 0.9.1)
   rspec-rails (= 2.9.0)
   ruby-graphviz
   ruby_parser

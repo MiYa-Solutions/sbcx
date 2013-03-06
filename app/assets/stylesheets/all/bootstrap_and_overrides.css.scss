@@ -366,7 +366,7 @@ input, textarea {
     font-size: 12px;
   }
 
-  span {
+  span h4 {
     font-weight: bold;
     color: $white;
     font-family: arial;
@@ -1302,7 +1302,7 @@ hr {
 }
 
 .green-balance {
-  span {
+  span, h4 {
     //background-color: red;
     letter-spacing: 0.1em;
     padding: 3px;
