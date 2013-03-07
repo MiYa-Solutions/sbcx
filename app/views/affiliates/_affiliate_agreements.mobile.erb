@@ -1,0 +1,34 @@
+<h3><%= Agreement.model_name.human.pluralize %></h3>
+
+<% if @agreements.empty? %>
+    <p>  <%= I18n.t('general.messages.invite_member') %></p>
+
+    <div class="miya_blue_button">
+      <%= link_to t('affiliates.buttons.new_agreement'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+    </div>
+
+<% else %>
+    <ul data-role="listview">
+      <% @agreements.each do |agreement| %>
+          <li class="inline_mobile service_calls_index">
+            <%= link_to agreement.name, agreement_path, "data-transition" => "slide" %>
+
+            <% if agreement.human_status_name == 'draft' %>
+                <p class="service_call_status_red">
+                  <%= agreement.status_name %>
+                </p>
+            <% else %>
+                <p class="service_call_status">
+                  <%= agreement.status_name %>
+                </p>
+            <% end %>
+          </li>
+      <% end %>
+      <br>
+    </ul>
+
+    <div class="miya_blue_button">
+      <%= link_to t('affiliates.buttons.new_agreement'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+    </div>
+
+<% end %>
