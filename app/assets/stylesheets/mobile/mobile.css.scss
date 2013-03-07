@@ -178,8 +178,15 @@ footer {
   font-size: 14px;
 }
 
-.jobs_index_address {
-  width: 70%;
+#jobs_index_address {
+  width: 45%;
+  padding-left: 5px;
+}
+
+#jobs_index_no_address {
+  width: 50%;
+  padding-left: 5px;
+
 }
 //
 
@@ -699,8 +706,17 @@ input.ui-input-text, textarea.ui-input-text {
     text-transform: uppercase;
     line-height: 12px;
     margin-right: 4%;
+  }
 
-
+  .service_call_status_red {
+    margin-left: 70%;
+    margin-top: -24px;
+    font-size: 10px;
+    text-align: left;
+    color: red;
+    text-transform: uppercase;
+    line-height: 12px;
+    margin-right: 4%;
   }
 
   .ui-btn-text {
@@ -846,6 +862,23 @@ input.ui-input-text, textarea.ui-input-text {
   }
 
 }
+
+
+.affiliate_agreements {
+   .ui-collapsible-content {
+    margin-top: 12px;
+   }
+
+  .service_calls_index .service_call_status {
+    margin-right: 15%;
+  }
+
+  .service_calls_index .service_call_status_red {
+    margin-right: 15%;
+  }
+}
+
+
 
 .customer_contacts {
   .ui-grid-a .ui-block-a {

@@ -67,7 +67,8 @@
                    <div class="ui-block-b">
                      <%= event.description %>
                      <br>at:
-                     <%= event.created_at %>
+                     <%= l event.created_at, :format => :default %>
+
                    </div>
                  </div>
              </li>

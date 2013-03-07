@@ -17,8 +17,11 @@
             <p class="ui-li-aside-blue ui-li-desc-blue">
               <badge><%= sc.ref_id %></badge>
             </p>
-
-            <%= link_to sc.customer.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
+            <% if sc.customer.address1.empty? %>
+                <%= link_to I18n.t('general.general.no_address'), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
+            <% else %>
+            <%= link_to sc.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
+            <% end %>
 
             <p class="service_call_status">
               <%= sc.human_status_name %>
@@ -37,8 +40,11 @@
                   <badge><%= sc.ref_id %></badge>
                 </p>
 
-                <%= link_to sc.customer.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
-
+                <% if sc.customer.address1.empty? %>
+                    <%= link_to I18n.t('general.general.no_address'), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
+                <% else %>
+                    <%= link_to sc.customer.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
+                <% end %>
                 <p class="service_call_status">
                   <%= sc.human_status_name %>
                 </p>

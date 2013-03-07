@@ -637,6 +637,35 @@ smart_alert {
   }
 }
 
+#block_job_statuses_actions {
+  a {
+    color: #696969;
+    text-decoration: none;
+  }
+
+  a:hover {
+    background-color: #3A87AD;
+    color: white;
+  }
+}
+
+.dropdown-menu {
+  a {
+    text-decoration: none;
+  }
+}
+
+.nav-list {
+  a {
+    text-decoration: none;
+  }
+}
+
+a:hover {
+  background-color: #FFFFFF;
+  text-decoration: none;
+}
+
 
 
 .total_price {

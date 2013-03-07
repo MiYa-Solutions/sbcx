@@ -91,3 +91,4 @@ en:
       total_price: 'Total Price: &nbsp;'
       total_cost: 'Total Cost: &nbsp;'
       billing: "Billing"
+      no_address: "No Address"
