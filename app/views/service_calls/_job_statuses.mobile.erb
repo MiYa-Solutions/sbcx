@@ -30,7 +30,7 @@
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor) %></div>
             <div class="ui-block-b">
               <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_name">
-                    <%= @service_call.subcontractor.try(:name) %>
+                <%= link_to @service_call.subcontractor.try(:name), affiliate_path(@service_call.subcontractor.id) %>
               </span>
             </div>
           </div>
@@ -53,7 +53,8 @@
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
             <div class="ui-block-b">
               <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
-                    <%= @service_call.provider.try(:name) %>
+                    <%= link_to @service_call.provider.try(:name), affiliate_path(@service_call.provider.id) %>
+
               </span>
             </div>
           </div>

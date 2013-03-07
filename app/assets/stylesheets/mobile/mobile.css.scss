@@ -452,6 +452,33 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+.job_history {
+  .ui-collapsible-content {
+    padding: 21px 15px;
+  }
+}
+
+.blue_badge_collape {
+  background-color: #396B9E;
+  border-radius: 1em 1em 1em 1em;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  height: 9px;
+  //margin-left: 100px;
+  margin-top: -10px;
+  padding: 2px 4px 3px;
+  text-align: center;
+  margin-left: 10%;
+
+  badge {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    text-shadow: 0 1px 1px #194B7E;
+  }
+}
+
+
 .alert_label_mobile {
 
   right: 5%;
@@ -875,6 +902,31 @@ input.ui-input-text, textarea.ui-input-text {
 
   .service_calls_index .service_call_status_red {
     margin-right: 15%;
+  }
+}
+
+.job_billing {
+  .billing_price {
+    color: #3A87AD;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 12px;
+    margin-left: 72%;
+    margin-right: 15%;
+    margin-top: -16px;
+    text-align: left;
+   }
+
+  .billing_price_label {
+    margin-right: 15%;
+    margin-left: 60%;
+    margin-top: -24px;
+    font-size: 12px;
+    text-align: left;
+    color: black;
+    line-height: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
   }
 }
 
