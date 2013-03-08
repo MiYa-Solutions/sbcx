@@ -16,6 +16,15 @@ body {
 
 }
 
+.modal.fade.in {
+  top: 60%;
+}
+
+body .modal {
+  margin: -250px 0 0 -480px;
+  width: 960px;
+}
+
 .sidebar-nav-position {
   //position: fixed;
   //width: 27%;
@@ -1135,13 +1144,7 @@ a:hover {
   }
 }
 
-body .modal {
-  //new custom width
-  width: 860px;
-  //must be half of the width, minus scrollbar on the left (30px)
-  margin: -250px 0 0 -400px;
-  //margin-right: 20%
-}
+
 
 .carousel .item > img {
   margin-left: 0 auto;

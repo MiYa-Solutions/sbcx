@@ -81,22 +81,30 @@
                 <br>
               </address>
             </li>
+
+
             <% unless @service_call.technician.blank? %>
-                <li>
-                  <div class="control-group select required">
-                    <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:technician) %></label>
-                    <div class="controls">
-                      <div class="input-large uneditable-input" title="To change Technician use the action section" rel='tooltip'>
-                        <%= f.object.technician.try(:name) %>
+                <% if @service_call.organization.my_user? (@service_call.technician) %>
+                    <li>
+                          <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
+                    </li>
+
+                <% else %>
+                     <li>
+                      <div class="control-group select required">
+                        <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:technician) %></label>
+                        <div class="controls">
+                          <div class="input-large uneditable-input" title="To change Technician use the action section" rel='tooltip'>
+                            <%= f.object.technician.try(:name) %>
+                          </div>
+
+                        </div>
                       </div>
-
-                    </div>
-                  </div>
-
-                </li>
+                     </li>
+                <% end %>
              <% end %>
 
-                <% permitted_to? :edit, @service_call do %>
+          <% permitted_to? :edit, @service_call do %>
                     <li>
                       <div class="control-group select required">
                         <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:subcontractor) %></label>
@@ -110,8 +118,8 @@
                       </div>
 
                     </li>
-                <% end %>
-          </ul>
+          <% end %>
+        </ul>
 
         </div>
 
