@@ -149,7 +149,7 @@ class Ticket < ActiveRecord::Base
 
   end
   def scheduled_for_text
-    @scheduled_for_text || started_on.try(:strftime, "%B %d, %Y %H:%M")
+    @scheduled_for_text || scheduled_for.try(:strftime, "%B %d, %Y %H:%M")
 
   end
 

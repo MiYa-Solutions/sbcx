@@ -51,7 +51,7 @@
               <div class="control-group string ">
                 <label class="string  control-label" for="service_call_started_on"><%= @service_call.class.human_attribute_name(:scheduled_for) %></label>
                 <div class="controls">
-                  <%= f.text_field :scheduled_for, class: "datepicker", value: f.object.scheduled_for %>
+                  <%= best_in_place f.object, :scheduled_for, type: :date, display_with: :l %>
                 </div>
               </div>
             </li>
@@ -69,11 +69,11 @@
 
             <li class="list_service_calls" id="customer_details">
               <address>
-                <%= best_in_place f.object.customer, :address1 %>
+                <%= best_in_place f.object, :address1 %>
                 <br>
-                <%= f.object.customer.address2 %>
+                <%= best_in_place f.object, :address2 %>
                 <br>
-                <%= f.object.customer.city %>, <%= f.object.customer.state %> <%= f.object.customer.zip %>
+                <%= f.object.city %>, <%= f.object.customer.state %> <%= f.object.customer.zip %>
                 <br>
                 <strong><%= I18n.t('general.general.phone') %></strong>: <%= f.object.customer.phone %>
                 <br>
@@ -86,9 +86,7 @@
                   <div class="control-group select required">
                     <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:technician) %></label>
                     <div class="controls">
-                      <div class="input-large uneditable-input" title="To change Technician use the action section" rel='tooltip'>
-                        <%= f.object.technician.try(:name) %>
-                      </div>
+                        <%= best_in_place f.object, :technician %>
 
                     </div>
                   </div>

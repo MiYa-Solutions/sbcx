@@ -71,6 +71,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def service_call
+    params[:service_call] = params[:my_service_call] if params[:my_service_call].present?
+    params[:service_call] = params[:transferred_service_call] if params[:transferred_service_call].present?
     if params[:service_call].nil?
       params.permit
     else
@@ -108,7 +110,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :work_phone,
                                   :email,
                                   :notes,
-                                  :total_price, :allow_collection, :re_transfer]
+                                  :total_price, :allow_collection, :re_transfer, :scheduled_for]
         end
 
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events

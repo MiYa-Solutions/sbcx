@@ -47,6 +47,8 @@ class ServiceCallsController < ApplicationController
           flash[:success] = t('service_call.crud_messages.update.success')
           redirect_to service_call_path @service_call
         end
+
+        format.json { respond_with_bip @service_call}
       end
     else
       respond_to do |format|
@@ -54,6 +56,8 @@ class ServiceCallsController < ApplicationController
         format.html do
           render :action => 'edit'
         end
+        format.json { respond_with_bip @service_call}
+
       end
 
 
