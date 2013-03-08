@@ -1,0 +1,24 @@
+<tr id="accounting_entry_<%= accounting_entry.id %>">
+  <td>
+    <%= link_to "#{accounting_entry.ticket.type} (#{accounting_entry.ticket.id})", accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %>
+  </td>
+  <td>
+    <%=  accounting_entry.type %>
+
+  </td>
+  <!--<td>-->
+    <!--<#%= accounting_entry.description %>-->
+  <!--</td>-->
+  <td>
+    <%= accounting_entry.human_status_name %>
+  </td>
+  <td>
+    <%= humanized_money_with_symbol accounting_entry.amount %>
+  </td>
+  <td>
+    <%= accounting_entry.created_at %>
+  </td>
+  <td>
+    <%= humanized_money_with_symbol accounting_entry.balance %>
+  </td>
+</tr>

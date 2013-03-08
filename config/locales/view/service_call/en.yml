@@ -73,8 +73,10 @@ en:
           tooltip: "Click to indicate the client was presented with an invoice for the service"
         subcon_invoiced:
           tooltip: "Click to indicate the subcontractor has invoiced the customer"
+        provider_invoiced:
+          tooltip: "Click to indicate the provider has invoiced the customer"
         overdue:
-          tooltip: "Click to indicate the payment for the service is overdue "
+          tooltip: "Click to indicate the payment for the service is overdue"
         collect:
           tooltip: "Click if the payment for the service was collected by an employee"
         deposited:

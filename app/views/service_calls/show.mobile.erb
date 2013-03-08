@@ -1,8 +1,8 @@
 <% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}" )%>
 
-<!--Job Actions  -->
-<div data-role="collapsible-set" data-inset="false">
 
+<div data-role="collapsible-set" data-inset="false">
+  <!--Job Actions  -->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
      <h3><%= I18n.t('general.general.actions')%></h3>
      <div class="service-call-actions" data-theme="d">
@@ -10,40 +10,55 @@
      </div>
   </div>
 
-<!--Job Customer Details-->
+  <!--Job Status-->
+  <div data-role="collapsible" data-theme="d">
+    <%= render :partial => 'job_statuses' %>
+  </div>
+
+
+  <!--Billing-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+
+    <h3><%= I18n.t('general.general.billing')%>
+     <span class="blue_badge_collape">
+                <badge><%= Bom.human_attribute_name(:price) %> <%= '&nbsp;'.html_safe %><span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span></badge>
+     </span>
+     <span class="blue_badge_collape">
+                 <badge><%= Bom.human_attribute_name(:cost) %> <%= '&nbsp;'.html_safe %><span id='job_total_cost'><%= humanized_money_with_symbol @service_call.total_cost %></span></badge>
+     </span>
+    </h3>
+
+    <div class="miya_blue_button_bom">
+      <%= link_to I18n.t('general.general.add_part'), new_service_call_bom_path(@service_call), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" %>
+    </div>
+
+    <ul data-role="listview">
+      <% @service_call.boms.each do |bom| %>
+          <li class=" job_billing">
+            <%= link_to bom.material_name, edit_service_call_bom_path(@service_call, bom), "data-transition" => "slide" %>
+             <p class= "billing_price_label"><%= Bom.human_attribute_name(:price) %></p>
+             <p class="billing_price"><%= humanized_money_with_symbol bom.price %></p>
+
+          </li>
+      <% end %>
+      <br>
+    </ul>
+
+  </div>
+
+
+  <!--Job Contact Details-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <%= render :partial => 'job_customer_info' %>
   </div>
 
-<!--Job Status-->
-  <div data-role="collapsible" data-theme="d">
-    <%= render :partial => 'job_statuses' %>
-  </div>
+
 
   <!--Job Info-->
   <div data-role="collapsible" data-theme="d">
     <%= render :partial => 'job_info_mobile' %>
   </div>
 
-<!--Parts-->
-  <div data-role="collapsible" data-collapsed="true" data-theme="d">
-
-        <h3><%= I18n.t('general.general.parts')%></h3>
-
-        <div class="miya_blue_button_bom">
-          <%= link_to I18n.t('general.general.add_part'), new_service_call_bom_path(@service_call), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" %>
-        </div>
-
-        <ul data-role="listview">
-         <% @service_call.boms.each do |bom| %>
-             <li>
-             <%= link_to bom.material_name, edit_service_call_bom_path(@service_call, bom), "data-transition" => "slide" %>
-             </li>
-          <% end %>
-            <br>
-        </ul>
-
-  </div>
 
   <!--Appointment-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
@@ -53,10 +68,9 @@
     </p>
   </div>
 
-
-<% unless @service_call.events.empty? %>
-<!--Job History-->
-   <div data-role="collapsible" data-collapsed="true" data-theme="d">
+  <!--Job History-->
+  <% unless @service_call.events.empty? %>
+   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="job_history">
     <h3>Job History</h3>
 
      <ul data-role="listview">
@@ -67,7 +81,8 @@
                    <div class="ui-block-b">
                      <%= event.description %>
                      <br>at:
-                     <%= event.created_at %>
+                     <%= l event.created_at, :format => :default %>
+
                    </div>
                  </div>
              </li>
@@ -76,7 +91,6 @@
 
   </div>
 <% end %>
-
 
   <!--end of collapsible-->
 </div>
@@ -101,9 +115,6 @@
         <%= f.submit "Save", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "right", id: 'service_call_save_btn' %>
       </div>
     </fieldset>
-
-
-
 <% end %>
 
 

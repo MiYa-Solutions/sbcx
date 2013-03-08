@@ -1,0 +1,9 @@
+en:
+  activerecord:
+    models:
+      accounting_entry: "Balance"
+    attributes:
+      accounting_entry:
+        ticket: "Job Type"
+        id: "Job Number"
+        type: "Account Entry"

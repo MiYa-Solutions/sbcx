@@ -81,20 +81,31 @@
                 <br>
               </address>
             </li>
+
+
             <% unless @service_call.technician.blank? %>
-                <li>
-                  <div class="control-group select required">
-                    <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:technician) %></label>
-                    <div class="controls">
-                        <%= best_in_place f.object, :technician %>
+                <% if @service_call.organization.my_user? (@service_call.technician) %>
+                    <li>
+                          <!--<#%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>-->
+                      <%= best_in_place f.object, :technician %>
+                    </li>
 
-                    </div>
-                  </div>
+                <% else %>
+                     <li>
+                      <div class="control-group select required">
+                        <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:technician) %></label>
+                        <div class="controls">
+                          <div class="input-large uneditable-input" title="To change Technician use the action section" rel='tooltip'>
+                            <%= f.object.technician.try(:name) %>
+                          </div>
 
-                </li>
+                        </div>
+                      </div>
+                     </li>
+                <% end %>
              <% end %>
 
-                <% permitted_to? :edit, @service_call do %>
+          <% permitted_to? :edit, @service_call do %>
                     <li>
                       <div class="control-group select required">
                         <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:subcontractor) %></label>
@@ -108,8 +119,8 @@
                       </div>
 
                     </li>
-                <% end %>
-          </ul>
+          <% end %>
+        </ul>
 
         </div>
 
@@ -136,27 +147,23 @@
   <div class="row-fluid">
     <div class="smart_label">
       <ul>
-        <li><h1><%= Material.model_name.human.pluralize %></h1></li>
+        <li><h1><%= t('general.general.billing') %></h1></li>
 
         <% if @service_call.total_price > 0 %>
-            <li class="total_bom green-balance"><span id='job_total_price'><h4><%= t('general.general.total_price').html_safe %></h4>
-              <%= humanized_money_with_symbol @service_call.total_price %></span></li>
+            <div class="total_bom">
+            <li class="total_price"><badge><%= t('general.general.total_price').html_safe %><span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span></badge></li>
+            </div>
         <% end %>
-        <% if @service_call.total_price < 0 %>
-            <li class="total_bom red-balance"><span id='job_total_price'><h4><%= t('general.general.total_price').html_safe %></h4>
-              <%= humanized_money_with_symbol @service_call.total_price %></span></li>
-        <% end %>
+
         <% if  @service_call.total_cost > 0 %>
-            <li class="total_bom green-balance"><span id='job_total_cost'><h4><%= t('general.general.total_cost').html_safe %></h4>
-              <%= humanized_money_with_symbol @service_call.total_cost %></span></li>
-        <% end %>
-        <% if @service_call.total_cost < 0 %>
-            <li class="total_bom red-balance"><span id='job_total_cost'><h4><%= t('general.general.total_cost').html_safe %></h4>
-              <%= humanized_money_with_symbol @service_call.total_cost %></span></li>
-        <% end %>
+            <div class="total_bom">
+            <li class="total_price"><badge><%= t('general.general.total_cost').html_safe %><span id='job_total_cost'> <%= humanized_money_with_symbol @service_call.total_cost %></span></badge></li>
+            </div>
+
+      <% end %>
 
 
-        <li><%= button_tag 'Add Parts', :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
+        <li><%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
       </ul>
     </div>
 
