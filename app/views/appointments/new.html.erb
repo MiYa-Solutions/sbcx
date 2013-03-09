@@ -2,9 +2,12 @@
 
 <div class="row-fluid">
   <div class="span4">
+    <%= render 'appointments/delete_appointment', appointment: @appointment %>
     <%= render 'appointments/add_appointment', appointable: @appointment.appointable %>
 
+    <div id="appointment-form">
     <%= render 'appointments/in_line_form', appointment: @appointment %>
+    </div>
 
     <span id="loading"> Loading.... </span>
   </div>

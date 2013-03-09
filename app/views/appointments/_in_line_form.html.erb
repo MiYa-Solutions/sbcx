@@ -1,16 +1,17 @@
-<%= simple_form_for(appointment, :html => { :class => 'form-horizontal' }, remote: true) do |f| %>
+<%= simple_form_for(appointment, :html => { :class => 'form-horizontal ajax-form' }, remote: true) do |f| %>
     <br>
     <%= f.error_notification %>
 
-    <%= f.submit I18n.t('general.general.add'), class: "ajax-btn btn btn-medium btn-primary", id: 'add_appointment' %>
+    <%= f.submit I18n.t('general.general.add'), class: "ajax-btn btn btn-medium btn-primary ajax-btn", id: 'add_appointment' %>
     <div id="ajax-msg"></div>
-    <%= image_tag 'ajax-loader.gif', id: "spinner" %>
 
     <%= f.input :title %>
     <%= f.input :all_day %>
-    <%= f.input :starts_at %>
+    <%= f.input :starts_at_date_text, input_html: {class: 'datepicker'} %>
+    <%= f.input :starts_at_time_text , input_html: {class: 'timepicker'}%>
+    <%= f.input :ends_at_date_text , input_html: {class: 'datepicker'} %>
+    <%= f.input :ends_at_time_text  , input_html: {class: 'timepicker'}%>
     <%= f.input :description %>
-    <%= f.input :ends_at %>
     <%= f.input :appointable_id, :as => :hidden, :input_html => { :value => appointment.appointable.id } %>
     <%= f.input :appointable_type, :as => :hidden, :input_html => { :value => appointment.appointable.class } %>
 

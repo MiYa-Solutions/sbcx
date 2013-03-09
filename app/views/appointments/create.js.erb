@@ -1,4 +1,8 @@
-
 $('#calendar').fullCalendar( 'refetchEvents');
-$('#calendar').fullCalendar( 'rerenderEvents' )
+$('#calendar').fullCalendar( 'rerenderEvents' );
 $("#calendar").focus();
+$("#appointment-form").html('<%= j render('appointments/in_line_form', appointment: @appointment) %>');
+$("#appointment_starts_at_date_text").datepicker();
+$("#appointment_ends_at_date_text").datepicker();
+$("#appointment_ends_at_time_text").timepicker();
+$("#appointment_starts_at_time_text").timepicker();

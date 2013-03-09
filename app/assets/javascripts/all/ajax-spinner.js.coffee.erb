@@ -5,7 +5,7 @@ jQuery ->
         old_val = $(this).val()
 
     $('.ajax-form').bind("ajax:before", ->
-        spinner.appendTo($('.ajax-btn').parent())
+        spinner.appendTo($('.ajax-btn'))
         $('.ajax-btn').val("Wait...")
     )
 

@@ -41,7 +41,7 @@
                   <div class="control-group select required">
                     <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:completed_on_text) %></label>
                     <div class="controls">
-                      <%= f.text_field :completed_on_text, class: "datepicker", placeholder: 'Click to set date'  %>
+                      <%= f.text_field :completed_on_text, class: "datetimepicker", placeholder: 'Click to set date'  %>
                     </div>
                   </div>
                 </li>
