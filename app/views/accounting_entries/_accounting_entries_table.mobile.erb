@@ -1,7 +1,7 @@
 <% if account.present? %>
     <table class="table table-striped" id="accounting_entries_table">
       <thead>
-      <th> <%= AccountingEntry.human_attribute_name(:id) %> </th>
+      <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
       <th><%= AccountingEntry.human_attribute_name(:address) %>       </th>
       <th><%= AccountingEntry.human_attribute_name(:type) %>          </th>
       <th><%= AccountingEntry.human_attribute_name(:status) %>        </th>

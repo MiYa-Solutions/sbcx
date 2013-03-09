@@ -1,0 +1,42 @@
+<div class="well well-home">
+
+    <div class="smart_label">
+        <ul>
+            <li><h1><%= Notification.model_name.human  %></h1></li>
+            <li></li>
+            <li><%= link_to  I18n.t('general.general.see_all'), notifications_path, :class => 'btn btn-primary' %></li>
+
+        </ul>
+    </div>
+
+    <br>
+
+    <% if !@notifications.empty? %>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            <th><%= Notification.human_attribute_name(:subject) %></th>
+            <th><%= Notification.human_attribute_name(:content) %></th>
+            <!--<th><#%= Notification.human_attribute_name(:status) %></th>-->
+            <th> Actions</th>
+        </tr>
+        </thead>
+        <tbody id="notifications">
+
+        <!--todo make this efficient-->
+        <% @notifications.sort_by{|t| - t.created_at.to_i}.first(5).each do |notification| %>
+        <%= render 'notifications/notification', notification: notification %>
+        <% end %>
+        </tbody>
+    </table>
+
+    <% else %>
+    <span class="alert alert-info" id="empty_search_result_notice">No Notifications</span>
+    <br>
+    <br>
+    <% end %>
+
+    <br>
+</div>

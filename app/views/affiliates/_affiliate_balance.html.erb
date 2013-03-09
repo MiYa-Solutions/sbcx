@@ -2,8 +2,9 @@
   <div class="smart_label">
     <ul>
       <li><h1><%= I18n.t('general.general.balance') %></h1></li>
-      <!--<li class="red-balance"><h1><#%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="affiliate_balance"><#%= humanized_money_with_symbol @account.balanc %></span></h1></li>-->
       <li></li>
+      <li class="red-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="affiliate_balance"><%= humanized_money_with_symbol @account.balance %></span></h1></li>
+
     </ul>
   </div>
 
@@ -27,13 +28,13 @@
   <div class="modal-body">
     <table class="table table-striped" id="event_log_in_service_call">
       <thead>
-      <th> <%= AccountingEntry.human_attribute_name(:id) %> </th>
-      <th> <%= AccountingEntry.human_attribute_name(:ticket) %> </th>
-      <th><%= AccountingEntry.human_attribute_name(:type) %>          </th>
-      <th><%= AccountingEntry.human_attribute_name(:status) %>        </th>
-      <th><%= AccountingEntry.human_attribute_name(:address) %>       </th>
-      <th><%= AccountingEntry.human_attribute_name(:created_at) %>    </th>
-      <th><%= AccountingEntry.human_attribute_name(:amount) %>        </th>
+      <th><%= AccountingEntry.human_attribute_name(:id) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:ticket) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:status) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:address) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:created_at) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:amount) %></th>
       <th><%= I18n.t('general.general.balance') %></th>
       </thead>
       <tbody>
@@ -57,6 +58,6 @@
     </table>
   </div>
   <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true"><%= I18n.t('general.general.close') %></button>
   </div>
 </div>

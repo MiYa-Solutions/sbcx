@@ -20,6 +20,11 @@ body {
   top: 60%;
 }
 
+
+.well {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
 body .modal {
   margin: -250px 0 0 -480px;
   width: 960px;
@@ -722,6 +727,15 @@ a:hover {
 
 }
 
+.promotion_beta {
+
+  text-align: center;
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+  width: 100%;
+
+}
+
 .status_label_success {
 
   //background-color: #5BB65B;
@@ -791,6 +805,7 @@ a:hover {
     font-weight: normal;
     line-height: 8px;
     text-transform: uppercase;
+    border-radius: 10px 10px 10px 10px;
 
   }
 

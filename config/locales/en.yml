@@ -93,3 +93,5 @@ en:
       billing: "Billing"
       no_address: "No Address"
       more_details: "More Details"
+      close: "Close"
+  calendar: "Calendar"
