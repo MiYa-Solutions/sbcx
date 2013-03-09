@@ -2,6 +2,10 @@
 <!--#<#% end %> -->
 <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
 <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
+<%= f.input :customer, input_html: {id: "customer-autocomplete"} %>
+<%= f.hidden_field :customer_id %>
+<ul id="customer-suggestions" data-role="listview" data-inset="true"></ul>
+
 <!-- <#%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %> -->
 
 <%= f.input :notes %>
