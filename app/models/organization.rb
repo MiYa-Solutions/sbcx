@@ -242,6 +242,10 @@ class Organization < ActiveRecord::Base
     Account.where("organization_id = #{self.id} AND accountable_id = #{org.id} AND accountable_type = '#{org.class.name}'").first
   end
 
+  def affiliate_jobs_for(org)
+    Ticket.affiliated_jobs(self, org)
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0
