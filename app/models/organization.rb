@@ -238,6 +238,10 @@ class Organization < ActiveRecord::Base
     User.where("id = ? AND organization_id = ?", user.id, self.id).size > 0
   end
 
+  def account_for(org)
+    Account.where("organization_id = #{self.id} AND accountable_id = #{org.id} AND accountable_type = '#{org.class.name}'").first
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0
