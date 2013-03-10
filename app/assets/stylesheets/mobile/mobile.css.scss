@@ -234,7 +234,11 @@ footer {
 
 .status_grey {
 
-    text-align: right;
+  text-align: right;
+  .ui-link {
+  background-color: #D9EDF7;
+  }
+
 
 }
 
@@ -458,6 +462,14 @@ input.ui-input-text, textarea.ui-input-text {
   }
 }
 
+
+.ui-popup .ui-header .ui-title {
+  h1 {
+  width: 60%;
+  text-align: left;
+  }
+}
+
 .affiliate_balance{
   .ui-collapsible-content {
     margin: 16px -15px;
@@ -470,7 +482,19 @@ input.ui-input-text, textarea.ui-input-text {
     height: 9px;
     margin-left: 35%;
     margin-top: -10px;
-    padding: 2px 4px 3px;
+    padding: 2px 9px 3px;
+    text-align: center;
+  }
+
+
+  .red_badge_collape {
+    background-color: #AB2525;
+    border-radius: 1em 1em 1em 1em;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    height: 9px;
+    margin-left: 35%;
+    margin-top: -10px;
+    padding: 2px 9px 3px;
     text-align: center;
   }
 
@@ -978,6 +1002,57 @@ input.ui-input-text, textarea.ui-input-text {
   }
 }
 
+.edit_job_details {
+  .ui-grid-a .ui-block-a {
+    width: 40%;
+    padding-top: 10px;
+  }
+
+  .ui-grid-a .ui-block-b {
+    width: 60%;
+  }
+
+  label.ui-input-text {
+    display: none;
+
+  }
+
+  label.ui-select {
+    display: none;
+  }
+
+  label.ui-checkbox {
+    display: none;
+  }
+
+  .ui-block-a, .ui-block-b, .ui-block-c, .ui-block-d, .ui-block-e {
+    min-height: 37px;
+
+  }
+
+  .ui-btn-inner {
+    font-size: 12px;
+  }
+
+  .ui-select .ui-btn-icon-right .ui-icon {
+    right: 5px;
+  }
+
+  .ui-checkbox .ui-btn-icon-left .ui-btn-inner, .ui-radio .ui-btn-icon-left .ui-btn-inner {
+    height: 11px;
+  }
+
+}
+
+.collection {
+  .control-label {
+    display: none;
+  }
+}
+
+#service_call_notes {
+  height: 50px;
+}
 
 .search_job {
 
@@ -1041,6 +1116,9 @@ input.ui-input-text, textarea.ui-input-text {
 
   p {
     padding-top: 5px;
+    color: #325bad;
+    text-shadow: none;
+    font-weight: bold;
   }
 }
 
@@ -1054,6 +1132,7 @@ input.ui-input-text, textarea.ui-input-text {
 
 
 .icon_grid {
+
 
 
   .ui-grid-b {
@@ -1109,6 +1188,19 @@ input.ui-input-text, textarea.ui-input-text {
   float: left;
   margin: 0 18px 18px 0;
   overflow: hidden;
+
+
+
+}
+
+.icon_frame, .ui-link {
+  background-color: none;
+  color: none;
+}
+
+.ui-body-d .ui-link {
+  background-color: none;
+
 }
 
 .footer_image {
@@ -1347,7 +1439,7 @@ footer .ui-navbar ul {
   //text-decoration: none;
   //text-shadow: 0 1px 1px #194B7E;
 
-  background-color: #D9EDF7;
+  //background-color: #D9EDF7;
   border-radius: 4px 4px 4px 4px;
   color: #3A87AD;
   letter-spacing: 0.1em;

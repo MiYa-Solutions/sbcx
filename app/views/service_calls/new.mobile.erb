@@ -1,4 +1,4 @@
-<% provide(:title, I18n.t('general.general.new').html_safe + "&nbsp;".html_safe + @service_call.class.human_attribute_name(:service_call) ) %>
+<% provide(:title, I18n.t('general.general.new').html_safe + "&nbsp;".html_safe + ServiceCall.model_name.human ) %>
 
 
 <%= simple_form_for @service_call, as: :service_call, url: service_calls_url, :html => { :class => 'form-horizontal' } do |f| %>

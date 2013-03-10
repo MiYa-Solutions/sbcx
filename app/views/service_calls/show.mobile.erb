@@ -37,7 +37,7 @@
           <li class=" job_billing">
             <%= link_to bom.material_name, edit_service_call_bom_path(@service_call, bom), "data-transition" => "slide" %>
              <p class= "billing_price_label"><%= Bom.human_attribute_name(:price) %></p>
-             <p class="billing_price"><%= humanized_money_with_symbol bom.price %></p>
+             <p class="billing_price"><%= humanized_money_with_symbol bom.total_price %></p>
 
           </li>
       <% end %>
@@ -99,11 +99,12 @@
 <!--Notes-->
 <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
 
+
     <div class="customer_contacts">
 
       <div class="ui-grid-a">
         <div class="ui-block-a">Notes:</div>
-        <div class="ui-block-b"> <%= f.text_field :notes %> </div>
+        <div class="ui-block-b collection"> <%= f.input :notes %> </div>
       </div>
       </div>
 

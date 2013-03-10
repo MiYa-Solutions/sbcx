@@ -2,8 +2,9 @@
     <!--<#%= link_to "#{accounting_entry.ticket.type} (#{accounting_entry.ticket.id})", accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %>-->
 
 <td><%= link_to accounting_entry.ticket.id, accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %></td>
-<td><%= accounting_entry.ticket.address1 %></td>
-<td><%= link_to accounting_entry.type.tableize.humanize, accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %></td>
+<td><%= link_to accounting_entry.ticket.address1, accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %></td>
+<!--<td><#%= link_to accounting_entry.type.tableize.humanize, accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %></td>-->
 <td><%= accounting_entry.human_status_name.humanize %></td>
-<td><%= humanized_money_with_symbol accounting_entry.balance %></td>
+  <td><%= humanized_money_with_symbol accounting_entry.amount %></td>
+  <td><%= humanized_money_with_symbol accounting_entry.balance %></td>
 </tr>

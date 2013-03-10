@@ -1,55 +1,134 @@
-<!--update customer contact info-->
+<div data-role="collapsible-set" data-inset="false">
+  <!--update customer contact info-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="edit_contact">
+  <h3>Update Job Contact</h3>
 
-<div class="customer_contacts">
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:name) %></div>
-    <div class="ui-block-b"><%= f.text_field :new_customer, "class" => "ui-disabled", placeholder: @service_call.customer.name %></div>
-  </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address1) %></div>
-    <div class="ui-block-b"><%= f.text_field :address1 %></div>
-  </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address2) %></div>
-    <div class="ui-block-b"><%= f.text_field :address2 %></div>
-  </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:company) %></div>
-    <div class="ui-block-b"><%= f.text_field :company %></div>
-  </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:city) %></div>
-    <div class="ui-block-b"><%= f.text_field :city %></div>
-  </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:state) %></div>
-    <div class="ui-block-b"><%= f.text_field :state %></div>
-  </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:zip) %></div>
-    <div class="ui-block-b"><%= f.text_field :zip %></div>
-  </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:country) %></div>
-    <div class="ui-block-b"><%= f.text_field :country %></div>
-  </div>
+        <div class="customer_contacts">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
+            <div class="ui-block-b"><%= f.text_field :new_customer, "class" => "ui-disabled", placeholder: @service_call.customer.name %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address1) %></div>
+            <div class="ui-block-b"><%= f.text_field :address1 %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address2) %></div>
+            <div class="ui-block-b"><%= f.text_field :address2 %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:company) %></div>
+            <div class="ui-block-b"><%= f.text_field :company %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:city) %></div>
+            <div class="ui-block-b"><%= f.text_field :city %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:state) %></div>
+            <div class="ui-block-b"><%= f.text_field :state %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:zip) %></div>
+            <div class="ui-block-b"><%= f.text_field :zip %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:country) %></div>
+            <div class="ui-block-b"><%= f.text_field :country %></div>
+          </div>
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:phone) %></div>
+          <div class="ui-block-b"><%= f.text_field :phone %></div>
+        </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:mobile_phone) %></div>
+            <div class="ui-block-b"><%= f.text_field :mobile_phone %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:work_phone) %></div>
+            <div class="ui-block-b"><%= f.text_field :work_phone %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:email) %></div>
+            <div class="ui-block-b"><%= f.text_field :email %></div>
+          </div>
+    </div>
 
-<div class="ui-grid-a">
-  <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:phone) %></div>
-  <div class="ui-block-b"><%= f.text_field :phone %></div>
 </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:mobile_phone) %></div>
-    <div class="ui-block-b"><%= f.text_field :mobile_phone %></div>
+
+  <!--update Job Details-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="edit_contact">
+    <h3>Update Job Details</h3>
+
+    <div class="edit_job_details">
+
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
+            <div class="ui-block-b"><%= f.input :scheduled_for_text, input_html: {class: "mobi-datetime"} %></div>
+          </div>
+
+      <% unless @service_call.started_on_text.blank? %>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:started_on_text) %></div>
+            <div class="ui-block-b"><%= f.input :started_on_text, input_html: {class: "mobi-datetime"} %></div>
+          </div>
+      <% end %>
+
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:completed_on_text) %></div>
+            <div class="ui-block-b"><%= f.input :completed_on_text, input_html: {class: "mobi-datetime"} %></div>
+          </div>
+
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
+            <div class="ui-block-b"><%= f.input :customer, input_html: {id: "customer-autocomplete"} %>
+              <%= f.hidden_field :customer_id %>
+              <ul id="customer-suggestions" data-role="listview" data-inset="true"></ul>
+            </div>
+          </div>
+
+      <br>
+
+      <% if @service_call.organization.my_user? (@service_call.technician) %>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
+            <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>
+           </div>
+
+      <% end %>
+
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:notes) %></div>
+        <div class="ui-block-b"><%= f.input :notes %></div>
+      </div>
+
+
+
+      <% if @service_call.my_role == :provider %>
+          <% unless @service_call.subcontractor.subcontrax_member? %>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:completed_on_text) %></div>
+            <div class="ui-block-b"><%= f.input :completed_on_text, input_html: {class: "mobi-datetime"} %></div>
+          </div>
+
+          <% end %>
+
+      <% end %>
+
+
+
+    </div>
+
   </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:work_phone) %></div>
-    <div class="ui-block-b"><%= f.text_field :work_phone %></div>
-  </div>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:email) %></div>
-    <div class="ui-block-b"><%= f.text_field :email %></div>
-  </div>
+
+
 
 
 </div>
+
+<!--if @service_call.my_role == :provider-->
+<!--# edit everything unless @service_call.subcontractor.subcontrax_member?-->
+<!--else-->
+<!--# edit everything unless @service_call.provider.subcontrax_member?-->
+<!--end-->

@@ -17,8 +17,8 @@ en:
       organization:
         name: "Name"
         work_phone: "Other Phone"
-        phone: "Main Phone"
-        mobile: "Mobile Phone"
+        phone: "Phone"
+        mobile: "Mobile"
   errors:
     messages:
       one_system_owner: "There can be only one system owner"

@@ -57,48 +57,8 @@
 <!--Billing Info-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_balance">
 
-    <h3><%= I18n.t('general.general.balance')%>
-      <span class="blue_badge_collape">
-                    <badge><%= Bom.human_attribute_name(:total) %> <%= '&nbsp;'.html_safe %>
-                      <span id='job_total_price'>
-                      $199
-                      <!--<#%= humanized_money_with_symbol @service_call.total_price %>-->
-                      </span>
-                    </badge>
-        </span>
-    </h3>
-
-    <% if @account.present? %>
-        <ul data-role="listview">
-             <% @account.accounting_entries.each do |entry| %>
-                <li class=" job_billing">
-                  <%= link_to entry.ticket.address1, entry.ticket.becomes(entry.ticket.class.superclass), "data-transition" => "slide" %>
-                  <p class= "billing_price_label"><%= I18n.t('general.general.balance') %> </p>
-                  <p class="billing_price"><%= humanized_money_with_symbol entry.balance %></p>
-
-                </li>
-             <% end %>
-          <br>
-        </ul>
-    <% else %>
-        No Account Present
-    <% end %>
-
-
-
+    <%= render :partial => 'affiliate_balance' %>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
   <!--end of re-designed-->
 

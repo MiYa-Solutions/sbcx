@@ -12,9 +12,9 @@
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address) %></div>
-        <div class="ui-block-b"><%= @service_call.customer.address1 %>
-          <% if !@service_call.customer.address2.blank? %>
-              <br> <%= @service_call.customer.address2 %>
+        <div class="ui-block-b"><%= @service_call.address1 %>
+          <% unless @service_call.customer.address2.blank? %>
+              <br> <%= @service_call.address2 %>
           <% end %>
         </div>
       </div>
@@ -22,31 +22,31 @@
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:city) %></div>
-        <div class="ui-block-b"><%= @service_call.customer.city %></div>
+        <div class="ui-block-b"><%= @service_call.city %></div>
       </div>
     </li>
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:state) %></div>
-        <div class="ui-block-b"><%= @service_call.customer.state %></div>
+        <div class="ui-block-b"><%= @service_call.state %></div>
       </div>
     </li>
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:zip) %></div>
-        <div class="ui-block-b"><%= @service_call.customer.zip %></div>
+        <div class="ui-block-b"><%= @service_call.zip %></div>
       </div>
     </li>
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:phone) %></div>
-        <div class="ui-block-b"><%= @service_call.customer.phone %></div>
+        <div class="ui-block-b"><%= @service_call.phone %></div>
       </div>
     </li>
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:mobile) %></div>
-        <div class="ui-block-b"><%= @service_call.customer.mobile_phone %></div>
+        <div class="ui-block-b"><%= @service_call.mobile_phone %></div>
       </div>
     </li>
     <% permitted_to? :edit, @customers do %>

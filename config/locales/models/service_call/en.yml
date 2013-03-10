@@ -9,23 +9,27 @@ en:
 
     models:
       my_service_call: "My Job"
+      service_call: "Job"
 
     attributes:
       my_service_call:
+        customer: "Customer"
         provider: "Provider"
-        address1: "The Customer Address"
+        address1: "Address"
         transferable: "Allow Transfer"
 
       transferred_service_call:
+        customer: "Customer"
         provider: "Provider"
-        address1: "The Customer Address"
+        address1: "Address"
         transferable: "Allow Transfer"
 
 
       service_call:
         provider: "Provider"
+        customer: "Customer"
         provider_id: "Originator"
-        address1: "The Customer Address"
+        address1: "Address"
         started_on: "Job Started on"
         started_on_text: "Started on"
         completed_on_text: "Completed on"

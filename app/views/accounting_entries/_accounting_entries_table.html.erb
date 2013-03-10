@@ -3,8 +3,9 @@
       <thead>
       <th> <%= AccountingEntry.human_attribute_name(:id) %> </th>
       <th><%= AccountingEntry.human_attribute_name(:address) %>       </th>
-      <th><%= AccountingEntry.human_attribute_name(:type) %>          </th>
+      <!--<th><#%= AccountingEntry.human_attribute_name(:type) %>          </th>-->
       <th><%= AccountingEntry.human_attribute_name(:status) %>        </th>
+      <th><%= AccountingEntry.human_attribute_name(:amount) %>        </th>
       <th><%= I18n.t('general.general.balance') %> </th>
       </thead>
       <tbody>

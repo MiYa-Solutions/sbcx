@@ -3,8 +3,11 @@
     <ul>
       <li><h1><%= I18n.t('general.general.balance') %></h1></li>
       <li></li>
+      <% if @account.balance < 0 %>
       <li class="red-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="affiliate_balance"><%= humanized_money_with_symbol @account.balance %></span></h1></li>
-
+      <% else %>
+      <li class="green-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="affiliate_balance"><%= humanized_money_with_symbol @account.balance %></span></h1></li>
+      <% end %>
     </ul>
   </div>
 
