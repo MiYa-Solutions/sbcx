@@ -60,14 +60,47 @@
     <%= render :partial => 'affiliate_balance' %>
   </div>
 
-  <!--end of re-designed-->
 
-  <div data-role="collapsible" data-collapsed="true" data-theme="d">
-  <h3>Open Jobs</h3>
-  <p>
-    This is the Balance
-  </p>
-</div>
+<!--Open Jobs-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_open_jobs">
+
+    <h3><%= I18n.t('general.general.open_jobs') %></h3>
+
+    <% if @affiliate.service_calls.empty? %>
+        <div class="miya_blue_button">
+          <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
+       </div>
+
+    <% else %>
+        <ul data-role="listview">
+          <% @affiliate.service_calls.each do |sc| %>
+              <li class="inline_mobile service_calls_index">
+                <p class="ui-li-aside-blue ui-li-desc-blue">
+                  <badge><%= sc.ref_id %></badge>
+                </p>
+                <% if sc.customer.address1.empty? %>
+                    <%= link_to I18n.t('general.general.no_address'), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
+                <% else %>
+                    <%= link_to sc.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
+                <% end %>
+
+                <p class="service_call_status">
+                  <%= sc.human_status_name %>
+                </p>
+
+              </li>
+          <% end %>
+          <br>
+        </ul>
+
+        <div class="miya_blue_button">
+          <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
+        </div>
+
+    <% end %>
+
+  </div>
+
 
 
 <!--Contact Info-->
@@ -75,6 +108,8 @@
     <%= render :partial => 'affiliates_contact_mobile' %>
   </div>
 
+
+<!--More-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <h3>More ...</h3>
 

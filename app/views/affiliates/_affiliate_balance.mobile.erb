@@ -18,80 +18,9 @@
     <ul data-role="listview">
       <% @account.accounting_entries.each do |entry| %>
           <li class=" job_billing">
-            <%= link_to entry.ticket.address1, "#balancePopup", "data-rel" => "popup", "data-transition" => "slide" %>
+            <%= link_to entry.ticket.address1, accounting_entry_path(entry) %>
             <p class= "billing_price_label"><%= I18n.t('general.general.balance') %> </p>
             <p class="billing_price"><%= humanized_money_with_symbol entry.balance %></p>
-
-
-            <div data-role="popup" id="balancePopup" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
-
-              <div data-role="header" data-theme="a" class="ui-corner-top">
-                <h1><%= entry.ticket.address1 %></h1>
-              </div>
-              <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
-              <br>
-                <div class="customer_in_service_call">
-                  <ul data-role="listview">
-                    <li class="ui-li ui-li-static">
-                      <div class="ui-grid-a">
-                        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:id) %></div>
-                        <div class="ui-block-b"><%= entry.ticket.address1 %></div>
-                      </div>
-                    </li>
-                    <li class="ui-li ui-li-static">
-                      <div class="ui-grid-a">
-                        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:ticket) %></div>
-                        <div class="ui-block-b"><%= entry.ticket.address1 %></div>
-                      </div>
-                    </li>
-                    <li class="ui-li ui-li-static">
-                      <div class="ui-grid-a">
-                        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:type) %></div>
-                        <div class="ui-block-b"><%= entry.ticket.address1 %></div>
-                      </div>
-                    </li>
-                    <li class="ui-li ui-li-static">
-                      <div class="ui-grid-a">
-                        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:status) %></div>
-                        <div class="ui-block-b"><%= entry.ticket.address1 %></div>
-                      </div>
-                    </li>
-                    <li class="ui-li ui-li-static">
-                      <div class="ui-grid-a">
-                        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:address) %></div>
-                        <div class="ui-block-b"><%= entry.ticket.address1 %></div>
-                      </div>
-                    </li>
-                    <li class="ui-li ui-li-static">
-                      <div class="ui-grid-a">
-                        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:created_at) %></div>
-                        <div class="ui-block-b"><%= entry.ticket.address1 %></div>
-                      </div>
-                    </li>
-                    <li class="ui-li ui-li-static">
-                      <div class="ui-grid-a">
-                        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:amount) %></div>
-                        <div class="ui-block-b"><%= entry.ticket.address1 %></div>
-                      </div>
-                    </li>
-                    <li class="ui-li ui-li-static">
-                      <div class="ui-grid-a">
-                        <div class="ui-block-a"><%= I18n.t('general.general.balance') %></div>
-                        <div class="ui-block-b"><%= entry.ticket.address1 %></div>
-                      </div>
-                    </li>
-                   </ul>
-                </div>
-
-
-
-
-               <br>
-                <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="b">Close</a>
-              </div>
-            </div>
-
-
           </li>
       <% end %>
       <br>

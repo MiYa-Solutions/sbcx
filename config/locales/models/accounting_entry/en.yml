@@ -7,3 +7,5 @@ en:
         ticket: "Job Type"
         id: "Job Number"
         type: "Account Entry"
+        entry_id: "Entry Number"
+        balance: "Balance"

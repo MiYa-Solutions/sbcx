@@ -33,20 +33,22 @@
       <th><%= I18n.t('general.general.description') %></th>
       <th><%= I18n.t('general.general.status') %></th>
       <th><%= I18n.t('general.general.customer') %></th>
-      <th><%= I18n.t('general.general.balance') %></th>
+      <th><%= Bom.human_attribute_name(:total_cost) %></th>
     </tr>
     </thead>
     <tbody>
     <% @affiliate.service_calls.each do |sc| %>
         <tr>
           <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
-          <td><%= link_to sc.type , service_call_path(sc) %></td>
+          <td><%= link_to sc.type.tableize.humanize , service_call_path(sc) %></td>
           <td><%= link_to sc.human_subcontractor_status_name, service_call_path(sc) %></td>
           <td><%= sc.customer.try(:name) %></td>
-          <td>- $190</td>
+          <td><%= humanized_money_with_symbol sc.total_price %></td>
         </tr>
     <% end %>
-    </tbody>
+   </tbody>
   </table>
 
 </div>
+
+

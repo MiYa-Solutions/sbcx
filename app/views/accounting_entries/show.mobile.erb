@@ -1,0 +1,79 @@
+<% provide(:title, AccountingEntry.human_attribute_name(:entry_id).html_safe + "&nbsp;".html_safe + @accounting_entry.id ) %>
+
+
+<fieldset class="ui-grid-a ui-btn-inner-small">
+
+  <div class="ui-block-a">
+    <%= link_to I18n.t('general.general.back'), :back, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+  </div>
+
+  <div class="ui-block-b">
+    <div class="miya_blue_button">
+      <%= link_to I18n.t('general.general.show_job'), @accounting_entry.ticket.becomes(@accounting_entry.ticket.class.superclass), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "email" %>
+    </div>
+  </div>
+
+</fieldset>
+<br>
+
+<div class="customer_in_service_call">
+  <ul data-role="listview">
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:id) %></div>
+        <div class="ui-block-b"><%= @accounting_entry.ticket.id %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:ticket) %></div>
+        <div class="ui-block-b"><%= @accounting_entry.ticket.type.tableize.humanize %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:type) %></div>
+      <div class="ui-block-b"><%= @accounting_entry.type.tableize.humanize %></div>
+    </div>
+  </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:status) %></div>
+        <div class="ui-block-b"><%= @accounting_entry.human_status_name.humanize %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:address) %></div>
+        <div class="ui-block-b"><%= @accounting_entry.ticket.address1 %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:created_at) %></div>
+        <div class="ui-block-b"><%= l @accounting_entry.created_at, :format => :default %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:amount) %></div>
+        <div class="ui-block-b"><%= humanized_money_with_symbol @accounting_entry.amount %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:balance) %></div>
+        <div class="ui-block-b"><%= humanized_money_with_symbol @accounting_entry.balance %></div>
+      </div>
+    </li>
+
+
+
+  </ul>
+</div>
+
+<br>
+<%= link_to I18n.t('general.general.back'), affiliate_path(@accounting_entry), "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "left" %>
+
+
