@@ -1,0 +1,76 @@
+<h3><%= I18n.t('general.general.agreement_info') %></h3>
+
+<div class="agreemnt_info">
+  <ul data-role="listview">
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= I18n.t('general.general.name') %></div>
+        <div class="ui-block-b"><%= @agreement.name %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:id) %></div>
+        <div class="ui-block-b"><%= @agreement.id %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:payment_terms) %></div>
+        <div class="ui-block-b"><%= @agreement.payment_terms %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:status) %></div>
+        <div class="ui-block-b"><%= @agreement.human_status_name %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:organization) %></div>
+        <div class="ui-block-b"><%= @agreement.organization.name %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:counterparty) %></div>
+        <div class="ui-block-b"><%= @agreement.counterparty.name %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:creator) %></div>
+        <div class="ui-block-b"><%= @agreement.creator.name %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:created_at) %></div>
+        <div class="ui-block-b"><%= l @agreement.created_at, :format => :default %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:last_updated) %></div>
+        <div class="ui-block-b"><%= l @agreement.updated_at, :format => :default %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Agreement.human_attribute_name(:ends_at) %></div>
+        <div class="ui-block-b"><%= @agreement.ends_at %></div>
+      </div>
+    </li>
+
+  </ul>
+</div>

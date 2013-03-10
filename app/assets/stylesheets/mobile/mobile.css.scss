@@ -939,12 +939,38 @@ input.ui-input-text, textarea.ui-input-text {
 
   .ui-grid-a .ui-block-a {
     width: 30%;
-    padding-top: 5px;
+    padding-bottom: 4px;
+    padding-top: 2px;
   }
 
   .ui-grid-a .ui-block-b {
     width: 70%;
-    padding-top: 5px;
+    padding-bottom: 4px;
+    padding-top: 2px;
+  }
+
+}
+
+
+.agreemnt_info {
+
+  //width: 80%;
+  //.ul-listview {
+  margin-left: 1x;
+  margin-right: 1px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  .ui-grid-a .ui-block-a {
+    width: 40%;
+    padding-bottom: 4px;
+    padding-top: 2px;
+  }
+
+  .ui-grid-a .ui-block-b {
+    width: 60%;
+    padding-bottom: 4px;
+    padding-top: 2px;
   }
 
 }
@@ -952,6 +978,17 @@ input.ui-input-text, textarea.ui-input-text {
 .affiliate_open_jobs {
   .ui-collapsible-content {
     margin-top: 12px;
+  }
+
+
+  .service_calls_index .ui-li-desc-blue {
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+  }
+
+  .service_calls_index .service_call_status {
+     margin-top: -20px;
+
   }
 }
 
@@ -967,6 +1004,19 @@ input.ui-input-text, textarea.ui-input-text {
 
   .service_calls_index .service_call_status_red {
     margin-right: 15%;
+  }
+
+  li {
+    line-height: 15px;
+  }
+
+  .status_red, .ui-collapsible-content .ui-btn-up-d {
+    line-height: 15px;
+  }
+
+  .ui-li-has-arrow .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow {
+    padding-bottom: 12px;
+    padding-right: 10px;
   }
 }
 

@@ -5,14 +5,18 @@
 
     <div class="miya_blue_button">
       <%= link_to t('affiliates.buttons.new_agreement'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+
     </div>
 
 <% else %>
     <ul data-role="listview">
       <% @agreements.each do |agreement| %>
           <li class="inline_mobile service_calls_index">
-            <%= link_to agreement.name, agreement_path, "data-transition" => "slide" %>
-
+            <% if agreement.name.blank? %>
+            <%= link_to agreement.id, agreement_path(agreement), "data-transition" => "slide" %>
+            <% else %>
+            <%= link_to agreement.name, agreement_path(agreement), "data-transition" => "slide" %>
+            <% end %>
             <% if agreement.human_status_name == 'draft' %>
                 <p class="service_call_status_red">
                   <%= agreement.status_name %>

@@ -7,7 +7,7 @@
 
          <fieldset class="ui-grid-b ui-btn-inner-small">
               <div class="ui-block-a">
-                <%= link_to 'Back', affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+                <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
               </div>
               <div class="ui-block-b">
               </div>
@@ -17,13 +17,13 @@
     <% else %>
         <fieldset class="ui-grid-a ui-btn-inner-small">
           <div class="ui-block-a">
-            <%= link_to 'Back', affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+            <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
           </div>
           <div class="ui-block-b">
             <div class="miya_blue_button">
             <%= form_for(current_user.organization.agreements.build(provider_id: @affiliate.id)) do |f| %>
                 <div><%= f.hidden_field :provider_id %></div>
-                <%= f.submit "Add Member", "data-theme" => "b", "data-mini" => "true" %>
+                <%= f.submit I18n.t('general.general.add_member'), "data-theme" => "b", "data-mini" => "true" %>
             <% end %>
           </div>
           </div>
@@ -34,12 +34,11 @@
 <% else %>
     <fieldset class="ui-grid-a ui-btn-inner-small">
       <div class="ui-block-a">
-        <%= link_to 'Back', affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+        <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
       </div>
       <div class="ui-block-b">
         <div class="miya_blue_button">
-         <%= link_to 'Invite', new_affiliate_path, "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "email" %>
-       </div>
+        </div>
       </div>
     </fieldset>
 

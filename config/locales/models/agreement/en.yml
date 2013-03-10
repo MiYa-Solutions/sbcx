@@ -6,6 +6,7 @@ en:
       agreement:
         id: "Agreement Id"
         name: "Agreement Name"
+        creator: "Created by"
       subcontracting_agreement:
         name: "Name"
         description: "Description"

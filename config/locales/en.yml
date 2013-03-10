@@ -96,4 +96,6 @@ en:
       close: "Close"
       show_job: "Show Job"
       open_jobs: "Open Jobs"
+      invite: "Invite"
+      agreement_info: "Agreement Info"
   calendar: "Calendar"

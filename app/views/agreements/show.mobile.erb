@@ -1,0 +1,63 @@
+<% provide(:title, I18n.t('general.general.agreement_id').html_safe + "&nbsp;".html_safe + @agreement.id) %>
+
+<div class="service_call_show_buttons">
+      <fieldset class="ui-grid-a ui-btn-inner-small">
+        <div class="ui-block-a">
+          <%= link_to 'Back', affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+        </div>
+
+        <div class="ui-block-b">
+          <div class="miya_blue_button">
+            <%= link_to I18n.t('general.general.invite'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "email", "data-iconpos" => "left"  %>
+          </div>
+        </div>
+      </fieldset>
+</div>
+
+
+
+<div data-role="collapsible-set" data-inset="false" >
+
+  <!--agreement_info-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="agreement_info">
+
+    <%= render :partial => 'agreement_info' %>
+
+  </div>
+
+
+
+
+
+
+  <!--agreement_rules-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="agreement_info">
+
+    <h3><%= I18n.t('general.general.agreement_rules') %></h3>
+
+  </div>
+
+<!--payment_methods-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="agreement_info">
+
+    <h3><%= I18n.t('general.general.payment_methods') %></h3>
+
+  </div>
+
+  <!--actions-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="agreement_info">
+
+    <h3><%= I18n.t('general.general.actions') %></h3>
+
+  </div>
+
+<!--agreement_history-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="agreement_info">
+
+    <h3><%= I18n.t('general.general.agreement_history') %></h3>
+
+  </div>
+
+
+
+</div>
