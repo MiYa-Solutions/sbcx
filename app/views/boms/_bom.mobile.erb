@@ -28,7 +28,7 @@
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:buyer) %></div>
           <div class="ui-block-b">
-            <%= f.select :buyer, options_for_select(buyer_options(@ticket)), include_blank: true  %>
+            <%= f.input :buyer, collection: options_for_select(buyer_options(@ticket)), include_blank: true  %>
             <%= f.hidden_field :buyer_type %>
           </div>
         </div>
