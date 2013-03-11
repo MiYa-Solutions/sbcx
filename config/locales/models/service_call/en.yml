@@ -33,6 +33,7 @@ en:
         started_on: "Job Started on"
         started_on_text: "Started on"
         completed_on_text: "Completed on"
+        scheduled_for_text: "scheduled for"
         completed_on: "Job Completed on"
         transferable: "Allow Transfer"
 

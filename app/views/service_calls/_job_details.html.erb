@@ -14,30 +14,50 @@
   </div>
   <br>
   <!--Update Job Info-->
-  <div class="row-fluid">
+  <div class="row-fluid job_details_block">
     <div class="span6">
+
       <ul class="unstyled list_service_calls">
-        <li>
-          <label><%= @service_call.class.human_attribute_name(:started_on_text) %></label>
-          <%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
-        </li>
-        <li>
-          <label><%= @service_call.class.human_attribute_name(:completed_on_text) %></label>
-          <%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
-        </li>
-        <li>
-          <label><%= @service_call.class.human_attribute_name(:scheduled_for_text) %></label>
-          <%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
-        </li>
-        <li>
+        <li><label><%= @service_call.class.human_attribute_name(:started_on_text) %></label></li>
+        <li><%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
+          &nbsp;<i class="icon-edit"></i></li>
+        <li></li>
+      </ul>
 
-            <label><%= @service_call.class.human_attribute_name(:customer) %></label>
-          <span id="customer-name" class="customer-autocomplete" data-job-id="<%= @service_call.id %>" data-obj-type="<%= @service_call.class.name.underscore %>"> <%= @service_call.customer.name %> </span>
+      <br>
 
-        </li>
+      <ul class="unstyled list_service_calls">
+        <li><label><%= @service_call.class.human_attribute_name(:completed_on_text) %></label></li>
+        <li><%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
+          &nbsp;<i class="icon-edit"></i></li>
+        <li></li>
+      </ul>
+
+      <br>
+
+      <ul class="unstyled list_service_calls">
+        <li><label><%= @service_call.class.human_attribute_name(:scheduled_for_text) %></label></li>
+        <li><%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
+          &nbsp;<i class="icon-edit"></i></li>
+        <li></li>
+      </ul>
+
+      <br>
+
+      <ul class="unstyled list_service_calls">
+        <li><label><%= @service_call.class.human_attribute_name(:customer) %></label></li>
+        <li>
+          <span id="customer-name" class="customer-autocomplete" data-job-id="<%= @service_call.id %>" data-obj-type="<%= @service_call.class.name.underscore %>"> <%=
+              @service_call.customer.name %> </span>&nbsp;<i class="icon-edit"></i></li>
+        <li></li>
+      </ul>
+
+      <br>
+
+      <ul class="unstyled">
         <li class="list_service_calls" id="customer_details">
           <address>
-            <%= best_in_place @service_call, :address1 %>
+            <%= best_in_place @service_call, :address1 %> &nbsp;<i class="icon-edit" id="icon_job_address"></i>
             <br>
             <%= best_in_place @service_call, :address2 %>
             <br>
@@ -50,23 +70,32 @@
             <br>
           </address>
         </li>
-        <% if @service_call.technician.present? && @service_call.organization.my_user?(@service_call.technician) %>
-            <li>
-              <label class=""><%= @service_call.class.human_attribute_name(:technician) %></label>
-              <%= link_to '', @service_call.technician do %>
-                  <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician, type: :select, collection: technicians_collection %>
-              <% end %>
-            </li>
-        <% end %>
-        <li>
-          <div class="control-group select required">
-            <label class=""><%= @service_call.class.human_attribute_name(:subcontractor) %></label>
-            <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
-          </div>
-        </li>
-
       </ul>
-    </div>
+
+      <br>
+
+      <% if @service_call.technician.present? && @service_call.organization.my_user?(@service_call.technician) %>
+      <ul class="unstyled list_service_calls">
+        <li><label><%= @service_call.class.human_attribute_name(:technician) %></label></li>
+        <li>
+          <!--<#%= link_to '', @service_call.technician do %>-->
+          <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician, type: :select, collection: technicians_collection %>
+              &nbsp;<i class="icon-edit"></i></li>
+          </li>
+        <li></li>
+      </ul>
+      <% end %>
+
+      <br>
+
+      <ul class="unstyled list_service_calls">
+        <li><label><%= @service_call.class.human_attribute_name(:subcontractor) %></label></li>
+        <li><%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
+          &nbsp;<i class="icon-edit"></i></li>
+        <li></li>
+      </ul>
+
+   </div>
 
     <div class="span6" id="job_notes">
       <label class=""><strong><%= @service_call.class.human_attribute_name(:notes) %></strong></label>

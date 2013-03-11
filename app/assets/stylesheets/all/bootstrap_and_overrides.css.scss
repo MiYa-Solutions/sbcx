@@ -787,16 +787,55 @@ a:hover {
 
 }
 
+#icon_job_address{
+  float: right;
+}
+
+.job_details_block {
+  min-height:350px;
+
+}
+
 .list_service_calls {
 
   address {
-    margin-left: 100px;
+    //margin-left: 100px;
+    //margin-top: 10px;
+    background: none repeat scroll 0 0 #EEEEEE;
+    margin-left: 14%;
     margin-top: 10px;
+    padding: 7px;
+    width: 70%;
   }
 
   label {
     font-weight: bold;
   }
+
+  ul {
+    list-style: none;
+  }
+
+  li:first-child {
+    float: left;
+    line-height: 16px;
+    width: 30%;
+    margin-left: 5%;
+  }
+
+  li {
+    float: left;
+    line-height: 16px;
+    width: 50%;
+  }
+
+  li:last-child {
+    float: right;
+    width: 10%;
+
+  }
+
+
 }
 
 .no_margins {
