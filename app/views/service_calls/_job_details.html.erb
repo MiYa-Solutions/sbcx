@@ -69,11 +69,13 @@
     </div>
 
     <div class="span6" id="job_notes">
-
-      <label class=""><%= @service_call.class.human_attribute_name(:notes) %></label>
+      <label class=""><strong><%= @service_call.class.human_attribute_name(:notes) %></strong></label>
+      <div class="area">
       <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, :type => :textarea, :ok_button => 'Save', :cancel_button => 'Cancel' %>
-
+     </div>
     </div>
+
+  </div>
     <!--end of status & Job details section-->
 
     <!--Parts-->

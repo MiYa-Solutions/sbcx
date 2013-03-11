@@ -240,6 +240,35 @@ footer {
 
 }
 
+
+#job_notes {
+  span, element.style {
+    min-height: 100px;
+    height: 53px;
+    min-height: 15px;
+    min-width: 53px;
+    overflow: hidden;
+  }
+
+  textarea {
+    width: 97%;
+  }
+
+  .area {
+    background-color: white;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    min-height: 200px;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    width: 70%;
+  }
+
+  button {
+    background-color: red;
+  }
+
+}
+
 .job_new_fields {
 
   .radio input[type="radio"], .checkbox input[type="checkbox"] {
