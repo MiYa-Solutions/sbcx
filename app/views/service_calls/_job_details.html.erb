@@ -56,8 +56,10 @@
 
       <ul class="unstyled">
         <li class="list_service_calls" id="customer_details">
+
           <address>
-            <%= best_in_place @service_call, :address1 %> &nbsp;<i class="icon-edit" id="icon_job_address"></i>
+            <h4><%= I18n.t('general.general.location_info') %> &nbsp;<i class="icon-edit icon-white" id="icon_job_address"></i></h4>
+            <%= best_in_place @service_call, :address1 %>
             <br>
             <%= best_in_place @service_call, :address2 %>
             <br>

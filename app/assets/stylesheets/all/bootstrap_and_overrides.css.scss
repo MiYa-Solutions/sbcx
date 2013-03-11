@@ -808,6 +808,16 @@ a:hover {
     width: 70%;
   }
 
+  h4 {
+    background-color: #999999;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+    overflow: auto;
+    padding: 1px 5px 0;
+  }
+
   label {
     font-weight: bold;
   }
