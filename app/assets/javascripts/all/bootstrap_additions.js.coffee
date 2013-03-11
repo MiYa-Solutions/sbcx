@@ -11,9 +11,12 @@ jQuery ->
   $("a[rel=tooltip]").tooltip()
   $('.best_in_place').best_in_place()
 
+  $.datepicker.setDefaults
+    dateFormat:"M dd, yy"
+    showButtonPanel: true
 
   $(".datepicker").datepicker
-    dateFormat:"M, dd, yy",
+    dateFormat:"M dd, yy",
     showButtonPanel: false,
     changeMonth:true,
     changeYear:true

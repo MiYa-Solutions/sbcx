@@ -38,7 +38,7 @@ class ServiceCallsController < ApplicationController
 
     if @service_call.update_attributes(permitted_params(@service_call).service_call)
       respond_to do |format|
-        format.js {}
+        format.js { render :json => @service_call }
         format.html do
           flash[:success] = t('service_call.crud_messages.update.success')
           redirect_to service_call_path @service_call
@@ -48,15 +48,15 @@ class ServiceCallsController < ApplicationController
           redirect_to service_call_path @service_call
         end
 
-        format.json { respond_with_bip @service_call}
+        format.json { respond_with_bip @service_call }
       end
     else
       respond_to do |format|
-        format.js {}
+        format.js { respond_bip_error @service_call }
         format.html do
           render :action => 'edit'
         end
-        format.json { respond_with_bip @service_call}
+        format.json { respond_bip_error @service_call }
 
       end
 

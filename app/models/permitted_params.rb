@@ -95,8 +95,9 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :subcontractor_id,
                                   :customer_id,
                                   :technician_id,
-                                  :started_on_text,
+                                  :started_on_text, :started_on,
                                   :completed_on_text,
+                                  :scheduled_for_text,
                                   :new_customer,
                                   :address1,
                                   :address2,
@@ -118,7 +119,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
       when TransferredServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event,
+          permitted_attributes = [:status_event, :started_on, :started_on_text,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -239,6 +240,9 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
     permitted_attributes
   end
+
+  alias_method :my_service_call_attributes, :service_call_attributes
+  alias_method :transferred_service_call_attributes, :service_call_attributes
 
   def customer
     if params[:customer].nil?

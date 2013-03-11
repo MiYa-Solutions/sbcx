@@ -26,7 +26,7 @@ gem 'state_machine', '1.1.2'
 gem 'magiclabs-userstamp', '2.0.2'
 gem 'strong_parameters', '0.2.0'
 
-gem 'best_in_place', '2.0.3'
+gem 'best_in_place', git: 'git://github.com/MiYa-Solutions/best_in_place.git'
 gem 'thin', '1.5.0'
 gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'

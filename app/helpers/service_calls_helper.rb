@@ -176,6 +176,14 @@ module ServiceCallsHelper
     end
   end
 
+  def technicians_collection
+    @service_call.organization.technicians.map {|user| [user.id, user.name]}
+  end
+
+  def subcontractor_collection
+    @service_call.organization.subcontractors.map {|subcon| [subcon.id, subcon.name]}
+  end
+
 
   # todo reject to inclulde also a rejection reason
   #def work_reject_form(service_call)
