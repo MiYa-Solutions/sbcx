@@ -6,6 +6,7 @@ class StaticPagesController < ApplicationController
     if user_signed_in?
       @notifications = current_user.notifications
       @service_calls = current_user.organization.service_calls
+      @affiliates = current_user.organization.affiliates
     else
       redirect_to new_user_session_path, notice: t('devise.failure.unauthenticated')
     end

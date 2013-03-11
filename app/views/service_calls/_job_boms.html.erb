@@ -1,0 +1,64 @@
+<div class="row-fluid">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= t('general.general.billing') %></h1></li>
+
+      <% if @service_call.total_price > 0 %>
+          <li class="total_price">
+            <div class="total_bom">
+
+              <badge><%= t('general.general.total_price').html_safe %>
+                <span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span>
+              </badge>
+            </div>
+
+          </li>
+      <% end %>
+
+      <% if  @service_call.total_cost > 0 %>
+          <li class="total_price">
+            <div class="total_bom">
+
+              <badge><%= t('general.general.total_cost').html_safe %>
+                <span id='job_total_cost'> <%= humanized_money_with_symbol @service_call.total_cost %></span>
+              </badge>
+            </div>
+
+          </li>
+
+      <% end %>
+
+
+      <li><%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
+    </ul>
+  </div>
+
+
+  <div class="bom collapse" id="bom">
+    <%= render 'boms/in_line_form', ticket: @service_call.becomes(ServiceCall) %>
+
+  </div>
+
+  <table class="table table-striped" id="boms-table">
+    <thead>
+    <tr>
+      <th><%= Bom.human_attribute_name(:material_name) %></th>
+      <th><%= Bom.human_attribute_name(:quantity) %></th>
+      <th><%= Bom.human_attribute_name(:cost) %></th>
+      <th><%= Bom.human_attribute_name(:price) %></th>
+      <th><%= Bom.human_attribute_name(:total_cost) %></th>
+      <th><%= Bom.human_attribute_name(:total_price) %></th>
+      <th><%= I18n.t('general.general.actions') %></th>
+    </tr>
+    </thead>
+    <tbody id="boms">
+
+    <% @service_call.boms.each do |bom| %>
+        <tr id="bom_<%= bom.id %>">
+          <%= render 'boms/bom', bom: bom %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+</div>

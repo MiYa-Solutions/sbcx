@@ -4,6 +4,10 @@ module ApplicationHelper
     current_user.notifications
   end
 
+  def permitted_attribute?(obj, attribute, attribute_val = nil)
+    permitted_params(obj).permitted_attribute?(obj.class.name.underscore, attribute, attribute_val)
+  end
+
 
   def link_to_add_fields(name, f, association)
     new_object = f.object.send(association).klass.new

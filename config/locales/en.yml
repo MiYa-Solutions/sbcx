@@ -12,6 +12,8 @@ en:
         default: "%a, %d %b %Y %H:%M %Z"
         short: "%d %b %H:%M"
         long: "%B %d, %Y %H:%M"
+        time_only: "%H:%M"
+        date_only: "%B %d, %Y"
       am: "am"
       pm: "pm"
 
@@ -41,6 +43,7 @@ en:
       job:  "Job Number"
       set_date: "Click to set date"
       jobs: "Jobs"
+    click_to_edit: "Click to edit"
     general:
       my_profile: "My Profile"
       account_settings: "Account Settings"
@@ -98,4 +101,4 @@ en:
       open_jobs: "Open Jobs"
       invite: "Invite"
       agreement_info: "Agreement Info"
-  calendar: "Calendar"
+      calendar: "Calendar"

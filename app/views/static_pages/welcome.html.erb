@@ -16,6 +16,15 @@
       </div>
 
       <br>
+      <ul>
+        <% @affiliates.each do |affiliate| %>
+            <li><%= affiliate.name %>: <%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></li>
+        <% end %>
+
+      </ul>
+
+
+
     </div>
   </div>
 

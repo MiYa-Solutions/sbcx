@@ -1,201 +1,84 @@
 <div class="span8" id="job_details">
-  <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
-
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= I18n.t('general.general.job_type') %></h1></li>
-          <li></li>
-          <% unless @service_call.events.empty? %>
-              <li>
-                <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#myModal">
-                  <%= I18n.t('general.general.job_history') %>
-                </button>
-              </li>
-          <% end %>
-        </ul>
-      </div>
-      <br>
-      <!--Update Job Info-->
-      <div class="row-fluid">
-
-        <div class="span6">
-          <ul class="unstyled list_service_calls">
-
-            <% unless @service_call.started_on_text.blank? %>
-
-                <li>
-                  <div class="control-group select required">
-                    <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:started_on_text) %></label>
-                    <div class="controls">
-                      <div class="input-large uneditable-input">
-                        <%= f.object.started_on_text  %>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-
-            <% end %>
-
-            <% unless @service_call.completed_on_text.blank? %>
-                <li>
-                  <div class="control-group select required">
-                    <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:completed_on_text) %></label>
-                    <div class="controls">
-                      <%= f.text_field :completed_on_text, class: "datepicker", placeholder: 'Click to set date'  %>
-                    </div>
-                  </div>
-                </li>
-            <% end %>
-
-            <li>
-              <div class="control-group string ">
-                <label class="string  control-label" for="service_call_started_on"><%= @service_call.class.human_attribute_name(:scheduled_for) %></label>
-                <div class="controls">
-                  <%= best_in_place f.object, :scheduled_for, type: :date, display_with: :l %>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="control-group select required">
-                <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:customer) %></label>
-                <div class="controls">
-                  <div class="input-large uneditable-input">
-                    <%= f.object.customer.name %>
-                  </div>
-                </div>
-              </div>
-            </li>
-
-            <li class="list_service_calls" id="customer_details">
-              <address>
-                <%= best_in_place f.object, :address1 %>
-                <br>
-                <%= best_in_place f.object, :address2 %>
-                <br>
-                <%= f.object.city %>, <%= f.object.customer.state %> <%= f.object.customer.zip %>
-                <br>
-                <strong><%= I18n.t('general.general.phone') %></strong>: <%= f.object.customer.phone %>
-                <br>
-                <strong><%= I18n.t('general.general.mobile') %></strong>:  <%= f.object.customer.mobile_phone %>
-                <br>
-              </address>
-            </li>
-
-
-            <% unless @service_call.technician.blank? %>
-                <% if @service_call.organization.my_user? (@service_call.technician) %>
-                    <li>
-                          <!--<#%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>-->
-                      <%= best_in_place f.object, :technician %>
-                    </li>
-
-                <% else %>
-                     <li>
-                      <div class="control-group select required">
-                        <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:technician) %></label>
-                        <div class="controls">
-                          <div class="input-large uneditable-input" title="To change Technician use the action section" rel='tooltip'>
-                            <%= f.object.technician.try(:name) %>
-                          </div>
-
-                        </div>
-                      </div>
-                     </li>
-                <% end %>
-             <% end %>
-
-          <% permitted_to? :edit, @service_call do %>
-                    <li>
-                      <div class="control-group select required">
-                        <label class="select optional control-label" for="completed_on_text"><%= @service_call.class.human_attribute_name(:subcontractor) %></label>
-                        <div class="controls">
-                          <div class="input-large uneditable-input" title="To change Technician use the action section" rel='tooltip'>
-                            <%= f.text_field :subcontractor %>
-
-                          </div>
-
-                        </div>
-                      </div>
-
-                    </li>
-          <% end %>
-        </ul>
-
-        </div>
-
-        <div class="span6" id="job_notes">
-
-          <div class="miya_note_area string mandatory">
-            <%= f.input :notes %>
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="form-actions_in_service_call">
-        <div class="form-actions">
-          <%= link_to I18n.t('general.general.back'), service_calls_path, class: "btn btn-medium" %>
-          <%= f.submit I18n.t('general.general.save_changes'), class: "btn btn-medium btn-primary", id: 'service_call_save_btn' %>
-        </div>
-      </div>
-      <!--end of status & Job details section-->
-
-  <% end %>
-  <!--Parts-->
-  <div class="row-fluid">
-    <div class="smart_label">
-      <ul>
-        <li><h1><%= t('general.general.billing') %></h1></li>
-
-        <% if @service_call.total_price > 0 %>
-            <div class="total_bom">
-            <li class="total_price"><badge><%= t('general.general.total_price').html_safe %><span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span></badge></li>
-            </div>
-        <% end %>
-
-        <% if  @service_call.total_cost > 0 %>
-            <div class="total_bom">
-            <li class="total_price"><badge><%= t('general.general.total_cost').html_safe %><span id='job_total_cost'> <%= humanized_money_with_symbol @service_call.total_cost %></span></badge></li>
-            </div>
-
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.job_type') %></h1></li>
+      <li></li>
+      <% unless @service_call.events.empty? %>
+          <li>
+            <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#myModal">
+              <%= I18n.t('general.general.job_history') %>
+            </button>
+          </li>
       <% end %>
+    </ul>
+  </div>
+  <br>
+  <!--Update Job Info-->
+  <div class="row-fluid">
+    <div class="span6">
+      <ul class="unstyled list_service_calls">
+        <li>
+          <label><%= @service_call.class.human_attribute_name(:started_on_text) %></label>
+          <%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
+        </li>
+        <li>
+          <label><%= @service_call.class.human_attribute_name(:completed_on_text) %></label>
+          <%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
+        </li>
+        <li>
+          <label><%= @service_call.class.human_attribute_name(:scheduled_for_text) %></label>
+          <%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
+        </li>
+        <li>
 
+            <label><%= @service_call.class.human_attribute_name(:customer) %></label>
+          <span id="customer-name" class="customer-autocomplete" data-job-id="<%= @service_call.id %>" data-obj-type="<%= @service_call.class.name.underscore %>"> <%= @service_call.customer.name %> </span>
 
-        <li><%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
+        </li>
+        <li class="list_service_calls" id="customer_details">
+          <address>
+            <%= best_in_place @service_call, :address1 %>
+            <br>
+            <%= best_in_place @service_call, :address2 %>
+            <br>
+            <%= best_in_place @service_call, :city %>
+            , <%= best_in_place @service_call, :state %> <%= best_in_place @service_call, :zip %>
+            <br>
+            <strong><%= @service_call.class.human_attribute_name(:phone) %></strong>: <%= best_in_place @service_call, :phone %>
+            <br>
+            <strong><%= @service_call.class.human_attribute_name(:mobile_phone) %></strong>:  <%= best_in_place @service_call, :mobile_phone %>
+            <br>
+          </address>
+        </li>
+        <% if @service_call.technician.present? && @service_call.organization.my_user?(@service_call.technician) %>
+            <li>
+              <label class=""><%= @service_call.class.human_attribute_name(:technician) %></label>
+              <%= link_to '', @service_call.technician do %>
+                  <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician, type: :select, collection: technicians_collection %>
+              <% end %>
+            </li>
+        <% end %>
+        <li>
+          <div class="control-group select required">
+            <label class=""><%= @service_call.class.human_attribute_name(:subcontractor) %></label>
+            <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
+          </div>
+        </li>
+
       </ul>
     </div>
 
+    <div class="span6" id="job_notes">
 
-    <div class="bom collapse" id="bom">
-      <%= render 'boms/in_line_form', ticket: @service_call.becomes(ServiceCall) %>
+      <label class=""><%= @service_call.class.human_attribute_name(:notes) %></label>
+      <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, :type => :textarea, :ok_button => 'Save', :cancel_button => 'Cancel' %>
 
     </div>
+    <!--end of status & Job details section-->
 
-    <table class="table table-striped" id="boms-table">
-      <thead>
-      <tr>
-        <th><%= Bom.human_attribute_name(:material_name) %></th>
-        <th><%= Bom.human_attribute_name(:quantity) %></th>
-        <th><%= Bom.human_attribute_name(:cost) %></th>
-        <th><%= Bom.human_attribute_name(:price) %></th>
-        <th><%= Bom.human_attribute_name(:total_cost) %></th>
-        <th><%= Bom.human_attribute_name(:total_price) %></th>
-        <th><%= Bom.human_attribute_name(:buyer) %></th>
-        <th><%= I18n.t('general.general.actions') %></th>
-      </tr>
-      </thead>
-      <tbody id="boms">
-
-      <% @service_call.boms.each do |bom| %>
-          <tr id="bom_<%= bom.id %>">
-            <%= render 'boms/bom', bom: bom %>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
+    <!--Parts-->
+    <%= render 'job_boms' %>
 
   </div>
-
 </div>
+

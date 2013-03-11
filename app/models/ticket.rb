@@ -60,6 +60,7 @@ class Ticket < ActiveRecord::Base
   has_many :appointments, as: :appointable
 
   scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov} AND subcontractor_id = #{subcon} and created_at > '#{after}'") }
+  scope :affiliated_jobs, ->(org, affiliate) {where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id))}
 
   stampable
 
@@ -138,10 +139,10 @@ class Ticket < ActiveRecord::Base
 
   def check_completed_on_text
     if @completed_on_text.present? && Time.zone.parse(@completed_on_text).nil?
-      errors.add @completed_on_text, "cannot be parsed"
+      errors.add :completed_on_text, "cannot be parsed"
     end
-  rescue ArgumentError
-    errors.add @completed_on_text, "is out of range"
+  rescue ArgumentError, RangeError
+    errors.add :completed_on_text, "is out of range"
   end
 
   def started_on_text
@@ -163,18 +164,18 @@ class Ticket < ActiveRecord::Base
 
   def check_started_on_text
     if @started_on_text.present? && Time.zone.parse(@started_on_text).nil?
-      errors.add @started_on_text, "cannot be parsed"
+      errors.add :started_on_text, "cannot be parsed"
     end
-  rescue ArgumentError
-    errors.add @started_on_text, "is out of range"
+  rescue ArgumentError, RangeError
+    errors.add :started_on_text, "is out of range"
   end
 
   def check_scheduled_for_text
     if @scheduled_for_text.present? && Time.zone.parse(@scheduled_for_text).nil?
-      errors.add @scheduled_for_text, "cannot be parsed"
+      errors.add :scheduled_for_text, "cannot be parsed"
     end
-  rescue ArgumentError
-    errors.add @scheduled_for_text, "is out of range"
+  rescue ArgumentError, RangeError
+    errors.add :scheduled_for_text, "is out of range"
   end
 
   def create_customer
