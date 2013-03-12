@@ -10,19 +10,35 @@
 
       <div class="smart_label">
         <ul>
-          <li><h1>Billing Summary</h1></li>
+          <li><h1><%= I18n.t('general.general.billing') %></h1></li>
           <li></li>
         </ul>
       </div>
 
       <br>
-      <ul>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th><%= Affiliate.model_name.human %></th>
+          <th><%= AccountingEntry.human_attribute_name(:balance) %></th>
+        </tr>
+        </thead>
+        <tbody>
         <% @affiliates.each do |affiliate| %>
-            <li><%= affiliate.name %>: <%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></li>
+          <% unless current_user.organization.account_for(affiliate).balance == 0 %>
+            <tr>
+                <td><%= link_to affiliate.name, affiliate_path(affiliate) %></td>
+              <% if current_user.organization.account_for(affiliate).balance > 0 %>
+                <td><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></td>
+              <% else %>
+                <td class="red_balance"><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></td>
+            <% end %>
+            </tr>
+          <% end %>
         <% end %>
-
-      </ul>
-
+        </tbody>
+      </table>
 
 
     </div>
@@ -41,10 +57,10 @@
 
   <!--Calendar-->
   <div class="span6" id= "home-incoming">
-    <div class="well well-home">
+    <div class="well">
       <div class="smart_label">
         <ul>
-          <li><h1><%=I18n.t('calendar') %></h1></li>
+          <li><h1><%=I18n.t('general.general.calendar') %></h1></li>
           <li><%= link_to Appointment.model_name.human, calendar_path, :class => 'btn btn-primary' %></li>
         </ul>
       </div>

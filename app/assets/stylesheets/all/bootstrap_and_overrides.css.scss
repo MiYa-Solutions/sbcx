@@ -56,7 +56,8 @@ a {
 }
 
 .well-home {
-  min-height: 278px;
+  height: 282px;
+  overflow: auto;
 }
 
 .nav-list {
@@ -785,6 +786,27 @@ a:hover {
     letter-spacing: .08em;
   }
 
+}
+
+.red_balance {
+  color: red;
+}
+
+.welcome_jobs {
+  height: 575px;
+  overflow: auto;
+}
+
+.welcome_alerts {
+  strong {
+    font-size: 12px;
+
+  }
+}
+
+#welcome_notifications {
+  height: 100px;
+  overflow: auto;
 }
 
 #icon_job_address{
