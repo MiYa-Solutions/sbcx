@@ -1,8 +1,10 @@
 <tr class="welcome_alerts">
-  <% if notification.human_status_name == 'unread' %>
+  <% if notification.human_status_name == 'read' %>
   <td>  <span>
-              <%= image_tag("index/alert_open_small.png", alt: "MiYa") %>
-          <!--<badge><i class="icon-envelope"></i></badge>-->
+              <%= image_tag("index/alerts_small.png", alt: "MiYa") %>
+              <!--<#%= image_tag("index/alert_open_small.png", alt: "MiYa") %>-->
+
+    <!--<badge><i class="icon-envelope"></i></badge>-->
         </span></td>
   <td><strong> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel: 'tooltip' %> </strong></td>
   <td><strong> <%= notification.html_message %></strong>  </td>
@@ -11,9 +13,8 @@
   <% else %>
       <td>
         <span>
-          <%= image_tag("index/alerts_small.png", alt: "MiYa") %>
+          <!--<#%= image_tag("index/alerts_small.png", alt: "MiYa") %>-->
 
-          <!--<badge><i class="icon-folder-open"></i></badge>-->
         </span>
       </td>
       <td> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %>    </td>

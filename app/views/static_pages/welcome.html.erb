@@ -22,6 +22,8 @@
         <tr>
           <th><%= Affiliate.model_name.human %></th>
           <th><%= AccountingEntry.human_attribute_name(:balance) %></th>
+          <th><%= I18n.t('general.general.actions') %></th>
+
         </tr>
         </thead>
         <tbody>
@@ -34,6 +36,9 @@
               <% else %>
                 <td class="red_balance"><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></td>
             <% end %>
+                <td>
+                  <%= link_to I18n.t('general.general.show'), affiliate_path(affiliate), :class => 'btn btn-mini btn-primary' %>
+                </td>
             </tr>
           <% end %>
         <% end %>

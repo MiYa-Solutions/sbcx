@@ -20,7 +20,7 @@
             <th><%= Notification.human_attribute_name(:subject) %></th>
             <th><%= Notification.human_attribute_name(:content) %></th>
             <!--<th><#%= Notification.human_attribute_name(:status) %></th>-->
-            <th> Actions</th>
+            <th> <%= I18n.t('general.general.actions')%></th>
         </tr>
         </thead>
         <tbody id="notifications">
@@ -33,7 +33,7 @@
     </table>
 
     <% else %>
-    <span class="alert alert-info" id="empty_search_result_notice">No Notifications</span>
+    <span class="alert alert-info" id="empty_search_result_notice"><%= I18n.t('general.general.no_notifications') %></span>
     <br>
     <br>
     <% end %>

@@ -1,4 +1,20 @@
-<h1>Calendar</h1>
+<% provide(:title, Appointment.name.humanize.pluralize) %>
+
+<div class="well well_height">
+
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.calendar') %></h1></li>
+      <li></li>
+      <li>
+        <%= link_to t('general.general.new_appointment'), new_appointment_path, :class => 'btn btn-primary', id: 'new-appointment-button' %>
+      </li>
+    </ul>
+  </div>
+
+  <br>
+
 <div id="calendar"></div>
 
 <div id="loading">Loading...</div>
+</div>
