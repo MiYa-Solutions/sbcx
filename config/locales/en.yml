@@ -104,3 +104,7 @@ en:
       calendar: "Calendar"
       location_info: "Location info"
       no_notifications: "No Notifications"
+      show_more: "Show More"
+      new_appointment_for: "New Appointment For :"
+      new_affiliate: "New Affiliate"
+      add_new_appointment: "Add New Appointment"

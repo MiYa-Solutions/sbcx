@@ -2,8 +2,7 @@
     <br>
     <%= f.error_notification %>
 
-    <%= f.submit I18n.t('general.general.add'), class: "ajax-btn btn btn-medium btn-primary ajax-btn", id: 'add_appointment' %>
-    <div id="ajax-msg"></div>
+
 
     <%= f.input :title %>
     <%= f.input :all_day %>
@@ -15,7 +14,13 @@
     <%= f.input :appointable_id, :as => :hidden, :input_html => { :value => appointment.appointable.id } %>
     <%= f.input :appointable_type, :as => :hidden, :input_html => { :value => appointment.appointable.class } %>
 
+    <div class="form-actions">
 
+      <%= link_to I18n.t('general.general.back'), appointment.appointable, class: "btn btn-medium", id: 'back_from_appointment' %>
+      <%= f.submit I18n.t('general.general.Save'), class: "ajax-btn btn btn-medium btn-primary ajax-btn", id: 'add_appointment' %>
+
+      <div id="ajax-msg"></div>
+    </div>
 
 <% end %>
 

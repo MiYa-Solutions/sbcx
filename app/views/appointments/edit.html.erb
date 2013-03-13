@@ -1,21 +1,97 @@
-<h1>New Appointment For <%= link_to "#{@appointment.appointable.class.model_name.human} #{ @appointment.appointable.id }" , @appointment.appointable  %></h1>
+<% provide(:title, @appointment.title) %>
 
-<div class="row-fluid">
-  <div class="span4">
-    <%= render 'appointments/delete_appointment', appointment: @appointment %>
-    <%= render 'appointments/add_appointment', appointable: @appointment.appointable %>
+<div class="well well_height">
+  <div class="row-fluid">
+    <div class="no_margins">
 
-    <div id="appointment-form">
-    <%= render 'appointments/in_line_form', appointment: @appointment %>
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= I18n.t('general.general.new_appointment_for').html_safe + "&nbsp;".html_safe + "#{@appointment.appointable.class.model_name.human} #{ @appointment.appointable.id }" %></h1></li>
+          <li>
+            <!--<#%= link_to t('general.general.back'),  @appointment.appointable , :class => 'btn btn-primary', id: 'back-appointment-button' %>-->
+            <%= render 'appointments/add_appointment', appointable: @appointment.appointable %>
+          </li>
+        </ul>
+      </div>
+      <br>
+
     </div>
-
-    <span id="loading"> Loading.... </span>
   </div>
 
-  <div class="span8 fc" id="calendar"></div>
+  <div class="row-fluid">
+    <div class="no_margins">
+      <div class="span4">
+        <div class="add_meeting" id="appointment-form">
+          <%= simple_form_for(@appointment, :html => { :class => 'form-horizontal ajax-form' }, remote: true) do |f| %>
+              <br>
+              <%= f.error_notification %>
+
+
+
+              <%= f.input :title %>
+              <%= f.input :all_day %>
+              <%= f.input :starts_at_date_text, input_html: {class: 'datepicker'} %>
+              <%= f.input :starts_at_time_text , input_html: {class: 'timepicker'}%>
+              <%= f.input :ends_at_date_text , input_html: {class: 'datepicker'} %>
+              <%= f.input :ends_at_time_text  , input_html: {class: 'timepicker'}%>
+              <%= f.input :description %>
+              <%= f.input :appointable_id, :as => :hidden, :input_html => { :value => @appointment.appointable.id } %>
+              <%= f.input :appointable_type, :as => :hidden, :input_html => { :value => @appointment.appointable.class } %>
+
+              <div class="form-actions">
+
+                <%= link_to I18n.t('general.general.back'), @appointment.appointable, class: "btn btn-medium", id: 'back_from_appointment' %>
+                <%= f.submit I18n.t('general.general.Save'), class: "ajax-btn btn btn-medium btn-primary ajax-btn", id: 'add_appointment' %>
+                <%= link_to "Delete", @appointment, confirm: 'Are you sure?', method: :delete, class: "btn btn-medium btn-danger"  %>
+                <div id="ajax-msg"></div>
+              </div>
+
+          <% end %>
+
+
+
+        </div>
+        <span id="loading"> Loading.... </span>
+      </div>
+
+      <div class="span8 fc" id="calendar">
+      </div>
+
+    </div>
+  </div>
+
+
+  <!--end of Well-->
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <a href="#form" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+
+
+
+
+
+
+
 
 <div class="modal hide fade" id="form">
   <div class="modal-header">

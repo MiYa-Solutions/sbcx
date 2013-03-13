@@ -2,7 +2,10 @@
   <div class="smart_label">
     <ul>
       <li><h1><%= I18n.t('general.general.job_type') %></h1></li>
-      <li></li>
+      <li>
+        <%= render 'appointments/add_appointment', appointable: @service_call %>
+
+      </li>
       <% unless @service_call.events.empty? %>
           <li>
             <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#myModal">

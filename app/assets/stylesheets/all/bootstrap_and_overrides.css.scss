@@ -423,7 +423,7 @@ input, textarea {
   }
 
   span {
-    font-weight: bold;
+    font-weight: normal;
     color: $white;
     font-family: arial;
     font-size: 14px;
@@ -491,6 +491,27 @@ input, textarea {
   .btn-signup {
     width: 120px;
 
+  }
+}
+
+
+.add_meeting {
+
+  .form-horizontal .control-label {
+    font-weight: bold;
+  }
+
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+     margin-top: 0.601em;
+  }
+
+  textarea {
+    height: 100px;
+  }
+
+  .btn {
+    line-height: 16px;
   }
 }
 
