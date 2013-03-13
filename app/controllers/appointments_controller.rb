@@ -4,9 +4,6 @@ class AppointmentsController < ApplicationController
 
   def index
     @appointments = Appointment.my_appointments(current_user.organization_id, params[:start], params[:end]).all
-    #@appointments = @appointments.after(params['start']) if (params['start'])
-    #@appointments = @appointments.before(params['end']) if (params['end'])
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @appointments }
@@ -38,7 +35,6 @@ class AppointmentsController < ApplicationController
 
   # GET /Appointments/1/edit
   def edit
-    render :new
   end
 
   # POST /Appointments
