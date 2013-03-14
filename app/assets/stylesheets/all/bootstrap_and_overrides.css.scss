@@ -684,22 +684,10 @@ smart_alert {
 }
 
 .total_bom {
-  //width: 25%;
-  //padding-top: 3px;
-  //
-  //h4 {
-  //  float: left;
-  //  font-size: 14px;
-  //  margin-top: -1px;
-  //}
-  //
-  //span {
-  //  float: right;
-  //}
-  li:last-child {
-    margin-top: 3px;
-    float: left;
-  }
+  float: left;
+  margin-top: 5px;
+  padding-bottom: 3px;
+
 }
 
 #block_job_statuses_actions {
@@ -731,19 +719,17 @@ a:hover {
   text-decoration: none;
 }
 
-
+#show_meetings_job {
+  height: 27px
+}
 
 .total_price {
 
-  //background-color: #5BB65B;
-  width: 60px;
-  background-color: #3A87AD;
-  text-align: justify;
+  background-color: #F5F5F5;
   border-radius: 3px 3px 3px 3px;
-  padding: 1px 14px 2px;
-
-  width: 20%;
-  padding-top: 3px;
+  padding: 2px 14px;
+  text-align: inherit;
+  width: 26%;
 
   h4 {
     float: left;
@@ -755,17 +741,18 @@ a:hover {
 
   span {
     float: none;
+    font-size: 16px;
+    color: #0076AD;
+    font-weight: bold;
   }
 
   badge {
-    color: white;
-    font-size: 13px;
+    color: #0076AD;
+    font-size: 16px;
     font-weight: bold;
-    line-height: 14px;
+    letter-spacing: 0.08em;
+    line-height: 12px;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    vertical-align: baseline;
-    white-space: nowrap;
-    letter-spacing: .08em;
   }
 
 }
@@ -1166,7 +1153,11 @@ a:hover {
 
 #service_call_type {
 
-    mrgin-top: 10px;
+  padding-bottom: 5px;
+  padding-top: 6px;
+  vertical-align: -6px;
+  background-color: transparent;
+  font-size: 8px;
 
 }
 

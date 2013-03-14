@@ -108,3 +108,7 @@ en:
       new_appointment_for: "New Appointment For :"
       new_affiliate: "New Affiliate"
       add_new_appointment: "Add New Appointment"
+      ends_at: "Ends at"
+      started_at: "Started at"
+      title: "Title"
+      show_appointments: "Show Appointments"

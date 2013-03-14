@@ -1,6 +1,6 @@
 <%= simple_form_for appointable.appointments.build, url: new_appointment_path, method: :get, html: {id: "create_app"} do |f| %>
     <%= f.input :appointable_id, :as => :hidden, :input_html => { :value => appointable.id } %>
     <%= f.input :appointable_type, :as => :hidden, :input_html => { :value => appointable.class.name } %>
-    <%= f.submit class: "btn btn-primary", :value => I18n.t('general.general.add_new_appointment') %>
+    <%= f.submit class: "btn btn-primary", :value => I18n.t('general.general.add_new_appointment'), id: "show_meetings_job" %>
 <% end %>
 

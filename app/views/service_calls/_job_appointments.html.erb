@@ -1,0 +1,28 @@
+<div id="myMeetings" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel"><%= I18n.t('general.general.appointments') %></h3>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped" id="event_log_in_service_call">
+      <thead>
+      <tr>
+        <th><%= I18n.t('general.general.title') %> </th>
+        <th><%= I18n.t('general.general.description') %></th>
+        <th><%= I18n.t('general.general.started_at') %></th>
+        <th><%= I18n.t('general.general.ends_at') %></th>
+      </tr>
+      </thead>
+      <tbody id="appointments">
+      <% @service_call.appointments.each do |appointment| %>
+          <tr id="appointment_<%= appointment.id %>">
+            <%= render 'appointments/appointment', appointment: appointment %>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>

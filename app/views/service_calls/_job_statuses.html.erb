@@ -4,7 +4,7 @@
       <ul>
         <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1>
         </li>
-        <li class="job_type_show">
+        <li class="total_price">
                <span class="status_label" id="service_call_type">
                <badge>
                  <% if @service_call.class == MyServiceCall %>
