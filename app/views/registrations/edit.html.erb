@@ -37,7 +37,16 @@
                   <%= f.input :phone %>
                   <%= f.input :mobile_phone %>
                   <%= f.input :work_phone %>
-                  <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones %>
+                <div class="control-group string mandatory">
+                  <label class="string optional control-label" for="time_zone">Time Zone</label>
+
+                  <div class="controls">
+                    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones %>
+                  </div>
+                </div>
+
+
+
                   <%= f.input :current_password %>
 
                 <div class="form-actions">
