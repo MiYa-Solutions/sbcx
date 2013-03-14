@@ -67,7 +67,7 @@ en:
       content: 'Please note that service call %{ref} was marked as settled by the subcontractor (%{subcontractor})'
     sc_started_notification:
       html_message: 'The %{subcontractor} has started the %{link}'
-      subject: 'Service call %{ref} is completed'
+      subject: 'Job %{ref} has started'
       content: '%{subcontractor} has started the service call at: %{started_at}'
     sc_start_notification:
       html_message: '%{technician} has started the %{link}'

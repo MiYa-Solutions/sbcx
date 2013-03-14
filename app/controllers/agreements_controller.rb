@@ -42,11 +42,11 @@ class AgreementsController < ApplicationController
       if @agreement.update_attributes(permitted_params(@agreement).agreement)
         format.html { redirect_to @agreement.becomes(Agreement), :notice => "Successfully updated agreements." }
         format.json { head :no_content }
-        format.mobile { render @agreement}
+        format.mobile { redirect_to @agreement.becomes(Agreement)}
       else
         format.html {render :action => 'edit'}
         format.json { render json: @agreement.errors, status: :unprocessable_entity }
-        format.mobile { render @agreement}
+        format.mobile { redirect_to @agreement.becomes(Agreement)}
       end
     end
 

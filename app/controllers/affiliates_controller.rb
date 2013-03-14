@@ -54,7 +54,7 @@ class AffiliatesController < ApplicationController
   def show
     # no need for the below as declarative_authorization filter_resource_access takes care of it
     #@affiliate = Affiliate.find(params[:id])
-    @agreements = Agreement.our_agreements(current_user.organization, @affiliate)
+    @agreements = Agreement.our_agreements(current_user.organization, @affiliate.becomes(Organization))
     @account    = Account.where("organization_id = ? AND accountable_id = ?", current_user.organization.id, @affiliate.id).first
   end
 
