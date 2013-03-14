@@ -28,7 +28,8 @@
                 </div>
 
             <div class="span6">
-                <%= render :partial => 'affiliate_balance' %>
+
+                <%= render :partial => 'affiliate_balance' if @account.present? %>
                 <!-- <#% unless @affiliate.service_calls.empty? %>-->
                 <%= render :partial => 'affiliate_jobs' %>
                 <!-- <#% end  %> -->

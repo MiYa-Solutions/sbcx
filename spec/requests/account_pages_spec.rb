@@ -7,7 +7,7 @@ describe "Account Pages", js: true do
   setup_standard_orgs
 
   let(:job) { create_my_job(org_admin_user, customer, :org) }
-  let(:profit_split) { Agreement.our_agreements(org.id, org2.id).first.rules.first }
+  let(:profit_split) { Agreement.our_agreements(org, org2).first.rules.first }
 
   let(:bom1) {
     params                = { name: "material1", price: 59.99, cost: 13.67, quantity: 1 }
