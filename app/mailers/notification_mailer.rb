@@ -6,6 +6,7 @@ class NotificationMailer < ActionMailer::Base
   #
   #   en.admin_mailer.sign_up_alert.subject
   #
+  # todo make more effiecient - in production does not load second level subclasses
   Dir.glob("#{Rails.root}/app/notifications/*.rb").sort.each { |file| require_dependency file } #if Rails.env == "development"
   ServiceCallNotification.subclasses.each do |subclass|
     define_method subclass.name.underscore do |subject, user, service_call|
