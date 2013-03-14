@@ -21,8 +21,8 @@
           </div>
           <div class="ui-block-b">
             <div class="miya_blue_button">
-            <%= form_for(current_user.organization.agreements.build(provider_id: @affiliate.id)) do |f| %>
-                <div><%= f.hidden_field :provider_id %></div>
+            <%= form_for(current_user.organization.agreements.build(organization_id: @affiliate.id)) do |f| %>
+                <div><%= f.hidden_field :organization_id %></div>
                 <%= f.submit I18n.t('general.general.add_member'), "data-theme" => "b", "data-mini" => "true" %>
             <% end %>
           </div>

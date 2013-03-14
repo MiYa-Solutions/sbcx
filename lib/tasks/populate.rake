@@ -5,7 +5,7 @@ namespace :db do
     create_providers
     create_subcontractors
     create_customers
-    create_agreements
+    #create_agreements
 
   end
 end
@@ -124,9 +124,9 @@ def create_providers
     5.times do
       prov = new_provider([prov_role])
       mem.providers << prov
-      agreement         = mem.reverse_agreements.where(organization_id: prov.id).last
-      agreement.creator = mem.org_admins.last
-      agreement.save!
+      #agreement         = mem.reverse_agreements.where(organization_id: prov.id).last
+      #agreement.creator = mem.org_admins.last
+      #agreement.save!
       #prov.subcontracting_agreements.create(counterparty: mem, creator: User.find_by_email('system@subcontrax.com') )
     end
   end
@@ -140,9 +140,9 @@ def create_subcontractors
     5.times do
       subcon = new_subcontractor([sub_role])
       mem.subcontractors << subcon
-      agreement         = mem.agreements.where(counterparty_id: subcon.id).last
-      agreement.creator = mem.org_admins.last
-      agreement.save!
+      #agreement         = mem.agreements.where(counterparty_id: subcon.id).last
+      #agreement.creator = mem.org_admins.last
+      #agreement.save!
       #mem.subcontracting_agreements.create(counterparty: new_subcontractor([sub_role]), creator: User.find_by_email('system@subcontrax.com') )
     end
   end

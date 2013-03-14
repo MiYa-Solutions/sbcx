@@ -64,7 +64,7 @@ class Agreement < ActiveRecord::Base
   scope :org_agreements, ->(org_id) { where(:organization_id => org_id) }
   scope :cparty_agreements, ->(org_id) { where(:counterparty_id => org_id) }
   scope :my_agreements, ->(org_id) { (org_agreements(org_id) | (cparty_agreements(org_id))) }
-  scope :our_agreements, ->(org_id, otherparty_id) { (org_agreements(org_id).where(:counterparty_id => otherparty_id) | (cparty_agreements(org_id).where(:organization_id => otherparty_id))) }
+  scope :our_agreements, ->(org, otherparty) { (org_agreements(org.id).where(:counterparty_id => otherparty.id).where(counterparty_type: otherparty.class.name ) | (cparty_agreements(org.id).where(:organization_id => otherparty.id).where(counterparty_type: otherparty.class.name ))) }
   scope :sibling_active_agreements, ->(agreement) { org_agreements(agreement.organization_id).where("counterparty_id = #{agreement.counterparty_id} AND type = '#{agreement.type}' AND status = #{Agreement::STATUS_ACTIVE}") - where(id: agreement.organization_id) }
   attr_accessor :change_reason
 
