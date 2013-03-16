@@ -53,6 +53,22 @@ Spork.prefork do
     # rspec-rails.
     config.infer_base_class_for_anonymous_controllers = false
     config.include(Matchers)
+
+
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :truncation
+
+    end
+
+    config.before(:each) do
+      DatabaseCleaner.start
+    end
+
+    config.after(:each) do
+      DatabaseCleaner.clean
+      load "#{Rails.root}/db/seeds.rb"
+    end
+
   end
 end
 

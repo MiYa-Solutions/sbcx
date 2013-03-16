@@ -91,7 +91,7 @@ class ProfitSplit < PostingRule
 
     @ticket.boms.each do |bom|
       if bom.buyer == agreement.counterparty
-        entries << MaterialReimbursementToCparty.new(event: @event, ticket: @ticket, amount: bom.cost, description: "Material Reimbursement to subcon")
+        entries << MaterialReimbursementToCparty.new(event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
       end
     end
 
@@ -103,7 +103,7 @@ class ProfitSplit < PostingRule
     entries << IncomeFromProvider.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to subcontractor owned account")
     @ticket.boms.each do |bom|
       if bom.buyer == agreement.counterparty
-        entries << MaterialReimbursement.new(event: @event, ticket: @ticket, amount: bom.cost, description: "Material Reimbursement to subcon")
+        entries << MaterialReimbursement.new(event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
       end
     end
 

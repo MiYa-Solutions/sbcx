@@ -12,14 +12,14 @@ describe "Account Pages", js: true do
   let(:bom1) {
     params                = { name: "material1", price: 59.99, cost: 13.67, quantity: 1 }
     params[:total_cost]   = params[:cost] * params[:quantity]          # expected to be 13.67
-    params[:total_price]  = params[:price] * params[:price]            # expeceted to be 119.98
+    params[:total_price]  = params[:price] * params[:quantity]         # expeceted to be 119.98
     params[:total_profit] = params[:total_price] - params[:total_cost] # expected to be 106.31
     params
   }
   let(:bom2) {
     params                = { name: "material2", price: 100, cost: 10, quantity: 2 }
     params[:total_cost]   = params[:cost] * params[:quantity]          # expected to be 20
-    params[:total_price]  = params[:price] * params[:price]            # expected to be 200
+    params[:total_price]  = params[:price] * params[:quantity]         # expected to be 200
     params[:total_profit] = params[:total_price] - params[:total_cost] # expected to be 180
     params
 
@@ -35,12 +35,6 @@ describe "Account Pages", js: true do
     in_browser(:org2) do
       sign_in org_admin_user2
     end
-  end
-
-  after do
-    clean org unless org.nil?
-    clean org2 unless org2.nil?
-    clean org3 unless org3.nil?
   end
 
   subject { page }
@@ -71,7 +65,7 @@ describe "Account Pages", js: true do
       end
       it 'the customer account should be updated with the amount' do
         visit customer_path customer
-        should have_selector '.balance', text: "#{bom1[:price]*bom1[:quantity] + bom2[:price]*bom1[:quantity]}"
+        should have_customer_balance( bom1[:total_price] + bom2[:total_price])
       end
 
 
@@ -110,7 +104,7 @@ describe "Account Pages", js: true do
 
         it 'customers account should show the correct balance' do
           in_browser(:org) do
-            expected_balance = job.total_price * 2
+            expected_balance = job.total_price
             visit customer_path customer
             #should have_selector '.balance', text: "#{bom1[:total_price] + bom2[:total_price]}"
             should have_customer_balance(expected_balance)
@@ -121,7 +115,7 @@ describe "Account Pages", js: true do
         it 'provider view should show a payment to subcon entry (withdrawal)' do
           job.reload
           org1_org2_acc.entries.map(&:class).should include(PaymentToSubcontractor)
-          accounting_entry      = org1_org2_acc.entries.where(type: 'PaymentToSubcontractor', ticket_id: job.id).first
+          accounting_entry      = org1_org2_acc.entries.scoped.where(type: 'PaymentToSubcontractor', ticket_id: job.id).first
           expected_entry_amount = (job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
 
           in_browser(:org) do
@@ -135,7 +129,7 @@ describe "Account Pages", js: true do
         it 'provider view should show reimbursement for the parts' do
           org1_org2_acc.entries.map(&:class).should include(MaterialReimbursementToCparty)
           entries = org1_org2_acc.entries.where(type: MaterialReimbursementToCparty)
-          entries.should have(2).items
+          entries.all.should have(2).entries
 
           in_browser(:org) do
             visit affiliate_path org2
@@ -148,7 +142,7 @@ describe "Account Pages", js: true do
 
         it 'provider view should show the correct balance' do
           job.reload
-          expected_balance = -(job.total_profit * (profit_split.rate / 100.0))
+          expected_balance = -(job.total_profit * (profit_split.rate / 100.0) + job.total_cost )
           in_browser(:org) do
             visit affiliate_path org2
             should have_affiliate_balance(expected_balance)
@@ -157,7 +151,8 @@ describe "Account Pages", js: true do
         end
 
         it 'subcontractor view should show a payment from provider entry (income)' do
-          accounting_entry = org2_org1_acc.entries.last
+          subcon_job.reload
+          accounting_entry = org2_org1_acc.entries.scoped.where(type: 'IncomeFromProvider', ticket_id: subcon_job.id).first
           expected_amount  = (subcon_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
           in_browser(:org2) do
             visit affiliate_path org
@@ -169,7 +164,7 @@ describe "Account Pages", js: true do
         it 'subcontractor view should show reimbursement for the parts' do
           org2_org1_acc.entries.map(&:class).should include(MaterialReimbursement)
           entries = org2_org1_acc.entries.where(type: MaterialReimbursement)
-          entries.should have(2).items
+          entries.all.should have(2).entries
 
           in_browser(:org2) do
             visit affiliate_path org
@@ -183,7 +178,7 @@ describe "Account Pages", js: true do
 
         it 'subcontractor view should show the correct balance' do
           in_browser(:org2) do
-            expected_balance = (subcon_job.total_profit * (profit_split.rate / 100.0))
+            expected_balance = (subcon_job.total_profit * (profit_split.rate / 100.0) + subcon_job.total_cost)
             visit affiliate_path org
             should have_affiliate_balance(expected_balance)
           end

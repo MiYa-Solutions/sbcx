@@ -95,7 +95,7 @@ end
 
 def setup_profit_split_agreement(prov, subcon)
   prov.subcontractors << subcon
-  agreement = Agreement.where("organization_id = ? and counterparty_id = ?", prov.id, subcon.id).first
+  agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
   FactoryGirl.create(:profit_split, agreement: agreement)
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
   agreement.save!

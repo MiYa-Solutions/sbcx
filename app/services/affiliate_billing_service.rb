@@ -16,7 +16,8 @@ class AffiliateBillingService
 
     @accounting_entries = get_accounting_entries(posting_rules)
 
-    AccountingEntry.transaction(:requires_new => true) do
+    AccountingEntry.transaction do
+      @account.lock!
       @accounting_entries.each do |entry|
         @account.entries << entry
       end
