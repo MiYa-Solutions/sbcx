@@ -6,7 +6,7 @@ module PaymentHelper
   def payment_option(klass)
 
     [
-        klass.name.titleize,
+        klass.model_name.human,
         klass.name.underscore,
     ]
 

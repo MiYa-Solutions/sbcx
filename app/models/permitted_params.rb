@@ -111,7 +111,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :work_phone,
                                   :email,
                                   :notes,
-                                  :total_price, :allow_collection, :re_transfer, :scheduled_for]
+                                  :total_price, :allow_collection, :re_transfer, :scheduled_for, :payment_type]
         end
 
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
@@ -138,7 +138,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :mobile_phone,
                                   :work_phone,
                                   :email,
-                                  :notes, :re_transfer, :provider_status_event]
+                                  :notes, :re_transfer, :provider_status_event, :payment_type]
 
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
           permitted_attributes = [:status_event,
@@ -154,7 +154,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :mobile_phone,
                                   :work_phone,
                                   :email,
-                                  :notes]
+                                  :notes, :payment_type]
         elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
           permitted_attributes = [:status_event,
                                   :subcontractor_id,
@@ -172,7 +172,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :mobile_phone,
                                   :work_phone,
                                   :email,
-                                  :notes, :re_transfer]
+                                  :notes, :re_transfer, :payment_type]
         end
 
         permitted_attributes.concat [:billing_status_event, :collector_id] if billing_allowed?

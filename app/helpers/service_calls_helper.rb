@@ -1,4 +1,5 @@
 module ServiceCallsHelper
+  include PaymentHelper
 
 
 
@@ -198,20 +199,19 @@ module ServiceCallsHelper
   #  end
   #end
 
-  # todo collect to include payment type
-  # todo payment form to include payment type
-  #def paid_form(service_call)
-  #  simple_form_for service_call.becomes(ServiceCall) do |f|
-  #    concat (hidden_field_tag "service_call[billing_status_event]", 'paid')
-  #    concat (hidden_field_tag "service_call[collector_id]", current_user.id)
-  #    concat (f.submit service_call.class.human_billing_status_event_name(:paid).titleize,
-  #                     id:    'settle_service_call_btn',
-  #                     class: "btn btn-large",
-  #                     title: 'Click to indicate that the customer has paid',
-  #                     rel:   'tooltip'
-  #           )
-  #  end
-  #end
+  def billing_paid_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (f.input :payment_type, collection: payment_types)
+      concat (hidden_field_tag "service_call[billing_status_event]", 'paid')
+      concat (hidden_field_tag "service_call[collector_id]", current_user.id)
+      concat (f.submit service_call.class.human_billing_status_event_name(:paid).titleize,
+                       id:    'job_paid_btn',
+                       class: "btn btn-large",
+                       title: 'Click to indicate that the customer has paid',
+                       rel:   'tooltip'
+             )
+    end
+  end
 
   private
 

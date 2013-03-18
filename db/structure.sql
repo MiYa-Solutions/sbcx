@@ -721,7 +721,8 @@ CREATE TABLE tickets (
     collector_type character varying(255),
     provider_status integer,
     work_status integer,
-    re_transfer boolean
+    re_transfer boolean,
+    payment_type character varying(255)
 );
 
 
@@ -1332,3 +1333,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130303025912');
 INSERT INTO schema_migrations (version) VALUES ('20130303030100');
 
 INSERT INTO schema_migrations (version) VALUES ('20130303232630');
+
+INSERT INTO schema_migrations (version) VALUES ('20130317032112');
+
+INSERT INTO schema_migrations (version) VALUES ('20130318012745');

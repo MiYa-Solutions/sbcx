@@ -31,6 +31,7 @@
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
+#  payment_type         :string(255)
 #
 
 require 'spec_helper'
@@ -98,6 +99,7 @@ describe Ticket do
   describe "associations" do
     it { should belong_to :organization }
     it { should have_many :boms }
+    it { should belong_to :payment }
     it { should belong_to :customer }
     it { should belong_to :technician }
     it { should belong_to :provider }

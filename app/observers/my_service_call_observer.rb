@@ -39,8 +39,8 @@ class MyServiceCallObserver < ServiceCallObserver
     service_call.events << ServiceCallInvoiceEvent.new
   end
 
-  def before_paid_payment(service_call, transition)
-    Rails.logger.debug { "invoked BEFORE paid \n #{service_call.inspect} \n #{transition.args.inspect}" }
+  def after_paid_payment(service_call, transition)
+    Rails.logger.debug { "invoked AFTER paid \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
     service_call.events << ServiceCallPaidEvent.new
   end

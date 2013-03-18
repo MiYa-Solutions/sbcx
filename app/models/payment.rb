@@ -13,6 +13,7 @@
 
 class Payment < ActiveRecord::Base
   belongs_to :agreement
+  has_many :tickets
 
   validates_uniqueness_of :agreement_id, scope: [:type]
 

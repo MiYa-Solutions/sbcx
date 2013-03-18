@@ -17,8 +17,6 @@
 #  balance_currency :string(255)     default("USD"), not null
 #
 
-class CashPayment < AccountingEntry
-  def amount_direction
-    1
-  end
+class CreditPayment < AccountingEntry
+  # To change this template use File | Settings | File Templates.
 end

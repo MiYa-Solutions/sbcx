@@ -187,48 +187,74 @@ describe "Account Pages", js: true do
 
         it "technician's view should show an employee commission (income)"
 
-        describe "when paid" do
-          it "should show all applicable payment types as per the agreement"
-          describe "with cash payment" do
-            it "customer's account should show cash payment entry"
-            it "customer's account balance should be zero"
-            it "provider's account should show cash collection from subcontractor with a pending status (income)"
-            it "subcontractor's account should show cash collection to provider with pending status (withdrawal)"
-            it "technician's account should show cash collection for employer with pending status (withdrawal)"
+        describe 'when invoiced by provider' do
+          before do
+            in_browser(:org) do
+              visit service_call_path(job)
+              click_button JOB_BTN_INVOICE
+            end
           end
-          describe "with credit card payment" do
-            it "customer's account should show credit card payment entry"
-            it "customer's account balance should be zero"
-            it "provider's account should not have additional entries"
-            it "subcontractor's account should  not have additional entries"
-            it "technician's account should not have additional entries"
+
+          it 'should show a select of payment type with a paid button' do
+             should have_select JOB_SELECT_PAYMENT
+             should have_button JOB_BTN_PAID
           end
-          describe "with cheque payment" do
-            describe "where the provider is the beneficiary" do
-              describe "when collected by the technician" do
-                it "customer's account should show a service call cheque payment entry"
-                it "provider's account should show a pending cheque collection by subcon entry"
-                it "subcontractor's account should show pending cheque collection for prov entry"
-                it "technician's account should show pending check collection for employer withdrawal"
 
-                describe "when the cheque is marked as deposited by the subcontractor" do
-                  it "provider's account should show the entry as deposited"
-                  it "provider's account should now have the amount type as withdrawal"
-                  it "subcontractor's account should show the entry as deposited"
-                  it "subcontractor's account should now have the amount type as income"
-                  it "technician's account should show the entry as deposited"
-                  it "technician's account should now have the amount type as income"
 
-                  describe "when provider marks the transaction as cleared" do
-                    it "provider's account should show the entry as cleared"
-                    it "subcontractor's account should show the entry as cleared"
-                    it "technician's account should show the entry as cleared"
+          it 'should send an invoice to the customer'
+
+
+          describe "when paid with cash" do
+            before do
+              select Cash.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+            end
+
+            it 'customer account should be zero' do
+               visit customer_path customer
+               should have_customer_balance 0
+            end
+            describe "with cash payment" do
+              it "customer's account should show cash payment entry"
+              it "customer's account balance should be zero"
+              it "provider's account should show cash collection from subcontractor with a pending status (income)"
+              it "subcontractor's account should show cash collection to provider with pending status (withdrawal)"
+              it "technician's account should show cash collection for employer with pending status (withdrawal)"
+            end
+            describe "with credit card payment" do
+              it "customer's account should show credit card payment entry"
+              it "customer's account balance should be zero"
+              it "provider's account should not have additional entries"
+              it "subcontractor's account should  not have additional entries"
+              it "technician's account should not have additional entries"
+            end
+            describe "with cheque payment" do
+              describe "where the provider is the beneficiary" do
+                describe "when collected by the technician" do
+                  it "customer's account should show a service call cheque payment entry"
+                  it "provider's account should show a pending cheque collection by subcon entry"
+                  it "subcontractor's account should show pending cheque collection for prov entry"
+                  it "technician's account should show pending check collection for employer withdrawal"
+
+                  describe "when the cheque is marked as deposited by the subcontractor" do
+                    it "provider's account should show the entry as deposited"
+                    it "provider's account should now have the amount type as withdrawal"
+                    it "subcontractor's account should show the entry as deposited"
+                    it "subcontractor's account should now have the amount type as income"
+                    it "technician's account should show the entry as deposited"
+                    it "technician's account should now have the amount type as income"
+
+                    describe "when provider marks the transaction as cleared" do
+                      it "provider's account should show the entry as cleared"
+                      it "subcontractor's account should show the entry as cleared"
+                      it "technician's account should show the entry as cleared"
+                    end
                   end
                 end
+
               end
 
             end
-
           end
         end
 
