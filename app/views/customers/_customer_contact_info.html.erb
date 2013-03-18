@@ -1,0 +1,56 @@
+<div class="affiliate_info">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= @customer.name %></h1></li>
+      <li></li>
+    </ul>
+  </div>
+
+  <table class="table table-striped table-condensed">
+    <tbody>
+    <tr>
+      <td class="first_td"><strong><%= Customer.human_attribute_name(:company) %></strong></td>
+      <td class="second_td"><%= @customer.company %></td>
+      <td class="third_td"><strong><%= Customer.human_attribute_name(:phone) %></strong></td>
+      <td class="forth_td"><%= @customer.phone %></td>
+    </tr>
+    <tr>
+      <td><strong><%= I18n.t('general.general.address') %></strong></td>
+      <td><%= @customer.address1 %> <%= @customer.address2 %></td>
+      <td><strong><%= Customer.human_attribute_name(:mobile_phone) %></strong></td>
+      <td><%= @customer.mobile_phone %></td>
+    </tr>
+    <tr>
+      <td><strong><%= Customer.human_attribute_name(:city) %></strong></td>
+      <td><%= @customer.city %></td>
+      <td><strong><%= Customer.human_attribute_name(:work_phone) %></strong></td>
+      <td><%= @customer.work_phone %></td>
+    </tr>
+    <tr>
+      <td><strong><%= Customer.human_attribute_name(:state) %></strong></td>
+      <td><%= @customer.state %></td>
+      <td><strong><%= Customer.human_attribute_name(:email) %></strong></td>
+      <td><%= link_to @customer.email, "mailto:" + @customer.email %></td>
+    </tr>
+    <tr>
+      <td><strong><%= Customer.human_attribute_name(:country) %></strong></td>
+      <td><%= @customer.country %></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong><%= Customer.human_attribute_name(:zip) %></strong></td>
+      <td><%= @customer.zip %></td>
+      <td></td>
+      <td></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="form-actions">
+    <%= link_to I18n.t('general.general.back'), customers_path, :class => 'btn btn-medium' %>
+    <%= link_to I18n.t('general.general.edit'), edit_customer_path(@customer), :class => 'btn btn-medium btn-primary' %>
+    <%= link_to I18n.t('general.general.archive'), customer_path(@customer), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
+   </div>
+</div>
+

@@ -87,6 +87,8 @@ en:
       job_details: "Job Details"
       appointments: "Appointment"
       contact_Info: "Contact Information"
+      job_source: "Job Source"
+      archive: "Archive"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"

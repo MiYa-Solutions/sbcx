@@ -5,16 +5,17 @@
         <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1>
         </li>
         <li class="total_price">
-               <span class="status_label" id="service_call_type">
-               <badge>
-                 <% if @service_call.class == MyServiceCall %>
-                     <%= I18n.t('general.general.my_job') %>
-                 <% else %>
-                     <%= I18n.t('general.general.transferred_job') %>
-                 <% end %>
-               </badge>
-               </span>
+               <!--<span class="status_label" id="service_call_type">-->
+               <!--<badge>-->
+                 <!--<#% if @service_call.class == MyServiceCall %>-->
+                     <!--<#%= I18n.t('general.general.my_job') %>-->
+                 <!--<#% else %>-->
+                     <!--<#%= I18n.t('general.general.transferred_job') %>-->
+                 <!--<#% end %>-->
+               <!--</badge>-->
+               <!--</span>-->
         </li>
+        <li></li>
       </ul>
     </div>
   </li>
@@ -22,6 +23,18 @@
 
     <table class="table table-striped table-condensed table-sbcx">
       <tbody>
+      <tr>
+        <td><strong><%= I18n.t('general.general.job_source') %></strong></td>
+        <td><span class="status_blue">
+              <% if @service_call.class == MyServiceCall %>
+                 <h3> <%= I18n.t('general.general.my_job') %></h3>
+              <% else %>
+                  <h3><%= I18n.t('general.general.transferred_job') %></h3>
+              <% end %>
+        </span>
+        </td>
+      </tr>
+
       <tr>
         <td><strong> <%= @service_call.class.human_attribute_name(:status) %></strong></td>
         <td>

@@ -725,7 +725,9 @@ a:hover {
 
 .total_price {
 
-  background-color: #F5F5F5;
+  //background-color: #F5F5F5;
+  background-color: none;
+
   border-radius: 3px 3px 3px 3px;
   padding: 2px 14px;
   text-align: inherit;
@@ -740,19 +742,29 @@ a:hover {
 
 
   span {
+    //float: none;
+    //font-size: 16px;
+    //color: #0076AD;
+    //font-weight: bold;
+    color: white;
     float: none;
     font-size: 16px;
-    color: #0076AD;
     font-weight: bold;
+
   }
 
   badge {
-    color: #0076AD;
-    font-size: 16px;
+    //color: #0076AD;
+    //font-size: 16px;
+    //font-weight: bold;
+    //letter-spacing: 0.08em;
+    //line-height: 12px;
+    //text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    color: white;
+    font-size: 17px;
     font-weight: bold;
     letter-spacing: 0.08em;
     line-height: 12px;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   }
 
 }
@@ -763,6 +775,10 @@ a:hover {
     width: 90%;
   }
 
+}
+
+.customer_agreements {
+  margin-left: 5%;
 }
 
 .promotion_beta {
