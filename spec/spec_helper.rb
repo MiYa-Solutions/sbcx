@@ -53,6 +53,8 @@ Spork.prefork do
     # rspec-rails.
     config.infer_base_class_for_anonymous_controllers = false
     config.include(Matchers)
+    config.include(ServiceCallMatchers)
+    config.include(AccountingMatchers)
 
 
     config.before(:suite) do

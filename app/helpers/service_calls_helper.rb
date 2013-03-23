@@ -167,7 +167,9 @@ module ServiceCallsHelper
   def billing_collect_form(service_call)
     simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.billing_status.collect.form_classes")} do |f|
       concat (hidden_field_tag "service_call[billing_status_event]", 'collect')
+      concat (f.label :collector)
       concat (collector_tag(service_call))
+      concat (f.input :payment_type, collection: payment_types)
       concat (f.submit service_call.class.human_billing_status_event_name(:collect).titleize,
                        id:    'collect_service_call_btn',
                        class: StylingService.instance.get_style("service_call.forms.billing_status.collect.button_classes"),
@@ -223,6 +225,10 @@ module ServiceCallsHelper
       res = hidden_field_tag("service_call[collector_id]", current_user.id)
     end
     res += hidden_field_tag("service_call[collector_type]", "User")
+  end
+
+  def payment_tag(job)
+
   end
 
 end

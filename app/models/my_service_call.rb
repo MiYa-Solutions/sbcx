@@ -123,7 +123,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.transferred? && !sc.subcontractor.subcontrax_member? && sc.work_done? && sc.allow_collection? }
+      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.transferred? && sc.work_done? && sc.allow_collection? }
     end
 
     event :overdue do

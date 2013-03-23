@@ -11,6 +11,12 @@ JOB_SELECT_SUBCONTRACTOR  = 'service_call_subcontractor_id'
 JOB_SELECT_PAYMENT        = 'service_call_payment_type'
 JOB_CBOX_ALLOW_COLLECTION = 'service_call_allow_collection'
 JOB_CBOX_RE_TRANSFER      = 'service_call_re_transfer'
+JOB_STATUS                = 'span#service_call_status'
+JOB_SUBCONTRACTOR_STATUS  = 'span#service_call_subcontractor_status'
+JOB_PROVIDER_STATUS       = 'span#service_call_provider_status'
+JOB_WORK_STATUS           = 'span#service_call_work_status'
+JOB_BILLING_STATUS        = 'span#service_call_billing_status'
+
 
 AFF_SPAN_BALANCE = 'span#affiliate_balance'
 
@@ -96,14 +102,28 @@ def fill_autocomplete(field, options = {})
   page.execute_script "$(\"#{selector}\").mouseenter().click()"
 end
 
+def setup_customer_agreement(org, customer)
+  agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Customer'", org.id, customer.id).first
+  account   = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Customer'", org.id, customer.id).first
+  if agreement.nil?
+    CustomerAgreement.create(name: "stam agr", organization: org, counterparty: customer, creator: org.users.first)
+  end
+  if account.nil?
+    account = Account.create(organization: org, accountable: customer)
+  end
+  Rails.logger.debug {"created account: #{account.inspect}"}
+end
+
 def setup_profit_split_agreement(prov, subcon)
-  prov.subcontractors << subcon
+  prov.subcontractors << subcon if prov.subcontrax_member?
+  subcon.providers << prov if subcon.subcontrax_member?
   agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
   FactoryGirl.create(:profit_split, agreement: agreement)
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
   agreement.save!
   agreement
 end
+
 
 def add_bom(name, cost, price, qty)
   click_button 'new-bom-button'

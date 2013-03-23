@@ -90,7 +90,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     case obj.class.name
       when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :billing_status_event, :collector_id, :subcontractor_status_event,
+          permitted_attributes = [:status_event, :collector_id, :subcontractor_status_event,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -116,6 +116,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
         permitted_attributes << :work_status_event unless obj.transferred? && obj.subcontractor.subcontrax_member?
+        permitted_attributes.concat [:billing_status_event, :collector_id, :payment_type] if billing_allowed?
 
       when TransferredServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
@@ -175,7 +176,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :notes, :re_transfer, :payment_type]
         end
 
-        permitted_attributes.concat [:billing_status_event, :collector_id] if billing_allowed?
+        permitted_attributes.concat [:billing_status_event, :collector_id, :payment_type] if billing_allowed?
         permitted_attributes << :work_status_event if obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?)
         permitted_attributes << :allow_collection if obj.present? && !obj.provider.subcontrax_member?
       else # new service call
@@ -501,6 +502,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = true
       res = false if params[:billing_status_event] == "provider_invoiced" && obj.provider.subcontrax_member?
       res = false if params[:billing_status_event] == "provider_collected" && obj.provider.subcontrax_member?
+      res = false if params[:billing_status_event] == "subcon_collected" && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
       res = false if params[:billing_status_event] == "subcon_invoiced" && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
     end
 

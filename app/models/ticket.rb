@@ -206,6 +206,10 @@ class Ticket < ActiveRecord::Base
     end
   end
 
+  def validate_payment
+    self.errors.add :payment_type, "You must indicate the type of payment" unless self.payment_type
+  end
+
   def validate_collector
     if organization.multi_user?
       self.errors.add :collector, "You must specify who collected the payment" unless self.collector

@@ -99,7 +99,7 @@ class ServiceCallEvent < Event
   end
 
   def set_customer_account_as_paid
-    account = Account.for(service_call.organization, service_call.customer).first
+    account = Account.for_customer(service_call.customer).first
 
     props = { amount:      - service_call.total_price,
               #account:    account,

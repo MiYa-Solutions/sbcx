@@ -6,13 +6,8 @@ describe "Service Call pages" do
   # ==============================================================
   # data elements to inspect
   # ==============================================================
-  status                         = 'span#service_call_status'
-  subcontractor_status           = 'span#service_call_subcontractor_status'
-  provider_status                = 'span#service_call_provider_status'
-  work_status                    = 'span#service_call_work_status'
-  billing_status                 = 'span#service_call_billing_status'
-  service_call_started_on        = '#service_call_started_on_text'
-  service_call_completed_on      = '#service_call_completed_on'
+  service_call_started_on        = '.service_call_started_on'
+  service_call_completed_on      = '.service_call_completed_on'
   subcontractor_select           = 'service_call_subcontractor_id'
   provider_select                = 'select#service_call_provider_id'
   technician_select              = 'service_call_technician_id'
@@ -46,7 +41,7 @@ describe "Service Call pages" do
   complete_btn                   = '#complete_service_call_btn'
   complete_btn_selector          = 'complete_service_call_btn'
   paid_btn                       = '#paid_service_call_btn'
-  paid_btn_selector              = 'paid_service_call_btn'
+  paid_btn_selector              = 'job_paid_btn'
   save_btn                       = '#service_call_save_btn'
   save_btn_selector              = 'service_call_save_btn'
   cancel_btn                     = '#cancel_service_call_btn'
@@ -252,10 +247,10 @@ describe "Service Call pages" do
 
       end
 
-      it { should have_selector(work_status, value: I18n.t('activerecord.state_machines.service_call.work_status.states.pending')) }
+      it { should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.pending')) }
       it { should have_selector(transfer_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
 
-      it { should have_selector(status) }
+      it { should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.new')) }
 
       let(:technician) { FactoryGirl.create(:technician, organization: org) }
 
@@ -292,11 +287,12 @@ describe "Service Call pages" do
           end
 
           it "work status should change to in progress" do
-            should have_selector(work_status, text: /#{I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress')}/i)
+
+            should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
 
           end
           it "subcontractor status should not be displayed" do
-            should_not have_selector(subcontractor_status)
+            should_not have_selector(JOB_SUBCONTRACTOR_STATUS)
           end
 
           it " service call should have a started event associated " do
@@ -333,11 +329,12 @@ describe "Service Call pages" do
         end
 
         it "should change the status to transferred" do
-          should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+          should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
         end
 
         it "should change the subcontractor status to pending localized" do
-          should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.pending'))
+
+          should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.pending'))
         end
 
         it " service call should have a Transfer event associated " do
@@ -365,15 +362,12 @@ describe "Service Call pages" do
           end
 
           it "should show up in the subcontractors gui with a locelized received_new status" do
-            should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.new'))
+            should have_status(I18n.t('activerecord.state_machines.transferred_service_call.status.states.new'))
           end
 
           it "should not have a subcontractor status displayed" do
-            should_not have_selector(subcontractor_status)
-          end
 
-          it "should have the right provider " do
-            should have_selector(provider_select + " option[selected]", text: org.name)
+            should_not have_subcon_status('')
           end
 
           it "should allow to accept the service call" do
@@ -394,12 +388,12 @@ describe "Service Call pages" do
           end
 
           it "status remains transferred" do
-            should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
-
+            should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
           end
 
           it "work status changes to accepted" do
-            should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.accepted'))
+
+            should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.accepted'))
           end
 
           it " service call should have an accepted event associated " do
@@ -414,11 +408,13 @@ describe "Service Call pages" do
             before { in_browser(:org2) {} }
 
             it " status changed to accepted" do
-              should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.accepted'))
+
+              should have_status(I18n.t('activerecord.state_machines.transferred_service_call.status.states.accepted'))
             end
 
             it " subcontractor status remains na" do
-              should_not have_selector(subcontractor_status)
+
+              should_not have_subcon_status('')
             end
 
           end
@@ -436,12 +432,14 @@ describe "Service Call pages" do
             end
 
             it "status remains transferred" do
-              should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+
+              should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
 
             end
 
             it "work status changes to in progress" do
-              should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
+
+              should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
             end
 
             it " service call should have a dispatched event associated " do
@@ -455,11 +453,13 @@ describe "Service Call pages" do
             describe "subcontractor view after dispatch" do
               before { in_browser(:org2) {} }
               it "status should change to dispatched" do
-                should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.dispatched'))
+
+                should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.dispatched'))
 
               end
               it "subcontractor status should remain na" do
-                should_not have_selector(subcontractor_status)
+
+                should_not have_subcon_status('')
 
               end
             end
@@ -475,11 +475,13 @@ describe "Service Call pages" do
               end
 
               it "status remains transferred" do
-                should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+
+                should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
 
               end
               it "work status remains in progress" do
-                should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
+
+                should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
               end
               it "start time is set to the same time as the subcontractor service call" do
                 Time.parse(find(service_call_started_on).text) == @subcon_service_call.started_on
@@ -495,11 +497,13 @@ describe "Service Call pages" do
               describe "subcontractor view after start" do
                 before { in_browser(:org2) {} }
                 it "work status should change to in progress" do
-                  should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
+
+                  should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
 
                 end
                 it "subcontractor status should remain na" do
-                  should_not have_selector(subcontractor_status)
+
+                  should_not have_subcon_status('')
                 end
 
                 it "start date should be updated with the current time" do
@@ -521,7 +525,8 @@ describe "Service Call pages" do
                 end
 
                 it "should change the status to canceled" do
-                  should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.canceled'))
+
+                  should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.canceled'))
                 end
 
                 it "should have canceled event displayed" do
@@ -534,7 +539,8 @@ describe "Service Call pages" do
 
                 it "subcontractor sc  should be canceled" do
                   in_browser(:org2) do
-                    should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
+
+                    should have_status(I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
                   end
 
                 end
@@ -550,7 +556,8 @@ describe "Service Call pages" do
                   end
 
                   it "should change the status to pending" do
-                    should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.new'))
+
+                    should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.new'))
                   end
 
                 end
@@ -569,11 +576,13 @@ describe "Service Call pages" do
                 end
 
                 it "status remains transferred" do
-                  should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+
+                  should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
 
                 end
                 it "work status changes to completed" do
-                  should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
+
+                  should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
                 end
                 it "completion time is equal to the subcontractor completion time" do
                   Time.parse(find(service_call_completed_on).text) == @subcon_service_call.completed_on
@@ -590,7 +599,8 @@ describe "Service Call pages" do
                 describe "subcontractor view after complete" do
                   before { in_browser(:org2) {} }
                   it "status should change to completed" do
-                    should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
+
+                    should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
 
                   end
 
@@ -618,7 +628,8 @@ describe "Service Call pages" do
                       end
 
                       it 'should have a customer billing status as invoiced by subcon' do
-                        should have_selector billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced_by_subcon')
+
+                        should have_billing_status(I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced_by_subcon'))
                       end
 
                       it 'the provider should be able to collect the payment' do
@@ -638,7 +649,7 @@ describe "Service Call pages" do
                         end
 
                         it 'should show the billing status as overdue' do
-                          should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.overdue')
+                          should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.overdue'))
                         end
 
                         it 'should show the overdue event' do
@@ -669,8 +680,8 @@ describe "Service Call pages" do
                             before do
                               @subcon_service_call.reload
                               select @subcon_service_call.technician.name.rstrip, from: collector_select_selector
+                              select Cash.model_name.human, from: JOB_SELECT_PAYMENT
                               click_button collect_btn_selector
-
                             end
 
                             it 'should mark as collected successfully when specifying a collector' do
@@ -687,7 +698,7 @@ describe "Service Call pages" do
                               end
 
                               it 'the status should indicate the subcontractor has collected the payment' do
-                                should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.collected_by_subcon')
+                                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.collected_by_subcon'))
 
                               end
 
@@ -706,7 +717,7 @@ describe "Service Call pages" do
                               end
 
                               it 'clicking deposit should update the billing status to claimed deposited' do
-                                should have_selector billing_status, text: I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.collected')
+                                should have_billing_status(I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.collected'))
                               end
 
                               it 'should show the deposit to prov button' do
@@ -719,7 +730,7 @@ describe "Service Call pages" do
                                 end
 
                                 it 'should change the billing status to deposited' do
-                                  should have_selector billing_status, text: I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited_to_prov')
+                                  should have_billing_status(I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited_to_prov'))
                                 end
 
                                 it 'service call should have the deposit_to_prov event associated ' do
@@ -731,7 +742,7 @@ describe "Service Call pages" do
                                   before { in_browser(:org) { visit service_call_path(service_call) } }
 
                                   it 'billing status should be subcon claimed deposit' do
-                                    should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.subcon_claim_deposited')
+                                    should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.subcon_claim_deposited'))
                                   end
 
                                   it 'should have confirm deposited button' do
@@ -753,7 +764,7 @@ describe "Service Call pages" do
                                   end
 
                                   it 'should change the status to paid' do
-                                    should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.paid')
+                                    should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.paid'))
                                   end
 
                                   describe 'subcontractor view' do
@@ -764,7 +775,7 @@ describe "Service Call pages" do
                                     end
 
                                     it 'should show a billing status of deposit confirmed' do
-                                      should have_selector billing_status, text: I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited')
+                                      should have_billing_status(I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited'))
                                     end
 
 
@@ -793,6 +804,7 @@ describe "Service Call pages" do
 
                           describe 'successful collection' do
                             before do
+                              select Cash.model_name.human, from: JOB_SELECT_PAYMENT
                               click_button collect_btn_selector
                             end
 
@@ -804,7 +816,7 @@ describe "Service Call pages" do
                               before { in_browser(:org) { visit service_call_path(service_call) } }
 
                               it 'the status should indicate the subcontractor has collected the payment' do
-                                should have_selector billing_status, text: I18n.t('activerecord.state_machines.my_service_call.billing_status.states.collected_by_subcon')
+                                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.collected_by_subcon'))
                               end
                             end
                           end
@@ -852,6 +864,7 @@ describe "Service Call pages" do
                           before do
                             in_browser(:org) do
                               visit service_call_path(service_call)
+                              select Cash.model_name.human, from: JOB_SELECT_PAYMENT
                               click_button paid_btn_selector
                             end
                           end
@@ -868,7 +881,7 @@ describe "Service Call pages" do
                             end
 
                             it 'should show a confirmed deposit status' do
-                              should have_selector billing_status, text: I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited')
+                              should have_billing_status(I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited'))
                             end
                           end
                         end
@@ -885,7 +898,7 @@ describe "Service Call pages" do
                       end
 
                       it "should have an invoiced billing status" do
-                        should have_selector billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced')
+                        should have_billing_status(I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced'))
                       end
 
                       it " service call should have the invoice event associated " do
@@ -898,7 +911,7 @@ describe "Service Call pages" do
                         before { in_browser(:org2) { visit service_call_path @subcon_service_call } }
 
                         it "should show invoiced by prov" do
-                          should have_selector billing_status, text: I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced_by_prov')
+                          should have_billing_status(I18n.t('activerecord.state_machines.service_call.billing_status.states.invoiced_by_prov'))
                         end
 
                         it " service call should have the provider invoiced event associated " do
@@ -942,13 +955,15 @@ describe "Service Call pages" do
                     end
 
                     it 'should show subcon status as marked as settled' do
-                      should have_selector subcontractor_status, text: I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claimed_as_settled')
+
+                      should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claimed_as_settled'))
                     end
 
                     describe 'subcontractor view' do
                       before { in_browser(:org2) {} }
                       it 'provider status should be claim_settled' do
-                        should have_selector provider_status, text: I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled')
+
+                        should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
                       end
                     end
 
@@ -960,7 +975,8 @@ describe "Service Call pages" do
                       end
 
                       it 'subcontractor status should be settled' do
-                        should have_selector subcontractor_status, text: I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled')
+
+                        should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
                       end
 
 
@@ -972,7 +988,8 @@ describe "Service Call pages" do
                         end
 
                         it 'subcontractor status should be settled' do
-                          should have_selector provider_status, text: I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled')
+
+                          should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled'))
                         end
 
                       end
@@ -991,7 +1008,8 @@ describe "Service Call pages" do
                     end
 
                     it 'should show subcon status as marked as claim_settled' do
-                      should have_selector subcontractor_status, text: I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled')
+
+                      should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
                     end
 
 
@@ -1014,12 +1032,14 @@ describe "Service Call pages" do
           end
 
           it "status remains transferred" do
-            should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+
+            should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
 
           end
 
           it "work status changes to rejected" do
-            should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.rejected'))
+
+            should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.rejected'))
           end
 
           it " service call should have an rejected event associated " do
@@ -1056,11 +1076,12 @@ describe "Service Call pages" do
           end
 
           it "should change the status to transferred localized" do
-            should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
+            should have_status(I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
           end
 
           it "should show the subcontractor status with pending localized" do
-            should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.pending'))
+
+            should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.pending'))
           end
 
           it "should show the subcontractor work action buttons" do
@@ -1097,24 +1118,26 @@ describe "Service Call pages" do
 
           describe "after transfer" do
             before do
-               in_browser(:org2) do
-                 check re_transfer_cbox_selector
-                 click_button transfer_btn_selector
-               end
+              in_browser(:org2) do
+                check re_transfer_cbox_selector
+                click_button transfer_btn_selector
+              end
             end
             it "should find the service call for the member subcontractor" do
               third_service_call.should_not be_nil
             end
             it "should change the status to passed" do
               in_browser(:org2) do
-                should have_selector(status, text: I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
+
+                should have_status(I18n.t('activerecord.state_machines.transferred_service_call.status.states.transferred'))
               end
 
             end
 
             it "should change the subcontractor status to pending localized" do
               in_browser(:org2) do
-                should have_selector(subcontractor_status, text: I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.pending'))
+
+                should have_subcon_status(I18n.t('activerecord.state_machines.transferred_service_call.subcontractor_status.states.pending'))
               end
             end
 
@@ -1175,7 +1198,8 @@ describe "Service Call pages" do
           end
 
           it 'should change the status to transferred' do
-            should have_selector status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.transferred')
+
+            should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
           end
 
           describe 'accept on behalf of the subcontractor' do
@@ -1184,7 +1208,7 @@ describe "Service Call pages" do
             end
 
             it 'status should change to accepted' do
-              should have_selector work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.accepted')
+              should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.accepted'))
             end
 
             it 'should show the start button' do
@@ -1197,7 +1221,8 @@ describe "Service Call pages" do
               end
 
               it 'should change the work status to in progress' do
-                should have_selector work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress')
+
+                should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
               end
 
               it 'should show the complete buttong' do
@@ -1211,7 +1236,7 @@ describe "Service Call pages" do
                 end
 
                 it 'should show the work status as completed' do
-                  should have_selector work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.done')
+                  should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
                 end
 
                 it 'should show the settle button' do
@@ -1224,7 +1249,8 @@ describe "Service Call pages" do
                   end
 
                   it 'should change the subcontractor status to settled' do
-                    should have_selector subcontractor_status, text: I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled')
+
+                    should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
                   end
                 end
               end
@@ -1266,11 +1292,12 @@ describe "Service Call pages" do
           end
 
           it "work status should change to in progress" do
-            should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
+            should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
 
           end
           it "subcontractor status should not be displayed" do
-            should_not have_selector(subcontractor_status)
+
+            should_not have_subcon_status('')
           end
 
           it " service call should have a started event associated " do
@@ -1288,7 +1315,8 @@ describe "Service Call pages" do
             end
 
             it "should change the status to canceled" do
-              should have_selector(status, text: I18n.t('activerecord.state_machines.my_service_call.status.states.canceled'))
+
+              should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.canceled'))
 
             end
 
@@ -1309,11 +1337,11 @@ describe "Service Call pages" do
               click_button complete_btn_selector
             end
             it "status should change to completed" do
-              should have_selector(work_status, text: I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
+              should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
 
             end
             it "subcontractor status should remain na" do
-              should_not have_selector(subcontractor_status)
+              should_not have_subcon_status('')
 
             end
             it "completion time is set" do

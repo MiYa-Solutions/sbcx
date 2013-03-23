@@ -110,7 +110,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :provider_confirmed do
-      transition :claim_settled => :settled, if: lambda {|sc| sc.provider_settlement_allowed?}
+      transition :claim_settled => :settled, if: lambda { |sc| sc.provider_settlement_allowed? }
     end
 
     event :provider_marked_as_settled do
@@ -118,7 +118,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :confirm_settled do
-      transition :claimed_as_settled => :settled, if: lambda {|sc| sc.provider_settlement_allowed?}
+      transition :claimed_as_settled => :settled, if: lambda { |sc| sc.provider_settlement_allowed? }
     end
 
     event :settle do
@@ -147,7 +147,10 @@ class TransferredServiceCall < ServiceCall
       validate { |sc| sc.validate_collector }
     end
     state :collected, value: BILLING_STATUS_COLLECTED do
-      validate { |sc| sc.validate_collector }
+      validate do |sc|
+        sc.validate_collector
+        sc.validate_payment
+      end
     end
     state :deposited_to_prov, value: BILLING_STATUS_DEPOSITED_TO_PROV
     state :deposited, value: BILLING_STATUS_DEPOSITED do
@@ -155,7 +158,10 @@ class TransferredServiceCall < ServiceCall
     end
     state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
     state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
-      validate { |sc| sc.validate_collector }
+      validate do |sc|
+        sc.validate_collector
+        sc.validate_payment
+      end
     end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV
@@ -235,7 +241,6 @@ class TransferredServiceCall < ServiceCall
     #  errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
     #end
   end
-
 
 
 end

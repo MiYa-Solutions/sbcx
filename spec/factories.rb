@@ -113,6 +113,10 @@ FactoryGirl.define do
   factory :customer do
     association :organization, factory: :member
     name Faker::Name.name
+
+    after(:create) do |cus|
+      setup_customer_agreement cus.organization, cus
+    end
   end
 
   factory :local_provider_customer, class: Customer do

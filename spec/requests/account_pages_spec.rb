@@ -62,10 +62,16 @@ describe "Account Pages", js: true do
     describe "completed" do
       before do
         click_button JOB_BTN_COMPLETE
+        visit customer_path customer
       end
       it 'the customer account should be updated with the amount' do
-        visit customer_path customer
-        should have_customer_balance( bom1[:total_price] + bom2[:total_price])
+
+        should have_customer_balance(bom1[:total_price] + bom2[:total_price])
+      end
+
+      it 'should show accounting entry' do
+        entry = job.entries.where("type = 'CashPayment'").last
+        should have_entry(entry)
       end
 
 
@@ -142,7 +148,7 @@ describe "Account Pages", js: true do
 
         it 'provider view should show the correct balance' do
           job.reload
-          expected_balance = -(job.total_profit * (profit_split.rate / 100.0) + job.total_cost )
+          expected_balance = -(job.total_profit * (profit_split.rate / 100.0) + job.total_cost)
           in_browser(:org) do
             visit affiliate_path org2
             should have_affiliate_balance(expected_balance)
@@ -196,66 +202,77 @@ describe "Account Pages", js: true do
           end
 
           it 'should show a select of payment type with a paid button' do
-             should have_select JOB_SELECT_PAYMENT
-             should have_button JOB_BTN_PAID
+            should have_select JOB_SELECT_PAYMENT
+            should have_button JOB_BTN_PAID
           end
 
 
           it 'should send an invoice to the customer'
 
 
-          describe "when paid with cash" do
+
+          it 'accounting entries status should be set to paid'
+
+          describe 'with cash payment' do
             before do
               select Cash.model_name.human, from: JOB_SELECT_PAYMENT
               click_button JOB_BTN_PAID
             end
 
+
+            it 'customer account should show cash payment entry' do
+              entry = job.entries.where("type = 'CashPayment'").last
+              visit customer_path customer
+              should have_entry(entry, amount: job.total_price, type: CashPayment.model_name.human)
+
+            end
+
             it 'customer account should be zero' do
-               visit customer_path customer
-               should have_customer_balance 0
+              visit customer_path customer
+              should have_customer_balance 0
             end
-            describe "with cash payment" do
-              it "customer's account should show cash payment entry"
-              it "customer's account balance should be zero"
-              it "provider's account should show cash collection from subcontractor with a pending status (income)"
-              it "subcontractor's account should show cash collection to provider with pending status (withdrawal)"
-              it "technician's account should show cash collection for employer with pending status (withdrawal)"
+            it 'provider account should show cash collection from subcontractor with a pending status (income)' do
+              visit affiliate_path(job.provider)
+              should have_entry
             end
-            describe "with credit card payment" do
-              it "customer's account should show credit card payment entry"
-              it "customer's account balance should be zero"
-              it "provider's account should not have additional entries"
-              it "subcontractor's account should  not have additional entries"
-              it "technician's account should not have additional entries"
-            end
-            describe "with cheque payment" do
-              describe "where the provider is the beneficiary" do
-                describe "when collected by the technician" do
-                  it "customer's account should show a service call cheque payment entry"
-                  it "provider's account should show a pending cheque collection by subcon entry"
-                  it "subcontractor's account should show pending cheque collection for prov entry"
-                  it "technician's account should show pending check collection for employer withdrawal"
+            it "subcontractor's account should show cash collection to provider with pending status (withdrawal)"
+            it "technician's account should show cash collection for employer with pending status (withdrawal)"
+          end
+          describe "with credit card payment" do
+            it "customer's account should show credit card payment entry"
+            it "customer's account balance should be zero"
+            it "provider's account should not have additional entries"
+            it "subcontractor's account should  not have additional entries"
+            it "technician's account should not have additional entries"
+          end
+          describe "with cheque payment" do
+            describe "where the provider is the beneficiary" do
+              describe "when collected by the technician" do
+                it "customer's account should show a service call cheque payment entry"
+                it "provider's account should show a pending cheque collection by subcon entry"
+                it "subcontractor's account should show pending cheque collection for prov entry"
+                it "technician's account should show pending check collection for employer withdrawal"
 
-                  describe "when the cheque is marked as deposited by the subcontractor" do
-                    it "provider's account should show the entry as deposited"
-                    it "provider's account should now have the amount type as withdrawal"
-                    it "subcontractor's account should show the entry as deposited"
-                    it "subcontractor's account should now have the amount type as income"
-                    it "technician's account should show the entry as deposited"
-                    it "technician's account should now have the amount type as income"
+                describe "when the cheque is marked as deposited by the subcontractor" do
+                  it "provider's account should show the entry as deposited"
+                  it "provider's account should now have the amount type as withdrawal"
+                  it "subcontractor's account should show the entry as deposited"
+                  it "subcontractor's account should now have the amount type as income"
+                  it "technician's account should show the entry as deposited"
+                  it "technician's account should now have the amount type as income"
 
-                    describe "when provider marks the transaction as cleared" do
-                      it "provider's account should show the entry as cleared"
-                      it "subcontractor's account should show the entry as cleared"
-                      it "technician's account should show the entry as cleared"
-                    end
+                  describe "when provider marks the transaction as cleared" do
+                    it "provider's account should show the entry as cleared"
+                    it "subcontractor's account should show the entry as cleared"
+                    it "technician's account should show the entry as cleared"
                   end
                 end
-
               end
 
             end
+
           end
+
         end
 
       end
