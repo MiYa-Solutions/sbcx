@@ -41,7 +41,7 @@
       <th><%= I18n.t('general.general.balance') %></th>
       </thead>
       <tbody>
-      <% @account.accounting_entries.each do |entry| %>
+      <% @account.accounting_entries.order('accounting_entries.id DESC').each do |entry| %>
 
           <tr id="accounting_entry_<%= entry.id %>">
             <td><%= link_to entry.ticket.id, entry.ticket.becomes(entry.ticket.class.superclass) %></td>

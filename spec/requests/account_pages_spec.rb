@@ -1,5 +1,5 @@
 require 'spec_helper'
-include MoneyRails::ActionViewExtension
+
 
 describe "Account Pages", js: true do
   self.use_transactional_fixtures = false
@@ -24,8 +24,11 @@ describe "Account Pages", js: true do
     params
 
   }
+
+  let(:expected_price) { bom1[:total_price] + bom2[:total_price] }
   let(:org1_org2_acc) { Account.for_affiliate(org, org2).first }
   let(:org2_org1_acc) { Account.for_affiliate(org2, org).first }
+  let(:customer_acc) { Account.for_customer(job.customer).first }
 
   before do
     in_browser(:org) do
@@ -49,29 +52,138 @@ describe "Account Pages", js: true do
   # todo complete the spec below
 
 
-  describe "not transferred service call" do
+  describe 'none transferred service call' do
     before do
       in_browser(:org) do
         visit service_call_path(job)
+        click_button JOB_BTN_START
         add_bom bom1[:name], bom1[:cost], bom1[:price], bom1[:quantity]
         add_bom bom2[:name], bom2[:cost], bom2[:price], bom2[:quantity]
-        click_button JOB_BTN_START
       end
     end
 
-    describe "completed" do
+    describe 'when completed' do
       before do
         click_button JOB_BTN_COMPLETE
         visit customer_path customer
       end
       it 'the customer account should be updated with the amount' do
 
-        should have_customer_balance(bom1[:total_price] + bom2[:total_price])
+        should have_customer_balance(expected_price)
       end
 
-      it 'should show accounting entry' do
-        entry = job.entries.where("type = 'CashPayment'").last
-        should have_entry(entry)
+      it 'the customer account should show accounting entry' do
+        entries = job.reload.entries.where(type: ServiceCallCharge)
+        entries.should have(1).entry
+        should have_entry(entries.first, amount: expected_price, type: ServiceCallCharge.model_name.human)
+        should have_customer_balance(expected_price)
+      end
+
+      describe 'when invoiced' do
+        before do
+          visit service_call_path(job)
+          click_button JOB_BTN_INVOICE
+        end
+
+        it "should send an invoice to the customer"
+
+        describe 'when paid' do
+
+          describe 'with cash payment' do
+            before do
+              select Cash.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+            end
+
+            it 'clear button is NOT shown' do
+              should_not have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+            end
+
+
+            it 'customer account should show the payment and zero balance' do
+              entries = customer_acc.entries.where(type: CashPayment, ticket_id: job.id)
+              entries.all.should have(1).entry
+
+              visit customer_path customer
+              should have_entry(entries.first, amount: -job.total_price, type: CashPayment.model_name.human, status: 'cleared')
+              should have_customer_balance(0)
+            end
+
+          end
+
+          describe 'with credit card payment' do
+            before do
+              select CreditCard.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+            end
+
+            it 'clear button is shown' do
+              should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+            end
+
+            it 'customer account should show the payment and zero balance' do
+              entries = customer_acc.entries.where(type: CreditPayment, ticket_id: job.id)
+              entries.all.should have(1).entry
+
+              visit customer_path customer
+              should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'pending')
+              should have_customer_balance(0)
+            end
+
+            describe 'clearing payment' do
+              before do
+                click_button JOB_BTN_CLEAR
+              end
+
+              it 'job billing and accounting entries statuses should change to cleared' do
+                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
+
+                entries = customer_acc.entries.where(type: CreditPayment, ticket_id: job.id)
+                entries.all.should have(1).entry
+
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'cleared')
+              end
+            end
+
+          end
+
+          describe 'with cheque payment' do
+            before do
+              select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+            end
+
+            it 'clear button is shown' do
+              should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+            end
+
+            it 'customer account should show the payment and zero balance' do
+              entries = customer_acc.entries.where(type: ChequePayment, ticket_id: job.id)
+              entries.all.should have(1).entry
+
+              visit customer_path customer
+              should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'pending')
+              should have_customer_balance(0)
+            end
+
+            describe 'clearing payment' do
+              before do
+                click_button JOB_BTN_CLEAR
+              end
+
+              it 'billing and accounting entries statuses should change to cleared' do
+                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
+
+                entries = customer_acc.entries.where(type: ChequePayment, ticket_id: job.id)
+                entries.all.should have(1).entry
+
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'cleared')
+              end
+            end
+          end
+        end
       end
 
 
@@ -79,7 +191,7 @@ describe "Account Pages", js: true do
 
   end
 
-  describe "transferred service call" do
+  describe 'transferred service call' do
     let(:subcon_job) { Ticket.last }
     before do
       in_browser(:org) do
@@ -96,12 +208,11 @@ describe "Account Pages", js: true do
         click_button JOB_BTN_START
         add_bom bom1[:name], bom1[:cost], bom1[:price], bom1[:quantity]
         add_bom bom2[:name], bom2[:cost], bom2[:price], bom2[:quantity]
-
       end
 
     end
-    describe "with profit share" do
-      describe "when completed" do
+    describe 'with profit share' do
+      describe 'when completed' do
         before do
           in_browser(:org2) do
             click_button JOB_BTN_COMPLETE
@@ -110,10 +221,8 @@ describe "Account Pages", js: true do
 
         it 'customers account should show the correct balance' do
           in_browser(:org) do
-            expected_balance = job.total_price
             visit customer_path customer
-            #should have_selector '.balance', text: "#{bom1[:total_price] + bom2[:total_price]}"
-            should have_customer_balance(expected_balance)
+            should have_customer_balance(expected_price)
           end
 
         end
@@ -127,7 +236,7 @@ describe "Account Pages", js: true do
           in_browser(:org) do
             visit affiliate_path org2
 
-            should have_entry(accounting_entry, expected_entry_amount)
+            should have_entry(accounting_entry, amount: expected_entry_amount)
           end
 
         end
@@ -140,7 +249,7 @@ describe "Account Pages", js: true do
           in_browser(:org) do
             visit affiliate_path org2
             entries.each do |entry|
-              should have_entry(entry, entry.amount)
+              should have_entry(entry, amount: entry.amount)
             end
 
           end
@@ -162,7 +271,7 @@ describe "Account Pages", js: true do
           expected_amount  = (subcon_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
           in_browser(:org2) do
             visit affiliate_path org
-            should have_entry(accounting_entry, expected_amount)
+            should have_entry(accounting_entry, amount: expected_amount)
           end
 
         end
@@ -175,7 +284,7 @@ describe "Account Pages", js: true do
           in_browser(:org2) do
             visit affiliate_path org
             entries.each do |entry|
-              should have_entry(entry, entry.amount)
+              should have_entry(entry, amount: entry.amount)
             end
 
           end
@@ -193,6 +302,394 @@ describe "Account Pages", js: true do
 
         it "technician's view should show an employee commission (income)"
 
+        describe 'when invoiced by subcontractor' do
+          before do
+            in_browser(:org2) do
+              visit service_call_path(subcon_job)
+              click_button JOB_BTN_INVOICE
+            end
+          end
+
+          it 'should show a select of payment type with a collect button' do
+            should have_select JOB_SELECT_PAYMENT
+            should have_button JOB_BTN_COLLECT
+          end
+
+          it "should send an invoice to the customer"
+
+          describe 'with cash payment' do
+            before do
+              in_browser(:org2) do
+                select Cash.model_name.human, from: JOB_SELECT_PAYMENT
+                click_button JOB_BTN_COLLECT
+              end
+            end
+
+
+            it 'customer account should show cash payment entry' do
+              entries = customer_acc.entries.where(type: CashPayment, ticket_id: job.id)
+              entries.all.should have(1).entry
+
+              in_browser(:org) do
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: CashPayment.model_name.human)
+              end
+            end
+
+            it 'customer account should be zero' do
+              in_browser(:org) do
+                visit customer_path customer
+                should have_customer_balance 0
+              end
+            end
+
+            it 'provider view: account should show cash collection entry from subcontractor with a cleared status (income)' do
+              entries = org1_org2_acc.entries.where(type: CashCollectionFromSubcon, ticket_id: job.id)
+              entries.all.should have(1).entry
+              in_browser(:org) do
+                visit affiliate_path(job.reload.subcontractor)
+                should have_entry(entries.first, amount: job.total_price, status: 'cleared', type: CashCollectionFromSubcon.model_name.human)
+              end
+
+            end
+
+            it 'provider view: account balance should be set to the difference between the total price and cost' do
+              in_browser(:org) do
+                visit affiliate_path(job.reload.subcontractor)
+                should have_affiliate_balance((subcon_job.total_price - subcon_job.total_cost)*(1 - profit_split.rate/100.0))
+              end
+
+            end
+
+            it 'subcontractor view: account should show cash collection entry for provider with cleared status (withdrawal)' do
+              entries = org2_org1_acc.entries.where(type: CashCollectionForProvider, ticket_id: subcon_job.id)
+              entries.all.should have(1).entry
+              in_browser(:org2) do
+                visit affiliate_path(subcon_job.reload.provider)
+                should have_entry(entries.first, amount: -subcon_job.total_price, status: 'cleared', type: CashCollectionForProvider.model_name.human)
+              end
+
+            end
+
+            it 'subcontractor view: account balance should be set to the difference between the total price and cost' do
+              in_browser(:org2) do
+                visit affiliate_path(subcon_job.reload.provider)
+                should have_affiliate_balance(-(job.total_price - job.total_cost)*(1 - profit_split.rate/100.0))
+              end
+
+            end
+
+            it "technician's account should show cash collection for employer with pending status (withdrawal)"
+
+            describe 'when the payment is marked as deposited by the subcontractor' do
+
+              before do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  click_button JOB_BTN_DEPOSIT
+                end
+              end
+              it 'subcon view: account should show the entry as deposited and the balance is updated' do
+                entries = org2_org1_acc.entries.where(type: CashDepositToProvider, ticket_id: subcon_job.id)
+
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.provider)
+                  should have_entry(entries.first, status: 'deposited', type: CashDepositToProvider.model_name.human)
+                  should have_affiliate_balance((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost)
+                end
+
+              end
+
+              it 'provider view: account should show the entry as deposited and balance is updated' do
+                entries = org1_org2_acc.entries.where(type: CashDepositFromSubcon, ticket_id: job.id)
+                entries.all.should have(1).entry
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+                  should have_entry(entries.first, amount: -job.total_price, status: 'deposited', type: CashDepositFromSubcon.model_name.human)
+                  should have_affiliate_balance(-((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost))
+                end
+
+              end
+
+              it "technician's account should show the entry as deposited"
+              it "technician's account should now have the amount type as income"
+
+              describe 'when provider confirms the deposit ' do
+                before do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    click_button JOB_BTN_CONFIRM_DEPOSIT
+                  end
+
+                end
+                it 'subcon view: account should show the entry as cleared' do
+                  entries = org2_org1_acc.entries.where(type: CashDepositToProvider, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.provider)
+                    should have_entry(entries.first, status: 'cleared')
+                  end
+                end
+                it 'provider view: account should should the entry as cleared' do
+                  entries = org1_org2_acc.entries.where(type: CashDepositFromSubcon, ticket_id: job.id)
+                  entries.should have(1).entry
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+                    should have_entry(entries.first, status: 'cleared')
+                  end
+
+                end
+                it "technician's account should show the entry as cleared"
+              end
+            end
+
+          end
+          describe 'with credit card payment' do
+            before do
+              in_browser(:org2) do
+                select CreditCard.model_name.human, from: JOB_SELECT_PAYMENT
+                click_button JOB_BTN_COLLECT
+              end
+            end
+
+
+            it 'customer account should show credit card payment entry' do
+              entries = customer_acc.entries.where(type: CreditPayment, ticket_id: job.id)
+              entries.all.should have(1).entry
+
+              in_browser(:org) do
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human)
+              end
+            end
+
+            it 'customer account should be zero' do
+              in_browser(:org) do
+                visit customer_path customer
+                should have_customer_balance 0
+              end
+            end
+
+            it 'provider view: account should show credit card collection from subcon with a cleared status (income)' do
+              entries = org1_org2_acc.entries.where(type: CreditCardCollectionFromSubcon, ticket_id: job.id)
+              entries.all.should have(1).entry
+              in_browser(:org) do
+                visit affiliate_path(job.reload.subcontractor)
+                should have_entry(entries.first, amount: job.total_price, status: 'cleared', type: CreditCardCollectionFromSubcon.model_name.human)
+              end
+            end
+
+            it 'provider view: account balance should be set to the difference between the total price and cost' do
+              in_browser(:org) do
+                visit affiliate_path(job.reload.subcontractor)
+                should have_affiliate_balance((subcon_job.total_price - subcon_job.total_cost)*(1 - profit_split.rate/100.0))
+              end
+            end
+
+            it 'subcon view: account should show credit card collection for provider with cleared status (withdrawal)' do
+              entries = org2_org1_acc.entries.where(type: CreditCardCollectionForProvider, ticket_id: subcon_job.id)
+              entries.all.should have(1).entry
+              in_browser(:org2) do
+                visit affiliate_path(subcon_job.reload.provider)
+                should have_entry(entries.first, amount: -subcon_job.total_price, status: 'cleared', type: CreditCardCollectionForProvider.model_name.human)
+              end
+            end
+
+            it 'subcon view: account balance should be set to the difference between the total price and cost' do
+              in_browser(:org2) do
+                visit affiliate_path(subcon_job.reload.provider)
+                should have_affiliate_balance(-(job.total_price - job.total_cost)*(1 - profit_split.rate/100.0))
+              end
+            end
+
+            it "technician's account should not have additional entries"
+
+            describe 'when marked as deposited by the subcontractor' do
+
+              before do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  click_button JOB_BTN_DEPOSIT
+                end
+              end
+              it 'subcon view: account should show the entry as deposited and the balance is updated' do
+                entries = org2_org1_acc.entries.where(type: CreditCardDepositToProvider, ticket_id: subcon_job.id)
+
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.provider)
+                  should have_entry(entries.first, status: 'deposited', type: CreditCardDepositToProvider.model_name.human)
+                  should have_affiliate_balance((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost)
+                end
+
+              end
+
+              it 'provider view: account should show the entry as deposited and balance is updated' do
+                entries = org1_org2_acc.entries.where(type: CreditCardDepositFromSubcon, ticket_id: job.id)
+                entries.all.should have(1).entry
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+                  should have_entry(entries.first, amount: -job.total_price, status: 'deposited', type: CreditCardDepositFromSubcon.model_name.human)
+                  should have_affiliate_balance(-((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost))
+                end
+
+              end
+
+              it "technician's account should show the entry as deposited"
+              it "technician's account should now have the amount type as income"
+
+              describe 'when provider confirms the deposit ' do
+                before do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    click_button JOB_BTN_CONFIRM_DEPOSIT
+                  end
+
+                end
+                it 'subcon view: account should show the entry as cleared' do
+                  entries = org2_org1_acc.entries.where(type: CreditCardDepositToProvider, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.provider)
+                    should have_entry(entries.first, status: 'cleared')
+                  end
+                end
+                it 'provider view: account should show the entry as cleared' do
+                  entries = org1_org2_acc.entries.where(type: CreditCardDepositFromSubcon, ticket_id: job.id)
+                  entries.should have(1).entry
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+                    should have_entry(entries.first, status: 'cleared')
+                  end
+
+                end
+                it "subcontractor's account should show the entry as cleared"
+                it "technician's account should show the entry as cleared"
+              end
+            end
+
+          end
+          describe 'with cheque payment' do
+            before do
+              in_browser(:org2) do
+                select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
+                click_button JOB_BTN_COLLECT
+              end
+            end
+
+
+            it 'customer account should show cheque payment entry with pending status' do
+              entries = customer_acc.entries.where(type: ChequePayment, ticket_id: job.id)
+              entries.all.should have(1).entry
+
+              in_browser(:org) do
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'pending')
+              end
+            end
+
+            it 'provider view: account should show cheque collection from subcontractor with a cleared status (income)' do
+              entries = org1_org2_acc.entries.where(type: ChequeCollectionFromSubcon, ticket_id: job.id)
+              entries.all.should have(1).entry
+              in_browser(:org) do
+                visit affiliate_path(job.reload.subcontractor)
+                should have_entry(entries.first, amount: job.total_price, status: 'cleared', type: ChequeCollectionFromSubcon.model_name.human)
+              end
+            end
+
+            it 'provider view: account balance should be set to the difference between the total price and cost' do
+              in_browser(:org) do
+                visit affiliate_path(job.reload.subcontractor)
+                should have_affiliate_balance((subcon_job.total_price - subcon_job.total_cost)*(1 - profit_split.rate/100.0))
+              end
+            end
+
+            it 'subcon view: account should show cheque collection to provider with pending status (withdrawal)' do
+              entries = org2_org1_acc.entries.where(type: ChequeCollectionForProvider, ticket_id: subcon_job.id)
+              entries.all.should have(1).entry
+              in_browser(:org2) do
+                visit affiliate_path(subcon_job.reload.provider)
+                should have_entry(entries.first, amount: -subcon_job.total_price, status: 'cleared', type: ChequeCollectionForProvider.model_name.human)
+              end
+            end
+
+            it 'subcon view: account balance should be set to the difference between the total price and cost' do
+              in_browser(:org2) do
+                visit affiliate_path(subcon_job.reload.provider)
+                should have_affiliate_balance(-(job.total_price - job.total_cost)*(1 - profit_split.rate/100.0))
+              end
+            end
+
+
+            it "technician's account should show pending check collection for employer withdrawal"
+
+            describe 'when the cheque is marked as deposited by the subcontractor' do
+
+              before do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  click_button JOB_BTN_DEPOSIT
+                end
+              end
+              it 'subcon view: account should show the entry as deposited and the balance is updated' do
+                entries = org2_org1_acc.entries.where(type: ChequeDepositToProvider, ticket_id: subcon_job.id)
+
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.provider)
+                  should have_entry(entries.first, status: 'deposited', type: ChequeDepositToProvider.model_name.human)
+                  should have_affiliate_balance((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost)
+                end
+
+              end
+
+              it 'provider view: account should show the entry as deposited and balance is updated' do
+                entries = org1_org2_acc.entries.where(type: ChequeDepositFromSubcon, ticket_id: job.id)
+                entries.all.should have(1).entry
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+                  should have_entry(entries.first, amount: -job.total_price, status: 'deposited', type: ChequeDepositFromSubcon.model_name.human)
+                  should have_affiliate_balance(-((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost))
+                end
+
+              end
+
+              it "technician's account should show the entry as deposited"
+              it "technician's account should now have the amount type as income"
+
+              describe 'when provider confirms the deposit ' do
+                before do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    click_button JOB_BTN_CONFIRM_DEPOSIT
+                  end
+
+                end
+                it 'subcon view: account should show the entry as cleared' do
+                  entries = org2_org1_acc.entries.where(type: ChequeDepositToProvider, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.provider)
+                    should have_entry(entries.first, status: 'cleared')
+                  end
+                end
+                it 'provider view: account should should the entry as cleared' do
+                  entries = org1_org2_acc.entries.where(type: ChequeDepositFromSubcon, ticket_id: job.id)
+                  entries.should have(1).entry
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+                    should have_entry(entries.first, status: 'cleared')
+                  end
+
+                end
+                it "subcontractor's account should show the entry as cleared"
+                it "technician's account should show the entry as cleared"
+              end
+            end
+
+
+          end
+
+        end
+
         describe 'when invoiced by provider' do
           before do
             in_browser(:org) do
@@ -206,12 +703,7 @@ describe "Account Pages", js: true do
             should have_button JOB_BTN_PAID
           end
 
-
-          it 'should send an invoice to the customer'
-
-
-
-          it 'accounting entries status should be set to paid'
+          it "should send an invoice to the customer"
 
           describe 'with cash payment' do
             before do
@@ -219,11 +711,10 @@ describe "Account Pages", js: true do
               click_button JOB_BTN_PAID
             end
 
-
             it 'customer account should show cash payment entry' do
-              entry = job.entries.where("type = 'CashPayment'").last
+              entry = job.accounting_entries.where("type = 'CashPayment'").last
               visit customer_path customer
-              should have_entry(entry, amount: job.total_price, type: CashPayment.model_name.human)
+              should have_entry(entry, amount: -job.total_price, type: CashPayment.model_name.human)
 
             end
 
@@ -231,45 +722,108 @@ describe "Account Pages", js: true do
               visit customer_path customer
               should have_customer_balance 0
             end
-            it 'provider account should show cash collection from subcontractor with a pending status (income)' do
-              visit affiliate_path(job.provider)
-              should have_entry
+
+            it 'provider view: account should not have any additional entries' do
+              job.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ServiceCallCharge, CashPayment]
+              org1_org2_acc.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty]
+              customer_acc.entries.reload.map(&:class).should =~ [ServiceCallCharge, CashPayment]
             end
-            it "subcontractor's account should show cash collection to provider with pending status (withdrawal)"
+
+            it 'subcon view: account should not have any additional entries' do
+              subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+              org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+            end
+
             it "technician's account should show cash collection for employer with pending status (withdrawal)"
           end
-          describe "with credit card payment" do
-            it "customer's account should show credit card payment entry"
-            it "customer's account balance should be zero"
-            it "provider's account should not have additional entries"
-            it "subcontractor's account should  not have additional entries"
+          describe 'with credit card payment' do
+            before do
+              select CreditCard.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+            end
+
+            it 'customer account should show pending credit card payment entry with zero balance ' do
+              entry = job.accounting_entries.where(type: CreditPayment).last
+              visit customer_path customer
+              should have_entry(entry, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'pending')
+
+            end
+
+            it 'provider view: account should not have any additional entries' do
+              job.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ServiceCallCharge, CreditPayment]
+              org1_org2_acc.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty]
+              customer_acc.entries.reload.map(&:class).should =~ [ServiceCallCharge, CreditPayment]
+            end
+
+            it 'subcon view: account should not have any additional entries' do
+              subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+              org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+            end
+
             it "technician's account should not have additional entries"
+
+            describe 'clearing payment' do
+              before do
+                click_button JOB_BTN_CLEAR
+              end
+
+              it 'job billing and accounting entries statuses should change to cleared' do
+                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
+
+                entries = customer_acc.entries.where(type: CreditPayment, ticket_id: job.id)
+                entries.all.should have(1).entry
+
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'cleared')
+              end
+            end
+
           end
           describe "with cheque payment" do
-            describe "where the provider is the beneficiary" do
-              describe "when collected by the technician" do
-                it "customer's account should show a service call cheque payment entry"
-                it "provider's account should show a pending cheque collection by subcon entry"
-                it "subcontractor's account should show pending cheque collection for prov entry"
-                it "technician's account should show pending check collection for employer withdrawal"
+            before do
+              select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+            end
 
-                describe "when the cheque is marked as deposited by the subcontractor" do
-                  it "provider's account should show the entry as deposited"
-                  it "provider's account should now have the amount type as withdrawal"
-                  it "subcontractor's account should show the entry as deposited"
-                  it "subcontractor's account should now have the amount type as income"
-                  it "technician's account should show the entry as deposited"
-                  it "technician's account should now have the amount type as income"
+            describe "when collected by the technician" do
+              it 'customer account should show pending credit card payment entry with zero balance ' do
+                entry = job.accounting_entries.where(type: ChequePayment).last
+                visit customer_path customer
+                should have_entry(entry, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'pending')
 
-                  describe "when provider marks the transaction as cleared" do
-                    it "provider's account should show the entry as cleared"
-                    it "subcontractor's account should show the entry as cleared"
-                    it "technician's account should show the entry as cleared"
-                  end
+              end
+
+              it 'provider view: account should not have any additional entries' do
+                job.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ServiceCallCharge, ChequePayment]
+                org1_org2_acc.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty]
+                customer_acc.entries.reload.map(&:class).should =~ [ServiceCallCharge, ChequePayment]
+              end
+
+              it 'subcon view: account should not have any additional entries' do
+                subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+                org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+              end
+
+              it "technician's account should show pending check collection for employer withdrawal"
+
+              describe 'clearing payment' do
+                before do
+                  click_button JOB_BTN_CLEAR
+                end
+
+                it 'job billing and accounting entries statuses should change to cleared' do
+                  should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
+
+                  entries = customer_acc.entries.where(type: ChequePayment, ticket_id: job.id)
+                  entries.all.should have(1).entry
+
+                  visit customer_path customer
+                  should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'cleared')
                 end
               end
 
             end
+
 
           end
 

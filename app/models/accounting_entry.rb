@@ -35,18 +35,30 @@ class AccountingEntry < ActiveRecord::Base
   # State machine  for ServiceCall status
   # first we will define the service call state values
 
-  # common statuses for all service call types
+  # common statuses for all accounting entrytypes
   # specific statuses will be setup in each sub-class by prefixing with an integer to avoid conflicts
-  # i.e. STATUS_SUBCLASS_STATUS = 41 (4 being the subclass status identifier)
+  # i.e. STATUS_PENDING = 41 (4 being the subclass status identifier)
 
-  STATUS_PENDING    = 0
-  STATUS_CLEARED    = 1
-  STATUS_RECONCILED = 2
+  STATUS_PENDING   = 0
+  STATUS_DEPOSITED = 1
+  STATUS_CLEARED   = 2
 
   state_machine :status, initial: :pending do
     state :pending, value: STATUS_PENDING
     state :cleared, value: STATUS_CLEARED
-    state :reconciled, value: STATUS_RECONCILED
+    state :deposited, value: STATUS_DEPOSITED
+
+    after_failure do |service_call, transition|
+      Rails.logger.debug { "AccountingEntry status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
+
+    event :deposit do
+      transition :pending => :deposited
+    end
+
+    event :clear do
+      transition [:pending, :deposited] => :cleared
+    end
 
   end
   protected
@@ -57,4 +69,8 @@ class AccountingEntry < ActiveRecord::Base
   def amount_direction
     raise "The ammount direction is not defined - you need to define amount_direction method for #{self.class}"
   end
+end
+
+Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |file|
+  require_dependency file
 end

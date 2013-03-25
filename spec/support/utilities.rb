@@ -7,6 +7,10 @@ JOB_BTN_TRANSFER          = 'service_call_transfer_btn'
 JOB_BTN_ACCEPT            = 'accept_service_call_btn'
 JOB_BTN_INVOICE           = 'invoice_service_call_btn'
 JOB_BTN_PAID              = 'job_paid_btn'
+JOB_BTN_CLEAR             = 'clear_service_call_btn'
+JOB_BTN_COLLECT           = 'collect_service_call_btn'
+JOB_BTN_DEPOSIT           = 'deposit_to_prov_service_call_btn'
+JOB_BTN_CONFIRM_DEPOSIT   = 'confirm_deposit_service_call_btn'
 JOB_SELECT_SUBCONTRACTOR  = 'service_call_subcontractor_id'
 JOB_SELECT_PAYMENT        = 'service_call_payment_type'
 JOB_CBOX_ALLOW_COLLECTION = 'service_call_allow_collection'
@@ -111,7 +115,7 @@ def setup_customer_agreement(org, customer)
   if account.nil?
     account = Account.create(organization: org, accountable: customer)
   end
-  Rails.logger.debug {"created account: #{account.inspect}"}
+  Rails.logger.debug { "created account: #{account.inspect}" }
 end
 
 def setup_profit_split_agreement(prov, subcon)
@@ -132,6 +136,9 @@ def add_bom(name, cost, price, qty)
   fill_in 'bom_price', with: price
   fill_in 'bom_quantity', with: qty
   click_button 'add_part'
+  page.should have_selector "td", text: name # to ensure bom is added before moving to the next action (click visit etc.)
+                                             #page.driver.render("#{Rails.root}/tmp/capybara/add_bom_#{name}_#{Time.now}.png", :full => true)
+                                             #page.save_page
   click_button 'new-bom-button'
 end
 

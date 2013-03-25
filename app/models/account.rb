@@ -30,9 +30,8 @@ class Account < ActiveRecord::Base
 
   alias_method :entries, :accounting_entries
 
-  scope :for_affiliate, ->(org, affiliate) { where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'", org.id, affiliate.id) }
-  scope :for_customer, ->(org, customer) { where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Customer'", org.id, customer.id) }
   scope :for, ->(org, accountable) { where("organization_id = ? AND accountable_id = ? AND accountable_type = ?", org.id, accountable.id, accountable.class.name) }
+  scope :for_affiliate, ->(org, affiliate) { where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'", org.id, affiliate.id) }
   scope :for_customer, ->(customer) { where("accountable_id = ? AND accountable_type = 'Customer'", customer.id) }
 
   def current_balance

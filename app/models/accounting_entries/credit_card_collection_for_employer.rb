@@ -17,9 +17,9 @@
 #  balance_currency :string(255)     default("USD"), not null
 #
 
-class EmployeeCommission < AccountingEntry
+class CreditCardCollectionForEmployer < AccountingEntry
   def amount_direction
-    1
+    -1
   end
 
 end

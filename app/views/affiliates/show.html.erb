@@ -2,13 +2,13 @@
 
 <div class="well well_height">
 
-<div class="row-fluid">
+  <div class="row-fluid">
     <div class="no_margins">
-        <div class="span6">
-            <!--Contact Info-->
-                <%= render :partial => 'contact_info' %>
-            <!--Agreements-->
-            <% if @agreements.empty? %>
+      <div class="span6">
+        <!--Contact Info-->
+        <%= render :partial => 'contact_info' %>
+        <!--Agreements-->
+        <% if @agreements.empty? %>
             </div>
             <div class="span10">
 
@@ -18,24 +18,21 @@
               </span>
               <br><br>
 
-                  <div class="bom collapse" id="add_new_agreement">
-                    <%= render 'agreements/agreement_form', other_party: @affiliate %>
-                  </div>
+              <div class="bom collapse" id="add_new_agreement">
+                <%= render 'agreements/agreement_form', other_party: @affiliate %>
+              </div>
             </div>
 
-            <% else %>
-                <%= render :partial => 'affiliate_agreements' %>
-                </div>
+        <% else %>
+            <%= render :partial => 'affiliate_agreements' %>
+            </div>
 
             <div class="span6">
-
-                <%= render 'affiliate_balance' if @account.present? %>
-                <!-- <#% unless @affiliate.service_calls.empty? %>-->
-                <%= render :partial => 'affiliate_jobs' %>
-                <!-- <#% end  %> -->
+              <%= render 'affiliate_balance' if @account.present? %>
+              <%= render :partial => 'affiliate_jobs' %>
             </div>
-          <% end %>
-<!--End row-->
-</div>
+        <% end %>
+        <!--End row-->
+        </div>
 </div>
 <!--End of Well-->

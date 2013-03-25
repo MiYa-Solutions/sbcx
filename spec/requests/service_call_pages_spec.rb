@@ -188,7 +188,7 @@ describe "Service Call pages" do
 
             it "the customer is accessible" do
               visit customer_path service_call.customer
-              should have_content(service_call.customer.name)
+              Capybara.string(page.body).should have_content(service_call.customer.name)
             end
 
             it "the customer should belong to the provider" do
@@ -248,7 +248,7 @@ describe "Service Call pages" do
       end
 
       it { should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.pending')) }
-      it { should have_selector(transfer_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
+      it { should have_button(I18n.t('activerecord.state_machines.my_service_call.status.events.transfer')) }
 
       it { should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.new')) }
 
@@ -298,7 +298,11 @@ describe "Service Call pages" do
           it " service call should have a started event associated " do
             service_call.events.pluck(:reference_id).should include(100015)
             service_call.reload
-            should have_selector('table#event_log_in_service_call td', content: I18n.t('service_call_start_event.description', technician: service_call.technician.name))
+            #adding Capybara.string(page.body) as page.should have_selector doesn't work with  text: for some reason
+            Capybara.string(page.body).should have_selector('table#event_log_in_service_call tbody tr td', text: I18n.t('service_call_start_event.description', technician: service_call.technician.name))
+
+
+            #should have_text(I18n.t('service_call_start_event.description', technician: service_call.technician.name))
           end
         end
 
@@ -312,7 +316,9 @@ describe "Service Call pages" do
           visit service_call_path service_call
         end
 
-        it { should have_selector(dispatch_btn, value: I18n.t('activerecord.state_machines.my_service_call.status.events.dispatch')) }
+        it 'should show a dispatch button' do
+          should have_button(I18n.t('activerecord.state_machines.my_service_call.status.events.dispatch'))
+        end
 
       end
 
@@ -358,7 +364,7 @@ describe "Service Call pages" do
           end
           it "notification should appear in the welcome" do
             visit user_root_path
-            should have_selector(notifications, content: /#{service_call.provider.name}/)
+            should have_selector(notifications, text: /#{service_call.provider.name}/)
           end
 
           it "should show up in the subcontractors gui with a locelized received_new status" do
@@ -370,9 +376,6 @@ describe "Service Call pages" do
             should_not have_subcon_status('')
           end
 
-          it "should allow to accept the service call" do
-            should have_selector(accept_btn, value: I18n.t('activerecord.state_machines.transferred_service_call.status.events.accept'))
-          end
         end
 
         describe "subcontractor accepts the service call" do
@@ -381,7 +384,7 @@ describe "Service Call pages" do
           before do
             in_browser(:org2) do
               visit service_call_path @subcon_service_call
-              click_button accept_btn_selector
+              click_button JOB_BTN_ACCEPT
             end
 
             in_browser(:org) { visit service_call_path service_call }
@@ -653,7 +656,7 @@ describe "Service Call pages" do
                         end
 
                         it 'should show the overdue event' do
-                          should have_selector('table#event_log_in_service_call td', content: I18n.t('service_call_payment_overdue_event.description'))
+                          should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_payment_overdue_event.description'))
                         end
 
                       end
@@ -666,7 +669,7 @@ describe "Service Call pages" do
 
                           it 'should have a collector select box with the technician as one of the values' do
                             @subcon_service_call.reload
-                            should have_selector collector_select, content: @subcon_service_call.technician.name
+                            should have_select collector_select_selector , with_options: [@subcon_service_call.technician.name]
                           end
 
                           it 'should not allow collection without specifying a collector' do
@@ -735,7 +738,7 @@ describe "Service Call pages" do
 
                                 it 'service call should have the deposit_to_prov event associated ' do
                                   @subcon_service_call.reload.events.pluck(:reference_id).should include(100022)
-                                  should have_selector('table#event_log_in_service_call td', content: I18n.t('service_call_deposit_event.description', provider: @subcon_service_call.provider.name))
+                                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_deposit_event.description', provider: @subcon_service_call.provider.name))
                                 end
 
                                 describe 'provider view' do
@@ -1325,7 +1328,7 @@ describe "Service Call pages" do
             end
 
             it "should have canceled event displayed" do
-              should have_selector("table#event_log_in_service_call td", content: I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+              should have_selector("table#event_log_in_service_call td", text: I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
             end
 
 

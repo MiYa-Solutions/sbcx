@@ -18,5 +18,8 @@
 #
 
 class CreditPayment < AccountingEntry
-  # To change this template use File | Settings | File Templates.
+  def amount_direction
+    1
+  end
+
 end

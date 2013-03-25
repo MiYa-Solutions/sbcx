@@ -20,6 +20,7 @@ class AffiliateBillingService
       @account.lock!
       @accounting_entries.each do |entry|
         @account.entries << entry
+        entry.clear
       end
     end
   end

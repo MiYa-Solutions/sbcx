@@ -81,11 +81,12 @@ class ServiceCallEvent < Event
 
   def notify_subcontractor?
     begin
-      service_call.subcontractor.subcontrax_member? &&
+      service_call.subcontractor.present? &&
+          service_call.subcontractor.subcontrax_member? &&
           service_call.subcontractor.id != service_call.organization.id &&
           !subcon_service_call.events.include?(self.triggering_event)
-    rescue
-      Rails.logger.error { "Error in  ServiceCallEvent#notify_subcontractor?" }
+    rescue Exception => err
+      Rails.logger.error { "Error in  #{self.class.name}#notify_subcontractor?: \n#{err.inspect}" }
     end
 
   end
@@ -99,21 +100,23 @@ class ServiceCallEvent < Event
   end
 
   def set_customer_account_as_paid
-    account = Account.for_customer(service_call.customer).first
+    account = Account.for_customer(service_call.customer).lock(true).first
+    ticket  = MyServiceCall.find(service_call.ref_id)
 
-    props = { amount:      - service_call.total_price,
-              #account:    account,
-              ticket:      service_call,
+    props = { amount:      -service_call.total_price,
+              ticket:      ticket,
               event:       self,
-              description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
+              description: I18n.t("payment.#{service_call.payment_type}.description", ticket: ticket.id).html_safe }
 
 
     case service_call.payment_type
       when 'cash'
-        account.entries << CashPayment.new(props)
-        Rails.logger.debug {"Just for a breakpoint"}
+        entry = CashPayment.new(props)
+        account.entries << entry
+        entry.clear
       when 'credit_card'
-        account.entries << CreditPayment.new(props)
+        entry = CreditPayment.new(props)
+        account.entries << entry
       when 'cheque'
         account.entries << ChequePayment.new(props)
       else

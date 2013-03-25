@@ -41,9 +41,9 @@ group :development do
   gem 'letter_opener'
 end
 group :development, :test do
-  gem 'rspec-rails', '2.9.0'
-  gem 'guard-rspec', '0.5.5'
-  gem 'annotate', '~> 2.4.1.beta'
+  gem 'rspec-rails', '2.13.0'
+  gem 'guard-rspec', '2.5.1'
+  gem 'annotate', '2.5.0'
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
@@ -60,7 +60,7 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara', '1.1.2'
+  gem 'capybara', '2.0.2'
   gem 'factory_girl_rails', '4.1.0'
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner', '~> 0.9.1'
@@ -71,6 +71,6 @@ group :test do
   gem 'launchy', '2.1.0'
   gem 'mocha'
   gem 'capybara-screenshot'
-  gem 'poltergeist'
+  gem 'poltergeist', '1.1.0'
   gem 'shoulda'
 end

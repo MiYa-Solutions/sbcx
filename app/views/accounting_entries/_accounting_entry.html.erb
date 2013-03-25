@@ -1,6 +1,7 @@
 <tr id="accounting_entry_<%= accounting_entry.id %>">
   <td id="entry_<%= accounting_entry.id %>_ticket_link"><%= link_to accounting_entry.ticket.id, accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %></td>
   <td><%= link_to accounting_entry.ticket.address1, accounting_entry.ticket.becomes(accounting_entry.ticket.class.superclass) %></td>
+  <td id="entry_<%= accounting_entry.id %>_type"><%= accounting_entry.class.model_name.human %></td>
   <td id="entry_<%= accounting_entry.id %>_status"><%= accounting_entry.human_status_name.humanize %></td>
   <td id="entry_<%= accounting_entry.id %>_amount"><%= humanized_money_with_symbol accounting_entry.amount %></td>
   <td id="entry_<%= accounting_entry.id %>_balance"><%= humanized_money_with_symbol accounting_entry.balance %></td>

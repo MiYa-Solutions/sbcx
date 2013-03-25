@@ -38,3 +38,7 @@ class Payment < ActiveRecord::Base
 
   end
 end
+
+Dir["#{Rails.root}/app/models/payments/*.rb"].each do |file|
+  require_dependency file
+end

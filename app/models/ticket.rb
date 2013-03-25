@@ -60,6 +60,9 @@ class Ticket < ActiveRecord::Base
   end
   belongs_to :collector, :polymorphic => true
   has_many :appointments, as: :appointable
+  has_many :accounting_entries
+
+  alias_method :entries, :accounting_entries
 
   scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov} AND subcontractor_id = #{subcon} and created_at > '#{after}'") }
   scope :affiliated_jobs, ->(org, affiliate) { where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id)) }

@@ -89,4 +89,7 @@ en:
           tooltip: "Click to indicate the subcontractor has deposited the customer payment"
         confirm_deposit:
           tooltip: "Click to confirm the subcontractor has deposited the customer payment"
+        clear:
+          tooltip: "Click to indicate the payment was cleared"
+
 

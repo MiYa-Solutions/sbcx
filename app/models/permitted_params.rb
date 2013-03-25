@@ -504,6 +504,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = false if params[:billing_status_event] == "provider_collected" && obj.provider.subcontrax_member?
       res = false if params[:billing_status_event] == "subcon_collected" && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
       res = false if params[:billing_status_event] == "subcon_invoiced" && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
+      res = false if params[:billing_status_event] == "prov_confirmed_deposit" && (obj.provider.nil? || (obj.organization_id != obj.provider_id && obj.provider.subcontrax_member?))
     end
 
     res

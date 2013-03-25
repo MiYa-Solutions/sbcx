@@ -1,8 +1,14 @@
+require File.expand_path("../../config/environment", __FILE__)
 require 'rubygems'
 require 'spork'
+require 'rspec/rails'
+require 'rspec/autorun'
+require 'capybara/rails'
 require 'capybara/rspec'
 require 'capybara-screenshot/rspec'
 require 'capybara/poltergeist'
+require 'declarative_authorization/maintenance'
+
 
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
@@ -19,11 +25,9 @@ Spork.prefork do
     Capybara::Poltergeist::Driver.new(app, :debug => true)
   end
 
+  Capybara.ignore_hidden_elements = false
+
   ENV["RAILS_ENV"] ||= 'test'
-  require File.expand_path("../../config/environment", __FILE__)
-  require 'rspec/rails'
-  require 'rspec/autorun'
-  require 'declarative_authorization/maintenance'
 
   include Authorization::TestHelper
 
@@ -32,6 +36,7 @@ Spork.prefork do
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
   RSpec.configure do |config|
+
     # ## Mock Framework
     #
     # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -55,6 +60,8 @@ Spork.prefork do
     config.include(Matchers)
     config.include(ServiceCallMatchers)
     config.include(AccountingMatchers)
+    config.include Capybara::DSL
+    #config.include Capybara::RSpecMatchers
 
 
     config.before(:suite) do
