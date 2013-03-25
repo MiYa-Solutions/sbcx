@@ -3,7 +3,6 @@ require 'capybara/rspec'
 
 describe "User Pages" do
 
-
   subject { page }
 
   describe "with Org Admin" do
