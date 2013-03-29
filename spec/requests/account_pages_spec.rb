@@ -26,6 +26,7 @@ describe "Account Pages", js: true do
   }
 
   let(:expected_price) { bom1[:total_price] + bom2[:total_price] }
+  let(:expected_subcon_cut) { (bom1[:total_profit] + bom2[:total_profit])*(profit_split.rate / 100.0) + bom1[:total_cost] + bom2[:total_cost] }
   let(:org1_org2_acc) { Account.for_affiliate(org, org2).first }
   let(:org2_org1_acc) { Account.for_affiliate(org2, org).first }
   let(:customer_acc) { Account.for_customer(job.customer).first }
@@ -42,14 +43,11 @@ describe "Account Pages", js: true do
 
   subject { page }
 
-
-  # todo complete the profit split rule
-  # todo add beneficiary for cheque payment upon completion
-  # todo create the fixed price rule
   # todo create correction ability using account entries controller
   # todo add collected_by to the payment event
   # todo add a proposal ticket type
-  # todo complete the spec below
+  # todo add beneficiary for cheque payment upon completion
+  # todo create the fixed price rule
 
 
   describe 'none transferred service call' do
@@ -191,7 +189,7 @@ describe "Account Pages", js: true do
 
   end
 
-  describe 'transferred service call' do
+  describe 'transferred service call to a member subcon' do
     let(:subcon_job) { Ticket.last }
     before do
       in_browser(:org) do
@@ -829,6 +827,734 @@ describe "Account Pages", js: true do
 
         end
 
+        describe 'provider / subcon settlement' do
+          before do
+            in_browser(:org) do
+              visit service_call_path(job)
+              click_button JOB_BTN_INVOICE
+              select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+              click_button JOB_BTN_CLEAR
+            end
+
+          end
+
+          it 'provider view: settlement button and subcon payment select should be available' do
+            in_browser(:org) do
+              visit service_call_path(job)
+              should have_select JOB_SELECT_SUBCON_PAYMENT
+              should have_button JOB_BTN_SETTLE
+            end
+          end
+
+          it 'subcon view: settlement button and provider payment should be available' do
+            in_browser(:org2) do
+              visit service_call_path(subcon_job)
+              should have_select JOB_SELECT_PROVIDER_PAYMENT
+              should have_button JOB_BTN_SETTLE
+
+            end
+          end
+
+          it 'provider view: should not allow settlement without choosing a payment' do
+            in_browser(:org) do
+              visit service_call_path(job)
+              click_button JOB_BTN_SETTLE
+              should have_selector 'div.alert-error'
+            end
+          end
+
+          it 'subcon view: should not allow settlement without choosing a payment' do
+            in_browser(:org2) do
+              visit service_call_path(subcon_job)
+              click_button JOB_BTN_SETTLE
+              should have_selector 'div.alert-error'
+            end
+          end
+
+          describe 'provider indicates the job is settled ' do
+
+            describe 'with cash' do
+
+              before do
+                in_browser(:org) do
+                  select Cash.model_name.human, from: JOB_SELECT_SUBCON_PAYMENT
+                  click_button JOB_BTN_SETTLE
+                end
+              end
+
+
+              it 'subcon view: should send a notification to the subcon' do
+                in_browser(:org2) do
+                  visit user_root_path
+                  should have_text(I18n.t('notifications.sc_provider_settled_notification.subject', ref: subcon_job.ref_id))
+                end
+              end
+
+              it 'provider view: status should be set to Settled?' do
+                in_browser(:org) do
+                  should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
+                end
+              end
+
+              it 'subcon view: status should be set to marked as settled by prov' do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claimed_as_settled'))
+                end
+              end
+
+              it 'provider view: account should have a cash payment entry with deposited status' do
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+
+                  entries = org1_org2_acc.entries.where(type: CashPaymentToAffiliate, ticket_id: job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: expected_subcon_cut, type: CashPaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+              end
+
+              it 'subcon view: account should have a cash payment entry with deposited status' do
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.reload.provider)
+
+                  entries = org2_org1_acc.entries.where(type: CashPaymentFromAffiliate, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: -expected_subcon_cut, type: CashPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+
+              end
+
+              describe 'subcon confirms the settlement' do
+                before do
+                  in_browser(:org2) do
+                    visit service_call_path(subcon_job)
+                    click_button JOB_CONFIRM_SETTLEMENT
+                  end
+
+                end
+                it 'subcon view: status should change to settled' do
+                  in_browser(:org2) do
+                    should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled'))
+                  end
+                end
+
+                it 'provider view: status should change to settled' do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
+                    should_not have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
+                  end
+
+                end
+
+                it 'provider should get a notification' do
+                  in_browser(:org) do
+                    visit user_root_path
+                    job.reload
+                    should have_text(I18n.t('notifications.sc_subcon_confirmed_settled_notification.subject', subcon: job.subcontractor.name, ref: job.ref_id))
+                  end
+                end
+
+                it 'provider view: payment entry status should change to cleared' do
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+
+                    entries = job.entries.where(type: CashPaymentToAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+                end
+
+                it 'subcon view: payment entry status should change to cleared' do
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.reload.provider)
+
+                    entries = subcon_job.entries.where(type: CashPaymentFromAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+
+                end
+              end
+            end
+            describe 'with credit card' do
+              before do
+                in_browser(:org) do
+                  select CreditCard.model_name.human, from: JOB_SELECT_SUBCON_PAYMENT
+                  click_button JOB_BTN_SETTLE
+                end
+              end
+
+              it 'subcon view: should send a notification to the subcon' do
+                in_browser(:org2) do
+                  visit user_root_path
+                  should have_text(I18n.t('notifications.sc_provider_settled_notification.subject', ref: subcon_job.ref_id))
+                end
+              end
+
+              it 'provider view: status should be set to Settled?' do
+                in_browser(:org) do
+                  should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
+                end
+              end
+
+              it 'subcon view: status should be set to marked as settled by prov' do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claimed_as_settled'))
+                end
+              end
+
+              it 'provider view: account should have a credit payment entry with deposited status' do
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+
+                  entries = org1_org2_acc.entries.where(type: CreditPaymentToAffiliate, ticket_id: job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: expected_subcon_cut, type: CreditPaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+              end
+
+              it 'subcon view: account should have a cash payment entry with deposited status' do
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.reload.provider)
+
+                  entries = org2_org1_acc.entries.where(type: CreditPaymentFromAffiliate, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: -expected_subcon_cut, type: CreditPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+
+              end
+
+              describe 'subcon confirms the settlement' do
+                before do
+                  in_browser(:org2) do
+                    visit service_call_path(subcon_job)
+                    click_button JOB_CONFIRM_SETTLEMENT
+                  end
+
+                end
+                it 'subcon view: status should change to settled' do
+                  in_browser(:org2) do
+                    should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled'))
+                  end
+                end
+
+                it 'provider view: status should change to settled' do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
+                    should_not have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
+                  end
+
+                end
+
+                it 'provider should get a notification' do
+                  in_browser(:org) do
+                    visit user_root_path
+                    job.reload
+                    should have_text(I18n.t('notifications.sc_subcon_confirmed_settled_notification.subject', subcon: job.subcontractor.name, ref: job.ref_id))
+                  end
+                end
+
+                it 'provider view: payment entry status should change to cleared' do
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+
+                    entries = job.entries.where(type: CreditPaymentToAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+                end
+
+                it 'subcon view: payment entry status should change to cleared' do
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.reload.provider)
+
+                    entries = subcon_job.entries.where(type: CreditPaymentFromAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+
+                end
+              end
+
+            end
+            describe 'with cheque' do
+              before do
+                in_browser(:org) do
+                  select Cheque.model_name.human, from: JOB_SELECT_SUBCON_PAYMENT
+                  click_button JOB_BTN_SETTLE
+                end
+              end
+
+              it 'subcon view: should send a notification to the subcon' do
+                in_browser(:org2) do
+                  visit user_root_path
+                  should have_text(I18n.t('notifications.sc_provider_settled_notification.subject', ref: subcon_job.ref_id))
+                end
+              end
+
+              it 'provider view: status should be set to Settled?' do
+                in_browser(:org) do
+                  should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
+                end
+              end
+
+              it 'subcon view: status should be set to marked as settled by prov' do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claimed_as_settled'))
+                end
+              end
+
+              it 'provider view: account should have a credit payment entry with deposited status' do
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+
+                  entries = org1_org2_acc.entries.where(type: ChequePaymentToAffiliate, ticket_id: job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: expected_subcon_cut, type: ChequePaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+              end
+
+              it 'subcon view: account should have a cash payment entry with deposited status' do
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.reload.provider)
+
+                  entries = org2_org1_acc.entries.where(type: ChequePaymentFromAffiliate, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: -expected_subcon_cut, type: ChequePaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+
+              end
+
+              describe 'subcon confirms the settlement' do
+                before do
+                  in_browser(:org2) do
+                    visit service_call_path(subcon_job)
+                    click_button JOB_CONFIRM_SETTLEMENT
+                  end
+
+                end
+
+                it 'subcon view: status should change to settled' do
+                  in_browser(:org2) do
+                    should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled'))
+                  end
+                end
+
+                it 'provider view: status should change to settled' do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
+                    should_not have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
+                  end
+
+                end
+
+                it 'provider should get a notification' do
+                  in_browser(:org) do
+                    visit user_root_path
+                    job.reload
+                    should have_text(I18n.t('notifications.sc_subcon_confirmed_settled_notification.subject', subcon: job.subcontractor.name, ref: job.ref_id))
+                  end
+                end
+
+                it 'provider view: payment entry status should change to cleared' do
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+
+                    entries = job.entries.where(type: ChequePaymentToAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+                end
+
+                it 'subcon view: payment entry status should change to cleared' do
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.reload.provider)
+
+                    entries = subcon_job.entries.where(type: ChequePaymentFromAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+
+                end
+              end
+            end
+          end
+          describe 'subcon indicates the job is settled ' do
+
+            describe 'with cash' do
+
+              before do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  select Cash.model_name.human, from: JOB_SELECT_PROVIDER_PAYMENT
+                  click_button JOB_BTN_SETTLE
+                end
+              end
+
+
+              it 'provider view: should send a notification to the subcon' do
+                in_browser(:org) do
+                  visit user_root_path
+                  should have_text(I18n.t('notifications.sc_settled_notification.subject', ref: job.ref_id))
+                end
+              end
+
+              it 'subcontractor view: status should be set to Settled?' do
+                in_browser(:org2) do
+                  should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
+                end
+              end
+
+              it 'provider view: status should be set to marked as settled by subcon' do
+                in_browser(:org) do
+                  visit service_call_path(job)
+                  should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claimed_as_settled'))
+                end
+              end
+
+              it 'provider view: account should have a cash payment entry with deposited status' do
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+
+                  entries = org1_org2_acc.entries.where(type: CashPaymentToAffiliate, ticket_id: job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: expected_subcon_cut, type: CashPaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+              end
+
+              it 'subcon view: account should have a cash payment entry with deposited status' do
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.reload.provider)
+
+                  entries = org2_org1_acc.entries.where(type: CashPaymentFromAffiliate, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: -expected_subcon_cut, type: CashPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+
+              end
+
+              describe 'provider confirms the settlement' do
+                before do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    click_button JOB_CONFIRM_SETTLEMENT
+                  end
+
+                end
+                it 'provider view: status should change to settled' do
+                  in_browser(:org) do
+                    should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
+                  end
+                end
+
+                it 'subcon view: status should change to settled' do
+                  in_browser(:org2) do
+                    visit service_call_path(subcon_job)
+                    should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled'))
+                    should_not have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
+                  end
+
+                end
+
+                it 'subcon should get a notification' do
+                  in_browser(:org2) do
+                    visit user_root_path
+                    job.reload
+                    should have_text(I18n.t('notifications.sc_provider_confirmed_settled_notification.subject', ref: job.ref_id))
+                  end
+                end
+
+                it 'provider view: payment entry status should change to cleared' do
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+
+                    entries = job.entries.where(type: CashPaymentToAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+                end
+
+                it 'subcon view: payment entry status should change to cleared' do
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.reload.provider)
+
+                    entries = subcon_job.entries.where(type: CashPaymentFromAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+
+                end
+              end
+            end
+            describe 'with credit card' do
+              before do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  select CreditCard.model_name.human, from: JOB_SELECT_PROVIDER_PAYMENT
+                  click_button JOB_BTN_SETTLE
+                end
+              end
+
+              it 'provider view: should have a notification ' do
+                in_browser(:org) do
+                  visit user_root_path
+                  should have_text(I18n.t('notifications.sc_settled_notification.subject', ref: job.ref_id))
+                end
+              end
+
+              it 'subcon view: status should be set to Settled?' do
+                in_browser(:org2) do
+                  should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
+                end
+              end
+
+              it 'subcon view: status should be set to marked as settled by provider' do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
+                end
+              end
+
+              it 'provider view: account should have a credit payment entry with deposited status' do
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+
+                  entries = org1_org2_acc.entries.where(type: CreditPaymentToAffiliate, ticket_id: job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: expected_subcon_cut, type: CreditPaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+              end
+
+              it 'subcon view: account should have a cash payment entry with deposited status' do
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.reload.provider)
+
+                  entries = org2_org1_acc.entries.where(type: CreditPaymentFromAffiliate, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: -expected_subcon_cut, type: CreditPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+
+              end
+
+              describe 'provider confirms the settlement' do
+                before do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    click_button JOB_CONFIRM_SETTLEMENT
+                  end
+
+                end
+                it 'subcon view: status should change to settled' do
+                  in_browser(:org2) do
+                    visit service_call_path(subcon_job)
+                    should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled'))
+                    should_not have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
+                  end
+                end
+
+                it 'provider view: status should change to settled' do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
+                    should_not have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
+                  end
+
+                end
+
+                it 'subcon should get a notification' do
+                  in_browser(:org2) do
+                    visit user_root_path
+                    subcon_job.reload
+                    should have_text(I18n.t('notifications.sc_provider_confirmed_settled_notification.subject', ref: job.ref_id))
+                  end
+                end
+
+                it 'provider view: payment entry status should change to cleared' do
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+
+                    entries = job.entries.where(type: CreditPaymentToAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+                end
+
+                it 'subcon view: payment entry status should change to cleared' do
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.reload.provider)
+
+                    entries = subcon_job.entries.where(type: CreditPaymentFromAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+
+                end
+              end
+
+            end
+            describe 'with cheque' do
+              before do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  select Cheque.model_name.human, from: JOB_SELECT_PROVIDER_PAYMENT
+                  click_button JOB_BTN_SETTLE
+                end
+              end
+
+              it 'provider view: should have a notification ' do
+                in_browser(:org) do
+                  visit user_root_path
+                  should have_text(I18n.t('notifications.sc_settled_notification.subject', ref: job.ref_id))
+                end
+              end
+
+              it 'subcon view: status should be set to Settled?' do
+                in_browser(:org2) do
+                  should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
+                end
+              end
+
+              it 'subcon view: status should be set to marked as settled by provider' do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
+                end
+              end
+
+              it 'provider view: account should have a credit payment entry with deposited status' do
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+
+                  entries = org1_org2_acc.entries.where(type: ChequePaymentToAffiliate, ticket_id: job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: expected_subcon_cut, type: ChequePaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+              end
+
+              it 'subcon view: account should have a cash payment entry with deposited status' do
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.reload.provider)
+
+                  entries = org2_org1_acc.entries.where(type: ChequePaymentFromAffiliate, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: -expected_subcon_cut, type: ChequePaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_affiliate_balance(0)
+
+                end
+
+              end
+
+              describe 'provider confirms the settlement' do
+                before do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    click_button JOB_CONFIRM_SETTLEMENT
+                  end
+
+                end
+                it 'subcon view: status should change to settled' do
+                  in_browser(:org2) do
+                    visit service_call_path(subcon_job)
+                    should have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled'))
+                    should_not have_provider_status(I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.claim_settled'))
+                  end
+                end
+
+                it 'provider view: status should change to settled' do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
+                    should_not have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.claim_settled'))
+                  end
+
+                end
+
+                it 'subcon should get a notification' do
+                  in_browser(:org2) do
+                    visit user_root_path
+                    subcon_job.reload
+                    should have_text(I18n.t('notifications.sc_provider_confirmed_settled_notification.subject', ref: job.ref_id))
+                  end
+                end
+
+                it 'provider view: payment entry status should change to cleared' do
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+
+                    entries = job.entries.where(type: ChequePaymentToAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+                end
+
+                it 'subcon view: payment entry status should change to cleared' do
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.reload.provider)
+
+                    entries = subcon_job.entries.where(type: ChequePaymentFromAffiliate)
+                    entries.should have(1).entry
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_affiliate_balance(0)
+
+                  end
+
+                end
+              end
+
+            end
+          end
+
+        end
       end
     end
 

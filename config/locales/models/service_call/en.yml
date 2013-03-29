@@ -121,6 +121,7 @@ en:
           states:
             settled: "Settled"
             claim_settled: "Settled?"
+            claimed_as_settled: "Claimed As Settled"
   messages:
     service_call:
       event: 'The service call was %{event_name} successfully'

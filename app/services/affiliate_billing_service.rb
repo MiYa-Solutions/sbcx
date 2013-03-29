@@ -8,8 +8,8 @@ class AffiliateBillingService
                              ).first
   end
 
-  def execute
-    agreement = find_affiliate_agreement
+  def execute(agreement = nil)
+    agreement ||= find_affiliate_agreement
     Rails.logger.debug { "BillingService execution for agreement: #{agreement.inspect}" }
     posting_rules = agreement.find_posting_rules(@event)
     Rails.logger.debug { "BillingService execution for posting rules: #{posting_rules.inspect}" }
@@ -20,7 +20,6 @@ class AffiliateBillingService
       @account.lock!
       @accounting_entries.each do |entry|
         @account.entries << entry
-        entry.clear
       end
     end
   end

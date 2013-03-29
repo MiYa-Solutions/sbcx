@@ -90,7 +90,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     case obj.class.name
       when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :collector_id, :subcontractor_status_event,
+          permitted_attributes = [:status_event, :collector_id,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -139,7 +139,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :mobile_phone,
                                   :work_phone,
                                   :email,
-                                  :notes, :re_transfer, :provider_status_event, :payment_type]
+                                  :notes, :re_transfer, :payment_type]
 
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
           permitted_attributes = [:status_event,
@@ -179,6 +179,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         permitted_attributes.concat [:billing_status_event, :collector_id, :payment_type] if billing_allowed?
         permitted_attributes << :work_status_event if obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?)
         permitted_attributes << :allow_collection if obj.present? && !obj.provider.subcontrax_member?
+        permitted_attributes.concat  [:provider_status_event, :provider_payment] if provider_event_allowed?
       else # new service call
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
           permitted_attributes = [:status_event,
@@ -237,7 +238,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         end
     end
 
-    permitted_attributes << :subcontractor_status_event if subcontractor_status_allowed?
+    permitted_attributes.concat [:subcontractor_status_event, :subcon_payment] if subcontractor_status_allowed?
 
     permitted_attributes
   end
@@ -518,6 +519,17 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = false if params[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
     end
     res
+  end
+
+  def provider_event_allowed?
+    res = false
+    unless obj.nil? || obj.provider.nil?
+      res = true
+      res = false if params[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
+      res = false if params[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
+    end
+    res
+
   end
 
 end

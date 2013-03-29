@@ -56,24 +56,35 @@ class ProfitSplit < PostingRule
   def get_entries(event)
     @ticket = event.eventable
     @event  = event
-    case @ticket.my_role
-      when :prov
-        organization_entries
-      when :subcon
-        counterparty_entries
-      else
-        raise "Unrecognized role when creting profit split entries"
-    end
 
+    case event.class.name
+      when ServiceCallCompletedEvent.name, ServiceCallCompleteEvent.name
+        charge_entries
+      when ScSubconSettleEvent.name, ScSubconSettledEvent.name, ScProviderSettleEvent.name, ScProviderSettledEvent.name
+        settlement_entries
+      else
+        raise "Unexpected Event to be processed by ProfitSplit posting rule"
+    end
   end
 
   # todo implement timebound check
   def applicable?(event)
-    event.instance_of?(ServiceCallCompletedEvent) ||
-        (event.instance_of?(ServiceCallCompleteEvent) &&
-            event.eventable.instance_of?(MyServiceCall) &&
-            event.eventable.transferred?) ||
-        (event.instance_of?(ServiceCallCompleteEvent) && event.eventable.instance_of?(TransferredServiceCall))
+    case event.class.name
+      when ServiceCallCompletedEvent.name
+        true
+      when ServiceCallCompleteEvent.name
+        event.eventable.instance_of?(MyServiceCall) && event.eventable.transferred? ||
+            event.eventable.instance_of?(TransferredServiceCall)
+      when ScSubconSettleEvent.name
+        true
+      when ScProviderSettleEvent.name
+        true
+      when ScSubconSettledEvent.name
+        true
+      when ScProviderSettledEvent.name
+        true
+      else
+    end
   end
 
   private
@@ -82,20 +93,63 @@ class ProfitSplit < PostingRule
     @ticket.total_profit * (rate / 100.0)
   end
 
+  def charge_entries
+    case @ticket.my_role
+      when :prov
+        organization_entries
+      when :subcon
+        counterparty_entries
+      else
+        raise "Unrecognized role when creting profit split entries"
+    end
+  end
+
+  def settlement_entries
+    case @ticket.my_role
+      when :prov
+        organization_settlement_entries
+      when :subcon
+        counterparty_settlement_entries
+      else
+        raise "Unrecognized role when creting profit split entries"
+    end
+  end
+
   def organization_entries
-
     entries = []
-
-
     entries << PaymentToSubcontractor.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to provider owned account")
-
     @ticket.boms.each do |bom|
       if bom.buyer == agreement.counterparty
         entries << MaterialReimbursementToCparty.new(event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
       end
     end
-
     entries
+  end
+
+  def organization_settlement_entries
+    result = []
+    total  = Money.new_with_amount(0)
+
+    charge = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
+    total += charge.amount if charge.present?
+
+    entries = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id)
+    entries.each do |entry|
+      total += entry.amount
+    end
+
+    case @ticket.subcon_payment
+      when 'cash'
+        result << CashPaymentToAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+      when 'credit_card'
+        result << CreditPaymentToAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+      when 'cheque'
+        result << ChequePaymentToAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+      else
+
+    end
+
+    result
   end
 
   def counterparty_entries
@@ -109,5 +163,33 @@ class ProfitSplit < PostingRule
 
     entries
   end
+
+  def counterparty_settlement_entries
+    result = []
+    total  = Money.new_with_amount(0)
+
+    charge = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
+    total += charge.amount if charge.present?
+
+    entries = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id)
+    entries.each do |entry|
+      total += entry.amount
+    end
+
+    case @ticket.provider_payment
+      when 'cash'
+        result << CashPaymentFromAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+      when 'credit_card'
+        result << CreditPaymentFromAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+      when 'cheque'
+        result << ChequePaymentFromAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+      else
+
+    end
+
+    result
+
+  end
+
 
 end

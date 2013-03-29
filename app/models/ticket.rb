@@ -308,6 +308,8 @@ class Ticket < ActiveRecord::Base
     end
   end
 
+  alias_method :affiliate, :counterparty
+
   private
   def customer_belongs_to_provider
     errors.add(:customer, I18n.t('service_call.errors.customer_does_not_belong_to_provider')) unless !customer || customer.organization_id == provider_id

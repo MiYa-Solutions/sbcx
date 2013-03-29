@@ -96,13 +96,13 @@ class TransferredServiceCall < ServiceCall
   state_machine :provider_status, :initial => :pending, namespace: 'provider' do
     state :pending, value: SUBCON_STATUS_PENDING
     state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED do
-      validate { |sc| sc.provider_settlement_allowed? }
+      validates_presence_of :provider_payment
     end
     state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED do
-      validate { |sc| sc.provider_settlement_allowed? }
+      validates_presence_of :provider_payment
     end
     state :settled, value: SUBCON_STATUS_SETTLED do
-      validate { |sc| sc.provider_settlement_allowed? }
+      validates_presence_of :provider_payment
     end
 
     after_failure do |service_call, transition|
@@ -222,10 +222,13 @@ class TransferredServiceCall < ServiceCall
     (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
   end
 
-
+  # to make the subcon_settlement_allowed? in ServiceCall work
   def payment_paid?
     payment_collected?
   end
+
+  # to make the subcon_settlement_allowed? in ServiceCall work
+  alias_method :payment_cleared?, :payment_paid?
 
   private
   def provider_is_not_a_member

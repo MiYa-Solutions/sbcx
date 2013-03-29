@@ -68,7 +68,7 @@ describe Ticket do
    :technician_cost,
    :transferable?,
    :allow_collection?,
-   :collector].each do |attr|
+   :collector, :payment_type, :subcon_payment, :provider_payment].each do |attr|
     it { should respond_to attr }
   end
 
@@ -99,7 +99,6 @@ describe Ticket do
   describe "associations" do
     it { should belong_to :organization }
     it { should have_many :boms }
-    it { should belong_to :payment }
     it { should belong_to :customer }
     it { should belong_to :technician }
     it { should belong_to :provider }

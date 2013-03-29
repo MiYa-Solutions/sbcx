@@ -111,3 +111,7 @@ en:
       html_message: 'The provider (%{provider}) has confirmed %{link} (%{ref}) has been settled'
       subject: 'Settlement With The Provider Has Been Confirmed For %{ref}'
       content: 'The provider (%{provider}) agrees with your indication that job %{ref} has been settled'
+    sc_subcon_confirmed_settled_notification:
+      subject: '%{subcon} (S) has confirmed the settlement of job %{ref}'
+      html_message: '%{subcon} (S) has confirmed that all commission and fees for %{link} have been settled'
+      content: '%{subcon} (S) has confirmed that all commission and fees for job %{ref} have been settled'

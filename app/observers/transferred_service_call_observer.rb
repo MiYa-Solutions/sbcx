@@ -54,7 +54,7 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ScProviderInvoicedEvent.new unless service_call.events.last.instance_of?(ScProviderInvoicedEvent)
   end
 
-  def before_settle_provider(service_call, transition)
+  def after_settle_provider(service_call, transition)
     service_call.events << ScProviderSettleEvent.new
   end
 
