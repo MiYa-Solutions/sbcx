@@ -1,6 +1,5 @@
 <% provide(:title, @customer.name) %>
 
-
 <div class="well well_height">
 
   <div class="row-fluid">
@@ -34,7 +33,7 @@
 
       <div class="span6">
 
-              <%= render :partial => 'customer_balance' if @account.present? %>
+              <%= render :partial => 'customer_balance' if @customer.account.present? %>
               <!-- <#% unless @affiliate.service_calls.empty? %>-->
               <%= render :partial => 'customer_jobs' %>
               <!-- <#% end  %> -->
@@ -45,31 +44,4 @@
 </div>
 <!--End of Well-->
 </div>
-
-
-
-
-
-
-  <div class="row-fluid">
-    <div class="span4">
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= @customer.name %></h1></li>
-          <li class="red-balance"><h1><%= Account.human_attribute_name(:balance) %>
-            <span id="customer_balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
-        </ul>
-
-      </div>
-    </div>
-  </div>
-
-
-
-
-
-<div>
-  <%= render 'accounting_entries/accounting_entries_table', account: @customer.account %>
-</div>
-
 

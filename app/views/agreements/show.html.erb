@@ -26,19 +26,20 @@
       <br><br>
       <%= render :partial => 'agreement_payment_types' %><br>
       <br><br>
+      <div class="smart_label">
+        <ul>
+          <li><h1>3. <%= I18n.t('general.general.actions') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+
+      <br>
+      <%= agreement_events(@agreement) %>
     </div>
   </div>
 
   <div class="row-fluid">
-    <div class="smart_label">
-      <ul>
-        <li><h1><%= I18n.t('general.general.actions') %></h1></li>
-        <li></li>
-      </ul>
-    </div>
 
-    <br>
-    <%= agreement_events(@agreement) %>
 
   </div>
 

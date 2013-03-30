@@ -14,15 +14,15 @@
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:quantity) %></div>
-          <div class="ui-block-b"> <%= f.text_field :quantity, placeholder: 'quantity' %></div>
+          <div class="ui-block-b"> <%= f.text_field :quantity, "type" => "range", "name" => "slider-1", id: "slider-1", "value" => "1", "min" => "0", "max" => "100" %></div>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:price) %></div>
-          <div class="ui-block-b"><%= f.text_field :price, placeholder: 'price' %></div>
+          <div class="ui-block-b"><%= f.text_field :price, placeholder: 'Price' %></div>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:cost) %></div>
-          <div class="ui-block-b">  <%= f.text_field :cost, placeholder: 'cost' %></div>
+          <div class="ui-block-b">  <%= f.text_field :cost, placeholder: 'Cost' %></div>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:buyer) %></div>

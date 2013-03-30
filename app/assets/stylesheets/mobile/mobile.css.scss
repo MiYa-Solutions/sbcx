@@ -522,6 +522,48 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+
+.affiliate_balance_home {
+
+  p {
+    margin-top: -30px;
+
+  }
+
+  .blue_badge_collape {
+    background-color: #396B9E;
+    border-radius: 1em 1em 1em 1em;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 14px;
+    margin-left: 60%;
+    text-align: center;
+    padding: 2px 9px 3px;
+  }
+
+
+  .red_badge_collape {
+    padding: 2px 9px 3px;
+    background-color: #AB2525;
+    border-radius: 1em 1em 1em 1em;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 14px;
+    margin-left: 60%;
+    text-align: center;
+  }
+
+  badge {
+    color: white;
+    font-weight: normal;
+    line-height: 23px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+  }
+
+
+}
+
 .blue_badge_collape {
   background-color: #396B9E;
   border-radius: 1em 1em 1em 1em;
@@ -1516,4 +1558,15 @@ footer .ui-navbar ul {
   min-height: 380px;
 }
 
+#affiliate_total_balance {
+  color: #ffffff;
+  font-weight: normal;
+}
+
+
+
+
+div.ui-slider {
+  width: 55%;
+}
 

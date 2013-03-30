@@ -1,4 +1,4 @@
-<div class="sidebar-nav-position">
+<div class="sidebar-nav-fixed">
 <div class="well sidebar-nav">
 
   <ul class="nav nav-list">
@@ -7,25 +7,25 @@
       <i class="icon-envelope"></i>
       Job Alerts:
     </li>
-    <li>
-      <a href="#">Transferred
-        <span class="label label-important">1</span>
-      </a>
-    </li>
-    <li>
-      <a href="#">Incoming
+    <!--<li>-->
+      <!--<a href="#">Transferred-->
+        <!--<span class="label label-important">1</span>-->
+      <!--</a>-->
+    <!--</li>-->
+    <li class="alerts_sidebar">
+      <a href="#"><%= link_to 'Incoming', notifications_path %>
         <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
       </a>
     </li>
 
-    <li class="nav-header"><i class="icon-folder-open"></i> Job Tickets</li>
-    <li><a href="#">New Service Call</a></li>
-    <li><a href="#">My Open Tickets</a></li>
-    <li><a href="#">Update Ticket Status</a></li>
+    <li class="nav-header"><i class="icon-folder-open"></i><%= I18n.t('general.general.jobs') %></li>
+    <li><%= link_to I18n.t('general.general.new_job'), new_service_call_path %></li>
+    <li><%= link_to I18n.t('general.general.open_jobs'), service_calls_path %></li>
+
     <li class="nav-header"><i class="icon-user"></i> New Contact</li>
-    <li><%= link_to 'New Provider' %></li>
-    <li><a href="#">New Subcontractor</a></li>
+    <li><%= link_to I18n.t('general.general.new_affiliate') , new_affiliate_path %></li>
     <li><%= link_to 'New Customer', new_customer_path %></li>
+    <li><%= link_to 'New Employee', new_my_user_path %></li>
   </ul>
 
 

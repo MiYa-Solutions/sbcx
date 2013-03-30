@@ -1,0 +1,66 @@
+<div class="affiliate_balance">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= Account.human_attribute_name(:balance) %></h1></li>
+      <li></li>
+      <% if @customer.account.balance < 0 %>
+          <li class="red-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="customer_balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
+      <% else %>
+          <li class="green-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="customer_balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div id="accounting_entries">
+    <%= render 'accounting_entries/accounting_entries_table', account: @customer.account %>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#balanceDetails">
+      <%= I18n.t('general.general.more_details') %>
+    </button>
+  </div>
+
+</div>
+
+<div id="balanceDetails" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel"><%= I18n.t('general.general.balance') %></h3>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped" id="event_log_in_service_call">
+      <thead>
+      <th><%= AccountingEntry.human_attribute_name(:id) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:ticket) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:status) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:address) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:created_at) %></th>
+      <th><%= AccountingEntry.human_attribute_name(:amount) %></th>
+      <th><%= I18n.t('general.general.balance') %></th>
+      </thead>
+      <tbody>
+      <% @customer.account.accounting_entries.each do |entry| %>
+
+          <tr id="accounting_entry_<%= entry.id %>">
+            <td><%= link_to entry.ticket.id, entry.ticket.becomes(entry.ticket.class.superclass) %></td>
+            <td><%= link_to entry.ticket.type.tableize.humanize, entry.ticket.becomes(entry.ticket.class.superclass) %></td>
+            <td><%=  entry.type.tableize.humanize %></td>
+            <td><%= entry.human_status_name.humanize %></td>
+            <td><%= entry.ticket.address1 %></td>
+
+            <td><%= l entry.created_at, :format => :default %></td>
+            <td><%= humanized_money_with_symbol entry.amount %></td>
+            <td><%= humanized_money_with_symbol entry.balance %></td>
+          </tr>
+
+
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true"><%= I18n.t('general.general.close') %></button>
+  </div>
+</div>
