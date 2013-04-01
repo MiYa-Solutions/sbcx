@@ -29,7 +29,7 @@
       <% @affiliates.each do |affiliate| %>
 
           <% unless current_user.organization.account_for(affiliate).balance == 0 %>
-              <%= link_to affiliate.name, affiliate_path(affiliate) %>
+              <%= link_to affiliate.name, affiliate_path(affiliate), "data-transition" => "slide", id: "affiliate_balance" %>
             <p>
               <% if current_user.organization.account_for(affiliate).balance < 0 %>
                         <span class="red_badge_collape">

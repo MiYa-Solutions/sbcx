@@ -1,7 +1,9 @@
 <div data-role="collapsible-set" data-inset="false">
   <!--update customer contact info-->
+
+<% if @service_call.class == MyServiceCall %>
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="edit_contact">
-  <h3>Update Job Contact</h3>
+  <h3>Update Customer Contact</h3>
 
         <div class="customer_contacts">
           <div class="ui-grid-a">
@@ -55,10 +57,13 @@
     </div>
 
 </div>
+<% end %>
 
   <!--update Job Details-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="edit_contact">
-    <h3>Update Job Details</h3>
+
+
+      <h3>Update Job Details</h3>
 
     <div class="edit_job_details">
 
@@ -81,7 +86,7 @@
 
           <div class="ui-grid-a">
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
-            <div class="ui-block-b"><%= f.input :customer, input_html: {id: "customer-autocomplete"} %>
+            <div class="ui-block-b"><%= f.input :customer, input_html: {id: "customer-autocomplete"}, "value" => @service_call.customer %>
               <%= f.hidden_field :customer_id %>
               <ul id="customer-suggestions" data-role="listview" data-inset="true"></ul>
             </div>
@@ -89,13 +94,13 @@
 
       <br>
 
-      <% if @service_call.organization.my_user? (@service_call.technician) %>
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
-            <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>
-           </div>
+      <!--<#% if @service_call.organization.my_user? (@service_call.technician) %>-->
+          <!--<div class="ui-grid-a">-->
+            <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:technician) %></div>-->
+            <!--<div class="ui-block-b"><#%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>-->
+           <!--</div>-->
 
-      <% end %>
+      <!--<#% end %>-->
 
 
       <div class="ui-grid-a">

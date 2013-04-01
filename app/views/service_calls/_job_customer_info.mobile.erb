@@ -49,7 +49,8 @@
         <div class="ui-block-b"><%= @service_call.mobile_phone %></div>
       </div>
     </li>
-    <% permitted_to? :edit, @customers do %>
+    <!--<#% permitted_to? :edit, @customers do %>-->
+    <% if @service_call.class == MyServiceCall %>
         <!--<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d">Subcontractor: <#%= @service_call.subcontractor.try (:name) %></li>-->
         <li class="ui-li ui-li-static">
           <fieldset class="ui-grid-solo ui-btn-inner-small">
