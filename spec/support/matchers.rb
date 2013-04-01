@@ -37,6 +37,50 @@ module Matchers
     end
   end
 
+  class SuccessMessageMatcher
+    def initialize(message = nil)
+      @message = message
+    end
+
+    def matches?(actual)
+      @errors           = {}
+      expected_elements = {
+          :alert_div => 'div.alert-success',
+      }
+
+      expected_values = {
+          :alert_div => @message
+      }
+
+      expected_elements.each do |key, selector|
+        @errors[key] = selector unless actual.has_selector?(selector)
+        if @message.present?
+          @errors["#{key}_value"] = "#{selector}  with value: #{expected_values[key]}" unless actual.has_selector?(selector, text: expected_values[key])
+        end
+      end
+      @errors.empty?
+    end
+
+    def failure_message
+      message = "expected page to success alert" if @errors[:alert_div]
+      message = "entry row exists but the value is wrong" unless @errors[:alert_div]
+      message += "\n#{@errors.to_yaml}" unless @errors.empty?
+      message
+
+    end
+
+    def negative_failure_message
+      message = "expected page to NOT show a success alert '#{@message}'"
+      message += "\n#{@errors.to_yaml}" unless @errors.empty?
+      message
+    end
+
+  end
+
+  def have_success_message(message = nil)
+    SuccessMessageMatcher.new(message)
+  end
+
 
 end
 

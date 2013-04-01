@@ -21,7 +21,9 @@ class AccountingEntry < ActiveRecord::Base
   monetize :amount_cents
   monetize :balance_cents
 
-  validates_presence_of :account_id, :status, :event_id, :ticket_id, :type, :description
+  validates_presence_of :account_id, :status, :type, :description
+  validates_presence_of :ticket_id, if: :validate_ticket_id?
+  validate :event_requirement
 
   belongs_to :account, autosave: true
   belongs_to :ticket
@@ -61,7 +63,13 @@ class AccountingEntry < ActiveRecord::Base
     end
 
   end
+
+
   protected
+  def validate_ticket_id?
+    true
+  end
+
   def set_amount_direction
     self.amount = self.amount * amount_direction
   end
@@ -69,6 +77,12 @@ class AccountingEntry < ActiveRecord::Base
   def amount_direction
     raise "The ammount direction is not defined - you need to define amount_direction method for #{self.class}"
   end
+
+  private
+  def event_requirement
+    @errors.add :event_id, "can't be blank" unless event_id.present? || type == AdjustmentEntry.model_name
+  end
+
 end
 
 Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |file|

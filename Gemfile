@@ -55,6 +55,7 @@ group :assets do
   gem 'sass-rails', '3.2.4'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
+  gem 'jquery-datatables-rails'
   gem 'jquery-ui-rails', '4.0.1'
   gem 'fullcalendar-rails', '1.5.4.0'
 end

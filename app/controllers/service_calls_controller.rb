@@ -7,6 +7,12 @@ class ServiceCallsController < ApplicationController
 
   def index
     @service_calls = current_user.organization.service_calls
+    respond_to do |format|
+      format.html {}
+
+      format.json {render json: TicketsDatatable.new(view_context)}
+    end
+
   end
 
   def show

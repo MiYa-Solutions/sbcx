@@ -1,32 +1,45 @@
 ## constans for page selector
 
-JOB_BTN_START               = 'start_service_call_btn'
-JOB_BTN_COMPLETE            = 'complete_service_call_btn'
-JOB_BTN_CREATE              = 'service_call_create_btn'
-JOB_BTN_TRANSFER            = 'service_call_transfer_btn'
-JOB_BTN_ACCEPT              = 'accept_service_call_btn'
-JOB_BTN_INVOICE             = 'invoice_service_call_btn'
-JOB_BTN_PAID                = 'job_paid_btn'
-JOB_BTN_CLEAR               = 'clear_service_call_btn'
-JOB_BTN_COLLECT             = 'collect_service_call_btn'
-JOB_BTN_DEPOSIT             = 'deposit_to_prov_service_call_btn'
-JOB_BTN_CONFIRM_DEPOSIT     = 'confirm_deposit_service_call_btn'
-JOB_BTN_SETTLE              = 'settle_service_call_btn'
-JOB_CONFIRM_SETTLEMENT      = 'confirm_settled_service_call_btn'
+JOB_BTN_START                  = 'start_service_call_btn'
+JOB_BTN_CANCEL                 = 'cancel_service_call_btn'
+JOB_BTN_CANCEL_TRANSFER        = 'cancel_transfer_service_call_btn'
+JOB_BTN_COMPLETE               = 'complete_service_call_btn'
+JOB_BTN_CREATE                 = 'service_call_create_btn'
+JOB_BTN_ADD_CUSTOMER           = 'add_customer_btn'
+JOB_BTN_TRANSFER               = 'service_call_transfer_btn'
+JOB_BTN_ACCEPT                 = 'accept_service_call_btn'
+JOB_BTN_UN_ACCEPT              = 'un_accept_service_call_btn'
+JOB_BTN_REJECT                 = 'reject_service_call_btn'
+JOB_BTN_INVOICE                = 'invoice_service_call_btn'
+JOB_BTN_PROV_INVOICE           = 'provider_invoiced_service_call_btn'
+JOB_BTN_PAID                   = 'job_paid_btn'
+JOB_BTN_CLEAR                  = 'clear_service_call_btn'
+JOB_BTN_COLLECT                = 'collect_service_call_btn'
+JOB_BTN_PROV_COLLECT           = 'provider_collected_service_call_btn'
+JOB_BTN_DEPOSIT                = 'deposit_to_prov_service_call_btn'
+JOB_BTN_CONFIRM_DEPOSIT        = 'confirm_deposit_service_call_btn'
+JOB_BTN_PROV_CONFIRMED_DEPOSIT = 'prov_confirmed_deposit_service_call_btn'
+JOB_BTN_SETTLE                 = 'settle_service_call_btn'
+JOB_BTN_CONFIRM_SETTLEMENT     = 'confirm_settled_service_call_btn'
+JOB_BTN_CLOSE                  = 'close_service_call_btn'
+
 JOB_SELECT_SUBCON_PAYMENT   = 'service_call_subcon_payment'
 JOB_SELECT_PROVIDER_PAYMENT = 'service_call_provider_payment'
 JOB_SELECT_SUBCONTRACTOR    = 'service_call_subcontractor_id'
+JOB_SELECT_PROVIDER         = 'service_call_provider_id'
 JOB_SELECT_PAYMENT          = 'service_call_payment_type'
 JOB_CBOX_ALLOW_COLLECTION   = 'service_call_allow_collection'
-JOB_CBOX_RE_TRANSFER        = 'service_call_re_transfer'
-JOB_STATUS                  = 'span#service_call_status'
-JOB_SUBCONTRACTOR_STATUS    = 'span#service_call_subcontractor_status'
-JOB_PROVIDER_STATUS         = 'span#service_call_provider_status'
-JOB_WORK_STATUS             = 'span#service_call_work_status'
-JOB_BILLING_STATUS          = 'span#service_call_billing_status'
+JOB_CBOX_RE_TRANSFER        = 'service_call_transferable'
 
+JOB_STATUS               = 'span#service_call_status'
+JOB_SUBCONTRACTOR_STATUS = 'span#service_call_subcontractor_status'
+JOB_PROVIDER_STATUS      = 'span#service_call_provider_status'
+JOB_WORK_STATUS          = 'span#service_call_work_status'
+JOB_BILLING_STATUS       = 'span#service_call_billing_status'
 
-AFF_SPAN_BALANCE = 'span#affiliate_balance'
+ACC_SELECT          = 'account'
+ACC_BTN_GET_ENTRIES = 'get-entries-btn'
+AFF_SPAN_BALANCE    = 'span#balance'
 
 def in_browser(name)
   Capybara.session_name = name
@@ -97,6 +110,11 @@ def setup_standard_orgs
 
 end
 
+def setup_org
+  let!(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  let!(:org) { org_admin_user.organization }
+end
+
 def fill_autocomplete(field, options = {})
   fill_in field, :with => options[:with]
 
@@ -162,6 +180,22 @@ def create_my_job(user, customer, browser)
     with_user(user) do
       visit new_service_call_path
       fill_autocomplete 'service_call_customer', with: customer.name.chop, select: customer.name
+      click_button JOB_BTN_CREATE
+    end
+  end
+
+  ServiceCall.last
+end
+
+def create_transferred_job(user, provider, browser)
+  in_browser(browser) do
+    with_user(user) do
+      visit new_service_call_path
+      click_link JOB_BTN_ADD_CUSTOMER
+      fill_in 'service_call_new_customer', with: Faker::Name.name
+      select provider.name, from: JOB_SELECT_PROVIDER
+      check JOB_CBOX_ALLOW_COLLECTION
+      check JOB_CBOX_RE_TRANSFER
       click_button JOB_BTN_CREATE
     end
   end

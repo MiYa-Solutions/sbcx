@@ -4,8 +4,14 @@ en:
       accounting_entry: "Balance"
     attributes:
       accounting_entry:
-        ticket: "Job Type"
-        id: "Job Number"
-        type: "Account Entry"
+        ticket: "Job"
+        id: "Id"
+        type: "Type"
+        status: "Status"
         entry_id: "Entry Number"
         balance: "Balance"
+    state_machines:
+      accounting_entry:
+        status:
+          states:
+            cleared: Cleared

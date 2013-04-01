@@ -24,7 +24,7 @@ class Account < ActiveRecord::Base
       proxy_association.owner.balance += (entry.amount * entry.amount_direction)
       entry.account                   = proxy_association.owner
       entry.balance                   = proxy_association.owner.balance
-      entry.save!
+      entry.save
     end
   end
 

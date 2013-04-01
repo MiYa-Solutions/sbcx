@@ -1,0 +1,42 @@
+<% affiliate ||= nil %>
+<% customer ||= nil %>
+<% account ||= nil %>
+<%= link_to 'Find', '#ticket_search', data: { toggle: 'modal' } %>
+<div id="ticket_search" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="ticket_search_header"><%= I18n.t('general.general.job_history') %></h3>
+  </div>
+  <div class="modal-body" id="ticket_search_body">
+    <div>
+      <%= hidden_field_tag :affiliate_id, affiliate.id if affiliate.present? %>
+      <%= hidden_field_tag :customer_id, customer.id  if customer.present? %>
+      <%= hidden_field_tag :account_id, account.try(:id) %>
+      <%= form_tag service_calls_url, id: "ticket_search_form", method: :get, remote: true, 'data-type' => 'json' do %>
+          <%= text_field_tag :search, params[:search] %>
+          <%= submit_tag t('affiliates.buttons.search'), :name => nil, class: 'btn btn-medium', :id => 'ticket-search-button' %>
+      <% end %>
+    </div>
+    <div id="search-results">
+      <table class="table table-striped display" hidden="true" id="search-results-table">
+        <thead>
+        <tr>
+          <th><%= Ticket.human_attribute_name(:id) %></th>
+          <th><%= Ticket.human_attribute_name(:created_at) %></th>
+          <th><%= Ticket.human_attribute_name(:customer) %></th>
+          <th><%= Ticket.human_attribute_name(:status) %></th>
+          <th><%= Ticket.human_attribute_name(:total_price) %></th>
+          <th><%= Ticket.human_attribute_name(:total_cost) %></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <div class="modal-footer" id="ticket_search_footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>

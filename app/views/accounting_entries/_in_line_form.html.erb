@@ -1,0 +1,51 @@
+<%= simple_form_for(AdjustmentEntry.new, url: accounting_entries_url, as: :accounting_entry, :html => { :class => 'form-horizontal ajax-form', 'data-type' => 'json' }, remote: true, format: :json) do |f| %>
+    <%= hidden_field_tag 'accounting_entry[account_id]', account.try(:id) %>
+    <br>
+    <%= f.error_notification %>
+
+    <div class="row-fluid add_part_service_call">
+      <div class="alert add_part_frame">
+
+        <ul>
+          <li></li>
+          <li class="quantity_field">
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:amount) %></span>
+              <%= f.text_field :amount %>
+            </div>
+
+          </li>
+          <li class="quantity_field">
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:ticket) %></span>
+              <%= f.text_field :ticket_ref_id %>
+            </div>
+
+          </li>
+          <li class="price_field">
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:description) %></span>
+              <%= f.text_field :description %>
+            </div>
+
+          </li>
+          <li class="add_button">
+            <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary ajax-btn", id: 'add_entry' %>
+
+          </li>
+          <li>
+            <div id="ajax-msg"></div>
+          </li>
+          <li>
+            <a href="#" data-toggle="collapse" data-target="#bom" class="close">×</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+<% end %>
+<%= render 'shared/ticket_search', account: account %>
+
+
+

@@ -112,3 +112,6 @@ en:
       started_at: "Started at"
       title: "Title"
       show_appointments: "Show Appointments"
+    buttons:
+      get_entries: "Get Entries"
+    select_prompt: "Please select"

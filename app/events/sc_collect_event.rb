@@ -19,7 +19,7 @@ class ScCollectEvent < ServiceCallEvent
   end
 
   def process_event
-    set_customer_account_as_paid
+    set_customer_account_as_paid if service_call.provider.subcontrax_member?
     update_provider_account
     super
   end

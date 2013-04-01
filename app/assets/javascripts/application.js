@@ -19,4 +19,10 @@
 //= require best_in_place
 //= require best_in_place.purr
 //= require bootstrap-datepicker
-//= require_tree ./all
+//= require all/jquery.dataTables.columnFilter
+//= require dataTables/jquery.dataTables
+//= require dataTables/jquery.dataTables.bootstrap
+//= require dataTables/extras/ZeroClipboard.js
+//= require dataTables/jquery.dataTables.api.fnFilterOnReturn
+//= require dataTables/extras/TableTools
+//= require_tree ./all/.

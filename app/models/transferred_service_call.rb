@@ -67,7 +67,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :un_accept do
-      transition :accepted => :rejected
+      transition :accepted => :rejected, unless: ->(sc) { sc.work_done? }
     end
 
     event :reject do

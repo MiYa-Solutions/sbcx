@@ -8,7 +8,7 @@
         <ul>
           <li><h1><%= @customer.name %></h1></li>
           <li class="red-balance"><h1><%= Account.human_attribute_name(:balance) %>
-            <span id="customer_balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
+            <span id="balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
         </ul>
 
       </div>
@@ -73,6 +73,7 @@
 
 <div>
   <%= render 'accounting_entries/accounting_entries_table', account: @customer.account %>
+  <%= link_to 'More', accounting_entries_url(account_id: @customer.account.id) %>
 </div>
 
 

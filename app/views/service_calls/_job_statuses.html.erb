@@ -75,7 +75,7 @@
           <tr>
             <td><%= @service_call.class.human_attribute_name(:provider) %></td>
             <td>
-              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
+              <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
               <h3><%= link_to @service_call.provider.try(:name), affiliate_path(@service_call.provider.id) %></h3>
               </span>
             </td>
@@ -84,7 +84,7 @@
           <tr>
             <td> <%= @service_call.class.human_attribute_name(:provider_status) %></td>
             <td>
-              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
+              <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
                   <h3><%= @service_call.human_provider_status_name %></h3>
               </span>
             </td>

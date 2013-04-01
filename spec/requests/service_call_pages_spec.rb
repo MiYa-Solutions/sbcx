@@ -951,6 +951,7 @@ describe "Service Call pages" do
 
                       in_browser(:org2) do
                         visit service_call_path @subcon_service_call
+                        select Cash.model_name.human, from: JOB_SELECT_PROVIDER_PAYMENT
                         click_button settle_btn_selector
                       end
 
@@ -1006,6 +1007,7 @@ describe "Service Call pages" do
 
                       in_browser(:org) do
                         visit service_call_path service_call
+                        select Cash.model_name.human, from: JOB_SELECT_SUBCON_PAYMENT
                         click_button settle_btn_selector
                       end
                     end
@@ -1069,7 +1071,7 @@ describe "Service Call pages" do
             in_browser(:org2) do
               visit service_call_path @subcon_service_call
               click_button accept_btn_selector
-              select local_subcontractor.name, from: subcontractor_select
+              select local_subcontractor.name, from: JOB_SELECT_SUBCONTRACTOR
               click_button transfer_btn_selector
             end
           end
@@ -1102,7 +1104,7 @@ describe "Service Call pages" do
             in_browser(:org2) do
               visit service_call_path @subcon_service_call
               click_button accept_btn_selector
-              select org3.name, from: subcontractor_select
+              select org3.name, from: JOB_SELECT_SUBCONTRACTOR
 
             end
             in_browser(:org3) do
@@ -1248,6 +1250,7 @@ describe "Service Call pages" do
 
                 describe 'mark as settled' do
                   before do
+                    select Cash.model_name.human, from: JOB_SELECT_SUBCON_PAYMENT
                     click_button settle_btn_selector
                   end
 
@@ -1511,6 +1514,12 @@ describe "Service Call pages" do
           end
         end
       end
+
+
+      describe 'reject the job' do
+        pending
+      end
+
     end
 
 

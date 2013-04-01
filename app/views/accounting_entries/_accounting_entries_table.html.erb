@@ -1,12 +1,14 @@
 <% if account.present? %>
     <table class="table table-striped" id="accounting_entries_table">
       <thead>
-      <th> <%= AccountingEntry.human_attribute_name(:id) %> </th>
-      <th><%= AccountingEntry.human_attribute_name(:address) %>       </th>
-      <th><%= AccountingEntry.human_attribute_name(:type) %>          </th>
-      <th><%= AccountingEntry.human_attribute_name(:status) %>        </th>
-      <th><%= AccountingEntry.human_attribute_name(:amount) %>        </th>
-      <th><%= I18n.t('general.general.balance') %> </th>
+      <tr>
+        <th> <%= AccountingEntry.human_attribute_name(:id) %> </th>
+        <th><%= AccountingEntry.human_attribute_name(:address) %>       </th>
+        <th><%= AccountingEntry.human_attribute_name(:type) %>          </th>
+        <th><%= AccountingEntry.human_attribute_name(:status) %>        </th>
+        <th><%= AccountingEntry.human_attribute_name(:amount) %>        </th>
+        <th><%= I18n.t('general.general.balance') %> </th>
+      </tr>
       </thead>
       <tbody>
       <% account.accounting_entries.order('accounting_entries.id DESC').limit(5).each do |entry| %>

@@ -116,6 +116,15 @@ service_call:
       confirm_deposit:
         form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
+      prov_confirmed_deposit:
+        form_classes: "blue-button"
+        button_classes: "btn btn-large btn-primary"
+      provider_collected:
+        form_classes: "blue-button"
+        button_classes: "btn btn-large btn-primary"
+      deposit_to_prov:
+        form_classes: "blue-button"
+        button_classes: "btn btn-large btn-primary"
 
   states:
     status:
@@ -152,7 +161,7 @@ service_call:
       collected_by_employee: "status_blue"
       collected: "status_blue"
       deposited_to_prov: "status_blue"
-      deposited: "status_blue"
+      deposited: "status_green"
       invoiced_by_subcon: "status_blue"
       collected_by_subcon: "status_blue"
       subcon_claim_deposited: "status_blue"

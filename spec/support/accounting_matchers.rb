@@ -136,7 +136,7 @@ module AccountingMatchers
   class CustomerBalanceMatcher < AffiliateBalanceMatcher
     protected
     def get_balance_selector
-      'span#customer_balance'
+      'span#balance'
     end
 
   end
