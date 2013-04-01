@@ -2,6 +2,7 @@ jQuery ->
   $('#entries_table').dataTable
     sDom: "<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
     sPaginationType: "bootstrap"
+    sProcessing: "zibi"
     iDisplayLength: 25
     oTableTools:
       aButtons: ["copy", "print",
