@@ -1,4 +1,4 @@
- class ScSubconSettleEvent < ServiceCallEvent
+class ScSubconSettleEvent < ScSettlementEvent
   def init
     self.name         = I18n.t('service_call_subcon_settle_event.name')
     self.description  = I18n.t('service_call_subcon_settle_event.description')
@@ -17,5 +17,9 @@
     nil
   end
 
+  def process_event
+    update_affiliate_account
+    super
+  end
 
 end

@@ -62,7 +62,6 @@ en:
             invoiced: "Invoiced"
             paid: "Paid"
             pending: "Pending"
-
             invoiced_by_prov: "Invoiced (Provider)"
       my_service_call:
         status:
@@ -79,11 +78,14 @@ en:
             canceled: "Canceled"
 
         billing_status:
+          events:
+            clear: 'Clear'
           states:
             collected_by_subcon: "Collected (Subcontractor)"
             subcon_claim_deposited: "Subcontractor Deposited?"
             paid: "Paid"
             overdue: "Overdue"
+            cleared: "Cleared"
       transferred_service_call:
         status:
           events:
@@ -119,6 +121,7 @@ en:
           states:
             settled: "Settled"
             claim_settled: "Settled?"
+            claimed_as_settled: "Claimed As Settled"
   messages:
     service_call:
       event: 'The service call was %{event_name} successfully'

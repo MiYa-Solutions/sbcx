@@ -31,6 +31,7 @@
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
+#  payment_type         :string(255)
 #
 
 require 'spec_helper'
@@ -67,7 +68,7 @@ describe Ticket do
    :technician_cost,
    :transferable?,
    :allow_collection?,
-   :collector].each do |attr|
+   :collector, :payment_type, :subcon_payment, :provider_payment].each do |attr|
     it { should respond_to attr }
   end
 

@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'capybara/rspec'
 
+
 describe "My Users pages" do
 
   describe "with Org Admin" do

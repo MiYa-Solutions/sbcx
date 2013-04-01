@@ -1,4 +1,5 @@
 module ServiceCallsHelper
+  include PaymentHelper
 
 
 
@@ -117,7 +118,7 @@ module ServiceCallsHelper
       concat(content_tag :h3, t('headers.subcontractor_actions')) unless service_call.subcontractor_status_events.empty?
 
       service_call.subcontractor_status_events.collect do |event|
-        concat(content_tag :li, send("subcon_#{event}_form".to_sym, service_call))
+        concat(content_tag :li, send("subcon_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event, event.to_s)
       end
     end
   end
@@ -126,7 +127,7 @@ module ServiceCallsHelper
     if service_call.instance_of?(TransferredServiceCall) && service_call.provider_settlement_allowed?
       concat(content_tag :h3, t('headers.provider_actions')) unless service_call.provider_status_events.empty?
       service_call.provider_status_events.collect do |event|
-        concat(content_tag :li, send("provider_#{event}_form".to_sym, service_call))
+        concat(content_tag :li, send("provider_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event, event.to_s)
       end
     end
 
@@ -166,7 +167,9 @@ module ServiceCallsHelper
   def billing_collect_form(service_call)
     simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.billing_status.collect.form_classes")} do |f|
       concat (hidden_field_tag "service_call[billing_status_event]", 'collect')
+      concat (f.label :collector)
       concat (collector_tag(service_call))
+      concat (f.input :payment_type, collection: payment_types)
       concat (f.submit service_call.class.human_billing_status_event_name(:collect).titleize,
                        id:    'collect_service_call_btn',
                        class: StylingService.instance.get_style("service_call.forms.billing_status.collect.button_classes"),
@@ -184,6 +187,43 @@ module ServiceCallsHelper
     @service_call.organization.subcontractors.map {|subcon| [subcon.id, subcon.name]}
   end
 
+  def billing_paid_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (f.input :payment_type, collection: payment_types)
+      concat (hidden_field_tag "service_call[billing_status_event]", 'paid')
+      concat (hidden_field_tag "service_call[collector_id]", current_user.id)
+      concat (f.submit service_call.class.human_billing_status_event_name(:paid).titleize,
+                       id:    'job_paid_btn',
+                       class: "btn btn-large",
+                       title: 'Click to indicate that the customer has paid',
+                       rel:   'tooltip'
+             )
+    end
+  end
+  def subcon_settle_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (f.input :subcon_payment, collection: payment_types)
+      concat (hidden_field_tag "service_call[subcontractor_status_event]", 'settle')
+      concat (f.submit service_call.class.human_subcontractor_status_event_name(:settle).titleize,
+                       id:    'settle_service_call_btn',
+                       class: "btn btn-large",
+                       title: 'Click to indicate that all fees with the subcontractor have been settled',
+                       rel:   'tooltip'
+             )
+    end
+  end
+  def provider_settle_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall) do |f|
+      concat (f.input :provider_payment, collection: payment_types)
+      concat (hidden_field_tag "service_call[provider_status_event]", 'settle')
+      concat (f.submit service_call.class.human_provider_status_event_name(:settle).titleize,
+                       id:    'settle_service_call_btn',
+                       class: "btn btn-large",
+                       title: 'Click to indicate that all fees with the provider have been settled',
+                       rel:   'tooltip'
+             )
+    end
+  end
 
   # todo reject to inclulde also a rejection reason
   #def work_reject_form(service_call)
@@ -198,20 +238,7 @@ module ServiceCallsHelper
   #  end
   #end
 
-  # todo collect to include payment type
-  # todo payment form to include payment type
-  #def paid_form(service_call)
-  #  simple_form_for service_call.becomes(ServiceCall) do |f|
-  #    concat (hidden_field_tag "service_call[billing_status_event]", 'paid')
-  #    concat (hidden_field_tag "service_call[collector_id]", current_user.id)
-  #    concat (f.submit service_call.class.human_billing_status_event_name(:paid).titleize,
-  #                     id:    'settle_service_call_btn',
-  #                     class: "btn btn-large",
-  #                     title: 'Click to indicate that the customer has paid',
-  #                     rel:   'tooltip'
-  #           )
-  #  end
-  #end
+
 
   private
 
@@ -223,6 +250,10 @@ module ServiceCallsHelper
       res = hidden_field_tag("service_call[collector_id]", current_user.id)
     end
     res += hidden_field_tag("service_call[collector_type]", "User")
+  end
+
+  def payment_tag(job)
+
   end
 
 end

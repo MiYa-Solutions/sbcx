@@ -31,6 +31,7 @@
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
+#  payment_type         :string(255)
 #
 
 class ServiceCall < Ticket
@@ -39,7 +40,7 @@ class ServiceCall < Ticket
   # if im not the subcontractor of this service call then I'm the provider
   def my_role
     if subcontractor_id.nil?
-      if provider_id.nil?
+      if provider_id.nil? || provider_id == organization_id
         @my_role = :prov
       else
         @my_role = :subcon
@@ -126,13 +127,14 @@ class ServiceCall < Ticket
     state :na, value: SUBCON_STATUS_NA
     state :pending, value: SUBCON_STATUS_PENDING
     state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED do
-      validate { |sc| sc.subcon_settlement_allowed? }
+      # todo validate that the payment string is valid
+      validates_presence_of :subcon_payment
     end
     state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED do
-      validate { |sc| sc.subcon_settlement_allowed? }
+      validates_presence_of :subcon_payment
     end
     state :settled, value: SUBCON_STATUS_SETTLED do
-      validate { |sc| sc.subcon_settlement_allowed? }
+      validates_presence_of :subcon_payment
     end
 
     after_failure do |service_call, transition|
@@ -191,9 +193,8 @@ class ServiceCall < Ticket
   def subcon_settlement_allowed?
 
     (subcontractor.subcontrax_member? && !allow_collection?) ||
-        (subcontractor.subcontrax_member? && allow_collection? && payment_paid?) ||
+        (subcontractor.subcontrax_member? && allow_collection? && ( payment_paid?) || payment_cleared? )||
         ( !subcontractor.subcontrax_member? && work_done?)
   end
-
 end
 

@@ -1,0 +1,3 @@
+class AffiliateSettlementEntry < AccountingEntry
+
+end

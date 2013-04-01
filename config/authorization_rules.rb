@@ -54,6 +54,7 @@ authorization do
     has_permission_on :subcontractors, :to => [:new, :create]
     has_permission_on :providers, :to => [:new, :create]
     has_permission_on :affiliates, :to => [:new, :create]
+    has_permission_on :accounting_entries, :to => [:new, :create, :show, :index]
 
 
     has_permission_on :organizations, to: [:show, :edit, :update] do

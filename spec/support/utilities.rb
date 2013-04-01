@@ -1,15 +1,45 @@
 ## constans for page selector
 
-JOB_BTN_START             = 'start_service_call_btn'
-JOB_BTN_COMPLETE          = 'complete_service_call_btn'
-JOB_BTN_CREATE            = 'service_call_create_btn'
-JOB_BTN_TRANSFER          = 'service_call_transfer_btn'
-JOB_BTN_ACCEPT            = 'accept_service_call_btn'
-JOB_SELECT_SUBCONTRACTOR  = 'service_call_subcontractor_id'
-JOB_CBOX_ALLOW_COLLECTION = 'service_call_allow_collection'
-JOB_CBOX_RE_TRANSFER      = 'service_call_re_transfer'
+JOB_BTN_START                  = 'start_service_call_btn'
+JOB_BTN_CANCEL                 = 'cancel_service_call_btn'
+JOB_BTN_CANCEL_TRANSFER        = 'cancel_transfer_service_call_btn'
+JOB_BTN_COMPLETE               = 'complete_service_call_btn'
+JOB_BTN_CREATE                 = 'service_call_create_btn'
+JOB_BTN_ADD_CUSTOMER           = 'add_customer_btn'
+JOB_BTN_TRANSFER               = 'service_call_transfer_btn'
+JOB_BTN_ACCEPT                 = 'accept_service_call_btn'
+JOB_BTN_UN_ACCEPT              = 'un_accept_service_call_btn'
+JOB_BTN_REJECT                 = 'reject_service_call_btn'
+JOB_BTN_INVOICE                = 'invoice_service_call_btn'
+JOB_BTN_PROV_INVOICE           = 'provider_invoiced_service_call_btn'
+JOB_BTN_PAID                   = 'job_paid_btn'
+JOB_BTN_CLEAR                  = 'clear_service_call_btn'
+JOB_BTN_COLLECT                = 'collect_service_call_btn'
+JOB_BTN_PROV_COLLECT           = 'provider_collected_service_call_btn'
+JOB_BTN_DEPOSIT                = 'deposit_to_prov_service_call_btn'
+JOB_BTN_CONFIRM_DEPOSIT        = 'confirm_deposit_service_call_btn'
+JOB_BTN_PROV_CONFIRMED_DEPOSIT = 'prov_confirmed_deposit_service_call_btn'
+JOB_BTN_SETTLE                 = 'settle_service_call_btn'
+JOB_BTN_CONFIRM_SETTLEMENT     = 'confirm_settled_service_call_btn'
+JOB_BTN_CLOSE                  = 'close_service_call_btn'
 
-AFF_SPAN_BALANCE = 'span#affiliate_balance'
+JOB_SELECT_SUBCON_PAYMENT   = 'service_call_subcon_payment'
+JOB_SELECT_PROVIDER_PAYMENT = 'service_call_provider_payment'
+JOB_SELECT_SUBCONTRACTOR    = 'service_call_subcontractor_id'
+JOB_SELECT_PROVIDER         = 'service_call_provider_id'
+JOB_SELECT_PAYMENT          = 'service_call_payment_type'
+JOB_CBOX_ALLOW_COLLECTION   = 'service_call_allow_collection'
+JOB_CBOX_RE_TRANSFER        = 'service_call_transferable'
+
+JOB_STATUS               = 'span#service_call_status'
+JOB_SUBCONTRACTOR_STATUS = 'span#service_call_subcontractor_status'
+JOB_PROVIDER_STATUS      = 'span#service_call_provider_status'
+JOB_WORK_STATUS          = 'span#service_call_work_status'
+JOB_BILLING_STATUS       = 'span#service_call_billing_status'
+
+ACC_SELECT          = 'account'
+ACC_BTN_GET_ENTRIES = 'get-entries-btn'
+AFF_SPAN_BALANCE    = 'span#balance'
 
 def in_browser(name)
   Capybara.session_name = name
@@ -80,6 +110,11 @@ def setup_standard_orgs
 
 end
 
+def setup_org
+  let!(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  let!(:org) { org_admin_user.organization }
+end
+
 def fill_autocomplete(field, options = {})
   fill_in field, :with => options[:with]
 
@@ -93,14 +128,28 @@ def fill_autocomplete(field, options = {})
   page.execute_script "$(\"#{selector}\").mouseenter().click()"
 end
 
+def setup_customer_agreement(org, customer)
+  agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Customer'", org.id, customer.id).first
+  account   = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Customer'", org.id, customer.id).first
+  if agreement.nil?
+    CustomerAgreement.create(name: "stam agr", organization: org, counterparty: customer, creator: org.users.first)
+  end
+  if account.nil?
+    account = Account.create(organization: org, accountable: customer)
+  end
+  Rails.logger.debug { "created account: #{account.inspect}" }
+end
+
 def setup_profit_split_agreement(prov, subcon)
-  prov.subcontractors << subcon
-  agreement = Agreement.where("organization_id = ? and counterparty_id = ?", prov.id, subcon.id).first
+  prov.subcontractors << subcon if prov.subcontrax_member?
+  subcon.providers << prov if subcon.subcontrax_member?
+  agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
   FactoryGirl.create(:profit_split, agreement: agreement)
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
   agreement.save!
   agreement
 end
+
 
 def add_bom(name, cost, price, qty)
   click_button 'new-bom-button'
@@ -109,6 +158,9 @@ def add_bom(name, cost, price, qty)
   fill_in 'bom_price', with: price
   fill_in 'bom_quantity', with: qty
   click_button 'add_part'
+  page.should have_selector "td", text: name # to ensure bom is added before moving to the next action (click visit etc.)
+                                             #page.driver.render("#{Rails.root}/tmp/capybara/add_bom_#{name}_#{Time.now}.png", :full => true)
+                                             #page.save_page
   click_button 'new-bom-button'
 end
 
@@ -128,6 +180,22 @@ def create_my_job(user, customer, browser)
     with_user(user) do
       visit new_service_call_path
       fill_autocomplete 'service_call_customer', with: customer.name.chop, select: customer.name
+      click_button JOB_BTN_CREATE
+    end
+  end
+
+  ServiceCall.last
+end
+
+def create_transferred_job(user, provider, browser)
+  in_browser(browser) do
+    with_user(user) do
+      visit new_service_call_path
+      click_link JOB_BTN_ADD_CUSTOMER
+      fill_in 'service_call_new_customer', with: Faker::Name.name
+      select provider.name, from: JOB_SELECT_PROVIDER
+      check JOB_CBOX_ALLOW_COLLECTION
+      check JOB_CBOX_RE_TRANSFER
       click_button JOB_BTN_CREATE
     end
   end

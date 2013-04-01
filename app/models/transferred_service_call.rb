@@ -31,6 +31,7 @@
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
+#  payment_type         :string(255)
 #
 
 class TransferredServiceCall < ServiceCall
@@ -66,7 +67,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :un_accept do
-      transition :accepted => :rejected
+      transition :accepted => :rejected, unless: ->(sc) { sc.work_done? }
     end
 
     event :reject do
@@ -95,13 +96,13 @@ class TransferredServiceCall < ServiceCall
   state_machine :provider_status, :initial => :pending, namespace: 'provider' do
     state :pending, value: SUBCON_STATUS_PENDING
     state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED do
-      validate { |sc| sc.provider_settlement_allowed? }
+      validates_presence_of :provider_payment
     end
     state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED do
-      validate { |sc| sc.provider_settlement_allowed? }
+      validates_presence_of :provider_payment
     end
     state :settled, value: SUBCON_STATUS_SETTLED do
-      validate { |sc| sc.provider_settlement_allowed? }
+      validates_presence_of :provider_payment
     end
 
     after_failure do |service_call, transition|
@@ -109,7 +110,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :provider_confirmed do
-      transition :claim_settled => :settled, if: lambda {|sc| sc.provider_settlement_allowed?}
+      transition :claim_settled => :settled, if: lambda { |sc| sc.provider_settlement_allowed? }
     end
 
     event :provider_marked_as_settled do
@@ -117,7 +118,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :confirm_settled do
-      transition :claimed_as_settled => :settled, if: lambda {|sc| sc.provider_settlement_allowed?}
+      transition :claimed_as_settled => :settled, if: lambda { |sc| sc.provider_settlement_allowed? }
     end
 
     event :settle do
@@ -146,7 +147,10 @@ class TransferredServiceCall < ServiceCall
       validate { |sc| sc.validate_collector }
     end
     state :collected, value: BILLING_STATUS_COLLECTED do
-      validate { |sc| sc.validate_collector }
+      validate do |sc|
+        sc.validate_collector
+        sc.validate_payment
+      end
     end
     state :deposited_to_prov, value: BILLING_STATUS_DEPOSITED_TO_PROV
     state :deposited, value: BILLING_STATUS_DEPOSITED do
@@ -154,7 +158,10 @@ class TransferredServiceCall < ServiceCall
     end
     state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
     state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
-      validate { |sc| sc.validate_collector }
+      validate do |sc|
+        sc.validate_collector
+        sc.validate_payment
+      end
     end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV
@@ -215,10 +222,13 @@ class TransferredServiceCall < ServiceCall
     (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
   end
 
-
+  # to make the subcon_settlement_allowed? in ServiceCall work
   def payment_paid?
     payment_collected?
   end
+
+  # to make the subcon_settlement_allowed? in ServiceCall work
+  alias_method :payment_cleared?, :payment_paid?
 
   private
   def provider_is_not_a_member
@@ -234,7 +244,6 @@ class TransferredServiceCall < ServiceCall
     #  errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
     #end
   end
-
 
 
 end

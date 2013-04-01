@@ -38,11 +38,12 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
+  gem 'letter_opener'
 end
 group :development, :test do
-  gem 'rspec-rails', '2.9.0'
-  gem 'guard-rspec', '0.5.5'
-  gem 'annotate', '~> 2.4.1.beta'
+  gem 'rspec-rails', '2.13.0'
+  gem 'guard-rspec', '2.5.1'
+  gem 'annotate', '2.5.0'
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
@@ -54,15 +55,16 @@ group :assets do
   gem 'sass-rails', '3.2.4'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
+  gem 'jquery-datatables-rails'
   gem 'jquery-ui-rails', '4.0.1'
   gem 'fullcalendar-rails', '1.5.4.0'
 end
 
 group :test do
-  gem 'capybara', '1.1.2'
+  gem 'capybara', '2.0.2'
   gem 'factory_girl_rails', '4.1.0'
   gem 'cucumber-rails', '1.2.1', require: false
-  gem 'database_cleaner', '0.7.0'
+  gem 'database_cleaner', '~> 0.9.1'
   gem 'rb-fsevent', '0.9.1', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'growl', '1.0.3'
   gem 'guard-spork', '0.3.2'
@@ -70,6 +72,6 @@ group :test do
   gem 'launchy', '2.1.0'
   gem 'mocha'
   gem 'capybara-screenshot'
-  gem 'poltergeist'
+  gem 'poltergeist', '1.1.0'
   gem 'shoulda'
 end

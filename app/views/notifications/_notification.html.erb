@@ -1,4 +1,4 @@
-<tr class="welcome_alerts">
+<tr class="welcome_alerts" id="notification_<%= notification.id %>">
   <% if notification.human_status_name == 'read' %>
   <td>  <span>
               <%= image_tag("index/new_alert.png", alt: "MiYa") %>
@@ -6,8 +6,8 @@
 
     <!--<badge><i class="icon-envelope"></i></badge>-->
         </span></td>
-  <td><strong> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel: 'tooltip' %> </strong></td>
-  <td><strong> <%= notification.html_message %></strong>  </td>
+  <td id="notification_<%= notification.id %>_subject"><strong> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel: 'tooltip' %> </strong></td>
+  <td id="notification_<%= notification.id %>_message"><strong> <%= notification.html_message %></strong>  </td>
   <!--<td><strong> <#%= notification.human_status_name %></strong>  </td>-->
 
   <% else %>
@@ -17,11 +17,11 @@
 
         </span>
       </td>
-      <td> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %>    </td>
-      <td> <%= notification.html_message %>  </td>
+      <td id="notification_<%= notification.id %>_subject"> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %>    </td>
+      <td id="notification_<%= notification.id %>_message"> <%= notification.html_message %>  </td>
       <!--<td> <#%= notification.human_status_name %></td>-->
    <% end %>
-  <td>
+  <td id="notification_<%= notification.id %>_actions">
 
     <!--<#%= link_to 'Show', notification_path(notification), :class => 'btn btn-mini btn-info' %>-->
     <!--<#%= link_to 'Dismiss', user_root_path, :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->

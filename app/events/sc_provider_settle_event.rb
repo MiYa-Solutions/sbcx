@@ -1,22 +1,27 @@
-class ScProviderSettleEvent < ServiceCallEvent
+class ScProviderSettleEvent < ScSettlementEvent
 
-    def init
-        self.name         = I18n.t('service_call_provider_settle_event.name')
-        self.description  = I18n.t('service_call_provider_settle_event.description')
-        self.reference_id = 100030
-    end
+  def init
+    self.name         = I18n.t('service_call_provider_settle_event.name')
+    self.description  = I18n.t('service_call_provider_settle_event.description')
+    self.reference_id = 100030
+  end
 
-    def notification_recipients
-        nil
-    end
+  def notification_recipients
+    nil
+  end
 
-    def notification_class
-        nil
-    end
+  def notification_class
+    nil
+  end
 
-    def update_provider
-        prov_service_call.events << ScSubconSettledEvent.new(triggering_event: self)
-    end
+  def update_provider
+    prov_service_call.events << ScSubconSettledEvent.new(triggering_event: self)
+  end
+
+  def process_event
+    update_affiliate_account
+    super
+  end
 
 
 end

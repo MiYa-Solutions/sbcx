@@ -37,68 +37,50 @@ module Matchers
     end
   end
 
-  class AffiliateBalanceMatcher
-    def initialize(balance)
-      @balance = balance
+  class SuccessMessageMatcher
+    def initialize(message = nil)
+      @message = message
     end
 
     def matches?(actual)
       @errors           = {}
       expected_elements = {
-          :balance => get_balance_selector,
+          :alert_div => 'div.alert-success',
       }
 
       expected_values = {
-          :balance => "#{humanized_money_with_symbol @balance}"
+          :alert_div => @message
       }
 
       expected_elements.each do |key, selector|
         @errors[key] = selector unless actual.has_selector?(selector)
-        @errors["#{key}_value"] = "#{selector}  with value: #{expected_values[key]}" unless actual.has_selector?(selector, text: expected_values[key])
+        if @message.present?
+          @errors["#{key}_value"] = "#{selector}  with value: #{expected_values[key]}" unless actual.has_selector?(selector, text: expected_values[key])
+        end
       end
       @errors.empty?
-
     end
 
     def failure_message
-      message = "expected page to have an affiliate balance span" if @errors[:balance]
-      message = "balance span found but the value is wrong" unless @errors[:balance]
+      message = "expected page to success alert" if @errors[:alert_div]
+      message = "entry row exists but the value is wrong" unless @errors[:alert_div]
       message += "\n#{@errors.to_yaml}" unless @errors.empty?
       message
 
     end
 
     def negative_failure_message
-      message = "expected page to NOT have an balance span row with amount = #{humanized_money_with_symbol @balance}"
+      message = "expected page to NOT show a success alert '#{@message}'"
       message += "\n#{@errors.to_yaml}" unless @errors.empty?
       message
     end
 
-    protected
-    def get_balance_selector
-      AFF_SPAN_BALANCE
-    end
-
   end
 
-  class CustomerBalanceMatcher < AffiliateBalanceMatcher
-    protected
-    def get_balance_selector
-      'span#customer_balance'
-    end
-
+  def have_success_message(message = nil)
+    SuccessMessageMatcher.new(message)
   end
 
-  def have_entry(entry, amount)
-    AccountingEntryMatcher.new(entry, amount)
-  end
-
-  def have_affiliate_balance(balance)
-    AffiliateBalanceMatcher.new(balance)
-  end
-  def have_customer_balance(balance)
-    CustomerBalanceMatcher.new(balance)
-  end
 
 end
 

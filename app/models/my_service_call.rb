@@ -31,6 +31,7 @@
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
+#  payment_type         :string(255)
 #
 
 class MyServiceCall < ServiceCall
@@ -96,6 +97,7 @@ class MyServiceCall < ServiceCall
   BILLING_STATUS_INVOICED_BY_SUBCON     = 4105
   BILLING_STATUS_COLLECTED_BY_SUBCON    = 4106
   BILLING_STATUS_SUBCON_CLAIM_DEPOSITED = 4107
+  BILLING_STATUS_CLEARED                = 4108
 
 
   # if collection is not allowed for this service call, then the initial status is set to na - not applicable
@@ -112,9 +114,19 @@ class MyServiceCall < ServiceCall
       validate { |sc| sc.validate_collector }
     end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
+    state :cleared, value: BILLING_STATUS_CLEARED
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+    end
+
+    # for cash payment, paid means cleared
+    after_transition any => :paid do |sc, transition|
+      sc.status = BILLING_STATUS_CLEARED if sc.payment_type == 'cash'
+    end
+
+    event :clear do
+      transition :paid => :cleared, if: ->(sc) { sc.payment_type != 'cash' }
     end
 
     event :invoice do
@@ -122,7 +134,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.transferred? && !sc.subcontractor.subcontrax_member? && sc.work_done? && sc.allow_collection? }
+      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.transferred? && sc.work_done? && sc.allow_collection? }
     end
 
     event :overdue do

@@ -19,4 +19,11 @@ class ServiceCallPaidEvent < ServiceCallEvent
     ScPaidNotification
   end
 
+  def process_event
+    set_customer_account_as_paid
+    super
+  end
+
+
+
 end

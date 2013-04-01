@@ -30,7 +30,9 @@
 #
 
 class ServiceCallEvent < Event
+
   before_create :set_default_creator
+
   def process_event
 
     Rails.logger.debug { "Running #{self.class.name} process_event method" }
@@ -79,11 +81,12 @@ class ServiceCallEvent < Event
 
   def notify_subcontractor?
     begin
-      service_call.subcontractor.subcontrax_member? &&
+      service_call.subcontractor.present? &&
+          service_call.subcontractor.subcontrax_member? &&
           service_call.subcontractor.id != service_call.organization.id &&
           !subcon_service_call.events.include?(self.triggering_event)
-    rescue
-      Rails.logger.error { "Error in  ServiceCallEvent#notify_subcontractor?" }
+    rescue Exception => err
+      Rails.logger.error { "Error in  #{self.class.name}#notify_subcontractor?: \n#{err.inspect}" }
     end
 
   end
@@ -93,6 +96,31 @@ class ServiceCallEvent < Event
   end
 
   def update_provider
-    nil # should be implemented in the subclass in case the subcontractor needs to be notified
+    nil # should be implemented in the subclass in case the provider needs to be notified
+  end
+
+  def set_customer_account_as_paid
+    account = Account.for_customer(service_call.customer).lock(true).first
+    ticket  = MyServiceCall.find(service_call.ref_id)
+
+    props = { amount:      -service_call.total_price,
+              ticket:      ticket,
+              event:       self,
+              description: I18n.t("payment.#{service_call.payment_type}.description", ticket: ticket.id).html_safe }
+
+
+    case service_call.payment_type
+      when 'cash'
+        entry = CashPayment.new(props)
+        account.entries << entry
+        entry.clear
+      when 'credit_card'
+        entry = CreditPayment.new(props)
+        account.entries << entry
+      when 'cheque'
+        account.entries << ChequePayment.new(props)
+      else
+        raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
+    end
   end
 end

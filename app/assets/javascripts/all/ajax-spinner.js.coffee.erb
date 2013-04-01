@@ -5,19 +5,32 @@ jQuery ->
         old_val = $(this).val()
 
     $('.ajax-form').bind("ajax:before", ->
-        spinner.appendTo($('.ajax-btn'))
+        $(this).find('div.control-group.error').removeClass('control-group error')
+        $(this).find('span.alert-error').remove()
+        spinner.appendTo($(this).find($('.ajax-btn')).parent())
         $('.ajax-btn').val("Wait...")
+        $('.ajax-btn').attr('disabled', 'disabled')
+
     )
 
     $('.ajax-form').bind("ajax:complete", ->
         spinner.remove()
         $('.ajax-btn').val(old_val)
+        $('.ajax-btn').removeAttr('disabled')
     )
 
     $('.ajax-form').bind("ajax:success", ->
-        msg = $("<span class='green'>Saved!</span>").appendTo('.ajax-btn')
-        msg.fadeOut(2000)
-        msg.remove()
+        msg = $('<span class="alert-success">Saved!</span>').appendTo($('.ajax-btn').parent())
+        msg.fadeOut(3000)
+        $(this).find('input:visible').val('')
+
     )
+
+    $('.ajax-form').bind("ajax:error", (e, xhr, status, error)->
+        container = $("<span class='flash-error'></span>").html("The Following Error Occured:<br>#{xhr.responseText}")
+        container.purr()
+        spinner.remove()
+    )
+
 
 

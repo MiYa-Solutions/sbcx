@@ -31,6 +31,7 @@
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
+#  payment_type         :string(255)
 #
 
 class Ticket < ActiveRecord::Base
@@ -39,6 +40,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
   belongs_to :provider
+  belongs_to :payment
   belongs_to :technician, class_name: User
   has_many :events, as: :eventable
   has_many :notifications, as: :notifiable
@@ -58,9 +60,13 @@ class Ticket < ActiveRecord::Base
   end
   belongs_to :collector, :polymorphic => true
   has_many :appointments, as: :appointable
+  has_many :accounting_entries
+
+  alias_method :entries, :accounting_entries
 
   scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov} AND subcontractor_id = #{subcon} and created_at > '#{after}'") }
-  scope :affiliated_jobs, ->(org, affiliate) {where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id))}
+  scope :affiliated_jobs, ->(org, affiliate) { where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id)) }
+  scope :customer_jobs, ->(org, customer) { where(organization_id: org.id).where(customer_id: customer.id) }
 
   stampable
 
@@ -73,7 +79,7 @@ class Ticket < ActiveRecord::Base
   before_save :save_started_on_text
   before_save :save_completed_on_text
   before_save :save_scheduled_for_text
-                                                            # create a new customer in case one was asked for
+                                                                                       # create a new customer in case one was asked for
   before_validation :create_customer
 
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
@@ -149,6 +155,7 @@ class Ticket < ActiveRecord::Base
     @started_on_text || started_on.try(:strftime, "%B %d, %Y %H:%M")
 
   end
+
   def scheduled_for_text
     @scheduled_for_text || scheduled_for.try(:strftime, "%B %d, %Y %H:%M")
 
@@ -201,6 +208,10 @@ class Ticket < ActiveRecord::Base
                                                       phone:        phone,
                                                       mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
     end
+  end
+
+  def validate_payment
+    self.errors.add :payment_type, "You must indicate the type of payment" unless self.payment_type
   end
 
   def validate_collector
@@ -297,6 +308,8 @@ class Ticket < ActiveRecord::Base
         raise "Unexpected role for #{self.class.name} id: #{self.id}"
     end
   end
+
+  alias_method :affiliate, :counterparty
 
   private
   def customer_belongs_to_provider

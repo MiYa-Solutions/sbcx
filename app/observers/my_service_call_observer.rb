@@ -1,8 +1,8 @@
 class MyServiceCallObserver < ServiceCallObserver
 
-  def after_dispatch(service_call, transition)
-    Rails.logger.debug { "invoked observer after dispatch \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.events << ServiceCallDispatchEvent.new(description: I18n.t('service_call_dispatch_event.description', technician: service_call.technician.name))
+  def after_clear_payment(service_call, transition)
+    Rails.logger.debug { "invoked observer after clear payment \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ScClearCustomerPaymentEvent.new
   end
 
   def after_start_work(service_call, transition)
@@ -39,8 +39,8 @@ class MyServiceCallObserver < ServiceCallObserver
     service_call.events << ServiceCallInvoiceEvent.new
   end
 
-  def before_paid_payment(service_call, transition)
-    Rails.logger.debug { "invoked BEFORE paid \n #{service_call.inspect} \n #{transition.args.inspect}" }
+  def after_paid_payment(service_call, transition)
+    Rails.logger.debug { "invoked AFTER paid \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
     service_call.events << ServiceCallPaidEvent.new
   end

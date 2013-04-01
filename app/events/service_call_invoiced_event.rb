@@ -8,6 +8,7 @@ class ServiceCallInvoicedEvent < ServiceCallEvent
   end
 
   def process_event
+
     service_call.subcon_invoiced_payment if service_call.can_subcon_invoiced_payment?
     super
   end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'capybara/rspec'
 
-
 describe "Affiliate Pages" do
 
 

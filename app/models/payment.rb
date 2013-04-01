@@ -13,6 +13,7 @@
 
 class Payment < ActiveRecord::Base
   belongs_to :agreement
+  has_many :tickets
 
   validates_uniqueness_of :agreement_id, scope: [:type]
 
@@ -36,4 +37,8 @@ class Payment < ActiveRecord::Base
     payment
 
   end
+end
+
+Dir["#{Rails.root}/app/models/payments/*.rb"].each do |file|
+  require_dependency file
 end

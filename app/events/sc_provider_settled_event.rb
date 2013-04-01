@@ -1,4 +1,4 @@
-class ScProviderSettledEvent < ServiceCallEvent
+class ScProviderSettledEvent < ScSettlementEvent
 
   def init
     self.name         = I18n.t('service_call_provider_settled_event.name')
@@ -15,7 +15,9 @@ class ScProviderSettledEvent < ServiceCallEvent
   end
 
   def process_event
+    service_call.provider_payment = self.triggering_event.service_call.subcon_payment if self.triggering_event.present?
     service_call.provider_marked_as_settled_provider
+    update_affiliate_account
     super
   end
 

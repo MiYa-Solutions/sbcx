@@ -21,8 +21,8 @@ class Bom < ActiveRecord::Base
   belongs_to :material
   belongs_to :buyer, :polymorphic => true
 
-  validates_presence_of :ticket, :cost, :price, :quantity, :material
-  validates_numericality_of :quantity
+  validates_presence_of :ticket, :cost, :price, :quantity, :material_id
+  validates_numericality_of :quantity, :cost, :price
   validate :buyer, :validate_buyer
 
   monetize :cost_cents
