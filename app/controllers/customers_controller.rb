@@ -109,6 +109,7 @@ class CustomersController < ApplicationController
     if permitted_to! :show, Customer.find(params[:id])
       @customer = Customer.find(params[:id])
       @jobs = @customer.service_calls.order('id desc').limit(5)
+      @agreements = CustomerAgreement.agreements_for(@customer)
     end
 
   end
