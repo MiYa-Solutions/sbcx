@@ -30,7 +30,7 @@
           <div class="row-fluid">
             <div class="account_entry_balance">
                 <ul class="alert alert-info" id="empty_balance_notice">
-                  <li><%= label_tag Account.human_attribute_name(:balance) %></li>
+                  <li><%= I18n.t('general.general.balance') %></li>
                   <li><span id="balance"><%= humanized_money_with_symbol @account.balance if @account.present? %></span></li>
                 </ul>
             </div>

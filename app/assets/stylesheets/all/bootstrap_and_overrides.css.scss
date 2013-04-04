@@ -1536,10 +1536,20 @@ a:hover {
   }
 }
 
+#search-results-table_info {
+  color: #000000;
+}
+
+
+
 #search-results-table_filter {
   input, textarea {
     margin-left: 8px;
-    width: 69%;
+    width: 65%;
+  }
+
+  label {
+    color: #000000;
   }
 }
 
@@ -1579,14 +1589,15 @@ a:hover {
 
 .dataTables_filter {
 
-  label {
-    color: white;
-  }
+
   input, textarea {
     width: 70%;
   }
 }
 
+#entries_table_filter, label {
+  color: white;
+}
 
 .dataTables_info {
   color: white;
@@ -1602,9 +1613,7 @@ a:hover {
   margin-top: 8px;
 }
 
-.DTTT_collection {
 
-}
 
 div.DTTT_collection button.DTTT_button, div.DTTT_collection div.DTTT_button, div.DTTT_collection a.DTTT_button {
   float: none;
