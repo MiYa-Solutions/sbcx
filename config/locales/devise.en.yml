@@ -90,6 +90,11 @@ en:
       job_source: "Job Source"
       archive: "Archive"
       new_customer: "New Customer"
+      number: " Number"
+      find_job: "Find Job"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"
+  affiliates:
+    buttons:
+      add_entry: "Add Entry"

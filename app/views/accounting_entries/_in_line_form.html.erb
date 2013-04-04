@@ -3,25 +3,40 @@
     <br>
     <%= f.error_notification %>
 
-    <div class="row-fluid add_part_service_call">
-      <div class="alert add_part_frame">
-
+ <div class="alert add_part_frame">
+    <div class="row-fluid add_account_entry">
         <ul>
           <li></li>
-          <li class="quantity_field">
+          <li class="ticket_field">
+            <div class="input-prepend input-append">
+              <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:ticket) %><%= I18n.t('general.general.number') %></span>
+              <%= f.text_field :ticket_ref_id %>
+            </div>
+          </li>
+          <li></li>
+        </ul>
+   </div>
+   <br>
+   <div class="row-fluid add_account_entry">
+
+       <ul>
+          <li></li>
+          </li>
+           <li class="quantity_field">
             <div class="input-prepend input-append">
               <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:amount) %></span>
               <%= f.text_field :amount %>
             </div>
 
           </li>
-          <li class="quantity_field">
-            <div class="input-prepend input-append">
-              <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:ticket) %></span>
-              <%= f.text_field :ticket_ref_id %>
-            </div>
+         <li>
+           <label class="find_job_help">Click the <strong>'Find'</strong> button to search for Job Number </label>
+         </li>
+         <li></li>
+          </ul>
+       <ul>
+          <li></li>
 
-          </li>
           <li class="price_field">
             <div class="input-prepend input-append">
               <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:description) %></span>
@@ -33,19 +48,24 @@
             <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary ajax-btn", id: 'add_entry' %>
 
           </li>
+
           <li>
             <div id="ajax-msg"></div>
           </li>
-          <li>
-            <a href="#" data-toggle="collapse" data-target="#bom" class="close">×</a>
-          </li>
         </ul>
-      </div>
-    </div>
+
+   </div>
+   <br>
+   <div class="row-fluid add_account_entry">
+     <a href="#" data-toggle="collapse" data-target="#add_entry" class="close">×</a>
+   </div>
+ </div>
 
 
 <% end %>
 <%= render 'shared/ticket_search', account: account %>
+
+
 
 
 
