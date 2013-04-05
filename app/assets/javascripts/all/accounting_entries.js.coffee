@@ -81,5 +81,9 @@ jQuery ->
 
   if $('#get-entries-btn').data('account-id') == ''
     $('#add_new_entry').hide()
+  else if $('#get-entries-btn').data('account-id') != undefined
+    oTable = $('#entries_table').dataTable()
+    oTable.fnDraw()
+
 
 

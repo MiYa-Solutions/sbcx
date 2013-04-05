@@ -851,6 +851,12 @@ describe "Account Pages", js: true do
                   visit customer_path customer
                   should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'cleared')
                 end
+
+                it 'should show the clearing event associated with the job' do
+                  job.events.pluck(:reference_id).should include(100034)
+                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_clear_customer_payment_event.name'))
+
+                end
               end
 
             end

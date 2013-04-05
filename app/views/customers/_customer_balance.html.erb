@@ -16,9 +16,11 @@
   </div>
 
   <div class="form-actions">
-    <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#balanceDetails">
-      <%= I18n.t('general.general.more_details') %>
-    </button>
+    <!--<button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#balanceDetails">-->
+      <!--<#%= I18n.t('general.general.more_details') %>-->
+    <!--</button>-->
+
+    <%= link_to I18n.t('general.general.more_details'), accounting_entries_url('accounting_entry[account_id]' => @customer.account.id), class: 'btn btn-primary btn-medium' %>
   </div>
 
 </div>
