@@ -10,7 +10,11 @@ $ ->
     $('div#search-results table').show()
 
     $('#search-results-table').dataTable
-      sDom: "<'row-fluid'<'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
+      sDom: "<'row-fluid'<'span12'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
+
+
+      #      sDom: "<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+
       sPaginationType: "bootstrap"
       bProcessing: true
       bStateSave: true

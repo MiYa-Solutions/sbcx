@@ -1,8 +1,8 @@
 jQuery ->
   $('#entries_table').dataTable
     sDom: "<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+#    sDom: "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
     sPaginationType: "bootstrap"
-    sProcessing: "zibi"
     iDisplayLength: 25
     oTableTools:
       aButtons: ["copy", "print",
@@ -30,6 +30,10 @@ jQuery ->
       $('td:eq(3)', nRow).attr('id', 'entry_' + aData[0] + '_type')
       $('td:eq(4)', nRow).attr('id', 'entry_' + aData[0] + '_status')
       $('td:eq(5)', nRow).attr('id', 'entry_' + aData[0] + '_amount')
+
+  $.extend $.fn.dataTableExt.oStdClasses,
+    sWrapper: "dataTables_wrapper form-inline"
+
 #      $(nRow).click ->
 #        alert ('clicked row' + $(nRow).attr('id'))
   $('#entries_table').dataTable().columnFilter()

@@ -7,7 +7,10 @@
     <%= f.input :password, :required => true %>
     <%= f.input :password_confirmation%>
     <%= f.input :company %>
+  <div class="new_user_roles" >
     <%= f.association :roles, collection: applicable_user_roles, as: :check_boxes %>
+  </div>
+
 
 </div>
 

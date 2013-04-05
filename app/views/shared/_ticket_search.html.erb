@@ -1,11 +1,11 @@
 <% affiliate ||= nil %>
 <% customer ||= nil %>
 <% account ||= nil %>
-<%= link_to 'Find', '#ticket_search', data: { toggle: 'modal' } %>
+<%= link_to 'Find', '#ticket_search', data: { toggle: 'modal' }, class: "btn btn-primary find_entry" %>
 <div id="ticket_search" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="ticket_search_header"><%= I18n.t('general.general.job_history') %></h3>
+    <h3 id="ticket_search_header"><%= I18n.t('general.general.find_job') %></h3>
   </div>
   <div class="modal-body" id="ticket_search_body">
     <div>
@@ -13,12 +13,14 @@
       <%= hidden_field_tag :customer_id, customer.id  if customer.present? %>
       <%= hidden_field_tag :account_id, account.try(:id) %>
       <%= form_tag service_calls_url, id: "ticket_search_form", method: :get, remote: true, 'data-type' => 'json' do %>
+          <label class="search_job_help">Enter the person's name and click the <strong>'Search'</strong> button to get get a list of all Jobs.</label>
           <%= text_field_tag :search, params[:search] %>
-          <%= submit_tag t('affiliates.buttons.search'), :name => nil, class: 'btn btn-medium', :id => 'ticket-search-button' %>
+          <%= submit_tag t('affiliates.buttons.search'), :name => nil, class: 'btn btn-primary', :id => 'ticket-search-button' %>
+          <br><label class="search_job_help">Double-click the Job you wish to add a new entry to.</label>
       <% end %>
     </div>
     <div id="search-results">
-      <table class="table table-striped display" hidden="true" id="search-results-table">
+      <table class="table table-striped display table-bordered" hidden="true" id="search-results-table">
         <thead>
         <tr>
           <th><%= Ticket.human_attribute_name(:id) %></th>

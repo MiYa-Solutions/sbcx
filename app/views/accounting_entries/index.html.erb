@@ -1,22 +1,69 @@
-<%= select_tag :account, grouped_options_for_select(account_options), prompt: I18n.t('general.select_prompt') %>
-<button id="get-entries-btn" class="ajax-btn" data-account-id="<%= @account.id if @account.present? %>"><%= I18n.t('general.buttons.get_entries') %></button>
+<% provide(:title, AccountingEntry.name.humanize.pluralize) %>
+<div class="well well_height">
 
-<%= label_tag Account.human_attribute_name(:balance) %>
-<span id="balance"><%= humanized_money_with_symbol @account.balance if @account.present? %></span>
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= AccountingEntry.model_name.human.pluralize %></h1></li>
+      <li></li>
+      <li>
+        <button class="btn btn-primary" data-toggle="collapse" data-target="#add_entry" id="add_new_entry">
+            <%= I18n.t('affiliates.buttons.add_entry') %>
+        </button>
 
-<%= render 'accounting_entries/in_line_form', account: @account %>
+<!--       <#%= link_to t('affiliates.buttons.add_entry'), new_affiliate_path, :class => 'btn btn-primary', id: 'new-affiliate-button' %></li>-->
+    </ul>
+  </div>
 
-<table class="table table-striped display" id="entries_table" data-source="<%= accounting_entries_url(format: "json") %>">
-  <thead>
-  <tr>
-    <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
-    <th><%= AccountingEntry.human_attribute_name(:created_at) %></th>
-    <th><%= AccountingEntry.human_attribute_name(:ticket) %></th>
-    <th><%= AccountingEntry.human_attribute_name(:type) %></th>
-    <th><%= AccountingEntry.human_attribute_name(:status) %></th>
-    <th><%= AccountingEntry.human_attribute_name(:amount) %></th>
-    <th><%= AccountingEntry.human_attribute_name(:balance) %></th>
-  </tr>
-  </thead>
+  <br>
 
-</table>
+ <div class="row-fluid get_entry_info">
+
+    <div class="span4">
+
+          <div class="row-fluid">
+            <div class="account_entry_select">
+              <%= select_tag :account, grouped_options_for_select(account_options), prompt: I18n.t('general.select_prompt') %>
+              <button id="get-entries-btn" class="ajax-btn btn btn-primary" data-account-id="<%= @account.id if @account.present? %>"><%= I18n.t('general.buttons.get_entries') %></button>
+            </div>
+          </div>
+
+          <div class="row-fluid">
+            <div class="account_entry_balance">
+                <ul class="alert alert-info" id="empty_balance_notice">
+                  <li><%= I18n.t('general.general.balance') %></li>
+                  <li><span id="balance"><%= humanized_money_with_symbol @account.balance if @account.present? %></span></li>
+                </ul>
+            </div>
+          </div>
+
+    </div>
+
+    <div class="span8">
+      <div id="add_entry" class="collapse">
+         <%= render 'accounting_entries/in_line_form', account: @account %>
+      </div>
+    </div>
+
+ </div>
+
+
+  <br>
+  <div class="row-fluid table_of_entries">
+        <table class="table table-striped display table-bordered" id="entries_table" data-source="<%= accounting_entries_url(format: "json") %>">
+          <thead class="entry_table_head">
+          <tr>
+            <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+            <th><%= AccountingEntry.human_attribute_name(:created_at) %></th>
+            <th><%= AccountingEntry.human_attribute_name(:ticket) %></th>
+            <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+            <th><%= AccountingEntry.human_attribute_name(:status) %></th>
+            <th><%= AccountingEntry.human_attribute_name(:amount) %></th>
+            <th><%= AccountingEntry.human_attribute_name(:balance) %></th>
+          </tr>
+          </thead>
+
+        </table>
+
+  <!--end of Well-->
+</div>
+</div>

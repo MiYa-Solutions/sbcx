@@ -130,7 +130,23 @@ footer {
 
 }
 
+.check_boxes, input {
+  width: auto;
 
+}
+
+.new_user_roles {
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    float: left;
+    margin-left: -37%;
+    margin-right: -29%;
+    margin-top: 0.1005em;
+  }
+
+
+
+}
 
 .sign-up {
 
@@ -145,6 +161,10 @@ footer {
   input, textarea {
       width: 70%;
     }
+
+  select {
+    width: auto;
+  }
 
   select {
     width: 71.5%;
@@ -982,6 +1002,8 @@ a:hover {
 
 }
 
+
+
 .list_service_calls {
 
   address {
@@ -1006,6 +1028,7 @@ a:hover {
 
   label {
     font-weight: bold;
+    color: #000000;
   }
 
   ul {
@@ -1403,11 +1426,256 @@ a:hover {
 
 }
 
+.add_account_entry {
+
+
+  input, textarea, text_field {
+    width: 40%;
+    margin-left: -5px;
+  }
+  textarea {
+    height: 18px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+
+    line-height: 16px;
+    width: 18%;
+  }
+
+  li:last-child {
+    //float: right;
+    //width: 10%;
+    float: left;
+    width: 23%;
+
+  }
+
+  .alert {
+    //border: 1px solid gray;
+    //border-radius: 4px 4px 4px 4px;
+    height: 30px;
+    margin-bottom: 1px;
+    padding-right: 30px;
+    //text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    //background-color: none;
+  }
+
+  .part_field {
+    width: 20%;
+    margin-right: -12px;
+  }
+  .quantity_field {
+    width: 20%;
+    margin-left: 1%;
+  }
+
+  .ticket_field {
+    width: 42%;
+    margin-left: 10%;
+    margin-top: -27px;
+  }
+
+  .price_field {
+    width: 31%;
+    margin-left: -10px;
+  }
+
+  .cost_field {
+    width: 14%;
+    margin-left: 1px;
+  }
+
+  .buyer_field {
+    width: 25%;
+    margin-left: -4px;
+
+  }
+
+  .add_button {
+    width: 14%;
+    margin-left: 1px;
+    .add_part_service_call input, .add_part_service_call textarea, .add_part_service_call text_field {
+      margin-left: -5px;
+      width: 80%;
+    }
+
+  }
+
+  .button_filter {
+    height: 16px;
+  }
+
+  .alert .close {
+    line-height: 18px;
+    position: relative;
+    right: -27px;
+    //top: -100px;
+  }
+
+  .close {
+    margin-top: -95px;
+  }
+
+  select {
+    width: 60%;
+    margin-left: -4px;
+  }
+
+}
+
+#accounting_entry_ticket_ref_id{
+   width: 18%;
+}
+
+.find_entry {
+  margin-left: 3%;
+  margin-top: -216px;
+}
+
+.get_entry_info{
+  min-height: 160px;
+}
+
+.find_job_help {
+  color: black;
+  font-style: italic;
+  margin-left: 74px;
+  margin-top: -40px;
+  width: 280px;
+}
+
+#ticket_search_form {
+  #search {
+     width: 20%;
+  }
+  #ticket-search-button{
+    margin-top: -10px;
+  }
+}
+
+#search-results-table_info {
+  color: #000000;
+}
+
+
+
+#search-results-table_filter {
+  input, textarea {
+    margin-left: 8px;
+    width: 65%;
+  }
+
+  label {
+    color: #000000;
+  }
+}
+
+.search_job_help {
+  color: black;
+  font-style: italic;
+  margin-top: 0;
+  width: 100%;
+}
+
+.dataTables_wrapper{
+
+  .caret {
+    height: 5px;
+    opacity: 0.75;
+    width: 2px;
+    margin-top: 5px;
+  }
+}
+
+.entry_table_head  {
+    color: white;
+    font-weight: bold;
+
+}
+
+.table_of_entries {
+  background: none repeat scroll 0 0 #999999;
+  padding: 4px;
+}
+
+.dataTables_paginate {
+  background-color: white;
+  float: right;
+  margin-top: 10px;
+}
+
+.dataTables_filter {
+
+
+  input, textarea {
+    width: 70%;
+  }
+}
+
+//#entries_table_filter, label {
+//  color: white;
+//}
+
+//label {
+//  color: #000000;
+//}
+//.dataTables_filter, label {
+//  color: white;
+//}
+
+#entries_table_filter{
+  color: #ffffff;
+}
+
+.dataTables_info {
+  color: white;
+  margin-bottom: 5px;
+  margin-left: 55px;
+  margin-top: -3px;
+}
+
+
+
+.dataTables_length {
+  color: #ffffff;
+  margin-top: 8px;
+}
+
+
+
+div.DTTT_collection button.DTTT_button, div.DTTT_collection div.DTTT_button, div.DTTT_collection a.DTTT_button {
+  float: none;
+  margin-bottom: -0.1em;
+  margin-left: -8px;
+  width: 100%;
+}
+
+div.DTTT_collection {
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 5px 5px 5px 5px;
+  padding: 0 0 2px;
+  background-color: #F3F3F3;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  height: 83px;
+  overflow: hidden;
+  width: 150px;
+  z-index: 2002;
+}
+
 .add_part_frame {
   background-color: #EEEEEE;
   border-color: black;
   border-width: 1px;
   color: #3A87AD;
+  padding-top: 42px;
+  margin-top: -15px;
+  height: 58px;
 }
 
 .edit_provider {
@@ -1824,6 +2092,69 @@ hr {
 
 #sign_in_header_link {
   line-height: 16px;
+}
+
+.account_entry_select {
+
+  select {
+    width: 50%;
+  }
+}
+
+
+#get-entries-btn {
+  margin-bottom: 9px;
+}
+
+.account_entry_balance {
+
+  ul {
+    font-weight: bold;
+    list-style: none outside none;
+    margin: 0;
+    min-height: 16px;
+    width: 37%;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: left;
+    margin-left: 0;
+
+  }
+}
+
+
+button.DTTT_button, div.DTTT_button, a.DTTT_button {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background-color: whitesmoke;
+  background-image: -moz-linear-gradient(center top , white, #E6E6E6);
+  background-repeat: repeat-x;
+  border-image: none;
+  border-style: solid;
+  border-width: 1px;
+  color: #333333;
+  cursor: pointer;
+  font-size: 13px;
+  margin-right: 19px;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  vertical-align: middle;
+  width: 66px;
+}
+
+
+
+.DTTT_container, a {
+  text-decoration: none;
 }
 
 

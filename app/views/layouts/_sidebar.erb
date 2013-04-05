@@ -18,7 +18,7 @@
       </a>
     </li>
 
-    <li class="nav-header"><i class="icon-folder-open"></i><%= I18n.t('general.general.jobs') %></li>
+    <li class="nav-header"><i class="icon-folder-open"></i> <%= I18n.t('general.general.jobs') %></li>
     <li><%= link_to I18n.t('general.general.new_job'), new_service_call_path %></li>
     <li><%= link_to I18n.t('general.general.open_jobs'), service_calls_path %></li>
 
@@ -26,6 +26,9 @@
     <li><%= link_to I18n.t('general.general.new_affiliate') , new_affiliate_path %></li>
     <li><%= link_to 'New Customer', new_customer_path %></li>
     <li><%= link_to 'New Employee', new_my_user_path %></li>
+
+    <li class="nav-header"><i class="icon-signal"></i> <%= I18n.t('general.general.billing') %></li>
+    <li><%= link_to AccountingEntry.name.tableize.humanize , accounting_entries_path %></li>
   </ul>
 
 
