@@ -49,6 +49,12 @@ jQuery ->
     $('#accounting_entry_account_id').val(new_acc)
     $('#get-entries-btn').data('account-id', new_acc )
     $('#balance').text($('#account').find(":selected").data('balance'))
+    if $('#get-entries-btn').data('account-id') != ''
+      $('#add_new_entry').show()
+    else
+      $('#add_new_entry').hide()
+
+
 
   $('#entries_table').dataTable.fnFilterOnReturn
 
@@ -72,5 +78,8 @@ jQuery ->
           $("#accounting_entry_ticket_ref_id").parent().append("<span class='alert-error'>#{msg}</span>")
         else
           $('#new_accounting_entry').prepend("<span class='alert-error'>#{attr} #{msg}</span>")
+
+  if $('#get-entries-btn').data('account-id') == ''
+    $('#add_new_entry').hide()
 
 

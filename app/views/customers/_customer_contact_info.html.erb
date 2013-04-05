@@ -31,7 +31,7 @@
       <td><strong><%= Customer.human_attribute_name(:state) %></strong></td>
       <td><%= @customer.state %></td>
       <td><strong><%= Customer.human_attribute_name(:email) %></strong></td>
-      <td><%= link_to @customer.email, "mailto:" + @customer.email %></td>
+      <td><%= link_to @customer.email, "mailto:" + @customer.email if @customer.email.present?%></td>
     </tr>
     <tr>
       <td><strong><%= Customer.human_attribute_name(:country) %></strong></td>
