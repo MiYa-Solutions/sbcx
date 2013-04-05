@@ -130,7 +130,23 @@ footer {
 
 }
 
+.check_boxes, input {
+  width: auto;
 
+}
+
+.new_user_roles {
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    float: left;
+    margin-left: -37%;
+    margin-right: -29%;
+    margin-top: 0.1005em;
+  }
+
+
+
+}
 
 .sign-up {
 
@@ -145,6 +161,10 @@ footer {
   input, textarea {
       width: 70%;
     }
+
+  select {
+    width: auto;
+  }
 
   select {
     width: 71.5%;
@@ -982,6 +1002,8 @@ a:hover {
 
 }
 
+
+
 .list_service_calls {
 
   address {
@@ -1006,6 +1028,7 @@ a:hover {
 
   label {
     font-weight: bold;
+    color: #000000;
   }
 
   ul {
@@ -1595,8 +1618,19 @@ a:hover {
   }
 }
 
-#entries_table_filter, label {
-  color: white;
+//#entries_table_filter, label {
+//  color: white;
+//}
+
+//label {
+//  color: #000000;
+//}
+//.dataTables_filter, label {
+//  color: white;
+//}
+
+#entries_table_filter{
+  color: #ffffff;
 }
 
 .dataTables_info {

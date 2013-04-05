@@ -92,6 +92,7 @@ en:
       new_customer: "New Customer"
       number: " Number"
       find_job: "Find Job"
+      new_employee: "New Employee"
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Click to add an agreement and send invitation to join your network"
