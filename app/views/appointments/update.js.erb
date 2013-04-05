@@ -1,6 +1,11 @@
+$("#appointment-form").html('<%= j render('appointments/in_line_form', appointment: @appointment) %>');
+$("#appointment_starts_at_date_text").datepicker();
+$("#appointment_ends_at_date_text").datepicker();
+$("#appointment_ends_at_time_text").timepicker();
+$("#appointment_starts_at_time_text").timepicker();
 event = $('#calendar').fullCalendar('clientEvents', <%= @appointment.id %>);
 event[0].title = "<%= @appointment.title %>";
 event[0].start = "<%= @appointment.starts_at.rfc822 %>";
 event[0].end = "<%= @appointment.ends_at.rfc822 %>";
 event[0].description = "<%= @appointment.description %>";
-$('#calendar').fullCalendar( 'updateEvent', event[0]);
+$('#calendar').fullCalendar('updateEvent', event[0]).focus();

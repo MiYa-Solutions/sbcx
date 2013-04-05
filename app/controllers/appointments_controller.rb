@@ -29,7 +29,7 @@ class AppointmentsController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.xml { render :xml => @appointment }
-      format.json { render :json =>  @appointment }
+      format.json { render :json => @appointment }
     end
   end
 
@@ -47,7 +47,7 @@ class AppointmentsController < ApplicationController
         format.js {}
       else
         format.html { render :action => "new" }
-        format.js {  }
+        format.js {}
       end
     end
   end
@@ -60,10 +60,10 @@ class AppointmentsController < ApplicationController
     respond_to do |format|
       if @appointment.update_attributes(permitted_params(@appointment).appointment)
         format.html { redirect_to(@appointment, :notice => 'Appointment was successfully updated.') }
-        format.js { }
+        format.js {  }
       else
         format.html { render :action => "edit" }
-        format.js { render :js => @appointment.errors.full_messages, :status => :unprocessable_entity }
+        format.js { render :create }
       end
     end
   end
@@ -82,7 +82,7 @@ class AppointmentsController < ApplicationController
     if params[:appointment].nil?
       redirect_to user_root_path
     end
-    @appointment = Appointment.new(permitted_params(@appointment).appointment)
+    @appointment                 = Appointment.new(permitted_params(@appointment).appointment)
     @appointment.organization_id = current_user.organization_id
   end
 

@@ -12,14 +12,14 @@ jQuery ->
   $('.best_in_place').best_in_place()
 
   $.datepicker.setDefaults
-    dateFormat:"M dd, yy"
+    dateFormat: "M dd, yy"
     showButtonPanel: true
 
   $(".datepicker").datepicker
-    dateFormat:"M dd, yy",
+    dateFormat: "M dd, yy",
     showButtonPanel: false,
-    changeMonth:true,
-    changeYear:true
+    changeMonth: true,
+    changeYear: true
 
   $(".datetimepicker").datetimepicker
     timeFormat: "hh:mm tt"
@@ -32,13 +32,11 @@ jQuery ->
     stepMinute: 1
 
 
-
   $(".datepicker2").datepicker
     dateFormat: "yy-mm-dd"
+    dateFormat: ""
     changeMonth: true
     changeYear: true
-
-
 
 
   $(".accordion .head").click(->
