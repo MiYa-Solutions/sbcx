@@ -74,4 +74,5 @@ group :test do
   gem 'capybara-screenshot'
   gem 'poltergeist', '1.1.0'
   gem 'shoulda'
+  gem 'zeus'
 end

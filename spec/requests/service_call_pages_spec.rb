@@ -329,6 +329,8 @@ describe "Service Call pages" do
             select subcontractor.name, from: subcontractor_select
             check re_transfer_cbox_selector
             check allow_collection_cbox_selector
+            #page.driver.render("#{Rails.root}/tmp/capybara/transfer_sc_#{Time.now}.png", :full => true)
+            #page.save_page
             click_button transfer_btn_selector
           end
           @subcon_service_call = ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id)
@@ -1071,6 +1073,8 @@ describe "Service Call pages" do
             in_browser(:org2) do
               visit service_call_path @subcon_service_call
               click_button accept_btn_selector
+              check re_transfer_cbox_selector
+              check allow_collection_cbox_selector
               select local_subcontractor.name, from: JOB_SELECT_SUBCONTRACTOR
               click_button transfer_btn_selector
             end
@@ -1125,6 +1129,8 @@ describe "Service Call pages" do
             before do
               in_browser(:org2) do
                 check re_transfer_cbox_selector
+                #page.driver.render("#{Rails.root}/tmp/capybara/transfer_sc_2_#{Time.now}.png", :full => true)
+                #page.save_page
                 click_button transfer_btn_selector
               end
             end

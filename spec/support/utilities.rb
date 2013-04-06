@@ -158,6 +158,7 @@ def add_bom(name, cost, price, qty)
   fill_in 'bom_price', with: price
   fill_in 'bom_quantity', with: qty
   click_button 'add_part'
+  sleep 0.5
   page.should have_selector "td", text: name # to ensure bom is added before moving to the next action (click visit etc.)
                                              #page.driver.render("#{Rails.root}/tmp/capybara/add_bom_#{name}_#{Time.now}.png", :full => true)
                                              #page.save_page

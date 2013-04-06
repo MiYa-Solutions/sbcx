@@ -52,8 +52,8 @@ service_call:
         form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
       close:
-        form_classes: ""
-        button_classes: "btn btn-large btn-info"
+        form_classes: "green-button"
+        button_classes: "btn btn-large btn-success"
       activate:
         form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
@@ -131,7 +131,7 @@ service_call:
       new: "status_blue"
       open: "status_blue"
       transferred: "status_blue"
-      closed: "status_grey"
+      closed: "status_green"
       canceled: "status_red"
       accepted: "status_blue"
       rejected: "status_red"
@@ -167,6 +167,6 @@ service_call:
       subcon_claim_deposited: "status_blue"
       invoiced_by_prov: "status_blue"
       overdue: "status_red"
-      paid: "status_blue"
+      paid: "status_green"
       cleared: "status_green"
 
