@@ -1,8 +1,5 @@
 <% provide(:title, @customer.name) %>
 
-<!--<div class="service_call_show_buttons">-->
-
-
 <fieldset class="ui-grid-a ui-btn-inner-small">
 
       <div class="ui-block-a">
@@ -11,83 +8,82 @@
 
       <div class="ui-block-b">
         <div class="miya_blue_button">
-          <%= link_to I18n.t('general.general.balance'), '#', "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "email" %>
+          <%= link_to I18n.t('general.general.edit'), edit_customer_path(@customer), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
         </div>
       </div>
 
-    </fieldset>
-<!--</div>-->
+</fieldset>
 <br>
 
-<div class="customer_in_service_call">
-<ul data-role="listview">
+<div data-role="collapsible-set" data-inset="false" >
 
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:name) %></div>
-      <div class="ui-block-b"><%= @customer.name %></div>
-    </div>
-  </li>
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:company) %></div>
-      <div class="ui-block-b"><%= @customer.company %></div>
-    </div>
-  </li>
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:address1) %></div>
-      <div class="ui-block-b" style= "display:inline !important"><%= @customer.address1 %> <%= @customer.address2 %></div>
-    </div>
-  </li>
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:city) %></div>
-      <div class="ui-block-b"><%= @customer.city %></div>
-    </div>
-  </li>
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:state) %></div>
-      <div class="ui-block-b"><%= @customer.state %></div>
-    </div>
-  </li>
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:country) %></div>
-      <div class="ui-block-b"><%= @customer.country %></div>
-    </div>
-  </li>
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:zip) %></div>
-      <div class="ui-block-b"><%= @customer.zip %></div>
-    </div>
-  </li>
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:phone) %></div>
-      <div class="ui-block-b" data-type="phone"><%= @customer.phone %></div>
-    </div>
-  </li>
-  <li class="ui-li ui-li-static">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:mobile_phone) %></div>
-      <div class="ui-block-b" data-type="phone"><%= @customer.mobile_phone %></div>
-    </div>
-  </li>
-  <li class="ui-li">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= Customer.human_attribute_name(:email) %></div>
-      <div class="ui-block-b" data-type="email" ><%= @customer.email %></div>
-    </div>
-  </li>
+  <!--Contact Info-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <%= render :partial => 'customer_contact_info' %>
+  </div>
 
-</ul>
+
+  <!--Billing Info-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_balance">
+
+    <%= render :partial => 'customer_balance' %>
+  </div>
+
+
+  <!--Open Jobs-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_open_jobs">
+
+    <h3><%= I18n.t('general.general.open_jobs') %></h3>
+
+    <% if @customer.service_calls.empty? %>
+        <div class="miya_blue_button">
+          <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
+        </div>
+
+    <% else %>
+        <ul data-role="listview">
+          <% @customer.service_calls.each do |sc| %>
+              <li class="inline_mobile service_calls_index">
+                <p class="ui-li-aside-blue ui-li-desc-blue">
+                  <badge><%= sc.ref_id %></badge>
+                </p>
+                <% if sc.customer.address1.empty? %>
+                    <%= link_to I18n.t('general.general.no_address'), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
+                <% else %>
+                    <%= link_to sc.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
+                <% end %>
+
+                <p class="service_call_status">
+                  <%= sc.human_status_name %>
+                </p>
+
+              </li>
+          <% end %>
+          <br>
+        </ul>
+
+        <div class="miya_blue_button">
+          <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
+        </div>
+
+    <% end %>
+
+  </div>
+
+
+  <!--More-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3>More ...</h3>
+
+    <p>
+    <div class="ui-grid-solo">
+
+      <%= link_to I18n.t('general.general.delete'),"#popupDialog", "data-rel" => "popup", "data-transition" => "pop", "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete" %>
+    </div>
+    </p>
+  </div>
+
+
 </div>
 
 <br>
-<%= link_to I18n.t('general.general.edit'), edit_customer_path(@customer), "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
-<br>
-<%= link_to I18n.t('general.general.delete'), customers_path(@customer), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete" %>
-

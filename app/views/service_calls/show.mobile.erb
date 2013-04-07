@@ -110,7 +110,7 @@
 
     <fieldset class="ui-grid-a ui-btn-inner-small">
       <div class="ui-block-a">
-        <%= link_to "Back", service_calls_path, "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_service_call_btn' %>
+        <%= link_to "Back", service_calls_path, "data-rel" => "back", "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_service_call_btn' %>
       </div>
       <div class="ui-block-b">
         <%= f.submit "Save", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "right", id: 'service_call_save_btn' %>

@@ -12,10 +12,11 @@
       </div>
       <div class="ui-block-b">
         <div class="miya_blue_button">
-          <%= f.submit 'Save', "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+          <%= f.submit 'Save', "class" => "ui-btn-up-b", "data-rel" => "back", "data-role" => "button", "data-theme" => "b", id: 'save_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
         </div>
       </div>
     </fieldset>
+
 
 
     <% if f.object.errors.any? %>
@@ -27,7 +28,7 @@
 
 
     <div class="miya_blue_button">
-      <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save2_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+      <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-rel" => "back", "data-role" => "button", "data-theme" => "b", id: 'save2_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
     </div>
 
 

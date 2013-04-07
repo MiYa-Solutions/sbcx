@@ -104,3 +104,23 @@ en:
       subject: 'Provider has Confirmed Settlement'
       content: 'Provider Name: &nbsp; <strong>%{provider}</strong> has confirmed that commission fees for this Job have been settled.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_provider_deposited_notification:
+      title: 'Provider has Confirmed Receiving Payment'
+      subject: 'Provider has Confirmed Receiving Payment'
+      content: 'Please note that Provider Name: &nbsp; <strong>%{provider}</strong> has confirmed receiving payment for the following job.'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_provider_collected_notification:
+      title: 'Payment has been collected by Provider'
+      subject: 'Payment has been collected by Provider'
+      content: 'Please note that Provider Name: &nbsp; <strong>%{provider}</strong> has collected payment for the following job.'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_subcon_collected_notification:
+      title: 'Payment has been collected by Subcontractor'
+      subject: 'Payment has been collected by Subcontractor'
+      content: 'Please note that Subcontractor Name: &nbsp; <strong>%{subcontractor}</strong> has collected payment for the following job.'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_provider_settled_notification:
+      title: 'Provider has confirmed Job is settled'
+      subject: 'Provider has confirmed Job is settled'
+      content: 'Your confirmation is pending. Please note that Provider Name: &nbsp; <strong>%{provider}</strong> has indicated that the following job is settled.'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account to confirm this action.'
