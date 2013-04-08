@@ -1,0 +1,30 @@
+<h3><%= I18n.t('general.general.balance')%>
+  <% if  @customer.account.balance < 0 %>
+             <span class="red_badge_collape">
+                    <badge><%= Bom.human_attribute_name(:total) %> <%= '&nbsp;'.html_safe %>
+                      <span id='job_total_price'><%= humanized_money_with_symbol @customer.account.balance %></span>
+                    </badge>
+             </span>
+  <% else %>
+             <span class="blue_badge_collape">
+                    <badge><%= Bom.human_attribute_name(:total) %> <%= '&nbsp;'.html_safe %>
+                      <span id='job_total_price'><%= humanized_money_with_symbol @customer.account.balance %></span>
+                    </badge>
+             </span>
+  <% end %>
+</h3>
+
+<% if @customer.account.present? %>
+    <ul data-role="listview">
+      <% @customer.account.accounting_entries.each do |entry| %>
+          <li class=" job_billing">
+            <%= link_to entry.ticket.address1, accounting_entry_path(entry) %>
+            <p class= "billing_price_label"><%= I18n.t('general.general.balance') %> </p>
+            <p class="billing_price"><%= humanized_money_with_symbol entry.balance %></p>
+          </li>
+      <% end %>
+      <br>
+    </ul>
+<% else %>
+    No Account Present
+<% end %>

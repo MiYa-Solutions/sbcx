@@ -32,7 +32,7 @@
             <tr>
                 <td><%= link_to affiliate.name, affiliate_path(affiliate) %></td>
               <% if current_user.organization.account_for(affiliate).balance > 0 %>
-                <td><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></td>
+                <td class="green_balance"><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></td>
               <% else %>
                 <td class="red_balance"><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></td>
             <% end %>
