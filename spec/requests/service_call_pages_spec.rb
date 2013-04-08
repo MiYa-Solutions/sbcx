@@ -254,6 +254,38 @@ describe "Service Call pages" do
 
       let(:technician) { FactoryGirl.create(:technician, organization: org) }
 
+      describe 'cancel ' do
+        before do
+          click_button JOB_BTN_CANCEL
+        end
+
+        it 'status should be canceled and the cancel event' do
+          should have_status(JOB_STATUS_CANCELED)
+          should have_event('100003')
+        end
+
+        it 'should not show the complete button and show the un_cancel button' do
+          should_not have_button(JOB_BTN_START)
+          should have_button(JOB_BTN_UN_CANCEL)
+        end
+
+        describe 'un-cancel' do
+          before do
+            click_button JOB_BTN_UN_CANCEL
+          end
+
+          it 'page should show a success message, cancel, transfer and start button with a new status' do
+            should have_success_message
+            should have_status(JOB_STATUS_NEW)
+            should have_button(JOB_BTN_START)
+            should have_button(JOB_BTN_TRANSFER)
+            should have_button(JOB_BTN_CANCEL)
+            should have_event('100037')
+          end
+        end
+      end
+
+
       describe "with single user organization" do
 
         before do
@@ -273,14 +305,39 @@ describe "Service Call pages" do
           should_not have_selector(dispatch_btn)
         end
 
-        describe 'cancel: ' do
+        describe 'cancel ' do
           before do
-            click_button JOB_BTN_CANCEL
+            in_browser(:org) do
+              click_button JOB_BTN_CANCEL
+            end
           end
 
-          it 'status should be canceled and the cancel event' do
+          it 'should not send a notification to the user itself' do
+            visit notifications_path
+            should_not have_notification(ScCancelNotification, service_call)
+          end
+
+          it 'should show: canceled status, cancel event and the un_cancel button' do
             should have_status(JOB_STATUS_CANCELED)
-            should have_event('100003')
+            should have_event('100003', I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+            should have_button(JOB_BTN_UN_CANCEL)
+          end
+
+
+          describe 'un-cancel' do
+            before do
+              click_button JOB_BTN_UN_CANCEL
+            end
+
+            it 'page should show a success message, cancel, transfer and start button with a new status' do
+              should have_success_message
+              should have_status(JOB_STATUS_NEW)
+              should have_work_status(JOB_WORK_STATUS_PENDING)
+              should have_button(JOB_BTN_START)
+              should have_button(JOB_BTN_TRANSFER)
+              should have_button(JOB_BTN_CANCEL)
+              should have_event('100037')
+            end
           end
         end
 
@@ -344,7 +401,7 @@ describe "Service Call pages" do
         end
 
         it 'should show a dispatch button' do
-          should have_button(I18n.t('activerecord.state_machines.my_service_call.status.events.dispatch'))
+          should have_button(JOB_BTN_DISPATCH)
         end
 
       end
@@ -375,8 +432,59 @@ describe "Service Call pages" do
         it " service call should have a Transfer event associated " do
           service_call.events.pluck(:reference_id).should include(100017)
         end
+
         it " transferred service call should have an Received event associated " do
           @subcon_service_call.events.pluck(:reference_id).should include(100010)
+        end
+
+        it 'if cancled should not create any accounting entries' do
+          in_browser(:org) do
+            expect { click_button JOB_BTN_CANCEL }.to_not change(AccountingEntry, :count)
+          end
+        end
+
+        describe 'provider canceled' do
+          before do
+            in_browser(:org) do
+              click_button JOB_BTN_CANCEL
+            end
+          end
+
+          it 'provider view: the page should show the correct status, event and buttons' do
+            in_browser(:org) do
+              should have_status(JOB_STATUS_CANCELED)
+              should have_event('100003')
+              should_not have_button(JOB_BTN_COMPLETE)
+              should have_button(JOB_BTN_UN_CANCEL)
+            end
+          end
+
+          it 'subcon view: the status should be canceled, have the associated event and have no buttons' do
+            in_browser(:org2) do
+              visit service_call_path(@subcon_service_call)
+              should have_status(JOB_STATUS_CANCELED)
+              should have_event('100003')
+              should_not have_button(JOB_BTN_COMPLETE)
+              should_not have_button(JOB_BTN_UN_CANCEL)
+            end
+          end
+
+          describe 'un-cancel' do
+            before do
+              click_button JOB_BTN_UN_CANCEL
+            end
+
+            it 'page should show a success message, cancel, transfer and start button with a new status' do
+              should have_success_message
+              should have_status(JOB_STATUS_NEW)
+              should have_button(JOB_BTN_START)
+              should have_button(JOB_BTN_TRANSFER)
+              should have_button(JOB_BTN_CANCEL)
+              should have_event('100037')
+            end
+          end
+
+
         end
 
         describe "subcontractor browser" do
@@ -1256,7 +1364,6 @@ describe "Service Call pages" do
             end
           end
 
-
           describe 'accept on behalf of the subcontractor' do
             before do
               click_button JOB_BTN_ACCEPT
@@ -1266,8 +1373,9 @@ describe "Service Call pages" do
               should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.accepted'))
             end
 
-            it 'should show the start button' do
+            it 'should show the start and cancel buttons' do
               should have_button start_btn_selector
+              should have_button JOB_BTN_CANCEL
             end
 
             describe 'cancel ' do
@@ -1284,6 +1392,21 @@ describe "Service Call pages" do
                 should_not have_button(JOB_BTN_COMPLETE)
                 should have_button(JOB_BTN_UN_CANCEL)
               end
+
+              describe 'un-cancel' do
+                before do
+                  click_button JOB_BTN_UN_CANCEL
+                end
+
+                it 'page should show a success message, cancel, transfer and start button with a new status' do
+                  should have_success_message
+                  should have_status(JOB_STATUS_NEW)
+                  should have_button(JOB_BTN_START)
+                  should have_button(JOB_BTN_TRANSFER)
+                  should have_button(JOB_BTN_CANCEL)
+                  should have_event('100037')
+                end
+              end
             end
 
 
@@ -1297,7 +1420,7 @@ describe "Service Call pages" do
                 should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
               end
 
-              it 'should show the complete buttong' do
+              it 'should show the complete button' do
                 should have_button complete_btn_selector
               end
 
@@ -1313,8 +1436,23 @@ describe "Service Call pages" do
                   should have_button(JOB_BTN_UN_CANCEL)
                 end
 
-              end
+                describe 'un-cancel' do
+                  before do
+                    click_button JOB_BTN_UN_CANCEL
+                  end
 
+                  it 'page should show a success message, cancel, transfer and start button with a new status' do
+                    should have_success_message
+                    should have_status(JOB_STATUS_NEW)
+                    should have_button(JOB_BTN_START)
+                    should have_button(JOB_BTN_TRANSFER)
+                    should have_button(JOB_BTN_CANCEL)
+                    should have_event('100037')
+                  end
+                end
+
+
+              end
 
               describe 'mark the work as completed and add boms' do
                 before do
@@ -1344,6 +1482,7 @@ describe "Service Call pages" do
                     should_not have_button(JOB_BTN_SETTLE)
                     should_not have_button(JOB_BTN_UN_CANCEL)
                   end
+
 
                 end
 
@@ -1452,6 +1591,55 @@ describe "Service Call pages" do
           service_call.events.pluck(:reference_id).should include(100007)
         end
 
+        it 'should send a notification to the technician' do
+          in_browser(:technician) do
+            sign_in technician
+            visit notifications_path
+            should have_notification(ScDispatchNotification, service_call)
+          end
+
+        end
+
+
+        describe 'cancel ' do
+          before do
+            click_button JOB_BTN_CANCEL
+          end
+
+          it 'status should be canceled and the cancel event' do
+            should have_status(JOB_STATUS_CANCELED)
+            should have_event('100003')
+          end
+
+          it 'should not show the complete button and show the un_cancel button' do
+            should_not have_button(JOB_BTN_START)
+            should have_button(JOB_BTN_UN_CANCEL)
+          end
+
+          it 'should send a notification to the technician' do
+            in_browser(:technician) do
+              sign_in technician
+              visit notifications_path
+              should have_notification(ScCancelNotification, service_call)
+            end
+          end
+
+          describe 'un-cancel' do
+            before do
+              click_button JOB_BTN_UN_CANCEL
+            end
+
+            it 'page should show a success message, cancel, transfer and start button with a new status' do
+              should have_success_message
+              should have_status(JOB_STATUS_NEW)
+              should have_button(JOB_BTN_START)
+              should have_button(JOB_BTN_TRANSFER)
+              should have_button(JOB_BTN_CANCEL)
+              should have_event('100037')
+            end
+          end
+        end
+
 
         describe "start the job" do
           before do
@@ -1462,6 +1650,7 @@ describe "Service Call pages" do
             service_call.reload
             service_call.started_on.should_not be_nil
           end
+
           it "start time is displayed" do
             Time.parse(find(service_call_started_on).text) <= Time.current
           end
@@ -1470,6 +1659,7 @@ describe "Service Call pages" do
             should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
 
           end
+
           it "subcontractor status should not be displayed" do
 
             should_not have_subcon_status('')
@@ -1481,35 +1671,51 @@ describe "Service Call pages" do
             #service_call.events.where(reference_id: 100015).first.description.should eq(I18n.t('service_call_start_event.description', technician: service_call.technician.name))
           end
 
-
-          describe "cancels the service call" do
-
+          describe 'cancel ' do
             before do
-              visit service_call_path service_call
-              click_button cancel_btn_selector
-            end
-
-            it "should change the status to canceled" do
-
-              should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.canceled'))
-
-            end
-
-            it 'service call should have a cancel event associated' do
-              service_call.events.pluck(:reference_id).should include(100003)
-            end
-
-            it "should have canceled event displayed" do
-              should have_selector("table#event_log_in_service_call td", text: I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+              click_button JOB_BTN_CANCEL
             end
 
 
+            it 'should send a notification to the technician' do
+              in_browser(:technician) do
+                sign_in technician
+                visit notifications_path
+                should have_notification(ScCancelNotification, service_call)
+              end
+            end
+
+            it 'should show: canceled status, cancel event and the un_cancel button' do
+              should have_status(JOB_STATUS_CANCELED)
+              should have_event('100003', I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+              should have_button(JOB_BTN_UN_CANCEL)
+            end
+
+
+            describe 'un-cancel' do
+              before do
+                click_button JOB_BTN_UN_CANCEL
+              end
+
+              it 'page should show a success message, cancel, transfer and start button with a new status' do
+                should have_success_message
+                should have_status(JOB_STATUS_NEW)
+                should have_button(JOB_BTN_DISPATCH)
+                should have_button(JOB_BTN_TRANSFER)
+                should have_button(JOB_BTN_CANCEL)
+                should have_event('100037')
+              end
+            end
           end
-
 
           describe "job done" do
             before do
-              click_button complete_btn_selector
+              in_browser(:technician) do
+                sign_in technician
+                visit service_call_path(service_call)
+                click_button complete_btn_selector
+              end
+
             end
             it "status should change to completed" do
               should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
@@ -1526,7 +1732,6 @@ describe "Service Call pages" do
             it "completion time is displayed" do
               Time.parse(find(service_call_completed_on).text) <= Time.current
             end
-
             it "should have a complete event associated " do
               service_call.events.pluck(:reference_id).should include(100005)
             end
@@ -1538,10 +1743,54 @@ describe "Service Call pages" do
               should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_complete_event.description', user: service_call.updater.name.rstrip))
             end
 
+            describe 'cancel ' do
+              before do
+                in_browser(:org) do
+                  click_button JOB_BTN_CANCEL
+                end
+              end
+
+
+              it 'should send a notification to the technician' do
+                in_browser(:technician) do
+                  visit notifications_path
+                  should have_notification(ScCancelNotification, service_call)
+                end
+              end
+
+              it 'should show: canceled status, cancel event and the un_cancel button' do
+                should have_status(JOB_STATUS_CANCELED)
+                should have_event('100003', I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+                should_not have_button(JOB_BTN_UN_CANCEL)
+              end
+            end
+
 
             describe "customer payment" do
 
               describe 'payment overdue' do
+
+                describe 'cancel ' do
+                  before do
+                    in_browser(:org) do
+                      click_button JOB_BTN_CANCEL
+                    end
+                  end
+
+
+                  it 'should send a notification to the technician' do
+                    in_browser(:technician) do
+                      visit notifications_path
+                      should have_notification(ScCancelNotification, service_call)
+                    end
+                  end
+
+                  it 'should show: canceled status, cancel event and the un_cancel button' do
+                    should have_status(JOB_STATUS_CANCELED)
+                    should have_event('100003', I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+                    should_not have_button(JOB_BTN_UN_CANCEL)
+                  end
+                end
 
               end
 
@@ -1549,10 +1798,6 @@ describe "Service Call pages" do
             end
 
 
-          end
-
-          describe "job done" do
-            pending
           end
 
 

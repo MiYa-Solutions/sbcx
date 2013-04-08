@@ -23,7 +23,9 @@ class ServiceCallCancelEvent < ServiceCallEvent
   end
 
   def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
+    res = User.my_dispatchers(service_call.organization.id).all
+    res << service_call.technician if service_call.technician.present?
+    res
   end
 
   def notification_class
@@ -36,12 +38,7 @@ class ServiceCallCancelEvent < ServiceCallEvent
   end
 
   def process_event
-    if service_call.is_a?(MyServiceCall)
-    service_call.customer.account.entries << CanceledJobAdjustment.new(event: self,
-                                                                       ticket: service_call,
-                                                                       amount: - service_call.total_price,
-                                                                       description: "Reimbursement for a canceled job")
-    end
+    CustomerBillingService.new(self).execute if service_call.work_done? && service_call.is_a?(MyServiceCall)
     invoke_affiliate_billing if service_call.work_done?
     super
   end

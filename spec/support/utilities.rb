@@ -2,12 +2,14 @@
 
 JOB_BTN_START                  = 'start_service_call_btn'
 JOB_BTN_CANCEL                 = 'cancel_service_call_btn'
+
 JOB_BTN_UN_CANCEL              = 'un_cancel_service_call_btn'
 JOB_BTN_CANCEL_TRANSFER        = 'cancel_transfer_service_call_btn'
 JOB_BTN_COMPLETE               = 'complete_service_call_btn'
 JOB_BTN_CREATE                 = 'service_call_create_btn'
 JOB_BTN_ADD_CUSTOMER           = 'add_customer_btn'
 JOB_BTN_TRANSFER               = 'service_call_transfer_btn'
+JOB_BTN_DISPATCH               = 'service_call_dispatch_btn'
 JOB_BTN_ACCEPT                 = 'accept_service_call_btn'
 JOB_BTN_UN_ACCEPT              = 'un_accept_service_call_btn'
 JOB_BTN_REJECT                 = 'reject_service_call_btn'

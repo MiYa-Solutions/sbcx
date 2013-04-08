@@ -26,7 +26,7 @@
           </tr>
 
           <% @notifications.each do |notification| %>
-              <tr>
+              <tr class="<%= "#{notification.class.model_name.underscore} #{notification.notifiable_type.underscore}_#{notification.notifiable_id}" %>">
                 <td><%= link_to notification.subject, notification.becomes(Notification) %></td>
                 <td><%= notification.html_message %></td>
                 <td><%= notification.human_status_name.titleize %></td>

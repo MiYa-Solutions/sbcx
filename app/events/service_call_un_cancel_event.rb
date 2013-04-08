@@ -35,4 +35,10 @@ class ServiceCallUnCancelEvent < ServiceCallEvent
     prov_service_call
   end
 
+  def process_event
+    service_call.work_status = ServiceCall::WORK_STATUS_PENDING
+    service_call.save!
+    super
+  end
+
 end

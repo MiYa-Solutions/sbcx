@@ -60,6 +60,18 @@ describe "Account Pages", js: true do
       end
     end
 
+    describe 'cancel' do
+      before do
+        click_button JOB_BTN_CANCEL
+      end
+
+      it 'should not create any accounting entries' do
+        expect{}.to_not change(AccountingEntry, :count)
+      end
+
+
+    end
+
     describe 'when completed' do
       before do
         click_button JOB_BTN_COMPLETE
@@ -2576,8 +2588,8 @@ describe "Account Pages", js: true do
 
         describe 'customer account' do
           before do
-            visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
-            click_button ACC_BTN_GET_ENTRIES
+            visit accounting_entries_path('accounting_entry[account_id]' => customer.account.id)
+            #click_button ACC_BTN_GET_ENTRIES
           end
 
           it 'should show canceled job entry with a zero balance' do

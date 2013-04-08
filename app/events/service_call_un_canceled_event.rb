@@ -14,7 +14,7 @@
 #  reference_id   :integer
 
 
-class ServiceUnCallCanceledEvent < ServiceCallEvent
+class ServiceCallUnCanceledEvent < ServiceCallEvent
 
   def init
     self.name = I18n.t('service_call_cancel_event.name') if name.nil?
@@ -23,12 +23,12 @@ class ServiceUnCallCanceledEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self)
+    prov_service_call.events << ServiceCallUnCanceledEvent.new(triggering_event: self)
     prov_service_call
   end
 
   def process_event
-    service_call.cancel
+    service_call.un_cancel
     super
   end
 

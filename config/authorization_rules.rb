@@ -14,7 +14,7 @@ authorization do
     has_permission_on :static_pages, to: [:index, :read]
     has_permission_on :appointments, :to => [:index, :show, :new, :create, :edit, :update, :destroy, :read]
     has_permission_on :notifications, to: [:index, :show, :read, :update, :destroy] do
-      if_attribute :user => is { user }
+      if_attribute :user_id => is { user.id }
     end
     has_permission_on :boms, to: [:new, :create, :index, :show, :read, :update, :destroy, :edit] do
       if_attribute :ticket => { :organization => is { user.organization } }

@@ -10,7 +10,7 @@ class ServiceCallObserver < ActiveRecord::Observer
     service_call.events << ScCloseEvent.new
   end
 
-  def before_cancel(service_call, transition)
+  def after_cancel(service_call, transition)
     service_call.events << ServiceCallCancelEvent.new
   end
   def before_un_cancel(service_call, transition)
