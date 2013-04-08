@@ -37,7 +37,7 @@ class ServiceCallUnCanceledEvent < ServiceCallEvent
   end
 
   def notification_class
-    ScCanceledNotification
+    ScUnCanceledNotification
   end
 
 

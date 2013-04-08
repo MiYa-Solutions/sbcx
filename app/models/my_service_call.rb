@@ -79,7 +79,8 @@ class MyServiceCall < ServiceCall
     end
 
     event :un_cancel do
-      transition :canceled => :new, if: ->(sc) { sc.can_un_cancel? }
+      transition :canceled => :transferred, if: ->(sc) { sc.can_uncancel? && sc.subcontractor.present? }
+      transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
     end
 
     event :close do
@@ -169,9 +170,13 @@ class MyServiceCall < ServiceCall
     end
   end
 
-  def can_un_cancel?
-    !self.work_done? &&
-        ((self.transferred? && !self.subcontractor.subcontrax_member?) || !self.transferred?)
+  def can_uncancel?
+    #!self.work_done? &&
+    #    ((self.transferred? && !self.subcontractor.subcontrax_member?) || !self.transferred?)
+
+    !self.work_done?
+
+
   end
 
 end

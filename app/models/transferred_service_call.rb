@@ -85,8 +85,13 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :cancel do
-      transition :accepted => :canceled
+      transition [:accepted, :new] => :canceled
     end
+
+    event :un_cancel do
+      transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
+    end
+
 
     event :close do
       transition :accepted => :closed, if: lambda { |sc| sc.work_done? && sc.provider_cleared? }
@@ -243,6 +248,12 @@ class TransferredServiceCall < ServiceCall
   # to make the subcon_settlement_allowed? in ServiceCall work
   alias_method :payment_cleared?, :payment_paid?
 
+  def can_uncancel?
+    !self.work_done? && !self.provider.subcontrax_member?  &&
+        ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?))
+  end
+
+
   private
   def provider_is_not_a_member
     if provider
@@ -257,6 +268,8 @@ class TransferredServiceCall < ServiceCall
     #  errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
     #end
   end
+
+
 
 
 end

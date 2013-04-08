@@ -437,7 +437,7 @@ describe "Service Call pages" do
           @subcon_service_call.events.pluck(:reference_id).should include(100010)
         end
 
-        it 'if cancled should not create any accounting entries' do
+        it 'if canceled should not create any accounting entries' do
           in_browser(:org) do
             expect { click_button JOB_BTN_CANCEL }.to_not change(AccountingEntry, :count)
           end
@@ -463,10 +463,18 @@ describe "Service Call pages" do
             in_browser(:org2) do
               visit service_call_path(@subcon_service_call)
               should have_status(JOB_STATUS_CANCELED)
-              should have_event('100003')
+              should have_event('100004')
               should_not have_button(JOB_BTN_COMPLETE)
               should_not have_button(JOB_BTN_UN_CANCEL)
             end
+          end
+
+          it 'subcon view: should have canceled notification' do
+            in_browser(:org2) do
+              visit notifications_path
+              should have_notification(ScCanceledNotification, @subcon_service_call)
+            end
+
           end
 
           describe 'un-cancel' do
@@ -476,11 +484,83 @@ describe "Service Call pages" do
 
             it 'page should show a success message, cancel, transfer and start button with a new status' do
               should have_success_message
-              should have_status(JOB_STATUS_NEW)
-              should have_button(JOB_BTN_START)
-              should have_button(JOB_BTN_TRANSFER)
+              should have_status(JOB_STATUS_TRANSFERRED)
+              should_not have_button(JOB_BTN_START)
+              should_not have_button(JOB_BTN_TRANSFER)
               should have_button(JOB_BTN_CANCEL)
+              should have_button(JOB_BTN_CANCEL_TRANSFER)
               should have_event('100037')
+            end
+
+            it 'subcon view: should get a un-canceled notification' do
+              in_browser(:org2) do
+                visit notifications_path
+                should have_notification(ScUnCanceledNotification, @subcon_service_call)
+              end
+            end
+          end
+
+
+        end
+
+        describe 'subcon canceled' do
+          before do
+            in_browser(:org2) do
+              visit service_call_path @subcon_service_call
+              click_button JOB_BTN_CANCEL
+            end
+          end
+
+          it 'subcon view: the page should show the correct status, event and buttons' do
+            in_browser(:org2) do
+              should have_status(JOB_STATUS_CANCELED)
+              should have_event('100003')
+              should_not have_button(JOB_BTN_COMPLETE)
+              should_not have_button(JOB_BTN_UN_CANCEL)
+            end
+          end
+
+          it 'provider view: the status should be canceled, have the associated event and have no buttons' do
+            in_browser(:org) do
+              visit service_call_path(service_call)
+              should have_status(JOB_STATUS_CANCELED)
+              should have_event('100004')
+              should_not have_button(JOB_BTN_COMPLETE)
+              should have_button(JOB_BTN_UN_CANCEL)
+            end
+          end
+
+          it 'provider view: should have canceled notification' do
+            in_browser(:org) do
+              visit notifications_path
+              should have_notification(ScCanceledNotification, service_call)
+            end
+
+          end
+
+          describe 'provider to un-cancel' do
+            before do
+              in_browser(:org) do
+                visit service_call_path service_call
+                click_button JOB_BTN_UN_CANCEL
+              end
+            end
+
+            it 'page should show a success message, cancel, transfer and start button with a new status' do
+              should have_success_message
+              should have_status(JOB_STATUS_TRANSFERRED)
+              should_not have_button(JOB_BTN_START)
+              should_not have_button(JOB_BTN_TRANSFER)
+              should have_button(JOB_BTN_CANCEL)
+              should have_button(JOB_BTN_CANCEL_TRANSFER)
+              should have_event('100037')
+            end
+
+            it 'subcon view: should get a un-canceled notification' do
+              in_browser(:org2) do
+                visit notifications_path
+                should have_notification(ScUnCanceledNotification, @subcon_service_call)
+              end
             end
           end
 
@@ -543,6 +623,130 @@ describe "Service Call pages" do
             @subcon_service_call.events.pluck(:reference_id).should include(100001)
           end
 
+          describe 'provider canceled' do
+            before do
+              in_browser(:org) do
+                click_button JOB_BTN_CANCEL
+              end
+            end
+
+            it 'provider view: the page should show the correct status, event and buttons' do
+              in_browser(:org) do
+                should have_status(JOB_STATUS_CANCELED)
+                should have_event('100003')
+                should_not have_button(JOB_BTN_COMPLETE)
+                should have_button(JOB_BTN_UN_CANCEL)
+              end
+            end
+
+            it 'subcon view: the status should be canceled, have the associated event and have no buttons' do
+              in_browser(:org2) do
+                visit service_call_path(@subcon_service_call)
+                should have_status(JOB_STATUS_CANCELED)
+                should have_event('100004')
+                should_not have_button(JOB_BTN_COMPLETE)
+                should_not have_button(JOB_BTN_UN_CANCEL)
+              end
+            end
+
+            it 'subcon view: should have canceled notification' do
+              in_browser(:org2) do
+                visit notifications_path
+                should have_notification(ScCanceledNotification, @subcon_service_call)
+              end
+
+            end
+
+            describe 'un-cancel' do
+              before do
+                click_button JOB_BTN_UN_CANCEL
+              end
+
+              it 'page should show a success message, cancel, transfer and start button with a new status' do
+                should have_success_message
+                should have_status(JOB_STATUS_TRANSFERRED)
+                should_not have_button(JOB_BTN_START)
+                should_not have_button(JOB_BTN_TRANSFER)
+                should have_button(JOB_BTN_CANCEL)
+                should have_button(JOB_BTN_CANCEL_TRANSFER)
+                should have_event('100037')
+              end
+
+              it 'subcon view: should get a un-canceled notification' do
+                in_browser(:org2) do
+                  visit notifications_path
+                  should have_notification(ScUnCanceledNotification, @subcon_service_call)
+                end
+              end
+            end
+
+
+          end
+
+          describe 'subcon canceled' do
+            before do
+              in_browser(:org2) do
+                visit service_call_path @subcon_service_call
+                click_button JOB_BTN_CANCEL
+              end
+            end
+
+            it 'subcon view: the page should show the correct status, event and buttons' do
+              in_browser(:org2) do
+                should have_status(JOB_STATUS_CANCELED)
+                should have_event('100003')
+                should_not have_button(JOB_BTN_COMPLETE)
+                should_not have_button(JOB_BTN_UN_CANCEL)
+              end
+            end
+
+            it 'provider view: the status should be canceled, have the associated event and have no buttons' do
+              in_browser(:org) do
+                visit service_call_path(service_call)
+                should have_status(JOB_STATUS_CANCELED)
+                should have_event('100004')
+                should_not have_button(JOB_BTN_COMPLETE)
+                should have_button(JOB_BTN_UN_CANCEL)
+              end
+            end
+
+            it 'provider view: should have canceled notification' do
+              in_browser(:org) do
+                visit notifications_path
+                should have_notification(ScCanceledNotification, service_call)
+              end
+
+            end
+
+            describe 'provider to un-cancel' do
+              before do
+                in_browser(:org) do
+                  visit service_call_path service_call
+                  click_button JOB_BTN_UN_CANCEL
+                end
+              end
+
+              it 'page should show a success message, cancel, transfer and start button with a new status' do
+                should have_success_message
+                should have_status(JOB_STATUS_TRANSFERRED)
+                should_not have_button(JOB_BTN_START)
+                should_not have_button(JOB_BTN_TRANSFER)
+                should have_button(JOB_BTN_CANCEL)
+                should have_button(JOB_BTN_CANCEL_TRANSFER)
+                should have_event('100037')
+              end
+
+              it 'subcon view: should get a un-canceled notification' do
+                in_browser(:org2) do
+                  visit notifications_path
+                  should have_notification(ScUnCanceledNotification, @subcon_service_call)
+                end
+              end
+            end
+
+
+          end
+
 
           describe "subcontractor browser" do
             before { in_browser(:org2) {} }
@@ -571,6 +775,8 @@ describe "Service Call pages" do
               in_browser(:org) { visit service_call_path service_call }
             end
 
+
+
             it "status remains transferred" do
 
               should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
@@ -585,8 +791,149 @@ describe "Service Call pages" do
             it " service call should have a dispatched event associated " do
               service_call.events.pluck(:reference_id).should include(100008)
             end
+
             it " transferred service call should have a dispatch event associated " do
               @subcon_service_call.events.pluck(:reference_id).should include(100007)
+            end
+
+            describe 'provider canceled' do
+              before do
+                in_browser(:org) do
+                  click_button JOB_BTN_CANCEL
+                end
+              end
+
+              it 'provider view: the page should show the correct status, event and buttons' do
+                in_browser(:org) do
+                  should have_status(JOB_STATUS_CANCELED)
+                  should have_event('100003')
+                  should_not have_button(JOB_BTN_COMPLETE)
+                  should have_button(JOB_BTN_UN_CANCEL)
+                end
+              end
+
+              it 'subcon view: the status should be canceled, have the associated event and have no buttons' do
+                in_browser(:org2) do
+                  visit service_call_path(@subcon_service_call)
+                  should have_status(JOB_STATUS_CANCELED)
+                  should have_event('100004')
+                  should_not have_button(JOB_BTN_COMPLETE)
+                  should_not have_button(JOB_BTN_UN_CANCEL)
+                end
+              end
+
+
+              it 'technician should receive a notification' do
+                in_browser(:technician) do
+                  sign_in technician
+                  visit notifications_path
+                  should have_notification(ScCancelNotification, @subcon_service_call)
+                end
+              end
+
+
+              it 'subcon view: should have canceled notification' do
+                in_browser(:org2) do
+                  visit notifications_path
+                  should have_notification(ScCanceledNotification, @subcon_service_call)
+                end
+
+              end
+
+              describe 'un-cancel' do
+                before do
+                  click_button JOB_BTN_UN_CANCEL
+                end
+
+                it 'page should show a success message, cancel, transfer and start button with a new status' do
+                  should have_success_message
+                  should have_status(JOB_STATUS_TRANSFERRED)
+                  should_not have_button(JOB_BTN_START)
+                  should_not have_button(JOB_BTN_TRANSFER)
+                  should have_button(JOB_BTN_CANCEL)
+                  should have_button(JOB_BTN_CANCEL_TRANSFER)
+                  should have_event('100037')
+                end
+
+                it 'subcon view: should get a un-canceled notification' do
+                  in_browser(:org2) do
+                    visit notifications_path
+                    should have_notification(ScUnCanceledNotification, @subcon_service_call)
+                  end
+                end
+              end
+            end
+
+            describe 'subcon canceled' do
+              before do
+                in_browser(:org2) do
+                  visit service_call_path @subcon_service_call
+                  click_button JOB_BTN_CANCEL
+                end
+              end
+
+              it 'technician should receive a notification' do
+                in_browser(:technician) do
+                  sign_in technician
+                  visit notifications_path
+                  should have_notification(ScCancelNotification, @subcon_service_call)
+                end
+              end
+
+              it 'subcon view: the page should show the correct status, event and buttons' do
+                in_browser(:org2) do
+                  should have_status(JOB_STATUS_CANCELED)
+                  should have_event('100003')
+                  should_not have_button(JOB_BTN_COMPLETE)
+                  should_not have_button(JOB_BTN_UN_CANCEL)
+                end
+              end
+
+              it 'provider view: the status should be canceled, have the associated event and have no buttons' do
+                in_browser(:org) do
+                  visit service_call_path(service_call)
+                  should have_status(JOB_STATUS_CANCELED)
+                  should have_event('100004')
+                  should_not have_button(JOB_BTN_COMPLETE)
+                  should have_button(JOB_BTN_UN_CANCEL)
+                end
+              end
+
+              it 'provider view: should have canceled notification' do
+                in_browser(:org) do
+                  visit notifications_path
+                  should have_notification(ScCanceledNotification, service_call)
+                end
+
+              end
+
+              describe 'provider to un-cancel' do
+                before do
+                  in_browser(:org) do
+                    visit service_call_path service_call
+                    click_button JOB_BTN_UN_CANCEL
+                  end
+                end
+
+                it 'page should show a success message, cancel, transfer and start button with a new status' do
+                  should have_success_message
+                  should have_status(JOB_STATUS_TRANSFERRED)
+                  should_not have_button(JOB_BTN_START)
+                  should_not have_button(JOB_BTN_TRANSFER)
+                  should have_button(JOB_BTN_CANCEL)
+                  should have_button(JOB_BTN_CANCEL_TRANSFER)
+                  should have_event('100037')
+                end
+
+                it 'subcon view: should get a un-canceled notification' do
+                  in_browser(:org2) do
+                    visit notifications_path
+                    should have_notification(ScUnCanceledNotification, @subcon_service_call)
+                  end
+                end
+              end
+
+
             end
 
 
@@ -653,56 +1000,142 @@ describe "Service Call pages" do
 
               end
 
-              describe "subcontractor cancels the service call" do
+              describe 'provider canceled' do
+                before do
+                  in_browser(:org) do
+                    click_button JOB_BTN_CANCEL
+                  end
+                end
 
+                it 'provider view: the page should show the correct status, event and buttons' do
+                  in_browser(:org) do
+                    should have_status(JOB_STATUS_CANCELED)
+                    should have_event('100003')
+                    should_not have_button(JOB_BTN_COMPLETE)
+                    should have_button(JOB_BTN_UN_CANCEL)
+                  end
+                end
+
+                it 'subcon view: the status should be canceled, have the associated event and have no buttons' do
+                  in_browser(:org2) do
+                    visit service_call_path(@subcon_service_call)
+                    should have_status(JOB_STATUS_CANCELED)
+                    should have_event('100004')
+                    should_not have_button(JOB_BTN_COMPLETE)
+                    should_not have_button(JOB_BTN_UN_CANCEL)
+                  end
+                end
+
+
+                it 'subcon view: dispatcher and technician should have canceled notification' do
+                  in_browser(:org2) do
+                    visit notifications_path
+                    should have_notification(ScCanceledNotification, @subcon_service_call)
+                  end
+
+                  in_browser(:technician) do
+                    sign_in technician
+                    visit notifications_path
+                    should have_notification(ScCanceledNotification, @subcon_service_call)
+                  end
+                end
+
+                describe 'un-cancel' do
+                  before do
+                    click_button JOB_BTN_UN_CANCEL
+                  end
+
+                  it 'page should show a success message, cancel, transfer and start button with a new status' do
+                    should have_success_message
+                    should have_status(JOB_STATUS_TRANSFERRED)
+                    should_not have_button(JOB_BTN_START)
+                    should_not have_button(JOB_BTN_TRANSFER)
+                    should have_button(JOB_BTN_CANCEL)
+                    should have_button(JOB_BTN_CANCEL_TRANSFER)
+                    should have_event('100037')
+                  end
+
+                  it 'subcon view: should get a un-canceled notification' do
+                    in_browser(:org2) do
+                      visit notifications_path
+                      should have_notification(ScUnCanceledNotification, @subcon_service_call)
+                    end
+                  end
+                end
+              end
+
+              describe 'subcon canceled' do
                 before do
                   in_browser(:org2) do
                     visit service_call_path @subcon_service_call
-                    click_button cancel_btn_selector
+                    click_button JOB_BTN_CANCEL
                   end
-
-                  in_browser(:org) { visit service_call_path service_call }
                 end
 
-                it "should change the status to canceled" do
-
-                  should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.canceled'))
+                it 'technician should receive a notification' do
+                  in_browser(:technician) do
+                    sign_in technician
+                    visit notifications_path
+                    should have_notification(ScCancelNotification, @subcon_service_call)
+                  end
                 end
 
-                it "should have canceled event displayed" do
-                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_canceled_event.description', subcontractor: org2.name))
-                end
-
-                it "should have an un_cancel button" do
-                  should have_selector(un_cancel_btn)
-                end
-
-                it "subcontractor sc  should be canceled" do
+                it 'subcon view: the page should show the correct status, event and buttons' do
                   in_browser(:org2) do
+                    should have_status(JOB_STATUS_CANCELED)
+                    should have_event('100003')
+                    should_not have_button(JOB_BTN_COMPLETE)
+                    should_not have_button(JOB_BTN_UN_CANCEL)
+                  end
+                end
 
-                    should have_status(I18n.t('activerecord.state_machines.transferred_service_call.status.states.canceled'))
+                it 'provider view: the status should be canceled, have the associated event and have no buttons' do
+                  in_browser(:org) do
+                    visit service_call_path(service_call)
+                    should have_status(JOB_STATUS_CANCELED)
+                    should have_event('100004')
+                    should_not have_button(JOB_BTN_COMPLETE)
+                    should have_button(JOB_BTN_UN_CANCEL)
+                  end
+                end
+
+                it 'provider view: should have canceled notification' do
+                  in_browser(:org) do
+                    visit notifications_path
+                    should have_notification(ScCanceledNotification, service_call)
                   end
 
                 end
 
-                describe "un-cancel" do
-
+                describe 'provider to un-cancel' do
                   before do
                     in_browser(:org) do
                       visit service_call_path service_call
-                      click_button un_cancel_btn_selector
+                      click_button JOB_BTN_UN_CANCEL
                     end
-
                   end
 
-                  it "should change the status to pending" do
-
-                    should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.new'))
+                  it 'page should show a success message, cancel, transfer and start button with a new status' do
+                    should have_success_message
+                    should have_status(JOB_STATUS_TRANSFERRED)
+                    should_not have_button(JOB_BTN_START)
+                    should_not have_button(JOB_BTN_TRANSFER)
+                    should have_button(JOB_BTN_CANCEL)
+                    should have_button(JOB_BTN_CANCEL_TRANSFER)
+                    should have_event('100037')
                   end
 
+                  it 'subcon view: should get a un-canceled notification' do
+                    in_browser(:org2) do
+                      visit notifications_path
+                      should have_notification(ScUnCanceledNotification, @subcon_service_call)
+                    end
+                  end
                 end
 
+
               end
+
 
               describe "subcontractor completes the service call" do
                 before do
@@ -733,6 +1166,95 @@ describe "Service Call pages" do
                 end
                 it " transferred service call should have a complete event associated " do
                   @subcon_service_call.events.pluck(:reference_id).should include(100005)
+                end
+
+                describe 'provider canceled' do
+                  before do
+                    in_browser(:org) do
+                      click_button JOB_BTN_CANCEL
+                    end
+                  end
+
+                  it 'provider view: the page should show the correct status, event and buttons' do
+                    in_browser(:org) do
+                      should have_status(JOB_STATUS_CANCELED)
+                      should have_event('100003')
+                      should_not have_button(JOB_BTN_COMPLETE)
+                      should_not have_button(JOB_BTN_UN_CANCEL)
+                    end
+                  end
+
+                  it 'subcon view: the status should be canceled, have the associated event and have no buttons' do
+                    in_browser(:org2) do
+                      visit service_call_path(@subcon_service_call)
+                      should have_status(JOB_STATUS_CANCELED)
+                      should have_event('100004')
+                      should_not have_button(JOB_BTN_COMPLETE)
+                      should_not have_button(JOB_BTN_UN_CANCEL)
+                    end
+                  end
+
+
+                  it 'subcon view: dispatcher and technician should have canceled notification' do
+                    in_browser(:org2) do
+                      visit notifications_path
+                      should have_notification(ScCanceledNotification, @subcon_service_call)
+                    end
+
+                    in_browser(:technician) do
+                      sign_in technician
+                      visit notifications_path
+                      should have_notification(ScCanceledNotification, @subcon_service_call)
+                    end
+                  end
+
+                end
+
+                describe 'subcon canceled' do
+                  before do
+                    in_browser(:org2) do
+                      visit service_call_path @subcon_service_call
+                      click_button JOB_BTN_CANCEL
+                    end
+                  end
+
+                  it 'technician should receive a notification' do
+                    in_browser(:technician) do
+                      sign_in technician
+                      visit notifications_path
+                      should have_notification(ScCancelNotification, @subcon_service_call)
+                    end
+                  end
+
+                  it 'subcon view: the page should show the correct status, event and buttons' do
+                    in_browser(:org2) do
+                      should have_status(JOB_STATUS_CANCELED)
+                      should have_event('100003')
+                      should_not have_button(JOB_BTN_COMPLETE)
+                      should_not have_button(JOB_BTN_UN_CANCEL)
+                    end
+                  end
+
+                  it 'provider view: the status should be canceled, have the associated event and have no buttons' do
+                    in_browser(:org) do
+                      visit service_call_path(service_call)
+                      should have_status(JOB_STATUS_CANCELED)
+                      should have_event('100004')
+                      should_not have_button(JOB_BTN_COMPLETE)
+                      should_not have_button(JOB_BTN_UN_CANCEL)
+                    end
+                  end
+
+                  it 'provider view: should have canceled notification' do
+                    in_browser(:org) do
+                      visit notifications_path
+                      should have_notification(ScCanceledNotification, service_call)
+                    end
+
+                  end
+
+
+
                 end
 
 

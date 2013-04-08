@@ -34,6 +34,10 @@ class ServiceCallUnCancelEvent < ServiceCallEvent
     prov_service_call.events << ServiceCallUnCanceledEvent.new(triggering_event: self)
     prov_service_call
   end
+  def update_subcontractor
+    subcon_service_call.events << ServiceCallUnCanceledEvent.new(triggering_event: self)
+    subcon_service_call
+  end
 
   def process_event
     service_call.work_status = ServiceCall::WORK_STATUS_PENDING
