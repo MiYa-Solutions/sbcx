@@ -2,7 +2,7 @@
 #
 # Table name: customers
 #
-#  id              :integer         not null, primary key
+#  id              :integer          not null, primary key
 #  name            :string(255)
 #  organization_id :integer
 #  company         :string(255)
@@ -16,8 +16,8 @@
 #  mobile_phone    :string(255)
 #  work_phone      :string(255)
 #  email           :string(255)
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #  creator_id      :integer
 #  updater_id      :integer
 #

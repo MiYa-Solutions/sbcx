@@ -42,7 +42,6 @@ group :development do
 end
 group :development, :test do
   gem 'rspec-rails', '2.13.0'
-  gem 'guard-rspec', '2.5.1'
   gem 'annotate', '2.5.0'
   gem 'nifty-generators'
   gem 'quiet_assets'
@@ -67,8 +66,6 @@ group :test do
   gem 'database_cleaner', '~> 0.9.1'
   gem 'rb-fsevent', '0.9.1', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'growl', '1.0.3'
-  gem 'guard-spork', '0.3.2'
-  gem 'spork', '0.9.0'
   gem 'launchy', '2.1.0'
   gem 'mocha'
   gem 'capybara-screenshot'

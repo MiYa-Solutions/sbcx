@@ -2,15 +2,11 @@
 #
 # Table name: org_to_roles
 #
-#  id                   :integer         not null, primary key
+#  id                   :integer          not null, primary key
 #  organization_id      :integer
 #  organization_role_id :integer
-#  created_at           :datetime        not null
-#  updated_at           :datetime        not null
-#
-# Indexes
-#
-#  index_org_to_roles_on_organization_id_and_organization_role_id  (organization_id,organization_role_id)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #
 
 class OrgToRole < ActiveRecord::Base

@@ -2,7 +2,7 @@
 #
 # Table name: appointments
 #
-#  id               :integer         not null, primary key
+#  id               :integer          not null, primary key
 #  starts_at        :datetime
 #  ends_at          :datetime
 #  title            :string(255)
@@ -11,8 +11,8 @@
 #  recurring        :boolean
 #  appointable_id   :integer
 #  appointable_type :string(255)
-#  created_at       :datetime        not null
-#  updated_at       :datetime        not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #  creator_id       :integer
 #  updater_id       :integer
 #  organization_id  :integer

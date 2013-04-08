@@ -2,14 +2,14 @@
 #
 # Table name: tickets
 #
-#  id                   :integer         not null, primary key
+#  id                   :integer          not null, primary key
 #  customer_id          :integer
 #  notes                :text
 #  started_on           :datetime
 #  organization_id      :integer
 #  completed_on         :datetime
-#  created_at           :datetime        not null
-#  updated_at           :datetime        not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #  status               :integer
 #  subcontractor_id     :integer
 #  technician_id        :integer
@@ -24,14 +24,16 @@
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
-#  transferable         :boolean         default(FALSE)
-#  allow_collection     :boolean         default(TRUE)
+#  transferable         :boolean          default(FALSE)
+#  allow_collection     :boolean          default(TRUE)
 #  collector_id         :integer
 #  collector_type       :string(255)
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
 #  payment_type         :string(255)
+#  subcon_payment       :string(255)
+#  provider_payment     :string(255)
 #
 
 class Ticket < ActiveRecord::Base

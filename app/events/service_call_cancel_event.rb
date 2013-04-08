@@ -35,4 +35,15 @@ class ServiceCallCancelEvent < ServiceCallEvent
     prov_service_call
   end
 
+  def process_event
+    if service_call.is_a?(MyServiceCall)
+    service_call.customer.account.entries << CanceledJobAdjustment.new(event: self,
+                                                                       ticket: service_call,
+                                                                       amount: - service_call.total_price,
+                                                                       description: "Reimbursement for a canceled job")
+    end
+    invoke_affiliate_billing if service_call.work_done?
+    super
+  end
+
 end

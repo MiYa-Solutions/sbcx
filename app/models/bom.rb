@@ -2,16 +2,16 @@
 #
 # Table name: boms
 #
-#  id             :integer         not null, primary key
+#  id             :integer          not null, primary key
 #  ticket_id      :integer
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #  quantity       :decimal(, )
 #  material_id    :integer
-#  cost_cents     :integer         default(0), not null
-#  cost_currency  :string(255)     default("USD"), not null
-#  price_cents    :integer         default(0), not null
-#  price_currency :string(255)     default("USD"), not null
+#  cost_cents     :integer          default(0), not null
+#  cost_currency  :string(255)      default("USD"), not null
+#  price_cents    :integer          default(0), not null
+#  price_currency :string(255)      default("USD"), not null
 #  buyer_id       :integer
 #  buyer_type     :string(255)
 #

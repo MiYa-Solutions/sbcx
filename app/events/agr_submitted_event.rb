@@ -2,7 +2,7 @@ class AgrSubmittedEvent < AgreementEvent
   def init
     self.name = I18n.t('events.agreement.submitted.name')
     self.description = I18n.t('events.agreement.submitted.description', originator: agreement.creator.organization.name, otherparty: other_party) if self.description.nil?
-    self.reference_id = 100002
+    self.reference_id = 200002
   end
 
   def notification_recipients

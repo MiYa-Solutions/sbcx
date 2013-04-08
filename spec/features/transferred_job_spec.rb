@@ -55,8 +55,19 @@ describe 'Transferred Job', js: true do
         should have_button(JOB_BTN_TRANSFER)
       end
 
-      describe "cancel the job" do
-        pending
+      describe 'cancel the job' do
+        before do
+          click_button JOB_BTN_CANCEL
+        end
+
+        it 'should show a canceled status' do
+          should have_status(JOB_STATUS_CANCELED)
+        end
+
+        it 'should have a cancel event' do
+          #click_button JOB_BTN_HISTORY
+          should have_event('100003', I18n.t('service_call_cancel_event.name'))
+        end
       end
 
       describe "un accept the job" do
@@ -90,8 +101,24 @@ describe 'Transferred Job', js: true do
           pending
         end
 
-        describe "cancel the job" do
-          pending
+        describe 'cancel the job' do
+          before do
+            click_button JOB_BTN_CANCEL
+          end
+
+          it 'should show a canceled status' do
+            should have_status(JOB_STATUS_CANCELED)
+          end
+
+          it 'should have a cancel event' do
+            #click_button JOB_BTN_HISTORY
+            should have_event('100003', I18n.t('service_call_cancel_event.name'))
+          end
+
+          it 'should not show a complete or close buttons' do
+            should_not have_button(JOB_BTN_COMPLETE)
+            should_not have_button(JOB_BTN_CLOSE)
+          end
         end
 
         describe 'complete the job' do
@@ -109,12 +136,35 @@ describe 'Transferred Job', js: true do
             should have_work_status(JOB_WORK_STATUS_COMPLETED)
           end
 
-          it 'should have buttons: cancel, invoice, provider invoiced and not un-accept' do
+          it 'should have buttons: cancel, invoice, provider invoiced and not un-accept and not cancel transfer' do
             should have_button(JOB_BTN_CANCEL)
             should have_button(JOB_BTN_INVOICE)
             should have_button(JOB_BTN_PROV_INVOICE)
             should_not have_button(JOB_BTN_UN_ACCEPT)
+            should_not have_button(JOB_BTN_CANCEL_TRANSFER)
           end
+
+          describe 'cancel the job' do
+            before do
+              click_button JOB_BTN_CANCEL
+            end
+
+            it 'should show a canceled status' do
+              should have_status(JOB_STATUS_CANCELED)
+            end
+
+            it 'should have a cancel event' do
+              #click_button JOB_BTN_HISTORY
+              should have_event('100003', I18n.t('service_call_cancel_event.name'))
+            end
+
+            it 'should not show a settle or close buttons' do
+              should_not have_button(JOB_BTN_SETTLE)
+              should_not have_button(JOB_BTN_CLOSE)
+            end
+
+          end
+
 
           describe 'invoice the customer' do
             before do
@@ -136,6 +186,27 @@ describe 'Transferred Job', js: true do
               should have_select(JOB_SELECT_PAYMENT, options: ["", Cash.model_name.human, CreditCard.model_name.human, Cheque.model_name.human])
             end
 
+            describe 'cancel the job' do
+              before do
+                click_button JOB_BTN_CANCEL
+              end
+
+              it 'should show a canceled status' do
+                should have_status(JOB_STATUS_CANCELED)
+              end
+
+              it 'should have a cancel event' do
+                #click_button JOB_BTN_HISTORY
+                should have_event('100003', I18n.t('service_call_cancel_event.name'))
+              end
+
+              it 'should not show a settle or close buttons' do
+                should_not have_button(JOB_BTN_SETTLE)
+                should_not have_button(JOB_BTN_CLOSE)
+              end
+
+            end
+
             describe 'collect the payment' do
               before do
                 select Cash.model_name.human, from: JOB_SELECT_PAYMENT
@@ -153,6 +224,27 @@ describe 'Transferred Job', js: true do
               it 'actions should show cancel and deposited buttons' do
                 should have_button(JOB_BTN_DEPOSIT)
                 should have_button(JOB_BTN_CANCEL)
+              end
+
+              describe 'cancel the job' do
+                before do
+                  click_button JOB_BTN_CANCEL
+                end
+
+                it 'should show a canceled status' do
+                  should have_status(JOB_STATUS_CANCELED)
+                end
+
+                it 'should have a cancel event' do
+                  #click_button JOB_BTN_HISTORY
+                  should have_event('100003', I18n.t('service_call_cancel_event.name'))
+                end
+
+                it 'should not show a settle or close buttons' do
+                  should_not have_button(JOB_BTN_SETTLE)
+                  should_not have_button(JOB_BTN_CLOSE)
+                end
+
               end
 
               describe 'deposit the payment' do
@@ -173,6 +265,28 @@ describe 'Transferred Job', js: true do
                   should have_button(JOB_BTN_PROV_CONFIRMED_DEPOSIT)
                 end
 
+                describe 'cancel the job' do
+                  before do
+                    click_button JOB_BTN_CANCEL
+                  end
+
+                  it 'should show a canceled status' do
+                    should have_status(JOB_STATUS_CANCELED)
+                  end
+
+                  it 'should have a cancel event' do
+                    #click_button JOB_BTN_HISTORY
+                    should have_event('100003', I18n.t('service_call_cancel_event.name'))
+                  end
+
+                  it 'should not show a settle or close buttons' do
+                    should_not have_button(JOB_BTN_SETTLE)
+                    should_not have_button(JOB_BTN_CLOSE)
+                  end
+
+                end
+
+
                 describe 'confirm deposit on behalf of the provider' do
                   before do
                     click_button JOB_BTN_PROV_CONFIRMED_DEPOSIT
@@ -191,6 +305,28 @@ describe 'Transferred Job', js: true do
                     should have_select(JOB_SELECT_PROVIDER_PAYMENT, options: [Cash.model_name.human, CreditCard.model_name.human, Cheque.model_name.human, ""])
                   end
 
+                  describe 'cancel the job' do
+                    before do
+                      click_button JOB_BTN_CANCEL
+                    end
+
+                    it 'should show a canceled status' do
+                      should have_status(JOB_STATUS_CANCELED)
+                    end
+
+                    it 'should have a cancel event' do
+                      #click_button JOB_BTN_HISTORY
+                      should have_event('100003', I18n.t('service_call_cancel_event.name'))
+                    end
+
+                    it 'should show a settle and cancel buttons' do
+                      should have_button(JOB_BTN_SETTLE)
+                      should_not have_button(JOB_BTN_CLOSE)
+                    end
+
+                  end
+
+
                   describe 'settle with provider' do
                     before do
                       select Cash.model_name.human, from: JOB_SELECT_PROVIDER_PAYMENT
@@ -205,29 +341,72 @@ describe 'Transferred Job', js: true do
                       should have_provider_status(JOB_PROVIDER_STATUS_SETTLED)
                     end
 
-                    it 'actions should show cancel and close buttons' do
+                    it 'actions should show cancel and provider clear buttons and not close' do
                       should have_button(JOB_BTN_CANCEL)
-                      should have_button(JOB_BTN_CLOSE)
+                      should have_button(JOB_BTN_PROV_PAYMENT_CLEAR)
+                      should_not have_button(JOB_BTN_CLOSE)
                     end
 
-                    describe 'close job' do
+                    describe 'cancel the job' do
                       before do
-                        click_button JOB_BTN_CLOSE
+                        click_button JOB_BTN_CANCEL
                       end
 
-                      it 'should show a success message' do
-                        should have_success_message
+                      it 'should show a canceled status' do
+                        should have_status(JOB_STATUS_CANCELED)
                       end
 
-                      it 'status should be set to closed' do
-                        should have_status(JOB_STATUS_CLOSED)
+                      it 'should have a cancel event' do
+                        #click_button JOB_BTN_HISTORY
+                        should have_event('100003', I18n.t('service_call_cancel_event.name'))
                       end
 
-                      it 'actions should not show any button' do
-                        should_not have_button(JOB_BTN_CANCEL)
+                      it 'should not show a settle or close buttons' do
+                        should_not have_button(JOB_BTN_SETTLE)
+                        should_not have_button(JOB_BTN_CLOSE)
                       end
 
                     end
+
+                    describe 'clear deposit' do
+                      before do
+                        click_button JOB_BTN_PROV_PAYMENT_CLEAR
+                      end
+
+                      it 'provider status should turn to cleared' do
+                        should have_provider_status(JOB_PROVIDER_STATUS_CLEARED)
+                      end
+
+                      it 'actions should show cancel and provider clear buttons and not close' do
+                        should have_button(JOB_BTN_CANCEL)
+                        should have_button(JOB_BTN_CLOSE)
+                      end
+
+                      describe 'close job' do
+                        before do
+                          click_button JOB_BTN_CLOSE
+                        end
+
+                        it 'should show a success message' do
+                          should have_success_message
+                        end
+
+                        it 'status should be set to closed' do
+                          should have_status(JOB_STATUS_CLOSED)
+                        end
+
+                        it 'actions should not show any button' do
+                          should_not have_button(JOB_BTN_CANCEL)
+                        end
+
+                        it 'should have the close event associated' do
+                          should have_event('100036')
+                        end
+
+                      end
+
+                    end
+
 
                   end
                 end
@@ -242,6 +421,7 @@ describe 'Transferred Job', js: true do
       end
 
     end
+
   end
 
 

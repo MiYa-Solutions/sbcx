@@ -1,6 +1,6 @@
 require File.expand_path("../../config/environment", __FILE__)
 require 'rubygems'
-require 'spork'
+#require 'spork'
 require 'rspec/rails'
 #require 'rspec/autorun'
 require 'capybara/rails'

@@ -6,6 +6,17 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ScDepositEvent.new
   end
 
+  def after_clear_provider(service_call, transition)
+    Rails.logger.debug { "invoked observer AFTER clear_provider \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ScProviderClearEvent.new
+
+  end
+
+  def after_prov_confirmed_deposit_payment(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE deposit_to_prov \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ScDepositConfirmedEvent.new unless service_call.events.last.instance_of?(ScDepositConfirmedEvent)
+  end
+
   def before_accept(service_call, transition)
     Rails.logger.debug { "invoked observer before accept \n #{service_call.inspect} \n #{transition.inspect}" }
     service_call.events << ServiceCallAcceptEvent.new

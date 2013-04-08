@@ -105,18 +105,20 @@
           </tbody>
         </table>
     <% end %>
-    <table class="table table-striped table-condensed table-sbcx">
-      <tbody>
+    <% unless @service_call.instance_of?(TransferredServiceCall) && @service_call.payment_na? %>
+        <table class="table table-striped table-condensed table-sbcx">
+          <tbody>
+          <tr>
+            <td><strong><%= @service_call.class.human_attribute_name(:billing_status) %></strong></td>
+            <td>
+              <span class="<%= StylingService.instance.get_style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
+                  <h3><%= @service_call.human_billing_status_name %></h3>
+              </span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+    <% end %>
 
-      <tr>
-        <td><strong><%= @service_call.class.human_attribute_name(:billing_status) %></strong></td>
-        <td>
-          <span class="<%= StylingService.instance.get_style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
-              <h3><%= @service_call.human_billing_status_name %></h3>
-          </span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
   </li>
 </ul>

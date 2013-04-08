@@ -113,7 +113,7 @@ module AccountingMatchers
     end
 
     def failure_message
-      message = "expected page to have an affiliate balance span" if @errors[:balance]
+      message = "expected page to show a balance span" if @errors[:balance]
       message = "balance span found but the value is wrong" unless @errors[:balance]
       message += "\n#{@errors.to_yaml}" unless @errors.empty?
       message
@@ -121,7 +121,7 @@ module AccountingMatchers
     end
 
     def negative_failure_message
-      message = "expected page to NOT have an balance span row with amount = #{humanized_money_with_symbol @balance}"
+      message = "expected page to NOT show a balance span row with amount = #{humanized_money_with_symbol @balance}"
       message += "\n#{@errors.to_yaml}" unless @errors.empty?
       message
     end
@@ -145,6 +145,7 @@ module AccountingMatchers
   def have_affiliate_balance(balance)
     AffiliateBalanceMatcher.new(balance)
   end
+  alias_method :have_balance, :have_affiliate_balance
   def have_customer_balance(balance)
     CustomerBalanceMatcher.new(balance)
   end

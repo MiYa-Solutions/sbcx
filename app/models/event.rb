@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id                  :integer          not null, primary key
+#  name                :string(255)
+#  type                :string(255)
+#  description         :string(255)
+#  eventable_type      :string(255)
+#  eventable_id        :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  user_id             :integer
+#  reference_id        :integer
+#  creator_id          :integer
+#  updater_id          :integer
+#  triggering_event_id :integer
+#
+
 ##
 # Events are the core unites that implement behavior. Events are created in various scenarios but the most common one is
 # in response to a status change in a state machine. Events are polymorphic and so can be associated with any model
@@ -36,25 +55,6 @@
 #                                      obj.events << MyEvent.new
 #                                    end
 #                               end
-# == Schema Information
-#
-# Table name: events
-#
-#  id                  :integer         not null, primary key
-#  name                :string(255)
-#  type                :string(255)
-#  description         :string(255)
-#  eventable_type      :string(255)
-#  eventable_id        :integer
-#  created_at          :datetime        not null
-#  updated_at          :datetime        not null
-#  user_id             :integer
-#  reference_id        :integer
-#  creator_id          :integer
-#  updater_id          :integer
-#  triggering_event_id :integer
-#
-
 class Event < ActiveRecord::Base
   belongs_to :eventable, polymorphic: true
   # todo - seems like the user is not needed instead a creator can be used

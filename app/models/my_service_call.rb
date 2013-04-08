@@ -2,14 +2,14 @@
 #
 # Table name: tickets
 #
-#  id                   :integer         not null, primary key
+#  id                   :integer          not null, primary key
 #  customer_id          :integer
 #  notes                :text
 #  started_on           :datetime
 #  organization_id      :integer
 #  completed_on         :datetime
-#  created_at           :datetime        not null
-#  updated_at           :datetime        not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #  status               :integer
 #  subcontractor_id     :integer
 #  technician_id        :integer
@@ -24,14 +24,16 @@
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
-#  transferable         :boolean         default(FALSE)
-#  allow_collection     :boolean         default(TRUE)
+#  transferable         :boolean          default(FALSE)
+#  allow_collection     :boolean          default(TRUE)
 #  collector_id         :integer
 #  collector_type       :string(255)
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
 #  payment_type         :string(255)
+#  subcon_payment       :string(255)
+#  provider_payment     :string(255)
 #
 
 class MyServiceCall < ServiceCall
@@ -46,6 +48,7 @@ class MyServiceCall < ServiceCall
   STATUS_TRANSFERRED = 1102
   STATUS_CANCELED    = 1103
   STATUS_CLOSED      = 1104
+
 
   state_machine :status, :initial => :new do
 
@@ -72,20 +75,20 @@ class MyServiceCall < ServiceCall
     end
 
     event :cancel do
-      transition [:open, :transferred] => :canceled
+      transition [:new, :open, :transferred] => :canceled
     end
 
     event :un_cancel do
-      transition :canceled => :new
+      transition :canceled => :new, if: ->(sc) { sc.can_un_cancel? }
     end
 
     event :close do
-      transition :transferred => :closed, if: lambda { |sc| sc.subcon_settled? && sc.payment_paid? }
-      transition :open => :closed, if: lambda { |sc| sc.payment_paid? }
+      transition :transferred => :closed, if: ->(sc) { sc.subcon_cleared? && sc.payment_paid? }
+      transition :open => :closed, if: ->(sc) { sc.payment_paid? }
     end
 
     event :cancel_transfer do
-      transition :transferred => :new
+      transition :transferred => :new, if: ->(sc) { !sc.work_done? }
     end
   end
 
@@ -126,45 +129,49 @@ class MyServiceCall < ServiceCall
     end
 
     event :clear do
-      transition :paid => :cleared, if: ->(sc) { sc.payment_type != 'cash' }
+      transition :paid => :cleared, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
     end
 
     event :invoice do
-      transition :pending => :invoiced, if: lambda { |sc| sc.work_done? }
+      transition :pending => :invoiced, if: ->(sc) { sc.work_done? }
     end
 
     event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.transferred? && sc.work_done? && sc.allow_collection? }
+      transition :pending => :invoiced_by_subcon, if: ->(sc) { !sc.canceled? && sc.transferred? && sc.work_done? && sc.allow_collection? }
     end
 
     event :overdue do
-      transition [:invoiced, :invoiced_by_subcon] => :overdue
+      transition [:invoiced, :invoiced_by_subcon] => :overdue, if: ->(sc) { !sc.canceled? }
     end
 
     event :collect do
-      transition [:invoiced, :overdue, :invoiced_by_subcon] => :collected_by_employee, if: lambda { |sc| sc.organization.multi_user? }
+      transition [:invoiced, :overdue, :invoiced_by_subcon] => :collected_by_employee, if: ->(sc) { !sc.canceled? && sc.organization.multi_user? }
     end
 
     event :deposited do
-      transition :collected_by_employee => :paid
+      transition :collected_by_employee => :paid, if: ->(sc) { !sc.canceled? }
     end
 
     event :paid do
-      transition [:invoiced, :invoiced_by_subcon, :overdue] => :paid, if: lambda { |sc| !sc.organization.multi_user? }
+      transition [:invoiced, :invoiced_by_subcon, :overdue] => :paid, if: ->(sc) { !sc.canceled? && !sc.organization.multi_user? }
     end
 
     event :subcon_collected do
-      transition :invoiced_by_subcon => :collected_by_subcon
+      transition :invoiced_by_subcon => :collected_by_subcon, if: ->(sc) { !sc.canceled? }
     end
 
     event :subcon_deposited do
-      transition :collected_by_subcon => :subcon_claim_deposited
+      transition :collected_by_subcon => :subcon_claim_deposited, if: ->(sc) { !sc.canceled? }
     end
 
     event :confirm_deposit do
-      transition :subcon_claim_deposited => :paid
+      transition :subcon_claim_deposited => :paid, if: ->(sc) { !sc.canceled? }
     end
   end
 
+  def can_un_cancel?
+    !self.work_done? &&
+        ((self.transferred? && !self.subcontractor.subcontrax_member?) || !self.transferred?)
+  end
 
 end

@@ -122,6 +122,7 @@ en:
             settled: "Settled"
             claim_settled: "Settled?"
             claimed_as_settled: "Claimed As Settled"
+            cleared: "Cleared"
   messages:
     service_call:
       event: 'The service call was %{event_name} successfully'
@@ -138,6 +139,9 @@ en:
   service_call_cancel_event:
     name: "Job has been Canceled"
     description: 'The Job has been canceled by %{user}'
+  service_call_un_cancel_event:
+    name: "Job has been Un-Canceled"
+    description: 'The Job has been un canceled by %{user}'
   service_call_canceled_event:
     description: 'The Job has been canceled by %{subcontractor}'
   service_call_received_event:
@@ -209,3 +213,12 @@ en:
   service_call_clear_customer_payment_event:
     name: "Payment for this job is marked as cleared"
     description: "The payment status for this job has been cleared, which means the check was cleared by the bank etc."
+  service_call_close_event:
+    name: "The job is closed"
+    description: "The job was marked as closed - no more actions are expected to happen in regards to this job"
+  service_call_provider_clear_event:
+    name: "The payment from provider is cleared"
+    description: 'It was indicated that the payment from %{prov} for job %{job_ref} was cleared'
+  service_call_subcon_cleared_event:
+    name: "Subcontractor Cleared Payment"
+    description: '%{subcon} has cleared the %{payment_type} payment for job %{ref}'

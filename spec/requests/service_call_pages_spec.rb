@@ -273,6 +273,17 @@ describe "Service Call pages" do
           should_not have_selector(dispatch_btn)
         end
 
+        describe 'cancel: ' do
+          before do
+            click_button JOB_BTN_CANCEL
+          end
+
+          it 'status should be canceled and the cancel event' do
+            should have_status(JOB_STATUS_CANCELED)
+            should have_event('100003')
+          end
+        end
+
         describe "start the job" do
           before do
             click_button start_btn_selector
@@ -304,6 +315,22 @@ describe "Service Call pages" do
 
             #should have_text(I18n.t('service_call_start_event.description', technician: service_call.technician.name))
           end
+          describe 'cancel: ' do
+            before do
+              click_button JOB_BTN_CANCEL
+            end
+
+            it 'status should be canceled and the cancel event' do
+              should have_status(JOB_STATUS_CANCELED)
+              should have_event('100003')
+            end
+
+            it 'should not show the complete button and show the un_cancel button' do
+              should_not have_button(JOB_BTN_COMPLETE)
+              should have_button(JOB_BTN_UN_CANCEL)
+            end
+          end
+
         end
 
       end
@@ -671,7 +698,7 @@ describe "Service Call pages" do
 
                           it 'should have a collector select box with the technician as one of the values' do
                             @subcon_service_call.reload
-                            should have_select collector_select_selector , with_options: [@subcon_service_call.technician.name]
+                            should have_select collector_select_selector, with_options: [@subcon_service_call.technician.name]
                           end
 
                           it 'should not allow collection without specifying a collector' do
@@ -1201,7 +1228,7 @@ describe "Service Call pages" do
         describe 'successful transfer' do
 
           before do
-            click_button transfer_btn_selector
+            click_button JOB_BTN_TRANSFER
           end
 
           it 'should show the accept button' do
@@ -1213,9 +1240,26 @@ describe "Service Call pages" do
             should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
           end
 
+          describe 'cancel ' do
+            before do
+              click_button JOB_BTN_CANCEL
+            end
+
+            it 'status should be canceled and the cancel event' do
+              should have_status(JOB_STATUS_CANCELED)
+              should have_event('100003')
+            end
+
+            it 'should not show the complete button and show the un_cancel button' do
+              should_not have_button(JOB_BTN_COMPLETE)
+              should have_button(JOB_BTN_UN_CANCEL)
+            end
+          end
+
+
           describe 'accept on behalf of the subcontractor' do
             before do
-              click_button accept_btn_selector
+              click_button JOB_BTN_ACCEPT
             end
 
             it 'status should change to accepted' do
@@ -1226,9 +1270,26 @@ describe "Service Call pages" do
               should have_button start_btn_selector
             end
 
+            describe 'cancel ' do
+              before do
+                click_button JOB_BTN_CANCEL
+              end
+
+              it 'status should be canceled and the cancel event' do
+                should have_status(JOB_STATUS_CANCELED)
+                should have_event('100003')
+              end
+
+              it 'should not show the complete button and show the un_cancel button' do
+                should_not have_button(JOB_BTN_COMPLETE)
+                should have_button(JOB_BTN_UN_CANCEL)
+              end
+            end
+
+
             describe 'start the work on behalf of the subcontractor' do
               before do
-                click_button start_btn_selector
+                click_button JOB_BTN_START
               end
 
               it 'should change the work status to in progress' do
@@ -1240,18 +1301,50 @@ describe "Service Call pages" do
                 should have_button complete_btn_selector
               end
 
+              describe 'cancel ' do
+                before do
+                  click_button JOB_BTN_CANCEL
+                end
+
+                it 'the page should show the correct status, event and buttons' do
+                  should have_status(JOB_STATUS_CANCELED)
+                  should have_event('100003')
+                  should_not have_button(JOB_BTN_COMPLETE)
+                  should have_button(JOB_BTN_UN_CANCEL)
+                end
+
+              end
+
+
               describe 'mark the work as completed and add boms' do
                 before do
                   add_bom "test part", 10.5, 22.5, 1
-                  click_button complete_btn_selector
+                  click_button JOB_BTN_COMPLETE
                 end
+
 
                 it 'should show the work status as completed' do
                   should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
                 end
 
-                it 'should show the settle button' do
-                  should have_button settle_btn_selector
+                it 'should show the settle button and should not show the cancel transfer button' do
+                  should have_button JOB_BTN_SETTLE
+                  should have_button JOB_BTN_CANCEL
+                  should_not have_button(JOB_BTN_CANCEL_TRANSFER)
+                end
+
+                describe 'cancel ' do
+                  before do
+                    click_button JOB_BTN_CANCEL
+                  end
+
+                  it 'the page should show the correct status, event and buttons' do
+                    should have_status(JOB_STATUS_CANCELED)
+                    should have_event('100003')
+                    should_not have_button(JOB_BTN_SETTLE)
+                    should_not have_button(JOB_BTN_UN_CANCEL)
+                  end
+
                 end
 
                 describe 'mark as settled' do
@@ -1264,6 +1357,76 @@ describe "Service Call pages" do
 
                     should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
                   end
+
+                  it 'should have the invoice, subcon invoiced and cancel buttons' do
+                    should have_button(JOB_BTN_INVOICE)
+                    should have_button(JOB_BTN_SUBCON_INVOICED)
+                    should have_button(JOB_BTN_CANCEL)
+                  end
+
+                  describe 'cancel ' do
+                    before do
+                      click_button JOB_BTN_CANCEL
+                    end
+
+                    it 'the page should show the correct status, event and buttons' do
+                      should have_status(JOB_STATUS_CANCELED)
+                      should have_event('100003')
+                      should_not have_button(JOB_BTN_CONFIRM_SETTLEMENT)
+                      should_not have_button(JOB_BTN_UN_CANCEL)
+                    end
+
+                  end
+
+                  describe 'invoice by provider' do
+                    before do
+                      click_button JOB_BTN_INVOICE
+                    end
+
+                    it 'should show a success message and changed the payment status to invoiced' do
+                      should have_success_message
+                      should have_billing_status(JOB_BILLING_STATUS_INVOICED)
+                    end
+                    describe 'payment' do
+                      before do
+                        select Cash.model_name.human, from: JOB_SELECT_PAYMENT
+                        click_button JOB_BTN_PAID
+                      end
+
+                      it 'should be successful and show a paid status, cancel and close buttons' do
+                        should have_success_message
+                        should have_billing_status(JOB_BILLING_STATUS_PAID)
+                        should have_button(JOB_BTN_CANCEL)
+                        should have_button(JOB_BTN_CLOSE)
+                      end
+
+                      describe 'cancel ' do
+                        before do
+                          click_button JOB_BTN_CANCEL
+                        end
+
+                        it 'the page should show the correct status, event and buttons' do
+                          should have_status(JOB_STATUS_CANCELED)
+                          should have_event('100003')
+                          should_not have_button(JOB_BTN_CLOSE)
+                          should_not have_button(JOB_BTN_UN_CANCEL)
+                        end
+
+                      end
+
+                      describe 'close: ' do
+                        before do
+                          click_button JOB_BTN_CLOSE
+                        end
+
+                        it 'should show a success message and a closed status' do
+                          should have_success_message
+                          should have_status(JOB_STATUS_CLOSED)
+                        end
+                      end
+                    end
+                  end
+
                 end
               end
             end
