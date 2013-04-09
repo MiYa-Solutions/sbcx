@@ -11,6 +11,8 @@
             <div class="input-prepend input-append">
               <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:ticket) %><%= I18n.t('general.general.number') %></span>
               <%= f.text_field :ticket_ref_id %>
+              <span><%= link_to 'Find', '#ticket_search', data: { toggle: 'modal' }, class: "btn btn-primary find_entry" %>
+               </span>
             </div>
           </li>
           <li></li>

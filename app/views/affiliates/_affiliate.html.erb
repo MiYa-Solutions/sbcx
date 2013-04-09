@@ -13,15 +13,14 @@
 
   <td><%= affiliate.phone %></td>
   <td><%= link_to affiliate.email, "mailto:#{affiliate.email}" %></td>
-  <td>
 
+  <td></td>
   <!--<#% if @account.balance > 0 %>-->
           <!--<td class="green_balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
   <!--<#% else %>-->
           <!--<td class="green-balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
   <!--<#% end %>-->
 
-  </td>
   <td class="actions_affiliate_index">
     <% if affiliate.subcontrax_member? %>
         <% unless  affiliate.id.in? affiliate_ids %>
