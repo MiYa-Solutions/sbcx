@@ -17,3 +17,6 @@ JOB_BILLING_STATUS_PAID = I18n.t('activerecord.state_machines.my_service_call.bi
 
 JOB_PROVIDER_STATUS_SETTLED = I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled')
 JOB_PROVIDER_STATUS_CLEARED = I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.cleared')
+
+JOB_SUBCON_STATUS_CLEARED = I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.cleared')
+

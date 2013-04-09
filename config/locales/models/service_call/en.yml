@@ -56,6 +56,7 @@ en:
             claimed_as_settled: "Claimed As Settled"
             settled: "Settled"
             claim_settled: "Settled?"
+            cleared: "Cleared"
         billing_status:
           states:
             invoiced_by_subcon: "Invoiced (Subcontractor)"
@@ -183,6 +184,9 @@ en:
   service_call_collect_event:
     name: "Payment has been Collected"
     description: "The payment for this Job has been collected"
+  service_call_subcon_clear_event:
+    name: 'The subcontractor (%{subcon}) has cleared the payment'
+    description: 'The payment for this Job has been cleared by the subcontractor (%{subcon})'
   service_call_collected_event:
     name: "Subcontractor has Collected Payment"
     description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has collected the payment from the customer'

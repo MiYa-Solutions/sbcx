@@ -5,6 +5,11 @@ class MyServiceCallObserver < ServiceCallObserver
     service_call.events << ScClearCustomerPaymentEvent.new
   end
 
+  def after_clear_subcon(service_call, transition)
+    Rails.logger.debug { "invoked observer after clear payment \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.events << ScSubconClearEvent.new
+  end
+
   def after_start_work(service_call, transition)
     Rails.logger.debug { "invoked AFTER start_work \n #{service_call.inspect} \n #{transition.args.inspect}" }
 

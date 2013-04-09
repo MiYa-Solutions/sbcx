@@ -319,7 +319,7 @@ describe "Service Call pages" do
 
           it 'should show: canceled status, cancel event and the un_cancel button' do
             should have_status(JOB_STATUS_CANCELED)
-            should have_event('100003', I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+            should have_event('100003', I18n.t('service_call_cancel_event.description', user: service_call.reload.updater.name.rstrip))
             should have_button(JOB_BTN_UN_CANCEL)
           end
 
@@ -827,7 +827,7 @@ describe "Service Call pages" do
                 in_browser(:technician) do
                   sign_in technician
                   visit notifications_path
-                  should have_notification(ScCancelNotification, @subcon_service_call)
+                  should have_notification(ScCanceledNotification, @subcon_service_call)
                 end
               end
 
@@ -2075,14 +2075,30 @@ describe "Service Call pages" do
 
                       end
 
-                      describe 'close: ' do
+
+                      describe 'clear: ' do
+
                         before do
-                          click_button JOB_BTN_CLOSE
+                          click_button JOB_BTN_CLEAR
                         end
 
-                        it 'should show a success message and a closed status' do
-                          should have_success_message
-                          should have_status(JOB_STATUS_CLOSED)
+
+                        it 'should show: close button, a cleared status and the clear event' do
+                          should have_button(JOB_BTN_CLOSE)
+                          should have_subcon_status(JOB_SUBCON_STATUS_CLEARED)
+                          should have_event('100041')
+                        end
+
+                        describe 'close: ' do
+                          before do
+                            click_button JOB_BTN_CLOSE
+                          end
+
+                          it 'should show a success message and a closed status' do
+                            should have_success_message
+                            should have_status(JOB_STATUS_CLOSED)
+                            should have_event('100036')
+                          end
                         end
                       end
                     end

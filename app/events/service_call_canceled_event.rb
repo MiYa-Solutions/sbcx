@@ -34,7 +34,8 @@ class ServiceCallCanceledEvent < ServiceCallEvent
 
   def notification_recipients
     res = User.my_dispatchers(service_call.organization.id).all
-    res << service_call.technician unless res.map(&:id).include?(service_call.technician.id)
+    res << service_call.technician unless service_call.technician.nil? || res.map(&:id).include?(service_call.technician.id)
+    res
   end
 
   def notification_class
