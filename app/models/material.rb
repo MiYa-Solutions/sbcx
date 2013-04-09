@@ -2,7 +2,7 @@
 #
 # Table name: materials
 #
-#  id              :integer         not null, primary key
+#  id              :integer          not null, primary key
 #  organization_id :integer
 #  supplier_id     :integer
 #  name            :string(255)
@@ -10,12 +10,12 @@
 #  creator_id      :integer
 #  updater_id      :integer
 #  status          :integer
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
-#  cost_cents      :integer         default(0), not null
-#  cost_currency   :string(255)     default("USD"), not null
-#  price_cents     :integer         default(0), not null
-#  price_currency  :string(255)     default("USD"), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  cost_cents      :integer          default(0), not null
+#  cost_currency   :string(255)      default("USD"), not null
+#  price_cents     :integer          default(0), not null
+#  price_currency  :string(255)      default("USD"), not null
 #
 
 class Material < ActiveRecord::Base

@@ -2,7 +2,7 @@ class AgrNewSubconEvent < AgreementEvent
   def init
     self.name = I18n.t('events.agreement.new_subcon_agreement.name')
     self.description = default_description if self.description.nil?
-    self.reference_id = 100001
+    self.reference_id = 200001
   end
 
   def notification_recipients

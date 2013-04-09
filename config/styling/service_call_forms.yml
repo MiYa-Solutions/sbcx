@@ -16,22 +16,29 @@ service_call:
       settle:
         form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
+      clear:
+        form_classes: "blue-button"
+        button_classes: "btn btn-large btn-success"
+
     provider_status:
       mark_as_settled:
         form_classes: "green-button"
-        button_classes: "btn btn-large btn-success"
+        button_classes: "btn btn-large btn-primary"
       subcon_confirmed:
         form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       subcon_marked_as_settled:
         form_classes: "green-button"
-        button_classes: "btn btn-large btn-success"
+        button_classes: "btn btn-large btn-primary"
       confirm_settled:
         form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       settle:
         form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
+      clear:
+        form_classes: "blue-button"
+        button_classes: "btn btn-large btn-success"
     status:
       accept:
         form_classes: "green-button"
@@ -146,14 +153,16 @@ service_call:
     subcontractor_status:
       na: "status_grey"
       pending: "status_grey"
-      claim_settled: "status_grey"
-      claimed_as_settled: "status_grey"
-      settled: "status_green"
+      claim_settled: "status_blue"
+      claimed_as_settled: "status_blue"
+      settled: "status_blue"
+      cleared: "status_green"
     provider_status:
       pending: "status_grey"
-      claim_settled: "status_grey"
-      claimed_as_settled: "status_grey"
-      settled: "status_green"
+      claim_settled: "status_blue"
+      claimed_as_settled: "status_blue"
+      settled: "status_blue"
+      cleared: "status_green"
     billing_status:
       na:  "status_grey"
       pending: "status_grey"

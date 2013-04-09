@@ -2,22 +2,22 @@
 #
 # Table name: posting_rules
 #
-#  id             :integer         not null, primary key
+#  id             :integer          not null, primary key
 #  agreement_id   :integer
 #  type           :string(255)
 #  rate           :decimal(, )
 #  rate_type      :string(255)
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #  properties     :hstore
-#  time_bound     :boolean         default(FALSE)
-#  sunday         :boolean         default(FALSE)
-#  monday         :boolean         default(FALSE)
-#  tuesday        :boolean         default(FALSE)
-#  wednesday      :boolean         default(FALSE)
-#  thursday       :boolean         default(FALSE)
-#  friday         :boolean         default(FALSE)
-#  saturday       :boolean         default(FALSE)
+#  time_bound     :boolean          default(FALSE)
+#  sunday         :boolean          default(FALSE)
+#  monday         :boolean          default(FALSE)
+#  tuesday        :boolean          default(FALSE)
+#  wednesday      :boolean          default(FALSE)
+#  thursday       :boolean          default(FALSE)
+#  friday         :boolean          default(FALSE)
+#  saturday       :boolean          default(FALSE)
 #  sunday_from    :time
 #  monday_from    :time
 #  tuesday_from   :time

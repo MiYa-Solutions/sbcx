@@ -19,7 +19,7 @@ class ServiceCallCanceledEvent < ServiceCallEvent
   def init
     self.name = I18n.t('service_call_cancel_event.name') if name.nil?
     self.description = I18n.t('service_call_canceled_event.description', subcontractor: service_call.subcontractor.name) if description.nil?
-    self.reference_id = 9
+    self.reference_id = 100004
   end
 
   def update_provider
@@ -33,7 +33,9 @@ class ServiceCallCanceledEvent < ServiceCallEvent
   end
 
   def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
+    res = User.my_dispatchers(service_call.organization.id).all
+    res << service_call.technician unless service_call.technician.nil? || res.map(&:id).include?(service_call.technician.id)
+    res
   end
 
   def notification_class

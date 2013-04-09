@@ -2,14 +2,14 @@
 #
 # Table name: tickets
 #
-#  id                   :integer         not null, primary key
+#  id                   :integer          not null, primary key
 #  customer_id          :integer
 #  notes                :text
 #  started_on           :datetime
 #  organization_id      :integer
 #  completed_on         :datetime
-#  created_at           :datetime        not null
-#  updated_at           :datetime        not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #  status               :integer
 #  subcontractor_id     :integer
 #  technician_id        :integer
@@ -24,14 +24,16 @@
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
-#  transferable         :boolean         default(FALSE)
-#  allow_collection     :boolean         default(TRUE)
+#  transferable         :boolean          default(FALSE)
+#  allow_collection     :boolean          default(TRUE)
 #  collector_id         :integer
 #  collector_type       :string(255)
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
 #  payment_type         :string(255)
+#  subcon_payment       :string(255)
+#  provider_payment     :string(255)
 #
 
 class TransferredServiceCall < ServiceCall
@@ -79,22 +81,28 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :cancel_transfer do
-      transition :transferred => :new
+      transition :transferred => :new, if: ->(sc) { !sc.work_done? }
     end
 
     event :cancel do
-      transition :accepted => :canceled
+      transition [:accepted, :new] => :canceled
     end
 
+    event :un_cancel do
+      transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
+    end
+
+
     event :close do
-      transition :accepted => :closed, if: lambda { |sc| sc.work_done? && sc.provider_settled? }
-      transition :transferred => :closed, if: lambda { |sc| sc.work_done? && sc.provider_settled? && sc.subcon_settled? }
+      transition :accepted => :closed, if: lambda { |sc| sc.work_done? && sc.provider_cleared? }
+      transition :transferred => :closed, if: lambda { |sc| sc.work_done? && sc.provider_cleared? && sc.subcon_cleared? }
     end
 
   end
 
   state_machine :provider_status, :initial => :pending, namespace: 'provider' do
     state :pending, value: SUBCON_STATUS_PENDING
+    state :cleared, value: SUBCON_STATUS_CLEARED
     state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED do
       validates_presence_of :provider_payment
     end
@@ -108,6 +116,12 @@ class TransferredServiceCall < ServiceCall
     after_failure do |service_call, transition|
       Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
+
+    # for cash payment, paid means cleared
+    after_transition any => :settled do |sc, transition|
+      sc.status = SUBCON_STATUS_CLEARED if sc.provider_payment == 'cash'
+    end
+
 
     event :provider_confirmed do
       transition :claim_settled => :settled, if: lambda { |sc| sc.provider_settlement_allowed? }
@@ -124,6 +138,10 @@ class TransferredServiceCall < ServiceCall
     event :settle do
       transition :pending => :settled, if: lambda { |sc| sc.provider_settlement_allowed? && !sc.provider.subcontrax_member? }
       transition :pending => :claim_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? }
+    end
+
+    event :clear do
+      transition :settled => :cleared
     end
   end
 
@@ -230,6 +248,12 @@ class TransferredServiceCall < ServiceCall
   # to make the subcon_settlement_allowed? in ServiceCall work
   alias_method :payment_cleared?, :payment_paid?
 
+  def can_uncancel?
+    !self.work_done? && !self.provider.subcontrax_member?  &&
+        ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?))
+  end
+
+
   private
   def provider_is_not_a_member
     if provider
@@ -244,6 +268,8 @@ class TransferredServiceCall < ServiceCall
     #  errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
     #end
   end
+
+
 
 
 end

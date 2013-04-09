@@ -2,13 +2,13 @@
 #
 # Table name: notifications
 #
-#  id              :integer         not null, primary key
+#  id              :integer          not null, primary key
 #  subject         :string(255)
 #  content         :text
 #  status          :integer
 #  user_id         :integer
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #  notifiable_id   :integer
 #  notifiable_type :string(255)
 #  type            :string(255)

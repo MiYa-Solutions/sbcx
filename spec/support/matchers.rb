@@ -76,9 +76,115 @@ module Matchers
     end
 
   end
+  class EventMatcher
+    def initialize(number, text = nil)
+      @number = number
+      @text   = text
+    end
+
+    def matches?(actual)
+      @errors           = {}
+      expected_elements = {
+          :number => 'table#event_log_in_service_call tbody tr td'
+
+
+      }
+
+      expected_values = {
+          :number => @number
+      }
+
+      unless @text.nil?
+        expected_elements[:text] = 'table#event_log_in_service_call tbody tr td'
+        expected_values[:text]   = @text
+      end
+
+
+      expected_elements.each do |key, selector|
+        @errors[key] = selector unless actual.has_selector?(selector, text: @number)
+        if @text.present?
+          @errors["#{key}_value"] = "#{selector}  with value: #{expected_values[key]}" unless actual.has_selector?(selector, text: expected_values[key])
+        end
+      end
+      @errors.empty?
+    end
+
+    def failure_message
+      message = "expected page to have event #{@number}" if @errors[:number]
+      message = "event #{@number} exists but the text is wrong" if @errors[:text]
+      message += "\n#{@errors.to_yaml}" unless @errors.empty?
+      message
+
+    end
+
+    def negative_failure_message
+      message = "expected page to NOT show event '#{@number}'"
+      message += "\n#{@errors.to_yaml}" unless @errors.empty?
+      message
+    end
+
+  end
+
+  class NotificationMatcher
+    def initialize (klass, eventable, params = {})
+      @notification_class = klass.name.underscore
+      @eventable_id       = eventable.id
+      @eventable_type     = eventable.class.table_name.singularize.underscore
+      @params             = params
+    end
+
+    def matches?(actual)
+      @errors = {}
+      expected_elements = {
+          :notification => "table tr.#{@notification_class}.#{@eventable_type}_#{@eventable_id}"
+
+      }
+
+      expected_values = {
+
+      }
+
+      #unless @text.nil?
+      #  expected_elements[:text] = 'table#event_log_in_service_call tbody tr td'
+      #  expected_values[:text]   = @text
+      #end
+
+
+      expected_elements.each do |key, selector|
+        @errors[key] = selector unless actual.has_selector?(selector)
+        #if @text.present?
+        #  @errors["#{key}_value"] = "#{selector}  with value: #{expected_values[key]}" unless actual.has_selector?(selector, text: expected_values[key])
+        #end
+      end
+      @errors.empty?
+
+    end
+
+    def failure_message
+      message = "expected page to have notification #{@notification_class}" if @errors[:notification]
+      message += "\n#{@errors.to_yaml}" unless @errors.empty?
+      message
+
+    end
+
+    def negative_failure_message
+      message = "expected page to NOT show notification '#{@notification_class}'"
+      message += "\n#{@errors.to_yaml}" unless @errors.empty?
+      message
+    end
+
+  end
 
   def have_success_message(message = nil)
     SuccessMessageMatcher.new(message)
+  end
+
+  def have_event(number, text = nil)
+    EventMatcher.new(number, text)
+  end
+
+  def have_notification(klass, eventable, params = {})
+    NotificationMatcher.new(klass, eventable, params={})
   end
 
 

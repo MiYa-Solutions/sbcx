@@ -33,6 +33,10 @@ en:
       html_message: '%{subcontractor} reported the customer has canceled the %{link}'
       subject: 'Transferred service call %{ref} has been canceled '
       content: '%{subcontractor} has reported the service call as canceled by the customer accepted the service call'
+    sc_un_canceled_notification:
+      html_message: '%{subcontractor} reported has changed his mind reverted the %{link} back from canceled to new'
+      subject: 'Transferred service call %{ref} has been un-canceled '
+      content: '%{subcontractor} has previously reported the service call as canceled but has changed his mind and un-canceled it.'
     sc_dispatch_notification:
       html_message: 'You got a new %{link} to work on!'
       subject: 'You got a new service call to work on'
@@ -115,3 +119,7 @@ en:
       subject: '%{subcon} (S) has confirmed the settlement of job %{ref}'
       html_message: '%{subcon} (S) has confirmed that all commission and fees for %{link} have been settled'
       content: '%{subcon} (S) has confirmed that all commission and fees for job %{ref} have been settled'
+    sc_subcon_cleared_notification:
+      html_message: '%{subcontractor}, ${link} - YALLA NU'
+      subject: '%{ref} YALLA NU'
+      content: '%{subcontractor} - YALLA NU'

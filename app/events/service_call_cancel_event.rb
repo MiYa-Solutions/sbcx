@@ -23,7 +23,9 @@ class ServiceCallCancelEvent < ServiceCallEvent
   end
 
   def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
+    res = User.my_dispatchers(service_call.organization.id).all
+    res << service_call.technician if service_call.technician.present?
+    res
   end
 
   def notification_class
@@ -33,6 +35,17 @@ class ServiceCallCancelEvent < ServiceCallEvent
   def update_provider
     prov_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self)
     prov_service_call
+  end
+
+  def update_subcontractor
+    subcon_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self)
+    subcon_service_call
+  end
+
+  def process_event
+    CustomerBillingService.new(self).execute if service_call.work_done? && service_call.is_a?(MyServiceCall)
+    invoke_affiliate_billing if service_call.work_done?
+    super
   end
 
 end

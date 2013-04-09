@@ -2,14 +2,14 @@
 #
 # Table name: tickets
 #
-#  id                   :integer         not null, primary key
+#  id                   :integer          not null, primary key
 #  customer_id          :integer
 #  notes                :text
 #  started_on           :datetime
 #  organization_id      :integer
 #  completed_on         :datetime
-#  created_at           :datetime        not null
-#  updated_at           :datetime        not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #  status               :integer
 #  subcontractor_id     :integer
 #  technician_id        :integer
@@ -24,14 +24,16 @@
 #  settlement_date      :datetime
 #  name                 :string(255)
 #  scheduled_for        :datetime
-#  transferable         :boolean         default(FALSE)
-#  allow_collection     :boolean         default(TRUE)
+#  transferable         :boolean          default(FALSE)
+#  allow_collection     :boolean          default(TRUE)
 #  collector_id         :integer
 #  collector_type       :string(255)
 #  provider_status      :integer
 #  work_status          :integer
 #  re_transfer          :boolean
 #  payment_type         :string(255)
+#  subcon_payment       :string(255)
+#  provider_payment     :string(255)
 #
 
 class ServiceCall < Ticket
@@ -71,46 +73,46 @@ class ServiceCall < Ticket
   state_machine :work_status, initial: :pending, namespace: 'work' do
     state :pending, value: WORK_STATUS_PENDING
     state :dispatched, value: WORK_STATUS_DISPATCHED do
-      validate {|sc| sc.validate_technician }
+      validate { |sc| sc.validate_technician }
     end
     state :in_progress, value: WORK_STATUS_IN_PROGRESS do
-      validate {|sc| sc.validate_technician }
+      validate { |sc| sc.validate_technician }
     end
     state :accepted, value: WORK_STATUS_ACCEPTED
     state :rejected, value: WORK_STATUS_REJECTED
     state :done, value: WORK_STATUS_DONE
 
     after_failure do |service_call, transition|
-      Rails.logger.debug { "#{service_call.class.name} work status state machine failure. errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect + "\n The Service Call:" + service_call.inspect}
+      Rails.logger.debug { "#{service_call.class.name} work status state machine failure. errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect + "\n The Service Call:" + service_call.inspect }
     end
 
     event :start do
-      transition [:pending] => :in_progress, if: lambda { |sc| !sc.organization.multi_user? && !sc.transferred? }
-      transition [:accepted, :dispatched] => :in_progress
+      transition [:pending] => :in_progress, if: lambda { |sc| !sc.canceled? && !sc.organization.multi_user? && !sc.transferred? }
+      transition [:accepted, :dispatched] => :in_progress, if: ->(sc) { !sc.canceled? }
     end
 
     event :accept do
-      transition :pending => :accepted, if: lambda { |sc| sc.transferred? }
+      transition :pending => :accepted, if: lambda { |sc| !sc.canceled? && sc.transferred? }
     end
 
     event :reject do
-      transition :pending => :rejected, if: lambda { |sc| sc.transferred? }
+      transition :pending => :rejected, if: lambda { |sc| !sc.canceled? && sc.transferred? }
     end
 
     event :un_accept do
-      transition :accepted => :rejected, if: lambda { |sc| sc.transferred? }
+      transition :accepted => :rejected, if: lambda { |sc| !sc.canceled? && sc.transferred? }
     end
 
     event :dispatch do
-      transition :pending => :dispatched, if: lambda { |sc| sc.organization.multi_user? }
+      transition :pending => :dispatched, if: lambda { |sc| !sc.canceled? && sc.organization.multi_user? }
     end
 
     event :reset do
-      transition :rejected => :pending
+      transition :rejected => :pending, if: ->(sc) { !sc.canceled? }
     end
 
     event :complete do
-      transition :in_progress => :done
+      transition :in_progress => :done, if: ->(sc) { !sc.canceled? }
     end
 
   end
@@ -122,6 +124,7 @@ class ServiceCall < Ticket
   SUBCON_STATUS_CLAIM_SETTLED      = 3002
   SUBCON_STATUS_CLAIMED_AS_SETTLED = 3003
   SUBCON_STATUS_SETTLED            = 3004
+  SUBCON_STATUS_CLEARED            = 3005
 
   state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
     state :na, value: SUBCON_STATUS_NA
@@ -136,26 +139,33 @@ class ServiceCall < Ticket
     state :settled, value: SUBCON_STATUS_SETTLED do
       validates_presence_of :subcon_payment
     end
+    state :cleared, value: SUBCON_STATUS_CLEARED do
+      validates_presence_of :subcon_payment
+    end
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
     event :subcon_confirmed do
-      transition :claim_settled => :settled , if: lambda {|sc| sc.subcon_settlement_allowed?}
+      transition :claim_settled => :settled, if: ->(sc) { !sc.canceled? &&  sc.subcon_settlement_allowed? }
     end
 
     event :subcon_marked_as_settled do
-      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? }
+      transition :pending => :claimed_as_settled, if: ->(sc) { !sc.canceled? &&  sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? }
     end
 
     event :confirm_settled do
-      transition :claimed_as_settled => :settled, if: lambda {|sc| sc.subcon_settlement_allowed?}
+      transition :claimed_as_settled => :settled, if: ->(sc) { !sc.canceled? &&  sc.subcon_settlement_allowed? }
     end
 
     event :settle do
-      transition :pending => :settled, if: lambda { |sc| sc.subcon_settlement_allowed? && sc.work_done? && !sc.subcontractor.subcontrax_member? }
-      transition :pending => :claim_settled, if: lambda { |sc| sc.subcon_settlement_allowed? && sc.work_done? && sc.subcontractor.subcontrax_member? }
+      transition :pending => :settled, if: ->(sc) { !sc.canceled? &&  sc.subcon_settlement_allowed? && sc.work_done? && !sc.subcontractor.subcontrax_member? }
+      transition :pending => :claim_settled, if: ->(sc) { !sc.canceled? &&  sc.subcon_settlement_allowed? && sc.work_done? && sc.subcontractor.subcontrax_member? }
+    end
+
+    event :clear do
+      transition :settled => :cleared
     end
   end
 
@@ -193,8 +203,8 @@ class ServiceCall < Ticket
   def subcon_settlement_allowed?
 
     (subcontractor.subcontrax_member? && !allow_collection?) ||
-        (subcontractor.subcontrax_member? && allow_collection? && ( payment_paid?) || payment_cleared? )||
-        ( !subcontractor.subcontrax_member? && work_done?)
+        (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
+        (!subcontractor.subcontrax_member? && work_done?)
   end
 end
 

@@ -2,22 +2,22 @@
 #
 # Table name: posting_rules
 #
-#  id             :integer         not null, primary key
+#  id             :integer          not null, primary key
 #  agreement_id   :integer
 #  type           :string(255)
 #  rate           :decimal(, )
 #  rate_type      :string(255)
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #  properties     :hstore
-#  time_bound     :boolean         default(FALSE)
-#  sunday         :boolean         default(FALSE)
-#  monday         :boolean         default(FALSE)
-#  tuesday        :boolean         default(FALSE)
-#  wednesday      :boolean         default(FALSE)
-#  thursday       :boolean         default(FALSE)
-#  friday         :boolean         default(FALSE)
-#  saturday       :boolean         default(FALSE)
+#  time_bound     :boolean          default(FALSE)
+#  sunday         :boolean          default(FALSE)
+#  monday         :boolean          default(FALSE)
+#  tuesday        :boolean          default(FALSE)
+#  wednesday      :boolean          default(FALSE)
+#  thursday       :boolean          default(FALSE)
+#  friday         :boolean          default(FALSE)
+#  saturday       :boolean          default(FALSE)
 #  sunday_from    :time
 #  monday_from    :time
 #  tuesday_from   :time
@@ -62,6 +62,8 @@ class ProfitSplit < PostingRule
         charge_entries
       when ScSubconSettleEvent.name, ScSubconSettledEvent.name, ScProviderSettleEvent.name, ScProviderSettledEvent.name
         settlement_entries
+      when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
+        cancellation_entries
       else
         raise "Unexpected Event to be processed by ProfitSplit posting rule"
     end
@@ -82,6 +84,10 @@ class ProfitSplit < PostingRule
       when ScSubconSettledEvent.name
         true
       when ScProviderSettledEvent.name
+        true
+      when ServiceCallCancelEvent.name
+        true
+      when ServiceCallCanceledEvent.name
         true
       else
     end
@@ -189,6 +195,27 @@ class ProfitSplit < PostingRule
 
     result
 
+  end
+
+  def cancellation_entries
+    case @ticket.my_role
+      when :prov
+        organization_cancellation_entries
+      when :subcon
+        counterparty_cancellation_entries
+      else
+        raise "Unrecognized role when creting profit split entries"
+    end
+
+  end
+
+  def counterparty_cancellation_entries
+    original_entry = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
+    [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: - original_entry.amount, description: "Entry to provider owned account")]
+  end
+  def organization_cancellation_entries
+    original_entry = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
+    [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: - original_entry.amount, description: "Entry to provider owned account")]
   end
 
 

@@ -194,7 +194,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[collector_id]", current_user.id)
       concat (f.submit service_call.class.human_billing_status_event_name(:paid).titleize,
                        id:    'job_paid_btn',
-                       class: "btn btn-large",
+                       class: StylingService.instance.get_style("service_call.forms.billing_status.paid.button_classes"),
                        title: 'Click to indicate that the customer has paid',
                        rel:   'tooltip'
              )
@@ -206,7 +206,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[subcontractor_status_event]", 'settle')
       concat (f.submit service_call.class.human_subcontractor_status_event_name(:settle).titleize,
                        id:    'settle_service_call_btn',
-                       class: "btn btn-large",
+                       class: StylingService.instance.get_style("service_call.forms.subcontractor_status.settle.button_classes"),
                        title: 'Click to indicate that all fees with the subcontractor have been settled',
                        rel:   'tooltip'
              )
@@ -218,7 +218,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[provider_status_event]", 'settle')
       concat (f.submit service_call.class.human_provider_status_event_name(:settle).titleize,
                        id:    'settle_service_call_btn',
-                       class: "btn btn-large",
+                       class: StylingService.instance.get_style("service_call.forms.provider_status.settle.button_classes"),
                        title: 'Click to indicate that all fees with the provider have been settled',
                        rel:   'tooltip'
              )

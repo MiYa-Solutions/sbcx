@@ -2,7 +2,7 @@
 #
 # Table name: organizations
 #
-#  id                :integer         not null, primary key
+#  id                :integer          not null, primary key
 #  name              :string(255)
 #  phone             :string(255)
 #  website           :string(255)
@@ -18,8 +18,8 @@
 #  email             :string(255)
 #  subcontrax_member :boolean
 #  status            :integer
-#  created_at        :datetime        not null
-#  updated_at        :datetime        not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 class Supplier < Organization

@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id                  :integer          not null, primary key
+#  name                :string(255)
+#  type                :string(255)
+#  description         :string(255)
+#  eventable_type      :string(255)
+#  eventable_id        :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  user_id             :integer
+#  reference_id        :integer
+#  creator_id          :integer
+#  updater_id          :integer
+#  triggering_event_id :integer
+#
+
 # == Creating a New Service Call Event
 # 1. Define the event in one of the state machines in ServiceCall, MyServiceCall or TransferredServiceCall
 # 2. Add the appropriate before and after callbacks in the applicable observer: ServiceCallObserver, MyServiceCallObserver, TransferredServiceCallObserver
@@ -10,25 +29,6 @@
 # 9. update the service_call_pages_spec.rb with tests for the new functionality
 # 10. implement the event behavior to get the tests to pass
 #
-# == Schema Information
-#
-# Table name: events
-#
-#  id                  :integer         not null, primary key
-#  name                :string(255)
-#  type                :string(255)
-#  description         :string(255)
-#  eventable_type      :string(255)
-#  eventable_id        :integer
-#  created_at          :datetime        not null
-#  updated_at          :datetime        not null
-#  user_id             :integer
-#  reference_id        :integer
-#  creator_id          :integer
-#  updater_id          :integer
-#  triggering_event_id :integer
-#
-
 class ServiceCallEvent < Event
 
   before_create :set_default_creator
@@ -121,6 +121,18 @@ class ServiceCallEvent < Event
         account.entries << ChequePayment.new(props)
       else
         raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
+    end
+  end
+
+  protected
+  def invoke_affiliate_billing
+    if service_call.affiliate.present?
+      aff_billing = AffiliateBillingService.new(self)
+      aff_billing.execute
+
+      aff_billing.accounting_entries.each do |entry|
+        entry.clear
+      end
     end
   end
 end

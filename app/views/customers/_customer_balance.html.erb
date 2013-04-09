@@ -4,9 +4,9 @@
       <li><h1><%= Account.human_attribute_name(:balance) %></h1></li>
       <li></li>
       <% if @customer.account.balance < 0 %>
-          <li class="red-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="customer_balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
+          <li class="red-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
       <% else %>
-          <li class="green-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="customer_balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
+          <li class="green-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %><span id="balance"><%= humanized_money_with_symbol @customer.account.balance %></span></h1></li>
       <% end %>
     </ul>
   </div>
@@ -16,9 +16,11 @@
   </div>
 
   <div class="form-actions">
-    <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#balanceDetails">
-      <%= I18n.t('general.general.more_details') %>
-    </button>
+    <!--<button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#balanceDetails">-->
+      <!--<#%= I18n.t('general.general.more_details') %>-->
+    <!--</button>-->
+
+    <%= link_to I18n.t('general.general.more_details'), accounting_entries_url('accounting_entry[account_id]' => @customer.account.id), class: 'btn btn-primary btn-medium' %>
   </div>
 
 </div>
