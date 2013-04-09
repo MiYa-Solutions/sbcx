@@ -6,28 +6,17 @@
   </td>
   <td id="notification_<%= notification.id %>_subject"> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel: 'tooltip' %> </td>
   <td id="notification_<%= notification.id %>_message"><%= notification.html_message %> </td>
-  <!--<td><strong> <#%= notification.human_status_name %></strong>  </td>-->
-
   <% else %>
       <td>
         <span>
-          <!--<#%= image_tag("index/alerts_small.png", alt: "MiYa") %>-->
           <%= image_tag("index/new_alert.png", alt: "MiYa") %>
-
-
         </span>
       </td>
       <td id="notification_<%= notification.id %>_subject"> <strong> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %> </strong>    </td>
       <td id="notification_<%= notification.id %>_message"><strong>  <%= notification.html_message %> </strong>  </td>
-      <!--<td> <#%= notification.human_status_name %></td>-->
    <% end %>
   <td id="notification_<%= notification.id %>_actions">
-
-    <!--<#%= link_to 'Show', notification_path(notification), :class => 'btn btn-mini btn-info' %>-->
-    <!--<#%= link_to 'Dismiss', user_root_path, :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->
     <%= link_to 'Dismiss', notification_path(notification), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
-
-
   </td>
 </tr>
 
