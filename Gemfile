@@ -46,6 +46,8 @@ group :development, :test do
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
+  gem 'parallel_tests'
+  gem 'zeus-parallel_tests'
 end
 
 # Gems used only for assets and not required
