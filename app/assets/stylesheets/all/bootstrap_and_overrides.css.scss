@@ -1033,11 +1033,11 @@ a:hover {
 .list_account_entry {
 
   address {
-    background: none repeat scroll 0 0 #FBEED5;
+    background: none repeat scroll 0 0 #FCF8E3;
     border: 1px solid #FBEED5;
     //background: none repeat scroll 0 0 #EEEEEE;
 
-    margin-left: 3%;
+    margin-left: 1%;
     margin-top: 10px;
     padding: 7px;
     width: 90%;
@@ -1085,7 +1085,7 @@ a:hover {
 
   .table-striped tbody tr:nth-child(2n+1) td, .table-striped tbody tr:nth-child(2n+1) th {
     //background: none repeat scroll 0 0 #EEEEEE;
-    background: none repeat scroll 0 0 #FBEED5;
+    background: none repeat scroll 0 0 #FCF8E3;
 
   }
 
@@ -1622,7 +1622,7 @@ a:hover {
   }
 
   .close {
-    margin-top: -95px;
+    margin-top: -134px;
   }
 
   select {
@@ -1655,7 +1655,7 @@ a:hover {
   font-style: italic;
   margin-left: -47px;
   margin-top: -23px;
-  width: 280px;
+  width: 310px;
 }
 
 #ticket_search_form {
@@ -1705,6 +1705,9 @@ a:hover {
     border: 1px solid #999999;
     border-collapse: separate;
     border-radius: 4px 4px 4px 4px;
+    margin-left: 4px;
+    width: 99%;
+
   }
 
 
@@ -1721,12 +1724,11 @@ a:hover {
 .table_of_entries {
   //background: none repeat scroll 0 0 #999999;
   border-radius: 3px 3px 3px 3px;
-  margin-left: 1%;
-  padding: 5px;
+  margin-left: 0.3%;
+  padding: 10px 5px 5px;
   width: 98%;
-  background-color: #FBEED5;
-  //background-color: #FCF8E3;
-
+  //background-color: #FBEED5;
+  background-color: #FCF8E3;
   border: 2px solid #FBEED5;
 
 }
@@ -1803,7 +1805,7 @@ div.DTTT_collection {
   border-color: black;
   border-width: 1px;
   color: #3A87AD;
-  padding-top: 42px;
+  padding-top: 18px;
   margin-top: -15px;
   height: 58px;
 }
@@ -2313,6 +2315,8 @@ hr {
   //text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   vertical-align: middle;
   width: 66px;
+  margin-left: 4px;
+  //margin-top: 4px;
 }
 
 button.DTTT_button, div.DTTT_button, a.DTTT_button {

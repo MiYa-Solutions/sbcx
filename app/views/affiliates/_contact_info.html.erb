@@ -12,7 +12,7 @@
                 <!--<#%= link_to I18n.t('general.general.add_member'), "", class: "btn btn-large btn-primary" %>-->
             <% end %>
         <% else %>
-            <%= link_to I18n.t('general.general.send_invite'), new_affiliate_path, :class => 'btn btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
+            <%= link_to I18n.t('general.general.send_invite'), '#', :class => 'btn btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
         <% end %>
       </li>
     </ul>
@@ -77,7 +77,9 @@
     <% else %>
         <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
         <%= link_to 'Edit', edit_affiliate_path(@affiliate), :class => 'btn btn-medium btn-primary' %>
-        <%= link_to 'Archive', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
-    <% end %>
+        <%= link_to 'Archive', '#', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
+        <!--<#%= link_to 'Archive', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>-->
+
+  <% end %>
   </div>
 </div>
