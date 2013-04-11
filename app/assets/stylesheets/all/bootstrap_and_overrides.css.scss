@@ -1698,7 +1698,7 @@ a:hover {
     opacity: 0.75;
     width: 2px;
     margin-top: 5px;
-    border-top: 4px solid white;
+    border-top: 4px solid #000000;
   }
 
   .table-bordered {
@@ -2301,8 +2301,8 @@ hr {
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
   background-color: whitesmoke;
-  //background-image: -moz-linear-gradient(center top , white, #E6E6E6);
-  background: #999999;
+  background-image: -moz-linear-gradient(center top , white, #E6E6E6);
+  //background: #999999;
   background-repeat: repeat-x;
   border-image: none;
   border-style: solid;
@@ -2314,7 +2314,9 @@ hr {
   text-align: center;
   //text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   vertical-align: middle;
-  width: 66px;
+  width: 50px;
+  padding-top: 4px;
+  height: 16px;
   margin-left: 4px;
   //margin-top: 4px;
 }
@@ -2334,7 +2336,9 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 .DTTT_container {
   span {
-  color: white;
+  //color: white;
+    font-size: 12px;
+    font-weight: normal;
   }
 }
 
