@@ -6,9 +6,9 @@
       <li><h1><%= AccountingEntry.model_name.human.pluralize %></h1></li>
       <li></li>
       <li>
-        <button class="btn btn-primary" data-toggle="collapse" data-target="#add_entry" id="add_new_entry">
-            <%= I18n.t('affiliates.buttons.add_entry') %>
-        </button>
+        <!--<button class="btn btn-primary" data-toggle="collapse" data-target="#add_entry" id="add_new_entry">-->
+            <!--<#%= I18n.t('affiliates.buttons.add_entry') %>-->
+        <!--</button>-->
 
 <!--       <#%= link_to t('affiliates.buttons.add_entry'), new_affiliate_path, :class => 'btn btn-primary', id: 'new-affiliate-button' %></li>-->
     </ul>
@@ -20,21 +20,37 @@
 
     <div class="span4">
 
-          <div class="row-fluid">
-            <div class="account_entry_select">
-              <%= select_tag :account, grouped_options_for_select(account_options), prompt: I18n.t('general.select_prompt') %>
-              <button id="get-entries-btn" class="ajax-btn btn btn-primary" data-account-id="<%= @account.id if @account.present? %>"><%= I18n.t('general.buttons.get_entries') %></button>
-            </div>
-          </div>
+       <ul class="unstyled">
+        <li id="entry_details" class="list_account_entry">
 
-          <div class="row-fluid">
-            <div class="account_entry_balance">
-                <ul class="alert alert-info" id="empty_balance_notice">
-                  <li><%= I18n.t('general.general.balance') %></li>
-                  <li><span id="balance"><%= humanized_money_with_symbol @account.balance if @account.present? %></span></li>
-                </ul>
+          <address>
+            <h4>Select an Account</h4>
+            <br>
+            <div class="row-fluid">
+              <div class="account_entry_select">
+                <%= select_tag :account, grouped_options_for_select(account_options), prompt: I18n.t('general.select_prompt') %>
+                <button id="get-entries-btn" class="ajax-btn btn btn-primary" data-account-id="<%= @account.id if @account.present? %>"><%= I18n.t('general.buttons.get_entries') %></button>
+              </div>
             </div>
-          </div>
+            <br>
+
+            <table class="table table-striped">
+               <tbody>
+                  <tr>
+                    <td> <h3><%= I18n.t('general.general.balance') %></h3></td>
+                    <td> <h3><span id="balance"><%= humanized_money_with_symbol @account.balance if @account.present? %></span></h3></td>
+                    <td></td>
+                  </tr>
+               </tbody>
+            </table>
+
+
+            <button class="btn btn-primary" data-toggle="collapse" data-target="#add_entry" id="add_new_entry">
+              <%= I18n.t('affiliates.buttons.add_entry') %>
+            </button>
+          </address>
+        </li>
+      </ul>
 
     </div>
 
@@ -55,7 +71,7 @@
             <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
             <th><%= AccountingEntry.human_attribute_name(:created_at) %></th>
             <th><%= AccountingEntry.human_attribute_name(:ticket) %></th>
-            <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+            <th class="data_entry_type"><%= AccountingEntry.human_attribute_name(:type) %></th>
             <th><%= AccountingEntry.human_attribute_name(:status) %></th>
             <th><%= AccountingEntry.human_attribute_name(:amount) %></th>
             <th><%= AccountingEntry.human_attribute_name(:balance) %></th>

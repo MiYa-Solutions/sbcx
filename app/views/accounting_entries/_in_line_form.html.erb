@@ -3,7 +3,7 @@
     <br>
     <%= f.error_notification %>
 
- <div class="alert add_part_frame">
+ <div class="alert add_entry_frame">
     <div class="row-fluid add_account_entry">
         <ul>
           <li></li>
@@ -11,17 +11,20 @@
             <div class="input-prepend input-append">
               <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:ticket) %><%= I18n.t('general.general.number') %></span>
               <%= f.text_field :ticket_ref_id %>
-              <span><%= link_to 'Find', '#ticket_search', data: { toggle: 'modal' }, class: "btn btn-primary find_entry" %>
+              <span class="find_entry"><%= link_to 'Find', '#ticket_search', data: { toggle: 'modal' }, class: "btn btn-primary" %>
                </span>
             </div>
           </li>
-          <li></li>
-        </ul>
+          <li>
+            <label class="find_job_help">Click the <strong>'Find'</strong> button to search for Job Number </label>
+          </li>
+          </ul>
    </div>
-   <br>
-   <div class="row-fluid add_account_entry">
 
-       <ul>
+   <br>
+
+   <div class="row-fluid add_account_entry">
+     <ul>
           <li></li>
           </li>
            <li class="quantity_field">
@@ -29,32 +32,28 @@
               <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:amount) %></span>
               <%= f.text_field :amount %>
             </div>
+           </li>
+     </ul>
+   </div>
+   <br>
 
-          </li>
-         <li>
-           <label class="find_job_help">Click the <strong>'Find'</strong> button to search for Job Number </label>
-         </li>
-         <li></li>
-          </ul>
-       <ul>
+   <div class="row-fluid add_account_entry">
+     <ul>
           <li></li>
-
           <li class="price_field">
-            <div class="input-prepend input-append">
+            <div class="input-prepend input-append price_field_area">
               <span class="add-on"><%= AdjustmentEntry.human_attribute_name(:description) %></span>
               <%= f.text_field :description %>
             </div>
-
           </li>
           <li class="add_button">
             <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary ajax-btn", id: 'add_entry' %>
 
           </li>
-
           <li>
             <div id="ajax-msg"></div>
           </li>
-        </ul>
+     </ul>
 
    </div>
    <br>

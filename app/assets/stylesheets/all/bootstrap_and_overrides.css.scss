@@ -767,6 +767,11 @@ smart_alert {
     text-transform: uppercase;
     line-height: 12px;
   }
+  color: #3A87AD;
+  font-size: 14px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  line-height: 12px;
 }
 
 .status_green {
@@ -777,6 +782,11 @@ smart_alert {
     text-transform: uppercase;
     line-height: 12px;
   }
+  color: #44ad3f;
+  font-size: 14px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  line-height: 12px;
 }
 
 .status_grey {
@@ -787,6 +797,12 @@ smart_alert {
     text-transform: uppercase;
     line-height: 12px;
   }
+
+  color: #696969;
+  font-size: 14px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  line-height: 12px;
 }
 
 .status_red {
@@ -797,7 +813,13 @@ smart_alert {
     text-transform: uppercase;
     line-height: 12px;
   }
+  color: #DA4E49;
+  font-size: 14px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  line-height: 12px;
 }
+
 
 
 .table_unstyled {
@@ -1008,7 +1030,78 @@ a:hover {
 
 }
 
+.list_account_entry {
 
+  address {
+    background: none repeat scroll 0 0 #FBEED5;
+    border: 1px solid #FBEED5;
+    //background: none repeat scroll 0 0 #EEEEEE;
+
+    margin-left: 3%;
+    margin-top: 10px;
+    padding: 7px;
+    width: 90%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    border-radius: 3px 3px 3px 3px;
+  }
+
+  h4 {
+    background-color: #999999;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+    overflow: auto;
+    padding: 3px 5px 2px;
+  }
+
+  label {
+    font-weight: bold;
+    color: #000000;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  li:first-child {
+    float: left;
+    line-height: 16px;
+    width: 30%;
+    margin-left: 5%;
+  }
+
+  li {
+    float: left;
+    line-height: 16px;
+    width: 50%;
+  }
+
+  li:last-child {
+    float: right;
+    width: 10%;
+
+  }
+
+  .table-striped tbody tr:nth-child(2n+1) td, .table-striped tbody tr:nth-child(2n+1) th {
+    //background: none repeat scroll 0 0 #EEEEEE;
+    background: none repeat scroll 0 0 #FBEED5;
+
+  }
+
+  td:first-child {
+    width: 43%;
+  }
+
+
+  h3 {
+    font-size: 15px;
+    line-height: 17px;
+    text-transform: uppercase;
+  }
+
+
+}
 
 .list_service_calls {
 
@@ -1482,14 +1575,18 @@ a:hover {
   }
 
   .ticket_field {
-    width: 42%;
-    margin-left: 10%;
+    width: 37%;
+    margin-left: 1%;
     margin-top: -27px;
   }
 
   .price_field {
-    width: 31%;
-    margin-left: -10px;
+    width: 60%;
+    margin-left: 1%;
+  }
+
+  .price_field_area {
+    width: 100%;
   }
 
   .cost_field {
@@ -1540,8 +1637,13 @@ a:hover {
 }
 
 .find_entry {
-  margin-left: 3%;
+  margin-left: -3px;
+
   //margin-top: -216px;
+}
+
+#accounting_entry_description{
+  width: 76%;
 }
 
 .get_entry_info{
@@ -1551,8 +1653,8 @@ a:hover {
 .find_job_help {
   color: black;
   font-style: italic;
-  margin-left: 74px;
-  margin-top: -40px;
+  margin-left: -47px;
+  margin-top: -23px;
   width: 280px;
 }
 
@@ -1596,19 +1698,37 @@ a:hover {
     opacity: 0.75;
     width: 2px;
     margin-top: 5px;
+    border-top: 4px solid white;
   }
+
+  .table-bordered {
+    border: 1px solid #999999;
+    border-collapse: separate;
+    border-radius: 4px 4px 4px 4px;
+  }
+
+
+
 }
 
 .entry_table_head  {
-    color: white;
+    color: #C09853;
     font-weight: bold;
+
 
 }
 
 .table_of_entries {
-  background: none repeat scroll 0 0 #999999;
-  padding: 5px;
+  //background: none repeat scroll 0 0 #999999;
   border-radius: 3px 3px 3px 3px;
+  margin-left: 1%;
+  padding: 5px;
+  width: 98%;
+  background-color: #FBEED5;
+  //background-color: #FCF8E3;
+
+  border: 2px solid #FBEED5;
+
 }
 
 .dataTables_paginate {
@@ -1621,7 +1741,7 @@ a:hover {
 
 
   input, textarea {
-    width: 70%;
+    width: 67%;
   }
 }
 
@@ -1636,15 +1756,17 @@ a:hover {
 //  color: white;
 //}
 
-#entries_table_filter{
-  color: #ffffff;
+#entries_table_filter, label{
+  color: #000000;
+  font-weight: bold;
 }
 
 .dataTables_info {
-  color: white;
+  color: #000000;
   margin-bottom: 5px;
   margin-left: 55px;
   margin-top: -3px;
+  font-weight: bold;
 }
 
 
@@ -1661,6 +1783,7 @@ div.DTTT_collection button.DTTT_button, div.DTTT_collection div.DTTT_button, div
   margin-bottom: -0.1em;
   margin-left: -8px;
   width: 100%;
+
 }
 
 div.DTTT_collection {
@@ -1683,6 +1806,16 @@ div.DTTT_collection {
   padding-top: 42px;
   margin-top: -15px;
   height: 58px;
+}
+
+.add_entry_frame {
+  background-color: #EEEEEE;
+  border-color: black;
+  border-width: 1px;
+  color: #3A87AD;
+  padding-top: 42px;
+  margin-top: -7px;
+  height: 132px;
 }
 
 .edit_provider {
@@ -1984,8 +2117,30 @@ hr {
     background-image: -moz-linear-gradient(center top , #EE5F5B, #BD362F);
     background-repeat: repeat-x;
     border-color: #BD362F #BD362F #802420;
+    font-weight: bold;
 
   }
+}
+
+.entry-red-balance {
+  background-color: #DA4E49;
+  background-image: -moz-linear-gradient(center top , #EE5F5B, #BD362F);
+  background-repeat: repeat-x;
+  border-color: #BD362F #BD362F #802420;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  padding: 3px 5px;
+}
+
+.entry-green-balance {
+  background-color: #5BB75B;
+  background-image: linear-gradient(to bottom, #62C462, #51A351);
+  background-repeat: repeat-x;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  padding: 3px 5px;
 }
 
 .green-balance {
@@ -1996,6 +2151,7 @@ hr {
     background-color: #5BB75B;
     background-image: linear-gradient(to bottom, #62C462, #51A351);
     background-repeat: repeat-x;
+    font-weight: bold;
     //border-color: #BD362F #BD362F #802420;
 
   }
@@ -2137,32 +2293,61 @@ hr {
 }
 
 
-button.DTTT_button, div.DTTT_button, a.DTTT_button {
+.button.DTTT_button, div.DTTT_button, a.DTTT_button {
   -moz-border-bottom-colors: none;
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
   background-color: whitesmoke;
-  background-image: -moz-linear-gradient(center top , white, #E6E6E6);
+  //background-image: -moz-linear-gradient(center top , white, #E6E6E6);
+  background: #999999;
   background-repeat: repeat-x;
   border-image: none;
   border-style: solid;
   border-width: 1px;
-  color: #333333;
+  color: #ffffff;
   cursor: pointer;
   font-size: 13px;
   margin-right: 19px;
   text-align: center;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  //text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   vertical-align: middle;
   width: 66px;
 }
 
+button.DTTT_button, div.DTTT_button, a.DTTT_button {
+  color: white;
+  font-weight: bold;
+}
+
+.DTTT_button {
+  color: #ffffff;
+}
+
+//#ToolTables_entries_table_0, span {
+//  color: #ffffff;
+//}
+
+.DTTT_container {
+  span {
+  color: white;
+  }
+}
 
 
 .DTTT_container, a {
   text-decoration: none;
 }
+
+.DTTT_print_info {
+  color: #000000;
+  text-align: center;
+}
+
+.data_entry_type {
+  width: 280px;
+}
+
 
 
 
