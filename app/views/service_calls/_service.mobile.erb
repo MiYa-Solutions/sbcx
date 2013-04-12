@@ -94,13 +94,14 @@
 
       <br>
 
-      <!--<#% if @service_call.organization.my_user? (@service_call.technician) %>-->
-          <!--<div class="ui-grid-a">-->
-            <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:technician) %></div>-->
-            <!--<div class="ui-block-b"><#%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>-->
-           <!--</div>-->
 
-      <!--<#% end %>-->
+      <% if @service_call.technician.present? && @service_call.instance_of?(MyServiceCall) && @service_call.organization.my_user?(@service_call.technician) %>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
+            <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>
+           </div>
+
+      <% end %>
 
 
       <div class="ui-grid-a">

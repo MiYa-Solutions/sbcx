@@ -1,0 +1,67 @@
+<h3><%= t('general.general.contact_Info') %></h3>
+<div class="customer_in_service_call">
+  <ul data-role="listview">
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:name) %></div>
+        <div class="ui-block-b"><%= @customer.name %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:company) %></div>
+        <div class="ui-block-b"><%= @customer.company %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:address1) %></div>
+        <div class="ui-block-b" style= "display:inline !important"><%= @customer.address1 %> <%= @customer.address2 %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:city) %></div>
+        <div class="ui-block-b"><%= @customer.city %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:state) %></div>
+        <div class="ui-block-b"><%= @customer.state %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:country) %></div>
+        <div class="ui-block-b"><%= @customer.country %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:zip) %></div>
+        <div class="ui-block-b"><%= @customer.zip %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:phone) %></div>
+        <div class="ui-block-b" data-type="phone"><%= @customer.phone %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:mobile_phone) %></div>
+        <div class="ui-block-b" data-type="phone"><%= @customer.mobile_phone %></div>
+      </div>
+    </li>
+    <li class="ui-li">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Customer.human_attribute_name(:email) %></div>
+        <div class="ui-block-b" data-type="email" ><%= @customer.email %></div>
+      </div>
+    </li>
+
+  </ul>
+</div>
