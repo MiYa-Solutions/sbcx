@@ -1033,9 +1033,10 @@ a:hover {
 .list_account_entry {
 
   address {
-    background: none repeat scroll 0 0 #FCF8E3;
-    border: 1px solid #FBEED5;
-    //background: none repeat scroll 0 0 #EEEEEE;
+    //background: none repeat scroll 0 0 #FCF8E3;
+    //border: 1px solid #FBEED5;
+    border: 1px solid #000000;
+    background: none repeat scroll 0 0 #EEEEEE;
 
     margin-left: 1%;
     margin-top: 10px;
@@ -1085,7 +1086,7 @@ a:hover {
 
   .table-striped tbody tr:nth-child(2n+1) td, .table-striped tbody tr:nth-child(2n+1) th {
     //background: none repeat scroll 0 0 #EEEEEE;
-    background: none repeat scroll 0 0 #FCF8E3;
+    //background: none repeat scroll 0 0 #FCF8E3;
 
   }
 
@@ -1715,8 +1716,9 @@ a:hover {
 }
 
 .entry_table_head  {
-    color: #C09853;
-    font-weight: bold;
+    //color: #C09853;
+  color: #000000;
+  font-weight: bold;
 
 
 }
@@ -1727,9 +1729,11 @@ a:hover {
   margin-left: 0.3%;
   padding: 10px 5px 5px;
   width: 98%;
-  //background-color: #FBEED5;
-  background-color: #FCF8E3;
-  border: 2px solid #FBEED5;
+  background-color: none;
+  //background-color: #FCF8E3;
+  //border: 2px solid #FBEED5;
+  //border: 1px solid #999999;
+
 
 }
 
@@ -1759,12 +1763,12 @@ a:hover {
 //}
 
 #entries_table_filter, label{
-  color: #000000;
+  color: #999999;
   font-weight: bold;
 }
 
 .dataTables_info {
-  color: #000000;
+  color: #999999;
   margin-bottom: 5px;
   margin-left: 55px;
   margin-top: -3px;
