@@ -76,6 +76,15 @@ describe Ticket do
 
   it { should be_valid }
 
+  it 'name should be set after create to a concatenation of tags and address' do
+
+    service_call.tag_list = "Test Tag, Test Tag2"
+    service_call.address1 = "Test Address"
+    service_call.save
+    service_call.name.should == "Test Tag, Test Tag2: Test Address"
+
+  end
+
   describe "validation" do
     describe "when organization is not present" do
       before { service_call.organization = nil }
@@ -101,6 +110,7 @@ describe Ticket do
   describe "associations" do
     it { should belong_to :organization }
     it { should have_many :boms }
+    it { should have_many(:tags).through(:taggings) }
     it { should belong_to :customer }
     it { should belong_to :technician }
     it { should belong_to :provider }

@@ -90,7 +90,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     case obj.class.name
       when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :collector_id,
+          permitted_attributes = [:status_event, :collector_id,:tag_list,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -120,7 +120,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
       when TransferredServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :started_on, :started_on_text,
+          permitted_attributes = [:status_event, :started_on, :started_on_text,:tag_list,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -142,7 +142,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :notes, :transferable, :allow_collection, :re_transfer, :payment_type]
 
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
-          permitted_attributes = [:status_event,
+          permitted_attributes = [:status_event,:tag_list,
                                   :completed_on_text,
                                   :address1,
                                   :address2,
@@ -157,7 +157,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :email,
                                   :notes, :payment_type]
         elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
-          permitted_attributes = [:status_event,
+          permitted_attributes = [:status_event, :tag_list,
                                   :subcontractor_id,
                                   :technician_id,
                                   :started_on_text,
@@ -182,7 +182,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         permitted_attributes.concat  [:provider_status_event, :provider_payment] if provider_event_allowed?
       else # new service call
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event,
+          permitted_attributes = [:status_event, :tag_list,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -204,7 +204,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :notes, :transferable, :allow_collection]
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
           [:status_event,
-           :completed_on_text,
+           :completed_on_text,:tag_list,
            :address1,
            :address2,
            :company,
@@ -219,7 +219,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
            :notes]
         elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
           [:status_event,
-           :subcontractor_id,
+           :subcontractor_id,:tag_list,
            :technician_id,
            :started_on_text,
            :completed_on_text,

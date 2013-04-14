@@ -5,12 +5,16 @@
       <div id="customer_wrapper" class="control-group select optional">
         <label class="string  control-label" for="service_call_customer"> <%= @service_call.class.human_attribute_name(:customer) %></label>
 
-        <div class="controls" >
+        <div class="controls">
           <!--<#%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>-->
           <%= f.autocomplete_field :customer, autocomplete_customer_name_service_calls_path, update_elements: { id: "#service_call_customer_id" }, data: { ref_id: "" } %>
           <%= f.hidden_field :customer_id %>
         </div>
       </div>
+      <div id="customer_wrapper" class="control-group select optional">
+        <div class="controls"></div>
+      </div>
+
 
       <div class="control-group string ">
         <div class="controls">
@@ -41,7 +45,7 @@
         </address>
       </div>
 
-
+      <%= f.text_field :tag_list, data: { tags: current_user.organization.tags.map(&:name) } %>
       <%= f.input :allow_collection %>
       <%= f.input :transferable %>
       <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>

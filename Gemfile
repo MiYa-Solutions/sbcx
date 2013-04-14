@@ -32,6 +32,8 @@ gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 
 gem 'money-rails', '0.8.0'
+gem 'select2-rails', '3.3.1'
+gem 'bootstrap-editable-rails'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'

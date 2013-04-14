@@ -187,7 +187,7 @@ class ServiceCall < Ticket
     if params.empty?
       sc = ServiceCall.new
     else
-
+      params[:organization_id] = org.id
       if params[:provider_id].empty? || params[:provider_id] == org.id
         sc = MyServiceCall.new(params)
       else
@@ -195,8 +195,16 @@ class ServiceCall < Ticket
       end
 
     end
-    sc.organization = org
+    #sc.organization = org
     sc
+  end
+
+  def as_json(options = {})
+    {
+        tag_list: tag_list,
+        provider: [provider],
+        subcontractor: [subcontractor]
+    }
   end
 
 

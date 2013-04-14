@@ -26,6 +26,12 @@ jQuery ->
 
     )
 
+    $('.best_in_place').bind("ajax:success", ->
+        msg = $('<span class="alert-success">Saved!</span>').appendTo($(this).parent())
+        msg.fadeOut(3000)
+    )
+
+
     $('.ajax-form').bind("ajax:error", (e, xhr, status, error)->
         container = $("<span class='flash-error'></span>").html("The Following Error Occured:<br>#{xhr.responseText}")
         container.purr()
