@@ -78,7 +78,7 @@ class Ticket < ActiveRecord::Base
   ### VIRTUAL ATTRIBUTES
   attr_writer :started_on_text, :completed_on_text, :scheduled_for_text, :company, :address1, :address2,
               :city, :state, :zip, :country, :phone, :mobile_phone, :work_phone, :email
-  attr_accessor :new_customer
+  attr_accessor :new_customer, :customer_name
 
   attr_writer :tag_list
 
@@ -89,7 +89,7 @@ class Ticket < ActiveRecord::Base
   before_save :assign_tags
 
   # create a new customer in case one was asked for
-  before_validation :create_customer
+  before_validation :create_customer,  if: ->(tkt) {tkt.customer_id.nil?}
   after_create :set_name
 
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
@@ -197,7 +197,7 @@ class Ticket < ActiveRecord::Base
 
   def create_customer
     if provider
-      self.customer = self.provider.customers.new(name:         new_customer,
+      self.customer = self.provider.customers.new(name:         customer_name,
                                                   address1:     address1,
                                                   address2:     address2,
                                                   country:      country,
@@ -205,10 +205,10 @@ class Ticket < ActiveRecord::Base
                                                   state:        state,
                                                   zip:          zip,
                                                   phone:        phone,
-                                                  mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
+                                                  mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
 
     else
-      self.customer = self.organization.customers.new(name:         new_customer,
+      self.customer = self.organization.customers.new(name:         customer_name,
                                                       address1:     address1,
                                                       address2:     address2,
                                                       country:      country,
@@ -216,7 +216,7 @@ class Ticket < ActiveRecord::Base
                                                       state:        state,
                                                       zip:          zip,
                                                       phone:        phone,
-                                                      mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
+                                                      mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
     end
   end
 
@@ -326,7 +326,7 @@ class Ticket < ActiveRecord::Base
 # Assigns tags from a comma separated tag list
   def assign_tags
     if @tag_list
-      self.taggings.each { |tagging| tagging.destroy }
+      #self.taggings.each { |tagging| tagging.destroy }
       self.tags = @tag_list.split(/,/).uniq.map do |name|
         Tag.where(name: name, organization_id: organization_id).first || Tag.create(:name => name.strip, organization_id: organization_id)
       end

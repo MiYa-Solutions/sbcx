@@ -7,7 +7,7 @@
 
         <div class="controls">
           <!--<#%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>-->
-          <%= f.autocomplete_field :customer, autocomplete_customer_name_service_calls_path, update_elements: { id: "#service_call_customer_id" }, data: { ref_id: "" } %>
+          <%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: "#service_call_customer_id", address1: '#service_call_address1' }, data: { ref_id: "" } %>
           <%= f.hidden_field :customer_id %>
         </div>
       </div>
@@ -18,7 +18,7 @@
 
       <div class="control-group string ">
         <div class="controls">
-          <%= link_to "Add Customer", "", class: "btn btn-danger btn-medium", id: 'add_customer_btn', data: { toggle: "collapse", target: "#new_customer_in_service_call" } %>
+          <%= link_to "Add Customer", "", class: "btn btn-danger btn-medium prevent-default", id: 'add_customer_btn', data: { toggle: "collapse", target: "#new_customer_in_service_call" } %>
 
         </div>
       </div>

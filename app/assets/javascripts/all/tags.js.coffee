@@ -1,4 +1,5 @@
 jQuery ->
+  the_tags = $('#tag_list').data('tags')
   $.fn.editable.defaults.mode = "popover"
   $("#tags_list").editable
     ajaxOptions:
@@ -8,7 +9,7 @@ jQuery ->
     select2:
       tags: $('#service_call_tag_list').data('tags') #[$('#tags-editable-1').data('value')]
       val: $('#service_call_tag_list').val()
-      tokenSeparators: [",", " "]
+      tokenSeparators: [","]
 
     display: (value) ->
       disp = []

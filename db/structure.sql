@@ -789,7 +789,18 @@ CREATE TABLE tickets (
     re_transfer boolean,
     payment_type character varying(255),
     subcon_payment character varying(255),
-    provider_payment character varying(255)
+    provider_payment character varying(255),
+    company character varying(255),
+    address1 character varying(255),
+    address2 character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zip character varying(255),
+    country character varying(255),
+    phone character varying(255),
+    mobile_phone character varying(255),
+    work_phone character varying(255),
+    email character varying(255)
 );
 
 
@@ -1454,3 +1465,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130326145646');
 INSERT INTO schema_migrations (version) VALUES ('20130412030121');
 
 INSERT INTO schema_migrations (version) VALUES ('20130413135821');
+
+INSERT INTO schema_migrations (version) VALUES ('20130414143212');
