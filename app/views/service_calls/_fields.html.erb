@@ -7,141 +7,68 @@
 
         <div class="controls">
           <!--<#%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %>-->
-          <%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: "#service_call_customer_id", address1: '#service_call_address1' }, data: { ref_id: "" } %>
-          <%= f.hidden_field :customer_id %>
-        </div>
-      </div>
-      <div id="customer_wrapper" class="control-group select optional">
-        <div class="controls"></div>
-      </div>
+          <%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: "#service_call_customer_id", address1: '#service_call_address1', address2: '#service_call_address2', company: '#service_call_company', phone: '#service_call_phone', mobile_phone: '#service_call_mobile_phone', work_phone: '#service_call_work_phone', country: '#country', state: '#service_call_state', email: '#service_call_email', zip: '#service_call_zip', city: '#service_call_city' }, data: { ref_id: "" } %>
+          <%= f.hidden_field :customer_id %> <br>
 
+          <div class="controls">
+            <%= f.text_field :tag_list, data: { tags: current_user.organization.tags.map(&:name) } %>
 
-      <div class="control-group string ">
-        <div class="controls">
-          <%= link_to "Add Customer", "", class: "btn btn-danger btn-medium prevent-default", id: 'add_customer_btn', data: { toggle: "collapse", target: "#new_customer_in_service_call" } %>
+          </div>
 
-        </div>
-      </div>
+          <%= f.text_field :address1, placeholder: 'Address 1' %>
+          <%= f.text_field :address2, placeholder: 'Address 2' %>
+          <%= f.text_field :company, placeholder: 'Company Name' %>
+          <%= f.text_field :city, placeholder: 'City' %>
+          <!--<#%= f.text_field :state, placeholder: 'State' %>-->
+          <%= f.text_field :zip, placeholder: 'Zip code' %>
+          <div class="controls">
+            <%= f.country_select :country, { priority: %w[US] }, hidden: 'true' %>
+          </div>
+          <div class="control-group string mandatory">
+            <label class="string optional control-label" for="customer_state">State</label>
 
-
-      <div id="new_customer_in_service_call" class="collapse">
-        <address>
-          <div class="control-group string ">
             <div class="controls">
-              <%= f.text_field :new_customer, placeholder: 'Customer Name' %>
-              <%= f.text_field :address1, placeholder: 'Address 1' %>
-              <%= f.text_field :address2, placeholder: 'Address 2' %>
-              <%= f.text_field :company, placeholder: 'Company Name' %>
-              <%= f.text_field :city, placeholder: 'City' %>
-              <%= f.text_field :state, placeholder: 'State' %>
-              <%= f.text_field :zip, placeholder: 'Zip code' %>
-              <%= f.text_field :country, placeholder: 'Country' %>
-              <%= f.text_field :phone, placeholder: 'Primary Phone' %>
-              <%= f.text_field :mobile_phone, placeholder: 'Mobile Phone' %>
-              <%= f.text_field :work_phone, placeholder: 'Work Phone' %>
-              <%= f.text_field :email, placeholder: 'Email address' %>
+              <%= render 'subregion_select', object: f .object%>
+
             </div>
           </div>
-        </address>
-      </div>
 
-      <%= f.text_field :tag_list, data: { tags: current_user.organization.tags.map(&:name) } %>
-      <%= f.input :allow_collection %>
-      <%= f.input :transferable %>
-      <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
-      <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
-      <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
+          <%= f.text_field :phone, placeholder: 'Primary Phone' %>
+          <%= f.text_field :mobile_phone, placeholder: 'Mobile Phone' %>
+          <%= f.text_field :work_phone, placeholder: 'Work Phone' %>
+          <%= f.text_field :email, placeholder: 'Email address' %>
 
+          <%= f.input :allow_collection %>
+          <%= f.input :transferable %>
+          <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+          <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
+          <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
 
-
-      <div class="control-group string ">
-        <label class="string  control-label" for="service_call_started_on"><%= @service_call.class.human_attribute_name(:scheduled_for) %></label>
-
-        <div class="controls">
-          <%= f.text_field :scheduled_for, class: "datetimepicker" %>
-          <span class="help-inline"><%= I18n.t('general.emails.set_date') %></span>
         </div>
-      </div>
-
-
-      <div class="control-group string ">
-        <label class="string  control-label" for="service_call_started_on"><%= @service_call.class.human_attribute_name(:started_on_text) %></label>
-
-        <div class="controls">
-          <%= f.text_field :started_on_text, class: "datetimepicker" %>
-          <span class="help-inline"><%= I18n.t('general.emails.set_date') %></span>
-        </div>
-      </div>
-
-      <div class="control-group string ">
-        <label class="string  control-label" for="service_call_completed_on"><%= @service_call.class.human_attribute_name(:completed_on_text) %></label>
-
-        <div class="controls">
-          <%= f.text_field :completed_on_text, class: "datetimepicker" %>
-          <span class="help-inline"><%= I18n.t('general.emails.set_date') %></span>
-        </div>
-
-      </div>
-      <!--End of Span5-->
-    </div>
-
-    <div class="span5">
-      <div class="miya_note_area string mandatory">
-        <%= f.input :notes %>
       </div>
     </div>
 
+
+    <div class="control-group string ">
+      <label class="string  control-label" for="service_call_started_on"><%= @service_call.class.human_attribute_name(:scheduled_for) %></label>
+
+      <div class="controls">
+        <%= f.text_field :scheduled_for, class: "datetimepicker" %>
+        <span class="help-inline"><%= I18n.t('general.emails.set_date') %></span>
+      </div>
+    </div>
+
+    <div class="miya_note_area string mandatory">
+      <%= f.input :notes %>
+    </div>
+
+    <!--End of Span5-->
+  </div>
+
+  <div class="span5">
   </div>
 
 
-  <!--<div class="row-fluid">-->
-  <!--<div class="span10 ">-->
-  <!--<button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
-  <!--Add customer-->
-  <!--</button>-->
-
-  <!--<div id="new_customer_in_service_call" class="collapse">-->
-  <!--<div class="row-fluid">-->
-  <!--<div class="span5 ">-->
-  <!--<br>-->
-  <!--<#%= f.label :new_customer %>-->
-  <!--<#%= f.text_field :new_customer %>-->
-  <!--<#%= f.label :address1 %>-->
-  <!--<#%= f.text_field :address1 %>-->
-  <!--<#%= f.label :address2 %>-->
-  <!--<#%= f.text_field :address2 %>-->
-  <!--<#%= f.label :company %>-->
-  <!--<#%= f.text_field :company %>-->
-  <!--<#%= f.label :city %>-->
-  <!--<#%= f.text_field :city %>-->
-  <!--<#%= f.label :state %>-->
-  <!--<#%= f.text_field :state %>-->
-  <!--<#%= f.label :zip %>-->
-  <!--<#%= f.text_field :zip %>-->
-  <!--<#%= f.label :country %>-->
-  <!--<#%= f.text_field :country %>-->
-  <!--<#%= f.label :phone %>-->
-  <!--<#%= f.text_field :phone %>-->
-  <!--<#%= f.label :mobile_phone %>-->
-  <!--<#%= f.text_field :mobile_phone %>-->
-  <!--<#%= f.label :work_phone %>-->
-  <!--<#%= f.text_field :work_phone %>-->
-  <!--<#%= f.label :email %>-->
-  <!--<#%= f.text_field :email %>-->
-  <!--<p>-->
-
-  <!--#<%# simple_form_for @customer, :html => {:class => 'form-horizontal'}, :remote => true do |f| %>-->
-  <!--#<%# render 'customers/fields', f: f %>-->
-  <!--<div class="form-actions">-->
-  <!--#<%# f.submit "Create Customer", class: "btn btn-medium btn-primary" %>-->
-  <!--</div>-->
-
-  <!--<%# end %>-->
-  <!--<button class="btn btn-danger" data-toggle="collapse" data-target="#new_customer_in_service_call">-->
-  <!--Save and close-->
-  <!--</button>-->
-  <!--</p>-->
-  <!--</div>-->
 
 
 </fieldset>

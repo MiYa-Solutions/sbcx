@@ -21,6 +21,8 @@ class RegionSelectController < ApplicationController
         render partial: 'my_users/subregion_select'
       when 'new_user'
         render partial: 'my_users/subregion_select'
+      when 'new_service_call'
+        render partial: 'service_calls/subregion_select'
       else
         render partial: 'shared/subregion_select'
     end

@@ -31,14 +31,14 @@
         <li>
           <!--todo cleanup-->
           <span class="tags" id="tags_list" data-url="<%= service_call_path(@service_call) %>" data-resrouce="service_call" data-value="<%= @service_call.tag_list %>" data-toggle="manual" data-type="select2" data-original-title="Enter tags">
-            <% @service_call.tags.each do  |tag| %>
+            <% @service_call.tags.each do |tag| %>
               <span class="label"><%= tag.name %></span>
             <% end %>
           </span>
-          <a href="#" id="tags-edit-1"  data-resrouce="service_call" data-editable="tags_list" class=""><i class="icon-pencil"></i></a>
+          <a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""><i class="icon-pencil"></i></a>
         </li>
         <!--<li id='tag_list'>-->
-          <!--<#%= @service_call.tag_list %>-->
+        <!--<#%= @service_call.tag_list %>-->
 
         <!--</li>-->
         <!--<li> <#%= button_tag 'Update Tags', id: "stam", data: { toggle: 'collapse', target: '#tags' }, class: "" %></li>-->
@@ -130,7 +130,7 @@
             <li><label><%= @service_call.class.human_attribute_name(:technician) %></label></li>
             <li>
               <!--<#%= link_to '', @service_call.technician do %>-->
-              <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician, type: :select, collection: technicians_collection %>
+              <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician_id, type: :select, collection: technicians_collection %>
               &nbsp;<i class="icon-edit"></i></li>
             </li>
             <li></li>
@@ -139,21 +139,25 @@
 
       <br>
 
-      <ul class="unstyled list_service_calls">
-        <li><label><%= @service_call.class.human_attribute_name(:subcontractor) %></label></li>
-        <li><%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
-          &nbsp;<i class="icon-edit"></i></li>
-        <li></li>
-      </ul>
+      <% if @service_call.transferred? %>
+          <ul class="unstyled list_service_calls">
+            <li><label><%= @service_call.class.human_attribute_name(:subcontractor) %></label></li>
+            <li><%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
+              &nbsp;<i class="icon-edit"></i></li>
+            <li></li>
+          </ul>
 
-      <br>
+          <br>
+      <% end %>
 
-      <ul class="unstyled list_service_calls">
-        <li><label><%= @service_call.class.human_attribute_name(:provider) %></label></li>
-        <li>
-          &nbsp;<i class="icon-edit"></i></li>
-        <li></li>
-      </ul>
+      <% if @service_call.instance_of?(TransferredServiceCall) %>
+          <ul class="unstyled list_service_calls">
+            <li><label><%= @service_call.class.human_attribute_name(:provider) %></label></li>
+            <li>
+              &nbsp;<i class="icon-edit"></i></li>
+            <li></li>
+          </ul>
+      <% end %>
 
     </div>
 

@@ -76,8 +76,7 @@ class Ticket < ActiveRecord::Base
   stampable
 
   ### VIRTUAL ATTRIBUTES
-  attr_writer :started_on_text, :completed_on_text, :scheduled_for_text, :company, :address1, :address2,
-              :city, :state, :zip, :country, :phone, :mobile_phone, :work_phone, :email
+  attr_writer :started_on_text, :completed_on_text, :scheduled_for_text
   attr_accessor :new_customer, :customer_name
 
   attr_writer :tag_list
@@ -99,50 +98,50 @@ class Ticket < ActiveRecord::Base
 
   accepts_nested_attributes_for :customer
 
-  def company
-    @company ||= customer.try(:company)
-  end
-
-  def address1
-    @address1 ||= customer.try(:address1)
-  end
-
-  def address2
-    @address2 ||= customer.try(:address2)
-  end
-
-  def city
-    @city ||= customer.try(:city)
-  end
-
-  def state
-    @state ||= customer.try(:city)
-  end
-
-  def zip
-    @zip ||= customer.try(:zip)
-  end
-
-  def country
-    @country ||= customer.try(:country)
-  end
-
-  def phone
-    @phone ||= customer.try(:phone)
-  end
-
-  def mobile_phone
-    @mobile_phone ||= customer.try(:mobile_phone)
-
-  end
-
-  def work_phone
-    @work_phone ||= customer.try(:work_phone)
-  end
-
-  def email
-    @email ||= customer.try(:email)
-  end
+  #def company
+  #  @company ||= customer.try(:company)
+  #end
+  #
+  #def address1
+  #  @address1 ||= customer.try(:address1)
+  #end
+  #
+  #def address2
+  #  @address2 ||= customer.try(:address2)
+  #end
+  #
+  #def city
+  #  @city ||= customer.try(:city)
+  #end
+  #
+  #def state
+  #  @state ||= customer.try(:city)
+  #end
+  #
+  #def zip
+  #  @zip ||= customer.try(:zip)
+  #end
+  #
+  #def country
+  #  @country ||= customer.try(:country)
+  #end
+  #
+  #def phone
+  #  @phone ||= customer.try(:phone)
+  #end
+  #
+  #def mobile_phone
+  #  @mobile_phone ||= customer.try(:mobile_phone)
+  #
+  #end
+  #
+  #def work_phone
+  #  @work_phone ||= customer.try(:work_phone)
+  #end
+  #
+  #def email
+  #  @email ||= customer.try(:email)
+  #end
 
   def completed_on_text
     @completed_on_text || completed_on.try(:strftime, "%B %d, %Y %H:%M")

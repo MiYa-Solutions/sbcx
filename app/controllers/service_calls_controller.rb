@@ -3,7 +3,7 @@ class ServiceCallsController < ApplicationController
   filter_access_to :autocomplete_customer_name, :require => :index
   filter_resource_access
 
-  autocomplete :customer, :name, extra_data: [:address1, :address2, :company, :phone],full: true, limit: 50
+  autocomplete :customer, :name, extra_data: [:address1, :address2, :company, :phone, :email, :mobile_phone, :work_phone, :country, :state, :city, :zip],full: true, limit: 50
 
   def index
     @service_calls = current_user.organization.service_calls
