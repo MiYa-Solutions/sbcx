@@ -34,6 +34,7 @@ JOB_SELECT_SUBCON_PAYMENT   = 'service_call_subcon_payment'
 JOB_SELECT_PROVIDER_PAYMENT = 'service_call_provider_payment'
 JOB_SELECT_SUBCONTRACTOR    = 'service_call_subcontractor_id'
 JOB_SELECT_PROVIDER         = 'service_call_provider_id'
+JOB_SELECT_COLLECTOR         = 'service_call_collector_id'
 JOB_SELECT_PAYMENT          = 'service_call_payment_type'
 JOB_CBOX_ALLOW_COLLECTION   = 'service_call_allow_collection'
 JOB_CBOX_RE_TRANSFER        = 'service_call_re_transfer'
@@ -206,8 +207,7 @@ def create_transferred_job(user, provider, browser)
   in_browser(browser) do
     with_user(user) do
       visit new_service_call_path
-      click_link JOB_BTN_ADD_CUSTOMER
-      fill_in 'service_call_new_customer', with: Faker::Name.name
+      fill_in 'service_call_customer_name', with: Faker::Name.name
       select provider.name, from: JOB_SELECT_PROVIDER
       check JOB_CBOX_ALLOW_COLLECTION
       check JOB_CBOX_TRANSFERABLE
@@ -216,4 +216,10 @@ def create_transferred_job(user, provider, browser)
   end
 
   ServiceCall.last
+end
+
+def pay_with_cheque(collector = nil)
+    select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
+    select collector, from: JOB_SELECT_COLLECTOR if collector.present?
+    click_button JOB_BTN_COLLECT
 end

@@ -1,2 +1,7 @@
 $('#new_posting_rule').remove();
-$('#posting_rules').after(' <%= j render "form" %>');
+$('#posting_rules').after(' <%= j render "#{@posting_rule.type.underscore}_form" %>');
+$(".timepicker").timepicker({
+    timeFormat: "HH:mm",
+    stepHour: 1,
+    stepMinute: 1
+});

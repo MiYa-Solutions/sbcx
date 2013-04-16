@@ -250,7 +250,7 @@ class TransferredServiceCall < ServiceCall
 
   def can_uncancel?
     !self.work_done? && !self.provider.subcontrax_member?  &&
-        ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?))
+        ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?) || self.subcontractor.nil?)
   end
 
 

@@ -115,3 +115,6 @@ en:
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
+    rate_type:
+      percentage: "Percentage"
+      flat_fee: "Flat Fee"

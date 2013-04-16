@@ -21,4 +21,11 @@ module PostingRulesHelper
     res
   end
 
+  def profit_split_payment_rates
+    [
+        [I18n.t('general.rate_type.percentage'),'percentage'],
+        [I18n.t('general.rate_type.flat_fee'),'flat_fee']
+    ]
+  end
+
 end

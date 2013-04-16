@@ -22,7 +22,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def posting_rule_attributes
-    [:agreement_id, :rate, :rate_type]
+    [:agreement_id, :rate, :rate_type, :sunday, :sunday_from, :sunday_to, :cash_rate, :cash_rate_type]
   end
 
   def payment
