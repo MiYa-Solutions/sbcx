@@ -3,14 +3,16 @@ class ServiceCallsController < ApplicationController
   filter_access_to :autocomplete_customer_name, :require => :index
   filter_resource_access
 
-  autocomplete :customer, :name, extra_data: [:address1, :address2, :company, :phone, :email, :mobile_phone, :work_phone, :country, :state, :city, :zip],full: true, limit: 50
+  autocomplete :customer, :name, extra_data: [:address1, :address2, :company, :phone, :email, :mobile_phone, :work_phone, :country, :state, :city, :zip], full: true, limit: 50
 
   def index
-    @service_calls = current_user.organization.service_calls
+    @service_calls = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
+    @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
+
     respond_to do |format|
       format.html {}
 
-      format.json {render json: TicketsDatatable.new(view_context)}
+      format.json { render json: TicketsDatatable.new(view_context) }
     end
 
   end
@@ -44,7 +46,7 @@ class ServiceCallsController < ApplicationController
 
     if @service_call.update_attributes(permitted_params(@service_call).service_call)
       respond_to do |format|
-        format.js {  }
+        format.js {}
         format.html do
           flash[:success] = t('service_call.crud_messages.update.success')
           redirect_to service_call_path @service_call

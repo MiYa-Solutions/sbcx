@@ -43,13 +43,6 @@ class MyServiceCall < ServiceCall
   end
 
 
-  STATUS_NEW         = 1100
-  STATUS_OPEN        = 1101
-  STATUS_TRANSFERRED = 1102
-  STATUS_CANCELED    = 1103
-  STATUS_CLOSED      = 1104
-
-
   state_machine :status, :initial => :new do
 
     state :new, value: STATUS_NEW

@@ -87,8 +87,8 @@ class Ticket < ActiveRecord::Base
   before_save :save_scheduled_for_text
   before_save :assign_tags
 
-  # create a new customer in case one was asked for
-  before_validation :create_customer,  if: ->(tkt) {tkt.customer_id.nil?}
+                                                                                       # create a new customer in case one was asked for
+  before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
   after_create :set_name
 
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
@@ -98,50 +98,20 @@ class Ticket < ActiveRecord::Base
 
   accepts_nested_attributes_for :customer
 
-  #def company
-  #  @company ||= customer.try(:company)
-  #end
-  #
-  #def address1
-  #  @address1 ||= customer.try(:address1)
-  #end
-  #
-  #def address2
-  #  @address2 ||= customer.try(:address2)
-  #end
-  #
-  #def city
-  #  @city ||= customer.try(:city)
-  #end
-  #
-  #def state
-  #  @state ||= customer.try(:city)
-  #end
-  #
-  #def zip
-  #  @zip ||= customer.try(:zip)
-  #end
-  #
-  #def country
-  #  @country ||= customer.try(:country)
-  #end
-  #
-  #def phone
-  #  @phone ||= customer.try(:phone)
-  #end
-  #
-  #def mobile_phone
-  #  @mobile_phone ||= customer.try(:mobile_phone)
-  #
-  #end
-  #
-  #def work_phone
-  #  @work_phone ||= customer.try(:work_phone)
-  #end
-  #
-  #def email
-  #  @email ||= customer.try(:email)
-  #end
+  ### state machine states constants
+
+  STATUS_NEW         = 0000
+  STATUS_OPEN        = 0001
+  STATUS_TRANSFERRED = 0002
+  STATUS_CLOSED      = 0003
+  STATUS_CANCELED    = 0004
+
+  scope :new_status, ->{where("tickets.status = ?", STATUS_NEW)}
+  scope :open_status, ->{where("tickets.status = ?", STATUS_OPEN)}
+  scope :transferred_status, ->{where("tickets.status = ?", STATUS_TRANSFERRED)}
+  scope :closed_status, ->{where("tickets.status = ?", STATUS_CLOSED)}
+  scope :canceled_status, ->{where("tickets.status = ?", STATUS_CANCELED)}
+
 
   def completed_on_text
     @completed_on_text || completed_on.try(:strftime, "%B %d, %Y %H:%M")
