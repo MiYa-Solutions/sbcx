@@ -28,7 +28,7 @@
             <br>
             <div class="row-fluid">
               <div class="account_entry_select">
-                <%= select_tag :account, grouped_options_for_select(account_options), prompt: I18n.t('general.select_prompt') %>
+                <%= select_tag :account, grouped_options_for_select(account_options, @account.try(:id)), prompt: I18n.t('general.select_prompt') %>
                 <button id="get-entries-btn" class="ajax-btn btn btn-primary" data-account-id="<%= @account.id if @account.present? %>"><%= I18n.t('general.buttons.get_entries') %></button>
               </div>
             </div>

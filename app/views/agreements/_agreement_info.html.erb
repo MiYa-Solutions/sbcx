@@ -41,11 +41,11 @@
     </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:organization) %></td>
-      <td><h4><%= link_to @agreement.organization.name, affiliate_path(@agreement.organization) %></h4></td>
+      <td><h4><%= link_to @agreement.organization.name, agreement_org_url %></h4></td>
     </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:counterparty) %></td>
-      <td><h4><%= link_to @agreement.counterparty.name, affiliate_path(@agreement.counterparty) %></h4></td>
+      <td><h4><%= link_to @agreement.counterparty.name, agreement_cparty_url %></h4></td>
     </tr>
     <tr>
       <td><%= I18n.t('general.general.created_by') %></td>

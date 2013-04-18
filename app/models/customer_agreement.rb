@@ -37,6 +37,9 @@ class CustomerAgreement < Agreement
   end
 
   scope :agreements_for, ->(customer) {where("agreements.counterparty_id = ?", customer.id)}
+
+
+
   private
   def set_default_rule
     rules << JobCharge.new(rate: 0, rate_type: :percentage)

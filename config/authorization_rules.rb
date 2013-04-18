@@ -103,17 +103,19 @@ authorization do
     has_permission_on :agreements, :to => [:edit, :update] do
 
       # when status is active allow users from either party to update the agreement
-      if_attribute :status => is { OrganizationAgreement::STATUS_ACTIVE }, :counterparty_id => is { user.organization_id }
-      if_attribute :status => is { OrganizationAgreement::STATUS_ACTIVE }, :organization_id => is { user.organization_id }
+      if_attribute type: is {'OrganizationAgreement'}, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :counterparty_id => is { user.organization_id }
+      if_attribute type: is {'OrganizationAgreement'}, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :organization_id => is { user.organization_id }
 
       # when the agreement status is draft
-      if_attribute :status => is { OrganizationAgreement::STATUS_DRAFT }, :organization_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
-      if_attribute :status => is { OrganizationAgreement::STATUS_DRAFT }, :counterparty_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
+      if_attribute type: is {'OrganizationAgreement'}, :status => is { OrganizationAgreement::STATUS_DRAFT }, :organization_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
+      if_attribute type: is {'OrganizationAgreement'}, :status => is { OrganizationAgreement::STATUS_DRAFT }, :counterparty_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
 
       # when the status is not active nor draft allow only the party that needs to respond to the other's update
-      if_attribute :counterparty_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
-      if_attribute :organization_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
+      if_attribute type: is {'OrganizationAgreement'}, :counterparty_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
+      if_attribute type: is {'OrganizationAgreement'}, :organization_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
 
+      # when customer agreement ensure the user org is the organization of the agreement
+      if_attribute type: is {'CustomerAgreement'}, organization_id: is {user.organization_id}
     end
 
     # todo define proper permissions

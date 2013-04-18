@@ -21,6 +21,7 @@
 
 class Agreement < ActiveRecord::Base
 
+
   belongs_to :organization
   belongs_to :counterparty, polymorphic: true
   has_many :events, as: :eventable
@@ -127,6 +128,11 @@ class Agreement < ActiveRecord::Base
   def ends_at_text
     @ends_at_text || ends_at.nil? ? "" : I18n.l(ends_at)
   end
+
+  def self.payment_options
+    { cod: 0, net_10: 10, net_15: 15, net_30: 30, net_60: 60, net_90: 90 }
+  end
+
 
   private
   def save_ends_on_text

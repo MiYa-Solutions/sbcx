@@ -101,10 +101,6 @@ class OrganizationAgreement < Agreement
 
   end
 
-  def self.payment_options
-    { cod: 0, net_10: 10, net_15: 15, net_30: 30, net_60: 60, net_90: 90 }
-  end
-
   private
   def end_date_validation
     errors.add :ends_at, I18n.t('activerecord.errors.agreement.ends_at_invalid', date: ends_at.strftime('%b, %d, %Y')) if self.ends_at && Ticket.created_after(self.organization_id, self.counterparty_id, self.ends_at).size > 0
