@@ -26,6 +26,7 @@ class ServiceCallsController < ApplicationController
   def new
     @service_call = ServiceCall.new
     @customer     = Customer.new
+    store_location
   end
 
   def create
