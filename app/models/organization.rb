@@ -120,7 +120,7 @@ class Organization < ActiveRecord::Base
   scope :provider_search, ->(org_id, query) { (search(query).provider_members - where(id: org_id)| search(query).my_providers(org_id)).order('organizations.name') }
   scope :subcontractor_search, ->(org_id, query) { ((search(query).subcontractor_members - where(id: org_id)| search(query).my_subcontractors(org_id)).order('organizations.name')) }
   #scope :affiliate_search, ->(org_id, query) { ((((search(query).members - where(id: org_id))| (search(query).my_affiliates(org_id) - where(id: org_id)))).order('organizations.name')) }
-  scope :affiliate_search, ->(org_id, query) { ((((search(query).members - where(id: org_id))| includes(:accounts).search(query) - where(id: org_id)))).order('organizations.name') }
+  scope :affiliate_search, ->(org_id, query) { my_affiliates(org_id) & ((((search(query).members - where(id: org_id))| includes(:accounts).search(query) - where(id: org_id)))).order('organizations.name ASC') }
 
   def technicians(columns = "")
     User.my_technicians(self.id, columns)
