@@ -17,6 +17,11 @@ en:
         description: "Description"
         organization: "Supplier"
         counterparty: "Supplier Customer"
+      customer_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Contractor"
+        counterparty: "Customer"
     state_machines:
       organization_agreement:
         status:

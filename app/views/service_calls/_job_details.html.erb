@@ -25,20 +25,61 @@
     <div class="span6">
 
       <ul class="unstyled list_service_calls">
+        <li>
+          <label><%= @service_call.class.human_attribute_name(:tag_list) %></label>
+        </li>
+        <li>
+          <!--todo cleanup-->
+          <span class="tags" id="tags_list" data-url="<%= service_call_path(@service_call) %>" data-resrouce="service_call" data-value="<%= @service_call.tag_list %>" data-toggle="manual" data-type="select2" data-original-title="Enter tags">
+            <% @service_call.tags.each do |tag| %>
+              <span class="label"><%= tag.name %></span>
+            <% end %>
+          </span>
+          <a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""><i class="icon-pencil"></i></a>
+        </li>
+        <!--<li id='tag_list'>-->
+        <!--<#%= @service_call.tag_list %>-->
+
+        <!--</li>-->
+        <!--<li> <#%= button_tag 'Update Tags', id: "stam", data: { toggle: 'collapse', target: '#tags' }, class: "" %></li>-->
+        <!--<li> <a href="#" id="stam"  data-resrouce="service_call" data-toggle="collapse" data-target="#tags"><i class="icon-pencil"></i></a></li>-->
+        <li></li>
+
+      </ul>
+      <br>
+
+      <div id="tags" class="collapse">
+
+        <ul class="unstyled list_service_calls">
+          <li>
+            <%= simple_form_for @service_call.becomes(ServiceCall), remote: true, html: { class: "ajax-form service_call", :'data-type' => 'json' } do |f| %>
+
+                <%= f.text_field :tag_list, data: { tags: current_user.organization.tags.map(&:name) } %>
+                <%= f.submit class: "ajax-btn" %>
+
+            <% end %>
+          </li>
+          <li></li>
+        </ul>
+
+      </div>
+
+      <br>
+      <ul class="unstyled list_service_calls">
         <li><label><%= @service_call.class.human_attribute_name(:started_on_text) %></label></li>
         <li><%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_started_on' %>
           &nbsp;<i class="icon-edit"></i></li>
         <li></li>
       </ul>
 
-      <br>
-
       <ul class="unstyled list_service_calls">
         <li><label><%= @service_call.class.human_attribute_name(:completed_on_text) %></label></li>
-        <li><%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_completed_on' %>
-          &nbsp;<i class="icon-edit"></i></li>
+        <li class="service_call_completed_on"><%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_completed_on' %>
+        &nbsp;<i class="icon-edit"></i></li>
         <li></li>
       </ul>
+
+      <br>
 
       <br>
 
@@ -65,7 +106,8 @@
         <li class="list_service_calls" id="customer_details">
 
           <address>
-            <h4><%= I18n.t('general.general.location_info') %> &nbsp;<i class="icon-edit icon-white" id="icon_job_address"></i></h4>
+            <h4><%= I18n.t('general.general.location_info') %> &nbsp;<i class="icon-edit icon-white" id="icon_job_address"></i>
+            </h4>
             <%= best_in_place @service_call, :address1 %>
             <br>
             <%= best_in_place @service_call, :address2 %>
@@ -84,50 +126,55 @@
       <br>
 
       <% if @service_call.technician.present? && @service_call.organization.my_user?(@service_call.technician) %>
-      <ul class="unstyled list_service_calls">
-        <li><label><%= @service_call.class.human_attribute_name(:technician) %></label></li>
-        <li>
-          <!--<#%= link_to '', @service_call.technician do %>-->
-          <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician, type: :select, collection: technicians_collection %>
+          <ul class="unstyled list_service_calls">
+            <li><label><%= @service_call.class.human_attribute_name(:technician) %></label></li>
+            <li>
+              <!--<#%= link_to '', @service_call.technician do %>-->
+              <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician_id, type: :select, collection: technicians_collection %>
               &nbsp;<i class="icon-edit"></i></li>
-          </li>
-        <li></li>
-      </ul>
+            </li>
+            <li></li>
+          </ul>
       <% end %>
 
       <br>
 
-      <ul class="unstyled list_service_calls">
-        <li><label><%= @service_call.class.human_attribute_name(:subcontractor) %></label></li>
-        <li><%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
-          &nbsp;<i class="icon-edit"></i></li>
-        <li></li>
-      </ul>
+      <% if @service_call.transferred? %>
+          <ul class="unstyled list_service_calls">
+            <li><label><%= @service_call.class.human_attribute_name(:subcontractor) %></label></li>
+            <li><%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
+              &nbsp;<i class="icon-edit"></i></li>
+            <li></li>
+          </ul>
 
-      <br>
+          <br>
+      <% end %>
 
-      <ul class="unstyled list_service_calls">
-        <li><label><%= @service_call.class.human_attribute_name(:provider) %></label></li>
-        <li>
-          &nbsp;<i class="icon-edit"></i></li>
-        <li></li>
-      </ul>
+      <% if @service_call.instance_of?(TransferredServiceCall) %>
+          <ul class="unstyled list_service_calls">
+            <li><label><%= @service_call.class.human_attribute_name(:provider) %></label></li>
+            <li>
+              &nbsp;<i class="icon-edit"></i></li>
+            <li></li>
+          </ul>
+      <% end %>
 
-   </div>
+    </div>
 
     <div class="span6" id="job_notes">
       <label class=""><strong><%= @service_call.class.human_attribute_name(:notes) %></strong></label>
+
       <div class="area">
-      <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, :type => :textarea, :ok_button => 'Save', :cancel_button => 'Cancel' %>
-     </div>
+        <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, :type => :textarea, :ok_button => 'Save', :cancel_button => 'Cancel' %>
+      </div>
     </div>
 
   </div>
-    <!--end of status & Job details section-->
+  <!--end of status & Job details section-->
 
-    <!--Parts-->
-    <%= render 'job_boms' %>
+  <!--Parts-->
+  <%= render 'job_boms' %>
 
-  </div>
 </div>
+
 

@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
 
   before_filter :prepare_for_mobile
 
-
   def permitted_params(obj)
     @permitted_params ||= PermittedParams.new(params, current_user, obj)
   end
@@ -27,7 +26,18 @@ class ApplicationController < ActionController::Base
   end
 
   private
+  def store_location
+    session[:return_to] = request.fullpath
+  end
 
+  def clear_stored_location
+    session[:return_to] = nil
+  end
+
+  def redirect_back_or_to(alternate)
+    redirect_to(session[:return_to] || alternate)
+    clear_stored_location
+  end
   def mobile_device?
     if session[:mobile_param]
       session[:mobile_param] == "1"

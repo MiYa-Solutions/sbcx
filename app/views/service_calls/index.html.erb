@@ -61,7 +61,7 @@
 </div>
 
 
-  <% unless @service_calls.nil? %>
+  <% unless @transferred_jobs.nil? %>
 
 <div class="row-fluid transferred_jobs">
 
@@ -90,7 +90,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @service_calls.each do |sc| %>
+          <% @transferred_jobs.each do |sc| %>
               <tr>
                 <td class="member_logo">
                   <!--<#% if sc.payment_overdue? %>-->

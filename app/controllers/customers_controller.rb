@@ -5,7 +5,6 @@ class CustomersController < ApplicationController
   def new
 
     #@customer = Customer.new
-
   end
 
   def create
@@ -24,7 +23,11 @@ class CustomersController < ApplicationController
         format.js { }
         format.html do
           flash[:success] = t 'customer.crud_messages.success', customer_name: @customer.name
-          redirect_to customer_path @customer
+          redirect_back_or_to(@customer)
+        end
+
+        format.mobile do
+          redirect_back_or_to(@customer)
         end
       end
     else

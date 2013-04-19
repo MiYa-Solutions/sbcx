@@ -32,6 +32,8 @@ gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 
 gem 'money-rails', '0.8.0'
+gem 'select2-rails', '3.3.1'
+gem 'bootstrap-editable-rails'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'
@@ -46,6 +48,8 @@ group :development, :test do
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
+  gem 'parallel_tests'
+  gem 'zeus-parallel_tests'
 end
 
 # Gems used only for assets and not required

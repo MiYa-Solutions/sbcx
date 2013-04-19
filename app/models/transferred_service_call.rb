@@ -43,12 +43,8 @@ class TransferredServiceCall < ServiceCall
     self.subcontractor ||= self.organization.try(:becomes, Subcontractor)
   end
 
-  STATUS_NEW         = 1200
   STATUS_ACCEPTED    = 1201
   STATUS_REJECTED    = 1202
-  STATUS_TRANSFERRED = 1203
-  STATUS_CLOSED      = 1204
-  STATUS_CANCELED    = 1205
 
   state_machine :status, :initial => :new do
     state :new, value: STATUS_NEW
@@ -250,7 +246,7 @@ class TransferredServiceCall < ServiceCall
 
   def can_uncancel?
     !self.work_done? && !self.provider.subcontrax_member?  &&
-        ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?))
+        ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?) || self.subcontractor.nil?)
   end
 
 

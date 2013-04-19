@@ -37,6 +37,7 @@ class ServiceCallTransferEvent < ServiceCallEvent
       new_service_call.ref_id           = service_call.ref_id
       new_service_call.transferable     = service_call.re_transfer
       new_service_call.allow_collection = service_call.allow_collection
+      new_service_call.name             = service_call.name
       new_service_call.events << ServiceCallReceivedEvent.new(triggering_event: self, description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
 
       new_service_call.save!

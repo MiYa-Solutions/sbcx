@@ -1,4 +1,13 @@
 jQuery ->
+  $(".ajax-form.service_call").bind("ajax:success", (e, data, status, xhr)->
+    $('#tag_list').html(data.tag_list)
+    $('#service_call_tag_list').val(data.tag_list)
+    $('#tags').collapse('toggle')
+
+  )
+  $('#service_call_state').select2()
+
+  $('#service_call_country').hide()
   $('.customer-autocomplete').live "click", ->
     orig = $(this).clone()
     input_str =  ['<input type="text" size="30" name="',orig.data('obj-type'), '[customer]" id="service_call_customer" data-update-elements="{&quot;id&quot;:&quot;#service_call_customer_id&quot;}" data-ref-id="" data-autocomplete="/service_calls/autocomplete_customer_name"><input type="hidden" name=" ', orig.data('obj-type'), '[customer_id]" id="service_call_customer_id">'].join("")
@@ -38,3 +47,5 @@ jQuery ->
           container.purr()
 
 
+  $('#service_call_customer_name').bind 'railsAutocomplete.select', (e, data)->
+    $('#service_call_state').select2("val", data.item.state)

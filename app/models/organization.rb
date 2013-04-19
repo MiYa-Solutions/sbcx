@@ -23,6 +23,8 @@
 #
 
 class Organization < ActiveRecord::Base
+
+  ### ASSOCIATIONS:
   has_many :users
   has_many :customers, inverse_of: :organization do
     #def << (customer)
@@ -87,6 +89,10 @@ class Organization < ActiveRecord::Base
 
   has_many :boms, as: :buyer
 
+  has_many :tags
+
+  ### VALIDATIONS:
+
   accepts_nested_attributes_for :users, :agreements, :reverse_agreements
 
   validates :name, { presence: true, length: { maximum: 255 } }
@@ -96,29 +102,25 @@ class Organization < ActiveRecord::Base
   validates_with OneOwnerValidator
   validates_uniqueness_of :name, scope: [:subcontrax_member], if: Proc.new { |org| org.subcontrax_member }
 
-
+  ### EAGER LOADS:
   includes :organization_roles
 
+  ### SCOPES:
   scope :members, -> { where(:subcontrax_member => true) }
   scope :providers, -> { includes(:organization_roles).where("organization_roles.id = ? ", OrganizationRole::PROVIDER_ROLE_ID) }
   scope :subcontractors, -> { includes(:organization_roles).where("organization_roles.id = ? ", OrganizationRole::SUBCONTRACTOR_ROLE_ID) }
-
   scope :subcontractor_members, -> { members.subcontractors }
   scope :provider_members, -> { members.providers }
-
   scope :associated_providers, -> { providers.includes(:agreements) }
   scope :associated_subcontractors, -> { subcontractors.includes(:reverse_agreements) }
-
   scope :my_providers, ->(org_id) { associated_providers.where('agreements.counterparty_id = ?', org_id) - where(id: org_id) }
   scope :my_subcontractors, ->(org_id) { associated_subcontractors.where('agreements.organization_id = ?', org_id) - where(id: org_id) }
   scope :my_affiliates, ->(org_id) { (associated_providers | associated_subcontractors).where('agreements.counterparty_id = ? OR agreements.organization_id = ?', org_id, org_id) - where(id: org_id) }
-
   scope :search, ->(query) { where(arel_table[:name].matches("%#{query}%")) }
-
   scope :provider_search, ->(org_id, query) { (search(query).provider_members - where(id: org_id)| search(query).my_providers(org_id)).order('organizations.name') }
   scope :subcontractor_search, ->(org_id, query) { ((search(query).subcontractor_members - where(id: org_id)| search(query).my_subcontractors(org_id)).order('organizations.name')) }
   #scope :affiliate_search, ->(org_id, query) { ((((search(query).members - where(id: org_id))| (search(query).my_affiliates(org_id) - where(id: org_id)))).order('organizations.name')) }
-  scope :affiliate_search, ->(org_id, query) { ((((search(query).members - where(id: org_id))| includes(:accounts).search(query) - where(id: org_id)))).order('organizations.name') }
+  scope :affiliate_search, ->(org_id, query) { my_affiliates(org_id) & ((((search(query).members - where(id: org_id))| includes(:accounts).search(query) - where(id: org_id)))).order('organizations.name ASC') }
 
   def technicians(columns = "")
     User.my_technicians(self.id, columns)

@@ -15,6 +15,8 @@
 //= require jquery_ujs
 //= require autocomplete-rails
 //= require bootstrap
+//= require bootstrap-editable
+//= require bootstrap-editable-rails
 //= require jquery.purr
 //= require best_in_place
 //= require best_in_place.purr
@@ -25,4 +27,5 @@
 //= require dataTables/extras/ZeroClipboard.js
 //= require dataTables/jquery.dataTables.api.fnFilterOnReturn
 //= require dataTables/extras/TableTools
+//= require select2
 //= require_tree ./all/.

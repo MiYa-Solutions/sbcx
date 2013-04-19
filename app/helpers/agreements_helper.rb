@@ -1,5 +1,23 @@
 module AgreementsHelper
 
+  def agreement_org_url
+    if @agreement.organization == current_user.organization
+      url = profile_path
+    else
+      url = affiliate_path(@agreement.organization)
+    end
+    url
+  end
+
+  def agreement_cparty_url
+    if @agreement.counterparty == current_user.organization
+      url = profile_path
+    else
+      url = @agreement.counterparty
+    end
+    url
+  end
+
   def agreement_payment_options
     @agreement.class.payment_options.keys.map {|key| [key, t("agreement.payment_options.#{key}")]}
   end

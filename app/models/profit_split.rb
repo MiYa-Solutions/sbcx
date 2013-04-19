@@ -37,7 +37,8 @@
 class ProfitSplit < PostingRule
 
   # define hstore properties methods
-  %w[sunday monday].each do |key|
+  %w[cheque_rate cheque_rate_type credit_rate credit_rate_type
+cash_rate cash_rate_type].each do |key|
     scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("properties @> (? => ?)", key, value) }
 
     define_method(key) do
@@ -213,10 +214,10 @@ class ProfitSplit < PostingRule
     original_entry = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
     [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: - original_entry.amount, description: "Entry to provider owned account")]
   end
+
   def organization_cancellation_entries
     original_entry = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
     [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: - original_entry.amount, description: "Entry to provider owned account")]
   end
-
 
 end

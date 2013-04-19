@@ -64,6 +64,9 @@ class Ticket < ActiveRecord::Base
   has_many :appointments, as: :appointable
   has_many :accounting_entries
 
+  has_many :taggings, as: :taggable
+  has_many :tags, through: :taggings
+
   alias_method :entries, :accounting_entries
 
   scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov} AND subcontractor_id = #{subcon} and created_at > '#{after}'") }
@@ -72,17 +75,21 @@ class Ticket < ActiveRecord::Base
 
   stampable
 
-  # virtual attributes
-  attr_writer :started_on_text, :completed_on_text, :scheduled_for_text, :company, :address1, :address2,
-              :city, :state, :zip, :country, :phone, :mobile_phone, :work_phone, :email
-  attr_accessor :new_customer
+  ### VIRTUAL ATTRIBUTES
+  attr_writer :started_on_text, :completed_on_text, :scheduled_for_text
+  attr_accessor :new_customer, :customer_name
 
-  # transform the dates before saving
+  attr_writer :tag_list
+
+  ### TRANSFORM THE DATES BEFORE SAVING
   before_save :save_started_on_text
   before_save :save_completed_on_text
   before_save :save_scheduled_for_text
+  before_save :assign_tags
+
                                                                                        # create a new customer in case one was asked for
-  before_validation :create_customer
+  before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
+  after_create :set_name
 
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
   validates_presence_of :organization, :provider
@@ -91,50 +98,20 @@ class Ticket < ActiveRecord::Base
 
   accepts_nested_attributes_for :customer
 
-  def company
-    @company ||= customer.try(:company)
-  end
+  ### state machine states constants
 
-  def address1
-    @address1 ||= customer.try(:address1)
-  end
+  STATUS_NEW         = 0000
+  STATUS_OPEN        = 0001
+  STATUS_TRANSFERRED = 0002
+  STATUS_CLOSED      = 0003
+  STATUS_CANCELED    = 0004
 
-  def address2
-    @address2 ||= customer.try(:address2)
-  end
+  scope :new_status, ->{where("tickets.status = ?", STATUS_NEW)}
+  scope :open_status, ->{where("tickets.status = ?", STATUS_OPEN)}
+  scope :transferred_status, ->{where("tickets.status = ?", STATUS_TRANSFERRED)}
+  scope :closed_status, ->{where("tickets.status = ?", STATUS_CLOSED)}
+  scope :canceled_status, ->{where("tickets.status = ?", STATUS_CANCELED)}
 
-  def city
-    @city ||= customer.try(:city)
-  end
-
-  def state
-    @state ||= customer.try(:city)
-  end
-
-  def zip
-    @zip ||= customer.try(:zip)
-  end
-
-  def country
-    @country ||= customer.try(:country)
-  end
-
-  def phone
-    @phone ||= customer.try(:phone)
-  end
-
-  def mobile_phone
-    @mobile_phone ||= customer.try(:mobile_phone)
-
-  end
-
-  def work_phone
-    @work_phone ||= customer.try(:work_phone)
-  end
-
-  def email
-    @email ||= customer.try(:email)
-  end
 
   def completed_on_text
     @completed_on_text || completed_on.try(:strftime, "%B %d, %Y %H:%M")
@@ -189,7 +166,7 @@ class Ticket < ActiveRecord::Base
 
   def create_customer
     if provider
-      self.customer = self.provider.customers.new(name:         new_customer,
+      self.customer = self.provider.customers.new(name:         customer_name,
                                                   address1:     address1,
                                                   address2:     address2,
                                                   country:      country,
@@ -197,10 +174,10 @@ class Ticket < ActiveRecord::Base
                                                   state:        state,
                                                   zip:          zip,
                                                   phone:        phone,
-                                                  mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
+                                                  mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
 
     else
-      self.customer = self.organization.customers.new(name:         new_customer,
+      self.customer = self.organization.customers.new(name:         customer_name,
                                                       address1:     address1,
                                                       address2:     address2,
                                                       country:      country,
@@ -208,7 +185,7 @@ class Ticket < ActiveRecord::Base
                                                       state:        state,
                                                       zip:          zip,
                                                       phone:        phone,
-                                                      mobile_phone: mobile_phone) if new_customer.present? && customer.nil?
+                                                      mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
     end
   end
 
@@ -311,7 +288,31 @@ class Ticket < ActiveRecord::Base
     end
   end
 
+  def tag_list
+    @tag_list || tags.map(&:name).join(", ")
+  end
+
+# Assigns tags from a comma separated tag list
+  def assign_tags
+    if @tag_list
+      #self.taggings.each { |tagging| tagging.destroy }
+      self.tags = @tag_list.split(/,/).uniq.map do |name|
+        Tag.where(name: name, organization_id: organization_id).first || Tag.create(:name => name.strip, organization_id: organization_id)
+      end
+    end
+  end
+
+  def self.tagged_with(org_id, name)
+    Tag.find_by_organization_id_and_name!(org_id, name).taggables
+  end
+
   alias_method :affiliate, :counterparty
+
+  def set_name
+    if self.name.nil?
+      self.name = "#{self.tags.map(&:name).join(", ")}: #{self.address1}"
+    end
+  end
 
   private
   def customer_belongs_to_provider

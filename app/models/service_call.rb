@@ -62,6 +62,8 @@ class ServiceCall < Ticket
     initialize_state_machines
   end
 
+  scope :my_transferred_jobs, ->(org) { where("tickets.organization_id = ?", org.id).transferred_status }
+  scope :jobs_to_work_on, ->(org) { where("tickets.organization_id = ?", org.id) & (new_status | open_status | where("tickets.status = ?", TransferredServiceCall::WORK_STATUS_ACCEPTED)) }
 
   WORK_STATUS_PENDING     = 2000
   WORK_STATUS_DISPATCHED  = 2001
@@ -148,20 +150,20 @@ class ServiceCall < Ticket
     end
 
     event :subcon_confirmed do
-      transition :claim_settled => :settled, if: ->(sc) { !sc.canceled? &&  sc.subcon_settlement_allowed? }
+      transition :claim_settled => :settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? }
     end
 
     event :subcon_marked_as_settled do
-      transition :pending => :claimed_as_settled, if: ->(sc) { !sc.canceled? &&  sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? }
+      transition :pending => :claimed_as_settled, if: ->(sc) { !sc.canceled? && sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? }
     end
 
     event :confirm_settled do
-      transition :claimed_as_settled => :settled, if: ->(sc) { !sc.canceled? &&  sc.subcon_settlement_allowed? }
+      transition :claimed_as_settled => :settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? }
     end
 
     event :settle do
-      transition :pending => :settled, if: ->(sc) { !sc.canceled? &&  sc.subcon_settlement_allowed? && sc.work_done? && !sc.subcontractor.subcontrax_member? }
-      transition :pending => :claim_settled, if: ->(sc) { !sc.canceled? &&  sc.subcon_settlement_allowed? && sc.work_done? && sc.subcontractor.subcontrax_member? }
+      transition :pending => :settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? && sc.work_done? && !sc.subcontractor.subcontrax_member? }
+      transition :pending => :claim_settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? && sc.work_done? && sc.subcontractor.subcontrax_member? }
     end
 
     event :clear do
@@ -187,7 +189,7 @@ class ServiceCall < Ticket
     if params.empty?
       sc = ServiceCall.new
     else
-
+      params[:organization_id] = org.id
       if params[:provider_id].empty? || params[:provider_id] == org.id
         sc = MyServiceCall.new(params)
       else
@@ -195,8 +197,16 @@ class ServiceCall < Ticket
       end
 
     end
-    sc.organization = org
+    #sc.organization = org
     sc
+  end
+
+  def as_json(options = {})
+    {
+        tag_list:      tag_list,
+        provider:      [provider],
+        subcontractor: [subcontractor]
+    }
   end
 
 

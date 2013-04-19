@@ -3,14 +3,16 @@ class ServiceCallsController < ApplicationController
   filter_access_to :autocomplete_customer_name, :require => :index
   filter_resource_access
 
-  autocomplete :customer, :name, full: true, limit: 50
+  autocomplete :customer, :name, extra_data: [:address1, :address2, :company, :phone, :email, :mobile_phone, :work_phone, :country, :state, :city, :zip], full: true, limit: 50
 
   def index
-    @service_calls = current_user.organization.service_calls
+    @service_calls = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
+    @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
+
     respond_to do |format|
       format.html {}
 
-      format.json {render json: TicketsDatatable.new(view_context)}
+      format.json { render json: TicketsDatatable.new(view_context) }
     end
 
   end
@@ -24,6 +26,7 @@ class ServiceCallsController < ApplicationController
   def new
     @service_call = ServiceCall.new
     @customer     = Customer.new
+    store_location
   end
 
   def create
@@ -44,7 +47,7 @@ class ServiceCallsController < ApplicationController
 
     if @service_call.update_attributes(permitted_params(@service_call).service_call)
       respond_to do |format|
-        format.js { render :json => @service_call }
+        format.js {}
         format.html do
           flash[:success] = t('service_call.crud_messages.update.success')
           redirect_to service_call_path @service_call
@@ -54,7 +57,8 @@ class ServiceCallsController < ApplicationController
           redirect_to service_call_path @service_call
         end
 
-        format.json { respond_with_bip @service_call }
+        #format.json { respond_with_bip @service_call }
+        format.json { render :json => @service_call, status: :ok }
       end
     else
       respond_to do |format|
@@ -78,52 +82,6 @@ class ServiceCallsController < ApplicationController
   def load_service_call
     @service_call = Ticket.find(params[:id])
   end
-
-  #def set_service_call_type
-  #
-  #  case @service_call.my_role
-  #    when :prov
-  #      #@service_call      = @service_call.becomes(MyServiceCall)
-  #      @service_call.type = "MyServiceCall"
-  #      @service_call.becomes(MyServiceCall).init_state_machines
-  #
-  #
-  #    when :subcon
-  #      #@service_call      = @service_call.becomes(TransferredServiceCall)
-  #      @service_call.type = "TransferredServiceCall"
-  #      @service_call.becomes(TransferredServiceCall).init_state_machines
-  #
-  #    else
-  #      #@service_call      = @service_call.becomes(MyServiceCall)
-  #      #@service_call.type = "MyServiceCall"
-  #      raise "Unexpected service call my_role"
-  #  end
-  #
-  #  #@service_call.organization = current_user.organization
-  #  #@service_call.init_state_machines
-  #  #@service_call.init_state_machines
-  #  #@service_call.save
-  #
-  #end
-
-  #def process_event
-  #
-  #  case params[:status_event]
-  #    when 'transfer'
-  #      #@service_call.subcontractor = Subcontractor.find(params[:service_call][:subcontractor]) unless params[:service_call][:subcontractor].nil?
-  #      @service_call.subcontractor_id = params[:service_call][:subcontractor] unless params[:service_call][:subcontractor].empty?
-  #
-  #    when 'dispatch'
-  #      @service_call.technician = User.find(params[:service_call][:technician]) unless params[:service_call][:technician].empty?
-  #    else
-  #      @service_call.send(params[:status_event].to_sym) #, recipient: subcontractor)
-  #
-  #  end
-  #
-  #  @service_call.send(params[:status_event].to_sym) #, recipient: subcontractor)
-  #
-  #
-  #end
 
   # TODO move autocomplete to CustomerController
   def autocomplete_customer_name_where

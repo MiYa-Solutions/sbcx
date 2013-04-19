@@ -16,7 +16,7 @@ describe "Service Call pages" do
   status_select                  = 'service_call_status_event'
   work_status_select             = 'service_call_work_status_event'
   customer_select                = 'service_call_customer_id'
-  new_customer_fld               = 'service_call_new_customer'
+  new_customer_fld               = 'service_call_customer_name'
   notification_counter           = '#notification-counter'
   notifications                  = '#notifications'
 
@@ -147,7 +147,7 @@ describe "Service Call pages" do
           before do
             in_browser(:org) do
               select org2.name, from: 'service_call_provider_id'
-              fill_in 'service_call_customer', with: customer.name
+              fill_in 'service_call_customer_name', with: customer.name
             end
           end
 
@@ -218,7 +218,7 @@ describe "Service Call pages" do
 
         it "should be created successfully" do
           expect do
-            fill_autocomplete 'service_call_customer', with: customer.name.chop, select: customer.name
+            fill_autocomplete new_customer_fld, with: customer.name.chop, select: customer.name
             click_button create_btn
           end.to change(ServiceCall, :count).by(1)
         end
@@ -776,7 +776,6 @@ describe "Service Call pages" do
             end
 
 
-
             it "status remains transferred" do
 
               should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
@@ -1254,7 +1253,6 @@ describe "Service Call pages" do
                   end
 
 
-
                 end
 
 
@@ -1391,8 +1389,9 @@ describe "Service Call pages" do
                                   click_button deposit_to_prov_btn_selector
                                 end
 
-                                it 'should change the billing status to deposited' do
+                                it 'should change the billing status to deposited and not show a provider confirmed button' do
                                   should have_billing_status(I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited_to_prov'))
+                                  should_not have_button(JOB_BTN_PROV_CONFIRMED_DEPOSIT)
                                 end
 
                                 it 'service call should have the deposit_to_prov event associated ' do
@@ -1965,10 +1964,11 @@ describe "Service Call pages" do
 
                   it 'page should show a success message, cancel, transfer and start button with a new status' do
                     should have_success_message
-                    should have_status(JOB_STATUS_NEW)
-                    should have_button(JOB_BTN_START)
-                    should have_button(JOB_BTN_TRANSFER)
+                    should have_status(JOB_STATUS_TRANSFERRED)
+                    should have_button(JOB_BTN_ACCEPT)
+                    should have_button(JOB_BTN_REJECT)
                     should have_button(JOB_BTN_CANCEL)
+                    should have_button(JOB_BTN_CANCEL_TRANSFER)
                     should have_event('100037')
                   end
                 end
@@ -2058,7 +2058,7 @@ describe "Service Call pages" do
                         should have_success_message
                         should have_billing_status(JOB_BILLING_STATUS_PAID)
                         should have_button(JOB_BTN_CANCEL)
-                        should have_button(JOB_BTN_CLOSE)
+                        should have_button(JOB_BTN_CLEAR)
                       end
 
                       describe 'cancel ' do
@@ -2278,7 +2278,8 @@ describe "Service Call pages" do
               Rails.logger.debug { "The service_call updater: '#{service_call.updater.name}'" }
               Rails.logger.debug { "The event description: '#{service_call.events.last.description}'" }
               Rails.logger.debug { "The test description: '#{I18n.t('service_call_complete_event.description', user: service_call.updater.name)}'" }
-              should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_complete_event.description', user: service_call.updater.name.rstrip))
+              #should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_complete_event.description', user: service_call.updater.name.rstrip))
+              should have_event(I18n.t('service_call_complete_event.description', user: service_call.reload.updater.name.rstrip))
             end
 
             describe 'cancel ' do
@@ -2306,30 +2307,50 @@ describe "Service Call pages" do
 
             describe "customer payment" do
 
-              describe 'payment overdue' do
-
-                describe 'cancel ' do
-                  before do
-                    in_browser(:org) do
-                      click_button JOB_BTN_CANCEL
-                    end
-                  end
-
-
-                  it 'should send a notification to the technician' do
-                    in_browser(:technician) do
-                      visit notifications_path
-                      should have_notification(ScCancelNotification, service_call)
-                    end
-                  end
-
-                  it 'should show: canceled status, cancel event and the un_cancel button' do
-                    should have_status(JOB_STATUS_CANCELED)
-                    should have_event('100003', I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
-                    should_not have_button(JOB_BTN_UN_CANCEL)
+              describe 'invoice' do
+                before do
+                  in_browser(:technician) do
+                    visit service_call_path(service_call)
+                    click_button JOB_BTN_INVOICE
                   end
                 end
 
+                describe 'pay with cheque' do
+                  before do
+                    pay_with_cheque(service_call.technician.name)
+                  end
+
+                  it 'should have billing status paid, buttons' do
+                    should have_billing_status(JOB_BILLING_STATUS_COLLECTED_BY_EMPLOYEE)
+                  end
+                end
+
+
+                describe 'payment overdue' do
+
+                  describe 'cancel ' do
+                    before do
+                      in_browser(:org) do
+                        click_button JOB_BTN_CANCEL
+                      end
+                    end
+
+
+                    it 'should send a notification to the technician' do
+                      in_browser(:technician) do
+                        visit notifications_path
+                        should have_notification(ScCancelNotification, service_call)
+                      end
+                    end
+
+                    it 'should show: canceled status, cancel event and the un_cancel button' do
+                      should have_status(JOB_STATUS_CANCELED)
+                      should have_event('100003', I18n.t('service_call_cancel_event.description', user: service_call.updater.name.rstrip))
+                      should_not have_button(JOB_BTN_UN_CANCEL)
+                    end
+                  end
+
+                end
               end
 
 
