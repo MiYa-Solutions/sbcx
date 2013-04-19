@@ -13,7 +13,7 @@
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address) %></div>
         <div class="ui-block-b"><%= @service_call.address1 %>
-          <% unless @service_call.customer.address2.blank? %>
+          <% unless @service_call.address2.blank? %>
               <br> <%= @service_call.address2 %>
           <% end %>
         </div>

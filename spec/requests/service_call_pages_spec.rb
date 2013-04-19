@@ -1389,8 +1389,9 @@ describe "Service Call pages" do
                                   click_button deposit_to_prov_btn_selector
                                 end
 
-                                it 'should change the billing status to deposited' do
+                                it 'should change the billing status to deposited and not show a provider confirmed button' do
                                   should have_billing_status(I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited_to_prov'))
+                                  should_not have_button(JOB_BTN_PROV_CONFIRMED_DEPOSIT)
                                 end
 
                                 it 'service call should have the deposit_to_prov event associated ' do
