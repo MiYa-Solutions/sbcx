@@ -27,8 +27,8 @@
         <%= render 'fields', f: f %>
 
         <div class="form-actions">
-          <%= link_to "Back to List", service_calls_path, :class => 'btn btn-large' %>
-          <%= f.submit "Create Service Call", class: "btn btn-large btn-primary", id: 'service_call_create_btn' %>
+          <%= link_to I18n.t('general.general.back'), service_calls_path, :class => 'btn btn-medium' %>
+          <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary", id: 'service_call_create_btn' %>
         </div>
     <% end %>
 
