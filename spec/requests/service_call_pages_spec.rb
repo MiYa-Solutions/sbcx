@@ -420,8 +420,9 @@ describe "Service Call pages" do
           @subcon_service_call = ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id)
         end
 
-        it "should change the status to transferred" do
+        it "should change the status to transferred and should not show to add item button" do
           should have_status(I18n.t('activerecord.state_machines.my_service_call.status.states.transferred'))
+          should_not have_button(JOB_BTN_ADD_BOM)
         end
 
         it "should change the subcontractor status to pending localized" do

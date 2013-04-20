@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   around_filter :user_time_zone, if: :current_user
 
-  before_filter { |c| Authorization.current_user = c.current_user }
+  before_filter { |c| Authorization.current_user = c.current_user || session[:user] }
   # todo make counting more efficient
   before_filter { |c| @notification_count = Notification.where(user_id: c.current_user.id).where(status: Notification::NOTIFICATION_UNREAD).count unless current_user.nil? }
   before_filter { |c| @org = c.current_user.organization unless c.current_user.nil? }

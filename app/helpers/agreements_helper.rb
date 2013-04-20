@@ -47,7 +47,7 @@ module AgreementsHelper
   end
 
   def agreement_events(agreement)
-    if  permitted_to? :update, agreement.becomes(Agreement)
+    if  permitted_to? :update, agreement.reload, context: :agreements
       content_tag_for :ul, agreement, class: 'agreement_events unstyled' do
         agreement.status_events.collect do |event|
           case event
@@ -81,11 +81,13 @@ module AgreementsHelper
     else
       Rails.logger.debug { "User is not permitted to update agreement:
               Agreement organization: #{agreement.organization_id}
-              Agreemenet counterparty: #{agreement.counterparty_id}
+              Agreement type: #{agreement.type}
+              Agreement counterparty: #{agreement.counterparty_id}
               Agreement status: #{agreement.human_status_name}
               Agreement creator org: #{agreement.creator.organization_id}
               Agreement creator id: #{agreement.creator_id}
               user's Org users: #{current_user.organization.user_ids}" }
+      nil
     end
 
 

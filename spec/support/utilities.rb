@@ -1,7 +1,8 @@
 ## constans for page selector
 
-JOB_BTN_START                  = 'start_service_call_btn'
-JOB_BTN_CANCEL                 = 'cancel_service_call_btn'
+JOB_BTN_START   = 'start_service_call_btn'
+JOB_BTN_CANCEL  = 'cancel_service_call_btn'
+JOB_BTN_ADD_BOM = 'new-bom-button'
 
 JOB_BTN_UN_CANCEL              = 'un_cancel_service_call_btn'
 JOB_BTN_CANCEL_TRANSFER        = 'cancel_transfer_service_call_btn'
@@ -34,7 +35,7 @@ JOB_SELECT_SUBCON_PAYMENT   = 'service_call_subcon_payment'
 JOB_SELECT_PROVIDER_PAYMENT = 'service_call_provider_payment'
 JOB_SELECT_SUBCONTRACTOR    = 'service_call_subcontractor_id'
 JOB_SELECT_PROVIDER         = 'service_call_provider_id'
-JOB_SELECT_COLLECTOR         = 'service_call_collector_id'
+JOB_SELECT_COLLECTOR        = 'service_call_collector_id'
 JOB_SELECT_PAYMENT          = 'service_call_payment_type'
 JOB_CBOX_ALLOW_COLLECTION   = 'service_call_allow_collection'
 JOB_CBOX_RE_TRANSFER        = 'service_call_re_transfer'
@@ -163,7 +164,7 @@ end
 
 
 def add_bom(name, cost, price, qty, buyer = nil)
-  click_button 'new-bom-button'
+  click_button JOB_BTN_ADD_BOM
   fill_in 'bom_material_name', with: name
   fill_in 'bom_cost', with: cost
   fill_in 'bom_price', with: price
@@ -219,7 +220,7 @@ def create_transferred_job(user, provider, browser)
 end
 
 def pay_with_cheque(collector = nil)
-    select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
-    select collector, from: JOB_SELECT_COLLECTOR if collector.present?
-    click_button JOB_BTN_COLLECT
+  select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
+  select collector, from: JOB_SELECT_COLLECTOR if collector.present?
+  click_button JOB_BTN_COLLECT
 end
