@@ -41,7 +41,7 @@ class Appointment < ActiveRecord::Base
   before_validation :save_ends_at_text
 
   def starts_at_date_text
-    @starts_at_date_text || (I18n.localize(Time.zone.parse(starts_at.to_s), format: :date_only ) if starts_at.present?)
+    @starts_at_date_text || (I18n.localize(Time.zone.parse(starts_at.to_s), format: :date_only) if starts_at.present?)
   end
 
   def starts_at_time_text
@@ -89,7 +89,7 @@ class Appointment < ActiveRecord::Base
   end
 
   def check_starts_at_text
-    errors.add :starts_at_date_text, "Can't be blank"  unless @starts_at_date_text.present? || starts_at.present?
+    errors.add :starts_at_date_text, "Can't be blank" unless @starts_at_date_text.present? || starts_at.present?
     errors.add :starts_at_date_text, "cannot be parsed" if @starts_at_date_text.present? && Time.zone.parse(@starts_at_date_text).nil?
   rescue ArgumentError
     errors.add :starts_at_date_text, "is out of range"
@@ -104,7 +104,12 @@ class Appointment < ActiveRecord::Base
   end
 
   def save_ends_at_text
-    self.ends_at = Time.zone.parse("#{@ends_at_date_text} #{@ends_at_time_text}") if @ends_at_date_text.present?
-  end
+    if @ends_at_date_text.present?
+      self.ends_at = Time.zone.parse("#{@ends_at_date_text} #{@ends_at_time_text}")
+    else
+      self.ends_at = Time.zone.parse("#{@starts_at_date_text} #{@starts_at_time_text}") if @starts_at_date_text.present? && all_day
+    end
 
+  end
 end
+
