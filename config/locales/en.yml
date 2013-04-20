@@ -31,6 +31,8 @@ en:
     messages:
       provider_icon: "This Affiliate is your Provider"
       subco_icon: "This Affiliate is your Subcontractor"
+      myJob: "This is a local Job"
+      TransJob: "This Job was Transferred to me"
       member_icon: "This Affiliate is a member in the SubConTraX Network"
       send_invite: "Send invitation to join the SubConTraX network. <br> See Promotion on the left"
       no_records: "No records, click 'New Affiliate' or search for affiliates to add new members to your network"
@@ -84,7 +86,7 @@ en:
       send_invite: "Send Invite"
       my_jobs: "Jobs To Work On"
       scheduled_for: "Scheduled for"
-      transferred_jobs: "Transferred Jobs"
+      transferred_jobs: "Jobs that I Transferred"
       job_number: "Job Number"
       job_history: "Job History"
       job_type: "Job Type"

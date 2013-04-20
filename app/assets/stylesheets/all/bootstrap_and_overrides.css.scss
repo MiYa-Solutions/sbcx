@@ -282,7 +282,7 @@ footer {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
     min-height: 200px;
     transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
-    width: 70%;
+    min-height: 150px;
   }
 
   button {
@@ -1104,13 +1104,56 @@ a:hover {
 
 }
 
+.job_new_location {
+
+  address {
+    //margin-left: 100px;
+    //margin-top: 10px;
+    background: none repeat scroll 0 0 #EEEEEE;
+    //margin-left: 14%;
+    margin-top: 10px;
+    padding: 7px;
+    width: 90%;
+  }
+
+  p {
+    font-style: italic;
+    margin-left: 5%;
+  }
+
+  h4 {
+    background-color: #999999;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+    overflow: auto;
+    padding: 1px 5px 0;
+  }
+
+  label {
+    font-weight: bold;
+    color: #000000;
+  }
+
+  input, textarea {
+    width: 60%;
+  }
+
+  .select2-container, .select2-drop, .select2-search, .select2-search input {
+    width: 62%;
+  }
+
+
+}
+
 .list_service_calls {
 
   address {
     //margin-left: 100px;
     //margin-top: 10px;
     background: none repeat scroll 0 0 #EEEEEE;
-    margin-left: 14%;
+    //margin-left: 14%;
     margin-top: 10px;
     padding: 7px;
     width: 70%;
@@ -1152,6 +1195,11 @@ a:hover {
     float: right;
     width: 10%;
 
+  }
+
+  p {
+    font-style: italic;
+    margin-left: 5%;
   }
 
 
@@ -1198,6 +1246,7 @@ a:hover {
 
   label {
     font-weight: bold;
+    color: #000000;
   }
 
   select {
@@ -2090,6 +2139,10 @@ hr {
   min-height: 320px;
 }
 
+.transferred_jobs {
+  min-height: 220px;
+}
+
 
 .actions_affiliate_index {
   width: 16%;
@@ -2365,7 +2418,80 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background-color: #F5F5F5;
+  //border-color: #DDDDDD #DDDDDD transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-image: none;
+  border-style: solid;
+  border-width: 1px;
+  color: #555555;
+  cursor: default;
+  font-size: 16px;
+}
 
+
+.nav-tabs > li {
+  margin-bottom: -13px;
+  margin-top: 8px;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid white;
+}
+
+.nav-tabs > li > a, .nav-pills > li > a {
+  font-size: 16px;
+  line-height: 14px;
+  margin-right: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+
+}
+
+.job_source {
+   width: 60px;
+ }
+
+
+
+.select2-container, .select2-drop, .select2-search, .select2-search input {
+  width: 83%;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}
+
+.select2-container-multi .select2-choices {
+  border: none;
+}
+
+.newJob_note_area {
+  input, textarea {
+    max-height: 150px;
+  }
+}
+
+#s2id_service_call_tag_list {
+  border: 1px solid #CCCCCC;
+  width: 83%;
+}
+
+#s2id_account, .select2-container, .select2-drop, .select2-search, .select2-search {
+   width: 60%;
+  input {
+    width: 150%;
+  }
+}
+
+.job_title {
+  margin-left: -1.5%;
+}
 
 
 

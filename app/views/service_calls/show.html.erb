@@ -1,8 +1,9 @@
 <% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}" )%>
-<div class="smart_label">
+
+<div class="smart_label job_title">
   <ul>
     <li><h1><%= @service_call.name %></h1></li>
-    <li></li>
+    <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1></li>
   </ul>
 </div>
 

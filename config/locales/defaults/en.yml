@@ -5,3 +5,8 @@ en:
     flash:
       created_successfully: "the user was created successfully"
       updated_successfully: "User updated successfully"
+  general:
+    general:
+      source: "Source"
+    messages:
+      job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'

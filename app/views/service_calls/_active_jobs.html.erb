@@ -1,0 +1,123 @@
+<div class="well">
+
+  <div class="row-fluid my_jobs">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.my_jobs') %></h1></li>
+        <li><%= link_to I18n.t('general.general.new_job'), new_service_call_path, :class => 'btn btn-primary' %></li>
+      </ul>
+    </div>
+
+    <br>
+
+    <% if @service_calls.nil? %>
+        <span class="alert alert-info"><%= I18n.t('general.messages.no_job_records') %></span>
+    <% else %>
+
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th><%= ServiceCall.human_attribute_name(:id) %></th>
+            <th><%= ServiceCall.human_attribute_name(:status) %></th>
+            <th><%= ServiceCall.human_attribute_name(:name) %></th>
+            <th><%= I18n.t('general.general.description') %></th>
+            <th><%= I18n.t('general.general.scheduled_for') %></th>
+            <th><%= I18n.t('general.general.customer') %></th>
+            <th><%= I18n.t('general.general.actions') %></th>
+            <th class="job_source"><%= I18n.t('general.general.source') %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @service_calls.each do |sc| %>
+              <tr>
+                <td class="member_logo">
+                  <!--<#% if sc.billing_status_name == 'Overdue' %>-->
+                  <% if sc.respond_to?(:payment_overdue?) && sc.payment_overdue? %>
+                      <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+                  <% end %>
+                </td>
+                <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
+                <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
+                <td><%= sc.try(:name) %></td>
+                <td>
+                  <% unless sc.notes.blank? %>
+                      <%= link_to sc.try(:notes), service_call_path(sc) %>
+                  <% end %>
+                </td>
+                <td><%= sc.try(:scheduled_for) %></td>
+                <td><%= sc.customer.try(:name) %></td>
+                <td><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
+                <td class="job_source">
+                  <% if @service_call.instance_of?(TransferredServiceCall) %>
+                      <%= image_tag("transJob.png", :title => I18n.t('general.messages.TransJob').html_safe, :rel => 'tooltip') %>
+                  <% else %>
+                      <%= image_tag("myJob.png", :title => I18n.t('general.messages.myJob').html_safe, :rel => 'tooltip') %>
+                <% end %>
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+    <% end %>
+
+  </div>
+
+
+  <% unless @transferred_jobs.nil? %>
+
+      <div class="row-fluid transferred_jobs">
+
+        <div class="smart_label">
+          <ul>
+            <li><h1><%= I18n.t('general.general.transferred_jobs') %></h1></li>
+            <li></li>
+          </ul>
+        </div>
+
+        <br>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th><%= ServiceCall.human_attribute_name(:id) %></th>
+            <th><%= ServiceCall.human_attribute_name(:status) %></th>
+            <th><%= ServiceCall.human_attribute_name(:name) %></th>
+            <th><%= I18n.t('general.general.description') %></th>
+            <th><%= I18n.t('general.general.scheduled_for') %></th>
+            <th><%= I18n.t('general.general.customer') %></th>
+            <th><%= I18n.t('general.general.actions') %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @transferred_jobs.each do |sc| %>
+              <tr>
+                <td class="member_logo">
+                  <!--<#% if sc.payment_overdue? %>-->
+                  <% if sc.respond_to?(:payment_overdue?) && sc.payment_overdue? %>
+                      <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+                  <% end %>
+                </td>
+                <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
+                <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
+                <td><%= sc.try(:name) %></td>
+                <td>
+                  <% unless sc.notes.blank? %>
+                      <%= link_to sc.try(:notes), service_call_path(sc) %>
+                  <% end %>
+                </td>
+                <td><%= sc.try(:scheduled_for) %></td>
+                <td><%= sc.customer.try(:name) %></td>
+                <td><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+
+      </div>
+  <% end %>
+  <!--End of Well-->
+</div>
