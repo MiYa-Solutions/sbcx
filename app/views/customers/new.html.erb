@@ -16,8 +16,8 @@
       <%= simple_form_for @customer, :html => {:class => 'form-horizontal'} do |f| %>
           <%= render 'fields', f: f %>
           <div class="form-actions">
-            <%= link_to 'Back', customers_path, :class => 'btn btn-medium' %>
-            <%= f.submit "Create Customer", class: "btn btn-medium btn-primary" %>
+            <%= link_to I18n.t('general.general.back'), customers_path, :class => 'btn btn-medium' %>
+            <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary" %>
           </div>
 
       <% end %>

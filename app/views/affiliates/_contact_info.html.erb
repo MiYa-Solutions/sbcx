@@ -1,9 +1,7 @@
 <div class="affiliate_info">
-  <div class="affiliate_label">
+  <div class="smart_label">
     <ul>
-      <li><h1><%= Affiliate.model_name %></h1></li>
-      <li><h2><%= @affiliate.name %></h2></li>
-
+      <li><h1><%= I18n.t('general.general.contact_Info') %></h1></li>
       <li>
         <% if @affiliate.subcontrax_member==true %>
             <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>

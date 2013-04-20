@@ -1,5 +1,13 @@
 <% provide(:title, @affiliate.name) %>
 
+<div class="title_label affiliate_title">
+  <ul>
+    <li><h1><%= Affiliate.model_name %>:</h1></li>
+    <li><h2><%= @affiliate.name %></h2></li>
+    <li></li>
+  </ul>
+</div>
+
 <div class="well well_height">
 
 <div class="row-fluid">

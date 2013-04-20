@@ -282,7 +282,7 @@ footer {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
     min-height: 200px;
     transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
-    width: 70%;
+    min-height: 150px;
   }
 
   button {
@@ -536,6 +536,55 @@ input, textarea {
 
 }
 
+
+
+.title_label {
+  //background-color: #325bad;
+  background-color: #325bad;
+  background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);
+  background-repeat: repeat-x;
+  border-color: #0055CC #0055CC #003580;
+  display: block;
+  border-radius: 3px 3px 3px 3px;
+  padding: 5px;
+  padding-bottom: none;
+  overflow: auto;
+
+  h1 {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+  span {
+    font-weight: bold;
+    color: $white;
+    font-family: arial;
+    font-size: 16px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: right;
+
+  }
+
+
+}
 
 
 .smart_label {
@@ -1033,9 +1082,10 @@ a:hover {
 .list_account_entry {
 
   address {
-    background: none repeat scroll 0 0 #FCF8E3;
-    border: 1px solid #FBEED5;
-    //background: none repeat scroll 0 0 #EEEEEE;
+    //background: none repeat scroll 0 0 #FCF8E3;
+    //border: 1px solid #FBEED5;
+    border: 1px solid #000000;
+    background: none repeat scroll 0 0 #EEEEEE;
 
     margin-left: 1%;
     margin-top: 10px;
@@ -1085,7 +1135,7 @@ a:hover {
 
   .table-striped tbody tr:nth-child(2n+1) td, .table-striped tbody tr:nth-child(2n+1) th {
     //background: none repeat scroll 0 0 #EEEEEE;
-    background: none repeat scroll 0 0 #FCF8E3;
+    //background: none repeat scroll 0 0 #FCF8E3;
 
   }
 
@@ -1103,13 +1153,56 @@ a:hover {
 
 }
 
+.job_new_location {
+
+  address {
+    //margin-left: 100px;
+    //margin-top: 10px;
+    background: none repeat scroll 0 0 #EEEEEE;
+    //margin-left: 14%;
+    margin-top: 10px;
+    padding: 7px;
+    width: 90%;
+  }
+
+  p {
+    font-style: italic;
+    margin-left: 5%;
+  }
+
+  h4 {
+    background-color: #999999;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+    overflow: auto;
+    padding: 1px 5px 0;
+  }
+
+  label {
+    font-weight: bold;
+    color: #000000;
+  }
+
+  input, textarea {
+    width: 60%;
+  }
+
+  .select2-container, .select2-drop, .select2-search, .select2-search input {
+    width: 62%;
+  }
+
+
+}
+
 .list_service_calls {
 
   address {
     //margin-left: 100px;
     //margin-top: 10px;
     background: none repeat scroll 0 0 #EEEEEE;
-    margin-left: 14%;
+    //margin-left: 14%;
     margin-top: 10px;
     padding: 7px;
     width: 70%;
@@ -1153,8 +1246,12 @@ a:hover {
 
   }
 
+  p {
+    font-style: italic;
+    margin-left: 5%;
+  }
 
-}
+ }
 
 .no_margins {
   margin-left: none;
@@ -1197,6 +1294,7 @@ a:hover {
 
   label {
     font-weight: bold;
+    color: #000000;
   }
 
   select {
@@ -1715,8 +1813,9 @@ a:hover {
 }
 
 .entry_table_head  {
-    color: #C09853;
-    font-weight: bold;
+    //color: #C09853;
+  color: #000000;
+  font-weight: bold;
 
 
 }
@@ -1727,9 +1826,11 @@ a:hover {
   margin-left: 0.3%;
   padding: 10px 5px 5px;
   width: 98%;
-  //background-color: #FBEED5;
-  background-color: #FCF8E3;
-  border: 2px solid #FBEED5;
+  background-color: none;
+  //background-color: #FCF8E3;
+  //border: 2px solid #FBEED5;
+  //border: 1px solid #999999;
+
 
 }
 
@@ -1759,12 +1860,12 @@ a:hover {
 //}
 
 #entries_table_filter, label{
-  color: #000000;
+  color: #999999;
   font-weight: bold;
 }
 
 .dataTables_info {
-  color: #000000;
+  color: #999999;
   margin-bottom: 5px;
   margin-left: 55px;
   margin-top: -3px;
@@ -2086,6 +2187,10 @@ hr {
   min-height: 320px;
 }
 
+.transferred_jobs {
+  min-height: 220px;
+}
+
 
 .actions_affiliate_index {
   width: 16%;
@@ -2356,6 +2461,132 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   width: 280px;
 }
 
+.row_homepage {
+  margin-left: -1.5%;
+}
+
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background-color: #F5F5F5;
+  //border-color: #DDDDDD #DDDDDD transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-image: none;
+  border-style: solid;
+  border-width: 1px;
+  color: #555555;
+  cursor: default;
+  font-size: 16px;
+}
+
+
+.nav-tabs > li {
+  margin-bottom: -13px;
+  margin-top: 8px;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid white;
+}
+
+.nav-tabs > li > a, .nav-pills > li > a {
+  font-size: 16px;
+  line-height: 14px;
+  margin-right: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+
+}
+
+.job_source {
+   width: 60px;
+ }
+
+
+
+.select2-container, .select2-drop, .select2-search, .select2-search input {
+  width: 83%;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}
+
+.select2-container-multi .select2-choices {
+  border: none;
+}
+
+.newJob_note_area {
+  input, textarea {
+    max-height: 150px;
+  }
+}
+
+#s2id_service_call_tag_list {
+  border: 1px solid #CCCCCC;
+  width: 83%;
+}
+
+#s2id_account, .select2-container, .select2-drop, .select2-search, .select2-search {
+   width: 60%;
+  input {
+    width: 150%;
+  }
+}
+
+.job_title {
+  margin-left: -1.5%;
+}
+
+.affiliate_title {
+  margin-left: -1.5%;
+  background-color: #387038;
+  background-image: -moz-linear-gradient(center top , #62C462, #51A351);
+  background-repeat: repeat-x;
+  border-color: #51A351 #51A351 #387038;
+
+  h2 {
+    font-size: 16px;
+    text-transform: none;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+}
+
+
+.customer_title {
+  margin-left: -1.5%;
+  background-color: #FCF8E3;
+  border: 1px solid #FBEED5;
+
+  h2 {
+    font-size: 16px;
+    text-transform: none;
+    font-weight: bold;
+    color: #C09853;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+  h1 {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #C09853;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+}
 
 
 
