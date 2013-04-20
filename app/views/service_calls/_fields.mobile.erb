@@ -45,6 +45,34 @@
     <div class="ui-block-b"><%= f.input :scheduled_for_text, input_html: {class: "mobi-datetime", value: (Time.now)} %></div>
   </div>
 
+  <div class="job_new_location">
+    <address>
+
+      <h4><%= I18n.t('general.general.location_info') %> &nbsp;<i class="icon-edit icon-white" id="icon_job_address"></i></h4>
+      <p><%= I18n.t('general.messages.job_location_info').html_safe %></p>
+
+      <%= f.input :address1, placeholder: 'Address 1' %>
+      <%= f.input :address2, placeholder: 'Address 2' %>
+      <%= f.input :company, placeholder: 'Company Name' %>
+      <%= f.input :city, placeholder: 'City' %>
+      <%= f.input :zip, placeholder: 'Zip code' %>
+      <div class="controls">
+        <%= f.country_select :country, { priority: %w[US] }, hidden: 'true' %>
+      </div>
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="customer_state">State</label>
+        <div class="controls">
+          <%= render 'subregion_select', object: f .object%>
+        </div>
+      </div>
+      <%= f.input :phone, placeholder: 'Primary Phone' %>
+      <%= f.input :mobile_phone, placeholder: 'Mobile Phone' %>
+      <%= f.input :work_phone, placeholder: 'Work Phone' %>
+      <%= f.input :email, placeholder: 'Email address' %>
+    </address>
+  </div>
+
+
   <!--<div class="ui-grid-a">-->
     <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:started_on_text) %></div>-->
     <!--<div class="ui-block-b"><#%= f.input :started_on_text, input_html: {class: "mobi-datetime"} %></div>-->

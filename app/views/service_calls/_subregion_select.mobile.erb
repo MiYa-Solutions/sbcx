@@ -1,0 +1,12 @@
+<div id="state_code_wrapper">
+  <% parent_region ||= params[:parent_region] %>
+  <% country = Carmen::Country.coded(parent_region) %>
+
+  <% if country.nil? %>
+      <%= subregion_select(:service_call, :state, 'US') %>
+  <% elsif country.subregions? %>
+      <%= subregion_select(:service_call, :state, parent_region) %>
+  <% else %>
+      <%= text_field(:service_call, :state) %>
+  <% end %>
+</div>
