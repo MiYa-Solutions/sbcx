@@ -182,7 +182,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         permitted_attributes.concat  [:provider_status_event, :provider_payment] if provider_event_allowed?
       else # new service call
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :tag_list,:customer_name,
+          permitted_attributes = [:status_event, :tag_list,:customer_name,:scheduled_for_text,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
