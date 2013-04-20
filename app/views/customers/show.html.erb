@@ -1,5 +1,14 @@
 <% provide(:title, @customer.name) %>
 
+
+<div class="title_label customer_title">
+  <ul>
+    <li><h1><%= Customer.model_name %>:</h1></li>
+    <li><h2><%= @customer.name %></h2></li>
+    <li></li>
+  </ul>
+</div>
+
 <div class="well well_height">
 
   <div class="row-fluid">

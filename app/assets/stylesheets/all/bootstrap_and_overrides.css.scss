@@ -2541,6 +2541,53 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   margin-left: -1.5%;
 }
 
+.affiliate_title {
+  margin-left: -1.5%;
+  background-color: #387038;
+  background-image: -moz-linear-gradient(center top , #62C462, #51A351);
+  background-repeat: repeat-x;
+  border-color: #51A351 #51A351 #387038;
+
+  h2 {
+    font-size: 16px;
+    text-transform: none;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+}
+
+
+.customer_title {
+  margin-left: -1.5%;
+  background-color: #FCF8E3;
+  border: 1px solid #FBEED5;
+
+  h2 {
+    font-size: 16px;
+    text-transform: none;
+    font-weight: bold;
+    color: #C09853;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+  h1 {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #C09853;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+}
+
 
 
 
