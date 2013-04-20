@@ -538,6 +538,55 @@ input, textarea {
 
 
 
+.title_label {
+  //background-color: #325bad;
+  background-color: #325bad;
+  background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);
+  background-repeat: repeat-x;
+  border-color: #0055CC #0055CC #003580;
+  display: block;
+  border-radius: 3px 3px 3px 3px;
+  padding: 5px;
+  padding-bottom: none;
+  overflow: auto;
+
+  h1 {
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+  }
+
+  span {
+    font-weight: bold;
+    color: $white;
+    font-family: arial;
+    font-size: 16px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: right;
+
+  }
+
+
+}
+
+
 .smart_label {
   background-color: $grayLight;
   display: block;
@@ -1202,8 +1251,7 @@ a:hover {
     margin-left: 5%;
   }
 
-
-}
+ }
 
 .no_margins {
   margin-left: none;
@@ -2492,6 +2540,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .job_title {
   margin-left: -1.5%;
 }
+
+
 
 
 

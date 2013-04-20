@@ -114,6 +114,8 @@ en:
       started_at: "Started at"
       title: "Title"
       show_appointments: "Show Appointments"
+      active_jobs: "Active Jobs"
+      all_jobs: "All Jobs"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
