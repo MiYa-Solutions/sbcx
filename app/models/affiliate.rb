@@ -23,5 +23,20 @@
 #
 
 class Affiliate < Organization
-  # To change this template use File | Settings | File Templates.
+
+  validate :affiliate_name
+  has_many :organizations, finder_sql: Proc.new {
+    %Q{
+      SELECT org.*
+      FROM organizations org INNER JOIN accounts acc ON acc.organization_id = org.id
+      WHERE acc.accountable_id = #{id} AND acc.accountable_type = 'Organization'
+      ORDER BY org.id
+    }
+  }
+#-> {"SELECT org.* from organizations org join accounts acc on org.id = acc.organization_id where acc.accountable_id=#{id}"}
+
+
+  def affiliate_name
+    #affiliate.errors[:name] = "You already have an affiliate by this name" if Organization.my_affiliates(organizations.last.id).where(name: self.name).size > 0
+  end
 end
