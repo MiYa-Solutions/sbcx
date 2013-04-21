@@ -8,6 +8,17 @@ $(document).bind "pageshow", (e) ->
       $a = $(e.currentTarget)
       $('#customer-autocomplete').val($a.text())
       $('#service_call_customer_id').val($a.data('autocomplete').id)
+      $('#service_call_address1').val($a.data('autocomplete').address1)
+      $('#service_call_address2').val($a.data('autocomplete').address2)
+      $('#service_call_company').val($a.data('autocomplete').company)
+      $('#service_call_city').val($a.data('autocomplete').phone)
+      $('#service_call_zip').val($a.data('autocomplete').zip)
+      $('#service_call_state').val($a.data('autocomplete').state)
+      $('#service_call_state').selectmenu('refresh');
+      $('#service_call_phone').val($a.data('autocomplete').phone)
+      $('#service_call_mobile_phone').val($a.data('autocomplete').mobile_phone)
+      $('#service_call_work_phone').val($a.data('autocomplete').work_phone)
+      $('#service_call_email').val($a.data('autocomplete').email)
       $("#customer-autocomplete").autocomplete('clear')
     #link: 'target.html?term=', #// link to be attached to each result
     minLength: 2 #// minimum length of search string
