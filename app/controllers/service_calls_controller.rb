@@ -64,7 +64,7 @@ class ServiceCallsController < ApplicationController
       respond_to do |format|
         format.js { respond_bip_error @service_call }
         format.html do
-          render :action => 'edit'
+          render :action => 'show'
         end
         format.json { respond_bip_error @service_call }
 
