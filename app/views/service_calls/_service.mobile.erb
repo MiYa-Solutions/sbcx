@@ -1,7 +1,7 @@
 <div data-role="collapsible-set" data-inset="false">
   <!--update customer contact info-->
 
-<% if @service_call.class == MyServiceCall %>
+  <!--<#% if @service_call.class == MyServiceCall %>-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="edit_contact">
   <h3>Update Customer Contact</h3>
 
@@ -28,7 +28,7 @@
           </div>
           <div class="ui-grid-a">
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:state) %></div>
-            <div class="ui-block-b"><%= f.text_field :state %></div>
+            <div class="ui-block-b"><%= render 'subregion_select', f: f %></div>
           </div>
           <div class="ui-grid-a">
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:zip) %></div>
@@ -57,7 +57,7 @@
     </div>
 
 </div>
-<% end %>
+  <!--<#% end %>  -->
 
   <!--update Job Details-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="edit_contact">
