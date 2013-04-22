@@ -2,6 +2,8 @@
   <div class="row-fluid">
 
     <div class="span5 job_new_fields">
+      <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+
 
       <div class="control-group string mandatory">
         <label class="string optional control-label" for="customer_state">Category</label>
@@ -31,9 +33,8 @@
 
       <%= f.input :allow_collection %>
       <%= f.input :transferable %>
-      <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
-      <%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>
-      <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %>
+      <!--<#%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %>-->
+      <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer if current_user.organization.multi_user? %>
 
     <div class="newJob_note_area string mandatory">
       <%= f.input :notes %>

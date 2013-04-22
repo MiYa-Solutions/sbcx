@@ -50,7 +50,7 @@
                 <td><%= sc.customer.try(:name) %></td>
                 <td><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
                 <td class="job_source">
-                  <% if @service_call.instance_of?(TransferredServiceCall) %>
+                  <% if sc.instance_of?(TransferredServiceCall) %>
                       <%= image_tag("transJob.png", :title => I18n.t('general.messages.TransJob').html_safe, :rel => 'tooltip') %>
                   <% else %>
                       <%= image_tag("myJob.png", :title => I18n.t('general.messages.myJob').html_safe, :rel => 'tooltip') %>
