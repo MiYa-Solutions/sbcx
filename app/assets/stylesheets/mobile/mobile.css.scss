@@ -509,7 +509,7 @@ input.ui-input-text, textarea.ui-input-text {
   }
 
   .job_billing .billing_price {
-     margin-left: 73%;
+     margin-left: 65%;
 
   }
 
@@ -519,8 +519,14 @@ input.ui-input-text, textarea.ui-input-text {
     padding-right: 10px;
   }
 
+  .job_billing p {
+    margin-top: -24px;
+  }
+
 
 }
+
+
 
 
 .affiliate_balance_home {
@@ -615,7 +621,7 @@ input.ui-input-text, textarea.ui-input-text {
     cursor: pointer;
     padding: 0;
     text-align: center;
-    width: 100px;
+    width: 77px;
     height: 18px;
     margin-top: -10px;
     position: absolute;
@@ -1591,6 +1597,10 @@ footer .ui-navbar ul {
 
 
 div.ui-slider {
+  width: 55%;
+}
+
+#affiliate_balance_address {
   width: 55%;
 }
 
