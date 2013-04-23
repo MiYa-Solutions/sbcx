@@ -1,23 +1,19 @@
+<% if user_signed_in? %>
 
- <% if user_signed_in? %>
-
-
-      <div data-role="header">
+     <div data-role="header">
         <div class="miya_logo">
           <img src="/assets/logo2.png" alt="MiYa"/>
         </div>
-        <h1><%= yield(:title) || "Untitled" %></h1>
+        <h1 ><%= yield(:title) || "Untitled" %>
+                <%= link_to image_tag("/assets/ImgPlus.png", :border => 0), '#panel_page', id: "panel_page" %>
+        </h1>
+
       </div>
 
   <% else %>
 
      <div data-role="header">
 
-        <!--<div class="ui-grid-solo">-->
-        <!--<#%= link_to new_user_session_path, class: "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-a", data: { icon: "gear", corners: "true", shadow: "true", iconshadow: "true", wrapperels: "span", theme: "a" } do %>-->
-            <!--<span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sign In</span><span class="ui-icon ui-icon-gear ui-icon-shadow">&nbsp;</span></span></a>-->
-              <!--</div>-->
-          <!--<%# end %>-->
 
         <div class="header_sign_out">
 
