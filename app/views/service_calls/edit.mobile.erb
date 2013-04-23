@@ -1,12 +1,12 @@
-<% provide(:title, "Update Contact" )%>
-
+<% provide(:title, I18n.t('general.general.update_job').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}" )%>
 
 <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' } do |f| %>
 
 
     <fieldset class="ui-grid-a ui-btn-inner-small">
       <div class="ui-block-a">
-        <%= link_to 'Back', service_call_path, "class" => "ui-btn-up-c", "data-role" => "button", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
+        <%= link_to I18n.t('general.general.back'), :back, "class" => "ui-btn-up-c", "data-role" => "button", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
+
       </div>
       <div class="ui-block-b">
         <div class="miya_blue_button">

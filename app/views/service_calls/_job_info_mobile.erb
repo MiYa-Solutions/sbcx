@@ -2,6 +2,14 @@
 
 <div class="job_info_list">
   <ul data-role="listview">
+
+    <li>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:tag_list) %></div>
+        <div class="ui-block-b"><%= @service_call.tag_list  %></div>
+      </div>
+    </li>
+
     <% unless @service_call.started_on_text.blank? %>
         <li class="ui-li ui-li-static">
           <div class="ui-grid-a">
@@ -31,11 +39,22 @@
         <div class="ui-block-b"> <%= @service_call.customer.name  %> </div>
       </div>
     </li>
-    <% unless @service_call.technician.blank? %>
+
+    <% if @service_call.technician.present? && @service_call.organization.my_user?(@service_call.technician) %>
+    <!--<#% unless @service_call.technician.blank? %>-->
         <li>
           <div class="ui-grid-a">
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
             <div class="ui-block-b"><%= @service_call.technician.try (:name)  %></div>
+          </div>
+        </li>
+    <% end %>
+
+    <% if @service_call.transferred? %>
+        <li>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor) %></div>
+            <div class="ui-block-b"><%= @service_call.subcontractor.try (:name)  %></div>
           </div>
         </li>
     <% end %>

@@ -1,13 +1,27 @@
-<% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}" )%>
+<!--<#% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}" )%>-->
+<% if @service_call.class == MyServiceCall %>
+    <% provide(:title, I18n.t('general.general.my_job').html_safe)%>
+<% else %>
+<% provide(:title, I18n.t('general.general.transferred_job').html_safe)%>
+<% end %>
 
 
 <div data-role="collapsible-set" data-inset="false">
+
+  <div data-role="list-divider" data-collapsed="true" data-theme="d" class="job_header">
+    <h3><%= @service_call.name %></h3>
+    <span class="job_source_label">
+      <badge><%= @service_call.ref_id %></badge>
+    </span>
+   </div>
+
   <!--Job Actions  -->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
      <h3><%= I18n.t('general.general.actions')%></h3>
      <div class="service-call-actions" data-theme="d">
            <%= event_list(@service_call) %>
      </div>
+
   </div>
 
   <!--Job Status-->

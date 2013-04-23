@@ -1,6 +1,20 @@
 <%#= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
 <!--#<#% end %> -->
- <br>
+<br>
+<div class="edit_job_details">
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
+      <div class="ui-block-b"><%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %></div>
+    </div>
+
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:tag_list) %></div>
+      <div class="ui-block-b"><%= f.text_field :tag_list, data: { tags: current_user.organization.tags.map(&:name) } %></div>
+    </div>
+</div>
+
+<br>
+
 <%= f.input :customer, input_html: {id: "customer-autocomplete"}, :label => "Select Customer" %>
 <div class= "new_customer_job_button">
   <%= link_to I18n.t('general.general.new_customer'), new_customer_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
@@ -8,9 +22,6 @@
 <%= f.hidden_field :customer_id %>
 <ul id="customer-suggestions" data-role="listview" data-inset="true"></ul>
 <br>
-
-<!-- <#%= f.association :customer, collection: current_user.organization.customers, value: f.object.customer %> -->
-
 
 <div class="edit_job_details">
 
@@ -24,66 +35,70 @@
     <div class="ui-block-b collection"><%= f.input :transferable %></div>
   </div>
 
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
-    <div class="ui-block-b"><%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %></div>
-  </div>
-
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor) %></div>
-    <div class="ui-block-b"><%= f.association :subcontractor, collection: ([current_user.organization.becomes(Subcontractor)] + current_user.organization.subcontractors), value: f.object.subcontractor, :include_blank => "Me" %></div>
-  </div>
-
+  <% if current_user.organization.multi_user? %>
   <div class="ui-grid-a">
     <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
-    <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.customer, value: f.object.customer %></div>
+    <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>
   </div>
+  <% end %>
 
 
   <div class="ui-grid-a">
     <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
     <div class="ui-block-b"><%= f.input :scheduled_for_text, input_html: {class: "mobi-datetime", value: (Time.now)} %></div>
   </div>
-
-  <div class="job_new_location">
-    <address>
-
-      <h4><%= I18n.t('general.general.location_info') %> &nbsp;<i class="icon-edit icon-white" id="icon_job_address"></i></h4>
-      <p><%= I18n.t('general.messages.job_location_info').html_safe %></p>
-
-      <%= f.input :address1, placeholder: 'Address 1' %>
-      <%= f.input :address2, placeholder: 'Address 2' %>
-      <%= f.input :company, placeholder: 'Company Name' %>
-      <%= f.input :city, placeholder: 'City' %>
-      <%= f.input :zip, placeholder: 'Zip code' %>
-      <div class="controls">
-        <%= f.country_select :country, { priority: %w[US] }, hidden: 'true' %>
-      </div>
-      <div class="control-group string mandatory">
-        <label class="string optional control-label" for="customer_state">State</label>
-        <div class="controls">
-          <%= render 'subregion_select', object: f .object%>
-        </div>
-      </div>
-      <%= f.input :phone, placeholder: 'Primary Phone' %>
-      <%= f.input :mobile_phone, placeholder: 'Mobile Phone' %>
-      <%= f.input :work_phone, placeholder: 'Work Phone' %>
-      <%= f.input :email, placeholder: 'Email address' %>
-    </address>
-  </div>
-
-
-  <!--<div class="ui-grid-a">-->
-    <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:started_on_text) %></div>-->
-    <!--<div class="ui-block-b"><#%= f.input :started_on_text, input_html: {class: "mobi-datetime"} %></div>-->
-  <!--</div>-->
-
-  <!--<div class="ui-grid-a">-->
-    <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:completed_on_text) %></div>-->
-    <!--<div class="ui-block-b"><#%= f.input :completed_on_text, input_html: {class: "mobi-datetime"} %></div>-->
-  <!--</div>-->
-
-
 </div>
 
-  <%= f.input :notes %>
+<%= f.input :notes %>
+<br>
+
+<ul data-role="listview"  data-filter="false" data-divider-theme="d">
+<li><h2><%= I18n.t('general.general.location_info') %></h2><p><%= I18n.t('general.messages.job_location_info').html_safe %></p>
+</li>
+<li>
+  <div class="edit_job_details">
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address1) %></div>
+      <div class="ui-block-b"><%= f.input :address1 %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address2) %></div>
+      <div class="ui-block-b"><%= f.input :address2 %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:company) %></div>
+      <div class="ui-block-b"><%= f.input :company %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:city) %></div>
+      <div class="ui-block-b"><%= f.input :city %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:zip) %></div>
+      <div class="ui-block-b"><%= f.input :zip %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:state) %></div>
+      <div class="ui-block-b"> <%= render 'subregion_select', f: f %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:phone) %></div>
+      <div class="ui-block-b"><%= f.input :phone %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:mobile_phone) %></div>
+      <div class="ui-block-b"><%= f.input :mobile_phone %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:work_phone) %></div>
+      <div class="ui-block-b"><%= f.input :work_phone %></div>
+    </div>
+    <div class="ui-grid-a">
+      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:email) %></div>
+      <div class="ui-block-b"><%= f.input :email %></div>
+    </div>
+  </div>
+</li>
+
+</ul>
+<br>

@@ -3,7 +3,7 @@
 
   <!--<#% if @service_call.class == MyServiceCall %>-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="edit_contact">
-  <h3>Update Customer Contact</h3>
+  <h3><%= I18n.t('general.general.update_customer_details') %></h3>
 
         <div class="customer_contacts">
           <div class="ui-grid-a">
@@ -63,37 +63,40 @@
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="edit_contact">
 
 
-      <h3>Update Job Details</h3>
+      <h3><%= I18n.t('general.general.update_job_details') %></h3>
 
     <div class="edit_job_details">
 
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
-            <div class="ui-block-b"><%= f.input :scheduled_for_text, input_html: {class: "mobi-datetime"} %></div>
-          </div>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:name) %></div>
+        <div class="ui-block-b"><%= f.text_field :name %></div>
+      </div>
 
-      <% unless @service_call.started_on_text.blank? %>
-          <div class="ui-grid-a">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:tag_list) %></div>
+        <div class="ui-block-b"><%= f.text_field :tag_list, data: { tags: current_user.organization.tags.map(&:name) } %></div>
+      </div>
+
+    <% if permitted_attribute? @service_call, :started_on_text %>
+    <div class="ui-grid-a">
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:started_on_text) %></div>
             <div class="ui-block-b"><%= f.input :started_on_text, input_html: {class: "mobi-datetime"} %></div>
           </div>
       <% end %>
 
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:completed_on_text) %></div>
-            <div class="ui-block-b"><%= f.input :completed_on_text, input_html: {class: "mobi-datetime"} %></div>
-          </div>
+      <% if permitted_attribute? @service_call, :completed_on_text %>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:completed_on_text) %></div>
+        <div class="ui-block-b"><%= f.input :completed_on_text, input_html: {class: "mobi-datetime"} %></div>
+      </div>
+      <% end %>
 
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
-            <div class="ui-block-b"><%= f.input :customer, input_html: {id: "customer-autocomplete"}, "value" => @service_call.customer %>
-              <%= f.hidden_field :customer_id %>
-              <ul id="customer-suggestions" data-role="listview" data-inset="true"></ul>
-            </div>
-          </div>
-
-      <br>
-
+      <% if permitted_attribute? @service_call, :scheduled_for_text %>
+      <div class="ui-grid-a">
+         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
+         <div class="ui-block-b"><%= f.input :scheduled_for_text, input_html: {class: "mobi-datetime"} %></div>
+      </div>
+      <% end %>
 
       <% if @service_call.technician.present? && @service_call.instance_of?(MyServiceCall) && @service_call.organization.my_user?(@service_call.technician) %>
           <div class="ui-grid-a">
@@ -103,28 +106,13 @@
 
       <% end %>
 
-
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:notes) %></div>
-        <div class="ui-block-b"><%= f.input :notes %></div>
-      </div>
-
-
-
-      <% if @service_call.my_role == :provider %>
-          <% unless @service_call.subcontractor.subcontrax_member? %>
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:completed_on_text) %></div>
-            <div class="ui-block-b"><%= f.input :completed_on_text, input_html: {class: "mobi-datetime"} %></div>
-          </div>
-
-          <% end %>
-
-      <% end %>
-
-
-
     </div>
+
+      <%= f.input :notes %>
+
+
+
+
 
   </div>
 
