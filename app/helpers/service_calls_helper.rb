@@ -159,7 +159,8 @@ module ServiceCallsHelper
                        id:    'service_call_transfer_btn',
                        class: "btn btn-large btn-primary red-button",
                        title: 'Click to transfer the Service Call to the Subcontractor you selected',
-                       rel:   'tooltip'
+                       rel:   'tooltip',
+                       confirm: ""
              )
     end
   end

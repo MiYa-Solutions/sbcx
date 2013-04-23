@@ -27,6 +27,7 @@ class CustomersController < ApplicationController
         end
 
         format.mobile do
+          flash[:success] = t 'customer.crud_messages.success', customer_name: @customer.name
           redirect_back_or_to(@customer)
         end
       end

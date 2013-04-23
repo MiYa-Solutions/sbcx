@@ -11,8 +11,9 @@
         <%= link_to 'Back', customers_path, "class" => "ui-btn-up-c", "data-role" => "button", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
       </div>
       <div class="ui-block-b">
-        <div class="miya_blue_button">
-          <%= f.submit 'Save', "class" => "ui-btn-up-b", "data-rel" => "back", "data-role" => "button", "data-theme" => "b", id: 'save_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+        <div class="">
+          <!--<%#= f.submit 'Save', "class" => "ui-btn-up-b", "data-rel" => "back", "data-role" => "button", "data-theme" => "b", id: 'save_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>-->
+          <%= f.submit 'Save', id: 'save_provider_btn', "data-theme" => "b" %>
         </div>
       </div>
     </fieldset>
@@ -27,9 +28,9 @@
 
 
 
-    <div class="miya_blue_button">
-      <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-rel" => "back", "data-role" => "button", "data-theme" => "b", id: 'save2_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>
-    </div>
+    <!--<div class="miya_blue_button">-->
+      <!--<#%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-rel" => "back", "data-role" => "button", "data-theme" => "b", id: 'save2_provider_btn', "data-icon" => "check", "data-iconpos" => "left" %>-->
+    <!--</div>-->
 
 
 <% end %>
