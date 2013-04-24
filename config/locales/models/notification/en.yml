@@ -9,7 +9,7 @@ en:
     received_service_call_notification:
       html_message: 'New %{link} from %{prov_name}'
       subject: 'New Service Call'
-      content: 'New service call was transferred to you by: <br> Provider Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
+      content: 'New service call was transferred to you by: <br> Contractor Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
       subject: 'Service call %{ref} is completed'
@@ -79,7 +79,7 @@ en:
       content: '%{technician} has started the service call at: %{started_at}'
     sc_provider_invoiced_notification:
       html_message: 'You should no longer handle the %{link} payment collection, as the %{provider} has invoiced the customer.'
-      subject: 'The provider invoiced job %{ref}'
+      subject: 'The Contractor invoiced job %{ref}'
       content: '%{provider} has invoiced the customer, therefore you are no longer expeceted to handle the payment collection.'
     sc_subcon_deposited_notification:
       html_message: '%{subcontractor}, claims he deposited the payment for %{link}. Please confirm by clicking the button'
@@ -100,21 +100,21 @@ en:
       subject: "Payment for %{ref} was collected"
       content: 'The payment for the service call was collected by the subcontractor %{subcontractor}'
     sc_deposit_confirmed_notification:
-      html_message: 'The provider (%{provider}) has confirmed receiving the payment for %{link} %{ref}'
-      subject: 'The provider confirmed the deposit for %{ref}'
+      html_message: 'The Contractor (%{provider}) has confirmed receiving the payment for %{link} %{ref}'
+      subject: 'The Contractor confirmed the deposit for %{ref}'
       content: '%{provider} has confirmed he received the payment'
     sc_provider_collected_notification:
-      html_message: 'The provider (%{provider}) has collected the payment for %{link} %{ref]'
-      subject: 'The provider collected the payment for job %{ref}'
-      content: 'Please note that the provider (%{provider}) has collected the payment for job %{ref}'
+      html_message: 'The Contractor (%{provider}) has collected the payment for %{link} %{ref]'
+      subject: 'The Contractor collected the payment for job %{ref}'
+      content: 'Please note that the Contractor (%{provider}) has collected the payment for job %{ref}'
     sc_provider_settled_notification:
-      html_message: 'The provider (%{provider}) claims the fees for this %{link} (%{ref}) have been settled. If you agree please confirm.'
-      subject: 'The Provider Claims Job %{ref} Is Settled'
-      content: 'The provider (%{provider}) claims you have settled the fees for commissions for this job %{ref}. You should confirm you agree with this statment by cicking ont the applicable button. If you disagree, please contact your provider to resolve the issue.'
+      html_message: 'The Contractor (%{provider}) claims the fees for this %{link} (%{ref}) have been settled. If you agree please confirm.'
+      subject: 'The Contractor Claims Job %{ref} Is Settled'
+      content: 'The Contractor (%{provider}) claims you have settled the fees for commissions for this job %{ref}. You should confirm you agree with this statment by cicking ont the applicable button. If you disagree, please contact your provider to resolve the issue.'
     sc_provider_confirmed_settled_notification:
-      html_message: 'The provider (%{provider}) has confirmed %{link} (%{ref}) has been settled'
-      subject: 'Settlement With The Provider Has Been Confirmed For %{ref}'
-      content: 'The provider (%{provider}) agrees with your indication that job %{ref} has been settled'
+      html_message: 'The Contractor (%{provider}) has confirmed %{link} (%{ref}) has been settled'
+      subject: 'Settlement With The Contractor Has Been Confirmed For %{ref}'
+      content: 'The Contractor (%{provider}) agrees with your indication that job %{ref} has been settled'
     sc_subcon_confirmed_settled_notification:
       subject: '%{subcon} (S) has confirmed the settlement of job %{ref}'
       html_message: '%{subcon} (S) has confirmed that all commission and fees for %{link} have been settled'

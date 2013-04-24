@@ -1,10 +1,13 @@
 en:
+  activerecord:
+    models:
+      provider: "Contractor"
   providers:
     buttons:
-      create_provider: 'Save Provider'
+      create_provider: 'Save Contractor'
       edit_provider: "Edit"
     flash:
-      create_provider: '%{name} provider was created successfully!'
+      create_provider: '%{name} Contractor was created successfully!'
     index:
-      create_provider_button: 'Create The Provider'
+      create_provider_button: 'Create The Contractor'
     new:

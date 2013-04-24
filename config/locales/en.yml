@@ -29,7 +29,7 @@ en:
       subcontractor_created: "Subcontractor creates successfully!"
   general:
     messages:
-      provider_icon: "This Affiliate is your Provider"
+      provider_icon: "This Affiliate is your Contractor"
       subco_icon: "This Affiliate is your Subcontractor"
       myJob: "I'm the Contractor"
       TransJob: "I'm the Subcontractor"
@@ -80,7 +80,7 @@ en:
       email: "Email"
       actions: "Actions"
       search_affiliate: "Search for private affiliates and SubConTraX members"
-      provider: "Provider"
+      provider: "Contractor"
       subcontractor: "Subcontractor"
       member: "SubConTraX member"
       send_invite: "Send Invite"

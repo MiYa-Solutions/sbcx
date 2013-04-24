@@ -1189,6 +1189,24 @@ input.ui-input-text, textarea.ui-input-text {
   }
 }
 
+.search_balance {
+
+  .ui-listview-filter {
+    border-width: 0;
+    margin: -35px -15px 15px;
+    overflow: hidden;
+    padding-top: 40px;
+  }
+
+  .new_job_button .ui-btn {
+    margin-top: -34px;
+
+  }
+  .ui-shadow-inset {
+    box-shadow: none;
+  }
+}
+
 
 .search_network {
 

@@ -4,11 +4,11 @@ en:
     received_new_service_call:
       subject: 'New Job has been transferred to you'
       title: 'New Job'
-      content: 'New service call has been transferred to you by Provider Name: &nbsp; <strong>%{provider}</strong>'
+      content: 'New service call has been transferred to you by Contractor Name: &nbsp; <strong>%{provider}</strong>'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the new service call'
     provider_invoiced_service_call:
-      subject: 'The Provider Has Invoiced The Customer'
-      title: 'The Provider Has Invoiced The Customer'
+      subject: 'The Contractor Has Invoiced The Customer'
+      title: 'The Contractor Has Invoiced The Customer'
       content: '%{provider} has invoiced the customer for job %{ref}'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the service call'
 
@@ -64,9 +64,9 @@ en:
       content: 'The following Job has been rejected by Subcontractor Name: &nbsp; <strong>%{subcontractor}</strong>.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_provider_invoiced_notification:
-      title: 'Customer has been Invoiced by Provider. No Collection is needed.'
-      subject: 'Invoiced by Provider'
-      content: 'Please note that the customer has been invoiced by Provider Name: &nbsp; <strong>%{provider}</strong>.'
+      title: 'Customer has been Invoiced by Contractor. No Collection is needed.'
+      subject: 'Invoiced by Contractor'
+      content: 'Please note that the customer has been invoiced by Contractor Name: &nbsp; <strong>%{provider}</strong>.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_subcon_deposited_notification:
       title: 'Payment has been deposited by Subcontractor'
@@ -87,7 +87,7 @@ en:
       title: 'Job has been Started'
       subject: 'Job has been Started'
       content: 'The Job has been started by Technician Name: &nbsp; <strong>%{technician}</strong>.'
-      content_provider: 'The Job has been started by Provider Name: &nbsp; <strong>%{provider}</strong>.'
+      content_provider: 'The Job has been started by Contractor Name: &nbsp; <strong>%{provider}</strong>.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_started_notification:
       title: 'Job has been Started'
@@ -100,19 +100,19 @@ en:
       content: 'Subcontractor Name: &nbsp; <strong>%{subcontractor}</strong> has confirmed that commission fees for this Job have been settled.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_provider_confirmed_settled_notification:
-      title: 'Provider has Confirmed Settlement'
-      subject: 'Provider has Confirmed Settlement'
-      content: 'Provider Name: &nbsp; <strong>%{provider}</strong> has confirmed that commission fees for this Job have been settled.'
+      title: 'Contractor has Confirmed Settlement'
+      subject: 'Contractor has Confirmed Settlement'
+      content: 'Contractor Name: &nbsp; <strong>%{provider}</strong> has confirmed that commission fees for this Job have been settled.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_provider_deposited_notification:
-      title: 'Provider has Confirmed Receiving Payment'
-      subject: 'Provider has Confirmed Receiving Payment'
-      content: 'Please note that Provider Name: &nbsp; <strong>%{provider}</strong> has confirmed receiving payment for the following job.'
+      title: 'Contractor has Confirmed Receiving Payment'
+      subject: 'Contractor has Confirmed Receiving Payment'
+      content: 'Please note that Contractor Name: &nbsp; <strong>%{provider}</strong> has confirmed receiving payment for the following job.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_provider_collected_notification:
-      title: 'Payment has been collected by Provider'
-      subject: 'Payment has been collected by Provider'
-      content: 'Please note that Provider Name: &nbsp; <strong>%{provider}</strong> has collected payment for the following job.'
+      title: 'Payment has been collected by Contractor'
+      subject: 'Payment has been collected by Contractor'
+      content: 'Please note that Contractor Name: &nbsp; <strong>%{provider}</strong> has collected payment for the following job.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_subcon_collected_notification:
       title: 'Payment has been collected by Subcontractor'
@@ -120,7 +120,7 @@ en:
       content: 'Please note that Subcontractor Name: &nbsp; <strong>%{subcontractor}</strong> has collected payment for the following job.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_provider_settled_notification:
-      title: 'Provider has confirmed Job is settled'
-      subject: 'Provider has confirmed Job is settled'
-      content: 'Your confirmation is pending. Please note that Provider Name: &nbsp; <strong>%{provider}</strong> has indicated that the following job is settled.'
+      title: 'Contractor has confirmed Job is settled'
+      subject: 'Contractor has confirmed Job is settled'
+      content: 'Your confirmation is pending. Please note that Contractor Name: &nbsp; <strong>%{provider}</strong> has indicated that the following job is settled.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account to confirm this action.'

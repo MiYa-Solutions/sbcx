@@ -2,6 +2,7 @@ en:
   activerecord:
     models:
       affiliate: "Affiliate"
+      provider: "Contractor"
     attributes:
       affiliate:
         address1: "Address"

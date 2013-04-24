@@ -10,7 +10,7 @@ en:
       subcontracting_agreement:
         name: "Name"
         description: "Description"
-        organization: "Provider"
+        organization: "Contractor"
         counterparty: "Subcontractor"
       supplier_agreement:
         name: "Name"
@@ -35,9 +35,9 @@ en:
           states:
             draft: "Draft"
             active: "Active"
-            pending_org_approval: "Pending Provider Approval"
+            pending_org_approval: "Pending Contractor Approval"
             pending_cparty_approval: "Pending Subcontractor Approval"
-            rejected_by_org: "Rejected By The Provider"
+            rejected_by_org: "Rejected By The Contractor"
             rejected_by_cparty: "Rejected By The Subcontractor"
             canceled: "Canceled"
             canceled: "Replaced With Another Agreement"

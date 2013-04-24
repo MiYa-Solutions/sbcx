@@ -9,4 +9,4 @@ en:
     errors:
       models:
         bom:
-          buyer: "The buyer must be either the provider, subcontractor or the technician"
+          buyer: "The buyer must be either the Contractor, Subcontractor or the Technician"

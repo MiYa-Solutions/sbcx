@@ -47,6 +47,19 @@
 <!-- Start of second page -->
 <div data-role="page" id="more" data-theme="d" data-content-theme="d">
 
+  <div data-role="popup" id="betaPopup" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
+
+    <div data-role="header" data-theme="a" class="ui-corner-top">
+      <h1>BETA VERSION</h1>
+    </div>
+    <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+      <br><h3 class="ui-title">This action can't be completed </h3>
+      <p>Please log into to your SubConTraX account from your PC to complete this action.</p>
+      <!--  <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="c">Cancel</a>-->
+      <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="b">Close</a>
+    </div>
+  </div>
+
   <div data-role="header">
 
     <div class="miya_logo">
@@ -83,8 +96,8 @@
     <div class="icon_grid">
       <div class="ui-grid-b">
         <div class="ui-block-a white icon_frame">
-          <img src="/assets/balance.png" alt="MiYa"/>
-
+          <!--<img src="/assets/balance.png" alt="MiYa"/>-->
+          <%= link_to image_tag("/assets/balance.png", :border => 0), accounting_entries_path %>
           <div><%= I18n.t('general.general.balance') %></div>
         </div>
         <div class="ui-block-b white icon_frame">
@@ -92,9 +105,15 @@
           <div><%= I18n.t('general.general.alerts') %></div>
         </div>
         <div class="ui-block-c white icon_frame">
-          <%= link_to image_tag("/assets/profile.png", :border => 0), edit_user_registration_path %>
+          <!--<#%= link_to image_tag("/assets/profile.png", :border => 0), edit_user_registration_path %>-->
+          <%= link_to image_tag("/assets/profile.png", :border => 0),  "#betaPopup", "data-rel" => "popup", "data-transition" => "pop" %>
+
           <div><%= I18n.t('general.general.my_profile') %></div>
         </div>
+
+
+
+
 
       </div>
     </div>
@@ -103,14 +122,14 @@
     <div class="icon_grid">
       <div class="ui-grid-b">
         <div class="ui-block-a white icon_frame">
-          <img src="/assets/settings.png" alt="MiYa"/>
-
+          <!--<img src="/assets/settings.png" alt="MiYa"/>-->
+          <%= link_to image_tag("/assets/settings.png", :border => 0),  "#betaPopup", "data-rel" => "popup", "data-transition" => "pop" %>
           <div><%= I18n.t('general.general.preferences') %></div>
         </div>
 
         <div class="ui-block-b white icon_frame">
-          <img src="/assets/support.png" alt="MiYa"/>
-
+          <!--<img src="/assets/support.png" alt="MiYa"/>-->
+          <%= link_to image_tag("/assets/support.png", :border => 0),  "#betaPopup", "data-rel" => "popup", "data-transition" => "pop" %>
           <div><%= I18n.t('general.general.contact_us') %></div>
         </div>
 

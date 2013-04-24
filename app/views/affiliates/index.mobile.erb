@@ -1,48 +1,6 @@
 <% provide(:title, Affiliate.name.humanize.pluralize) %>
 
-<!--<div class="three_buttons_top ui-btn-inner-small">-->
-
-<!--<fieldset class="ui-grid-b">-->
-
-      <!--<div class="ui-block-a">-->
-             <!--<#%= link_to 'Subcontractors', subcontractors_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>-->
-      <!--</div>-->
-
-      <!--<div class="ui-block-b">-->
-             <!--<#%= link_to 'Providers', providers_path, "data-role" => "button", :class => "ui-btn-up-c", "data-inline" => "true" %>-->
-      <!--</div>-->
-
-      <!--<div class="ui-block-c">-->
-            <!--<div class="miya_blue_button">-->
-                 <!--<#%= link_to 'New', new_affiliate_path, "data-role" => "button", :class => "ui-btn-up-b",  id: 'new-affiliate-button', "data-icon" => "email"%>-->
-            <!--</div>-->
-      <!--</div>-->
-
-<!--</fieldset>-->
-<!--</div>-->
-
-
 <br>
-
-
-<!--<ul data-role="listview">-->
-
-  <!--<li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d affiliates_switch"><#%= Subcontractor.model_name.human  %>-->
-
-    <!--<div data-role="fieldcontain">-->
-      <!--<select name="flip-5" id="flip-5" data-role="slider" data-theme="c" data-track-theme="a" data-mini="true">-->
-        <!--<option value="no">No</option>-->
-        <!--<option value="yes">Yes</option>-->
-      <!--</select>-->
-    <!--</div>-->
-    <!--<div class= "show_all_notifications">-->
-      <!--<#%= link_to I18n.t('general.general.see_all'), notifications_path, "data-role" => "button", id: 'show-all-notifications-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>-->
-    <!--</div>-->
-        <!--<span class="alert_label_mobile">-->
-                <!--<badge><#%= @notification_count %></badge>-->
-        <!--</span>-->
-  <!--</li>-->
-  <!--</ul>-->
 
 <div class="search_network">
   <%= form_tag affiliates_path, id: "agreement_search_form", :method => :get, :remote => true, :class => "ui-listview-filter ui-bar-c", "role" => "search" do %>

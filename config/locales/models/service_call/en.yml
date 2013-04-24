@@ -18,6 +18,7 @@ en:
         provider: "Contractor"
         address1: "Address"
         transferable: "Allow Transfer"
+        provider_status: "Contractor Status"
 
       transferred_service_call:
         customer: "Customer"
@@ -25,6 +26,7 @@ en:
         tag_list: "Job Type(s)"
         address1: "Address"
         transferable: "Allow Transfer"
+        provider_status: "Contractor Status"
 
 
       service_call:
@@ -39,6 +41,7 @@ en:
         scheduled_for_text: "scheduled for"
         completed_on: "Job Completed on"
         transferable: "Allow Transfer"
+        provider_status: "Contractor Status"
 
 
     state_machines:
@@ -66,7 +69,7 @@ en:
             invoiced: "Invoiced"
             paid: "Paid"
             pending: "Pending"
-            invoiced_by_prov: "Invoiced (Provider)"
+            invoiced_by_prov: "Invoiced (Contractor)"
       my_service_call:
         status:
           events:
@@ -133,9 +136,9 @@ en:
       event: 'The service call was %{event_name} successfully'
   service_call:
     errors:
-      cant_create_for_member: "You can't create a transferred Job when the provider is a member. Please contact the provider and ask him to create the service call"
-      missing_provider: "Please specify a provider for this transferred Job"
-      customer_does_not_belong_to_provider: "The customer must be the provider's customer"
+      cant_create_for_member: "You can't create a transferred Job when the Contractor is a member. Please contact the Contractor and ask him to create the service call"
+      missing_provider: "Please specify a Contractor for this transferred Job"
+      customer_does_not_belong_to_provider: "The customer must be the Contractor's customer"
 
     crud_messages:
       success: "The Job was created successfully"
@@ -177,11 +180,11 @@ en:
     name: "Job has been Invoiced"
     description: '%{subcontractor} has submitted the Job invoice to the customer'
   service_call_provider_invoiced_event:
-    name: "Invoiced by Provider"
-    description: 'Please note that the provider &nbsp; (%{provider}) has submitted the Job invoice to the customer. You are no longer expected to collect the payment from the customer.'
+    name: "Invoiced by Contractor"
+    description: 'Please note that the Contractor &nbsp; (%{provider}) has submitted the Job invoice to the customer. You are no longer expected to collect the payment from the customer.'
   service_call_deposit_event:
-    name: "Deposited Payment to Provider"
-    description: 'The payment has been deposited to Provider Name: &nbsp; %{provider}'
+    name: "Deposited Payment to Contractor"
+    description: 'The payment has been deposited to Contractor Name: &nbsp; %{provider}'
   service_call_subcon_deposited_event:
     name: "Subcontractor has Deposited Payment"
     description: 'Subcontractor Name: &nbsp; %{subcontractor} has indicated that payment has been deposited for this Job'
@@ -195,26 +198,26 @@ en:
     name: "Subcontractor has Collected Payment"
     description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has collected the payment from the customer'
   service_call_deposit_confirmed_event:
-    name: "Provider has Confirmed Deposit"
-    description: 'Provider Name: &nbsp; (%{provider}) has confirmed receiving payment for this Job'
+    name: "Contractor has Confirmed Deposit"
+    description: 'Contractor Name: &nbsp; (%{provider}) has confirmed receiving payment for this Job'
   service_call_confirm_deposit_event:
     name: "Deposit has been Confirmed"
     description: 'You have confirmed receiving customer payment from Subcontractor Name: &nbsp; %{subcontractor}'
   service_call_provider_collected_event:
-    name: "Payment has been Collected by Provider"
-    description: "Provider Name: &nbsp; (%{provider}) has collected the payment from the customer"
+    name: "Payment has been Collected by Contractor"
+    description: "Contractor Name: &nbsp; (%{provider}) has collected the payment from the customer"
   service_call_payment_overdue_event:
     name: "Payment is Overdue"
     description: "The payment for this Job has been marked as overdue"
   service_call_provider_settled_event:
-    name: "Provider has Marked as Settled"
-    description: 'Provider Name: &nbsp; (%{provider}) has indicated that the subcontracting fee for this service call has been settled. If you agree please click the confirm button'
+    name: "Contractor has Marked as Settled"
+    description: 'Contractor Name: &nbsp; (%{provider}) has indicated that the subcontracting fee for this service call has been settled. If you agree please click the confirm button'
   service_call_provider_settle_event:
-    name: "Settled with Provider"
-    description: "You have indicated that the commission fees have been settled with the provider"
+    name: "Settled with Contractor"
+    description: "You have indicated that the commission fees have been settled with the Contractor"
   service_call_provider_confirmed_settled_event:
-    name: "Provider has Confirmed Settlement"
-    description: 'Provider Name: &nbsp; (%{provider}) has confirmed that commission fees for this Job have been settled'
+    name: "Contractor has Confirmed Settlement"
+    description: 'Contractor Name: &nbsp; (%{provider}) has confirmed that commission fees for this Job have been settled'
   service_call_subcon_confirmed_settled_event:
     name: "Subcontractor has Confirmed Settlement"
     description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
@@ -225,7 +228,7 @@ en:
     name: "The job is closed"
     description: "The job was marked as closed - no more actions are expected to happen in regards to this job"
   service_call_provider_clear_event:
-    name: "The payment from provider is cleared"
+    name: "The payment from Contractor is cleared"
     description: 'It was indicated that the payment from %{prov} for job %{job_ref} was cleared'
   service_call_subcon_cleared_event:
     name: "Subcontractor Cleared Payment"

@@ -1,7 +1,7 @@
 en:
   headers:
     subcontractor_actions: "Subcontractor Actions"
-    provider_actions: "Provider Actions"
+    provider_actions: "Contractor Actions"
     billing_actions: "Billing Actions"
     work_actions: "Work Actions"
   service_call:
@@ -36,7 +36,7 @@ en:
         reject:
           tooltip: "Click to reject the service call"
         transfer:
-          tooltip: "Click to outsource the service call to one of your providers the"
+          tooltip: "Click to outsource the service call to one of your Contractor the"
         cancel_transfer:
           tooltip: "Click cancel the outsourcing of this service call"
         cancel:
@@ -74,7 +74,7 @@ en:
         subcon_invoiced:
           tooltip: "Click to indicate the subcontractor has invoiced the customer"
         provider_invoiced:
-          tooltip: "Click to indicate the provider has invoiced the customer"
+          tooltip: "Click to indicate the Contractor has invoiced the customer"
         overdue:
           tooltip: "Click to indicate the payment for the service is overdue"
         collect:

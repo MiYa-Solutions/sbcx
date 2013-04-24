@@ -5,6 +5,7 @@ en:
   activerecord:
     models:
       agreement: "Subcontracting Agreement"
+      provider: "Contractor"
     attributes:
       provider:
         name: "Name"
