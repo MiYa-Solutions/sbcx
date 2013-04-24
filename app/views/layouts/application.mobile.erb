@@ -14,9 +14,7 @@
 <body>
 <div data-role="page" data-theme="d" data-content-theme="d">
 
-
-
-  <!--<div data-role="panel" id="mypanel" data-position="right" data-display="overlay">-->
+  <!--<div data-role="panel" id="panel_page" data-position="right" data-display="overlay">-->
   <!--&lt;!&ndash; panel content goes here &ndash;&gt;-->
   <!--Hello!-->
   <!--</div>-->
@@ -25,10 +23,7 @@
     <%= render 'layouts/header' %>
   </div>
 
-
-
-
-  <div data-role="content">
+  <div data-role="content" class="ui-responsive-panel">
 
     <% unless flash.empty? %>
         <div class="info">
@@ -53,7 +48,12 @@
 <div data-role="page" id="more" data-theme="d" data-content-theme="d">
 
   <div data-role="header">
-    <%= render 'layouts/header' %>
+
+    <div class="miya_logo">
+      <img src="/assets/logo2.png" alt="MiYa"/>
+    </div>
+    <h1 >Closed BETA</h1>
+
   </div>
   <!-- /header -->
 

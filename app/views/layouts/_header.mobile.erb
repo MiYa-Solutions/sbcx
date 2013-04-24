@@ -5,7 +5,7 @@
           <img src="/assets/logo2.png" alt="MiYa"/>
         </div>
         <h1 ><%= yield(:title) || "Untitled" %>
-                <%= link_to image_tag("/assets/ImgPlus.png", :border => 0), '#panel_page', id: "panel_page" %>
+                <%= link_to image_tag("/assets/ImgPlus.png", :border => 0), "#side_bar", id: "panel_page", "data-position-to" => "origin", "data-rel" => "popup", "data-transition" => "slide" %>
         </h1>
 
       </div>
@@ -13,15 +13,15 @@
   <% else %>
 
      <div data-role="header">
-
-
         <div class="header_sign_out">
-
         <h1>Closed BETA</h1>
         </div>
 
      </div>
   <% end %>
+
+
+
 
 
 
