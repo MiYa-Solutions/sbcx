@@ -1,7 +1,9 @@
+<div class="posting_rules_inputs">
+
 <%= simple_form_for(@posting_rule, as: :posting_rule, url: agreement_posting_rules_url(@posting_rule.agreement), method: :post, :html => { :class => 'form-horizontal' }) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 
-    <div class="form-inputs">
+
 
       <%= f.hidden_field :agreement_id %>
 
@@ -11,42 +13,60 @@
       <%= f.hidden_field :rate_type, value: @posting_rule.rate_types.first %>
 
       <%= f.input :cash_rate %>
-      <%= f.label :cash_rate_type %>
-      <%= f.select :cash_rate_type, profit_split_payment_rates %>
+
+     <div class="control-group string mandatory">
+         <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:cash_rate_type) %></label>
+          <div class="controls">
+                <%= f.select :cash_rate_type, profit_split_payment_rates %>
+          </div>
+     </div>
 
       <%= f.input :credit_rate %>
-      <%= f.label :credit_rate_type %>
-      <%= f.select :credit_rate_type, profit_split_payment_rates %>
+
+
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:credit_rate_type) %></label>
+        <div class="controls">
+          <%= f.select :credit_rate_type, profit_split_payment_rates %>
+        </div>
+      </div>
 
       <%= f.input :cheque_rate %>
-      <%= f.label :cheque_rate_type %>
-      <%= f.select :cheque_rate_type, profit_split_payment_rates %>
 
-      <h4>Applicable On</h4><br>
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:cheque_rate_type) %></label>
+        <div class="controls">
+          <%= f.select :cheque_rate_type, profit_split_payment_rates %>
+        </div>
+      </div>
 
-      <%= f.input :sunday %>
-      <%= f.text_field :sunday_from, class: 'timepicker'%>
-      <%= f.text_field :sunday_to, class: 'timepicker'%>
-      <%= f.input :monday %>
-      <%= f.text_field :monday_from, class: 'timepicker'%>
-      <%= f.text_field :monday_to, class: 'timepicker'%>
-      <%= f.input :tuesday %>
-      <%= f.text_field :tuesday_from, class: 'timepicker'%>
-      <%= f.text_field :tuesday_to, class: 'timepicker'%>
-      <%= f.input :wednesday %>
-      <%= f.text_field :wednesday_from, class: 'timepicker'%>
-      <%= f.text_field :wednesday_to, class: 'timepicker'%>
-      <%= f.input :thursday %>
-      <%= f.text_field :thursday_from, class: 'timepicker'%>
-      <%= f.text_field :thursday_to, class: 'timepicker'%>
-      <%= f.input :friday %>
-      <%= f.text_field :friday_from, class: 'timepicker'%>
-      <%= f.text_field :friday_to, class: 'timepicker'%>
-      <%= f.input :saturday %>
-      <%= f.text_field :saturday_from, class: 'timepicker'%>
-      <%= f.text_field :saturday_to, class: 'timepicker'%>
 
-    </div>
+
+      <!--<h4>Applicable On</h4><br>-->
+
+      <!--<#%= f.input :sunday %>-->
+      <!--<#%= f.text_field :sunday_from, class: 'timepicker'%>-->
+      <!--<#%= f.text_field :sunday_to, class: 'timepicker'%>-->
+      <!--<#%= f.input :monday %>-->
+      <!--<#%= f.text_field :monday_from, class: 'timepicker'%>-->
+      <!--<#%= f.text_field :monday_to, class: 'timepicker'%>-->
+      <!--<#%= f.input :tuesday %>-->
+      <!--<#%= f.text_field :tuesday_from, class: 'timepicker'%>-->
+      <!--<#%= f.text_field :tuesday_to, class: 'timepicker'%>-->
+      <!--<#%= f.input :wednesday %>-->
+      <!--<#%= f.text_field :wednesday_from, class: 'timepicker'%>-->
+      <!--<#%= f.text_field :wednesday_to, class: 'timepicker'%>-->
+      <!--<#%= f.input :thursday %>-->
+      <!--<#%= f.text_field :thursday_from, class: 'timepicker'%>-->
+      <!--<#%= f.text_field :thursday_to, class: 'timepicker'%>-->
+      <!--<#%= f.input :friday %>-->
+      <!--<#%= f.text_field :friday_from, class: 'timepicker'%>-->
+      <!--<#%= f.text_field :friday_to, class: 'timepicker'%>-->
+      <!--<#%= f.input :saturday %>-->
+      <!--<#%= f.text_field :saturday_from, class: 'timepicker'%>-->
+      <!--<#%= f.text_field :saturday_to, class: 'timepicker'%>-->
+
+
 
     <div class="form-actions">
       <%= f.button :submit, :class => 'btn btn-primary' %>
@@ -54,3 +74,6 @@
 
     </div>
 <% end %>
+
+
+</div>

@@ -1436,6 +1436,12 @@ footer .ui-navbar ul {
 
 }
 
+.notification_link {
+   .ui-link {
+      background: none repeat scroll 0 0 #FFFFFF;
+    }
+}
+
 #flash_notice {
   background: none repeat scroll 0 0 #006837;
   border-radius: 4px 4px 4px 4px;

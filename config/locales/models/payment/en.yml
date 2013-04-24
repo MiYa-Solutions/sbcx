@@ -5,5 +5,5 @@ en:
     credit_card:
       description: 'Credit card payment for ticket %{ticket}'
     cheque:
-      description: 'Cheque payment for ticket %{ticket}'
+      description: 'Check payment for ticket %{ticket}'
 

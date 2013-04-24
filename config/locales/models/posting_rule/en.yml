@@ -2,6 +2,7 @@ en:
   posting_rule:
     rate_types:
       percentage: Percentage
+      cheque_rate_type: "Check rate type"
 
   activerecord:
     errors:
@@ -12,4 +13,9 @@ en:
       profit_split: Profit Split
     attributes:
       profit_split:
-        rate: Subcontractor Rate
+        rate: "Subcontractor rate"
+        cheque_rate_type: "Check rate type"
+        cheque_rate: "Check rate"
+
+
+
