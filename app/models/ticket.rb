@@ -61,7 +61,7 @@ class Ticket < ActiveRecord::Base
     end
   end
   belongs_to :collector, :polymorphic => true
-  has_many :appointments, as: :appointable
+  has_many :appointments, as: :appointable, finder_sql: proc {"SELECT appointments.* FROM appointments WHERE appointments.appointable_id = #{id} AND appointments.appointable_type = '#{self.class.name}'"}
   has_many :accounting_entries
 
   has_many :taggings, as: :taggable
