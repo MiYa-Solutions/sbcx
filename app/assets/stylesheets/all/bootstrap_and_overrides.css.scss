@@ -699,6 +699,14 @@ input, textarea {
     width: 120px;
 
   }
+
+  imp {
+    margin-bottom: -4px;
+  }
+}
+
+.smart_label, imp {
+  margin-bottom: -4px;
 }
 
 
@@ -2337,6 +2345,12 @@ hr {
 
 .alerts_sidebar, .nav > li > a {
   display: inline;
+
+}
+
+.alert {
+
+  margin-left: -1.5%;
 
 }
 

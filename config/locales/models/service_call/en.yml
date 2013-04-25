@@ -6,10 +6,10 @@ en:
           attributes:
             customer:
               blank: "Name field can't be blank"
-
     models:
       my_service_call: "My Job"
       service_call: "Job"
+      transferred_service_call: "Incoming Job"
 
     attributes:
       my_service_call:
