@@ -31,7 +31,7 @@ en:
     messages:
       provider_icon: "This Affiliate is your Contractor"
       subco_icon: "This Affiliate is your Subcontractor"
-      myJob: "This Job has been created by me"
+      myJob: "This is my Job (my Customer)"
       TransJob: "I'm the Subcontractor"
       member_icon: "This Affiliate is a member in the SubConTraX Network"
       send_invite: "Send invitation to join the SubConTraX network. <br> See Promotion on the left"
@@ -107,7 +107,7 @@ en:
       location_info: "Location info"
       no_notifications: "No Notifications"
       show_more: "Show More"
-      new_appointment_for: "New Appointment For :"
+      new_appointment_for: "New Appointment For:"
       new_affiliate: "New Affiliate"
       add_new_appointment: "Add New Appointment"
       ends_at: "Ends at"

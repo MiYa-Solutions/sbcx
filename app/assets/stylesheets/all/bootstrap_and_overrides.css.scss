@@ -700,8 +700,8 @@ input, textarea {
 
   }
 
-  imp {
-    margin-bottom: -4px;
+  img {
+    margin-top: -5px;
   }
 }
 
@@ -785,8 +785,9 @@ fieldset label {
   vertical-align: middle;
 }
 
-smart_alert {
-  display: block;
+.smart_alert {
+  //display: block;
+  margin-left: -1.5%;
 }
 
 .add_member {
@@ -2348,11 +2349,15 @@ hr {
 
 }
 
-.alert {
+//.alert {
+//
+//  margin-left: -1.5%;
+//
+//}
 
-  margin-left: -1.5%;
-
-}
+//.alert-notice {
+//  margin-right: 1.5%;
+//}
 
 
 .sidebar-nav-fixed {
@@ -2528,6 +2533,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .job_source {
    width: 60px;
  }
+
+.actions_job_index {
+  width: 7%;
+}
 
 
 
