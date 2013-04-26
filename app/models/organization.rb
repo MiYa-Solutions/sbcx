@@ -91,6 +91,8 @@ class Organization < ActiveRecord::Base
 
   has_many :tags
 
+  has_many :appointments
+
   ### VALIDATIONS:
 
   accepts_nested_attributes_for :users, :agreements, :reverse_agreements

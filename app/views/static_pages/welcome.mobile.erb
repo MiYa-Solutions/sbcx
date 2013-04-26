@@ -24,25 +24,12 @@
   <% end %>
 
 
-  <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.balance')%></li>
-  <li class="affiliate_balance_home">
-      <% @affiliates.each do |affiliate| %>
+  <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= Appointment.model_name.human.pluralize %></li>
+  <li class="">
+      <% @appointments.each do |appointment| %>
 
-          <% unless current_user.organization.account_for(affiliate).balance == 0 %>
-              <%= link_to affiliate.name, affiliate_path(affiliate), "data-transition" => "slide", id: "affiliate_balance" %>
-            <p>
-              <% if current_user.organization.account_for(affiliate).balance < 0 %>
-                        <span class="red_badge_collape">
-                            <badge><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></badge>
-                        </span>
-              <% else %>
-                        <span class="blue_badge_collape">
-                            <badge><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></badge>
-                        </span>
-              <% end %>
-            </p>
+              <%= link_to appointment.title, appointment_path(appointment), "data-transition" => "slide", id: "affiliate_balance" %>
 
-          <% end %>
       <% end %>
   </li>
 
