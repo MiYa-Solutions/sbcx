@@ -68,19 +68,19 @@
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= User.human_attribute_name(:phone) %></div>
-        <div class="ui-block-b"><%= @my_user.phone %></div>
+        <div class="ui-block-b"><%= link_to @my_user.phone, "tel:#{@my_user.phone}" %></div>
       </div>
     </li>
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= User.human_attribute_name(:mobile_phone) %></div>
-        <div class="ui-block-b"><%= @my_user.mobile_phone %></div>
+        <div class="ui-block-b"><%= link_to @my_user.mobile_phone, "tel:#{@my_user.mobile_phone}" %></div>
       </div>
     </li>
     <li class="ui-li">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= User.human_attribute_name(:email) %></div>
-        <div class="ui-block-b" data-type="email" ><%= @my_user.email %></div>
+        <div class="ui-block-b" data-type="email" ><%= link_to @my_user.email, "mailto:#{@my_user.email}" %></div>
       </div>
     </li>
 

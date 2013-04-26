@@ -6,7 +6,21 @@
 
            <div class="smart_label">
               <ul>
-                <li><h1><%= I18n.t('general.general.new_appointment_for').html_safe + "&nbsp;".html_safe + "#{@appointment.appointable.class.model_name.human} #{ @appointment.appointable.id }" %></h1></li>
+                <!--<li><h1><#%= I18n.t('general.general.new_appointment_for').html_safe + "&nbsp;".html_safe + "#{@appointment.appointable.class.model_name.human} #{ @appointment.appointable.id }" %></h1></li>-->
+                <li><h1><%= I18n.t('general.general.new_appointment_for').html_safe %></h1></li>
+                 <li>
+                   <h3><%= link_to @appointment.appointable.try(:name), service_call_path(@appointment.appointable.id) %></h3>
+                 </li>
+                 <li>
+                   <% if @service_call.class == MyServiceCall %>
+                       <% if @service_call.transferred? %>
+                           <%= image_tag("Itransferred.png", :title => I18n.t('general.messages.transferred_job').html_safe, :rel => 'tooltip') %>
+                       <% end %>
+                       <%= image_tag("myJobLarge.png", :title => I18n.t('general.messages.myJob').html_safe, :rel => 'tooltip') %>
+                   <% else %>
+                       <%= image_tag("Incoming.png", :title => I18n.t('general.messages.incoming_job').html_safe, :rel => 'tooltip') %>
+                   <% end %>
+                 </li>
                 <li>
                   <%= render 'appointments/add_appointment', appointable: @appointment.appointable %>
 

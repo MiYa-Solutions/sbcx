@@ -52,19 +52,22 @@
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= Affiliate.human_attribute_name(:phone) %></div>
-        <div class="ui-block-b"><%= @affiliate.phone %></div>
+        <!--<div class="ui-block-b"><#%= @affiliate.phone %></div>-->
+        <div class="ui-block-b"><%= link_to @affiliate.phone, "tel:#{@affiliate.phone}" %></div>
+
+
       </div>
     </li>
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= Affiliate.human_attribute_name(:mobile) %></div>
-        <div class="ui-block-b"><%= @affiliate.mobile %></div>
+        <div class="ui-block-b"><%= link_to @affiliate.mobile, "tel:#{@affiliate.mobile}" %></div>
       </div>
     </li>
     <li class="ui-li">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= Affiliate.human_attribute_name(:email) %></div>
-        <div class="ui-block-b" data-type="email" ><%= @affiliate.email %></div>
+        <div class="ui-block-b" data-type="email" ><%= link_to @affiliate.email, "mailto:#{@affiliate.email}" %></div>
       </div>
     </li>
     <li class="ui-li">

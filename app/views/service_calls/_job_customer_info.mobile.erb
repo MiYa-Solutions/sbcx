@@ -40,13 +40,13 @@
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:phone) %></div>
-        <div class="ui-block-b"><%= @service_call.phone %></div>
+        <div class="ui-block-b"><%= link_to @service_call.phone, "tel:#{@service_call.phone}" %></div>
       </div>
     </li>
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:mobile) %></div>
-        <div class="ui-block-b"><%= @service_call.mobile_phone %></div>
+        <div class="ui-block-b"><%= link_to @service_call.mobile_phone, "tel:#{@service_call.mobile_phone}" %></div>
       </div>
     </li>
     <!--<#% permitted_to? :edit, @customers do %>-->
