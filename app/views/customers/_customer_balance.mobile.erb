@@ -19,8 +19,7 @@
       <% @customer.account.accounting_entries.each do |entry| %>
           <li class=" job_billing">
             <%= link_to entry.ticket.address1, accounting_entry_path(entry) %>
-            <p class= "billing_price_label"><%= I18n.t('general.general.balance') %> </p>
-            <p class="billing_price"><%= humanized_money_with_symbol entry.balance %></p>
+             <p class="billing_price"><%= humanized_money_with_symbol entry.balance %></p>
           </li>
       <% end %>
       <br>
