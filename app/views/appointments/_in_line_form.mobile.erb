@@ -1,0 +1,60 @@
+<%= simple_form_for @appointment, :html => { :class => 'form-horizontal' } do |f| %>
+    <%= f.error_notification %>
+
+    <fieldset class="ui-grid-a ui-btn-inner-small">
+      <div class="ui-block-a">
+        <%= link_to I18n.t('general.general.back'), :back, "class" => "ui-btn-up-c", "data-role" => "button", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
+
+      </div>
+      <div class="ui-block-b">
+        <div class="miya_blue_button">
+          <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_appointment_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="edit_appointment_details">
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @appointment.class.human_attribute_name(:title) %></div>
+        <div class="ui-block-b"><%= f.input :title %></div>
+      </div>
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @appointment.class.human_attribute_name(:all_day) %></div>
+        <div class="ui-block-b collection"><%= f.input :all_day %></div>
+      </div>
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @appointment.class.human_attribute_name(:starts_at_date_text) %></div>
+        <div class="ui-block-b collection"><%= f.input :starts_at_date_text, input_html: {class: "mobi-dateonly"} %></div>
+      </div>
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @appointment.class.human_attribute_name(:starts_at_time_text) %></div>
+        <div class="ui-block-b collection"><%= f.input :starts_at_time_text, input_html: {class: "mobi-timeonly"} %></div>
+      </div>
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @appointment.class.human_attribute_name(:ends_at_date_text) %></div>
+        <div class="ui-block-b collection"><%= f.input :ends_at_date_text, input_html: {class: "mobi-dateonly"} %></div>
+      </div>
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @appointment.class.human_attribute_name(:ends_at_time_text) %></div>
+        <div class="ui-block-b collection"><%= f.input :ends_at_time_text, input_html: {class: "mobi-timeonly"} %></div>
+      </div>
+
+      <%= f.input :appointable_id, :as => :hidden, :input_html => { :value => @appointment.appointable.id } %>
+      <%= f.input :appointable_type, :as => :hidden, :input_html => { :value => @appointment.appointable.class } %>
+
+    </div>
+
+    <%= f.input :description %>
+
+
+    <div class="miya_blue_button">
+      <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_appointmentbtn2', "data-icon" => "check", "data-iconpos" => "left" %>
+    </div>
+
+<% end %>

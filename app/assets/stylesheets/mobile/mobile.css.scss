@@ -439,6 +439,14 @@ input.ui-input-text, textarea.ui-input-text {
   top: 50%;
 }
 
+.appointment_date_label {
+  right: 11%;
+  margin-top: -10px;
+  position: absolute;
+  top: 50%;
+  color: #3A87AD;
+}
+
 .member_label_mobile {
   //position: absolute;
   //margin-right: -20px;
@@ -1161,6 +1169,48 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+.edit_appointment_details {
+  .ui-grid-a .ui-block-a {
+    width: 40%;
+    padding-top: 10px;
+  }
+
+  .ui-grid-a .ui-block-b {
+    width: 60%;
+  }
+
+  label.ui-input-text {
+    display: none;
+
+  }
+
+  label.ui-select {
+    display: none;
+  }
+
+  label.ui-checkbox {
+    display: none;
+  }
+
+  .ui-block-a, .ui-block-b, .ui-block-c, .ui-block-d, .ui-block-e {
+    min-height: 37px;
+
+  }
+
+  .ui-btn-inner {
+    font-size: 12px;
+  }
+
+  .ui-select .ui-btn-icon-right .ui-icon {
+    right: 5px;
+  }
+
+  .ui-checkbox .ui-btn-icon-left .ui-btn-inner, .ui-radio .ui-btn-icon-left .ui-btn-inner {
+    height: 11px;
+  }
+
+}
+
 .collection {
   .control-label {
     display: none;
@@ -1460,6 +1510,16 @@ footer .ui-navbar ul {
     }
 }
 
+.appointment_for_label {
+  margin-bottom: -10px;
+  margin-top: 3px;}
+
+.appointment_link {
+  .ui-link {
+    background: none repeat scroll 0 0 #FFFFFF;
+  }
+}
+
 #flash_notice {
   background: none repeat scroll 0 0 #006837;
   border-radius: 4px 4px 4px 4px;
@@ -1682,7 +1742,8 @@ div.ui-slider {
   padding-right: 10px;
   position: absolute;
   text-align: center;
-  top: 13%;
+  //top: 13.5%;
+  margin-top: -36px;
 
   badge {
     color: #FFFFFF;

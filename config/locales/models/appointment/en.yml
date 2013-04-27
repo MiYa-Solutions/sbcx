@@ -3,4 +3,8 @@ en:
     models:
       appointment: "Meetings"
     attributes:
-      affiliate:
+      appointment:
+        starts_at_date_text: "Start Day"
+        starts_at_time_text: "Start Time"
+        ends_at_date_text: "End Day"
+        ends_at_time_text: "End Time"
