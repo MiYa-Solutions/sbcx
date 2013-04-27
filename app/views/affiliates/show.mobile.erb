@@ -65,14 +65,14 @@
 
     <h3><%= I18n.t('general.general.open_jobs') %></h3>
 
-    <% if @affiliate.service_calls.empty? %>
+    <% if current_user.organization.affiliate_jobs_for( @affiliate).empty? %>
         <div class="miya_blue_button">
           <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
        </div>
 
     <% else %>
         <ul data-role="listview">
-          <% @affiliate.service_calls.each do |sc| %>
+          <% current_user.organization.affiliate_jobs_for( @affiliate).each do |sc| %>
               <li class="inline_mobile service_calls_index">
                 <p class="ui-li-aside-blue ui-li-desc-blue">
                   <badge><%= sc.ref_id %></badge>
@@ -99,6 +99,7 @@
     <% end %>
 
   </div>
+
 
 
 
