@@ -10,12 +10,14 @@
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:material_name) %></div>
           <div class="ui-block-b">
-            <%= f.text_field :material_name, placeholder: 'material', data: { autocomplete_source: materials_path }, label: "Part Name:" %>
+            <%= f.input :material_name, input_html: {id: "material-autocomplete"}, :label => "Part Name" %>
+            <%= f.hidden_field :material_id %>
+            <ul id="material-suggestions" data-role="listview" data-inset="true"></ul>
           </div>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:quantity) %></div>
-          <div class="ui-block-b"> <%= f.text_field :quantity, placeholder: 'quantity' %></div>
+          <div class="ui-block-b"> <%= f.text_field :quantity, "type" => "range", "name" => "bom[quantity]", id: "slider-1", "value" => "1", "min" => "0", "max" => "100" %></div>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:price) %></div>
@@ -28,7 +30,7 @@
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:buyer) %></div>
           <div class="ui-block-b">
-            <%= f.input :buyer, collection: options_for_select(buyer_options(@ticket)), include_blank: true  %>
+            <%= f.select :buyer_id, buyer_options(@ticket), include_blank: true  %>
             <%= f.hidden_field :buyer_type %>
           </div>
         </div>
@@ -38,7 +40,7 @@
       </div>
     </div>
 
-    <div class="miya_blue_button">
+    <div class="">
       <%= f.submit I18n.t('general.general.update_part') , "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
     </div>
 <% end %>

@@ -63,7 +63,10 @@ class BomsController < ApplicationController
         format.json { render json: @bom, status: :created, location: @bom }
       else
         format.html { render :new }
-        format.mobile { render :new }
+        format.mobile do
+          @ticket = ServiceCall.find(params[:service_call_id]).becomes(ServiceCall)
+          render :new
+        end
         format.json { render json: @bom.errors, status: :unprocessable_entity }
         format.js { }
       end
