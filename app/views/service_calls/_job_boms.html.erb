@@ -56,9 +56,7 @@
     <tbody id="boms">
 
     <% @service_call.boms.each do |bom| %>
-        <tr id="bom_<%= bom.id %>">
           <%= render 'boms/bom', bom: bom %>
-        </tr>
     <% end %>
     </tbody>
   </table>

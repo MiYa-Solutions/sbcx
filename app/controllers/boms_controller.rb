@@ -82,7 +82,7 @@ class BomsController < ApplicationController
       if @bom.update_attributes(permitted_params(@bom).bom)
         format.html { redirect_to [@bom.ticket.becomes(@bom.ticket.class.superclass), @bom], notice: 'Bom was successfully updated.' }
         format.mobile { redirect_to @bom.ticket.becomes(@bom.ticket.class.superclass), notice: 'Bom was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render :json => @bom, status: :ok }
       else
         format.html { render action: "edit" }
         format.mobile { redirect_to :back }
