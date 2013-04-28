@@ -48,5 +48,7 @@ describe TransferredServiceCall do
     service_call.customer.organization_id.should == service_call.provider_id
 
   end
+
+  it {should validate_presence_of(:provider_agreement)}
 end
 

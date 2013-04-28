@@ -66,6 +66,8 @@ class Ticket < ActiveRecord::Base
 
   has_many :taggings, as: :taggable
   has_many :tags, through: :taggings
+  belongs_to :subcon_agreement, class_name: 'Agreement'
+  belongs_to :provider_agreement, class_name: 'Agreement'
 
   alias_method :entries, :accounting_entries
 

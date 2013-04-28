@@ -25,7 +25,15 @@ class AffiliateBillingService
   end
 
   def find_affiliate_agreement
-    OrganizationAgreement.where("status = #{OrganizationAgreement::STATUS_ACTIVE} AND organization_id = ? AND counterparty_id = ?", @ticket.provider_id, @ticket.subcontractor_id).first
+    #OrganizationAgreement.where("status = #{OrganizationAgreement::STATUS_ACTIVE} AND organization_id = ? AND counterparty_id = ?", @ticket.provider_id, @ticket.subcontractor_id).first
+    case @event.eventable.my_role
+      when :prov
+        @event.eventable.subcon_agreement
+      when :subcon
+        @event.eventable.provider_agreement
+      else
+        raise "Unexpected value when calling my_role"
+    end
   end
 
   def accounting_entries

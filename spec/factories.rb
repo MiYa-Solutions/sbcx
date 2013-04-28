@@ -1,5 +1,6 @@
 require 'declarative_authorization/maintenance'
 include Authorization::TestHelper
+require 'support/utilities'
 
 FactoryGirl.define do
 
@@ -131,14 +132,35 @@ FactoryGirl.define do
 
     notes Faker::Lorem.sentence
 
+    after(:build) do |sc|
+      agr = Agreement.org_agreements(sc.provider.id).cparty_agreements(sc.subcontractor.id).with_status(:active).first
+      if agr.present?
+        sc.provider_agreement = agr
+      else
+        sc.provider_agreement = setup_profit_split_agreement(sc.provider, sc.organization)
+      end
+
+    end
+
   end
 
   factory :transferred_sc_with_new_customer, class: TransferredServiceCall do
     association :organization, factory: :member
     association :provider
-    new_customer Faker::Name.name
+    customer_name Faker::Name.name
     association :subcontractor
     notes Faker::Lorem.sentence
+
+    after(:build) do |sc|
+      agr = Agreement.org_agreements(sc.provider.id).cparty_agreements(sc.subcontractor.id).with_status(:active).first
+      if agr.present?
+        sc.provider_agreement = agr
+      else
+        sc.provider_agreement = setup_profit_split_agreement(sc.provider, sc.organization)
+      end
+
+    end
+
   end
 
   factory :my_service_call do
@@ -156,7 +178,7 @@ FactoryGirl.define do
 
       after(:build) do |service_call|
         service_call.technician = FactoryGirl.create(:technician, organization: service_call.organization)
-        service_call.creator  = service_call.organization.users.first
+        service_call.creator    = service_call.organization.users.first
         service_call.dispatch_work if defined? service_call.dispatch_work
         service_call.start_work
         add_bom_to_ticket(service_call)

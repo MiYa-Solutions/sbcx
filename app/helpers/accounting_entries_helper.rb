@@ -8,7 +8,7 @@ module AccountingEntriesHelper
         when Organization.name
           options[aff_key] << [acc.accountable.name, acc.id, {"data-balance" => humanized_money_with_symbol(acc.balance)}]
         when Customer.name
-          options[cus_key] << [acc.accountable.name, acc.id, acc.id, {"data-balance" => humanized_money_with_symbol(acc.balance)}]
+          options[cus_key] << [acc.accountable.name, acc.id, {"data-balance" => humanized_money_with_symbol(acc.balance)}]
         else
           raise "Unexpected accountable type "
 

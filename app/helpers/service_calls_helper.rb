@@ -2,7 +2,6 @@ module ServiceCallsHelper
   include PaymentHelper
 
 
-
   def style(path)
     StylingService.instance.get_style(path)
   end
@@ -10,7 +9,7 @@ module ServiceCallsHelper
 
   ServiceCall.state_machine(:work_status).events.map(&:name).each do |event|
     define_method("work_#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.work_status.#{event}.form_classes")} do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.work_status.#{event}.form_classes") } do |f|
         concat (hidden_field_tag "service_call[work_status_event]", "#{event}")
         concat (f.submit service_call.class.human_work_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
@@ -24,7 +23,7 @@ module ServiceCallsHelper
 
   ServiceCall.state_machine(:subcontractor_status).events.map(&:name).each do |event|
     define_method("subcon_#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.work_status.#{event}.form_classes")}  do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.work_status.#{event}.form_classes") } do |f|
         concat (hidden_field_tag "service_call[subcontractor_status_event]", "#{event}")
         concat (f.submit service_call.class.human_subcontractor_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
@@ -38,7 +37,7 @@ module ServiceCallsHelper
 
   TransferredServiceCall.state_machine(:provider_status).events.map(&:name).each do |event|
     define_method("provider_#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.provider_status.#{event}.form_classes")} do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.provider_status.#{event}.form_classes") } do |f|
         concat (hidden_field_tag "service_call[provider_status_event]", "#{event}")
         concat (f.submit service_call.class.human_provider_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
@@ -52,7 +51,7 @@ module ServiceCallsHelper
 
   (TransferredServiceCall.state_machine(:status).events.map(&:name) | MyServiceCall.state_machine(:status).events.map(&:name)).each do |event|
     define_method("#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.status.#{event}.form_classes")} do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.status.#{event}.form_classes") } do |f|
         concat (hidden_field_tag "service_call[status_event]", "#{event}")
         concat (f.submit service_call.class.human_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
@@ -66,7 +65,7 @@ module ServiceCallsHelper
 
   (TransferredServiceCall.state_machine(:billing_status).events.map(&:name) | MyServiceCall.state_machine(:billing_status).events.map(&:name)).each do |event|
     define_method("billing_#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.billing_status.#{event}.form_classes")} do |f|
+      simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.billing_status.#{event}.form_classes") } do |f|
         concat (hidden_field_tag "service_call[billing_status_event]", "#{event}")
         concat (f.submit service_call.class.human_billing_status_event_name(event).titleize,
                          id:    "#{event}_service_call_btn",
@@ -137,7 +136,7 @@ module ServiceCallsHelper
   # forms that require more than just a button are overridden  below
   #
   def work_dispatch_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.work_status.dispatch.form_classes")} do |f|
+    simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.work_status.dispatch.form_classes") } do |f|
       concat (f.input :technician_id, collection: f.object.organization.technicians, label_method: :name, value_method: :id)
       concat (hidden_field_tag "service_call[work_status_event]", 'dispatch')
       concat (f.submit service_call.class.human_work_status_event_name(:dispatch).titleize,
@@ -150,23 +149,24 @@ module ServiceCallsHelper
   end
 
   def transfer_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.status.transfer.form_classes")} do |f|
-      concat (f.input :subcontractor_id, collection: f.object.organization.subcontractors, label_method: :name, value_method: :id )
+    simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.status.transfer.form_classes") } do |f|
+      concat (f.select :subcontractor_id,  subcon_options,   { include_blank: true} )
+      concat (f.input :subcon_agreement_id, collection: [])
       concat (f.input :allow_collection)
       concat (f.input :re_transfer)
       concat (hidden_field_tag "service_call[status_event]", 'transfer')
       concat (f.submit service_call.class.human_status_event_name(:transfer).titleize,
-                       id:    'service_call_transfer_btn',
-                       class: "btn btn-large btn-primary red-button",
-                       title: 'Click to transfer the Service Call to the Subcontractor you selected',
-                       rel:   'tooltip',
+                       id:      'service_call_transfer_btn',
+                       class:   "btn btn-large btn-primary red-button",
+                       title:   'Click to transfer the Service Call to the Subcontractor you selected',
+                       rel:     'tooltip',
                        confirm: ""
              )
     end
   end
 
   def billing_collect_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall), html: {class: style("service_call.forms.billing_status.collect.form_classes")} do |f|
+    simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.billing_status.collect.form_classes") } do |f|
       concat (hidden_field_tag "service_call[billing_status_event]", 'collect')
       concat (f.label :collector)
       concat (collector_tag(service_call))
@@ -181,11 +181,11 @@ module ServiceCallsHelper
   end
 
   def technicians_collection
-    @service_call.organization.technicians.map {|user| [user.id, user.name]}
+    @service_call.organization.technicians.map { |user| [user.id, user.name] }
   end
 
   def subcontractor_collection
-    @service_call.organization.subcontractors.map {|subcon| [subcon.id, subcon.name]}
+    @service_call.organization.subcontractors.map { |subcon| [subcon.id, subcon.name] }
   end
 
   def billing_paid_form(service_call)
@@ -201,6 +201,7 @@ module ServiceCallsHelper
              )
     end
   end
+
   def subcon_settle_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (f.input :subcon_payment, collection: payment_types)
@@ -213,6 +214,7 @@ module ServiceCallsHelper
              )
     end
   end
+
   def provider_settle_form(service_call)
     simple_form_for service_call.becomes(ServiceCall) do |f|
       concat (f.input :provider_payment, collection: payment_types)
@@ -239,9 +241,27 @@ module ServiceCallsHelper
   #  end
   #end
 
+  def subcon_options
+    current_user.organization.subcontractors.collect do |subcon|
+      [subcon.name, subcon.id, {"data-agreements" => agreement_data_tags(current_user.organization, subcon)} ]
+    end
+  end
+
+  def provider_options
+    res = []
+    current_user.organization.providers.each do |prov|
+      res << [prov.name, prov.id, { "data-agreements" => agreement_data_tags(prov, current_user.organization) }]
+    end
+
+    res
+  end
 
 
   private
+
+  def agreement_data_tags(prov, subcon)
+    h(Agreement.our_agreements(prov, subcon).with_status(:active).map { |agr| [agr.name, agr.id] })
+  end
 
   def collector_tag(service_call)
     res = ""
@@ -256,5 +276,4 @@ module ServiceCallsHelper
   def payment_tag(job)
 
   end
-
 end

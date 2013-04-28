@@ -12,7 +12,7 @@ require 'declarative_authorization/maintenance'
 Capybara.javascript_driver = :poltergeist
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, :debug => true)
+  Capybara::Poltergeist::Driver.new(app, :debug => false)
 end
 
 Capybara.ignore_hidden_elements = false

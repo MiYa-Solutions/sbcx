@@ -2,7 +2,16 @@
   <div class="row-fluid">
 
     <div class="span5 job_new_fields">
-      <%= f.association :provider, collection: ([current_user.organization.becomes(Provider)] + current_user.organization.providers), value: f.object.provider, :include_blank => "Me" %>
+      <!--<#%= f.input :provider, collection: provider_options, value: f.object.provider, :include_blank => "Me" %>-->
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="customer_state"> <%= @service_call.class.human_attribute_name(:provider) %></label>
+        <div class="controls">
+          <%= f.select :provider_id, provider_options, { prompt: "Me"}%>
+        </div>
+      </div>
+
+
+      <%= f.input :provider_agreement_id, collection: [] %>
 
 
       <div class="control-group string mandatory">

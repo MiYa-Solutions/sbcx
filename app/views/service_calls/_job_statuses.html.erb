@@ -65,6 +65,11 @@
               </span>
             </td>
           </tr>
+          <tr>
+            <td><%= @service_call.class.human_attribute_name(:subcon_agreement) %></td>
+            <td>
+              <%= link_to truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15), agreement_path(@service_call.subcon_agreement), title: "#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}" %>
+            </td>
           </tr>
           <tr>
             <td> <%= @service_call.class.human_attribute_name(:subcontractor_status) %></td>
@@ -91,6 +96,13 @@
               </span>
             </td>
           </tr>
+          <tr>
+            <td><%= @service_call.class.human_attribute_name(:provider_agreement) %></td>
+            <td>
+
+              <%= link_to truncate("#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}", length: 15), agreement_path(@service_call.provider_agreement), title: "#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}" %>
+
+            </td>
           </tr>
           <tr>
             <td> <%= @service_call.class.human_attribute_name(:provider_status) %></td>

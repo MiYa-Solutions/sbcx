@@ -37,7 +37,7 @@
 #
 
 class TransferredServiceCall < ServiceCall
-  validates_presence_of :provider
+  validates_presence_of :provider, :provider_agreement
   validate :provider_is_not_a_member
   before_validation do
     self.subcontractor ||= self.organization.try(:becomes, Subcontractor)

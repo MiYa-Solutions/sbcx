@@ -46,6 +46,7 @@ describe Agreement do
     it { should have_many(:events) }
     it { should have_many(:notifications) }
     it { should have_many(:posting_rules) }
+    it { should have_many(:tickets) }
   end
 
 

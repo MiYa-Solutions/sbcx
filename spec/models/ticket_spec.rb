@@ -105,6 +105,16 @@ describe Ticket do
 
       it { should_not be_valid }
     end
+
+    it 'my job when transferred an agreement must be present' do
+      sc = FactoryGirl.create(:my_service_call)
+      expect do
+        sc.transfer!
+      end.to raise_error(StateMachine::InvalidTransition)
+    end
+
+    it 'agreement must be one that belongs to the subcon'
+
   end
 
   describe "associations" do
@@ -116,6 +126,8 @@ describe Ticket do
     it { should belong_to :provider }
     it { should belong_to :subcontractor }
     it { should belong_to :collector }
+    it { should belong_to :subcon_agreement }
+    it { should belong_to :provider_agreement }
   end
 
 end

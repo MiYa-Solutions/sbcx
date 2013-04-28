@@ -51,6 +51,7 @@ class MyServiceCall < ServiceCall
     end
     state :transferred, value: STATUS_TRANSFERRED do
       validate { |sc| sc.validate_subcon }
+      validates_presence_of :subcon_agreement_id
     end
     state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED
