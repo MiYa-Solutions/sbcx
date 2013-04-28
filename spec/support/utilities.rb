@@ -36,6 +36,7 @@ JOB_SELECT_PROVIDER_PAYMENT = 'service_call_provider_payment'
 JOB_SELECT_SUBCONTRACTOR    = 'service_call_subcontractor_id'
 JOB_SELECT_PROVIDER         = 'service_call_provider_id'
 JOB_SELECT_PROVIDER_AGR     = 'service_call_provider_agreement_id'
+JOB_SELECT_SUBCON_AGR       = 'service_call_subcon_agreement_id'
 JOB_SELECT_COLLECTOR        = 'service_call_collector_id'
 JOB_SELECT_PAYMENT          = 'service_call_payment_type'
 JOB_CBOX_ALLOW_COLLECTION   = 'service_call_allow_collection'
@@ -159,7 +160,7 @@ def setup_profit_split_agreement(prov, subcon)
   agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
   FactoryGirl.create(:profit_split, agreement: agreement)
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
-  agreement.name = "#{prov.name} (P), #{subcon.name} (S)"
+  agreement.name   = "#{prov.name} (P), #{subcon.name} (S)"
   agreement.save!
   agreement
 end
@@ -198,7 +199,7 @@ def create_my_job(user, customer, browser)
   in_browser(browser) do
     with_user(user) do
       visit new_service_call_path
-      fill_autocomplete 'service_call_customer', with: customer.name.chop, select: customer.name
+      fill_autocomplete 'service_call_customer_name', with: customer.name.chop, select: customer.name
       click_button JOB_BTN_CREATE
     end
   end
@@ -227,4 +228,14 @@ def pay_with_cheque(collector = nil)
   select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
   select collector, from: JOB_SELECT_COLLECTOR if collector.present?
   click_button JOB_BTN_COLLECT
+end
+
+def transfer_job(job, subcon)
+  agr = Agreement.my_agreements(job.organization.id).cparty_agreements(subcon.id).with_status(:active).first
+  visit service_call_path(job)
+  select subcon.name, from: JOB_SELECT_SUBCONTRACTOR
+  select agr.name, from: JOB_SELECT_SUBCON_AGR
+  check JOB_CBOX_RE_TRANSFER
+  check JOB_CBOX_ALLOW_COLLECTION
+  click_button JOB_BTN_TRANSFER
 end

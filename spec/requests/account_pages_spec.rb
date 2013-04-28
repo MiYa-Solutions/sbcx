@@ -363,11 +363,7 @@ describe "Account Pages", js: true do
     let(:subcon_job) { Ticket.last }
     before do
       in_browser(:org) do
-        visit service_call_path(job)
-        select org2.name, from: JOB_SELECT_SUBCONTRACTOR
-        check JOB_CBOX_RE_TRANSFER
-        check JOB_CBOX_ALLOW_COLLECTION
-        click_button JOB_BTN_TRANSFER
+        transfer_job(job, org2 )
       end
 
       in_browser(:org2) do
@@ -2545,9 +2541,7 @@ describe "Account Pages", js: true do
     let(:subcon_org_acc) { Account.for_affiliate(org, subcon).first }
 
     before do
-      visit service_call_path(job)
-      select subcon.name, from: JOB_SELECT_SUBCONTRACTOR
-      click_button JOB_BTN_TRANSFER
+      transfer_job(job, subcon )
       click_button JOB_BTN_ACCEPT
       click_button JOB_BTN_START
       add_bom bom1[:name], bom1[:cost], bom1[:price], bom1[:quantity], subcon.name

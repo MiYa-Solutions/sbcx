@@ -146,7 +146,9 @@ describe "Service Call pages" do
         describe "when the provider is a member" do
           before do
             in_browser(:org) do
+              agr = Agreement.my_agreements(org2.id).cparty_agreements(org.id).with_status(:active).first
               select org2.name, from: 'service_call_provider_id'
+              select agr.name, from: JOB_SELECT_PROVIDER_AGR
               fill_in 'service_call_customer_name', with: customer.name
             end
           end
@@ -162,10 +164,11 @@ describe "Service Call pages" do
           #let(:local_provider) { FactoryGirl.build(:provider) }
 
           before do
-            #org.providers << provider
+            agr = Agreement.my_agreements(provider.id).cparty_agreements(org.id).with_status(:active).first
             in_browser(:org) do
               visit new_service_call_path
               select provider.name, from: 'service_call_provider_id'
+              select agr.name, from: JOB_SELECT_PROVIDER_AGR
               fill_in new_customer_fld, with: Faker::Name.name
 
             end
@@ -410,12 +413,13 @@ describe "Service Call pages" do
         # transfer the service call
         before do
           in_browser(:org) do
-            select subcontractor.name, from: subcontractor_select
-            check re_transfer_cbox_selector
-            check allow_collection_cbox_selector
+            transfer_job(service_call, subcontractor.name)
+            #select subcontractor.name, from: subcontractor_select
+            #check re_transfer_cbox_selector
+            #check allow_collection_cbox_selector
             #page.driver.render("#{Rails.root}/tmp/capybara/transfer_sc_#{Time.now}.png", :full => true)
             #page.save_page
-            click_button transfer_btn_selector
+            #click_button transfer_btn_selector
           end
           @subcon_service_call = ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id)
         end
@@ -1846,8 +1850,10 @@ describe "Service Call pages" do
         }
         before do
           Rails.logger.debug { "local subcontractor valid? #{local_subcontractor.valid?}" }
+          agr = Agreement.my_agreements(service_call.organization.id).cparty_agreements(service_call.subcontractor.id).with_status(:active).first
           visit service_call_path service_call
           select local_subcontractor.name, from: subcontractor_select
+          select agr.name, from: JOB_SELECT_SUBCON_AGR
         end
 
         it "should not create another service call" do
@@ -2439,9 +2445,11 @@ describe "Service Call pages" do
 
 
       before do
+        agr = Agreement.my_agreements(provider.id).cparty_agreements(org.id).with_status(:active).first
         in_browser(:org) {
           visit new_service_call_path
           select provider.name, from: 'service_call_provider_id'
+          select agr.name, from: JOB_SELECT_PROVIDER_AGR
           fill_in new_customer_fld, with: customer.name
           click_button create_btn_selector
 

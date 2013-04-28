@@ -96,6 +96,7 @@ class Ticket < ActiveRecord::Base
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
   validates_presence_of :organization, :provider
   validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
+  validate :check_subcon_agreement, :check_provider_agreement
 
 
   accepts_nested_attributes_for :customer
@@ -292,6 +293,19 @@ class Ticket < ActiveRecord::Base
 
   def tag_list
     @tag_list || tags.map(&:name).join(", ")
+  end
+
+  protected
+
+  def check_subcon_agreement
+    unless self.subcon_agreement.nil?
+      errors.add :subcon_agreement, "Invalid Subcontracting Agreement: the agreement must specify the subcontractor as the counterparty" if subcon_agreement.counterparty != self.subcontractor.becomes(Organization)
+    end
+  end
+  def check_provider_agreement
+    unless self.provider_agreement.nil?
+      errors.add :provider_agreement, "Invalid Subcontracting Agreement: the agreement must specify the provider as the organization" if provider_agreement.organization != self.provider.becomes(Organization)
+    end
   end
 
 # Assigns tags from a comma separated tag list

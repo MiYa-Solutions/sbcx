@@ -44,7 +44,7 @@ class ServiceCallsController < ApplicationController
   end
 
   def update
-
+    @bom      = Bom.new
     if @service_call.update_attributes(permitted_params(@service_call).service_call)
       respond_to do |format|
         format.js {}
@@ -64,6 +64,7 @@ class ServiceCallsController < ApplicationController
       respond_to do |format|
         format.js { respond_bip_error @service_call }
         format.html do
+          flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
           render :action => 'show'
         end
         format.json { respond_bip_error @service_call }

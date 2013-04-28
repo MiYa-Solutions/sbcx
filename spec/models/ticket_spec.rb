@@ -113,7 +113,13 @@ describe Ticket do
       end.to raise_error(StateMachine::InvalidTransition)
     end
 
-    it 'agreement must be one that belongs to the subcon'
+    it 'subcon agreement must be one that matches the roles on the ticket' do
+      service_call.save
+      agr = setup_profit_split_agreement(service_call.subcontractor, service_call.organization)
+      service_call.subcon_agreement = agr
+
+      service_call.should_not be_valid
+    end
 
   end
 
