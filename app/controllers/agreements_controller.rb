@@ -37,16 +37,20 @@ class AgreementsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
 
-      if @agreement.update_attributes(permitted_params(@agreement).agreement)
+    if @agreement.update_attributes(permitted_params(@agreement).agreement)
+      respond_to do |format|
+
         format.html { redirect_to @agreement.becomes(Agreement), :notice => "Successfully updated agreements." }
         format.json { head :no_content }
-        format.mobile { redirect_to @agreement.becomes(Agreement)}
-      else
-        format.html {render :action => 'edit'}
+        format.mobile { redirect_to @agreement.becomes(Agreement) }
+      end
+    else
+      respond_to do |format|
+
+        format.html { render :action => 'edit' }
         format.json { render json: @agreement.errors, status: :unprocessable_entity }
-        format.mobile { redirect_to @agreement.becomes(Agreement)}
+        format.mobile { redirect_to @agreement.becomes(Agreement) }
       end
     end
 
@@ -62,8 +66,9 @@ class AgreementsController < ApplicationController
       otherparty_id   = params[:otherparty_id]
       otherparty_role = params[:otherparty_role]
       type            = params[:agreement_type]
+      name            = params[:agreement_name]
 
-      @agreement = Agreement.new_agreement(type, current_user.organization, otherparty_id, otherparty_role)
+      @agreement = Agreement.new_agreement(type, current_user.organization, otherparty_id, otherparty_role, name)
     else
       @agreement = Agreement.new_agreement_from_params(params[:agreement_type], permitted_params(nil).agreement)
     end

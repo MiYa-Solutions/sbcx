@@ -76,7 +76,7 @@ class PostingRulesController < ApplicationController
     @posting_rule.destroy
 
     respond_to do |format|
-      format.html { redirect_to @posting_rule.agreement.becomes(Agreement) }
+      format.html { redirect_to agreement_path(@posting_rule.agreement) }
       format.json { head :no_content }
     end
   end

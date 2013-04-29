@@ -119,7 +119,11 @@ authorization do
     end
 
     # todo define proper permissions
-    has_permission_on :posting_rules, to: [:new, :create, :update, :edit, :show, :index, :destroy]
+    has_permission_on :posting_rules, to: [:new, :edit, :show, :index]
+    has_permission_on :posting_rules, to: [:update, :create, :destroy] do
+      if_attribute :agreement => { status: is_not {Agreement::STATUS_ACTIVE}}
+    end
+
     has_permission_on :payments, to: [:new, :create, :update, :edit, :show, :index, :destroy]
   end
 

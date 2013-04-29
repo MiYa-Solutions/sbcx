@@ -13,7 +13,8 @@ module AgreementsHelper
     if @agreement.counterparty == current_user.organization
       url = profile_path
     else
-      url = @agreement.counterparty
+      url = @agreement.counterparty unless @agreement.counterparty.instance_of?(Organization)
+      url = @agreement.counterparty.becomes(Affiliate) if @agreement.counterparty.instance_of?(Organization)
     end
     url
   end

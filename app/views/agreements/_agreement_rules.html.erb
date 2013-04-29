@@ -39,7 +39,7 @@
               <td><%= rule.rate_type %></td>
               <!--<td><#%= rule.properties %></td>-->
               <td><%= l rule.created_at, :format => :long %></td>
-              <td></td>
+              <td><%= link_to 'Delete', agreement_posting_rule_path(@agreement, rule), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-mini btn-danger' if permitted_to? :destroy, rule, context: :posting_rules %></td>
             </tr>
         <% end %>
         </tbody>

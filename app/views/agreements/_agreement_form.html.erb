@@ -16,6 +16,14 @@
           <li>
             <div id="agreement_role_wrapper">
               <%= select_tag 'otherparty_role', options_for_select(role_options_for_agreement(SubcontractingAgreement), include_blank: true) %>
+              <div class="control-group string required">
+                <label class="string required control-label" for="affiliate_name">
+                  <abbr title="required"><i class="icon-flag"></i></abbr> <%= SubcontractingAgreement.human_attribute_name(:name) %></label>
+                <div class="controls">
+                  <%= text_field_tag 'agreement_name', "", class: "string required" %>
+                </div>
+              </div>
+
             </div>
           </li>
           <li>

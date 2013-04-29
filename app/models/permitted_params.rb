@@ -345,7 +345,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       # need this step to work around a declarative authorization problem with strong parameters
       params.permit
     else
-      params.require(:agreement).permit(*agreement_attributes)
+      params[:agreement].permit(*agreement_attributes)
     end
 
   end
