@@ -10,9 +10,7 @@
         <%= link_to 'Back', my_users_path, "class" => "ui-btn-up-c", "data-role" => "button", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
       </div>
       <div class="ui-block-b">
-        <div class="miya_blue_button">
           <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_user_button', "data-icon" => "check", "data-iconpos" => "left" %>
-        </div>
       </div>
     </fieldset>
 
@@ -24,8 +22,6 @@
     <%= render 'fields', f: f %>
 
 
-    <div class="miya_blue_button">
       <%= f.submit I18n.t('general.general.Save'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'create_user_button', "data-icon" => "check", "data-iconpos" => "left" %>
-    </div>
 
 <% end %>
