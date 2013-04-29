@@ -3,7 +3,7 @@
     <div class="smart_label statuses">
       <ul>
         <li><h1><%= I18n.t('general.general.job_statuses').html_safe  %></h1>
-        <li>
+        <li class="job_icons">
           <% if @service_call.class == MyServiceCall %>
               <% if @service_call.transferred? %>
                   <%= image_tag("Itransferred.png", :title => I18n.t('general.messages.transferred_job').html_safe, :rel => 'tooltip') %>

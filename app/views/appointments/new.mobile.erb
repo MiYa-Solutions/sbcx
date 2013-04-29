@@ -1,0 +1,9 @@
+<% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@appointment.appointable.id}" ) %>
+
+<h3 class="appointment_for_label"><%= I18n.t('general.general.new_appointment_for') %></h3>
+
+<p class="notification_link">
+ <%= link_to @appointment.appointable.try(:name), service_call_path(@appointment.appointable.id) %>
+</p>
+
+<%= render :partial => 'in_line_form' %>

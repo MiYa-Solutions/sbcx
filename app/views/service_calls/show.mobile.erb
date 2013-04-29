@@ -77,9 +77,10 @@
   <!--Appointment-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <h3><%= I18n.t('general.general.appointments') %></h3>
-    <p class="service-call-actions">
-      Appointment
-    </p>
+    <!--<button type="button" class="btn btn-medium" data-toggle="modal" data-target="#myMeetings">-->
+      <!--<#%= I18n.t('general.general.show_appointments') %>-->
+    <!--</button>-->
+    <%= render 'appointments/add_appointment', appointable: @service_call %>
   </div>
 
   <!--Job History-->

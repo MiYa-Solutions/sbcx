@@ -1,16 +1,20 @@
 <h3><%= I18n.t('general.general.balance')%>
-  <% if @account.balance < 0 %>
-             <span class="red_badge_collape">
-                    <badge><%= Bom.human_attribute_name(:total) %> <%= '&nbsp;'.html_safe %>
-                      <span id='job_total_price'><%= humanized_money_with_symbol @account.balance %></span>
-                    </badge>
-             </span>
-  <% else %>
-             <span class="blue_badge_collape">
-                    <badge><%= Bom.human_attribute_name(:total) %> <%= '&nbsp;'.html_safe %>
-                      <span id='job_total_price'><%= humanized_money_with_symbol @account.balance %></span>
-                    </badge>
-             </span>
+  <% if @account.present? %>
+      <% if @account.balance < 0 %>
+                 <span class="red_badge_collape">
+                        <badge><%= Bom.human_attribute_name(:total) %> <%= '&nbsp;'.html_safe %>
+                          <span id='job_total_price'><%= humanized_money_with_symbol @account.balance %></span>
+                        </badge>
+                 </span>
+      <% else  %>
+          <% if @account.balance > 0 %>
+                 <span class="blue_badge_collape">
+                        <badge><%= Bom.human_attribute_name(:total) %> <%= '&nbsp;'.html_safe %>
+                          <span id='job_total_price'><%= humanized_money_with_symbol @account.balance %></span>
+                        </badge>
+                 </span>
+          <% end %>
+      <% end %>
   <% end %>
 </h3>
 

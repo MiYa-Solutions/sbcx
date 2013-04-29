@@ -12,6 +12,9 @@ en:
       update_job: "Edit Job"
       update_job_details: "Update Job Details"
       update_customer_details: "Update Customer Contact"
+      appointment_for: "Apointment for Job:"
+      balance_affiliates: "Balance - Affiliates"
+      balance_customers: "Balance - Customers"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"

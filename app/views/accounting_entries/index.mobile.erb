@@ -6,37 +6,56 @@
     <div class="new_job_button">
       <%= link_to I18n.t('general.general.new'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
     </div>
+    <!--<li class="job_index_divider" data-role="list-divider"><#%= I18n.t('general.general.balance') %></li>-->
 
+    <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.balance_affiliates') %></li>
 
-    <li class="affiliate_balance_home">
-    <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.balance') %></li>
-    <li class="affiliate_balance_home">
       <% @accounts.each do |account| %>
+        <% unless account.balance == 0 %>
+            <% if account.accountable.is_a?(Organization) %>
+        <li class="inline_mobile affiliate_balance_home">
+                 <%= link_to account.accountable.name, affiliate_path(account.accountable), "data-transition" => "slide"  %>
+                  <p>
+                    <% if account.balance < 0 %>
+                                <span class="red_badge_collape">
+                                    <badge><%= humanized_money_with_symbol account.balance %></badge>
+                                </span>
+                    <% else %>
+                                <span class="blue_badge_collape">
+                                    <badge><%= humanized_money_with_symbol account.balance %></badge>
+                                </span>
+                    <% end %>
+                  </p>
 
-          <% unless account.balance == 0 %>
-              <% if account.accountable.is_a?(Organization) %>
-                  <%= link_to account.accountable.name, affiliate_path(account.accountable), "data-transition" => "slide"  %>
-              <% else %>
-                  <%= link_to account.accountable.name, customer_path(account.accountable), "data-transition" => "slide" %>
-              <% end %>
-              <p>
-                <% if account.balance < 0 %>
-                        <span class="red_badge_collape">
-                            <badge><%= humanized_money_with_symbol account.balance %></badge>
-                        </span>
-                <% else %>
-                        <span class="blue_badge_collape">
-                            <badge><%= humanized_money_with_symbol account.balance %></badge>
-                        </span>
-                <% end %>
-              </p>
 
+        </li>
           <% end %>
-      <% end %>
-    </li>
+        <% end %>
+     <% end %>
 
+        <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.balance_customers') %></li>
 
-    </li>
+        <% @accounts.each do |account| %>
+            <% unless account.balance == 0 %>
+            <% unless account.accountable.is_a?(Organization) %>
+                <li class="inline_mobile affiliate_balance_home">
+
+                      <%= link_to account.accountable.name, customer_path(account.accountable), "data-transition" => "slide" %>
+                      <p>
+                        <% if account.balance < 0 %>
+                                <span class="red_badge_collape">
+                                    <badge><%= humanized_money_with_symbol account.balance %></badge>
+                                </span>
+                        <% else %>
+                                <span class="blue_badge_collape">
+                                    <badge><%= humanized_money_with_symbol account.balance %></badge>
+                                </span>
+                        <% end %>
+                      </p>
+             </li>
+            <% end %>
+            <% end %>
+        <% end %>
 
   </ul>
 </div>
