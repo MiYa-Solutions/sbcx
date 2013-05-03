@@ -76,4 +76,5 @@ group :test do
   gem 'poltergeist', '1.1.0'
   gem 'shoulda'
   gem 'zeus'
+  gem 'spork'
 end

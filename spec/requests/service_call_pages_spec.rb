@@ -413,7 +413,7 @@ describe "Service Call pages" do
         # transfer the service call
         before do
           in_browser(:org) do
-            transfer_job(service_call, subcontractor.name)
+            transfer_job(service_call, subcontractor)
             #select subcontractor.name, from: subcontractor_select
             #check re_transfer_cbox_selector
             #check allow_collection_cbox_selector
@@ -1850,7 +1850,7 @@ describe "Service Call pages" do
         }
         before do
           Rails.logger.debug { "local subcontractor valid? #{local_subcontractor.valid?}" }
-          agr = Agreement.my_agreements(service_call.organization.id).cparty_agreements(service_call.subcontractor.id).with_status(:active).first
+          agr = Agreement.my_agreements(service_call.organization.id).cparty_agreements(local_subcontractor.id).with_status(:active).first
           visit service_call_path service_call
           select local_subcontractor.name, from: subcontractor_select
           select agr.name, from: JOB_SELECT_SUBCON_AGR
