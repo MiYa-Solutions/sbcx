@@ -51,15 +51,14 @@ class Agreement < ActiveRecord::Base
     state :draft, value: STATUS_DRAFT
     state :active, value: STATUS_ACTIVE
     state :canceled, value: STATUS_CANCELED
-    state :approved_pending, value: STATUS_APPROVED_PENDING do
-      validate { |agr| agr.check_replacement_agreement }
-    end
+
     after_failure do |agreement, transition|
       Rails.logger.debug { "#{agreement.class.name} status state machine failure. Agreement errors : \n" + agreement.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
-    after_transition :all => :active do |agr|
+    after_transition any => :active do |agr|
       agr.starts_at = Time.zone.now unless agr.starts_at
+      agr.save
     end
   end
 

@@ -316,7 +316,7 @@ DEPENDENCIES
   bootstrap-will_paginate (= 0.0.5)
   capybara (= 2.0.2)
   capybara-screenshot
-  carmen-rails (~> 1.0.0.beta3)
+  carmen-rails (= 1.0.0.beta3)
   coffee-rails (= 3.2.2)
   cucumber-rails (= 1.2.1)
   database_cleaner (~> 0.9.1)

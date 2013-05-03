@@ -62,9 +62,6 @@ class OrganizationAgreement < Agreement
       unless Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'", agreement.counterparty_id, agreement.organization_id).present?
         Account.create!(organization: agreement.counterparty, accountable: agreement.organization) if agreement.counterparty.subcontrax_member?
       end
-
-      agreement.starts_at = Time.zone.now unless agreement.starts_at.present?
-      agreement.save
     end
 
 
@@ -74,7 +71,6 @@ class OrganizationAgreement < Agreement
     end
 
     event :activate do
-      transition :draft => :approved_pending, if: ->(agreement) { Agreement.sibling_active_agreements(agreement).size > 0 }
       transition :draft => :active, if: ->(agreement) { !agreement.organization.subcontrax_member? }
       transition :draft => :active, if: ->(agreement) { !agreement.counterparty.subcontrax_member? }
     end
@@ -85,9 +81,7 @@ class OrganizationAgreement < Agreement
     end
 
     event :accept do
-      transition [:pending_org_approval, :pending_cparty_approval] => :approved_pending, if: ->(agreement) { Agreement.sibling_active_agreements(agreement).size > 0 }
       transition [:pending_org_approval, :pending_cparty_approval] => :active, if: ->(agreement) { Agreement.sibling_active_agreements(agreement).size == 0 }
-
     end
 
     event :reject do
@@ -113,8 +107,8 @@ class OrganizationAgreement < Agreement
   def agreement_locked?
     res = false
     if self.status_changed?
-      res = true if changed_other_than?(%w('status', 'ends_at')) && self.status_was == OrganizationAgreement::STATUS_ACTIVE
-      res = true if changed_other_than?(%w('status')) && self.status_was == OrganizationAgreement::STATUS_CANCELED
+      res = true if changed_other_than?(%w(status ends_at)) && self.status_was == OrganizationAgreement::STATUS_ACTIVE
+      res = true if changed_other_than?(%w(status)) && self.status_was == OrganizationAgreement::STATUS_CANCELED
     else
       res = true if (self.active? && changed_other_than?(%w(ends_at))) || self.canceled? || self.replaced?
     end
@@ -124,7 +118,7 @@ class OrganizationAgreement < Agreement
   # determines if attributes other than the ones specified have been changed
   # @param attributes an array of strings with attributes to exclude from the check
   def changed_other_than?(attributes = [])
-    test_hash = self.changed_attributes
+    test_hash = self.changed_attributes.clone
     attributes.each do |attr|
       test_hash.delete(attr)
     end

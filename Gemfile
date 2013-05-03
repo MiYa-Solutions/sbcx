@@ -9,7 +9,7 @@ gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.5'
 gem 'bootstrap-datepicker-rails', '1.0.0'
-gem 'carmen-rails', '~> 1.0.0.beta3'
+gem 'carmen-rails', '1.0.0.beta3'
 gem 'active_attr', '0.7.0'
 
 
