@@ -7,9 +7,7 @@
       </div>
 
       <div class="ui-block-b">
-        <div class="miya_blue_button">
           <%= link_to I18n.t('general.general.edit'), edit_customer_path(@customer), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right" %>
-        </div>
       </div>
 
 </fieldset>
@@ -36,9 +34,7 @@
     <h3><%= I18n.t('general.general.open_jobs') %></h3>
 
     <% if @customer.service_calls.empty? %>
-        <div class="miya_blue_button">
           <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
-        </div>
 
     <% else %>
         <ul data-role="listview">
@@ -62,9 +58,7 @@
           <br>
         </ul>
 
-        <div class="miya_blue_button">
           <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
-        </div>
 
     <% end %>
 

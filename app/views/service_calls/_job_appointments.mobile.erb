@@ -1,0 +1,23 @@
+<div class="job_appointments_list">
+
+      <ul data-role="listview">
+
+          <% @service_call.appointments.each do |appointment| %>
+              <li class="inline_mobile service_calls_index">
+                <p class="ui-li-aside-blue ui-li-desc-blue">
+                  <badge><%= appointment.appointable.id %></badge>
+                </p>
+                <%= link_to appointment.title, appointment_path(appointment), "data-transition" => "slide", id: "affiliate_balance" %>
+                <span class="appointment_date_label">
+                    <%= appointment.starts_at_date_text %>, <%= appointment.starts_at_time_text %>
+          </span>
+              </li>
+          <% end %>
+
+      </ul>
+
+</div>
+
+
+
+

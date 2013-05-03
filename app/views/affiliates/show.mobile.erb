@@ -20,12 +20,12 @@
             <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
           </div>
           <div class="ui-block-b">
-            <div class="miya_blue_button">
+            <!--<div class="miya_blue_button">-->
             <%= form_for(current_user.organization.agreements.build(organization_id: @affiliate.id)) do |f| %>
                 <div><%= f.hidden_field :organization_id %></div>
                 <%= f.submit I18n.t('general.general.add_member'), "data-theme" => "b", "data-mini" => "true" %>
             <% end %>
-          </div>
+          <!--</div>-->
           </div>
         </fieldset>
 
@@ -37,8 +37,7 @@
         <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
       </div>
       <div class="ui-block-b">
-        <div class="miya_blue_button">
-        </div>
+
       </div>
     </fieldset>
 
@@ -66,9 +65,9 @@
     <h3><%= I18n.t('general.general.open_jobs') %></h3>
 
     <% if current_user.organization.affiliate_jobs_for( @affiliate).empty? %>
-        <div class="miya_blue_button">
+        <!--<div class="miya_blue_button">-->
           <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
-       </div>
+       <!--</div>-->
 
     <% else %>
         <ul data-role="listview">
@@ -92,9 +91,9 @@
           <br>
         </ul>
 
-        <div class="miya_blue_button">
+        <!--<div class="miya_blue_button">-->
           <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
-        </div>
+        <!--</div>-->
 
     <% end %>
 

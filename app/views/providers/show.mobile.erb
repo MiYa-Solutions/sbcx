@@ -16,12 +16,10 @@
             <%= link_to 'Back', providers_path, "data-role" => "button", :class => "ui-btn-up-c", "data-icon" => "arrow-l" %>
           </div>
           <div class="ui-block-b">
-            <div class="miya_blue_button">
               <%= form_for(current_user.organization.agreements.build(provider_id: @provider.id)) do |f| %>
                   <div><%= f.hidden_field :provider_id %></div>
                   <%= f.submit "Add Member", "data-theme" => "b", "data-icon" => "email" %>
               <% end %>
-            </div>
           </div>
         </fieldset>
 
@@ -35,9 +33,7 @@
       </div>
 
       <div class="ui-block-b">
-        <div class="miya_blue_button">
           <%= link_to 'Invite', new_provider_path, "data-role" => "button", :class => "ui-btn-up-b", "data-icon" => "email" %>
-        </div>
       </div>
 
     </fieldset>

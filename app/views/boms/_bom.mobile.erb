@@ -30,7 +30,7 @@
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:buyer) %></div>
           <div class="ui-block-b">
-            <%= f.select :buyer_id, buyer_options(@ticket), include_blank: true  %>
+            <%= f.input :buyer, collection: options_for_select(buyer_options(@ticket)), include_blank: true  %>
             <%= f.hidden_field :buyer_type %>
           </div>
         </div>
@@ -40,7 +40,5 @@
       </div>
     </div>
 
-    <div class="">
       <%= f.submit I18n.t('general.general.update_part') , "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
-    </div>
 <% end %>
