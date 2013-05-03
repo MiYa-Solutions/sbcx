@@ -51,15 +51,14 @@ class Agreement < ActiveRecord::Base
     state :draft, value: STATUS_DRAFT
     state :active, value: STATUS_ACTIVE
     state :canceled, value: STATUS_CANCELED
-    state :approved_pending, value: STATUS_APPROVED_PENDING do
-      #validate { |agr| agr.check_replacement_agreement }
-    end
+
     after_failure do |agreement, transition|
       Rails.logger.debug { "#{agreement.class.name} status state machine failure. Agreement errors : \n" + agreement.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
-    after_transition :all => :active do |agr|
+    after_transition any => :active do |agr|
       agr.starts_at = Time.zone.now unless agr.starts_at
+      agr.save
     end
   end
 
@@ -70,15 +69,14 @@ class Agreement < ActiveRecord::Base
   scope :sibling_active_agreements, ->(agreement) { org_agreements(agreement.organization_id).where("counterparty_id = #{agreement.counterparty_id} AND type = '#{agreement.type}' AND status = #{Agreement::STATUS_ACTIVE}") - where(id: agreement.organization_id) }
   attr_accessor :change_reason
 
-  def self.new_agreement(type, org, other_party_id = nil, other_party_role = nil, name = nil)
+  def self.new_agreement(type, org, other_party_id = nil, other_party_role = nil)
 
     if type.nil? || type.empty?
-      agreement               = Agreement.new(name: name)
+      agreement               = Agreement.new
       agreement.errors[:type] = t('activerecord.errors.agreement.attributes.type.blank')
     else # create the agreement subclass which is expected to be underscored
 
       agreement = type.camelize.constantize.new
-      agreement.name = name
 
       if other_party_role.nil? # if the role of the other party is not specified, assume counterparty
         org.agreements << agreement
