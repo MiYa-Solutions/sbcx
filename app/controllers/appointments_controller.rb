@@ -44,6 +44,7 @@ class AppointmentsController < ApplicationController
     respond_to do |format|
       if @appointment.save
         format.html { redirect_to(@appointment, :notice => 'Appointment was successfully created.') }
+        format.mobile { redirect_to(@appointment.appointable, :notice => 'Appointment was successfully created.') }
         format.js {}
       else
         format.html { render :action => "new" }
@@ -60,9 +61,11 @@ class AppointmentsController < ApplicationController
     respond_to do |format|
       if @appointment.update_attributes(permitted_params(@appointment).appointment)
         format.html { redirect_to(@appointment, :notice => 'Appointment was successfully updated.') }
+        format.mobile { redirect_to(@appointment.appointable, :notice => 'Appointment was successfully updated.') }
         format.js {  }
       else
-        format.html { render :action => "edit" }
+        format.html { render :edit }
+        format.mobile { render :new }
         format.js { render :create }
       end
     end
