@@ -13,7 +13,6 @@ describe "Service Call pages" do
   technician_select              = 'service_call_technician_id'
   collector_select               = 'select#service_call_collector_id'
   collector_select_selector      = 'service_call_collector_id'
-  status_select                  = 'service_call_status_event'
   work_status_select             = 'service_call_work_status_event'
   customer_select                = 'service_call_customer_id'
   new_customer_fld               = 'service_call_customer_name'
@@ -24,7 +23,6 @@ describe "Service Call pages" do
   # ==============================================================
   # buttons to click and inspect
   # ==============================================================
-  transfer_btn                   = '#service_call_transfer_btn'
   transfer_btn_selector          = 'service_call_transfer_btn'
   dispatch_btn                   = '#service_call_dispatch_btn'
   dispatch_btn_selector          = 'service_call_dispatch_btn'
@@ -32,43 +30,22 @@ describe "Service Call pages" do
   create_btn_selector            = 'service_call_create_btn'
   accept_btn                     = '#accept_service_call_btn'
   accept_btn_selector            = 'accept_service_call_btn'
-  reject_btn                     = '#reject_service_call_btn'
   reject_btn_selector            = 'reject_service_call_btn'
-  settle_btn                     = '#settle_service_call_btn'
   settle_btn_selector            = 'settle_service_call_btn'
   start_btn                      = '#start_service_call_btn'
   start_btn_selector             = 'start_service_call_btn'
-  complete_btn                   = '#complete_service_call_btn'
   complete_btn_selector          = 'complete_service_call_btn'
-  paid_btn                       = '#paid_service_call_btn'
   paid_btn_selector              = 'job_paid_btn'
-  save_btn                       = '#service_call_save_btn'
   save_btn_selector              = 'service_call_save_btn'
-  cancel_btn                     = '#cancel_service_call_btn'
-  cancel_btn_selector            = 'cancel_service_call_btn'
-  un_cancel_btn                  = '#un_cancel_service_call_btn'
-  un_cancel_btn_selector         = 'un_cancel_service_call_btn'
-  allow_collection_cbox          = '#service_call_allow_collection'
   allow_collection_cbox_selector = 'service_call_allow_collection'
-  re_transfer_cbox               = '#service_call_re_transfer'
   re_transfer_cbox_selector      = 'service_call_re_transfer'
   invoice_btn_selector           = 'invoice_service_call_btn'
   provider_invoiced_btn_selector = 'provider_invoiced_service_call_btn'
-  provider_invoiced_btn          = '#provider_invoiced_service_call_btn'
   collect_btn_selector           = 'collect_service_call_btn'
-  collect_btn                    = '#collect_service_call_btn'
-  deposit_btn_selector           = 'deposit_service_call_btn'
-  deposit_btn                    = '#desposit_service_call_btn'
   employee_deposit_btn_selector  = 'employee_deposit_service_call_btn'
-  employee_deposit_btn           = '#employee_desposit_service_call_btn'
   deposit_to_prov_btn_selector   = 'deposit_to_prov_service_call_btn'
-  deposit_to_prov_btn            = '#deposit_to_prov_service_call_btn'
   confirm_deposit_btn_selector   = 'confirm_deposit_service_call_btn'
-  confirm_deposit_btn            = '#confirm_deposit_service_call_btn'
   payment_overdue_btn_selector   = 'overdue_service_call_btn'
-  payment_overdue_btn            = '#overdue_service_call_btn'
-  confirm_settled_btn_selector   = 'confirm_settled_service_call_btn'
-  confirm_settled_btn            = '#confirm_settled_service_call_btn'
 
 
   describe "with Org Admin", js: true do
@@ -1637,7 +1614,7 @@ describe "Service Call pages" do
                     describe 'provider confirms settlement' do
                       before do
                         in_browser(:org) do
-                          click_button confirm_settled_btn_selector
+                          click_button JOB_BTN_CONFIRM_SETTLEMENT
                         end
                       end
 
@@ -2198,7 +2175,7 @@ describe "Service Call pages" do
             it 'page should show a success message, cancel, transfer and start button with a new status' do
               should have_success_message
               should have_status(JOB_STATUS_NEW)
-              should have_button(JOB_BTN_START)
+              should have_button(JOB_BTN_DISPATCH)
               should have_button(JOB_BTN_TRANSFER)
               should have_button(JOB_BTN_CANCEL)
               should have_event('100037')

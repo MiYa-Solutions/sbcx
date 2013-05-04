@@ -28,7 +28,7 @@ JOB_BTN_SETTLE                 = 'settle_service_call_btn'
 JOB_BTN_PROV_SETTLE            = 'provider_settle_service_call_btn'
 JOB_BTN_PROV_PAYMENT_CLEAR     = 'clear_prov_service_call_btn'
 JOB_BTN_SUBCON_PAYMENT_CLEAR   = 'clear_subcon_service_call_btn'
-JOB_BTN_CONFIRM_SETTLEMENT     = 'confirm_settled_service_call_btn'
+JOB_BTN_CONFIRM_SETTLEMENT     = 'confirm_settled_subcon_service_call_btn'
 JOB_BTN_CLOSE                  = 'close_service_call_btn'
 JOB_BTN_HISTORY                = 'job_history_btn'
 
