@@ -78,7 +78,7 @@
       <ul class="unstyled list_service_calls">
         <li><label><%= @service_call.class.human_attribute_name(:completed_on_text) %></label></li>
         <li class="service_call_completed_on"><%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_completed_on' %>
-        &nbsp;<i class="icon-pencil"></i></li>
+          &nbsp;<i class="icon-pencil"></i></li>
         <li></li>
       </ul>
 
@@ -96,10 +96,13 @@
       <ul class="unstyled list_service_calls">
         <li><label><%= @service_call.class.human_attribute_name(:customer) %></label></li>
         <li>
-          <span id="customer-name" class="customer-autocomplete" data-job-id="<%= @service_call.id %>" data-obj-type="<%= @service_call.class.name.underscore %>"> <%=
-              @service_call.customer.name %>
-          </span>
-          <!--&nbsp;<i class="icon-pencil"></i>-->
+          <% if permitted_attribute? @service_call, :customer_id %>
+              <span id="customer-name" class="customer-autocomplete" data-job-id="<%= @service_call.id %>" data-obj-type="<%= @service_call.class.name.underscore %>">
+                <%= @service_call.customer.name %>
+              </span><i class="icon-pencil"></i>
+          <% else %>
+              <span><%= link_to @service_call.customer.name, @service_call.customer %></span>
+          <% end %>
         </li>
         <li></li>
       </ul>
@@ -131,13 +134,13 @@
       <% end %>
 
       <!--<#% if @service_call.instance_of?(TransferredServiceCall) %>-->
-          <!--<ul class="unstyled list_service_calls">-->
-            <!--<li><label><#%= @service_call.class.human_attribute_name(:provider) %></label></li>-->
-            <!--<li>-->
-              <!--&nbsp;<i class="icon-pencil"></i></li>-->
-            <!--<li></li>-->
-          <!--</ul>-->
-          <!--<br>-->
+      <!--<ul class="unstyled list_service_calls">-->
+      <!--<li><label><#%= @service_call.class.human_attribute_name(:provider) %></label></li>-->
+      <!--<li>-->
+      <!--&nbsp;<i class="icon-pencil"></i></li>-->
+      <!--<li></li>-->
+      <!--</ul>-->
+      <!--<br>-->
       <!--<#% end %>-->
 
       <ul class="unstyled list_service_calls">
@@ -182,7 +185,7 @@
       <br>
 
 
-   </div>
+    </div>
 
   </div>
   <!--end of status & Job details section-->
