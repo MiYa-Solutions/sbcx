@@ -33,7 +33,9 @@ class OrganizationAgreement < Agreement
   # The state machine definitions
   state_machine :status, :initial => :draft do
     state :draft, value: STATUS_DRAFT
-    state :active, value: STATUS_ACTIVE
+    state :active, value: STATUS_ACTIVE do
+      validate ->(agr) { agr.check_rules }
+    end
     state :pending_org_approval, value: STATUS_PENDING_ORG_APPROVAL do
 
       validates_presence_of :posting_rules
@@ -93,6 +95,12 @@ class OrganizationAgreement < Agreement
       transition :active => :canceled
     end
 
+  end
+
+  protected
+
+  def check_rules
+    errors.add :posting_rules, "Can't activate agreement without posting rules" unless rules.size > 0
   end
 
   private

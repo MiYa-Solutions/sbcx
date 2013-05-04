@@ -15,6 +15,13 @@
 
 <% provide(:title, I18n.t('general.general.edit').html_safe + "&nbsp;".html_safe + @agreement.id) %>
 
+<% if @agreement.errors.any? %>
+    <div class="alert alert-block alert-error">
+      <a class="close" data-dismiss="alert" href="#">x</a>
+      <%= render 'shared/error_messages', object: @agreement %>
+    </div>
+<% end %>
+
 
 <div class="well well_height">
 

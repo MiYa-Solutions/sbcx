@@ -35,7 +35,7 @@ describe OrganizationAgreement do
   describe 'payment terms' do
 
     it 'the available payment terms' do
-      new_agreement.class.payment_options.should == [ :cod, :net_10, :net_15, :net_30, :net_60, :net_90 ]
+      new_agreement.class.payment_options.should == [:cod, :net_10, :net_15, :net_30, :net_60, :net_90]
     end
 
 
@@ -164,9 +164,9 @@ describe OrganizationAgreement do
       end
 
       it "should not allow the transition " do
-        expect {
+        expect do
           agreement_by_org.submit_for_approval!
-        }.should raise_error { StateMachine::InvalidTransition }
+        end.to raise_error { StateMachine::InvalidTransition }
       end
 
       it "should have an error on posting rules" do
@@ -283,4 +283,17 @@ describe OrganizationAgreement do
 
   end
 
+  describe 'with local provider' do
+    let(:agr_with_local_subcon) { FactoryGirl.create(:organization_agreement, counterparty: FactoryGirl.create(:subcontractor)) }
+
+    it 'activation with no rules should not be allowed' do
+      agr_with_local_subcon.rules.destroy_all
+      expect do
+        agr_with_local_subcon.activate!
+      end.to raise_error(StateMachine::InvalidTransition)
+      Rails.logger.debug {"agr_with_local_subcon status: #{agr_with_local_subcon.status_name}"}
+    end
+
+  end
 end
+

@@ -48,7 +48,7 @@ class AgreementsController < ApplicationController
     else
       respond_to do |format|
 
-        format.html { render :action => 'edit' }
+        format.html { render :show }
         format.json { render json: @agreement.errors, status: :unprocessable_entity }
         format.mobile { redirect_to @agreement.becomes(Agreement) }
       end
