@@ -142,7 +142,6 @@ service_call:
       canceled: "status_red"
       accepted: "status_blue"
       rejected: "status_red"
-      closed: "status_grey"
     work_status:
       pending: "status_grey"
       dispatched: "status_blue"

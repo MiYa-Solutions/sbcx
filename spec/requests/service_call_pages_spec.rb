@@ -2057,7 +2057,7 @@ describe "Service Call pages" do
                     end
                     describe 'payment' do
                       before do
-                        select Cash.model_name.human, from: JOB_SELECT_PAYMENT
+                        select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
                         click_button JOB_BTN_PAID
                       end
 
@@ -2068,6 +2068,27 @@ describe "Service Call pages" do
                         should have_button(JOB_BTN_CLEAR)
                       end
 
+                      describe 'clear payment with subcon: ' do
+                        before do
+                          click_button JOB_BTN_SUBCON_PAYMENT_CLEAR
+                        end
+
+                        it 'should show a success message' do
+                          should have_success_message
+                        end
+
+                        describe 'clear customer billing: ' do
+                          before do
+                            click_button JOB_BTN_CLEAR
+                          end
+
+                          it 'should have the close button' do
+
+                            should have_button JOB_BTN_CLOSE
+
+                          end
+                        end
+                      end
                       describe 'cancel ' do
                         before do
                           click_button JOB_BTN_CANCEL

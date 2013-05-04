@@ -26,7 +26,7 @@ module ServiceCallsHelper
       simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.work_status.#{event}.form_classes") } do |f|
         concat (hidden_field_tag "service_call[subcontractor_status_event]", "#{event}")
         concat (f.submit service_call.class.human_subcontractor_status_event_name(event).titleize,
-                         id:    "#{event}_service_call_btn",
+                         id:    "#{event}_subcon_service_call_btn",
                          class: style("service_call.forms.subcontractor_status.#{event}.button_classes"),
                          title: I18n.t("service_call.forms.subcontractor_status.#{event}.tooltip"),
                          rel:   'tooltip'
@@ -40,7 +40,7 @@ module ServiceCallsHelper
       simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.provider_status.#{event}.form_classes") } do |f|
         concat (hidden_field_tag "service_call[provider_status_event]", "#{event}")
         concat (f.submit service_call.class.human_provider_status_event_name(event).titleize,
-                         id:    "#{event}_service_call_btn",
+                         id:    "#{event}_prov_service_call_btn",
                          class: style("service_call.forms.provider_status.#{event}.button_classes"),
                          title: I18n.t("service_call.forms.provider_status.#{event}.tooltip"),
                          rel:   'tooltip'

@@ -24,6 +24,7 @@ class Bom < ActiveRecord::Base
   validates_presence_of :ticket, :cost, :price, :quantity, :material_id
   validates_numericality_of :quantity, :cost, :price
   validate :buyer, :validate_buyer
+  validate :check_ticket_status
 
   monetize :cost_cents
   monetize :price_cents
@@ -94,6 +95,19 @@ class Bom < ActiveRecord::Base
     if self.buyer.nil?
       self.buyer = self.ticket.try(:organization)
     end
+  end
+
+  def check_ticket_status
+    errors.add :ticket, "Can't add/update a bom to ticket transferred to a member subcon" if ticket.transferred? && ticket.subcontractor.subcontrax_member?
+    errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done?
+  end
+
+  def destroy
+    unless ticket.can_change_boms?
+      self.errors.add :ticket, "Can't delete a bom for a completed ticket"
+      raise ActiveRecord::RecordInvalid.new(self)
+    end
+    super
   end
 end
 

@@ -216,5 +216,10 @@ class ServiceCall < Ticket
         (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
         (!subcontractor.subcontrax_member? && work_done?)
   end
+
+  def can_change_boms?
+    self.work_in_progress? && !self.work_completed? && !self.transferred?
+  end
+
 end
 

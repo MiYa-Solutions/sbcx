@@ -48,6 +48,7 @@ group :development, :test do
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
+  gem 'zeus', '0.13.3'
   gem 'parallel_tests'
   gem 'zeus-parallel_tests'
 end
@@ -75,6 +76,5 @@ group :test do
   gem 'capybara-screenshot'
   gem 'poltergeist', '1.1.0'
   gem 'shoulda'
-  gem 'zeus'
   gem 'spork'
 end

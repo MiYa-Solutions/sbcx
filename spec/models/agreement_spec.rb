@@ -57,7 +57,7 @@ describe Agreement do
     it { should validate_presence_of(:creator) }
 
     it "an agreement can't be active if there are no posting rules" do
-
+       expect { agreement.activate!}.to raise_error(StateMachine::InvalidTransition)
     end
 
     it "starts_at is set when activated"

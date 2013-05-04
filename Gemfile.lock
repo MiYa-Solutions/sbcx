@@ -359,5 +359,5 @@ DEPENDENCIES
   thin (= 1.5.0)
   uglifier (= 1.2.3)
   will_paginate (= 3.0.3)
-  zeus
+  zeus (= 0.13.3)
   zeus-parallel_tests

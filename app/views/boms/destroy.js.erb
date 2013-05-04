@@ -1,1 +1,12 @@
-$('#bom_<%= @bom.id %>').remove();
+<% if @bom.errors.any? %>
+    var msg = "";
+
+    <% @bom.errors[:ticket].each do |err| %>
+        msg = msg + '<span class="error-msg alert-error help-inline"><%= err %> </span>';
+
+    <% end%>
+    $(msg).purr();
+
+<% else %>
+    $('#bom_<%= @bom.id %>').remove();
+ <% end %>

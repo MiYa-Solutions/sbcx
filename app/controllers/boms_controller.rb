@@ -59,7 +59,7 @@ class BomsController < ApplicationController
       if @bom.save
         format.html { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
         format.mobile { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
-        format.js { }
+        format.js {}
         format.json { render json: @bom, status: :created, location: @bom }
       else
         format.html { render :new }
@@ -68,7 +68,7 @@ class BomsController < ApplicationController
           render :new
         end
         format.json { render json: @bom.errors, status: :unprocessable_entity }
-        format.js { }
+        format.js {}
       end
     end
   end
@@ -95,7 +95,12 @@ class BomsController < ApplicationController
   # DELETE /boms/1.json
   def destroy
     @bom = Bom.find(params[:id])
-    @bom.destroy
+    begin
+      @bom.destroy
+    rescue ActiveRecord::RecordInvalid
+
+    end
+
 
     respond_to do |format|
       format.html { redirect_to service_call_boms_url }

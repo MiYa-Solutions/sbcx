@@ -78,8 +78,8 @@ class MyServiceCall < ServiceCall
     end
 
     event :close do
-      transition :transferred => :closed, if: ->(sc) { sc.subcon_cleared? && sc.payment_paid? }
-      transition :open => :closed, if: ->(sc) { sc.payment_paid? }
+      transition :transferred => :closed, if: ->(sc) { sc.subcon_cleared? && sc.payment_cleared? }
+      transition :open => :closed, if: ->(sc) { sc.payment_cleared? }
     end
 
     event :cancel_transfer do

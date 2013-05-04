@@ -21,22 +21,10 @@
 
     <table class="table table-striped table-condensed table-sbcx">
       <tbody>
-      <!--<tr>-->
-        <!--<td><strong><#%= I18n.t('general.general.job_source') %></strong></td>-->
-        <!--<td><span class="status_blue">-->
-              <!--<#% if @service_call.class == MyServiceCall %>-->
-                 <!--<h3> <#%= I18n.t('general.general.my_job') %></h3>-->
-              <!--<#% else %>-->
-                  <!--<h3><#%= I18n.t('general.general.transferred_job') %></h3>-->
-              <!--<#% end %>-->
-        <!--</span>-->
-        <!--</td>-->
-      <!--</tr>-->
-
       <tr>
         <td><strong> <%= @service_call.class.human_attribute_name(:status) %></strong></td>
         <td>
-          <span class="<%= StylingService.instance.get_style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
+          <span class="<%= style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
           <h3><%= @service_call.human_status_name %></h3>
           </span>
         </td>
@@ -60,21 +48,21 @@
           <tr>
             <td><%= @service_call.class.human_attribute_name(:subcontractor) %></td>
             <td>
-              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_name">
-              <h3><%= link_to( @service_call.subcontractor.try(:name), affiliate_path(@service_call.subcontractor) ) if @service_call.transferred? %></h3>
+              <span class="<%= style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_name">
+              <h3><%= link_to( @service_call.subcontractor.try(:name), affiliate_path(@service_call.subcontractor) ) if @service_call.subcontractor.present? %></h3>
               </span>
             </td>
           </tr>
           <tr>
             <td><%= @service_call.class.human_attribute_name(:subcon_agreement) %></td>
             <td>
-              <%= link_to truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15), agreement_path(@service_call.subcon_agreement), title: "#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}" if @service_call.transferred? %>
+              <%= link_to truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15), agreement_path(@service_call.subcon_agreement), title: "#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}" if @service_call.subcontractor.present? %>
             </td>
           </tr>
           <tr>
             <td> <%= @service_call.class.human_attribute_name(:subcontractor_status) %></td>
             <td>
-              <span class="<%= StylingService.instance.get_style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_status">
+              <span class="<%= style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_status">
               <h3><%= @service_call.human_subcontractor_status_name %></h3>
               </span>
             </td>

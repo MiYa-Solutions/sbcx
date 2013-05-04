@@ -41,6 +41,12 @@ $('#bom_quantity').val('');
     $('#bom_cost').after('<span class="error-msg help-inline"><%= err %> </span>')
     <% end%>
 <%end %>
+<% unless @bom.errors[:ticket].empty? %>
+
+    <% @bom.errors[:ticket].each do |err| %>
+    $('#new_bom').append('<span class="error-msg alert-error help-inline"><%= err %> </span>')
+    <% end%>
+<%end %>
 
 <% else %>
     $('#boms:last').append('<%= j render(@bom) %>');

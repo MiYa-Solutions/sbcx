@@ -29,7 +29,7 @@
       <% end %>
 
 
-      <li><%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
+      <li><%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } if @service_call.can_change_boms?%></li>
     </ul>
   </div>
 

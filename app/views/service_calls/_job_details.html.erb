@@ -77,7 +77,7 @@
 
       <ul class="unstyled list_service_calls">
         <li><label><%= @service_call.class.human_attribute_name(:completed_on_text) %></label></li>
-        <li class="service_call_completed_on"><%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_completed_on' %>
+        <li class="service_call_completed_on"><%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: '' %>
           &nbsp;<i class="icon-pencil"></i></li>
         <li></li>
       </ul>
