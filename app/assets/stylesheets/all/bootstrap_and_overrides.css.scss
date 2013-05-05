@@ -1404,6 +1404,13 @@ a:hover {
 }
 
 .add_new_agreement {
+
+  .row-fluid {
+    background-color: #EEEEEE;
+    border-color: black;
+    border-width: 1px;
+  }
+
   select {
     width: 160px;
   }
@@ -1422,11 +1429,43 @@ a:hover {
   }
 
   li {
-    float: left;
+    //float: left;
     margin: 0 5px;
     line-height: 16px;
+    margin-top: 4px;
     //width: 65%;
   }
+
+  label {
+    float: right;
+    color: #000000;
+  }
+
+  .new_agreement_table {
+    width: 90%;
+    margin-left: 2%;
+    margin-top: 1%;
+  }
+
+  #new_agreement_label {
+    float: right;
+  }
+
+  #otherparty_role {
+    margin-left: 3%;
+  }
+  #new_agreement_name {
+    margin-left: 3%;
+    width: 151px;
+  }
+
+  #add-agreement-button {
+    margin-left: 52%;
+    margin-top: 1%;
+  }
+
+
+
 }
 
 .filter_affiliate_jobs {

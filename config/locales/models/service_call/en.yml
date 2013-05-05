@@ -42,6 +42,7 @@ en:
         completed_on: "Job Completed on"
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
+        provider_agreement: "Contractor Agreement"
 
 
     state_machines:

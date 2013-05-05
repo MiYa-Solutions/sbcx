@@ -56,7 +56,10 @@
           <tr>
             <td><%= @service_call.class.human_attribute_name(:subcon_agreement) %></td>
             <td>
-              <%= link_to truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15), agreement_path(@service_call.subcon_agreement), title: "#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}" if @service_call.subcontractor.present? %>
+             <span class="status_grey">
+             <h3><%= link_to truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15), agreement_path(@service_call.subcon_agreement), title: "#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}" if @service_call.subcontractor.present? %>
+             </h3></span>
+
             </td>
           </tr>
           <tr>
@@ -87,9 +90,9 @@
           <tr>
             <td><%= @service_call.class.human_attribute_name(:provider_agreement) %></td>
             <td>
-
-              <%= link_to truncate("#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}", length: 15), agreement_path(@service_call.provider_agreement), title: "#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}" %>
-
+              <span class="status_grey">
+             <h3><%= link_to truncate("#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}", length: 15), agreement_path(@service_call.provider_agreement), title: "#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}" %>
+             </h3></span>
             </td>
           </tr>
           <tr>

@@ -1,41 +1,44 @@
 <% other_party ||= "" %>
 <div class="add_new_agreement">
+  <div class="row-fluid">
+
   <%= form_tag agreements_url, :class => 'simple_form form-horizontal ajax-form' do %>
+  <div id="agreement_role_wrapper">
+      <table class="unstyled new_agreement_table">
+        <tbody>
+           <tr>
+             <%= hidden_field_tag 'otherparty_id', other_party.id %>
+             <%= hidden_field_tag 'agreement_type', 'subcontracting_agreement' %>
+           </tr>
+           <tr>
+             <td>
+               <!--<#%= label_tag "Where #{other_party.name} is your" %>-->
+               <%= label_tag @affiliate.name + " is your" %>
 
+             </td>
+             <td>
+               <%= select_tag 'otherparty_role', options_for_select(role_options_for_agreement(SubcontractingAgreement), include_blank: true) %>
+             </td>
+           </tr>
+           <tr>
+             <td>
+               <label class="string required control-label" for="affiliate_name" id="new_agreement_label">
+                 <abbr title="required"><i class="icon-flag"></i></abbr> <%= SubcontractingAgreement.human_attribute_name(:name) %></label>
+             </td>
+             <td>
+               <%= text_field_tag 'agreement_name', "", class: "string required", id: "new_agreement_name" %>
+             </td>
+           </tr>
+        </tbody>
+      </table>
+  </div>
 
-      <fieldset>
+              <%= submit_tag "Create", class: 'btn btn-medium btn-primary ajax-btn', :id => 'add-agreement-button' %>
 
-        <ul>
-          <li>
-            <%= hidden_field_tag 'otherparty_id', other_party.id %>
-            <%= hidden_field_tag 'agreement_type', 'subcontracting_agreement' %>
-          </li>
-          <li>
-            <label class="string optional control-label" for="customer_country"><%= label_tag "Where #{other_party.name} is your: " %></label>
-          </li>
-          <li>
-            <div id="agreement_role_wrapper">
-              <%= select_tag 'otherparty_role', options_for_select(role_options_for_agreement(SubcontractingAgreement), include_blank: true) %>
-              <div class="control-group string required">
-                <label class="string required control-label" for="affiliate_name">
-                  <abbr title="required"><i class="icon-flag"></i></abbr> <%= SubcontractingAgreement.human_attribute_name(:name) %></label>
-                <div class="controls">
-                  <%= text_field_tag 'agreement_name', "", class: "string required" %>
-                </div>
-              </div>
-
-            </div>
-          </li>
-          <li>
-            <%= submit_tag "Create", class: 'btn btn-medium btn-primary ajax-btn', :id => 'add-agreement-button' %>
-          </li>
-
-        </ul>
-      </fieldset>
-  <% end %>
+<% end %>
 
   <div id="agreement_form">
   </div>
 
-
+  </div>
 </div>
