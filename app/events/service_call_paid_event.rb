@@ -21,6 +21,7 @@ class ServiceCallPaidEvent < ServiceCallEvent
 
   def process_event
     set_customer_account_as_paid
+    AffiliateBillingService.new(self).execute if service_call.instance_of?(TransferredServiceCall) || service_call.transferred?
     super
   end
 

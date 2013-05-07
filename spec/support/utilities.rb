@@ -4,33 +4,34 @@ JOB_BTN_START   = 'start_service_call_btn'
 JOB_BTN_CANCEL  = 'cancel_service_call_btn'
 JOB_BTN_ADD_BOM = 'new-bom-button'
 
-JOB_BTN_UN_CANCEL              = 'un_cancel_service_call_btn'
-JOB_BTN_CANCEL_TRANSFER        = 'cancel_transfer_service_call_btn'
-JOB_BTN_COMPLETE               = 'complete_service_call_btn'
-JOB_BTN_CREATE                 = 'service_call_create_btn'
-JOB_BTN_ADD_CUSTOMER           = 'add_customer_btn'
-JOB_BTN_TRANSFER               = 'service_call_transfer_btn'
-JOB_BTN_DISPATCH               = 'service_call_dispatch_btn'
-JOB_BTN_ACCEPT                 = 'accept_service_call_btn'
-JOB_BTN_UN_ACCEPT              = 'un_accept_service_call_btn'
-JOB_BTN_REJECT                 = 'reject_service_call_btn'
-JOB_BTN_INVOICE                = 'invoice_service_call_btn'
-JOB_BTN_PROV_INVOICE           = 'provider_invoiced_service_call_btn'
-JOB_BTN_SUBCON_INVOICED        = 'subcon_invoiced_service_call_btn'
-JOB_BTN_PAID                   = 'job_paid_btn'
-JOB_BTN_CLEAR                  = 'clear_service_call_btn'
-JOB_BTN_COLLECT                = 'collect_service_call_btn'
-JOB_BTN_PROV_COLLECT           = 'provider_collected_service_call_btn'
-JOB_BTN_DEPOSIT                = 'deposit_to_prov_service_call_btn'
-JOB_BTN_CONFIRM_DEPOSIT        = 'confirm_deposit_service_call_btn'
-JOB_BTN_PROV_CONFIRMED_DEPOSIT = 'prov_confirmed_deposit_service_call_btn'
-JOB_BTN_SETTLE                 = 'settle_service_call_btn'
-JOB_BTN_PROV_SETTLE            = 'provider_settle_service_call_btn'
-JOB_BTN_PROV_PAYMENT_CLEAR     = 'clear_prov_service_call_btn'
-JOB_BTN_SUBCON_PAYMENT_CLEAR   = 'clear_subcon_service_call_btn'
-JOB_BTN_CONFIRM_SETTLEMENT     = 'confirm_settled_subcon_service_call_btn'
-JOB_BTN_CLOSE                  = 'close_service_call_btn'
-JOB_BTN_HISTORY                = 'job_history_btn'
+JOB_BTN_UN_CANCEL               = 'un_cancel_service_call_btn'
+JOB_BTN_CANCEL_TRANSFER         = 'cancel_transfer_service_call_btn'
+JOB_BTN_COMPLETE                = 'complete_service_call_btn'
+JOB_BTN_CREATE                  = 'service_call_create_btn'
+JOB_BTN_ADD_CUSTOMER            = 'add_customer_btn'
+JOB_BTN_TRANSFER                = 'service_call_transfer_btn'
+JOB_BTN_DISPATCH                = 'service_call_dispatch_btn'
+JOB_BTN_ACCEPT                  = 'accept_service_call_btn'
+JOB_BTN_UN_ACCEPT               = 'un_accept_service_call_btn'
+JOB_BTN_REJECT                  = 'reject_service_call_btn'
+JOB_BTN_INVOICE                 = 'invoice_service_call_btn'
+JOB_BTN_PROV_INVOICE            = 'provider_invoiced_service_call_btn'
+JOB_BTN_SUBCON_INVOICED         = 'subcon_invoiced_service_call_btn'
+JOB_BTN_PAID                    = 'job_paid_btn'
+JOB_BTN_CLEAR                   = 'clear_service_call_btn'
+JOB_BTN_COLLECT                 = 'collect_service_call_btn'
+JOB_BTN_PROV_COLLECT            = 'provider_collected_service_call_btn'
+JOB_BTN_DEPOSIT                 = 'deposit_to_prov_service_call_btn'
+JOB_BTN_CONFIRM_DEPOSIT         = 'confirm_deposit_service_call_btn'
+JOB_BTN_PROV_CONFIRMED_DEPOSIT  = 'prov_confirmed_deposit_service_call_btn'
+JOB_BTN_SETTLE                  = 'settle_service_call_btn'
+JOB_BTN_PROV_SETTLE             = 'provider_settle_service_call_btn'
+JOB_BTN_PROV_PAYMENT_CLEAR      = 'clear_prov_service_call_btn'
+JOB_BTN_SUBCON_PAYMENT_CLEAR    = 'clear_subcon_service_call_btn'
+JOB_BTN_CONFIRM_SETTLEMENT      = 'confirm_settled_subcon_service_call_btn'
+JOB_BTN_CONFIRM_PROV_SETTLEMENT = 'confirm_settled_prov_service_call_btn'
+JOB_BTN_CLOSE                   = 'close_service_call_btn'
+JOB_BTN_HISTORY                 = 'job_history_btn'
 
 JOB_SELECT_SUBCON_PAYMENT   = 'service_call_subcon_payment'
 JOB_SELECT_PROVIDER_PAYMENT = 'service_call_provider_payment'
@@ -155,11 +156,26 @@ def setup_customer_agreement(org, customer)
   Rails.logger.debug { "created account: #{account.inspect}" }
 end
 
-def setup_profit_split_agreement(prov, subcon)
+def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
   prov.subcontractors << subcon if prov.subcontrax_member?
   subcon.providers << prov if subcon.subcontrax_member?
   agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
-  FactoryGirl.create(:profit_split, agreement: agreement)
+
+  payment_rules[:cash_rate]        ||= 1.0
+  payment_rules[:cheque_rate]      ||= 2.5
+  payment_rules[:credit_rate]      ||= 2.9
+  payment_rules[:cash_rate_type]   ||= :percentage
+  payment_rules[:cheque_rate_type] ||= :percentage
+  payment_rules[:credit_rate_type] ||= :percentage
+
+  FactoryGirl.create(:profit_split, agreement: agreement, rate: rate,
+                     cheque_rate:              payment_rules[:cheque_rate],
+                     cash_rate:                payment_rules[:cash_rate],
+                     credit_rate:              payment_rules[:credit_rate],
+                     cheque_rate_type:         payment_rules[:cheque_rate_type],
+                     cash_rate_type:           payment_rules[:cash_rate_type],
+                     credit_rate_type:         payment_rules[:credit_rate_type]
+  )
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
   agreement.name   = "#{prov.name} (P), #{subcon.name} (S)"
   agreement.save!

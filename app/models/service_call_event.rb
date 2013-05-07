@@ -70,12 +70,17 @@ class ServiceCallEvent < Event
 
   def copy_boms_to_provider
     service_call.boms.each do |bom|
-      new_bom = bom.dup
-      # if the material buyer is the subcontractor or the technician make the buyer the owner of this service call
-      if new_bom.buyer.instance_of?(User) || new_bom.buyer == service_call.subcontractor
-        new_bom.buyer = service_call.organization
+      Bom.without_stamps do
+        new_bom           = bom.dup
+        new_bom.ticket_id = nil
+        new_bom.creator   = nil
+        new_bom.updater   = nil
+        # if the material buyer is the subcontractor or the technician make the buyer the owner of this service call
+        if new_bom.buyer.instance_of?(User) || new_bom.buyer == service_call.subcontractor
+          new_bom.buyer = service_call.organization
+        end
+        prov_service_call.boms << new_bom
       end
-      prov_service_call.boms << new_bom
     end
   end
 

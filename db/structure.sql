@@ -248,7 +248,9 @@ CREATE TABLE boms (
     price_cents integer DEFAULT 0 NOT NULL,
     price_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
     buyer_id integer,
-    buyer_type character varying(255)
+    buyer_type character varying(255),
+    creator_id integer,
+    updater_id integer
 );
 
 
@@ -1473,3 +1475,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130414143212');
 INSERT INTO schema_migrations (version) VALUES ('20130427164241');
 
 INSERT INTO schema_migrations (version) VALUES ('20130427203818');
+
+INSERT INTO schema_migrations (version) VALUES ('20130505140727');
