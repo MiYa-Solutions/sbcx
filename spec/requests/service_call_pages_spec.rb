@@ -2089,20 +2089,25 @@ describe "Service Call pages" do
 
 
                         it 'should show: close button, a cleared status and the clear event' do
-                          should have_button(JOB_BTN_CLOSE)
+                          should have_button(JOB_BTN_SUBCON_PAYMENT_CLEAR)
                           should have_subcon_status(JOB_SUBCON_STATUS_CLEARED)
                           should have_event('100041')
                         end
 
-                        describe 'close: ' do
+                        describe 'clear subcon payment' do
                           before do
-                            click_button JOB_BTN_CLOSE
+                            click_button JOB_BTN_SUBCON_PAYMENT_CLEAR
                           end
+                          describe 'close: ' do
+                            before do
+                              click_button JOB_BTN_CLOSE
+                            end
 
-                          it 'should show a success message and a closed status' do
-                            should have_success_message
-                            should have_status(JOB_STATUS_CLOSED)
-                            should have_event('100036')
+                            it 'should show a success message and a closed status' do
+                              should have_success_message
+                              should have_status(JOB_STATUS_CLOSED)
+                              should have_event('100036')
+                            end
                           end
                         end
                       end

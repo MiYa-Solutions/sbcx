@@ -355,7 +355,7 @@ cash_rate cash_rate_type].each do |key|
       when 'cheque'
         payment_reimbursement = AccountingEntry.where(type: ReimbursementForChequePayment, ticket_id: @ticket.id).first
       else
-        raise "ProfitSplit#organization_settlement_entries - unexpected payment type: #{@ticket.payment_type}. expected 'case', 'credit_cart' or 'cheque'"
+        Rails.logger.debug {"ProfitSplit#organization_settlement_entries - payment fees are not taken in account when calculating settlement amount"}#raise "ProfitSplit#organization_settlement_entries - unexpected payment type: #{@ticket.payment_type}. expected 'case', 'credit_cart' or 'cheque'"
 
     end
 
@@ -408,7 +408,7 @@ cash_rate cash_rate_type].each do |key|
       when 'cheque'
         payment_fee = AccountingEntry.where(type:ChequePaymentFee, ticket_id: @ticket.id).first
       else
-        raise "ProfitSplit#organization_settlement_entries - unexpected payment type: #{@ticket.payment_type}. expected 'cash', 'credit_cart' or 'cheque'"
+        Rails.logger.debug {"ProfitSplit#counterparty_settlement_entries - payment fees are not taken into account when calculating settlement amount"}#raise "ProfitSplit#organization_settlement_entries - unexpected payment type: #{@ticket.payment_type}. expected 'cash', 'credit_cart' or 'cheque'"
 
     end
 
