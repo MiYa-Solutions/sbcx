@@ -10,8 +10,13 @@
         </div>
       </div>
 
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="service_call_provider_agreement_id"> <%= @service_call.class.human_attribute_name(:provider_agreement) %></label>
+          <div class="controls">
+            <%= select_tag 'service_call[provider_agreement_id]', collection: [] %>
+        </div>
+      </div>
 
-      <%= f.input :provider_agreement_id, collection: [] %>
 
 
       <div class="control-group string mandatory">
