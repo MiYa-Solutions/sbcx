@@ -9,9 +9,9 @@ gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.5'
 gem 'bootstrap-datepicker-rails', '1.0.0'
+gem 'carmen', '1.0.0.beta2'
 gem 'carmen-rails', '1.0.0.beta3'
 gem 'active_attr', '0.7.0'
-
 
 gem 'american_date', '1.0.0'
 
@@ -48,9 +48,7 @@ group :development, :test do
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
-  gem 'zeus', '0.13.3'
-  gem 'parallel_tests'
-  gem 'zeus-parallel_tests'
+
 end
 
 # Gems used only for assets and not required
@@ -70,11 +68,10 @@ group :test do
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner', '~> 0.9.1'
   gem 'rb-fsevent', '0.9.1', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
-  gem 'growl', '1.0.3'
   gem 'launchy', '2.1.0'
   gem 'mocha'
-  gem 'capybara-screenshot'
+  gem 'capybara-screenshot', '0.3.4'
   gem 'poltergeist', '1.1.0'
   gem 'shoulda'
-  gem 'spork'
+  gem 'spork', '0.9.0'
 end

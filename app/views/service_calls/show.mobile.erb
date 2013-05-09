@@ -43,7 +43,7 @@
     </h3>
 
     <div class="miya_blue_button_bom">
-      <%= link_to I18n.t('general.general.add_part'), new_service_call_bom_path(@service_call), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" %>
+      <%= link_to I18n.t('general.general.add_part'), new_service_call_bom_path(@service_call), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" if @service_call.can_change_boms?%>
     </div>
 
     <ul data-role="listview">
