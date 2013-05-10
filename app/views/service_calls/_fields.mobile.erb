@@ -4,14 +4,9 @@
 <div class="edit_job_details">
     <div class="ui-grid-a">
       <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
-      <div class="ui-block-b"><%= f.select :provider_id, provider_options, { prompt: "Me"}%>
-        <%= f.input :provider_agreement_id, collection: [] %>
-
-      </div>
-      <!--<div class="ui-block-b"><#%= f.input :provider_agreement_id, collection: [] %></div>-->
+      <div class="ui-block-b"><%= f.select :provider_id, provider_options, { prompt: "Me"}%></div>
+      <div class="ui-block-b"><%= select_tag 'service_call[provider_agreement_id]', collection: [] %></div>
     </div>
-
-
 
     <div class="ui-grid-a">
       <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:tag_list) %></div>

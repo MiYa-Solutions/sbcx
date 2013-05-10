@@ -109,6 +109,13 @@ describe Bom do
 
   end
 
+  describe 'associations' do
+    should belong_to(:creator)
+    should belong_to(:updater)
+    should belong_to(:ticket)
+    should belong_to(:ticket)
+  end
+
 
 end
 

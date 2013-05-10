@@ -318,8 +318,15 @@ FactoryGirl.define do
   factory :posting_rule do
     association :agreement
 
-    factory :profit_split do
+    factory :profit_split, class: ProfitSplit do
       rate 50
+      cheque_rate 1.0
+      cheque_rate_type :percentage
+      cash_rate 1.0
+      cash_rate_type :percentage
+      credit_rate 1.0
+      credit_rate_type :percentage
+
       rate_type "percentage"
       type "ProfitSplit"
     end

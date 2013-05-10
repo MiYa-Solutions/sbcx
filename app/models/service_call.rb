@@ -218,7 +218,7 @@ class ServiceCall < Ticket
   end
 
   def can_change_boms?
-    self.work_in_progress? && !self.work_done? && !self.transferred?
+    self.work_in_progress? && !self.work_done? && (!self.transferred? || self.transferred? && !self.subcontractor.subcontrax_member?)
   end
 
 end
