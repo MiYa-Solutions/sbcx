@@ -1129,6 +1129,13 @@ input.ui-input-text, textarea.ui-input-text {
   }
 }
 
+.new_bom {
+  label.ui-input-text {
+    display: none;
+
+  }
+}
+
 .edit_job_details {
   .ui-grid-a .ui-block-a {
     width: 40%;
