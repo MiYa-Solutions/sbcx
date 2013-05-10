@@ -74,4 +74,5 @@ group :test do
   gem 'poltergeist', '1.1.0'
   gem 'shoulda'
   gem 'spork', '0.9.0'
+  gem 'faye-websocket', '0.4.4'
 end
