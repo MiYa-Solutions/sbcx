@@ -5,14 +5,14 @@
       <!--<div class="control-group string ">-->
         <!--<div class="controls">-->
 
-      <div class="customer_contacts">
+      <div class="customer_contacts new_bom">
          <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:material_name) %></div>
           <div class="ui-block-b">
             <%= f.input :material_name, input_html: {id: "material-autocomplete"}, :label => "Select Material" %>
             <%= f.hidden_field :material_id %>
             <ul id="material-suggestions" data-role="listview" data-inset="true"></ul>
-          </div>
+          </div>  <br><br>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:quantity) %></div>

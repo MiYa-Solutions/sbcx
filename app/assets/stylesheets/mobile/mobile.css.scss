@@ -1129,6 +1129,17 @@ input.ui-input-text, textarea.ui-input-text {
   }
 }
 
+#service_call_provider_agreement_id {
+  float: right;
+}
+
+.new_bom {
+  label.ui-input-text {
+    display: none;
+
+  }
+}
+
 .edit_job_details {
   .ui-grid-a .ui-block-a {
     width: 40%;
