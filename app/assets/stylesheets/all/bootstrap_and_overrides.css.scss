@@ -2207,6 +2207,12 @@ hr {
   margin-left: -1.5%;
 }
 
+.well_job_history {
+  min-height: 575px;
+
+}
+
+
 .navbar .nav .active > a, .navbar .nav .active > a:hover {
   background-color: #555555;
   color: white;
@@ -2244,6 +2250,12 @@ hr {
 
 .my_jobs {
   min-height: 320px;
+}
+
+.job_show_well {
+  margin-left: -1.5%;
+  width: 101.5%;
+  margin-top: 0.2%;
 }
 
 .transferred_jobs {

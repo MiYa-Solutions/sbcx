@@ -1,0 +1,31 @@
+<div class="well">
+  <div class="row-fluid my_jobs">
+
+    <div class="span4" id="job_statuses_actions">
+
+        <%= render :partial => 'job_statuses' %>
+        <br>
+
+        <ul class="unstyled">
+          <li>
+            <div class="smart_label">
+              <ul>
+                <li><h1><%= I18n.t('general.general.actions') %></h1></li>
+                <li></li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <div class="action_buttons_service_call">
+              <%= event_list(@service_call) %>
+            </div>
+          </li>
+        </ul>
+
+    </div>
+
+    <!--Job details-->
+    <%= render 'job_details' %>
+
+  </div>
+</div>

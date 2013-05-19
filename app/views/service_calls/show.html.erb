@@ -7,44 +7,30 @@
   </ul>
 </div>
 
-<div class="well well_height">
+<div class="row-fluid well_height job_show_well">
 
-<div class="row-fluid">
 
-<div class="no_margins">
-  <div class="span4" id="job_statuses_actions">
 
-    <%= render :partial => 'job_statuses' %>
+  <ul class="nav nav-tabs" id="myJobShowTab">
+    <li class="active"><a href="#jobMain" data-toggle="tab"><%= I18n.t('general.general.job_main') %></a></li>
+    <li><a href="#job_appointments" data-toggle="tab"><%= I18n.t('general.general.appointments') %></a></li>
+    <li><a href="#jobHistory" data-toggle="tab"><%= I18n.t('general.general.job_history') %></a></li>
+  </ul>
 
-    <br>
-
-    <ul class="unstyled">
-      <li>
-        <div class="smart_label">
-          <ul>
-            <li><h1><%= I18n.t('general.general.actions') %></h1></li>
-            <li></li>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <div class="action_buttons_service_call">
-          <%= event_list(@service_call) %>
-        </div>
-      </li>
-    </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="jobMain"><%= render :partial => 'job_homepage' %></div>
+    <div class="tab-pane" id="job_appointments"><%= render :partial => 'job_appointments' %></div>
+    <div class="tab-pane" id="jobHistory"><%= render :partial => 'job_history' %></div>
 
   </div>
+
+  <script>
+      $(function () {
+          $('#myJobShowTab a:first').tab('show');
+      })
+  </script>
+
+
 </div>
 
- <!--Job details-->
-    <%= render 'job_details' %>
 
-<!--End of main row-->
-</div>
-<!--end of well  -->
-</div>
-
-<!--Job History Pop-up-->
-<%= render :partial => 'job_history' %>
-<%= render :partial => 'job_appointments' %>
