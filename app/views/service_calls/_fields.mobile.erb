@@ -8,16 +8,16 @@
      <%= select_tag 'service_call[provider_agreement_id]', collection: [], label: "select" %>  </div>
     </div>
 
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:tag_list) %></div>
-      <div class="ui-block-b"><%= f.text_field :tag_list, data: { tags: current_user.organization.tags.map(&:name) } %></div>
-    </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:tag_list) %></div>
+    <div class="ui-block-b"><%= f.input :tag_list, collection: current_user.organization.tags.map(&:name), input_html: { multiple: '1', 'data-native-menu' => 'false', placeholder: 'choose category' } %></div>
+  </div>
 </div>
 
 <br>
 
-<%= f.input :customer, input_html: {id: "customer-autocomplete"}, :label => "Select Customer" %>
-<div class= "new_customer_job_button">
+<%= f.input :customer, input_html: { id: "customer-autocomplete" }, :label => "Select Customer" %>
+<div class="new_customer_job_button">
   <%= link_to I18n.t('general.general.new_customer'), new_customer_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
 </div>
 <%= f.hidden_field :customer_id %>
@@ -37,30 +37,32 @@
   </div>
 
   <% if current_user.organization.multi_user? %>
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
-    <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>
-  </div>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
+        <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>
+      </div>
   <% end %>
 
 
   <div class="ui-grid-a">
     <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
-    <div class="ui-block-b"><%= f.input :scheduled_for_text, input_html: {class: "mobi-datetime", value: (Time.now)} %></div>
+    <div class="ui-block-b"><%= f.input :scheduled_for_text, input_html: { class: "mobi-datetime", value: (Time.now) } %></div>
   </div>
 </div>
 
 <%= f.input :notes %>
 <br>
 
-<ul data-role="listview"  data-filter="false" data-divider-theme="d">
-<li><h2><%= I18n.t('general.general.location_info') %></h2><p><%= I18n.t('general.messages.job_location_info').html_safe %></p>
-</li>
-<li>
-  <div class="edit_job_details">
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address1) %></div>
-      <div class="ui-block-b"><%= f.input :address1 %></div>
+<ul data-role="listview" data-filter="false" data-divider-theme="d">
+  <li><h2><%= I18n.t('general.general.location_info') %></h2>
+
+    <p><%= I18n.t('general.messages.job_location_info').html_safe %></p>
+  </li>
+  <li>
+    <div class="edit_job_details">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address1) %></div>
+        <div class="ui-block-b"><%= f.input :address1 %></div>
     </div>
     <div class="ui-grid-a">
       <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:address2) %></div>
