@@ -35,34 +35,42 @@ describe "Account Pages", js: true do
       when 'flat_fee'
         Money.new_with_amount(profit_split.cash_rate.delete(',').to_f)
       else
-        fee = Money.new_with_amount(0)
+        Money.new_with_amount(0)
     end
   end
   let(:credit_fee) do
-    case profit_split.cash_rate_type
+    case profit_split.credit_rate_type
       when 'percentage'
-        fee = expected_price * (profit_split.credit_rate.delete(',').to_f / 100.0)
+        expected_price * (profit_split.credit_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
-        fee = profit_split.credit_rate.delete(',').to_f
+        Money.new_with_amount(profit_split.credit_rate.delete(',').to_f)
       else
-        fee = 0
+        Money.new_with_amount(0)
     end
-    Money.new_with_amount(fee)
+
   end
   let(:cheque_fee) do
-    case profit_split.cash_rate_type
+    case profit_split.cheque_rate_type
       when 'percentage'
-        fee = expected_price * (profit_split.cheque_rate.delete(',').to_f / 100.0)
+        expected_price * (profit_split.cheque_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
-        fee = profit_split.cheque_rate.delete(',').to_f
+        Money.new_with_amount(profit_split.cheque_rate.delete(',').to_f)
       else
-        fee = 0
+        Money.new_with_amount(0)
     end
-    Money.new_with_amount(fee)
+
   end
 
   let(:expected_subcon_cut_cash) {
     net = Money.new_with_amount(bom1[:total_profit] + bom2[:total_profit]) - cash_fee
+    Money.new_with_amount(boms_cost + (net.to_f * profit_split.rate / 100.0))
+  }
+  let(:expected_subcon_cut_credit) {
+    net = Money.new_with_amount(bom1[:total_profit] + bom2[:total_profit]) - credit_fee
+    Money.new_with_amount(boms_cost + (net.to_f * profit_split.rate / 100.0))
+  }
+  let(:expected_subcon_cut_cheque) {
+    net = Money.new_with_amount(bom1[:total_profit] + bom2[:total_profit]) - cheque_fee
     Money.new_with_amount(boms_cost + (net.to_f * profit_split.rate / 100.0))
   }
 
@@ -684,10 +692,10 @@ describe "Account Pages", js: true do
               end
             end
 
-            it 'provider view: account balance should be set to the difference between the total price and cost' do
+            it 'provider view: account balance should be set to the difference between the total price and costs' do
               in_browser(:org) do
                 visit affiliate_path(job.reload.subcontractor)
-                should have_affiliate_balance(job.total_price - ((subcon_job.total_price - subcon_job.total_cost - cash_fee)*(profit_split.rate/100.0) + subcon_job.total_cost))
+                should have_affiliate_balance(job.total_price - ((subcon_job.total_price - subcon_job.total_cost - credit_fee)*(profit_split.rate/100.0) + subcon_job.total_cost))
               end
             end
 
@@ -703,7 +711,7 @@ describe "Account Pages", js: true do
             it 'subcon view: account balance should be set to the difference between the total price and cost' do
               in_browser(:org2) do
                 visit affiliate_path(subcon_job.reload.provider)
-                should have_affiliate_balance(-(job.total_price - job.total_cost)*(1 - profit_split.rate/100.0))
+                should have_affiliate_balance(-(job.total_price - expected_subcon_cut_credit))
               end
             end
 
@@ -723,7 +731,7 @@ describe "Account Pages", js: true do
                 in_browser(:org2) do
                   visit affiliate_path(subcon_job.provider)
                   should have_entry(entries.first, status: 'deposited', type: CreditCardDepositToProvider.model_name.human)
-                  should have_affiliate_balance((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost)
+                  should have_affiliate_balance(expected_subcon_cut_credit)
                 end
 
               end
@@ -734,7 +742,7 @@ describe "Account Pages", js: true do
                 in_browser(:org) do
                   visit affiliate_path(job.reload.subcontractor)
                   should have_entry(entries.first, amount: -job.total_price, status: 'deposited', type: CreditCardDepositFromSubcon.model_name.human)
-                  should have_affiliate_balance(-((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost))
+                  should have_affiliate_balance(-(expected_subcon_cut_credit))
                 end
 
               end
@@ -804,7 +812,7 @@ describe "Account Pages", js: true do
             it 'provider view: account balance should be set to the difference between the total price and cost' do
               in_browser(:org) do
                 visit affiliate_path(job.reload.subcontractor)
-                should have_affiliate_balance((subcon_job.total_price - subcon_job.total_cost)*(1 - profit_split.rate/100.0))
+                should have_affiliate_balance((subcon_job.total_price - subcon_job.total_cost - cheque_fee)*(1 - profit_split.rate/100.0) +  cheque_fee)
               end
             end
 
@@ -820,7 +828,7 @@ describe "Account Pages", js: true do
             it 'subcon view: account balance should be set to the difference between the total price and cost' do
               in_browser(:org2) do
                 visit affiliate_path(subcon_job.reload.provider)
-                should have_affiliate_balance(-(job.total_price - job.total_cost)*(1 - profit_split.rate/100.0))
+                should have_affiliate_balance(-(job.total_price - expected_subcon_cut_cheque))
               end
             end
 
@@ -841,7 +849,7 @@ describe "Account Pages", js: true do
                 in_browser(:org2) do
                   visit affiliate_path(subcon_job.provider)
                   should have_entry(entries.first, status: 'deposited', type: ChequeDepositToProvider.model_name.human)
-                  should have_affiliate_balance((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost)
+                  should have_affiliate_balance(expected_subcon_cut_cheque)
                 end
 
               end
@@ -852,7 +860,7 @@ describe "Account Pages", js: true do
                 in_browser(:org) do
                   visit affiliate_path(job.reload.subcontractor)
                   should have_entry(entries.first, amount: -job.total_price, status: 'deposited', type: ChequeDepositFromSubcon.model_name.human)
-                  should have_affiliate_balance(-((job.total_price - job.total_cost)*(profit_split.rate/100.0) + job.total_cost))
+                  should have_affiliate_balance(-expected_subcon_cut_cheque)
                 end
 
               end
@@ -929,14 +937,14 @@ describe "Account Pages", js: true do
             end
 
             it 'provider view: account should not have any additional entries' do
-              job.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ServiceCallCharge, CashPayment]
-              org1_org2_acc.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty]
+              job.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ServiceCallCharge, CashPayment, ReimbursementForCashPayment]
+              org1_org2_acc.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ReimbursementForCashPayment]
               customer_acc.entries.reload.map(&:class).should =~ [ServiceCallCharge, CashPayment]
             end
 
-            it 'subcon view: account should not have any additional entries' do
-              subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
-              org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+            it 'subcon view: account should show additional CashPayment entry' do
+              subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement, CashPaymentFee]
+              org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement, CashPaymentFee]
             end
 
             it "technician's account should show cash collection for employer with pending status (withdrawal)"
@@ -955,14 +963,14 @@ describe "Account Pages", js: true do
             end
 
             it 'provider view: account should not have any additional entries' do
-              job.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ServiceCallCharge, CreditPayment]
-              org1_org2_acc.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty]
+              job.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ServiceCallCharge, CreditPayment, ReimbursementForCreditPayment]
+              org1_org2_acc.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ReimbursementForCreditPayment]
               customer_acc.entries.reload.map(&:class).should =~ [ServiceCallCharge, CreditPayment]
             end
 
-            it 'subcon view: account should not have any additional entries' do
-              subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
-              org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+            it 'subcon view: account should additional CreditPaymentFee entry ' do
+              subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement, CreditPaymentFee]
+              org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement, CreditPaymentFee]
             end
 
             it "technician's account should not have additional entries"
@@ -1005,8 +1013,8 @@ describe "Account Pages", js: true do
               end
 
               it 'subcon view: account should not have any additional entries' do
-                subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
-                org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+                subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement, ChequePaymentFee]
+                org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement, ChequePaymentFee]
               end
 
               it "technician's account should show pending check collection for employer withdrawal"
@@ -1050,6 +1058,13 @@ describe "Account Pages", js: true do
               click_button JOB_BTN_CLEAR
             end
 
+          end
+
+          it 'subcon view: should show cheque payment fee' do
+            entry = subcon_job.entries.where(type: ChequePaymentFee)
+            entry.should have(1).entries
+            #visit accounting_entries_path('accounting_entry[account_id]' => Account.for_affiliate(subcon, provider).first.id)
+            #should have_entry()
           end
 
           it 'provider view: settlement button and subcon payment select should be available' do
@@ -1123,7 +1138,7 @@ describe "Account Pages", js: true do
 
                   entries = org1_org2_acc.entries.where(type: CashPaymentToAffiliate, ticket_id: job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: expected_subcon_cut - cheque_fee * (profit_split.rate / 100.0), type: CashPaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: expected_subcon_cut_cheque, type: CashPaymentToAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1135,7 +1150,7 @@ describe "Account Pages", js: true do
 
                   entries = org2_org1_acc.entries.where(type: CashPaymentFromAffiliate, ticket_id: subcon_job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_subcon_cut, type: CashPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: -expected_subcon_cut_cheque , type: CashPaymentFromAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1146,7 +1161,7 @@ describe "Account Pages", js: true do
                 before do
                   in_browser(:org2) do
                     visit service_call_path(subcon_job)
-                    click_button JOB_BTN_CONFIRM_SETTLEMENT
+                    click_button JOB_BTN_CONFIRM_PROV_SETTLEMENT
                   end
 
                 end
@@ -1179,7 +1194,7 @@ describe "Account Pages", js: true do
 
                     entries = job.entries.where(type: CashPaymentToAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1191,7 +1206,7 @@ describe "Account Pages", js: true do
 
                     entries = subcon_job.entries.where(type: CashPaymentFromAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1233,7 +1248,7 @@ describe "Account Pages", js: true do
 
                   entries = org1_org2_acc.entries.where(type: CreditPaymentToAffiliate, ticket_id: job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: expected_subcon_cut - cheque_fee*(profit_split.rate / 100.0), type: CreditPaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: Money.new_with_amount(expected_subcon_cut) - cheque_fee*(profit_split.rate / 100.0), type: CreditPaymentToAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1245,7 +1260,7 @@ describe "Account Pages", js: true do
 
                   entries = org2_org1_acc.entries.where(type: CreditPaymentFromAffiliate, ticket_id: subcon_job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_subcon_cut, type: CreditPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: CreditPaymentFromAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1289,7 +1304,7 @@ describe "Account Pages", js: true do
 
                     entries = job.entries.where(type: CreditPaymentToAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut - cheque_fee*(profit_split.rate / 100.0))
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1301,7 +1316,7 @@ describe "Account Pages", js: true do
 
                     entries = subcon_job.entries.where(type: CreditPaymentFromAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1344,7 +1359,7 @@ describe "Account Pages", js: true do
 
                   entries = org1_org2_acc.entries.where(type: ChequePaymentToAffiliate, ticket_id: job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: expected_subcon_cut, type: ChequePaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: expected_subcon_cut_cheque, type: ChequePaymentToAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1356,7 +1371,7 @@ describe "Account Pages", js: true do
 
                   entries = org2_org1_acc.entries.where(type: ChequePaymentFromAffiliate, ticket_id: subcon_job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_subcon_cut, type: ChequePaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: ChequePaymentFromAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1367,7 +1382,7 @@ describe "Account Pages", js: true do
                 before do
                   in_browser(:org2) do
                     visit service_call_path(subcon_job)
-                    click_button JOB_BTN_CONFIRM_SETTLEMENT
+                    click_button JOB_BTN_CONFIRM_PROV_SETTLEMENT
                   end
 
                 end
@@ -1401,7 +1416,7 @@ describe "Account Pages", js: true do
 
                     entries = job.entries.where(type: ChequePaymentToAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1413,7 +1428,7 @@ describe "Account Pages", js: true do
 
                     entries = subcon_job.entries.where(type: ChequePaymentFromAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1461,7 +1476,7 @@ describe "Account Pages", js: true do
 
                   entries = org1_org2_acc.entries.where(type: CashPaymentToAffiliate, ticket_id: job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: expected_subcon_cut, type: CashPaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: expected_subcon_cut_cheque, type: CashPaymentToAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1473,7 +1488,7 @@ describe "Account Pages", js: true do
 
                   entries = org2_org1_acc.entries.where(type: CashPaymentFromAffiliate, ticket_id: subcon_job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_subcon_cut, type: CashPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: CashPaymentFromAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1517,7 +1532,7 @@ describe "Account Pages", js: true do
 
                     entries = job.entries.where(type: CashPaymentToAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1529,7 +1544,7 @@ describe "Account Pages", js: true do
 
                     entries = subcon_job.entries.where(type: CashPaymentFromAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1572,7 +1587,7 @@ describe "Account Pages", js: true do
 
                   entries = org1_org2_acc.entries.where(type: CreditPaymentToAffiliate, ticket_id: job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: expected_subcon_cut, type: CreditPaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: expected_subcon_cut_cheque, type: CreditPaymentToAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1584,7 +1599,7 @@ describe "Account Pages", js: true do
 
                   entries = org2_org1_acc.entries.where(type: CreditPaymentFromAffiliate, ticket_id: subcon_job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_subcon_cut, type: CreditPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: CreditPaymentFromAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1630,7 +1645,7 @@ describe "Account Pages", js: true do
 
                     entries = job.entries.where(type: CreditPaymentToAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1642,7 +1657,7 @@ describe "Account Pages", js: true do
 
                     entries = subcon_job.entries.where(type: CreditPaymentFromAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1686,7 +1701,7 @@ describe "Account Pages", js: true do
 
                   entries = org1_org2_acc.entries.where(type: ChequePaymentToAffiliate, ticket_id: job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: expected_subcon_cut, type: ChequePaymentToAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: expected_subcon_cut_cheque, type: ChequePaymentToAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1698,7 +1713,7 @@ describe "Account Pages", js: true do
 
                   entries = org2_org1_acc.entries.where(type: ChequePaymentFromAffiliate, ticket_id: subcon_job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_subcon_cut, type: ChequePaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: ChequePaymentFromAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -1744,7 +1759,7 @@ describe "Account Pages", js: true do
 
                     entries = job.entries.where(type: ChequePaymentToAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut - cheque_fee*(profit_split.rate / 100.0))
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut_cheque )
                     should have_affiliate_balance(0)
 
                   end
@@ -1756,7 +1771,7 @@ describe "Account Pages", js: true do
 
                     entries = subcon_job.entries.where(type: ChequePaymentFromAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut)
+                    should have_entry(entries.first, status: 'cleared', amount: -expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -1979,10 +1994,10 @@ describe "Account Pages", js: true do
                 it 'subcon view: should show entry and a balance of the job amount minus the parts' do
                   transferred_job.reload
                   accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                  expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                  expected_amount  = expected_subcon_cut_cash + cash_fee
 
                   should have_entry(accounting_entry, amount: expected_amount)
-                  should have_affiliate_balance(-transferred_job.total_profit)
+                  should have_affiliate_balance(boms_cost)
 
                 end
 
@@ -2002,7 +2017,7 @@ describe "Account Pages", js: true do
 
                 visit affiliate_path(provider)
                 should have_entry(entries.first, status: 'deposited', type: CashDepositToProvider.model_name.human)
-                should have_affiliate_balance((transferred_job.total_price - transferred_job.total_cost)*(profit_split.rate/100.0) + transferred_job.total_cost)
+                should have_affiliate_balance(expected_subcon_cut_cash)
 
               end
 
@@ -2084,10 +2099,10 @@ describe "Account Pages", js: true do
                 it 'subcon view: should show entry and a balance of the job amount minus the parts' do
                   transferred_job.reload
                   accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                  expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                  expected_amount  = expected_subcon_cut_credit + credit_fee
 
                   should have_entry(accounting_entry, amount: expected_amount)
-                  should have_affiliate_balance(-transferred_job.total_profit)
+                  should have_affiliate_balance(boms_cost)
 
                 end
               end
@@ -2104,7 +2119,7 @@ describe "Account Pages", js: true do
 
                 visit affiliate_path(provider)
                 should have_entry(entries.first, status: 'deposited', type: CreditCardDepositToProvider.model_name.human)
-                should have_affiliate_balance((transferred_job.total_price - transferred_job.total_cost)*(profit_split.rate/100.0) + transferred_job.total_cost)
+                should have_affiliate_balance(expected_subcon_cut_credit)
 
               end
 
@@ -2135,7 +2150,7 @@ describe "Account Pages", js: true do
                   it 'subcon view: should show entry and a balance of the job amount minus the parts' do
                     transferred_job.reload
                     accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                    expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                    expected_amount  = -(expected_subcon_cut_credit - transferred_job.total_cost)
 
                     should have_entry(accounting_entry, amount: expected_amount)
                     should have_affiliate_balance(transferred_job.total_cost)
@@ -2210,10 +2225,10 @@ describe "Account Pages", js: true do
                 it 'subcon view: should show entry and a balance of the job amount minus the parts' do
                   transferred_job.reload
                   accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                  expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                  expected_amount  = expected_subcon_cut_cheque + cheque_fee
 
                   should have_entry(accounting_entry, amount: expected_amount)
-                  should have_affiliate_balance(transferred_job.total_cost - transferred_job.total_price)
+                  should have_affiliate_balance(boms_cost)
 
                 end
               end
@@ -2231,7 +2246,7 @@ describe "Account Pages", js: true do
 
                 visit affiliate_path(transferred_job.provider)
                 should have_entry(entries.first, status: 'deposited', type: ChequeDepositToProvider.model_name.human)
-                should have_affiliate_balance((transferred_job.total_price - transferred_job.total_cost)*(profit_split.rate/100.0) + transferred_job.total_cost)
+                should have_affiliate_balance(expected_subcon_cut_cheque)
 
               end
 
@@ -2262,7 +2277,7 @@ describe "Account Pages", js: true do
                   it 'subcon view: should show entry and a balance of the job amount minus the parts' do
                     transferred_job.reload
                     accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                    expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                    expected_amount  = -(expected_subcon_cut_cheque - transferred_job.total_cost)
 
                     should have_entry(accounting_entry, amount: expected_amount)
                     should have_affiliate_balance(transferred_job.total_cost)
@@ -2310,7 +2325,7 @@ describe "Account Pages", js: true do
                     it 'subcon view: should show entry and a balance of the job amount minus the parts' do
                       transferred_job.reload
                       accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                      expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                      expected_amount  = -(expected_subcon_cut_cheque - transferred_job.total_cost)
 
                       should have_entry(accounting_entry, amount: expected_amount)
                       should have_affiliate_balance(transferred_job.total_cost)
@@ -2426,7 +2441,7 @@ describe "Account Pages", js: true do
 
                 entries = provider_org_acc.entries.where(type: CashPaymentFromAffiliate, ticket_id: transferred_job.id)
                 entries.should have(1).entry
-                should have_entry(entries.first, amount: -expected_subcon_cut, type: CashPaymentFromAffiliate.model_name.human, status: 'cleared')
+                should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: CashPaymentFromAffiliate.model_name.human, status: 'cleared')
                 should have_affiliate_balance(0)
               end
               describe 'cancel the job: ' do
@@ -2454,10 +2469,10 @@ describe "Account Pages", js: true do
                   it 'subcon view: should show entry and a balance of the job subcon cut amount' do
                     transferred_job.reload
                     accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                    expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                    expected_amount  = expected_subcon_cut_cheque -  transferred_job.total_cost
 
-                    should have_entry(accounting_entry, amount: expected_amount)
-                    should have_affiliate_balance(-transferred_job.total_profit * (profit_split.rate / 100.0))
+                    should have_entry(accounting_entry, amount: - expected_amount)
+                    should have_affiliate_balance(-expected_amount)
 
                   end
 
@@ -2482,7 +2497,7 @@ describe "Account Pages", js: true do
 
                 entries = provider_org_acc.entries.where(type: CreditPaymentFromAffiliate, ticket_id: transferred_job.id)
                 entries.should have(1).entry
-                should have_entry(entries.first, amount: -expected_subcon_cut, type: CreditPaymentFromAffiliate.model_name.human, status: 'deposited')
+                should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: CreditPaymentFromAffiliate.model_name.human, status: 'deposited')
                 should have_affiliate_balance(0)
               end
               describe 'cancel the job: ' do
@@ -2510,10 +2525,10 @@ describe "Account Pages", js: true do
                   it 'subcon view: should show entry and a balance of the job subcon cut amount' do
                     transferred_job.reload
                     accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                    expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                    expected_amount  = - (expected_subcon_cut_cheque - transferred_job.total_cost)
 
                     should have_entry(accounting_entry, amount: expected_amount)
-                    should have_affiliate_balance(-transferred_job.total_profit * (profit_split.rate / 100.0))
+                    should have_affiliate_balance( expected_amount)
 
                   end
 
@@ -2542,7 +2557,7 @@ describe "Account Pages", js: true do
 
                 entries = provider_org_acc.entries.where(type: ChequePaymentFromAffiliate, ticket_id: transferred_job.id)
                 entries.should have(1).entry
-                should have_entry(entries.first, amount: -expected_subcon_cut, type: ChequePaymentFromAffiliate.model_name.human, status: 'deposited')
+                should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: ChequePaymentFromAffiliate.model_name.human, status: 'deposited')
                 should have_affiliate_balance(0)
               end
 
@@ -2571,10 +2586,10 @@ describe "Account Pages", js: true do
                   it 'subcon view: should show entry and a balance of the job subcon cut amount' do
                     transferred_job.reload
                     accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                    expected_amount  = -(transferred_job.total_profit * accounting_entry.amount_direction) * (profit_split.rate / 100.0)
+                    expected_amount  = -(expected_subcon_cut_cheque - transferred_job.total_cost)
 
                     should have_entry(accounting_entry, amount: expected_amount)
-                    should have_affiliate_balance(-transferred_job.total_profit * (profit_split.rate / 100.0))
+                    should have_affiliate_balance(expected_amount)
 
                   end
 

@@ -6,4 +6,10 @@ en:
       description: 'Credit card payment for ticket %{ticket}'
     cheque:
       description: 'Check payment for ticket %{ticket}'
+    amex:
+      description: 'American Express payment for ticket %{ticket}'
+  activerecord:
+    models:
+      amex_credit_card: "American Express"
+
 

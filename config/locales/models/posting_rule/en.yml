@@ -9,13 +9,15 @@ en:
       posting_rule:
         change_active_project: "You can't change or add a posting rule to an active agreement. To make changes you will need to create a new agreement"
     models:
-      posting_rule:
-      profit_split: Profit Split
+      posting_rule: "Rule"
+      profit_split: "Profit Split"
     attributes:
       profit_split:
         rate: "Subcontractor rate"
         cheque_rate_type: "Check rate type"
         cheque_rate: "Check rate"
+        amex_rate: "American Express"
+        amex_rate_type: "American Express rate type"
 
 
 

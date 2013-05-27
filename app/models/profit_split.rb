@@ -38,7 +38,7 @@ class ProfitSplit < PostingRule
 
   # define hstore properties methods
   %w[cheque_rate cheque_rate_type credit_rate credit_rate_type
-cash_rate cash_rate_type].each do |key|
+cash_rate cash_rate_type, amex_rate, amex_rate_type].each do |key|
     scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("properties @> (? => ?)", key, value) }
 
     define_method(key) do
@@ -67,7 +67,7 @@ cash_rate cash_rate_type].each do |key|
         cancellation_entries
       when ScCollectEvent.name, ScCollectedEvent.name
         collection_entries
-      when ServiceCallPaidEvent.name
+      when ServiceCallPaidEvent.name, ScProviderCollectedEvent.name
         payment_entries
 
       else
@@ -100,6 +100,8 @@ cash_rate cash_rate_type].each do |key|
       when ServiceCallPaidEvent.name
         true
       when ScCollectedEvent.name
+        true
+      when ScProviderCollectedEvent.name
         true
       else
         false
@@ -437,19 +439,68 @@ cash_rate cash_rate_type].each do |key|
       when :subcon
         counterparty_cancellation_entries
       else
-        raise "Unrecognized role when creting profit split entries"
+        raise "Unrecognized role when creating profit split entries"
     end
 
   end
 
   def counterparty_cancellation_entries
     original_entry = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
-    [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: -original_entry.amount, description: "Entry to provider owned account")]
+
+    case @ticket.payment_type
+      when 'cash'
+        payment_fee_entry = AccountingEntry.where(type: CashPaymentFee, ticket_id: @ticket.id).first
+        collection_entry = AccountingEntry.where(type: CashCollectionForProvider, ticket_id: @ticket.id).first
+        deposit_entry = AccountingEntry.where(type: CashDepositToProvider, ticket_id: @ticket.id).first
+      when 'credit_card'
+        payment_fee_entry = AccountingEntry.where(type: CreditPaymentFee, ticket_id: @ticket.id).first
+        collection_entry = AccountingEntry.where(type: CreditCardCollectionForProvider, ticket_id: @ticket.id).first
+        deposit_entry = AccountingEntry.where(type: CreditCardDepositToProvider, ticket_id: @ticket.id).first
+      when 'cheque'
+        payment_fee_entry = AccountingEntry.where(type: ChequePaymentFee, ticket_id: @ticket.id).first
+        collection_entry = AccountingEntry.where(type: ChequeCollectionForProvider, ticket_id: @ticket.id).first
+        deposit_entry = AccountingEntry.where(type: ChequeDepositToProvider, ticket_id: @ticket.id).first
+      when nil
+        # leave adjustment as zero
+      else
+        raise "unexpected payment type: '#{@ticket.payment_type}'"
+    end
+
+    payment_fee = payment_fee_entry ? payment_fee_entry.amount : Money.new_with_amount(0)
+    collection_fee = collection_entry ? collection_entry.amount : Money.new_with_amount(0)
+    deposit_fee = deposit_entry ? deposit_entry.amount : Money.new_with_amount(0)
+    adjustment = payment_fee + collection_fee + deposit_fee
+
+    [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: -(original_entry.amount + adjustment), description: "Entry to provider owned account")]
   end
 
   def organization_cancellation_entries
     original_entry = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
-    [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: -original_entry.amount, description: "Entry to provider owned account")]
+    case @ticket.payment_type
+      when 'cash'
+        payment_fee_entry = AccountingEntry.where(type: ReimbursementForCashPayment, ticket_id: @ticket.id).first
+        collection_entry = AccountingEntry.where(type: CashCollectionFromSubcon, ticket_id: @ticket.id).first
+        deposit_entry = AccountingEntry.where(type: CashDepositFromSubcon, ticket_id: @ticket.id).first
+      when 'credit_card'
+        payment_fee_entry = AccountingEntry.where(type: ReimbursementForCreditPayment, ticket_id: @ticket.id).first
+        collection_entry = AccountingEntry.where(type: CreditCardCollectionFromSubcon, ticket_id: @ticket.id).first
+        deposit_entry = AccountingEntry.where(type: CreditCardDepositFromSubcon, ticket_id: @ticket.id).first
+      when 'cheque'
+        payment_fee_entry = AccountingEntry.where(type: ReimbursementForChequePayment, ticket_id: @ticket.id).first
+        collection_entry = AccountingEntry.where(type: ChequeCollectionFromSubcon, ticket_id: @ticket.id).first
+        deposit_entry = AccountingEntry.where(type: ChequeDepositFromSubcon, ticket_id: @ticket.id).first
+      when nil
+        # leave adjustment as zero
+      else
+        raise "unexpected payment type"
+    end
+
+    payment_fee = payment_fee_entry ? payment_fee_entry.amount : Money.new_with_amount(0)
+    collection_fee = collection_entry ? collection_entry.amount : Money.new_with_amount(0)
+    deposit_fee = deposit_entry ? deposit_entry.amount : Money.new_with_amount(0)
+    adjustment = payment_fee + collection_fee + deposit_fee
+
+    [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: -(original_entry.amount + adjustment), description: "Entry to provider owned account")]
   end
 
 

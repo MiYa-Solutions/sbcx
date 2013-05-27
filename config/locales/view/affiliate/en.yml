@@ -13,44 +13,44 @@ en:
       create_provider_button: 'Create'
     new:
 
-    activerecord:
-      models:
-        agreement: "Agreement"
+  activerecord:
+    models:
+      agreement: "Agreement"
 
-      attributes:
-        affiliate:
-          address1: "Address"
-        agreement:
-      state_machines:
-        organization_agreement:
-          status:
-            events:
-              submit_for_approval: "Submit"
-              activate: "Activate The Agreement"
-              submit_change: "Submit The Change"
-              accept: "Accept The Terms"
-              reject: "Reject The Agreement Terms"
-              cancel: "Cancel This Agreement"
-            states:
-              draft: "Draft"
-              active: "Active"
-              pending_org_approval: "Pending Contractor Approval"
-              pending_cparty_approval: "Pending Subcontractor Approval"
-              rejected_by_org: "Rejected By The Contractor"
-              rejected_by_cparty: "Rejected By The Subcontractor"
-              canceled: "Canceled"
-              canceled: "Replaced With Another Agreement"
+    attributes:
+      affiliate:
+        address1: "Address"
+      agreement:
+    state_machines:
+      organization_agreement:
+        status:
+          events:
+            submit_for_approval: "Submit"
+            activate: "Activate The Agreement"
+            submit_change: "Submit The Change"
+            accept: "Accept The Terms"
+            reject: "Reject The Agreement Terms"
+            cancel: "Cancel This Agreement"
+          states:
+            draft: "Draft"
+            active: "Active"
+            pending_org_approval: "Pending Contractor Approval"
+            pending_cparty_approval: "Pending Subcontractor Approval"
+            rejected_by_org: "Rejected By The Contractor"
+            rejected_by_cparty: "Rejected By The Subcontractor"
+            canceled: "Canceled"
+            canceled: "Replaced With Another Agreement"
 
-        subcontracting_agreement:
-          name: "Name"
-          description: "Description"
-          organization: "Contractor"
-          counterparty: "Subcontractor"
-        supplier_agreement:
-          name: "Name"
-          description: "Description"
-          organization: "Supplier"
-          counterparty: "Supplier Customer"
+      subcontracting_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Contractor"
+        counterparty: "Subcontractor"
+      supplier_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Supplier"
+        counterparty: "Supplier Customer"
 
     events:
       agreement:

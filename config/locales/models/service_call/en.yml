@@ -2,7 +2,7 @@ en:
   activerecord:
     errors:
       models:
-        service_call:
+        service_call: Job
           attributes:
             customer:
               blank: "Name field can't be blank"

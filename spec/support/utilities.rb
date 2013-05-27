@@ -176,8 +176,9 @@ def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
                      cash_rate_type:           payment_rules[:cash_rate_type],
                      credit_rate_type:         payment_rules[:credit_rate_type]
   )
-  agreement.status = OrganizationAgreement::STATUS_ACTIVE
   agreement.name   = "#{prov.name} (P), #{subcon.name} (S)"
+  agreement.save!
+  agreement.status = OrganizationAgreement::STATUS_ACTIVE
   agreement.save!
   agreement
 end

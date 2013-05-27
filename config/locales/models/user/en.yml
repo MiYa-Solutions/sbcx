@@ -1,7 +1,5 @@
 en:
   activerecord:
-    models:
-
     attributes:
       user:
         first_name: "Name"

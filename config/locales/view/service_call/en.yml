@@ -48,10 +48,6 @@ en:
         un_cancel:
           tooltip: "Click in case you made a mistake and this service call should not be canceled"
 
-
-
-
-
       work_status:
         start:
           tooltip: "Click to indicate the service has started"
