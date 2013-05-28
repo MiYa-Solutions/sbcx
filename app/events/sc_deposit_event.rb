@@ -37,6 +37,8 @@ class ScDepositEvent < ServiceCallEvent
         entry = CashDepositToProvider.new(props)
       when 'credit_card'
         entry = CreditCardDepositToProvider.new(props)
+      when 'amex_credit_card'
+        entry = AmexDepositToProvider.new(props)
       when 'cheque'
         entry = ChequeDepositToProvider.new(props)
       else

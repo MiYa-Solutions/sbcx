@@ -49,6 +49,17 @@ describe "Account Pages", js: true do
     end
 
   end
+  let(:amex_fee) do
+    case profit_split.amex_rate_type
+      when 'percentage'
+        expected_price * (profit_split.amex_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(profit_split.amex_rate.delete(',').to_f)
+      else
+        Money.new_with_amount(0)
+    end
+
+  end
   let(:cheque_fee) do
     case profit_split.cheque_rate_type
       when 'percentage'
@@ -67,6 +78,10 @@ describe "Account Pages", js: true do
   }
   let(:expected_subcon_cut_credit) {
     net = Money.new_with_amount(bom1[:total_profit] + bom2[:total_profit]) - credit_fee
+    Money.new_with_amount(boms_cost + (net.to_f * profit_split.rate / 100.0))
+  }
+  let(:expected_subcon_cut_amex) {
+    net = Money.new_with_amount(bom1[:total_profit] + bom2[:total_profit]) - amex_fee
     Money.new_with_amount(boms_cost + (net.to_f * profit_split.rate / 100.0))
   }
   let(:expected_subcon_cut_cheque) {
@@ -334,6 +349,68 @@ describe "Account Pages", js: true do
 
                 visit customer_path customer
                 should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'cleared')
+              end
+            end
+
+          end
+
+          describe 'with amex payment' do
+            before do
+              select AmexCreditCard.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+            end
+
+            it 'clear button is shown' do
+              should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+            end
+
+            it 'customer account should show the payment and zero balance' do
+              entries = customer_acc.entries.where(type: AmexPayment, ticket_id: job.id)
+              entries.all.should have(1).entry
+
+              visit customer_path customer
+              should have_entry(entries.first, amount: -job.total_price, type: AmexPayment.model_name.human, status: 'pending')
+              should have_customer_balance(0)
+            end
+
+            describe 'cancel the job: ' do
+              before do
+                visit service_call_path(job)
+                click_button JOB_BTN_CANCEL
+              end
+
+              describe 'customer account: ' do
+                before do
+                  visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
+                  click_button ACC_BTN_GET_ENTRIES
+                end
+
+                it 'should show canceled job entry with a zero balance' do
+                  entries = job.reload.entries.where(type: CanceledJobAdjustment)
+                  entries.should have(1).entry
+                  should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
+                  should have_customer_balance(-expected_price)
+
+                end
+
+              end
+
+            end
+
+
+            describe 'clearing payment' do
+              before do
+                click_button JOB_BTN_CLEAR
+              end
+
+              it 'job billing and accounting entries statuses should change to cleared' do
+                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
+
+                entries = customer_acc.entries.where(type: AmexPayment, ticket_id: job.id)
+                entries.all.should have(1).entry
+
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: AmexPayment.model_name.human, status: 'cleared')
               end
             end
 
@@ -781,6 +858,130 @@ describe "Account Pages", js: true do
             end
 
           end
+          describe 'with amex payment' do
+            before do
+              in_browser(:org2) do
+                select AmexCreditCard.model_name.human, from: JOB_SELECT_PAYMENT
+                click_button JOB_BTN_COLLECT
+              end
+            end
+
+
+            it 'customer account should show credit card payment entry' do
+              entries = customer_acc.entries.where(type: AmexPayment, ticket_id: job.id)
+              entries.all.should have(1).entry
+
+              in_browser(:org) do
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: AmexPayment.model_name.human)
+              end
+            end
+
+            it 'customer account should be zero' do
+              in_browser(:org) do
+                visit customer_path customer
+                should have_customer_balance 0
+              end
+            end
+
+            it 'provider view: account should show credit card collection from subcon with a cleared status (income)' do
+              entries = org1_org2_acc.entries.where(type: AmexCollectionFromSubcon, ticket_id: job.id)
+              entries.all.should have(1).entry
+              in_browser(:org) do
+                visit affiliate_path(job.reload.subcontractor)
+                should have_entry(entries.first, amount: job.total_price, status: 'cleared', type: AmexCollectionFromSubcon.model_name.human)
+              end
+            end
+
+            it 'provider view: account balance should be set to the difference between the total price and costs' do
+              in_browser(:org) do
+                visit affiliate_path(job.reload.subcontractor)
+                should have_affiliate_balance(job.total_price - ((subcon_job.total_price - subcon_job.total_cost - amex_fee)*(profit_split.rate/100.0) + subcon_job.total_cost))
+              end
+            end
+
+            it 'subcon view: account should show credit card collection for provider with cleared status (withdrawal)' do
+              entries = org2_org1_acc.entries.where(type: AmexCollectionForProvider, ticket_id: subcon_job.id)
+              entries.all.should have(1).entry
+              in_browser(:org2) do
+                visit affiliate_path(subcon_job.reload.provider)
+                should have_entry(entries.first, amount: -subcon_job.total_price, status: 'cleared', type: AmexCollectionForProvider.model_name.human)
+              end
+            end
+
+            it 'subcon view: account balance should be set to the difference between the total price and cost' do
+              in_browser(:org2) do
+                visit affiliate_path(subcon_job.reload.provider)
+                should have_affiliate_balance(-(job.total_price - expected_subcon_cut_amex))
+              end
+            end
+
+            it "technician's account should not have additional entries"
+
+            describe 'when marked as deposited by the subcontractor' do
+
+              before do
+                in_browser(:org2) do
+                  visit service_call_path(subcon_job)
+                  click_button JOB_BTN_DEPOSIT
+                end
+              end
+              it 'subcon view: account should show the entry as deposited and the balance is updated' do
+                entries = org2_org1_acc.entries.where(type: AmexDepositToProvider, ticket_id: subcon_job.id)
+
+                in_browser(:org2) do
+                  visit affiliate_path(subcon_job.provider)
+                  should have_entry(entries.first, status: 'deposited', type: AmexDepositToProvider.model_name.human)
+                  should have_affiliate_balance(expected_subcon_cut_amex)
+                end
+
+              end
+
+              it 'provider view: account should show the entry as deposited and balance is updated' do
+                entries = org1_org2_acc.entries.where(type: AmexDepositFromSubcon, ticket_id: job.id)
+                entries.all.should have(1).entry
+                in_browser(:org) do
+                  visit affiliate_path(job.reload.subcontractor)
+                  should have_entry(entries.first, amount: -job.total_price, status: 'deposited', type: AmexDepositFromSubcon.model_name.human)
+                  should have_affiliate_balance(-(expected_subcon_cut_amex))
+                end
+
+              end
+
+              it "technician's account should show the entry as deposited"
+              it "technician's account should now have the amount type as income"
+
+              describe 'when provider confirms the deposit ' do
+                before do
+                  in_browser(:org) do
+                    visit service_call_path(job)
+                    click_button JOB_BTN_CONFIRM_DEPOSIT
+                  end
+
+                end
+                it 'subcon view: account should show the entry as cleared' do
+                  entries = org2_org1_acc.entries.where(type: AmexDepositToProvider, ticket_id: subcon_job.id)
+                  entries.should have(1).entry
+                  in_browser(:org2) do
+                    visit affiliate_path(subcon_job.provider)
+                    should have_entry(entries.first, status: 'cleared')
+                  end
+                end
+                it 'provider view: account should show the entry as cleared' do
+                  entries = org1_org2_acc.entries.where(type: AmexDepositFromSubcon, ticket_id: job.id)
+                  entries.should have(1).entry
+                  in_browser(:org) do
+                    visit affiliate_path(job.reload.subcontractor)
+                    should have_entry(entries.first, status: 'cleared')
+                  end
+
+                end
+                it "subcontractor's account should show the entry as cleared"
+                it "technician's account should show the entry as cleared"
+              end
+            end
+
+          end
           describe 'with cheque payment' do
             before do
               in_browser(:org2) do
@@ -988,6 +1189,49 @@ describe "Account Pages", js: true do
 
                 visit customer_path customer
                 should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'cleared')
+              end
+            end
+
+          end
+          describe 'with amex payment' do
+            before do
+              select AmexCreditCard.model_name.human, from: JOB_SELECT_PAYMENT
+              click_button JOB_BTN_PAID
+            end
+
+            it 'customer account should show pending credit card payment entry with zero balance ' do
+              entry = job.accounting_entries.where(type: AmexPayment).last
+              visit customer_path customer
+              should have_entry(entry, amount: -job.total_price, type: AmexPayment.model_name.human, status: 'pending')
+
+            end
+
+            it 'provider view: account should not have any additional entries' do
+              job.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ServiceCallCharge, AmexPayment, ReimbursementForAmexPayment]
+              org1_org2_acc.entries.reload.map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty, ReimbursementForAmexPayment]
+              customer_acc.entries.reload.map(&:class).should =~ [ServiceCallCharge, AmexPayment]
+            end
+
+            it 'subcon view: account should additional CreditPaymentFee entry ' do
+              subcon_job.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement, AmexPaymentFee]
+              org2_org1_acc.entries.reload.map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement, AmexPaymentFee]
+            end
+
+            it "technician's account should not have additional entries"
+
+            describe 'clearing payment' do
+              before do
+                click_button JOB_BTN_CLEAR
+              end
+
+              it 'job billing and accounting entries statuses should change to cleared' do
+                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
+
+                entries = customer_acc.entries.where(type: AmexPayment, ticket_id: job.id)
+                entries.all.should have(1).entry
+
+                visit customer_path customer
+                should have_entry(entries.first, amount: -job.total_price, type: AmexPayment.model_name.human, status: 'cleared')
               end
             end
 

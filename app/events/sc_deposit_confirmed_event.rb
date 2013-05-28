@@ -30,6 +30,8 @@ class ScDepositConfirmedEvent < ServiceCallEvent
                 ChequeDepositToProvider
               when 'credit_card'
                 CreditCardDepositToProvider
+              when 'amex_credit_card'
+                AmexDepositToProvider
               else
                 raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
             end

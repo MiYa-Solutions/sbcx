@@ -3,9 +3,9 @@ en:
     errors:
       models:
         service_call: Job
-          attributes:
-            customer:
-              blank: "Name field can't be blank"
+      attributes:
+        customer:
+          blank: "Name field can't be blank"
     models:
       my_service_call: "My Job"
       service_call: "Job"

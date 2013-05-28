@@ -66,6 +66,23 @@ describe AffiliateBillingService do
         customer.account.balance == Money.new_with_amount(0)
       end
     end
+
+    describe 'amex payment' do
+      before do
+        job.invoice_payment
+        job.payment_type = :amex_credit_card
+        job.paid_payment
+      end
+
+      it 'should have a payment entry' do
+        payment_entry = job.entries.where(type: CashPayment).first
+        job.entries.map(&:class).should =~ [ServiceCallCharge, CashPayment]
+        payment_entry.amount.should eq Money.new_with_amount(-300)
+        payment_entry.account.should == job.customer.account
+        customer.account.balance == Money.new_with_amount(0)
+      end
+
+    end
   end
 
 end
