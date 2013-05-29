@@ -42,6 +42,8 @@ class ScSubconDepositedEvent < ServiceCallEvent
         entry =  CashDepositFromSubcon.new(props)
       when 'credit_card'
         entry = CreditCardDepositFromSubcon.new(props)
+      when 'amex_credit_card'
+        entry = AmexDepositFromSubcon.new(props)
       when 'cheque'
         entry = ChequeDepositFromSubcon.new(props)
       else

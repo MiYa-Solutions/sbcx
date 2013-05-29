@@ -122,6 +122,9 @@ class ServiceCallEvent < Event
       when 'credit_card'
         entry = CreditPayment.new(props)
         account.entries << entry
+      when 'amex_credit_card'
+        entry = AmexPayment.new(props)
+        account.entries << entry
       when 'cheque'
         account.entries << ChequePayment.new(props)
       else

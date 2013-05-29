@@ -3,7 +3,6 @@ en:
     provider:
       provider_created: '%{name} provider is created successfully!'
   activerecord:
-    models:
     attributes:
       subcontractor:
         name: "Subcontractor Name"

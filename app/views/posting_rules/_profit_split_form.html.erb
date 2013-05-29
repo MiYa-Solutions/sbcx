@@ -31,6 +31,16 @@
         </div>
       </div>
 
+      <%= f.input :amex_rate %>
+
+
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:amex_rate_type) %></label>
+        <div class="controls">
+          <%= f.select :amex_rate_type, profit_split_payment_rates %>
+        </div>
+      </div>
+
       <%= f.input :cheque_rate %>
 
       <div class="control-group string mandatory">

@@ -164,20 +164,25 @@ def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
   payment_rules[:cash_rate]        ||= 1.0
   payment_rules[:cheque_rate]      ||= 2.5
   payment_rules[:credit_rate]      ||= 2.9
+  payment_rules[:amex_rate]        ||= 3.0
   payment_rules[:cash_rate_type]   ||= :percentage
   payment_rules[:cheque_rate_type] ||= :percentage
-  payment_rules[:credit_rate_type] ||= :percentage
+  payment_rules[:amex_rate_type]   ||= :percentage
+  payment_rules[:credit_rate_type]   ||= :percentage
 
   FactoryGirl.create(:profit_split, agreement: agreement, rate: rate,
                      cheque_rate:              payment_rules[:cheque_rate],
                      cash_rate:                payment_rules[:cash_rate],
                      credit_rate:              payment_rules[:credit_rate],
+                     amex_rate:                payment_rules[:amex_rate],
                      cheque_rate_type:         payment_rules[:cheque_rate_type],
                      cash_rate_type:           payment_rules[:cash_rate_type],
-                     credit_rate_type:         payment_rules[:credit_rate_type]
+                     credit_rate_type:         payment_rules[:credit_rate_type],
+                     amex_rate_type:           payment_rules[:amex_rate_type]
   )
+  agreement.name = "#{prov.name} (P), #{subcon.name} (S)"
+  agreement.save!
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
-  agreement.name   = "#{prov.name} (P), #{subcon.name} (S)"
   agreement.save!
   agreement
 end

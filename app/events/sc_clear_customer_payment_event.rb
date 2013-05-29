@@ -29,6 +29,8 @@ class ScClearCustomerPaymentEvent < ServiceCallEvent
                 ChequePayment
               when 'credit_card'
                 CreditPayment
+              when 'amex_credit_card'
+                AmexPayment
               else
                 raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
             end

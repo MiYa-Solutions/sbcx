@@ -326,6 +326,8 @@ FactoryGirl.define do
       cash_rate_type :percentage
       credit_rate 1.0
       credit_rate_type :percentage
+      amex_rate 1.0
+      amex_rate_type :percentage
 
       rate_type "percentage"
       type "ProfitSplit"

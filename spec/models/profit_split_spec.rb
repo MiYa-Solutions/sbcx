@@ -116,4 +116,8 @@ describe ProfitSplit do
     it { should belong_to(:agreement) }
   end
 
+  describe 'methods' do
+
+  end
+
 end
