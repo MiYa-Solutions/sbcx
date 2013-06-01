@@ -44,6 +44,7 @@ JOB_SELECT_PAYMENT          = 'service_call_payment_type'
 JOB_CBOX_ALLOW_COLLECTION   = 'service_call_allow_collection'
 JOB_CBOX_RE_TRANSFER        = 'service_call_re_transfer'
 JOB_CBOX_TRANSFERABLE       = 'service_call_transferable'
+JOB_INPUT_TAX               = 'service_call_tax'
 
 JOB_STATUS               = 'span#service_call_status'
 JOB_SUBCONTRACTOR_STATUS = 'span#service_call_subcontractor_status'
@@ -168,7 +169,7 @@ def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
   payment_rules[:cash_rate_type]   ||= :percentage
   payment_rules[:cheque_rate_type] ||= :percentage
   payment_rules[:amex_rate_type]   ||= :percentage
-  payment_rules[:credit_rate_type]   ||= :percentage
+  payment_rules[:credit_rate_type] ||= :percentage
 
   FactoryGirl.create(:profit_split, agreement: agreement, rate: rate,
                      cheque_rate:              payment_rules[:cheque_rate],

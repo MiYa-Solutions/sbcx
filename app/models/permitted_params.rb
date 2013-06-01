@@ -115,6 +115,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
         permitted_attributes << :work_status_event unless obj.transferred? && obj.subcontractor.subcontrax_member?
+        permitted_attributes << :tax if obj.can_change_financial_data?
         permitted_attributes.concat [:billing_status_event, :collector_id, :payment_type] if billing_allowed?
         permitted_attributes.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
 
@@ -179,6 +180,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         permitted_attributes.concat [:billing_status_event, :collector_id, :payment_type] if billing_allowed?
         permitted_attributes << :work_status_event if obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?)
         permitted_attributes << :allow_collection if obj.present? && !obj.provider.subcontrax_member?
+        permitted_attributes << :tax if obj.can_change_financial_data?
         permitted_attributes.concat  [:provider_status_event, :provider_payment] if provider_event_allowed?
         permitted_attributes.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
       else # new service call
