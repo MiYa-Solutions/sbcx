@@ -71,7 +71,7 @@ class JobCharge < PostingRule
   end
 
   def charge_amount
-    @ticket.total_price - (@ticket.total_price * (rate / 100.0))
+   ( @ticket.total_price - (@ticket.total_price * (rate / 100.0)) ) + @ticket.total_price * (@ticket.tax / 100.0)
   end
 
   def applicable?(event)

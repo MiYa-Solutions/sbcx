@@ -15,7 +15,12 @@ class ServiceCallCompletedEvent < ScCompletionEvent
   end
 
   def update_provider
-    copy_boms_to_provider
+    if notify_provider?
+      copy_boms_to_provider
+      prov_service_call.tax = service_call.tax
+      prov_service_call.save!
+    end
+
     prov_service_call.events << ServiceCallCompletedEvent.new(triggering_event: self)
   end
 

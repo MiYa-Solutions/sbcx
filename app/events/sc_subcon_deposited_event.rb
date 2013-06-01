@@ -31,7 +31,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
   def update_subcon_account
     account = Account.for_affiliate(service_call.organization, service_call.subcontractor).lock(true).first
 
-    props = { amount:      service_call.total_price,
+    props = { amount:      service_call.total_price + service_call.tax_amount,
               ticket:      service_call,
               event:       self,
               description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }

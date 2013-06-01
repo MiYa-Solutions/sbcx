@@ -39,6 +39,7 @@
 class ServiceCall < Ticket
 
 
+  validate :financial_data_change
   # if im not the subcontractor of this service call then I'm the provider
   def my_role
     if subcontractor_id.nil?
@@ -220,6 +221,14 @@ class ServiceCall < Ticket
   def can_change_boms?
     self.work_in_progress? && !self.work_done? && (!self.transferred? || self.transferred? && !self.subcontractor.subcontrax_member?)
   end
+
+  alias_method :can_change_financial_data?, :can_change_boms?
+
+  private
+  def financial_data_change
+    errors.add :tax, "Can't change tax when job is completed or transferred" if self.changed_attributes.has_key?('tax') && !can_change_financial_data?
+  end
+
 
 end
 

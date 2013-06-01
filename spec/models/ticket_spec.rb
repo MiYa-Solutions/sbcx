@@ -70,7 +70,7 @@ describe Ticket do
    :technician_cost,
    :transferable?,
    :allow_collection?,
-   :collector, :payment_type, :subcon_payment, :provider_payment].each do |attr|
+   :collector, :payment_type, :subcon_payment, :provider_payment, :tax].each do |attr|
     it { should respond_to attr }
   end
 
@@ -86,24 +86,24 @@ describe Ticket do
   end
 
   describe "validation" do
-    describe "when organization is not present" do
-      before { service_call.organization = nil }
-      it { should_not be_valid }
+    it 'organization must be present' do
+      should validate_presence_of(:organization)
     end
-    describe "when customer and new_customer is not present" do
-      before do
-        service_call.customer     = nil
-        service_call.new_customer = nil
-      end
-      it { should_not be_valid }
+    it 'tax must be numeric' do
+      should validate_numericality_of(:tax)
     end
-    describe "when provider is not present" do
-      before do
-        service_call.provider     = nil
-        service_call.new_customer = nil
-      end
 
-      it { should_not be_valid }
+
+    it 'a customer or a new customer must be present' do
+      service_call.customer      = nil
+      service_call.new_customer  = nil
+      service_call.customer_name = nil
+      should_not be_valid
+    end
+
+    it 'when the provider is not present' do
+      service_call.provider = nil
+      should_not be_valid
     end
 
     it 'my job when transferred an agreement must be present' do
@@ -115,7 +115,7 @@ describe Ticket do
 
     it 'subcon agreement must be one that matches the roles on the ticket' do
       service_call.save
-      agr = setup_profit_split_agreement(service_call.subcontractor, service_call.organization)
+      agr                           = setup_profit_split_agreement(service_call.subcontractor, service_call.organization)
       service_call.subcon_agreement = agr
 
       service_call.should_not be_valid

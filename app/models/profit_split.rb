@@ -110,7 +110,7 @@ class ProfitSplit < PostingRule
   def cash_fee
     case cash_rate_type
       when 'percentage'
-        @ticket.total_price * (cash_rate.delete(',').to_f / 100.0)
+        (@ticket.total_price + @ticket.tax_amount)* (cash_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(cash_rate.delete(',').to_f)
       else
@@ -121,7 +121,7 @@ class ProfitSplit < PostingRule
   def credit_fee
     case credit_rate_type
       when 'percentage'
-        @ticket.total_price * (credit_rate.delete(',').to_f / 100.0)
+        (@ticket.total_price + @ticket.tax_amount) * (credit_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(credit_rate.delete(',').to_f)
       else
@@ -131,7 +131,7 @@ class ProfitSplit < PostingRule
   def amex_fee
     case amex_rate_type
       when 'percentage'
-        @ticket.total_price * (amex_rate.delete(',').to_f / 100.0)
+        (@ticket.total_price + @ticket.tax_amount) * (amex_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(amex_rate.delete(',').to_f)
       else
@@ -142,7 +142,7 @@ class ProfitSplit < PostingRule
   def cheque_fee
     case cheque_rate_type
       when 'percentage'
-        @ticket.total_price * (cheque_rate.delete(',').to_f / 100.0)
+        (@ticket.total_price + @ticket.tax_amount) * (cheque_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(cheque_rate.delete(',').to_f)
       else
@@ -250,13 +250,13 @@ class ProfitSplit < PostingRule
         fee_props[:amount] = cash_fee * (rate / 100.0)
         entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate == 0
       when 'credit_card'
-        fee_props[:amount] = @ticket.total_price * (credit_rate.delete(',').to_f / 100.0) * (rate / 100.0)
+        fee_props[:amount] = credit_fee * (rate / 100.0)
         entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate == 0
       when 'amex_credit_card'
-        fee_props[:amount] = @ticket.total_price * (amex_rate.delete(',').to_f / 100.0) * (rate / 100.0)
+        fee_props[:amount] = amex_fee * (rate / 100.0)
         entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate == 0
       when 'cheque'
-        fee_props[:amount] = @ticket.total_price * (cheque_rate.delete(',').to_f / 100.0) * (rate / 100.0)
+        fee_props[:amount] = cheque_fee * (rate / 100.0)
         entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate == 0
       else
     end
@@ -268,7 +268,7 @@ class ProfitSplit < PostingRule
 
     collection_props = {
         status:      AccountingEntry::STATUS_CLEARED,
-        amount:      @ticket.total_price,
+        amount:      @ticket.total_price  + (@ticket.total_price * (@ticket.tax / 100.0)),
         ticket:      @ticket,
         event:       @event,
         description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
@@ -313,7 +313,7 @@ class ProfitSplit < PostingRule
   def org_collection_entries
     entries          = []
     collection_props = { status:      AccountingEntry::STATUS_CLEARED,
-                         amount:      @ticket.total_price,
+                         amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
                          ticket:      @ticket,
                          event:       @event,
                          description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
@@ -331,15 +331,15 @@ class ProfitSplit < PostingRule
         fee_props[:amount] = cash_fee * (rate / 100.0)
         entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate == 0
       when 'credit_card'
-        fee_props[:amount] = @ticket.total_price * (credit_rate.delete(',').to_f / 100.0) * (rate / 100.0)
+        fee_props[:amount] = credit_fee * (rate / 100.0)
         entries << CreditCardCollectionFromSubcon.new(collection_props)
         entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate == 0
       when 'amex_credit_card'
-        fee_props[:amount] = @ticket.total_price * (amex_rate.delete(',').to_f / 100.0) * (rate / 100.0)
+        fee_props[:amount] = amex_fee * (rate / 100.0)
         entries << AmexCollectionFromSubcon.new(collection_props)
         entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate == 0
       when 'cheque'
-        fee_props[:amount] = @ticket.total_price * (cheque_rate.delete(',').to_f / 100.0) * (rate / 100.0)
+        fee_props[:amount] = cheque_fee * (rate / 100.0)
         entries << ChequeCollectionFromSubcon.new(collection_props)
         entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate == 0
 

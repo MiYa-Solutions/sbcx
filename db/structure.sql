@@ -804,7 +804,8 @@ CREATE TABLE tickets (
     work_phone character varying(255),
     email character varying(255),
     subcon_agreement_id integer,
-    provider_agreement_id integer
+    provider_agreement_id integer,
+    tax double precision DEFAULT 0.0
 );
 
 
@@ -1477,3 +1478,9 @@ INSERT INTO schema_migrations (version) VALUES ('20130427164241');
 INSERT INTO schema_migrations (version) VALUES ('20130427203818');
 
 INSERT INTO schema_migrations (version) VALUES ('20130505140727');
+
+INSERT INTO schema_migrations (version) VALUES ('20130601172948');
+
+INSERT INTO schema_migrations (version) VALUES ('20130601183526');
+
+INSERT INTO schema_migrations (version) VALUES ('20130601183731');

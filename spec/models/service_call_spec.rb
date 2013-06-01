@@ -118,5 +118,26 @@ describe ServiceCall do
     it { should_not be_valid }
   end
 
+  it 'should not allow to change the tax if the work is done' do
+    service_call.work_status = ServiceCall::WORK_STATUS_DONE
+    service_call.name = "lklklk"
+    service_call.should be_valid
+    service_call.tax = 5.0
+    service_call.should_not be_valid
+  end
+
+  it 'should not allow to change the tax if transferred' do
+    service_call.status = ServiceCall::STATUS_TRANSFERRED
+    service_call.name = "lklklk"
+    service_call.should be_valid
+    service_call.tax = 5.0
+    service_call.should_not be_valid
+  end
+
+  it 'should allow to change the tax when the work is in progress' do
+    service_call.work_status = ServiceCall::WORK_STATUS_IN_PROGRESS
+    service_call.tax = 5.0
+    service_call.should be_valid
+  end
 
 end

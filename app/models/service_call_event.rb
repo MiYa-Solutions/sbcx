@@ -108,7 +108,7 @@ class ServiceCallEvent < Event
     account = Account.for_customer(service_call.customer).lock(true).first
     ticket  = MyServiceCall.find(service_call.ref_id)
 
-    props = { amount:      -service_call.total_price,
+    props = { amount:      -(service_call.total_price + (service_call.total_price * (service_call.tax / 100.0))),
               ticket:      ticket,
               event:       self,
               description: I18n.t("payment.#{service_call.payment_type}.description", ticket: ticket.id).html_safe }

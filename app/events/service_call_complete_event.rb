@@ -1,5 +1,6 @@
 class ServiceCallCompleteEvent < ScCompletionEvent
   before_create :set_default_creator
+
   def init
     self.name         = I18n.t('service_call_complete_event.name')
     self.reference_id = 100005
@@ -19,9 +20,13 @@ class ServiceCallCompleteEvent < ScCompletionEvent
   end
 
   def process_event
-    copy_boms_to_provider if notify_provider?
+    if notify_provider?
+      copy_boms_to_provider
+      prov_service_call.tax = service_call.tax
+      prov_service_call.save!
+    end
     invoke_affiliate_billing
-    CustomerBillingService.new(self).execute  if service_call.organization.my_customer?(service_call.customer)
+    CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
     super
   end
 

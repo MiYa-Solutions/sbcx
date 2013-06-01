@@ -120,7 +120,7 @@ class MyServiceCall < ServiceCall
 
     # for cash payment, paid means cleared
     after_transition any => :paid do |sc, transition|
-      sc.status = BILLING_STATUS_CLEARED if sc.payment_type == 'cash'
+      sc.billing_status = BILLING_STATUS_CLEARED if sc.payment_type == 'cash'
     end
 
     event :clear do

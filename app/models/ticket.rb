@@ -97,7 +97,7 @@ class Ticket < ActiveRecord::Base
   validates_presence_of :organization, :provider
   validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
   validate :check_subcon_agreement, :check_provider_agreement
-
+  validates_numericality_of :tax
 
   accepts_nested_attributes_for :customer
 
@@ -115,6 +115,9 @@ class Ticket < ActiveRecord::Base
   scope :closed_status, ->{where("tickets.status = ?", STATUS_CLOSED)}
   scope :canceled_status, ->{where("tickets.status = ?", STATUS_CANCELED)}
 
+  def tax_amount
+    total_price * (tax / 100.0)
+  end
 
   def completed_on_text
     @completed_on_text || completed_on.try(:strftime, "%B %d, %Y %H:%M")
@@ -304,7 +307,7 @@ class Ticket < ActiveRecord::Base
   end
   def check_provider_agreement
     unless self.provider_agreement.nil?
-      errors.add :provider_agreement, "Invalid Subcontracting Agreement: the agreement must specify the provider as the organization" if provider_agreement.organization != self.provider.becomes(Organization)
+      errors.add :provider_agreement, "Invalid Subcontracting Agreement: the agreement must specify the provider as the organization" if provider_agreement.organization != self.provider.try(:becomes, Organization)
     end
   end
 
