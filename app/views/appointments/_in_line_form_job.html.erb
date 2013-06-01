@@ -1,6 +1,11 @@
+<div class="alert add_meeting_frame" >
+
 <%= simple_form_for(appointment, :html => { :class => 'form-horizontal ajax-form' }, remote: true) do |f| %>
     <br>
 
+    <div class="row-fluid">
+      <a href="#" data-toggle="collapse" data-target="#new_meeting" class="close">×</a>
+    </div>
     <%= f.error_notification %>
 
 
@@ -15,14 +20,15 @@
     <%= f.input :appointable_id, :as => :hidden, :input_html => { :value => appointment.appointable.id } %>
     <%= f.input :appointable_type, :as => :hidden, :input_html => { :value => appointment.appointable.class } %>
 
-    <div class="form-actions">
+    <!--<div class="form-actions">-->
 
-      <%= link_to I18n.t('general.general.back'), appointment.appointable, class: "btn btn-medium", id: 'back_from_appointment' %>
-      <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary ajax-btn", id: 'add_appointment' %>
+      <!--<#%= link_to I18n.t('general.general.close'), "#", class: "btn btn-medium", :data-toggle => "collapse", :data-target =>"#new_meeting" %>-->
+      <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary ajax-btn", id: 'add_appointment_job_show' %>
 
       <br>
       <div id="ajax-msg"></div>
-    </div>
+    <!--</div>-->
 
 <% end %>
 
+</div>

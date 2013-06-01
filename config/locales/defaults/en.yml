@@ -20,3 +20,4 @@ en:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"
       incoming_job: "This Job has been transferred to you"
+      cant_add_parts: "You can't add items to this job. <br> Items can be added only when a job has been accepted or started by you."

@@ -1980,6 +1980,36 @@ div.DTTT_collection {
   height: 132px;
 }
 
+.add_meeting_frame {
+  background-color: #EEEEEE;
+  border-color: black;
+  border-width: 1px;
+  color: #3A87AD;
+  height: 500px;
+
+  //input, textarea {
+  //  width: 100%;
+  //}
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    float: left;
+    margin-left: -18px;
+    margin-top: 0.501em;
+  }
+
+  .close {
+    line-height: 18px;
+    position: relative;
+    right: -21px;
+    top: -19px;
+  }
+
+}
+
+.calendar_job {
+  //margin-left: 1%;
+}
+
 .edit_provider {
   textarea {
     height: 18px;
@@ -1997,7 +2027,9 @@ div.DTTT_collection {
   }
 }
 
-
+#add_appointment_job_show {
+  margin-left: 50%;
+}
 
 .carousel .item > img {
   margin-left: 0 auto;
@@ -2544,6 +2576,19 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 .row_homepage {
   margin-left: -1.5%;
+}
+
+.note_meeting {
+  textarea {
+    height: 150px;
+  }
+}
+
+.add_meeting_button_job {
+  button {
+    float: right;
+  }
+
 }
 
 
