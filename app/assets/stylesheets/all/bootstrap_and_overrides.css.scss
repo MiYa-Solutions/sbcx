@@ -1980,6 +1980,36 @@ div.DTTT_collection {
   height: 132px;
 }
 
+.add_meeting_frame {
+  background-color: #EEEEEE;
+  border-color: black;
+  border-width: 1px;
+  color: #3A87AD;
+  height: 500px;
+
+  //input, textarea {
+  //  width: 100%;
+  //}
+
+  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+    float: left;
+    margin-left: -18px;
+    margin-top: 0.501em;
+  }
+
+  .close {
+    line-height: 18px;
+    position: relative;
+    right: -21px;
+    top: -19px;
+  }
+
+}
+
+.calendar_job {
+  //margin-left: 1%;
+}
+
 .edit_provider {
   textarea {
     height: 18px;
@@ -1997,7 +2027,9 @@ div.DTTT_collection {
   }
 }
 
-
+#add_appointment_job_show {
+  margin-left: 50%;
+}
 
 .carousel .item > img {
   margin-left: 0 auto;
@@ -2546,6 +2578,19 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   margin-left: -1.5%;
 }
 
+.note_meeting {
+  textarea {
+    height: 150px;
+  }
+}
+
+.add_meeting_button_job {
+  button {
+    float: right;
+  }
+
+}
+
 
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
   -moz-border-bottom-colors: none;
@@ -2553,14 +2598,24 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
   background-color: #F5F5F5;
-  //border-color: #DDDDDD #DDDDDD transparent;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2) -moz-use-text-color;
   border-image: none;
-  border-style: solid;
-  border-width: 1px;
-  color: #555555;
-  cursor: default;
+  border-style: solid solid none;
+  border-width: 1px 1px medium;
   font-size: 16px;
+  padding-bottom: 9px;
+}
+
+.well_job_show {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  border-image: none;
+  border-radius: 0 4px 4px 4px;
+  border-style: none solid solid;
+  border-width: medium 1px 1px;
+  margin-top: -2px;
 }
 
 
@@ -2570,7 +2625,9 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 .nav-tabs {
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid #ffffff;
+
 }
 
 .nav-tabs > li > a, .nav-pills > li > a {
@@ -2582,6 +2639,38 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   border: 1px solid rgba(0, 0, 0, 0.2);
 
 }
+
+//.nav-tabs > li > a, .nav-pills > li > a {
+//  -moz-border-bottom-colors: none;
+//  -moz-border-left-colors: none;
+//  -moz-border-right-colors: none;
+//  -moz-border-top-colors: none;
+//  border-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2) -moz-use-text-color;
+//  border-image: none;
+//  border-style: solid solid none;
+//  border-width: 1px 1px medium;
+//  font-size: 16px;
+//  line-height: 14px;
+//  margin-right: 2px;
+//  padding-left: 12px;
+//  padding-right: 12px;
+//}
+//
+//
+//.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+//  -moz-border-bottom-colors: none;
+//  -moz-border-left-colors: none;
+//  -moz-border-right-colors: none;
+//  -moz-border-top-colors: none;
+//  background-color: #F5F5F5;
+//  border-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2) -moz-use-text-color;
+//  border-image: none;
+//  border-style: solid solid none;
+//  border-width: 1px 1px medium;
+//  color: #555555;
+//  cursor: default;
+//  font-size: 16px;
+//}
 
 .job_source {
    width: 60px;
@@ -2624,6 +2713,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 .job_title {
   margin-left: -1.5%;
+  margin-bottom: 10px;
 }
 
 .affiliate_title {

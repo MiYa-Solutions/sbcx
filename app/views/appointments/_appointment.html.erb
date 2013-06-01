@@ -1,5 +1,10 @@
-<td><%= appointment.title %></td>
-<td><%= appointment.description %></td>
+<!--<td><#%= appointment.title %></td>-->
+<td><%= link_to appointment.title, edit_appointment_path(appointment) %></td>
+<td><%= link_to appointment.description, edit_appointment_path(appointment) %></td>
+<!--<td><#%= appointment.description %></td>-->
 <td><%= appointment.starts_at %></td>
 <td><%= appointment.ends_at %></td>
+
+
+
 

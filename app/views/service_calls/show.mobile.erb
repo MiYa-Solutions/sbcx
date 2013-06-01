@@ -46,6 +46,10 @@
       <%= link_to I18n.t('general.general.add_part'), new_service_call_bom_path(@service_call), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" if @service_call.can_change_boms?%>
     </div>
 
+    <% unless @service_call.can_change_boms? %>
+       <p><%= I18n.t('general.messages.cant_add_parts').html_safe %></p>
+    <% end %>
+
     <ul data-role="listview">
       <% @service_call.boms.each do |bom| %>
           <li class=" job_billing">
