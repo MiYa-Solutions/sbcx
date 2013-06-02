@@ -115,7 +115,7 @@ class TransferredServiceCall < ServiceCall
 
     # for cash payment, paid means cleared
     after_transition any => :settled do |sc, transition|
-      sc.status = SUBCON_STATUS_CLEARED if sc.provider_payment == 'cash'
+      sc.provider_status = SUBCON_STATUS_CLEARED if sc.provider_payment == 'cash'
     end
 
 

@@ -22,8 +22,12 @@ class ServiceCallCompleteEvent < ScCompletionEvent
   def process_event
     if notify_provider?
       copy_boms_to_provider
-      prov_service_call.tax = service_call.tax
-      prov_service_call.save!
+      ServiceCall.transaction do
+        prov_service_call.system_update=true
+        prov_service_call.tax = service_call.tax
+        prov_service_call.save!
+        prov_service_call.system_update=false
+      end
     end
     invoke_affiliate_billing
     CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)

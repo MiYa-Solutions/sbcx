@@ -2213,10 +2213,6 @@ describe "Service Call pages" do
             should_not have_subcon_status('')
           end
 
-          it 'should have a tax input' do
-            should have_field JOB_INPUT_TAX
-          end
-
           it " service call should have a started event associated " do
             service_call.events.pluck(:reference_id).should include(100015)
             should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_start_event.description', technician: service_call.technician.name))

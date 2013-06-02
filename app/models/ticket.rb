@@ -80,6 +80,7 @@ class Ticket < ActiveRecord::Base
   ### VIRTUAL ATTRIBUTES
   attr_writer :started_on_text, :completed_on_text, :scheduled_for_text
   attr_accessor :new_customer, :customer_name
+  attr_accessor :system_update
 
   attr_writer :tag_list
 

@@ -220,14 +220,15 @@ class ServiceCall < Ticket
   end
 
   def can_change_boms?
-    self.work_in_progress? && !self.work_done? && (!self.transferred? || self.transferred? && !self.subcontractor.subcontrax_member?)
+
+    (self.work_status_was == WORK_STATUS_IN_PROGRESS || self.work_in_progress? )&& (!self.transferred? || self.transferred? && !self.subcontractor.subcontrax_member?)
   end
 
   alias_method :can_change_financial_data?, :can_change_boms?
 
   private
   def financial_data_change
-    errors.add :tax, "Can't change tax when job is completed or transferred" if self.changed_attributes.has_key?('tax') && !can_change_financial_data?
+    errors.add :tax, "Can't change tax when job is completed or transferred" if !self.system_update && self.changed_attributes.has_key?('tax') && !can_change_financial_data?
   end
 
 
