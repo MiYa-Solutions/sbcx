@@ -61,7 +61,7 @@ class Ticket < ActiveRecord::Base
     end
   end
   belongs_to :collector, :polymorphic => true
-  has_many :appointments, as: :appointable, finder_sql: proc {"SELECT appointments.* FROM appointments WHERE appointments.appointable_id = #{id} AND appointments.appointable_type = '#{self.class.name}'"}
+  has_many :appointments, as: :appointable, finder_sql: proc { "SELECT appointments.* FROM appointments WHERE appointments.appointable_id = #{id} AND appointments.appointable_type = '#{self.class.name}'" }
   has_many :accounting_entries
 
   has_many :taggings, as: :taggable
@@ -109,11 +109,25 @@ class Ticket < ActiveRecord::Base
   STATUS_CLOSED      = 0003
   STATUS_CANCELED    = 0004
 
-  scope :new_status, ->{where("tickets.status = ?", STATUS_NEW)}
-  scope :open_status, ->{where("tickets.status = ?", STATUS_OPEN)}
-  scope :transferred_status, ->{where("tickets.status = ?", STATUS_TRANSFERRED)}
-  scope :closed_status, ->{where("tickets.status = ?", STATUS_CLOSED)}
-  scope :canceled_status, ->{where("tickets.status = ?", STATUS_CANCELED)}
+  scope :new_status, -> { where("tickets.status = ?", STATUS_NEW) }
+  scope :open_status, -> { where("tickets.status = ?", STATUS_OPEN) }
+  scope :transferred_status, -> { where("tickets.status = ?", STATUS_TRANSFERRED) }
+  scope :closed_status, -> { where("tickets.status = ?", STATUS_CLOSED) }
+  scope :canceled_status, -> { where("tickets.status = ?", STATUS_CANCELED) }
+
+  def subcon_balance
+    if transferred?
+      account = Account.for_affiliate(self.organization, subcontractor).first
+      AccountingEntry.where(account_id: account.id, ticket_id: self.id).select([:amount_cents, :amount_currency]).map(&:amount).inject { |sum, n| sum + n }
+    end
+  end
+
+  def provider_balance
+    if provider != organization
+      account = Account.for_affiliate(self.organization, provider).first
+      AccountingEntry.where(account_id: account.id, ticket_id: self.id).select([:amount_cents, :amount_currency]).map(&:amount).inject { |sum, n| sum + n }
+    end
+  end
 
   def tax_amount
     total_price * (tax / 100.0)
@@ -305,6 +319,7 @@ class Ticket < ActiveRecord::Base
       errors.add :subcon_agreement, "Invalid Subcontracting Agreement: the agreement must specify the subcontractor as the counterparty" if subcon_agreement.counterparty != self.subcontractor.becomes(Organization)
     end
   end
+
   def check_provider_agreement
     unless self.provider_agreement.nil?
       errors.add :provider_agreement, "Invalid Subcontracting Agreement: the agreement must specify the provider as the organization" if provider_agreement.organization != self.provider.try(:becomes, Organization)

@@ -194,6 +194,7 @@ class ServiceCall < Ticket
       if params[:provider_id].empty? || params[:provider_id] == org.id
         sc = MyServiceCall.new(params)
       else
+        params[:subcontractor_id] = nil
         sc = TransferredServiceCall.new(params)
       end
 
