@@ -170,6 +170,7 @@ GEM
       money (~> 5.1.0)
       railties (>= 3.0)
     multi_json (1.7.3)
+    newrelic_rpm (3.6.3.104)
     nifty-generators (0.4.6)
     nokogiri (1.5.9)
     orm_adapter (0.0.7)
@@ -319,6 +320,7 @@ DEPENDENCIES
   meta_request
   mocha
   money-rails
+  newrelic_rpm
   nifty-generators
   pg (= 0.14.1)
   poltergeist (= 1.1.0)
