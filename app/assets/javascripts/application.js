@@ -20,7 +20,7 @@
 //= require jquery.purr
 //= require best_in_place
 //= require best_in_place.purr
-//= require bootstrap-datepicker
+//= require all/bootstrap-datepicker
 //= require all/jquery.dataTables.columnFilter
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
