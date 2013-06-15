@@ -32,14 +32,14 @@
             <tr>
               <td><%= link_to sc.ref_id, sc %></td>
               <td><%= l sc.created_at, format: :date_only %></td>
-              <td><%= link_to sc.customer.name, sc.customer %></td>
-              <td><%= link_to sc.provider.name, affiliate_path(sc.provider) if sc.provider.present? %></td>
-              <td><%= link_to sc.subcontractor.name, affiliate_path(sc.subcontractor) if sc.subcontractor.present? %></td>
-              <td><%= link_to sc.human_status_name, sc %></td>
-              <td><%=  sc.provider_balance if sc.instance_of?(TransferredServiceCall) %></td>
-              <td><%=  sc.subcon_balance %></td>
-              <td><%=  sc.total_price %></td>
-              <td><%=  sc.total_cost %></td>
+              <td><%= sc.customer.name %></td>
+              <td><%= sc.provider.name if sc.provider.present? %></td>
+              <td><%= sc.subcontractor.name if sc.subcontractor.present? %></td>
+              <td><%= sc.human_status_name %></td>
+              <td><%= sc.provider_balance if sc.instance_of?(TransferredServiceCall) %></td>
+              <td><%= sc.subcon_balance %></td>
+              <td><%= sc.total_price %></td>
+              <td><%= sc.total_cost %></td>
             </tr>
         <% end %>
 
