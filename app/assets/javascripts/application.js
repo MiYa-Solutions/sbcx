@@ -27,5 +27,8 @@
 //= require dataTables/extras/ZeroClipboard.js
 //= require dataTables/jquery.dataTables.api.fnFilterOnReturn
 //= require dataTables/extras/TableTools
+//= require dataTables/extras/ColumnFilterWidgets
+//= require dataTables/extras/jquery.dataTables.columnFilter
+//= require dataTables/extras/ColVis
 //= require select2
 //= require_tree ./all/.
