@@ -62,9 +62,9 @@ class TicketsDatatable
 
     end
     if params[:sSearch].present?
-      tickets = tickets.where("id = :search", search: "#{params[:sSearch]}")
+      tickets = tickets.where("name ilike :search", search: "#{params[:sSearch]}")
     end
-    tickets
+    tickets.order("#{sort_column} #{sort_direction}").page(page).per_page(per_page)
   end
 
   def page
