@@ -1620,7 +1620,9 @@ a:hover {
     //border-radius: 4px 4px 4px 4px;
     height: 30px;
     margin-bottom: 1px;
-    padding-right: 30px;
+    //padding-right: 30px;
+    padding-right: 1px;
+
     //text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     //background-color: none;
   }
@@ -1667,8 +1669,9 @@ a:hover {
   .alert .close {
     line-height: 18px;
     position: relative;
-    right: -27px;
-    top: -32px;
+    //right: -27px;
+    right: -1px;
+    top: -46px;
   }
 
   select {
@@ -1682,7 +1685,8 @@ a:hover {
 
 
   input, textarea, text_field {
-    width: 40%;
+    //width: 40%;
+    width: 20%;
     margin-left: -5px;
   }
   textarea {
@@ -1701,10 +1705,9 @@ a:hover {
   }
 
   li:last-child {
-    //float: right;
-    //width: 10%;
     float: left;
-    width: 23%;
+    //width: 23%;
+    width: 50%;
 
   }
 
@@ -1738,8 +1741,16 @@ a:hover {
   }
 
   .price_field {
-    width: 60%;
+    //width: 60%;
+    width: 70%;
     margin-left: 1%;
+  }
+
+  #add_entry {
+    margin-left: 3px;
+    padding-left: 2px;
+    padding-right: 2px;
+    width: 50px;
   }
 
   .price_field_area {
@@ -1800,7 +1811,7 @@ a:hover {
 }
 
 #accounting_entry_description{
-  width: 76%;
+  width: 70%;
 }
 
 .get_entry_info{
@@ -1808,9 +1819,14 @@ a:hover {
 }
 
 .find_job_help {
+  //color: black;
+  //font-style: italic;
+  //margin-left: -26px;
+  //margin-top: -23px;
+  //width: 310px;
   color: black;
+  float: left;
   font-style: italic;
-  margin-left: -26px;
   margin-top: -23px;
   width: 310px;
 }
@@ -2004,6 +2020,10 @@ div.DTTT_collection {
     top: -19px;
   }
 
+}
+
+#login_well {
+  margin-left: 0%;
 }
 
 .calendar_job {
@@ -2770,6 +2790,79 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   }
 
 }
+
+.column-filter-widgets {
+  select {
+    //background-color: white;
+    //border: 1px solid #CCCCCC;
+    //border-radius: 3px 3px 3px 3px;
+    //box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    //display: inline;
+    //float: left;
+    //margin-bottom: 2%;
+    //margin-right: 1%;
+    //transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    //width: 18%;
+    background-color: white;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    display: inline;
+    margin-bottom: 4px;
+    margin-right: 1%;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    width: 18%;
+  }
+
+  .filter-term {
+    margin-left: 3px;
+  }
+}
+
+.ColVis {
+  button {
+    float: right;
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: normal;
+  }
+}
+
+
+.ColVis_collection {
+  button, span {
+    padding-right: 3px;
+    text-align: left;
+  }
+}
+
+.column-filter-widgets {
+  margin-bottom: 20px;
+}
+
+.all_jobs_filter {
+  p {
+   font-style: italic;
+  }
+}
+
+#job-search-results, .table th, .table td {
+
+    font-size: 12px;
+
+  //.table th, .table td {
+  //  font-size: 12px;
+  // }
+}
+
+#job-search-results {
+  tfoot {
+    background: none repeat scroll 0 0 #EEEEEE;
+  }
+}
+
 
 
 
