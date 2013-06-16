@@ -12,6 +12,7 @@ gem 'bootstrap-datepicker-rails', '1.0.0'
 gem 'carmen', '1.0.0.beta2'
 gem 'carmen-rails', '1.0.0.beta3'
 gem 'active_attr', '0.7.0'
+gem 'newrelic_rpm'
 
 gem 'american_date', '1.0.0'
 

@@ -20,12 +20,15 @@
 //= require jquery.purr
 //= require best_in_place
 //= require best_in_place.purr
-//= require bootstrap-datepicker
+//= require all/bootstrap-datepicker
 //= require all/jquery.dataTables.columnFilter
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
 //= require dataTables/extras/ZeroClipboard.js
 //= require dataTables/jquery.dataTables.api.fnFilterOnReturn
 //= require dataTables/extras/TableTools
+//= require dataTables/extras/ColumnFilterWidgets
+//= require dataTables/extras/jquery.dataTables.columnFilter
+//= require dataTables/extras/ColVis
 //= require select2
 //= require_tree ./all/.
