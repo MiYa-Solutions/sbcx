@@ -120,6 +120,6 @@ en:
       html_message: '%{subcon} (S) has confirmed that all commission and fees for %{link} have been settled'
       content: '%{subcon} (S) has confirmed that all commission and fees for job %{ref} have been settled'
     sc_subcon_cleared_notification:
-      html_message: '%{subcontractor}, ${link} - YALLA NU'
-      subject: '%{ref} YALLA NU'
-      content: '%{subcontractor} - YALLA NU'
+      html_message: '%{subcontractor}, has marked the payment for ${link} as cleared'
+      subject: '%{ref} was cleared by the subcontractor'
+      content: '%{subcontractor} has cleared the payment'

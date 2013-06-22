@@ -135,7 +135,10 @@
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:tax) %></label></li>
       <li><%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>
-        &nbsp;<% if permitted_attribute? @service_call, :tax %><i class="icon-pencil"></i><% end  %></li>
+        &nbsp;
+        <% if permitted_attribute? @service_call, :tax %>
+            <i class="icon-pencil"></i>
+        <% end %></li>
       <li></li>
     </ul>
 
@@ -156,7 +159,7 @@
       <li>
         <div id="job_notes">
           <div class="area">
-            <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, :type => :textarea, :ok_button => 'Save', :cancel_button => 'Cancel' %>
+            <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, type: :textarea, display_as: :html_notes, sanitize: false %>
           </div>
         </div>
       </li>
