@@ -1,6 +1,5 @@
 en:
   notification_mailer:
-
     received_new_service_call:
       subject: 'New Job has been transferred to you'
       title: 'New Job'
@@ -11,7 +10,6 @@ en:
       title: 'The Contractor Has Invoiced The Customer'
       content: '%{provider} has invoiced the customer for job %{ref}'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the service call'
-
     completed_service_call:
       title: 'Job has been Completed'
       subject: 'Job has been Completed'
