@@ -133,7 +133,7 @@
         <br>
     <% end %>
     <ul class="unstyled list_service_calls">
-      <li><label><%= @service_call.class.human_attribute_name(:tax) %></label></li>
+      <li><label><%= @service_call.class.human_attribute_name(:tax) %> (%) </label></li>
       <li><%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>
         &nbsp;<% if permitted_attribute? @service_call, :tax %><i class="icon-pencil"></i><% end  %></li>
       <li></li>

@@ -39,6 +39,7 @@ en:
       no_records: "No records, click 'New Affiliate' or search for affiliates to add new members to your network"
       no_job_records: "No records, click 'New Service Call' to add new contact"
       show_job: "Click to open Job ticket"
+      no_bom: "You can't edit Billing due to one of the following reasons: \n (1) Job is pending your 'Start' action \n (2) Pending your 'Accept' action (you transferred to local subcontractor) \n (3) In progress by subcontractor (you transferred to a SubConTraX member), or \n (4) Job has been completed"
 
       overdue: "This Job is overdue"
     emails:

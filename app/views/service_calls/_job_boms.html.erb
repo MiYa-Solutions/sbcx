@@ -1,7 +1,10 @@
 <div class="row-fluid">
   <div class="smart_label">
     <ul>
-      <li><h1><%= t('general.general.billing') %></h1></li>
+      <li><h1><%= t('general.general.billing') %>
+         <%= image_tag("question.png", :title => I18n.t('general.messages.no_bom').html_safe, :rel => 'tooltip') unless @service_call.can_change_boms?%>
+      </h1></li>
+
 
       <% if @service_call.total_price > 0 %>
           <li class="total_price">
