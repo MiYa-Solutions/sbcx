@@ -8,8 +8,9 @@ en:
   notifications:
     received_service_call_notification:
       html_message: 'New %{link} from %{prov_name}'
-      subject: 'New Service Call'
+      subject: New Service Call
       content: 'New service call was transferred to you by: <br> Contractor Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
+
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
       subject: 'Service call %{ref} is completed'
@@ -120,6 +121,6 @@ en:
       html_message: '%{subcon} (S) has confirmed that all commission and fees for %{link} have been settled'
       content: '%{subcon} (S) has confirmed that all commission and fees for job %{ref} have been settled'
     sc_subcon_cleared_notification:
-      html_message: '%{subcontractor}, ${link} - YALLA NU'
-      subject: '%{ref} YALLA NU'
-      content: '%{subcontractor} - YALLA NU'
+      html_message: '%{subcontractor}, has marked the payment for ${link} as cleared'
+      subject: '%{ref} was cleared by the subcontractor'
+      content: '%{subcontractor} has cleared the payment'

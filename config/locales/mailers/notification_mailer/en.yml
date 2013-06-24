@@ -6,6 +6,7 @@ en:
       title: 'New Job'
       content: 'New service call has been transferred to you by Contractor Name: &nbsp; <strong>%{provider}</strong>'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the new service call'
+
     provider_invoiced_service_call:
       subject: 'The Contractor Has Invoiced The Customer'
       title: 'The Contractor Has Invoiced The Customer'
@@ -16,18 +17,22 @@ en:
       title: 'Job has been Completed'
       subject: 'Job has been Completed'
       content: 'The following Job has been completed by Technician Name: &nbsp; <strong>%{technician}</strong>.'
+
     completed_transferred_service_call:
       content: 'The following Job has been completed by Subcontractor Name: &nbsp; <strong>%{subcontractor}</strong>.'
+
     agr_new_subcon_notification:
       title: 'New Subcontractor Agreement'
       subject: 'New Subcontractor Agreement'
       content: 'New Subcontractor Agreement was submitted to you by:'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
+
     sc_accepted_notification:
       title: 'Transferred Job has been Accepted'
       subject: 'Your transferred Job has been Accepted'
       content: 'Subcontractor Name: &nbsp; <strong>%{subcontractor}</strong> has accepted your Job.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview Job statuses.'
+
     sc_cancel_notification:
       title: 'Job has been Canceled'
       subject: 'Job has been Canceled'

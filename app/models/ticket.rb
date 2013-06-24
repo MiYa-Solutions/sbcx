@@ -130,6 +130,10 @@ class Ticket < ActiveRecord::Base
     end
   end
 
+  def html_notes
+    self.notes.gsub(/\n/, '<br/>')
+  end
+
   def tax_amount
     total_price * (tax / 100.0)
   end

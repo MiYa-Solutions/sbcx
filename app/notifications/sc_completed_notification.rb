@@ -10,7 +10,7 @@ class ScCompletedNotification < ServiceCallNotification
   end
 
   def default_content
-    I18n.t('notifications.sc_completed_notification.content', subcontractor: service_call.provider.name, completed_at: service_call.completed_on)
+    I18n.t('notifications.sc_completed_notification.content', subcontractor: service_call.subcontractor.name, completed_at: service_call.completed_on)
   end
 
 
