@@ -10,6 +10,7 @@ en:
       html_message: 'New %{link} from %{prov_name}'
       subject: New Service Call
       content: 'New service call was transferred to you by: <br> Contractor Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
+
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
       subject: 'Service call %{ref} is completed'
