@@ -159,7 +159,7 @@
       <li>
         <div id="job_notes">
           <div class="area">
-            <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, type: :textarea, display_as: :html_notes, sanitize: false %>
+            <%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, type: :textarea, display_with: ->(v) { textilize(v).html_safe }, sanitize: false %>
           </div>
         </div>
       </li>

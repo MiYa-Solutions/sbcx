@@ -1,4 +1,7 @@
 jQuery ->
+  $(".best_in_place").bind "ajax:success", ->
+    $(this).JQtextile "textile", @innerHTML  if $(this).attr("data-type") is "textarea"
+
   $(".ajax-form.service_call").bind("ajax:success", (e, data, status, xhr)->
     $('#tag_list').html(data.tag_list)
     $('#service_call_tag_list').val(data.tag_list)
@@ -10,15 +13,16 @@ jQuery ->
   $('#service_call_country').hide()
   $('.customer-autocomplete').live "click", ->
     orig = $(this).clone()
-    input_str =  ['<input type="text" size="30" name="',orig.data('obj-type'), '[customer]" id="service_call_customer" data-update-elements="{&quot;id&quot;:&quot;#service_call_customer_id&quot;}" data-ref-id="" data-autocomplete="/service_calls/autocomplete_customer_name"><input type="hidden" name=" ', orig.data('obj-type'), '[customer_id]" id="service_call_customer_id">'].join("")
+    input_str = ['<input type="text" size="30" name="', orig.data('obj-type'),
+                 '[customer]" id="service_call_customer" data-update-elements="{&quot;id&quot;:&quot;#service_call_customer_id&quot;}" data-ref-id="" data-autocomplete="/service_calls/autocomplete_customer_name"><input type="hidden" name=" ',
+                 orig.data('obj-type'), '[customer_id]" id="service_call_customer_id">'].join("")
     console.log (input_str)
     input = $(input_str)
 
-#    input = $('<input type="text" size="30" name="service_call[customer]" id="service_call_customer" data-update-elements="{&quot;id&quot;:&quot;#service_call_customer_id&quot;}" data-ref-id="" data-autocomplete="/service_calls/autocomplete_customer_name"><input type="hidden" name="service_call[customer_id]" id="service_call_customer_id">')
+    #    input = $('<input type="text" size="30" name="service_call[customer]" id="service_call_customer" data-update-elements="{&quot;id&quot;:&quot;#service_call_customer_id&quot;}" data-ref-id="" data-autocomplete="/service_calls/autocomplete_customer_name"><input type="hidden" name="service_call[customer_id]" id="service_call_customer_id">')
     $(this).replaceWith(input)
 
     input.focusout (e) ->
-
       $.ajax
         type: "put"
         dataType: "json"
@@ -54,7 +58,7 @@ jQuery ->
   if $('#service_call_subcontractor_id :selected').data('agreements')
     options = $('#service_call_subcontractor_id :selected').data('agreements')
     if options
-      $("label[for='"+$('#service_call_subcon_agreement_id').attr('id')+"']").show(400)
+      $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").show(400)
       $('#service_call_subcon_agreement_id').show(400)
       $.each options, (key, value) ->
         opt = $('<option></option>')
@@ -63,17 +67,17 @@ jQuery ->
         $('#service_call_subcon_agreement_id').append(opt)
     else
       $('#service_call_subcon_agreement_id').hide(400)
-      $("label[for='"+$('#service_call_subcon_agreement_id').attr('id')+"']").hide(400)
+      $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").hide(400)
 
   else
     $('#service_call_subcon_agreement_id').hide()
-    $("label[for='"+$('#service_call_subcon_agreement_id').attr('id')+"']").hide()
+    $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").hide()
 
   $('#service_call_subcontractor_id').change ->
     $('#service_call_subcon_agreement_id').empty()
     options = $('#service_call_subcontractor_id :selected').data('agreements')
     if options
-      $("label[for='"+$('#service_call_subcon_agreement_id').attr('id')+"']").show(400)
+      $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").show(400)
       $('#service_call_subcon_agreement_id').show(400)
       $.each options, (key, value) ->
         opt = $('<option></option>')
@@ -82,7 +86,7 @@ jQuery ->
         $('#service_call_subcon_agreement_id').append(opt)
     else
       $('#service_call_subcon_agreement_id').hide(400)
-      $("label[for='"+$('#service_call_subcon_agreement_id').attr('id')+"']").hide(400)
+      $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").hide(400)
 
 
   # dynamic provider agreement selection
@@ -90,13 +94,13 @@ jQuery ->
 
   else
     $('#service_call_provider_agreement_id').hide()
-    $("label[for='"+$('#service_call_provider_agreement_id').attr('id')+"']").hide()
+    $("label[for='" + $('#service_call_provider_agreement_id').attr('id') + "']").hide()
 
   $('#service_call_provider_id').change ->
     $('#service_call_provider_agreement_id').empty()
     options = $('#service_call_provider_id :selected').data('agreements')
     if options
-      $("label[for='"+$('#service_call_provider_agreement_id').attr('id')+"']").show(400)
+      $("label[for='" + $('#service_call_provider_agreement_id').attr('id') + "']").show(400)
       $('#service_call_provider_agreement_id').show(400)
       $.each options, (key, value) ->
         opt = $('<option></option>')
@@ -105,5 +109,5 @@ jQuery ->
         $('#service_call_provider_agreement_id').append(opt)
     else
       $('#service_call_provider_agreement_id').hide(400)
-      $("label[for='"+$('#service_call_provider_agreement_id').attr('id')+"']").hide(400)
+      $("label[for='" + $('#service_call_provider_agreement_id').attr('id') + "']").hide(400)
 
