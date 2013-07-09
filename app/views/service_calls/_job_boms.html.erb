@@ -1,8 +1,11 @@
 <div class="row-fluid">
-  <div class="smart_label">
+  <div class="smart_label designed_tooltip">
     <ul>
       <li><h1><%= t('general.general.billing') %>
-         <%= image_tag("question.png", :title => I18n.t('general.messages.no_bom').html_safe, :rel => 'tooltip') unless @service_call.can_change_boms?%>
+         <!--<#%= image_tag("question.png", :title => I18n.t('general.messages.no_bom'), rel: 'tooltip') unless @service_call.can_change_boms?%>-->
+        <% unless @service_call.can_change_boms?%>
+            <a href="#" rel="tooltip" title="<%= I18n.t('general.messages.no_bom').html_safe %>" ><img src="/assets/question.png" /></a>
+        <% end %>
       </h1></li>
 
 

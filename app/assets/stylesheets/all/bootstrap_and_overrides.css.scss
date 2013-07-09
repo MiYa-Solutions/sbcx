@@ -21,6 +21,22 @@ body {
 }
 
 
+.tooltip-inner {
+  white-space:pre-wrap;
+  text-align: left;
+  max-width: 450px;
+}
+//.designed_tooltip, .tooltip-inner {
+//  background-color: #D13127;
+//  color: #fff;
+//}
+//
+//.tooltip-inner {background-color: #D13127; color: #fff;}
+
+.designed_tooltip > h1 > a:hover {
+    color: #000000;
+  }
+
 .well {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -1087,7 +1103,7 @@ a:hover {
 }
 
 .job_details_block {
-  min-height:380px;
+  min-height:200px;
 
 }
 
@@ -2862,6 +2878,44 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     background: none repeat scroll 0 0 #EEEEEE;
   }
 }
+
+
+.designed_notes {
+
+  ul {
+    list-style-type: disc;
+  }
+
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li:first-child {
+    float: none;
+    margin-left: 0%;
+  }
+
+  li:last-child {
+    float: none;
+  }
+}
+
+.note_area_job {
+  margin-left: 2.5%;
+  min-height: 230px;
+
+  strong {
+   color: #000000;
+  }
+}
+
+
+
+
+
+
+
 
 
 

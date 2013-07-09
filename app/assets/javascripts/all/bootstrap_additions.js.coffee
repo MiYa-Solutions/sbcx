@@ -4,6 +4,7 @@ $('.typeahead').typeahead()
 $(".tooltip").tooltip()
 $("a[rel=tooltip]").tooltip()
 
+
 jQuery ->
   $('.carousel').carousel()
   $("a[rel=popover]").popover()
