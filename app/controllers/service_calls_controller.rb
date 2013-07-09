@@ -6,7 +6,7 @@ class ServiceCallsController < ApplicationController
   autocomplete :customer, :name, extra_data: [:address1, :address2, :company, :phone, :email, :mobile_phone, :work_phone, :country, :state, :city, :zip], full: true, limit: 50
 
   def index
-    @service_calls = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
+    @service_calls    = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
     @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
 
     respond_to do |format|
@@ -44,7 +44,7 @@ class ServiceCallsController < ApplicationController
   end
 
   def update
-    @bom      = Bom.new
+    @bom = Bom.new
     if @service_call.update_attributes(permitted_params(@service_call).service_call)
       respond_to do |format|
         format.js {}
@@ -58,7 +58,7 @@ class ServiceCallsController < ApplicationController
         end
 
         #format.json { respond_with_bip @service_call }
-        format.json { render :json => @service_call, status: :ok }
+        format.json { respond_with_bip(@service_call) }
       end
     else
       respond_to do |format|

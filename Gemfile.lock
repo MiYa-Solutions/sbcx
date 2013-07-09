@@ -16,6 +16,7 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    RedCloth (4.2.9)
     actionmailer (3.2.12)
       actionpack (= 3.2.12)
       mail (~> 2.4.4)
@@ -297,6 +298,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  RedCloth (~> 4.2.9)
   active_attr (= 0.7.0)
   activerecord-postgres-hstore (= 0.7.5)
   american_date (= 1.0.0)

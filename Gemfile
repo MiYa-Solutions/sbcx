@@ -1,4 +1,3 @@
-ruby '1.9.3'
 source 'http://rubygems.org'
 
 gem 'rails', '3.2.12'
@@ -36,6 +35,7 @@ gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-j
 gem 'money-rails'
 gem 'select2-rails', '3.3.1'
 gem 'bootstrap-editable-rails'
+gem 'RedCloth', '~> 4.2.9', :require => 'redcloth'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'

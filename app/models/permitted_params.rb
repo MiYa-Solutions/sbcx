@@ -90,7 +90,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     case obj.class.name
       when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :collector_id,:tag_list, :name, :subcon_agreement_id,
+          permitted_attributes = [:status_event, :collector_id, :tag_list, :name, :subcon_agreement_id,
                                   :provider_id,
                                   :subcontractor_id,
                                   :technician_id,
@@ -111,6 +111,23 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :email,
                                   :notes,
                                   :total_price, :allow_collection, :transferable, :re_transfer, :scheduled_for, :payment_type]
+        else # todo need to define the permitted params after giving it some thouhgt, as this is done just for alpha
+          permitted_attributes = [:status_event, :collector_id, :tag_list,
+
+                                  :scheduled_for_text,
+                                  :address1,
+                                  :address2,
+                                  :company,
+                                  :city,
+                                  :state,
+                                  :zip,
+                                  :country,
+                                  :phone,
+                                  :mobile_phone,
+                                  :work_phone,
+                                  :email,
+                                  :notes,
+                                  :scheduled_for, :payment_type]
         end
 
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
@@ -119,10 +136,10 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         permitted_attributes.concat [:billing_status_event, :collector_id, :payment_type] if billing_allowed?
         permitted_attributes.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
 
-        # todo refactor attributes to ensure agreement can't be changed after the job was created
+      # todo refactor attributes to ensure agreement can't be changed after the job was created
       when TransferredServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :started_on, :started_on_text,:tag_list, :name, :provider_agreement_id,:subcon_agreement_id,
+          permitted_attributes = [:status_event, :started_on, :started_on_text, :tag_list, :name, :provider_agreement_id, :subcon_agreement_id,
                                   :provider_id, :scheduled_for_text,
                                   :subcontractor_id,
                                   :technician_id,
@@ -143,7 +160,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :notes, :transferable, :allow_collection, :re_transfer, :payment_type]
 
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
-          permitted_attributes = [:status_event,:tag_list,
+          permitted_attributes = [:status_event, :tag_list,
                                   :completed_on_text, :scheduled_for_text,
                                   :address1,
                                   :address2,
@@ -158,7 +175,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :email,
                                   :notes, :payment_type]
         elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
-          permitted_attributes = [:status_event, :tag_list, :name,:scheduled_for_text, :provider_agreement_id, :subcon_agreement_id,
+          permitted_attributes = [:status_event, :tag_list, :name, :scheduled_for_text, :provider_agreement_id, :subcon_agreement_id,
                                   :subcontractor_id,
                                   :technician_id,
                                   :started_on_text,
@@ -181,11 +198,11 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         permitted_attributes << :work_status_event if obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?)
         permitted_attributes << :allow_collection if obj.present? && !obj.provider.subcontrax_member?
         permitted_attributes << :tax if obj.can_change_financial_data?
-        permitted_attributes.concat  [:provider_status_event, :provider_payment] if provider_event_allowed?
+        permitted_attributes.concat [:provider_status_event, :provider_payment] if provider_event_allowed?
         permitted_attributes.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
       else # new service call
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :tag_list,:customer_name,:scheduled_for_text, :name, :scheduled_for, :provider_agreement_id,
+          permitted_attributes = [:status_event, :tag_list, :customer_name, :scheduled_for_text, :name, :scheduled_for, :provider_agreement_id,
                                   :provider_id,
                                   :subcontractor_id,
                                   :customer_id,
@@ -207,7 +224,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :notes, :transferable, :allow_collection]
         elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
           [:status_event,
-           :completed_on_text,:tag_list,:customer_name,
+           :completed_on_text, :tag_list, :customer_name,
            :address1,
            :address2,
            :company,
@@ -222,7 +239,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
            :notes]
         elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
           [:status_event,
-           :subcontractor_id,:tag_list,:customer_name, :name,
+           :subcontractor_id, :tag_list, :customer_name, :name,
            :technician_id,
            :started_on_text,
            :completed_on_text,
@@ -299,7 +316,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :website,
      :work_phone,
      :zip,
-     {:organization_role_ids => []},
+     { :organization_role_ids => [] },
      :provider_id,
      :users_attributes,
      :provider_attributes,
@@ -397,7 +414,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :city,
      :zip,
      :mobile_phone,
-     :work_phone, :time_zone, :current_password, {:role_ids => []},]
+     :work_phone, :time_zone, :current_password, { :role_ids => [] },]
 
   end
 

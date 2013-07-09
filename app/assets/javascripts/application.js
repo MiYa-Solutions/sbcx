@@ -31,4 +31,5 @@
 //= require dataTables/extras/jquery.dataTables.columnFilter
 //= require dataTables/extras/ColVis
 //= require select2
+//= require all/JQtextile
 //= require_tree ./all/.
