@@ -1,11 +1,14 @@
 $('.popover').popover()
 $(".collapse").collapse('toggle')
 $('.typeahead').typeahead()
-$(".tooltip").tooltip()
-$("a[rel=tooltip]").tooltip()
 
 
 jQuery ->
+  $(".tooltip").tooltip()
+  $("a[rel=tooltip]").tooltip()
+  $("img[rel=tooltip]").tooltip()
+  $("input[rel=tooltip]").tooltip()
+
   $('.carousel').carousel()
   $("a[rel=popover]").popover()
   $(".tooltip").tooltip()

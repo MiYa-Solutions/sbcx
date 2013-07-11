@@ -31,12 +31,14 @@
       </li>
       <li>
         <!--todo cleanup-->
+
           <span class="tags" id="tags_list" data-url="<%= service_call_path(@service_call) %>" data-resrouce="service_call" data-value="<%= @service_call.tag_list %>" data-toggle="manual" data-type="select2" data-original-title="Enter tags">
             <% @service_call.tags.each do |tag| %>
               <span class="label"><%= tag.name %></span>
             <% end %>
           </span>
-        <a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""><i class="icon-pencil"></i></a>
+
+        <a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""></a>
       </li>
       <!--<li id='tag_list'>-->
       <!--<#%= @service_call.tag_list %>-->
@@ -68,8 +70,8 @@
 
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:started_on_text) %></label></li>
-      <li><%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_started_on' %>
-        &nbsp;<i class="icon-pencil"></i></li>
+      <li><i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_started_on' %>
+        </li>
       <li></li>
     </ul>
 
@@ -77,8 +79,9 @@
 
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:completed_on_text) %></label></li>
-      <li class="service_call_completed_on"><%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: '' %>
-        &nbsp;<i class="icon-pencil"></i></li>
+      <li class="service_call_completed_on">
+        <i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: '' %>
+       </li>
       <li></li>
     </ul>
 
@@ -86,8 +89,8 @@
 
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:scheduled_for_text) %></label></li>
-      <li><%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
-        &nbsp;<i class="icon-pencil"></i></li>
+      <li><i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
+      </li>
       <li></li>
     </ul>
 
@@ -97,9 +100,10 @@
       <li><label><%= @service_call.class.human_attribute_name(:customer) %></label></li>
       <li>
         <% if permitted_attribute? @service_call, :customer_id %>
+            <i class="icon-pencil"></i>&nbsp;
               <span id="customer-name" class="customer-autocomplete" data-job-id="<%= @service_call.id %>" data-obj-type="<%= @service_call.class.name.underscore %>">
                 <%= @service_call.customer.name %>
-              </span><i class="icon-pencil"></i>
+              </span>
         <% else %>
             <span><%= link_to @service_call.customer.name, @service_call.customer %></span>
         <% end %>
@@ -113,9 +117,9 @@
         <ul class="unstyled list_service_calls">
           <li><label><%= @service_call.class.human_attribute_name(:technician) %></label></li>
           <li>
-            <!--<#%= link_to '', @service_call.technician do %>-->
+            <i class="icon-pencil"></i>&nbsp;<!--<#%= link_to '', @service_call.technician do %>-->
             <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician_id, type: :select, collection: technicians_collection %>
-            &nbsp;<i class="icon-pencil"></i></li>
+            </li>
           </li>
           <li></li>
         </ul>
@@ -125,8 +129,9 @@
     <% if @service_call.transferred? %>
         <ul class="unstyled list_service_calls">
           <li><label><%= @service_call.class.human_attribute_name(:subcontractor) %></label></li>
-          <li><%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
-            &nbsp;<i class="icon-pencil"></i></li>
+          <li>
+            <i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :subcontractor_id, type: :select, collection: subcontractor_collection %>
+          </li>
           <li></li>
         </ul>
 
@@ -134,11 +139,12 @@
     <% end %>
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:tax) %> (%) </label></li>
-      <li><%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>
-        &nbsp;
+      <li>
         <% if permitted_attribute? @service_call, :tax %>
-            <i class="icon-pencil"></i>
-        <% end %></li>
+            &nbsp;<i class="icon-pencil"></i>
+        <% end %>
+        <%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>
+       </li>
       <li></li>
     </ul>
 
@@ -208,8 +214,8 @@
 
   <ul class="unstyled ">
     <li><label class=""><strong><%= @service_call.class.human_attribute_name(:notes) %></strong>
-      <a href="#" rel="tooltip" title="<%= I18n.t('general.messages.add_note').html_safe %>" ><img src="/assets/question16.png" /></a></label>
-    </li>
+      <%= image_tag("question24.png", :title => I18n.t('general.messages.add_note'), :rel => 'tooltip', "data-placement" => "left") %>
+    </label></li>
     <li>
       <div id="job_notes">
         <div class="area designed_notes">

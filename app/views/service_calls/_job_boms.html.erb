@@ -1,12 +1,7 @@
 <div class="row-fluid">
   <div class="smart_label designed_tooltip">
     <ul>
-      <li><h1><%= t('general.general.billing') %>
-         <!--<#%= image_tag("question.png", :title => I18n.t('general.messages.no_bom'), rel: 'tooltip') unless @service_call.can_change_boms?%>-->
-        <% unless @service_call.can_change_boms?%>
-            <a href="#" rel="tooltip" title="<%= I18n.t('general.messages.no_bom').html_safe %>" ><img src="/assets/question.png" /></a>
-        <% end %>
-      </h1></li>
+      <li><h1><%= t('general.general.billing') %></h1></li>
 
 
       <% if @service_call.total_price > 0 %>
@@ -35,8 +30,33 @@
       <% end %>
 
 
-      <li><%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } if @service_call.can_change_boms?%></li>
-    </ul>
+      <li>
+        <% if @service_call.can_change_boms? %>
+            <%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
+        <% else %>
+
+            <% if @service_call.transferred? && @service_call.work_pending?  %>
+                <% if @service_call.subcontractor.subcontrax_member? %>
+                    <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_to_member'), :rel => 'tooltip', "data-placement" => "left") %>
+                <% else %>
+                    <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_to_local'), :rel => 'tooltip', "data-placement" => "left") %>
+                <% end %>
+            <% else %>
+                <% if @service_call.class == MyServiceCall && @service_call.work_pending?%>
+                    <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_start'), :rel => 'tooltip', "data-placement" => "left") %>
+                <% else%>
+                    <% if @service_call.work_pending?  %>
+                        <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_local_provider'), :rel => 'tooltip', "data-placement" => "left") %>
+                    <% else %>
+                        <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_completed'), :rel => 'tooltip', "data-placement" => "left") %>
+                    <% end %>
+                <% end %>
+            <% end %>
+            <a href="#" class="btn btn-primary disabled"><%= t('general.general.add_part') %></a>
+     <% end %>
+    </li>
+
+   </ul>
   </div>
 
 

@@ -51,7 +51,9 @@
       <%= f.association :technician, collection: current_user.organization.users, value: f.object.customer if current_user.organization.multi_user? %>
 
     <div class="newJob_note_area string mandatory">
+      <!--<#%= f.input :notes, :input_html => { :value => '---' } %>-->
       <%= f.input :notes %>
+
     </div>
 
     <!--End of Span5-->
