@@ -16,6 +16,13 @@ body {
 
 }
 
+//html {
+//  color: #54585A;
+//  font-family: 'Open Sans',sans-serif;
+//  font-size: 12px;
+//}
+
+
 .modal.fade.in {
   top: 60%;
 }
@@ -2866,12 +2873,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 #job-search-results, .table th, .table td {
-
     font-size: 12px;
-
-  //.table th, .table td {
-  //  font-size: 12px;
-  // }
+    line-height: 20px;
 }
 
 #job-search-results {

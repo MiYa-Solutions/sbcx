@@ -37,9 +37,19 @@ en:
       member_icon: "This Affiliate is a member in the SubConTraX Network"
       send_invite: "Send invitation to join the SubConTraX network. <br> See Promotion on the left"
       no_records: "No records, click 'New Affiliate' or search for affiliates to add new members to your network"
-      no_job_records: "No records, click 'New Service Call' to add new contact"
+      no_job_records: "No records, click 'New Job' to add new contact"
       show_job: "Click to open Job ticket"
-      no_bom: "You can't edit Billing due to one of the following reasons: \n (1) Job is pending your 'Start' action \n (2) Pending your 'Accept' action (you transferred to local subcontractor) \n (3) In progress by subcontractor (you transferred to a SubConTraX member), or \n (4) Job has been completed"
+      no_bom: "You can't edit Billing due to one of the following reasons: \n(1) Job is pending your 'Start' action \n(2) Pending your 'Accept' action (you transferred to local subcontractor) \n(3) In progress by subcontractor (you transferred to a SubConTraX member), or \n(4) Job has been completed"
+      add_note: "To add headings use the following format: h1.your text (h1,h2,h3,h4,h5)  \nTo add bullets use the following format: *your text"
+      no_bom_transferred_to_member: "You can't add billing items after transferring the job to a SubConTraX member."
+      no_bom_transferred_to_local: "You can't add billing items after transferring the job to a local subcontractor before accepting the job. \nClick on the ACCEPT button on the left to accept the job"
+      no_bom_start: "You can add billing items only after starting or transferring the job to a local subcontractor. \nClick on the START button or select a subcontractor and click on the TRANSFER button on the left"
+      no_bom_transferred_from_provider: "You can't add billing items before accepting the job. \nClick on the ACCEPT button on the left to accept the job"
+      no_bom_completed: "You can't add billing items after job is completed"
+      no_bom_transferred_accepted: "You can't add billing items before starting the job. \nClick on the START button on the left to start the job"
+      actions_local_job: "Click on the START button below if you are going to work on this job by yourself. \nIf you wish to transfer the job, select a subcontractors from the dropdown below and then click TRANSFER"
+      edit_job_tag: "To add or edit job's type simply click on the pencil icon on the left. \nIf yo wish to edit the rest of the fields below simply click on the text itself"
+
 
       overdue: "This Job is overdue"
     emails:

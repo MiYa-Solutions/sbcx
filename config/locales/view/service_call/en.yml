@@ -8,59 +8,59 @@ en:
     forms:
       subcontractor_status:
         mark_as_settled:
-          tooltip: "click to indicate this service call has settled with the subcontractor"
+          tooltip: "click to indicate this job has settled with the subcontractor"
         subcon_confirmed:
-          tooltip: "Click here to indicate the subcontractor has confirmed this service call as settled"
+          tooltip: "Click here to indicate the subcontractor has confirmed this job as settled"
         subcon_marked_as_settled:
-          tooltip: "click here if the subcontractor claims this is setteled"
+          tooltip: "click here if the subcontractor claims this is settled"
         confirm_settled:
-          tooltip: "Click to confirm this service call has been settled"
+          tooltip: "Click to confirm this job has been settled"
         settle:
           tooltip: "Click here to indicate the"
       provider_status:
         mark_as_settled:
-          tooltip: "click to indicate this service call has settled with the subcontractor"
+          tooltip: "click to indicate this job has settled with the subcontractor"
         subcon_confirmed:
-          tooltip: "Click here to indicate the subcontractor has confirmed this service call as settled"
+          tooltip: "Click here to indicate the subcontractor has confirmed this job as settled"
         subcon_marked_as_settled:
-          tooltip: "click here if the subcontractor claims this is setteled"
+          tooltip: "click here if the subcontractor claims this is settled"
         confirm_settled:
-          tooltip: "Click to confirm this service call has been settled"
+          tooltip: "Click to confirm this job has been settled"
         settle:
           tooltip: "Click here to indicate the"
       status:
         accept:
-          tooltip: "Click to accept the transferred service call"
+          tooltip: "Click to accept the transferred job"
         un_accept:
-          tooltip: "Click if you changed your mind and would like to reject the service call"
+          tooltip: "Click if you changed your mind and would like to reject the job"
         reject:
-          tooltip: "Click to reject the service call"
+          tooltip: "Click to reject the job"
         transfer:
-          tooltip: "Click to outsource the service call to one of your Contractor the"
+          tooltip: "Click to outsource the job to one of your Contractor the"
         cancel_transfer:
-          tooltip: "Click cancel the outsourcing of this service call"
+          tooltip: "Click cancel the outsourcing of this job"
         cancel:
-          tooltip: "Click to indicate the customer has canceled the service call"
+          tooltip: "Click to indicate the customer has canceled the job"
         close:
-          tooltip: "Click to close the service call - not this is an irreversible operation"
+          tooltip: "Click to close the job - not this is an irreversible operation"
         activate:
-          tooltip: "Click to make the service call active"
+          tooltip: "Click to make the job active"
         un_cancel:
-          tooltip: "Click in case you made a mistake and this service call should not be canceled"
+          tooltip: "Click in case you made a mistake and this job should not be canceled"
 
       work_status:
         start:
           tooltip: "Click to indicate the service has started"
         accept:
-          tooltip: "Click to indicate the subcontractor accepted the service call"
+          tooltip: "Click to indicate the subcontractor accepted the job"
         reject:
-          tooltip: "Click to indicate the subcontractor rejected the service call"
+          tooltip: "Click to indicate the subcontractor rejected the job"
         un_accept:
-          tooltip: "Click to indicate the subcontractor changed his mind and therefore rejected the service call"
+          tooltip: "Click to indicate the subcontractor changed his mind and therefore rejected the job"
         dispatch:
-          tooltip: "Click to assign the service call to a technician"
+          tooltip: "Click to assign the job to a technician"
         reset:
-          tooltip: "Click to reset the service call after rejected in order to dispatch or outsource to another subcontractor"
+          tooltip: "Click to reset the job after rejected in order to dispatch or outsource to another subcontractor"
         complete:
           tooltip: "Click to indicate the service has completed"
 

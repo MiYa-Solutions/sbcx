@@ -5,11 +5,11 @@ en:
 
   service_call_accept_event:
     name: "Job has been Accepted"
-    description: "You have accepted the the transferred service call"
+    description: "You have accepted the the transferred job"
 
   service_call_reject_event:
     name: "Job has been Rejected"
-    description: "You have rejected this service call"
+    description: "You have rejected this job"
 
   service_call_transfer_event:
     name: "Job has been Transferred"
@@ -25,7 +25,7 @@ en:
 
   service_call_complete_event:
     name: "Job has been Completed"
-    description: 'Service call was reported as completed by %{user}'
+    description: 'job was reported as completed by %{user}'
 
   service_call_subcon_settle_event:
     name: "Job Balance has been Settled with Subcontractor"

@@ -10,8 +10,14 @@
           <li>
             <div class="smart_label">
               <ul>
-                <li><h1><%= I18n.t('general.general.actions') %></h1></li>
-                <li></li>
+                <li><h1><%= I18n.t('general.general.actions') %>
+                  <% if @service_call.class == MyServiceCall && @service_call.work_pending? && !@service_call.transferred? %>
+                      <%= image_tag("question24.png", :title => I18n.t('general.messages.actions_local_job'), :rel => 'tooltip') %>
+                  <% end %>
+                </h1>
+                </li>
+                <li>
+                </li>
               </ul>
             </div>
           </li>

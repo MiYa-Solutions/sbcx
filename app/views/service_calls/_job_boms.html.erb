@@ -35,26 +35,44 @@
             <%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
         <% else %>
 
-            <% if @service_call.transferred? && @service_call.work_pending?  %>
-                <% if @service_call.subcontractor.subcontrax_member? %>
-                    <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_to_member'), :rel => 'tooltip', "data-placement" => "left") %>
-                <% else %>
-                    <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_to_local'), :rel => 'tooltip', "data-placement" => "left") %>
-                <% end %>
-            <% else %>
-                <% if @service_call.class == MyServiceCall && @service_call.work_pending?%>
-                    <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_start'), :rel => 'tooltip', "data-placement" => "left") %>
-                <% else%>
-                    <% if @service_call.work_pending?  %>
-                        <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_local_provider'), :rel => 'tooltip', "data-placement" => "left") %>
-                    <% else %>
-                        <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_completed'), :rel => 'tooltip', "data-placement" => "left") %>
-                    <% end %>
-                <% end %>
+            <!--My Job and not transferred-->
+            <% if @service_call.class == MyServiceCall && @service_call.work_pending? && !@service_call.transferred? %>
+                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_start'), :rel => 'tooltip', "data-placement" => "left") %>
             <% end %>
+
+            <!--My Job and I transferred to local-->
+            <% if @service_call.instance_of?(MyServiceCall) && @service_call.work_pending? && @service_call.transferred? && !@service_call.subcontractor.subcontrax_member? %>
+                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_to_local'), :rel => 'tooltip', "data-placement" => "left") %>
+            <% end %>
+
+            <!-- My Job, and I transferred to local, accepted and pending my START-->
+            <% if  @service_call.class == MyServiceCall && @service_call.work_accepted? %>
+                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_accepted'), :rel => 'tooltip', "data-placement" => "left") %>
+            <% end %>
+
+            <!--My Job and I transferred to subco member-->
+            <% if @service_call.class == MyServiceCall && (@service_call.work_pending? || @service_call.work_accepted?) && @service_call.transferred? && @service_call.subcontractor.subcontrax_member? %>
+                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_to_member'), :rel => 'tooltip', "data-placement" => "left") %>
+            <% end %>
+
+            <!--Job transferred from local/subco-->
+            <% if @service_call.class == TransferredServiceCall && @service_call.work_pending? && !@service_call.accepted? && !@service_call.work_done?  %>
+                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_from_provider'), :rel => 'tooltip', "data-placement" => "left") %>
+            <% end %>
+
+            <!--Job transferred, accepted and pending my START-->
+            <% if @service_call.class == TransferredServiceCall && @service_call.accepted? && !@service_call.work_done? %>
+                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_accepted'), :rel => 'tooltip', "data-placement" => "left") %>
+            <% end %>
+
+            <!--Job completed-->
+            <% if @service_call.work_done? %>
+                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_completed'), :rel => 'tooltip', "data-placement" => "left") %>
+            <% end %>
+
             <a href="#" class="btn btn-primary disabled"><%= t('general.general.add_part') %></a>
-     <% end %>
-    </li>
+        <% end %>
+        </li>
 
    </ul>
   </div>

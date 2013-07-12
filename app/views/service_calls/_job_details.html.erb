@@ -30,15 +30,17 @@
         <label><%= @service_call.class.human_attribute_name(:tag_list) %></label>
       </li>
       <li>
-        <!--todo cleanup-->
+        <a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""><i class="icon-pencil"></i></a>
 
+        <!--todo cleanup-->
           <span class="tags" id="tags_list" data-url="<%= service_call_path(@service_call) %>" data-resrouce="service_call" data-value="<%= @service_call.tag_list %>" data-toggle="manual" data-type="select2" data-original-title="Enter tags">
             <% @service_call.tags.each do |tag| %>
               <span class="label"><%= tag.name %></span>
             <% end %>
           </span>
+        <%= image_tag("question16.png", :title => I18n.t('general.messages.edit_job_tag'), :rel => 'tooltip') %>
+        <!--<a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""><i class="icon-pencil"></i></a>-->
 
-        <a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""></a>
       </li>
       <!--<li id='tag_list'>-->
       <!--<#%= @service_call.tag_list %>-->
@@ -214,7 +216,7 @@
 
   <ul class="unstyled ">
     <li><label class=""><strong><%= @service_call.class.human_attribute_name(:notes) %></strong>
-      <%= image_tag("question24.png", :title => I18n.t('general.messages.add_note'), :rel => 'tooltip', "data-placement" => "left") %>
+      <%= image_tag("question16.png", :title => I18n.t('general.messages.add_note'), :rel => 'tooltip') %>
     </label></li>
     <li>
       <div id="job_notes">

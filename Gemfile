@@ -34,7 +34,7 @@ gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-j
 
 gem 'money-rails'
 gem 'select2-rails', '3.3.1'
-gem 'bootstrap-editable-rails'
+gem 'bootstrap-editable-rails', '0.0.4'
 gem 'RedCloth', '~> 4.2.9', :require => 'redcloth'
 
 group :development do

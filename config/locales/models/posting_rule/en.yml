@@ -1,9 +1,4 @@
 en:
-  posting_rule:
-    rate_types:
-      percentage: Percentage
-      cheque_rate_type: "Check rate type"
-
   activerecord:
     errors:
       posting_rule:

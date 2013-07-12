@@ -17,6 +17,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     RedCloth (4.2.9)
+    RedCloth (4.2.9-x86-mingw32)
     actionmailer (3.2.12)
       actionpack (= 3.2.12)
       mail (~> 2.4.4)
@@ -308,7 +309,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-datepicker-rails (= 1.0.0)
-  bootstrap-editable-rails
+  bootstrap-editable-rails (= 0.0.4)
   bootstrap-sass (= 2.0.4)
   bootstrap-will_paginate (= 0.0.5)
   capybara (= 2.0.2)

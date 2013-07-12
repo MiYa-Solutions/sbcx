@@ -22,7 +22,7 @@
             <th><%= ServiceCall.human_attribute_name(:id) %></th>
             <th><%= ServiceCall.human_attribute_name(:status) %></th>
             <th><%= ServiceCall.human_attribute_name(:name) %></th>
-            <th><%= I18n.t('general.general.description') %></th>
+            <th><%= ServiceCall.human_attribute_name(:work_status) %></th>
             <th><%= I18n.t('general.general.scheduled_for') %></th>
             <th><%= I18n.t('general.general.customer') %></th>
             <th><%= I18n.t('general.general.actions') %></th>
@@ -41,11 +41,7 @@
                 <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
                 <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
                 <td><%= link_to sc.try(:name), service_call_path(sc) %></td>
-                <td>
-                  <% unless sc.notes.blank? %>
-                      <%= link_to sc.try(:notes), service_call_path(sc) %>
-                  <% end %>
-                </td>
+                <td><%= link_to sc.human_work_status_name, service_call_path(sc) %></td>
                 <td><%=  sc.try(:scheduled_for) %></td>
 
                 <td><%= sc.customer.try(:name) %></td>
@@ -86,7 +82,7 @@
             <th><%= ServiceCall.human_attribute_name(:id) %></th>
             <th><%= ServiceCall.human_attribute_name(:status) %></th>
             <th><%= ServiceCall.human_attribute_name(:name) %></th>
-            <th><%= I18n.t('general.general.description') %></th>
+            <th><%= ServiceCall.human_attribute_name(:work_status) %></th>
             <th><%= I18n.t('general.general.scheduled_for') %></th>
             <th><%= I18n.t('general.general.customer') %></th>
             <th class="actions_job_index"><%= I18n.t('general.general.actions') %></th>
@@ -105,11 +101,7 @@
                 <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
                 <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
                 <td><%= link_to sc.try(:name), service_call_path(sc) %></td>
-                <td>
-                  <% unless sc.notes.blank? %>
-                      <%= link_to sc.try(:notes), service_call_path(sc) %>
-                  <% end %>
-                </td>
+                <td><%= link_to sc.human_work_status_name, service_call_path(sc) %></td>
                 <td><%= sc.try(:scheduled_for) %></td>
                 <td><%= sc.customer.try(:name) %></td>
                 <td class="actions_job_index"><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
