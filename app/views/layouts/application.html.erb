@@ -11,7 +11,22 @@
 </head>
 
 <body>
-<%= render 'layouts/header' %>
+<% unless user_signed_in? %>
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+   <div class="large_header">
+     <%= render 'layouts/header' %>
+   </div>
+</div>
+</div>
+<% else %>
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+
+  <%= render 'layouts/header' %>
+</div>
+    </div>
+<% end %>
 
 <% if user_signed_in? %>
     <div class="container-fluid">

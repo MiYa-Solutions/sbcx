@@ -16,6 +16,10 @@ body {
 
 }
 
+.large_header {
+  min-height: 50px;
+}
+
 //html {
 //  color: #54585A;
 //  font-family: 'Open Sans',sans-serif;
@@ -111,7 +115,7 @@ a {
 }
 
 footer {
-  margin-top: 5px;
+  margin-top: 0px;
   padding-top: 5px;
   border-top: 1px solid #eaeaea;
   color: $grayLight;
@@ -848,9 +852,11 @@ fieldset label {
   h3 {
     color: #3A87AD;
     font-size: 14px;
+    line-height: 0;
+    margin-bottom: -8px;
     padding-right: 10px;
+    padding-top: 13px;
     text-transform: uppercase;
-    line-height: 12px;
   }
   color: #3A87AD;
   font-size: 14px;
@@ -863,9 +869,11 @@ fieldset label {
   h3 {
     color: #44ad3f;
     font-size: 14px;
+    line-height: 0;
+    margin-bottom: -8px;
     padding-right: 10px;
+    padding-top: 13px;
     text-transform: uppercase;
-    line-height: 12px;
   }
   color: #44ad3f;
   font-size: 14px;
@@ -878,9 +886,11 @@ fieldset label {
   h3 {
     color: #696969;
     font-size: 14px;
+    line-height: 0;
+    margin-bottom: -8px;
     padding-right: 10px;
+    padding-top: 13px;
     text-transform: uppercase;
-    line-height: 12px;
   }
 
   color: #696969;
@@ -1677,9 +1687,11 @@ a:hover {
   }
 
   .add_button {
-    width: 14%;
     margin-left: 1px;
-   .add_part_service_call input, .add_part_service_call textarea, .add_part_service_call text_field {
+    position: relative;
+    width: 10%;
+
+    .add_part_service_call input, .add_part_service_call textarea, .add_part_service_call text_field {
       margin-left: -5px;
       width: 80%;
     }
@@ -2914,17 +2926,94 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   }
 }
 
+.show_more_button {
+
+  button {
+    float: right;
+    argin-right: 4%;
+
+  }
+}
+
+.welcomepage_frame {
+
+  background-image: asset-url('welcome_bg7.png', image);
+  //background-position: center;
+  //background-repeat: no-repeat;
+  margin-left: -20px;
+  margin-top: -19px;
+  min-height: 800px;
+  //padding-right: 2.2%;
+  padding-right: 40px;
+  width: 102%;
+  z-index: 1;
+}
+
+.well_welcome {
+  background-color: #F5F5F5;
+  border: 0 solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px 4px 4px 4px;
+  box-shadow: 0 1px 4px 2px #737373;
+  margin-bottom: 20px;
+  //margin-left: 2.2%;
+  margin-left: 20px;
+  margin-top: 3%;
+  min-height: 800px;
+  padding: 19px;
+
+}
+
+.well_footer {
+  margin-top: -7px;
+}
+
+.welcome_benefits {
+  font-family: 'Open Sans',sans-serif;
+
+  h2 {
+    color: #7593AC;
+    font-size: 16px;
+    font-weight: bold;
+    padding-left: 5%;
+  }
 
 
 
+}
 
 
+.benefit {
+  float: left;
+  overflow: hidden;
+  width: 218px;
+
+  .benefit_icon {
+    float: left;
+    padding-right: 10px;
+    text-align: left;
+    width: 50px;
+  }
+
+  .benefit_text {
+    float: left;
+    padding-top: 10px;
+    width: 150px;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    color: #54585A;
+    line-height: 18px;
+  }
+
+  p {
+    padding-bottom: 15px;
+    font-style: italic;
+    font-weight: 100;
+  }
 
 
-
-
-
-
-
-
+}
 
