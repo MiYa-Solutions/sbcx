@@ -2963,20 +2963,93 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 }
 
+
+.slide_welcome {
+  //background-color: #F5F5F5;
+  //border: 0 solid rgba(0, 0, 0, 0.2);
+  //border-radius: 4px 4px 4px 4px;
+  //box-shadow: 0 1px 4px 2px #737373;
+  margin-bottom: 20px;
+  //margin-left: 2.2%;
+  margin-left: 20px;
+  margin-top: 1%;
+  //min-height: 800px;
+  padding: 19px;
+
+}
+
 .well_footer {
   margin-top: -7px;
 }
 
 .welcome_benefits {
   font-family: 'Open Sans',sans-serif;
+  margin-left: 40px;
+  margin-top: -60px;
+
+  //h1 {
+  //  color: #7593AC;
+  //  font-size: 20px;
+  //  font-weight: bold;
+  //  padding-left: 5%;
+  //  text-transform: uppercase;
+  //}
+  //
+  //h2 {
+  //  color: #54585A;
+  //  font-size: 16px;
+  //  font-weight: bold;
+  //  padding-left: 5%;
+  //  line-height: 24px;
+  //}
+
 
   h2 {
-    color: #7593AC;
-    font-size: 16px;
-    font-weight: bold;
-    padding-left: 5%;
+    color: #ffffff;
+    font-family: Century Gothic;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 25px;
+    padding-left: 1%;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px #000000;
+
+
   }
 
+  h1 {
+    color: #376092;
+    font-family: Century Gothic;
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 30px;
+    padding-left: 1%;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px #000000;
+  }
+
+  h4 {
+    color: #254061;
+    font-family: Century Gothic;
+    font-size: 23px;
+    font-weight: bold;
+    line-height: 24px;
+    margin-left: 1%;
+    margin-top: 30px;
+    padding-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  h6 {
+    color: #254061;
+    font-family: Century Gothic;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 22px;
+    padding-bottom: 8px;
+    text-transform: none;
+    margin-top: 10px;
+  }
 
 
 }
@@ -2985,33 +3058,36 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .benefit {
   float: left;
   overflow: hidden;
-  width: 218px;
+  width: 300px;
+  line-height: 50px;
 
   .benefit_icon {
     float: left;
     padding-right: 10px;
     text-align: left;
-    width: 50px;
+    width: 80px;
   }
 
   .benefit_text {
     float: left;
     padding-top: 10px;
-    width: 150px;
+    width: 200px;
   }
 
   h3 {
-    font-size: 16px;
-    font-weight: bold;
-    padding-bottom: 2px;
-    color: #54585A;
+    color: #254061;
+    font-family: Century Gothic;
+    font-size: 23px;
+    font-weight: normal;
     line-height: 18px;
+    //padding-bottom: 8px;
   }
 
   p {
-    padding-bottom: 15px;
+    padding-bottom: 18px;
     font-style: italic;
     font-weight: 100;
+    margin-top: -6px;
   }
 
 
