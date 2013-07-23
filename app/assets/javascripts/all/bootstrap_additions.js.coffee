@@ -9,6 +9,8 @@ jQuery ->
   $("img[rel=tooltip]").tooltip()
   $("input[rel=tooltip]").tooltip()
 
+  $("input.login_hint").ezpz_hint()
+
   $('.carousel').carousel()
   $("a[rel=popover]").popover()
   $(".tooltip").tooltip()

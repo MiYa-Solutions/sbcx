@@ -185,6 +185,16 @@ footer {
     margin-bottom: 6px;
   }
 
+  .alert-info {
+    background-color: #EEEEEE;
+    border-color: #999999;
+    color: #999999;
+  }
+
+  label {
+    color: #000000;
+  }
+
   input, textarea {
       width: 70%;
     }
@@ -1121,7 +1131,7 @@ a:hover {
 }
 
 .job_details_block {
-  min-height:200px;
+  min-height:300px;
 
 }
 
@@ -2295,6 +2305,11 @@ hr {
   margin-left: -1.5%;
 }
 
+.well_signin {
+  min-height: 575px;
+  margin-left: -0.5%;
+}
+
 .well_job_history {
   min-height: 575px;
 
@@ -2935,18 +2950,40 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   }
 }
 
+.background_welcome {
+
+  img {
+  position: fixed;
+  top:0px;
+  left:0px;
+  z-index:-100;
+  width:100%;
+  //min-height: 100%;
+  //min-height: 917px;
+  //min-height: 1000px;
+  //min-width: 1000px;
+  }
+}
+
 .welcomepage_frame {
 
-  background-image: asset-url('welcome_bg7.png', image);
+  //background-image: asset-url('welcome_bg7.png', image);
+  //margin-left: -20px;
+  //margin-top: -19px;
+  min-height: 1000px;
+  margin-bottom: 200px;
+  //padding-right: 40px;
+  //width: 102%;
+  //z-index: 1;
+
+  //bgproperties: fixed;
+  //background-attachment: fixed;
+  //background-position: fixed;
   //background-position: center;
   //background-repeat: no-repeat;
-  margin-left: -20px;
-  margin-top: -19px;
-  min-height: 800px;
   //padding-right: 2.2%;
-  padding-right: 40px;
-  width: 102%;
-  z-index: 1;
+
+
 }
 
 .well_welcome {
@@ -2972,7 +3009,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   margin-bottom: 20px;
   //margin-left: 2.2%;
   margin-left: 20px;
-  margin-top: 1%;
+  margin-top: -2%;
   //min-height: 800px;
   padding: 19px;
 
@@ -3010,9 +3047,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     font-size: 20px;
     font-weight: normal;
     line-height: 25px;
-    padding-left: 1%;
+    //padding-left: 1%;
     margin-bottom: 10px;
     text-shadow: 1px 1px #000000;
+    text-align: center;
 
 
   }
@@ -3023,9 +3061,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     font-size: 28px;
     font-weight: bold;
     line-height: 30px;
-    padding-left: 1%;
+    //padding-left: 1%;
     margin-bottom: 10px;
     text-shadow: 1px 1px #000000;
+    text-align: center;
   }
 
   h4 {
@@ -3058,20 +3097,24 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .benefit {
   float: left;
   overflow: hidden;
-  width: 300px;
-  line-height: 50px;
+  width: 350px;
+  line-height: 170px;
+  margin-buttom: 10px;
+  margin-right: 10px;
 
   .benefit_icon {
     float: left;
     padding-right: 10px;
     text-align: left;
-    width: 80px;
+    width: 75px;
+    margin-top: -45px;
   }
 
   .benefit_text {
     float: left;
     padding-top: 10px;
-    width: 200px;
+    width: 260px;
+    margin-right: 5px;
   }
 
   h3 {
@@ -3079,15 +3122,68 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     font-family: Century Gothic;
     font-size: 23px;
     font-weight: normal;
-    line-height: 18px;
+    line-height: 22px;
     //padding-bottom: 8px;
   }
 
   p {
-    padding-bottom: 18px;
     font-style: italic;
     font-weight: 100;
-    margin-top: -6px;
+    line-height: 20px;
+    margin-top: 4px;
+    //padding-bottom: 18px;
+    font-size: 16px;
+  }
+
+
+}
+
+.welcome_contactus {
+
+  input {
+    border: 1px solid #254061;
+    border-radius: 4px 4px 4px 4px;
+    color: #888888;
+    font-size: 16px;
+    height: 35px;
+    line-height: 32px;
+    margin: 7px 80px 7px 0;
+    padding-bottom: 0;
+    padding-left: 15px;
+    width: 220px;
+  }
+
+  .btn {
+    margin-top: 10px;
+  }
+
+}
+
+
+
+.welcome_footer {
+
+    background-color: #737373;
+    background-image: -moz-linear-gradient(center top , #888888, #555555);
+    background-repeat: repeat-x;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+    min-height: 60px;
+    padding-top: 10px;
+
+  small {
+   margin-left: 1%;
+   color: #ffffff;
+  }
+
+  a {
+   color: #F5F5F5;
+   font-weight: bold;
+   font-size: 16px;
+  }
+
+  nav {
+    margin-right: 1%;
   }
 
 

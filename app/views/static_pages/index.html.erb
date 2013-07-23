@@ -1,6 +1,12 @@
 <% provide(:title, 'Welcome') %>
 
+<div class="background_welcome">
+  <%= image_tag("bg7.jpg", id: "background_welcome") %>
+</div>
+
 <div class="welcomepage_frame">
+
+
 
   <div class="row-fluid ">
     <div class="span1"></div>
@@ -50,11 +56,44 @@
             <div class="benefit">
 
               <div class="benefit_icon">
-                <%= image_tag("index/Alerts.png", alt: "MiYa") %>
+                <%= image_tag("index/Jobs.png", alt: "MiYa") %>
               </div>
 
               <div class="benefit_text">
-                <h3>hsgkhcksjdhsd</h3>
+                <h3>Manage Jobs</h3>
+                <p>Active jobs and opportunities</p>
+              </div>
+            </div>
+
+            <div class="benefit">
+              <div class="benefit_icon">
+                <%= image_tag("index/sell.png", alt: "MiYa") %>
+              </div>
+
+              <div class="benefit_text">
+                <h3>Billing</h3>
+                <p>Customer and affiliate billing</p>
+              </div>
+            </div>
+
+            <div class="benefit">
+              <div class="benefit_icon">
+                <%= image_tag("index/Sign.png", alt: "MiYa") %>
+              </div>
+
+              <div class="benefit_text">
+                <h3>Affiliate Management</h3>
+                <p>Propose, negotiate, sign and manage working agreements with other service providers and subcontractors</p>
+              </div>
+            </div>
+
+            <div class="benefit">
+              <div class="benefit_icon">
+                <%= image_tag("index/Invite.png", alt: "MiYa") %>
+              </div>
+
+              <div class="benefit_text">
+                <h3>Customer management</h3>
                 <p>jahsd gjsagd dfsdfd</p>
               </div>
             </div>
@@ -65,51 +104,18 @@
               </div>
 
               <div class="benefit_text">
-                <h3>hsgkhcksjdhsd</h3>
-                <p>jahsd gjsagd dfsdfd</p>
+                <h3>Alerts and Tracking</h3>
+                <p>Receive alerts and respond accordingly. Track status of each job assigned to you or transferred by you</p>
               </div>
             </div>
 
             <div class="benefit">
               <div class="benefit_icon">
-                <%= image_tag("index/Alerts.png", alt: "MiYa") %>
+                <%= image_tag("index/Parts.png", alt: "MiYa") %>
               </div>
 
               <div class="benefit_text">
-                <h3>hsgkhcksjdhsd</h3>
-                <p>jahsd gjsagd dfsdfd</p>
-              </div>
-            </div>
-
-            <div class="benefit">
-              <div class="benefit_icon">
-                <%= image_tag("index/Alerts.png", alt: "MiYa") %>
-              </div>
-
-              <div class="benefit_text">
-                <h3>hsgkhcksjdhsd</h3>
-                <p>jahsd gjsagd dfsdfd</p>
-              </div>
-            </div>
-
-            <div class="benefit">
-              <div class="benefit_icon">
-                <%= image_tag("index/Alerts.png", alt: "MiYa") %>
-              </div>
-
-              <div class="benefit_text">
-                <h3>hsgkhcksjdhsd</h3>
-                <p>jahsd gjsagd dfsdfd</p>
-              </div>
-            </div>
-
-            <div class="benefit">
-              <div class="benefit_icon">
-                <%= image_tag("index/Alerts.png", alt: "MiYa") %>
-              </div>
-
-              <div class="benefit_text">
-                <h3>hsgkhcksjdhsd</h3>
+                <h3>Manage Parts</h3>
                 <p>jahsd gjsagd dfsdfd</p>
               </div>
             </div>
@@ -118,9 +124,22 @@
 
          <div class="span4">
            <a class="btn btn-large btn-primary" href="/users/sign_up">Sign Up &raquo;</a>
-           <h6>Or fill out the form below and we will contact you soon</h6>
+           <h6>Or, fill out the form below and we will contact you soon</h6>
 
            <!--form-->
+           <div class="row-fluid">
+             <div class="welcome_contactus">
+
+               <input type="text" name="name" value="" class="login_hint" id="name" title="*Name" />
+               <input type="text" name="email" value="" class="login_hint" id="email" title="*Email" />
+               <input type="text" name="phone" value="" class="login_hint" id="phone" title="*Phone" />
+               <input type="text" class="login_hint" id="notes" title="Notes" />
+               <br>
+               <a class="btn btn-large btn-primary" href="/users/sign_up">Contact Us</a>
+
+             </div>
+           </div>
+
          </div>
 
 
