@@ -1,4 +1,10 @@
+<div class="background_welcome">
+  <%= image_tag("bg7.jpg", id: "background_welcome") %>
+</div>
+
 <div class="row-fluid">
+  <div class="span1"></div>
+  <div class="span10">
   <div class="well well_signin">
 
 
@@ -14,7 +20,7 @@
     <br>
 
     <div class="row-fluid">
-      <div class="span4">
+      <div class="span6">
 
 
         <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => 'form-horizontal' }) do |f| %>
@@ -33,6 +39,8 @@
 
       </div>
     </div>
+
+  </div>
 
   </div>
 </div>
