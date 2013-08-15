@@ -1,7 +1,11 @@
 class ServiceCallStartEvent < ServiceCallEvent
   def init
-    self.name         = I18n.t('service_call_start_event.name')
-    self.description  = I18n.t('service_call_start_event.description', technician: service_call.technician.name)
+    self.name = I18n.t('service_call_start_event.name')
+    if service_call.technician.nil?
+      self.description = I18n.t('service_call_start_event.description', technician: '')
+    else
+      self.description = I18n.t('service_call_start_event.description', technician: service_call.technician.name)
+    end
     self.reference_id = 100015
   end
 
