@@ -23,8 +23,8 @@ jQuery ->
     $('#bom_price').val(data["item"]["price_cents"] / 100.0)
   )
 
-  $('#bom_buyer').change (e) ->
-    type = $('#bom_buyer option:selected').data('type')
+  $('#bom_buyer_id').change (e) ->
+    type = $('#bom_buyer_id option:selected').data('type')
     $('#bom_buyer_type').val(type)
 
 

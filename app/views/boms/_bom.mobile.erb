@@ -1,7 +1,7 @@
-<%= simple_form_for([@ticket, @bom], :html => { :class => 'form-horizontal' }) do |f| %>
-    <%= f.error_notification %>
+<%= simple_form_for([@bom.ticket.becomes(ServiceCall), @bom], :html => { :class => 'form-horizontal' }) do |f| %>
+    <%= render 'shared/error_messages', object: @bom %>
 
-    <div class="form-inputs" id= "hi">
+    <div class="form-inputs" id="hi">
       <!--<div class="control-group string ">-->
       <!--<div class="controls">-->
 
@@ -10,7 +10,7 @@
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:material_name) %></div>
           <div class="ui-block-b">
-            <%= f.input :material_name, input_html: {id: "material-autocomplete"}, :label => "Part Name" %>
+            <%= f.text_field :material_name, id: 'material-autocomplete', input_html: { id: "material-autocomplete" }, :label => "Part Name" %>
             <%= f.hidden_field :material_id %>
             <ul id="material-suggestions" data-role="listview" data-inset="true"></ul>
           </div>
@@ -21,16 +21,16 @@
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:price) %></div>
-          <div class="ui-block-b"><%= f.text_field :price, placeholder: 'price' %></div>
+          <div class="ui-block-b"><%= f.text_field :price, placeholder: 'price', "type" => "number" %></div>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:cost) %></div>
-          <div class="ui-block-b">  <%= f.text_field :cost, placeholder: 'cost' %></div>
+          <div class="ui-block-b">  <%= f.text_field :cost, placeholder: 'cost', "type" => "number" %></div>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:buyer) %></div>
           <div class="ui-block-b">
-            <%= f.input :buyer, collection: options_for_select(buyer_options(@ticket)), include_blank: true  %>
+            <%= f.select :buyer_id, options_for_select(buyer_options(@bom.ticket), @bom.buyer.try(:id)), include_blank: true %>
             <%= f.hidden_field :buyer_type %>
           </div>
         </div>
@@ -40,5 +40,5 @@
       </div>
     </div>
 
-      <%= f.submit I18n.t('general.general.update_part') , "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
+    <%= f.submit I18n.t('general.general.update_part'), "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
 <% end %>

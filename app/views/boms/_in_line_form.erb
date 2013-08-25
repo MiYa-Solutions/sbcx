@@ -39,7 +39,7 @@
           <li class="buyer_field">
             <div class="input-prepend input-append">
               <span class="add-on"><%= Bom.human_attribute_name(:buyer) %></span>
-              <%= f.select :buyer, options_for_select(buyer_options(ticket)), include_blank: true %>
+              <%= f.select :buyer_id, options_for_select(buyer_options(ticket)), include_blank: true %>
               <%= f.hidden_field :buyer_type %>
             </div>
           </li>

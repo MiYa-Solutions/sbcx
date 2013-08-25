@@ -25,7 +25,7 @@ class Bom < ActiveRecord::Base
 
   validates_presence_of :ticket, :cost, :price, :quantity, :material_id
   validates_numericality_of :quantity, :cost, :price
-  validate :buyer, :validate_buyer
+  validate :validate_buyer
   validate :check_ticket_status
 
   monetize :cost_cents
@@ -88,14 +88,15 @@ class Bom < ActiveRecord::Base
                       ticket.subcontractor_id,
                       ticket.technician_id].compact
 
-      errors.add(:buyer, I18n.t('activerecord.errors.models.bom.buyer')) unless valid_values.include? buyer_id
+      errors.add(:buyer_id, I18n.t('activerecord.errors.models.bom.buyer')) unless valid_values.include? buyer_id
     end
 
   end
 
   def set_default_buyer
-    if self.buyer.nil?
-      self.buyer = self.ticket.try(:organization)
+    if self.buyer_id.nil?
+      self.buyer_id   = self.ticket.try(:organization_id)
+      self.buyer_type = "Organization"
     end
   end
 

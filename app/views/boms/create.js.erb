@@ -4,52 +4,60 @@ $('#bom_cost').val('');
 $('#bom_price').val('');
 $('#bom_material_name').val('');
 $('#bom_quantity').val('');
+$('#bom_buyer_id').val('');
 
 <% if @bom.errors.any? %>
 <% unless @bom.errors[:quantity].empty? %>
-    $('#bom_quantity').wrap('<div class="control-group error" />')
+$('#bom_quantity').wrap('<div class="control-group error" />')
 
-    <% @bom.errors[:quantity].each do |err| %>
-        $('#bom_quantity').after('<span class="error-msg help-inline"><%= err %> </span>')
-    <% end%>
+<% @bom.errors[:quantity].each do |err| %>
+$('#bom_quantity').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
 <%end %>
 <% unless @bom.errors[:material_name].empty? %>
-    $('#bom_material_name').wrap('<div class="control-group error" />')
+$('#bom_material_name').wrap('<div class="control-group error" />')
 
-    <% @bom.errors[:material_name].each do |err| %>
-    $('#bom_material_name').after('<span class="error-msg help-inline"><%= err %> </span>')
-    <% end%>
+<% @bom.errors[:material_name].each do |err| %>
+$('#bom_material_name').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
 <%end %>
 <% unless @bom.errors[:material_id].empty? %>
-    $('#bom_material_name').wrap('<div class="control-group error" />')
+$('#bom_material_name').wrap('<div class="control-group error" />')
 
-    <% @bom.errors[:material_id].each do |err| %>
-    $('#bom_material_name').after('<span class="error-msg help-inline"><%= err %> </span>')
-    <% end%>
+<% @bom.errors[:material_id].each do |err| %>
+$('#bom_material_name').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
 <%end %>
 <% unless @bom.errors[:price].empty? %>
-    $('#bom_price').wrap('<div class="control-group error" />')
+$('#bom_price').wrap('<div class="control-group error" />')
 
-    <% @bom.errors[:price].each do |err| %>
-    $('#bom_price').after('<span class="error-msg help-inline"><%= err %> </span>')
-    <% end%>
+<% @bom.errors[:price].each do |err| %>
+$('#bom_price').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
 <%end %>
 <% unless @bom.errors[:cost].empty? %>
-    $('#bom_cost').wrap('<div class="control-group error" />')
+$('#bom_cost').wrap('<div class="control-group error" />')
 
-    <% @bom.errors[:cost].each do |err| %>
-    $('#bom_cost').after('<span class="error-msg help-inline"><%= err %> </span>')
-    <% end%>
+<% @bom.errors[:cost].each do |err| %>
+$('#bom_cost').after('<span class="error-msg help-inline"><%= err %> </span>')
+<% end%>
 <%end %>
 <% unless @bom.errors[:ticket].empty? %>
 
-    <% @bom.errors[:ticket].each do |err| %>
-    $('#new_bom').append('<span class="error-msg alert-error help-inline"><%= err %> </span>')
-    <% end%>
+<% @bom.errors[:ticket].each do |err| %>
+$('#new_bom').append('<span class="error-msg alert-error help-inline"><%= err %> </span>')
+<% end%>
+<%end %>
+<% unless @bom.errors[:buyer_id].empty? %>
+
+$('.buyer_field div').wrap('<div class="control-group error" />');
+<% @bom.errors[:buyer_id].each do |err| %>
+$('#new_bom').append('<span class="error-msg alert-error help-inline"><%= err %> </span>')
+<% end%>
 <%end %>
 
 <% else %>
-    $('#boms:last').append('<%= j render(@bom) %>');
-    $('#job_total_cost').html('<%= j(humanized_money_with_symbol @bom.ticket.total_cost) %>');
-    $('#job_total_price').html('<%= j(humanized_money_with_symbol @bom.ticket.total_price) %>');
+$('#boms:last').append('<%= j render(@bom) %>');
+$('#job_total_cost').html('<%= j(humanized_money_with_symbol @bom.ticket.total_cost) %>');
+$('#job_total_price').html('<%= j(humanized_money_with_symbol @bom.ticket.total_price) %>');
 <% end %>
