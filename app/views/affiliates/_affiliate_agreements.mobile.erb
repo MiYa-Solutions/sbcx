@@ -3,32 +3,35 @@
 <% if @agreements.empty? %>
     <p>  <%= I18n.t('general.messages.invite_member') %></p>
 
-      <%= link_to t('affiliates.buttons.new_agreement'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+    <%= link_to t('affiliates.buttons.new_agreement'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "left" %>
 
 
 <% else %>
     <ul data-role="listview">
       <% @agreements.each do |agreement| %>
-          <li class="inline_mobile service_calls_index">
-            <% if agreement.name.blank? %>
-            <%= link_to agreement.id, agreement_path(agreement), "data-transition" => "slide" %>
-            <% else %>
-            <%= link_to agreement.name, agreement_path(agreement), "data-transition" => "slide" %>
-            <% end %>
-            <% if agreement.human_status_name == 'draft' %>
-                <p class="service_call_status_red">
-                  <%= agreement.status_name %>
-                </p>
-            <% else %>
-                <p class="service_call_status">
-                  <%= agreement.status_name %>
-                </p>
-            <% end %>
-          </li>
+          <% if permitted_to? :show, agreement.becomes(Agreement) %>
+              <li class="inline_mobile service_calls_index">
+                <% if agreement.name.blank? %>
+                    <%= link_to agreement.id, agreement_path(agreement), "data-transition" => "slide" %>
+                <% else %>
+                    <%= link_to agreement.name, agreement_path(agreement), "data-transition" => "slide" %>
+                <% end %>
+                <% if agreement.human_status_name == 'draft' %>
+                    <p class="service_call_status_red">
+                      <%= agreement.status_name %>
+                    </p>
+                <% else %>
+                    <p class="service_call_status">
+                      <%= agreement.status_name %>
+                    </p>
+                <% end %>
+              </li>
+          <% end %>
+
       <% end %>
       <br>
     </ul>
 
-      <%= link_to t('affiliates.buttons.new_agreement'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+    <%= link_to t('affiliates.buttons.new_agreement'), "#betaPopup", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "left" %>
 
 <% end %>
