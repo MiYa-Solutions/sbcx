@@ -42,6 +42,7 @@ Sbcx::Application.routes.draw do
 
   devise_scope :user do
     match "/profile" => "registrations#show"
+    match "/sign_up" => "registrations#new", as: :sign_up
   end
 
 
