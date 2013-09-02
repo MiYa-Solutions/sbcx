@@ -39,7 +39,10 @@ describe Bom do
 
   describe "validation" do
     before { bom.valid? }
-    [:ticket, :cost, :quantity, :price, :material].each do |attr|
+
+    it { monetize(:price_cents).should be_true }
+    it { monetize(:cost_cents).should be_true }
+    [:ticket, :cost_cents, :quantity, :price_cents, :material_id].each do |attr|
       it "must have a #{attr}" do
         should validate_presence_of attr
       end
@@ -77,8 +80,8 @@ describe Bom do
 
     describe "default values are not set when a value is present" do
       before do
-        valid_bom.price = valid_bom.material.price + 2
-        valid_bom.cost  = valid_bom.material.cost + 2
+        valid_bom.price = valid_bom.material.price + Money.new_with_amount(2)
+        valid_bom.cost  = valid_bom.material.cost + Money.new_with_amount(2)
       end
 
       it "should NOT equal the associated material cost" do

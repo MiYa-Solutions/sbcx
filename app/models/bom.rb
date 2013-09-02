@@ -23,8 +23,8 @@ class Bom < ActiveRecord::Base
 
   stampable
 
-  validates_presence_of :ticket, :cost, :price, :quantity, :material_id
-  validates_numericality_of :quantity, :cost, :price
+  validates_presence_of :ticket, :cost_cents, :price_cents, :quantity, :material_id
+  validates_numericality_of :quantity, :cost_cents, :price_cents
   validate :validate_buyer
   validate :check_ticket_status
 
@@ -101,8 +101,10 @@ class Bom < ActiveRecord::Base
   end
 
   def check_ticket_status
-    errors.add :ticket, "Can't add/update a bom to ticket transferred to a member subcon" if ticket.transferred? && ticket.subcontractor.subcontrax_member? && creator.present?
-    errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done?
+    unless ticket.nil?
+      errors.add :ticket, "Can't add/update a bom for a ticket transferred to a member subcon" if ticket.transferred? && ticket.subcontractor.subcontrax_member? && creator.present?
+      errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done?
+    end
   end
 
   def destroy

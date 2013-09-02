@@ -8,6 +8,7 @@ require 'capybara/rspec'
 require 'capybara-screenshot/rspec'
 require 'capybara/poltergeist'
 require 'declarative_authorization/maintenance'
+require 'money-rails/test_helpers'
 
 
 #uncomment the following line to use spork with the debugger
@@ -30,6 +31,7 @@ Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'
 
   include Authorization::TestHelper
+  include MoneyRails::TestHelpers
 
 
   # Requires supporting ruby files with custom matchers and macros, etc,
