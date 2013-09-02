@@ -68,32 +68,6 @@ describe ServiceCall do
    :technician_cost].each do |attr|
     it { should respond_to attr }
   end
-  #it "should have the expected attributes" do
-  #  should respond_to(:customer_id)
-  #  should respond_to(:organization_id)
-  #  should respond_to(:technician_id)
-  #  should respond_to(:creator_id)
-  #  should respond_to(:updater_id)
-  #  should respond_to(:name)
-  #  should respond_to(:settlement_date)
-  #  should respond_to(:address1)
-  #  should respond_to(:address2)
-  #  should respond_to(:country)
-  #  should respond_to(:city)
-  #  should respond_to(:state)
-  #  should respond_to(:zip)
-  #  should respond_to(:phone)
-  #  should respond_to(:mobile_phone)
-  #  should respond_to(:boms)
-  #  should respond_to(:scheduled_for)
-  #  should respond_to(:total_price)
-  #  should respond_to(:total_cost)
-  #  should respond_to(:total_profit)
-  #  should respond_to(:provider_cost)
-  #  should respond_to(:subcontractor_cost)
-  #  should respond_to(:technician_cost)
-  #end
-
 
   it { should be_valid }
 
@@ -120,7 +94,7 @@ describe ServiceCall do
 
   it 'should not allow to change the tax if the work is done' do
     service_call.work_status = ServiceCall::WORK_STATUS_DONE
-    service_call.name = "lklklk"
+    service_call.name        = "lklklk"
     service_call.should be_valid
     service_call.tax = 5.0
     service_call.should_not be_valid
@@ -128,7 +102,7 @@ describe ServiceCall do
 
   it 'should not allow to change the tax if transferred' do
     service_call.status = ServiceCall::STATUS_TRANSFERRED
-    service_call.name = "lklklk"
+    service_call.name   = "lklklk"
     service_call.should be_valid
     service_call.tax = 5.0
     service_call.should_not be_valid
@@ -136,8 +110,64 @@ describe ServiceCall do
 
   it 'should allow to change the tax when the work is in progress' do
     service_call.work_status = ServiceCall::WORK_STATUS_IN_PROGRESS
-    service_call.tax = 5.0
+    service_call.tax         = 5.0
     service_call.should be_valid
+  end
+
+  describe 'job lifecycle' do
+    setup_standard_orgs
+
+    let(:job) { FactoryGirl.create(:my_service_call, organization: org) }
+
+    it { job.should be_valid }
+
+    it 'transfer job should create another job for the subcontractor' do
+      job.subcontractor = org2.becomes(Subcontractor)
+
+      expect do
+        job.subcon_agreement = Agreement.find_by_organization_id_and_counterparty_id(org.id, org2.id)
+        job.transfer
+      end.to change(ServiceCall, :count).by(1)
+
+    end
+
+    describe 'transfer job and allow re-transfer' do
+      before do
+        job.re_transfer      = true
+        job.subcontractor    = org2.becomes(Subcontractor)
+        job.subcon_agreement = Agreement.find_by_organization_id_and_counterparty_id(org.id, org2.id)
+        job.transfer
+      end
+
+      let(:subcon_job) { Ticket.find_by_organization_id_and_ref_id(org2.id, job.id) }
+
+      it 'status should change to transferred' do
+        job.status.should be(Ticket::STATUS_TRANSFERRED)
+      end
+
+      it 'subcon job status should be received new' do
+        subcon_job.status.should be(TransferredServiceCall::STATUS_NEW)
+      end
+
+      describe 'passed on job' do
+        before do
+          subcon_job.accept
+          subcon_job.subcontractor    = org3.becomes(Subcontractor)
+          subcon_job.subcon_agreement = Agreement.find_by_organization_id_and_counterparty_id(org2.id, org3.id)
+          subcon_job.transfer
+        end
+
+        let(:org3_job) { Ticket.find_by_organization_id_and_ref_id(org3.id, job.id) }
+
+        it 'should create a job for the third sucon' do
+          org3_job.should_not be_nil
+          Ticket.count.should be(3)
+        end
+
+
+      end
+    end
+
   end
 
 end

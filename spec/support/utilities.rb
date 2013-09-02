@@ -56,7 +56,7 @@ ACC_SELECT          = 'account'
 ACC_BTN_GET_ENTRIES = 'get-entries-btn'
 AFF_SPAN_BALANCE    = 'span#balance'
 
-BOM_SELECT_BUYER = 'bom_buyer'
+BOM_SELECT_BUYER = 'bom_buyer_id'
 
 def in_browser(name)
   Capybara.session_name = name

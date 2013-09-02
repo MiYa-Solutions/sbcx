@@ -1737,6 +1737,60 @@ describe "Service Call pages" do
             should have_selector(accept_btn)
           end
 
+          describe 'accept the job on behalf of local 2nd subcon ' do
+            before do
+              in_browser(:org2) do
+                click_button JOB_BTN_ACCEPT
+              end
+            end
+
+            it 'subcon status should chnage to accepted' do
+              should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.accepted'))
+            end
+
+            describe 'start the job on behalf of local 2nd subcon ' do
+              before do
+                in_browser(:org2) do
+                  click_button JOB_BTN_START
+                end
+              end
+
+              it 'work status should chnage to in progress' do
+                should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.in_progress'))
+              end
+
+
+              describe 'add boms and complete the job on behalf of local 2nd subcon ' do
+                before do
+                  in_browser(:org2) do
+                    add_bom 'stam', 10.0, 20.0, 1, local_subcontractor.name
+                    click_button JOB_BTN_COMPLETE
+                  end
+                end
+
+                it 'work status should chnage to completed' do
+                  should have_work_status(I18n.t('activerecord.state_machines.service_call.work_status.states.done'))
+                end
+
+                describe 'mark the job as settled by the local subcon' do
+                  before do
+                    in_browser(:org2) do
+                      select Cash.model_name.human, from: JOB_SELECT_SUBCON_PAYMENT
+                      click_button JOB_BTN_SETTLE
+                    end
+                  end
+
+                  it 'billing status should changed to collected by subcon' do
+                    should have_subcon_status(I18n.t('activerecord.state_machines.service_call.subcontractor_status.states.settled'))
+                  end
+
+                end
+
+              end
+            end
+
+          end
+
         end
 
         describe "subcontractor transfers the service call to a member subcontractor" do

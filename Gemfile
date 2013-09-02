@@ -65,7 +65,7 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara', '2.0.2'
+  gem 'capybara', '2.1.0'
   gem 'factory_girl_rails', '4.1.0'
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner', '~> 0.9.1'
@@ -73,7 +73,7 @@ group :test do
   gem 'launchy', '2.1.0'
   gem 'mocha'
   gem 'capybara-screenshot', '0.3.4'
-  gem 'poltergeist', '1.1.0'
+  gem 'poltergeist', '1.2.0'
   gem 'shoulda'
   gem 'spork', '0.9.0'
   gem 'faye-websocket', '0.4.4'
