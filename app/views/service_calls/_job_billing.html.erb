@@ -1,0 +1,35 @@
+<div class="well well_job_history well_job_show">
+
+  <div class="row-fluid">
+
+    <table class="table table-striped" id="event_log_in_service_call">
+      <thead>
+      <tr>
+        <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+        <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
+        <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
+        <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
+        <th><%= AccountingEntry.human_attribute_name(:status) %> </th>
+        <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+        <th><%= AccountingEntry.human_attribute_name(:description) %></th>
+        <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @service_call.entries.each do |entry| %>
+          <tr>
+            <td><%= entry.id %></td>
+            <td><%= entry.account.accountable.name %></td>
+            <td><%= entry.account.accountable.class.model_name.human %></td>
+            <td><%= l entry.created_at %></td>
+            <td><%= entry.human_status_name %></td>
+            <td><%= entry.type.constantize.model_name.human %></td>
+            <td><%= entry.description %></td>
+            <td><%= humanized_money_with_symbol entry.amount %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>

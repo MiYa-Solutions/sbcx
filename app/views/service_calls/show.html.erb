@@ -1,8 +1,10 @@
-<% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}" )%>
+<% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}") %>
 
 <div class="title_label job_title">
   <ul>
-    <li><h1 id="job_name_show"><%= best_in_place @service_call, :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1></li>
+    <li>
+      <h1 id="job_name_show"><%= best_in_place @service_call, :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1>
+    </li>
     <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1></li>
   </ul>
 </div>
@@ -10,17 +12,18 @@
 <div class="row-fluid well_height job_show_well">
 
 
-
   <ul class="nav nav-tabs" id="myJobShowTab">
     <li class="active"><a href="#jobMain" data-toggle="tab"><%= I18n.t('general.general.job_main') %></a></li>
     <li><a href="#job_appointments" data-toggle="tab"><%= I18n.t('general.general.appointments') %></a></li>
     <li><a href="#jobHistory" data-toggle="tab"><%= I18n.t('general.general.job_history') %></a></li>
+    <li><a href="#jobBilling" data-toggle="tab"><%= I18n.t('general.general.job_billing') %></a></li>
   </ul>
 
   <div class="tab-content">
-    <div class="tab-pane active" id="jobMain"><%= render :partial => 'job_homepage' %></div>
-    <div class="tab-pane" id="job_appointments"><%= render :partial => 'job_appointments' %></div>
-    <div class="tab-pane" id="jobHistory"><%= render :partial => 'job_history' %></div>
+    <div class="tab-pane active" id="jobMain"><%= render 'job_homepage' %></div>
+    <div class="tab-pane" id="job_appointments"><%= render 'job_appointments' %></div>
+    <div class="tab-pane" id="jobHistory"><%= render 'job_history' %></div>
+    <div class="tab-pane" id="jobBilling"><%= render 'job_billing' %></div>
 
   </div>
 

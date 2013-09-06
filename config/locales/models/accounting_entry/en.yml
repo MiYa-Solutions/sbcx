@@ -15,3 +15,12 @@ en:
         status:
           states:
             cleared: Cleared
+  payment_reimbursement:
+    cash:
+      description: 'Reimbursement for cash payment clearing for %{ticket}'
+    credit_card:
+      description: 'Reimbursement for credit card (none AMEX) payment clearing for %{ticket}'
+    amex_credit_card:
+      description: 'Reimbursement for American Express payment clearing for %{ticket}'
+    cheque:
+      description: 'Reimbursement for check clearing for %{ticket}'

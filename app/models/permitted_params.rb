@@ -22,7 +22,16 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def posting_rule_attributes
-    [:agreement_id, :rate, :rate_type, :sunday, :sunday_from, :sunday_to, :cash_rate, :cash_rate_type]
+    [
+        :agreement_id, :rate,
+        :rate_type, :sunday,
+        :sunday_from, :sunday_to,
+        :cash_rate, :cash_rate_type,
+        :cheque_rate, :cheque_rate_type,
+        :credit_rate, :credit_rate_type,
+        :amex_rate, :amex_rate_type
+    ]
+
   end
 
   def payment
@@ -90,7 +99,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     case obj.class.name
       when MyServiceCall.name
         if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :collector_id, :tag_list, :name, :subcon_agreement_id,
+          permitted_attributes = [:status_event, :collector_id, :collector_type, :tag_list, :name, :subcon_agreement_id,
                                   :provider_id,
                                   :subcontractor_id,
                                   :technician_id,
@@ -112,7 +121,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :notes,
                                   :total_price, :allow_collection, :transferable, :re_transfer, :scheduled_for, :payment_type]
         else # todo need to define the permitted params after giving it some thouhgt, as this is done just for alpha
-          permitted_attributes = [:status_event, :collector_id, :tag_list,
+          permitted_attributes = [:status_event, :collector_id, :collector_type, :tag_list,
 
                                   :scheduled_for_text,
                                   :address1,
@@ -133,7 +142,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
         permitted_attributes << :work_status_event unless obj.transferred? && obj.subcontractor.subcontrax_member?
         permitted_attributes << :tax if obj.can_change_financial_data?
-        permitted_attributes.concat [:billing_status_event, :collector_id, :payment_type] if billing_allowed?
+        permitted_attributes.concat [:billing_status_event, :collector_id, :collector_type, :payment_type] if billing_allowed?
         permitted_attributes.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
 
       # todo refactor attributes to ensure agreement can't be changed after the job was created
@@ -194,7 +203,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                                   :notes, :transferable, :re_transfer, :payment_type]
         end
 
-        permitted_attributes.concat [:billing_status_event, :collector_id, :payment_type] if billing_allowed?
+        permitted_attributes.concat [:billing_status_event, :collector_id, :collector_type, :payment_type] if billing_allowed?
         permitted_attributes << :work_status_event if obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?)
         permitted_attributes << :allow_collection if obj.present? && !obj.provider.subcontrax_member?
         permitted_attributes << :tax if obj.can_change_financial_data?

@@ -150,7 +150,7 @@ module ServiceCallsHelper
 
   def transfer_form(service_call)
     simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.status.transfer.form_classes") } do |f|
-      concat (f.select :subcontractor_id,  subcon_options,   { include_blank: true} )
+      concat (f.select :subcontractor_id, subcon_options, { include_blank: true })
       concat (f.input :subcon_agreement_id, collection: [])
       concat (f.input :allow_collection)
       concat (f.input :re_transfer)
@@ -179,6 +179,22 @@ module ServiceCallsHelper
              )
     end
   end
+
+  def billing_subcon_collected_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.billing_status.subcon_collected.form_classes") } do |f|
+      concat (hidden_field_tag "service_call[billing_status_event]", 'subcon_collected')
+      concat (hidden_field_tag "service_call[collector_id]", service_call.subcontractor.id)
+      concat (hidden_field_tag "service_call[collector_type]", "Organization")
+      concat (f.input :payment_type, collection: payment_types)
+      concat (f.submit service_call.class.human_billing_status_event_name(:subcon_collected).titleize,
+                       id:    'subcon_collected_service_call_btn',
+                       class: StylingService.instance.get_style("service_call.forms.billing_status.subcon_collected.button_classes"),
+                       title: I18n.t("service_call.forms.billing_status.subcon_collected.tooltip"),
+                       rel:   'tooltip'
+             )
+    end
+  end
+
 
   def technicians_collection
     @service_call.organization.technicians.map { |user| [user.id, user.name] }
@@ -243,7 +259,7 @@ module ServiceCallsHelper
 
   def subcon_options
     current_user.organization.subcontractors.collect do |subcon|
-      [subcon.name, subcon.id, {"data-agreements" => agreement_data_tags(current_user.organization, subcon)} ]
+      [subcon.name, subcon.id, { "data-agreements" => agreement_data_tags(current_user.organization, subcon) }]
     end
   end
 
