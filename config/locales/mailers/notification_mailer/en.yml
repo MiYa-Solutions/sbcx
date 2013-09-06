@@ -73,6 +73,11 @@ en:
       subject: 'Invoiced by Contractor'
       content: 'Please note that the customer has been invoiced by Contractor Name: &nbsp; <strong>%{provider}</strong>.'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_subcon_invoiced_notification:
+      title: 'Customer has been Invoiced by the Subcontractor.'
+      subject: 'Invoiced by Subcontractor'
+      content: 'Please note that the customer was invoiced by one of your subcontractors: &nbsp; <strong>%{subcon}</strong>.'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_subcon_deposited_notification:
       title: 'Payment has been deposited by Subcontractor'
       subject: 'Payment has been deposited'
