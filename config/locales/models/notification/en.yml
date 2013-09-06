@@ -124,3 +124,7 @@ en:
       html_message: '%{subcontractor}, has marked the payment for ${link} as cleared'
       subject: '%{ref} was cleared by the subcontractor'
       content: '%{subcontractor} has cleared the payment'
+    agr_subcon_accepted_notification:
+      html_message: "The %{link} %{name} terms were accepted by ${other_party]"
+      subject: 'Subcontracting agreement terms were accepted'
+      content: 'The terms of the subcontracting agreement %{name}, were accepted by %{other_party}'

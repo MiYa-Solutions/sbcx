@@ -39,3 +39,8 @@ en:
     name: "New Agreement"
     description: '%{creator} has created a new %{agreement} with %{counterparty} as the counterparty'
 
+  agr_subcon_accepted_event:
+    name: "Accepted Subcontracting Agreement"
+    description: '%{other_party} has accepted the terms of the subcontracting agreement'
+
+
