@@ -1,7 +1,7 @@
 authorization do
 
   role :guest do
-
+    has_permission_on :authorization_rules, :to => :read
   end
   role :admin do
     has_permission_on [:affiliates, :organizations, :users, :providers, :subcontractors, :service_calls, :customers],

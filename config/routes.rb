@@ -1,5 +1,7 @@
 Sbcx::Application.routes.draw do
 
+  # for rails4 unmark the 'via:' part
+  match '(errors)/:status', to: 'errors#show', constraints: { status: /\d{3}/ } # via: :all
 
   resource :calendar, only: :show
   resources :appointments

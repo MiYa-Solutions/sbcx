@@ -1,0 +1,7 @@
+<h1>The change you wanted was rejected (422)</h1>
+<% if @exception %>
+    <p><%= @exception.message %></p>
+<% else %>
+
+    <p>Maybe you tried to change something you didn't have access to.</p>
+<% end %>
