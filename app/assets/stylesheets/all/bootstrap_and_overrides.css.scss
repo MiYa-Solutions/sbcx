@@ -753,7 +753,7 @@ input, textarea {
   }
 
   img {
-    margin-top: -7px;
+    margin-top: -5px;
     vertical-align: text-top;
   }
 }
@@ -1150,7 +1150,7 @@ a:hover {
 }
 
 .job_details_block {
-  min-height:300px;
+  min-height: 250px;
 
 }
 
@@ -1410,7 +1410,11 @@ a:hover {
 
 #new_posting_rule {
   input, textarea {
-    width: 30%;
+    width: 40%;
+  }
+
+  #submit_posting_rules {
+    width: 25%;
   }
 }
 
@@ -2518,6 +2522,48 @@ hr {
   }
 }
 
+.agreement_posting_rules_td  {
+  float: left;
+}
+
+.agreement_posting_rules {
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+
+
+  //li {
+  //
+  //
+  // input {
+  //   float: left;
+  //   display: inline;
+  //
+  // }
+  //
+  // label {
+  //   float: left;
+  //   display: inline;
+  // }
+  //
+  // img {
+  //   float: left;
+  //   display: inline;
+  // }
+    //float: left;
+    //margin: 0 10px;
+    //line-height: 16px;
+  //}
+  //
+  //li:last-child {
+  //  float: left;
+  //  margin-left: 0;
+  //
+  //}
+}
+
 
 .alerts_sidebar, .nav > li > a {
   display: inline;
@@ -2858,10 +2904,12 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .posting_rules_inputs {
   margin-left: 5%;
   select {
-    width: 32%;
+    width: 42.8%;
   }
 
 }
+
+
 
 .column-filter-widgets {
   select {
@@ -2956,6 +3004,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .note_area_job {
   margin-left: 2.5%;
   min-height: 230px;
+  width: 95%;
 
   strong {
     color: #000000;
@@ -2964,8 +3013,9 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 .show_more_button {
 
+
   button {
-    float: right;
+    //float: right;
     argin-right: 4%;
     text-transform:capitalize;
 

@@ -1,57 +1,61 @@
-<div class="posting_rules_inputs">
+<div class="posting_rules_inputs" xmlns="http://www.w3.org/1999/html">
+
+<div class="agreement_posting_rules">
 
 <%= simple_form_for(@posting_rule, as: :posting_rule, url: agreement_posting_rules_url(@posting_rule.agreement), method: :post, :html => { :class => 'form-horizontal' }) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 
+      <div class="row-fluid">
+        <div class="span8">
+          <%= f.hidden_field :agreement_id %>
+          <%= f.hidden_field :type, value: @posting_rule.class.name.underscore %>
+          <%= f.input :rate %>
 
+          <%= f.hidden_field :rate_type, value: @posting_rule.rate_types.first %>
+          <%= f.input :cash_rate %>
 
-      <%= f.hidden_field :agreement_id %>
+         <div class="control-group string mandatory">
+             <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:cash_rate_type) %></label>
+                <div class="controls">
+                    <%= f.select :cash_rate_type, profit_split_payment_rates %>
+                </div>
+         </div>
 
-      <%= f.hidden_field :type, value: @posting_rule.class.name.underscore %>
+          <%= f.input :credit_rate %>
+          <!--<#%= f.number_field :credit_rate, :in => 0..100, :step => 0.01 %>-->
 
-      <%= f.input :rate %>
-      <%= f.hidden_field :rate_type, value: @posting_rule.rate_types.first %>
-
-      <%= f.input :cash_rate %>
-
-     <div class="control-group string mandatory">
-         <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:cash_rate_type) %></label>
-          <div class="controls">
-                <%= f.select :cash_rate_type, profit_split_payment_rates %>
-          </div>
-     </div>
-
-      <%= f.input :credit_rate %>
-      <!--<#%= f.number_field :credit_rate, :in => 0..100, :step => 0.01 %>-->
-
-
-
-      <div class="control-group string mandatory">
+        <div class="control-group string mandatory">
         <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:credit_rate_type) %></label>
         <div class="controls">
           <%= f.select :credit_rate_type, profit_split_payment_rates %>
         </div>
       </div>
 
-      <%= f.input :amex_rate %>
+        <%= f.input :amex_rate %>
 
 
-      <div class="control-group string mandatory">
+        <div class="control-group string mandatory">
         <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:amex_rate_type) %></label>
         <div class="controls">
           <%= f.select :amex_rate_type, profit_split_payment_rates %>
         </div>
       </div>
 
-      <%= f.input :cheque_rate %>
+        <%= f.input :cheque_rate %>
 
-      <div class="control-group string mandatory">
+         <div class="control-group string mandatory">
         <label class="string optional control-label" for="provider_country"><%= PostingRule.human_attribute_name(:cheque_rate_type) %></label>
         <div class="controls">
           <%= f.select :cheque_rate_type, profit_split_payment_rates %>
         </div>
       </div>
 
+        </div>
+        <div class="span4 agreement_posting_rules_td">
+          <%= image_tag("question24.png", :title => I18n.t('general.messages.agr_select_rule'), :rel => 'tooltip', "data-placement" => "left") %>
+
+        </div>
+      </div>
 
 
       <!--<h4>Applicable On</h4><br>-->
@@ -81,11 +85,11 @@
 
 
     <div class="form-actions">
-      <%= f.button :submit, :class => 'btn btn-primary' %>
-
-
+      <%= f.button :submit, :class => 'btn btn-primary', :id => 'submit_posting_rules' %>
     </div>
 <% end %>
 
+
+</div>
 
 </div>

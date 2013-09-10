@@ -35,9 +35,18 @@
             <%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
         <% else %>
 
+            <!--My Job Dispatched and and not transferred-->
+            <% if @service_call.class == MyServiceCall && @service_call.work_dispatched? && !@service_call.transferred?   %>
+                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_start_dispached'), :rel => 'tooltip', "data-placement" => "left") %>
+             <% end %>
+
             <!--My Job and not transferred-->
             <% if @service_call.class == MyServiceCall && @service_call.work_pending? && !@service_call.transferred? %>
-                <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_start'), :rel => 'tooltip', "data-placement" => "left") %>
+                <% if @service_call.organization.multi_user? %>
+                    <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_start_users'), :rel => 'tooltip', "data-placement" => "left") %>
+                <% else %>
+                    <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_start'), :rel => 'tooltip', "data-placement" => "left") %>
+                <% end %>
             <% end %>
 
             <!--My Job and I transferred to local-->

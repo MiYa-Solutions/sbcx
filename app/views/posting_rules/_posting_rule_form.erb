@@ -2,11 +2,13 @@
     <fieldset>
       <ul>
         <li>
+
           <%= hidden_field_tag 'agreement_id', @agreement.id %>
           <%= select_tag 'posting_rule_type', options_for_select(posting_rule_types), include_blank: true %>
         </li>
         <li>
           <%= submit_tag "Add", class: 'btn btn-medium btn-primary', :id => 'add-posting-rule-button' %>
+          <%= image_tag("question24.png", :title => I18n.t('general.messages.agr_select_rule'), :rel => 'tooltip', "data-placement" => "left") %>
         </li>
 
       </ul>

@@ -14,19 +14,20 @@
 
 <% unless user_signed_in? %>
 
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-   <div class="large_header">
-     <%= render 'layouts/header' %>
-   </div>
-</div>
-</div>
-<% else %>
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="large_header">
+                <%= render 'layouts/header' %>
+            </div>
+        </div>
+    </div>
 
-  <%= render 'layouts/header' %>
-</div>
+<% else %>
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+           <%= render 'layouts/header' %>
+        </div>
     </div>
 <% end %>
 
@@ -40,14 +41,14 @@
 
         <div class="span10">
 
-          <% flash.each do |key, value| %>
+             <% flash.each do |key, value| %>
               <div class="smart_alert">
                 <a class="close" data-dismiss="alert" href="#">×</a>
                 <%= content_tag(:div, value, class: "alert alert-#{key}") %>
               </div>
           <% end %>
 
-          <%= yield %>
+             <%= yield %>
 
         </div>
 
