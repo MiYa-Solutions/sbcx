@@ -28,6 +28,7 @@ en:
   messages:
     subcontractor:
       subcontractor_created: "Subcontractor creates successfully!"
+
   general:
     messages:
       provider_icon: "This Affiliate is your Contractor"
@@ -58,6 +59,16 @@ en:
       agr_no_add_rule_pending: "You can't add rules in case the agreement is pending approval. \nTo edit the agreement, please delete the posting rules below and then add new rules."
       agr_select_rule: "Select 'Profit Split' from the dropdown and click on the Add button. \nPlease note you can enter more than one rule in the next following fields"
 
+    errors:
+      error: "Error"
+      403_title: "Forbidden. (403)"
+      403_content: "You are not authorized to perform that action."
+      404_title: "Not Found (404)"
+      404_content: "The page you are looking for doesn't exist."
+      422_title: "The change you wanted was rejected (422)"
+      422_content: "Maybe you tried to change something you don't have access to."
+      500_title: "Server Error (500)"
+      500_content: "We're sorry, but something went wrong."
 
       overdue: "This Job is overdue"
     emails:
