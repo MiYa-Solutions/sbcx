@@ -1,7 +1,29 @@
-<h1>Not Found (404)</h1>
-<% if @exception %>
-    <p><%= @exception.message %></p>
-<% else %>
+<div class="title_label error_title">
+  <ul>
+    <li><h1><%= I18n.t('general.errors.error') %></h1></li>
+    <li></li>
+  </ul>
+</div>
 
-    <p>The page you are looking for doesn't exist.</p>
-<% end %>
+<div class="well well_height">
+  <div class="row-fluid">
+
+    <h2><%= I18n.t('general.errors.404_title') %></h2>
+
+    <% if @exception %>
+        <p><%= @exception.message %></p>
+    <% else %>
+        <p><%= I18n.t('general.errors.404_content') %></p>
+    <% end %>
+
+  </div>
+
+
+  <div class="row-fluid">
+    <div class="form-actions">
+      <%= link_to 'Back', :back, :class => 'btn btn-medium' %>
+    </div>
+  </div>
+
+  <!--End of Well-->
+</div>

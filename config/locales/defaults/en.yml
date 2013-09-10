@@ -22,3 +22,4 @@ en:
       transferred_job: "Jobs that I Transferred"
       incoming_job: "This Job has been transferred to you"
       cant_add_parts: "You can't add items to this job. <br> Items can be added only when a job has been accepted or started by you."
+

@@ -1,6 +1,29 @@
-<h1>Forbidden. (403)</h1>
-<% if @exception %>
-    <p><%= @exception.message %></p>
-<% else %>
-    <p>You are not authorized to perform that action.</p>
-<% end %>
+<div class="title_label error_title">
+  <ul>
+    <li><h1><%= I18n.t('general.errors.error') %></h1></li>
+    <li></li>
+  </ul>
+</div>
+
+<div class="well well_height">
+  <div class="row-fluid">
+
+    <h2><%= I18n.t('general.errors.403_title') %></h2>
+
+    <% if @exception %>
+        <p><%= @exception.message %></p>
+    <% else %>
+        <p><%= I18n.t('general.errors.403_content') %></p>
+    <% end %>
+
+  </div>
+
+
+  <div class="row-fluid">
+    <div class="form-actions">
+      <%= link_to 'Back', :back, :class => 'btn btn-medium' %>
+    </div>
+  </div>
+
+  <!--End of Well-->
+</div>
