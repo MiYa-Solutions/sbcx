@@ -18,4 +18,10 @@ class SubcontractingAgreementObserver < ActiveRecord::Observer
     Rails.logger.debug { "invoked observer after_submit_for_approval \n #{agreement.inspect} \n #{transition.inspect}" }
   end
 
+  def after_accept(agreement, transition)
+    Rails.logger.debug { "invoked observer after_accept \n #{agreement.inspect} \n #{transition.inspect}" }
+
+    agreement.events << AgrSubconAcceptedEvent.new
+  end
+
 end

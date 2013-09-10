@@ -1,0 +1,16 @@
+class Agr Notification < AgreementNotification
+
+    def html_message
+        I18n.t('notifications.agr_                    _notification.html_message', name: agreement.name, link: agreement_link).html_safe
+    end
+
+    def default_subject
+        I18n.t('notifications.agr_                    _notification.subject')
+    end
+
+    def default_content
+        I18n.t('notifications.agr_                    _notification.content')
+    end
+
+
+end

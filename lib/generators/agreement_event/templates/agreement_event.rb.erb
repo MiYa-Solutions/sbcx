@@ -1,0 +1,30 @@
+class Agr Event < AgreementEvent
+
+    def init
+        self.name        = I18n.t('agr_                    _event.name')
+        self.description = I18n.t('agr_                    _event.description')
+
+        self.reference_id =
+
+                self.reference_id = "CHANGE ME (AND DONT FORGET TO UPDATE THE EXCEL)"
+
+    end
+
+    def notification_recipients
+
+        #todo add recipients to the notifications
+
+        nil
+
+    end
+
+    def notification_class
+
+        Agr Notification
+
+        nil
+
+    end
+
+
+end

@@ -1,0 +1,15 @@
+Description:
+    creates a service call event as well as it's associated notification
+
+Example:
+    rails generate agreement_event submitted
+
+    This will create:
+        AgrSubmittedEvent/AgrSubmittedNotification
+
+    rails g agreement_event submitted --skip-notification
+
+    This will create:
+        AgrSubmittedEvent
+
+    reference_id

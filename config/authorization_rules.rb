@@ -1,7 +1,7 @@
 authorization do
 
   role :guest do
-
+    has_permission_on :authorization_rules, :to => :read
   end
   role :admin do
     has_permission_on [:affiliates, :organizations, :users, :providers, :subcontractors, :service_calls, :customers],
@@ -93,9 +93,19 @@ authorization do
 
     has_permission_on :agreements, :to => [:new]
 
-    has_permission_on :agreements, :to => [:show, :create] do
-      if_attribute :organization => is {user.organization}
-      if_attribute :counterparty => is {user.organization}
+    has_permission_on :agreements, :to => [:show] do
+      # when status is not draft, any user of either orgs can see the agreement
+      if_attribute :organization_id => is { user.organization.id }, :status => is_not { OrganizationAgreement::STATUS_DRAFT }
+      if_attribute :counterparty_id => is { user.organization.id }, :status => is_not { OrganizationAgreement::STATUS_DRAFT }
+
+      # when status is draft
+      if_attribute :organization_id => is { user.organization.id }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :organization_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
+      if_attribute :counterparty_id => is { user.organization.id }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :counterparty_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
+
+    end
+    has_permission_on :agreements, :to => [:create] do
+      if_attribute :organization_id => is { user.organization.id }
+      if_attribute :counterparty_id => is { user.organization.id }
     end
 
     # todo define proper permission for creating agreements so one can't create an agreement with a local organization of another member
@@ -103,25 +113,25 @@ authorization do
     has_permission_on :agreements, :to => [:edit, :update] do
 
       # when status is active allow users from either party to update the agreement
-      if_attribute :type => is {'SubcontractingAgreement'}, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :counterparty_id => is { user.organization_id }
-      if_attribute :type => is {'SubcontractingAgreement'}, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :organization_id => is { user.organization_id }
+      if_attribute :type => is { 'SubcontractingAgreement' }, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :counterparty_id => is { user.organization_id }
+      if_attribute :type => is { 'SubcontractingAgreement' }, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :organization_id => is { user.organization_id }
 
       # when the agreement status is draft
-      if_attribute :type => is {'SubcontractingAgreement'}, :status => is { OrganizationAgreement::STATUS_DRAFT }, :organization_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
-      if_attribute :type => is {'SubcontractingAgreement'}, :status => is { OrganizationAgreement::STATUS_DRAFT }, :counterparty_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
+      if_attribute :type => is { 'SubcontractingAgreement' }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :organization_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
+      if_attribute :type => is { 'SubcontractingAgreement' }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :counterparty_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
 
       # when the status is not active nor draft allow only the party that needs to respond to the other's update
-      if_attribute :type => is {'SubcontractingAgreement'}, :counterparty_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
-      if_attribute :type => is {'SubcontractingAgreement'}, :organization_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
+      if_attribute :type => is { 'SubcontractingAgreement' }, :counterparty_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
+      if_attribute :type => is { 'SubcontractingAgreement' }, :organization_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
 
       # when customer agreement ensure the user org is the organization of the agreement
-      if_attribute :type => is {'CustomerAgreement'}, organization_id: is {user.organization_id}
+      if_attribute :type => is { 'CustomerAgreement' }, organization_id: is { user.organization_id }
     end
 
     # todo define proper permissions
     has_permission_on :posting_rules, to: [:new, :edit, :show, :index]
     has_permission_on :posting_rules, to: [:update, :create, :destroy] do
-      if_attribute :agreement => { status: is_not {Agreement::STATUS_ACTIVE}}
+      if_attribute :agreement => { status: is_not { Agreement::STATUS_ACTIVE } }
     end
 
     has_permission_on :payments, to: [:new, :create, :update, :edit, :show, :index, :destroy]

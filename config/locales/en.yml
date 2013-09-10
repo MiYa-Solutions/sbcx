@@ -109,6 +109,7 @@ en:
       transferred_jobs: "Jobs that I Transferred"
       job_number: "Job Number"
       job_history: "Job History"
+      job_billing: "Job Billing"
       job_type: "Job Type"
       mobile: "Mobile"
       save_changes: "Save Changes"

@@ -48,10 +48,10 @@ class Ticket < ActiveRecord::Base
   has_many :notifications, as: :notifiable
   has_many :boms do
     def build(params)
-      unless params[:buyer].nil? || params[:buyer].empty?
-        buyer = params[:buyer_type].classify.constantize.find(params[:buyer])
+      unless params[:buyer_id].nil? || params[:buyer_id].empty?
+        buyer = params[:buyer_type].classify.constantize.find(params[:buyer_id])
       end
-      params.delete(:buyer)
+      params.delete(:buyer_id)
       params.delete(:buyer_type)
 
       bom        = Bom.new(params)

@@ -33,8 +33,9 @@ class BomsController < ApplicationController
     @bom    = @ticket.boms.new
 
     respond_to do |format|
-      format.html # new.html.erb
-      format.js   # new.js.erb
+      format.html   # new.html.erb
+      format.mobile # new.mobile.erb
+      format.js     # new.js.erb
       format.json { render json: @bom }
     end
   end
@@ -85,7 +86,7 @@ class BomsController < ApplicationController
         format.json { render :json => @bom, status: :ok }
       else
         format.html { render action: "edit" }
-        format.mobile { redirect_to :back }
+        format.mobile { render action: "edit" }
         format.json { render json: @bom.errors, status: :unprocessable_entity }
       end
     end
@@ -104,6 +105,7 @@ class BomsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to service_call_boms_url }
+      format.mobile { redirect_to @bom.ticket }
       format.js
       format.json { head :no_content }
     end

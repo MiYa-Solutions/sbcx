@@ -21,8 +21,8 @@ class ApplicationController < ActionController::Base
   protected
 
   def permission_denied
-    flash[:error] = t('authorization.permission_denied')
-    redirect_to root_url
+    #flash[:error] = t('authorization.permission_denied')
+    redirect_to "/403"
   end
 
   private
@@ -38,6 +38,7 @@ class ApplicationController < ActionController::Base
     redirect_to(session[:return_to] || alternate)
     clear_stored_location
   end
+
   def mobile_device?
     if session[:mobile_param]
       session[:mobile_param] == "1"

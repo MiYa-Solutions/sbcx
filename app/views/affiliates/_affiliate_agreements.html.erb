@@ -7,7 +7,7 @@
       </li>
     </ul>
   </div>
-<!---->
+  <!---->
   <div class="bom collapse" id="add_new_agreement">
     <%= render 'agreements/agreement_form', other_party: @affiliate %>
   </div>
@@ -17,16 +17,17 @@
         <thead>
         <tr>
           <td><h4><%= Agreement.human_attribute_name (:status) %></h4></td>
-          <td class="role_agreement"><h4><%= @affiliate.name %><span><%= "&nbsp;".html_safe + "is your" %></span></h4></td>
+          <td class="role_agreement"><h4><%= @affiliate.name %><span><%= "&nbsp;".html_safe + "is your" %></span></h4>
+          </td>
           <td><h4><%= Agreement.human_attribute_name (:name) %></h4></td>
           <td><h4><%= I18n.t('general.general.actions') %></h4></td>
         </tr>
         </thead>
         <tbody>
         <% @agreements.each do |agreement| %>
-           <tr>
-            <%= render 'agreements/agreement', agreement: agreement %>
-           </tr>
+            <tr>
+              <%= render 'agreements/agreement', agreement: agreement if permitted_to? :show, agreement.becomes(Agreement) %>
+            </tr>
         <% end %>
         </tbody>
       </table>

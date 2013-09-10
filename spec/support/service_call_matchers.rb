@@ -15,8 +15,8 @@ module ServiceCallMatchers
       }
 
       expected_elements.each do |key, selector|
-        @errors[key] = selector unless actual.has_selector?(selector)
-        @errors["#{key}_value"] = "expected #{selector}  with value: #{expected_values[key]}" unless actual.has_selector?(selector, text: /#{Regexp.escape(expected_values[key])}/i)
+        @errors[key] = selector unless actual.has_selector?(selector, visible: :all)
+        @errors["#{key}_value"] = "expected #{selector}  with value: #{expected_values[key]}" unless actual.has_selector?(selector, text: /#{Regexp.escape(expected_values[key])}/i, visible: :all)
       end
       @errors.empty?
 

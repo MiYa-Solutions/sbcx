@@ -1,0 +1,7 @@
+en:
+  activerecord:
+    models:
+      account: "account"
+    attributes:
+      account:
+        accountable_type: "account for"

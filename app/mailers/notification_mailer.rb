@@ -6,7 +6,7 @@ class NotificationMailer < ActionMailer::Base
   #
   #   en.admin_mailer.sign_up_alert.subject
   #
-  # todo make more effiecient - in production does not load second level subclasses
+                                                                                                # todo make more effiecient - in production does not load second level subclasses
   Dir.glob("#{Rails.root}/app/notifications/*.rb").sort.each { |file| require_dependency file } #if Rails.env == "development"
   ServiceCallNotification.subclasses.each do |subclass|
     define_method subclass.name.underscore do |subject, user, service_call|
@@ -17,11 +17,20 @@ class NotificationMailer < ActionMailer::Base
     end
   end
 
-  def agr_new_subcon_notification(subject, user, agreement)
-    @agreement = agreement
-    @user      = user
-    mail to: user.email, subject: subject
+  AgreementNotification.subclasses.each do |subclass|
+    define_method subclass.name.underscore do |subject, user, agreement|
+      @agreement = agreement
+      @user      = user
+
+      mail to: user.email, subject: subject
+    end
   end
+
+  #def agr_new_subcon_notification(subject, user, agreement)
+  #  @agreement = agreement
+  #  @user      = user
+  #  mail to: user.email, subject: subject
+  #end
 
 
   # todo implement method_missing to make the mailer more DRY

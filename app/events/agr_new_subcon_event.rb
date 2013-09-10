@@ -6,16 +6,17 @@ class AgrNewSubconEvent < AgreementEvent
   end
 
   def notification_recipients
-    #  if agreement creator is the organization notify c.party else notify organization
-    if creator.organization == agreement.organization
-      User.my_admins(agreement.counterparty.id)
-    else
-      User.my_admins(agreement.organization.id)
-    end
+    ##  if agreement creator is the organization notify c.party else notify organization
+    #if creator.organization == agreement.organization
+    #  User.my_admins(agreement.counterparty.id)
+    #else
+    #  User.my_admins(agreement.organization.id)
+    #end
+    nil
   end
 
   def notification_class
-    AgrNewSubconNotification
+    nil
   end
 
   private

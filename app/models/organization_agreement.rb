@@ -83,7 +83,7 @@ class OrganizationAgreement < Agreement
     end
 
     event :accept do
-      transition [:pending_org_approval, :pending_cparty_approval] => :active, if: ->(agreement) { Agreement.sibling_active_agreements(agreement).size == 0 }
+      transition [:pending_org_approval, :pending_cparty_approval] => :active
     end
 
     event :reject do

@@ -78,6 +78,8 @@ class ServiceCallsController < ApplicationController
 
   def new_service_call_from_params
     @service_call ||= ServiceCall.new_from_params(current_user.organization, permitted_params(nil).service_call)
+    # this is to work around a textile best_in_place issue which causes html tags to dislay when editing for the first time
+    @service_call.notes = "**" if @service_call.notes.nil? || @service_call.notes.empty?
   end
 
   def load_service_call

@@ -12,15 +12,15 @@ $(document).live "pageshow", ->
     callback: (e) ->
       $a = $(e.currentTarget)
       $('#material-autocomplete').val($a.text())
-      $('#service_call_customer_id').val($a.data('autocomplete').id)
+      $('#bom_material_id').val($a.data('autocomplete').id)
       $('#bom_price').val($a.data('autocomplete').price_cents / 100.0)
       $('#bom_cost').val($a.data('autocomplete').cost_cents / 100.0)
       $("#material-autocomplete").autocomplete('clear')
-    #link: 'target.html?term=', #// link to be attached to each result
+  #link: 'target.html?term=', #// link to be attached to each result
     minLength: 2 #// minimum length of search string
-    transition: 'fade',#// page transition, default is fade
+    transition: 'fade', #// page transition, default is fade
     matchFromStart: false, #// search from start, or anywhere in the string
-    loadingHtml : '<li data-icon="none"><a href="#">Searching...</a></li>', #// HTML to display when searching remotely
+    loadingHtml: '<li data-icon="none"><a href="#">Searching...</a></li>', #// HTML to display when searching remotely
     interval: 3000, #// The minimum delay between server calls when using a remote "source"
-    builder : null, #// optional callback to build HTML for autocomplete
+    builder: null, #// optional callback to build HTML for autocomplete
 
