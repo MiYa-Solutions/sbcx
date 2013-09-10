@@ -2873,6 +2873,30 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 
+.error_title {
+  margin-left: -1.5%;
+  background-color: #DA4E49;
+  background-image: -moz-linear-gradient(center top , #EE5F5B, #BD362F);
+  background-repeat: repeat-x;
+  border-color: #BD362F #BD362F #802420;
+
+
+
+
+  h1 {
+    font-size: 16px;
+    text-transform: none;
+    font-weight: normal;
+    color: white;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    line-height: 28px;
+    letter-spacing: .01em;
+    font-family: Century Gothic;
+  }
+
+}
+
+
 .customer_title {
   margin-left: -1.5%;
   background-color: #FCF8E3;
