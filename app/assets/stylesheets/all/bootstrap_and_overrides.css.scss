@@ -18,6 +18,10 @@ body {
 
 .large_header {
   min-height: 50px;
+
+  img {
+    margin-left: -10px;
+  }
 }
 
 //html {
@@ -783,6 +787,10 @@ input, textarea {
   .btn {
     line-height: 16px;
   }
+
+  #back_from_appointment {
+    margin-left: -55px;
+  }
 }
 
 .field_input {
@@ -1014,6 +1022,12 @@ fieldset label {
 .nav-list {
   a {
     text-decoration: none;
+  }
+}
+
+.navbar-inner {
+  img {
+    margin-left: -15px;
   }
 }
 
@@ -1312,7 +1326,7 @@ a:hover {
   li {
     float: left;
     line-height: 16px;
-    width: 50%;
+    width: 55%;
   }
 
   li:last-child {
@@ -1410,11 +1424,11 @@ a:hover {
 
 #new_posting_rule {
   input, textarea {
-    width: 40%;
+    width: 130px;
   }
 
   #submit_posting_rules {
-    width: 25%;
+    width: 120px;
   }
 }
 
@@ -1719,10 +1733,16 @@ a:hover {
 
   }
 
+  #add_part {
+    text-align: center;
+    padding-left: 7px;
+  }
+
   .add_button {
     margin-left: 1px;
     position: relative;
     width: 10%;
+
 
     .add_part_service_call input, .add_part_service_call textarea, .add_part_service_call text_field {
       margin-left: -5px;
@@ -2087,6 +2107,15 @@ div.DTTT_collection {
     position: relative;
     right: -21px;
     top: -19px;
+  }
+
+
+  .form-horizontal .control-label {
+    width: 100px;
+  }
+
+  .form-horizontal .controls {
+    margin-left: 110px;
   }
 
 }
@@ -2873,30 +2902,6 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 
-.error_title {
-  margin-left: -1.5%;
-  background-color: #DA4E49;
-  background-image: -moz-linear-gradient(center top , #EE5F5B, #BD362F);
-  background-repeat: repeat-x;
-  border-color: #BD362F #BD362F #802420;
-
-
-
-
-  h1 {
-    font-size: 16px;
-    text-transform: none;
-    font-weight: normal;
-    color: white;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
-    line-height: 28px;
-    letter-spacing: .01em;
-    font-family: Century Gothic;
-  }
-
-}
-
-
 .customer_title {
   margin-left: -1.5%;
   background-color: #FCF8E3;
@@ -2928,7 +2933,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .posting_rules_inputs {
   margin-left: 5%;
   select {
-    width: 42.8%;
+    width: 139px;
   }
 
 }
@@ -3246,17 +3251,48 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     height: 35px;
     line-height: 32px;
     margin: 7px 80px 7px 0;
-    padding-bottom: 0;
     padding-left: 15px;
     width: 220px;
   }
 
+  textarea {
+    border: 1px solid #254061;
+    border-radius: 4px 4px 4px 4px;
+    color: #888888;
+    font-size: 16px;
+    line-height: 32px;
+    margin: 7px 80px 7px 0;
+    padding-left: 15px;
+    width: 220px;
+  }
+
+  label {
+    display: none;
+  }
+
+  .form-horizontal .controls {
+    margin-left: 0;
+  }
+
   .btn {
     margin-top: 10px;
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    width: 110px;
+    //padding-top: 5px;
+    line-height: normal;
+    padding: 9px 14px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: center;
+    vertical-align: middle;
+    height: 38px;
+
+
   }
 
 }
-
 
 .welcome_footer {
 

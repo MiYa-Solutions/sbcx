@@ -1,15 +1,42 @@
-<h2>Forgot your password?</h2>
+<div class="background_welcome">
+  <%= image_tag("bg7.jpg", id: "background_welcome") %>
+</div>
 
-<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= f.error_notification %>
+<div class="row-fluid">
+  <div class="span1"></div>
+  <div class="span10">
+    <div class="well well_signin">
 
-  <div class="inputs">
-    <%= f.input :email, :required => true %>
+
+      <div class="smart_label"  >
+        <ul>
+          <li><h1><%= I18n.t('general.message.forgot_pass') %></h1></li>
+          <li>
+          </li>
+        </ul>
+      </div>
+
+      <br>
+
+      <div class="row-fluid">
+        <div class="span6">
+
+          <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }, :html => { :class => 'form-horizontal' }) do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :email, "type" => "email", :required => true %>
+
+
+              <div class="form-actions">
+                <%= f.button :submit, I18n.t('general.general.send_inst'), :class => 'btn btn-large btn-primary' %>
+
+              </div>
+
+          <% end %>
+
+        </div>
+      </div>
+
+    </div>
+
   </div>
-
-  <div class="actions">
-    <%= f.button :submit, "Send me reset password instructions" %>
-  </div>
-<% end %>
-
-<%= render "links" %>
+</div>

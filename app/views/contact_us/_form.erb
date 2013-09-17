@@ -3,13 +3,13 @@
 
     <div class="smart_label"  >
       <ul>
-        <li><h1>Contact Us</h1></li>
+        <li><h1><%= I18n.t('general.general.contact_us') %></h1></li>
         <li>
         </li>
       </ul>
     </div>
     <br>
-    <h4>SubConTraX is in closed BETA mode. If you would like to join our beta user group please contact us using the form below.</h4>
+    <h4><%= I18n.t('general.message.contact_us') %></h4>
 
     <br>
 
@@ -27,8 +27,8 @@
 
 
                     <div class="form-actions">
-                      <%= link_to 'Back', root_path, :class => 'btn btn-large', id: 'back_from_sign_up' %>
-                      <%= form.submit "Send", :class => 'btn btn-large btn-primary' %> </br>
+                      <%= link_to I18n.t('general.general.back'), root_path, :class => 'btn btn-large', id: 'back_from_sign_up' %>
+                      <%= form.submit I18n.t('general.general.send'), :class => 'btn btn-large btn-primary' %> </br>
                     </div>
 
               <% end %>

@@ -128,12 +128,15 @@
            <div class="row-fluid">
              <div class="welcome_contactus">
 
-               <input type="text" name="name" value="" class="login_hint" id="name" title="*Name" />
-               <input type="text" name="email" value="" class="login_hint" id="email" title="*Email" />
-               <input type="text" name="phone" value="" class="login_hint" id="phone" title="*Phone" />
-               <input type="text" class="login_hint" id="notes" title="Notes" />
-               <br>
-               <a class="btn btn-large btn-primary" href="/users/sign_up">Contact Us</a>
+               <%= simple_form_for @message, :url => contact_us_path, :html => { :class => 'form-horizontal' } do |form| %>
+
+                   <%= form.input :name, :html => { :class => 'login_hint' }, id: "name", title: "*Name", placeholder: "*Name" %>
+                   <%= form.input :email, "type" => "email", :html => { :class => 'login_hint' }, id: "email", title: "*Email", placeholder: "*Email" %>
+                   <%= form.input :phone, "class" => "login_hint", id: "phone", title: "*Phone", placeholder: "*Phone" %>
+                   <%= form.text_area :content, :rows => "4", :html => { :class => 'login_hint' }, id: "notes", title: "Notes", placeholder: "Notes" %>
+                   <%= form.submit I18n.t('general.general.contact_us'), :class => 'btn btn-large btn-primary' %> </br>
+
+               <% end %>
 
              </div>
            </div>
