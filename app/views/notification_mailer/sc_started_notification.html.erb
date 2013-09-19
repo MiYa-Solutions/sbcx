@@ -42,6 +42,7 @@
                           <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>
                           ,<br>
                           <%= I18n.t('notification_mailer.sc_started_notification.content', subcontractor: @service_call.subcontractor.name, ref: @service_call.ref_id).html_safe %>
+                          &nbsp;<strong><%= @service_call.subcontractor.name.html_safe %></strong>.
                           <br>
                         </div>
                       </td>

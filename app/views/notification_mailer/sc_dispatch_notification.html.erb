@@ -42,7 +42,8 @@
                           <h4 class="h4"><%= I18n.t('notification_mailer.sc_dispatch_notification.title').html_safe %></h4>
                           <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>
                           ,<br>
-                          <%= I18n.t('notification_mailer.sc_dispatch_notification.content', technician: @service_call.technician.name, ref: @service_call.ref_id) %>
+                          <%= I18n.t('notification_mailer.sc_dispatch_notification.content', technician: @service_call.technician.name, ref: @service_call.ref_id).html_safe %>
+                          &nbsp;<strong><%= @service_call.technician.name.html_safe %></strong>.
                           <br>
                         </div>
                       </td>
@@ -83,6 +84,7 @@
                                   &nbsp;<strong><%= @service_call.customer.class.human_attribute_name(:mobile_phone) %>
                               :</strong>&nbsp;<%= @service_call.customer.mobile_phone %>
                               <% end %>
+                              <br>
                             </td>
                           </tr>
                           <tr>
