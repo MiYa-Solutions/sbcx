@@ -58,7 +58,7 @@ class ServiceCallsController < ApplicationController
         end
 
         #format.json { respond_with_bip @service_call }
-        format.json { respond_with_bip(@service_call) }
+        format.json { respond_with_bip(@service_call.becomes(ServiceCall)) }
       end
     else
       respond_to do |format|
@@ -67,7 +67,7 @@ class ServiceCallsController < ApplicationController
           flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
           render :action => 'show'
         end
-        format.json { respond_bip_error @service_call }
+        format.json { respond_bip_error @service_call.becomes(ServiceCall) }
 
       end
 
