@@ -168,7 +168,22 @@ FactoryGirl.define do
 
     association :subcontractor
 
+    email Faker::Internet.email
+    name Faker::Name.name
+    phone Faker::PhoneNumber.phone_number
+    mobile_phone Faker::PhoneNumber.phone_number
+    work_phone Faker::PhoneNumber.phone_number
+    company Faker::Company.name
+    address1 Faker::Address.street_address
+    address2 Faker::Address.street_address(true)
+    city Faker::Address.city
+    state Faker::Address.us_state_abbr
+    zip Faker::Address.zip_code
+    country "US"
+
+
     notes Faker::Lorem.sentence
+
 
     after(:build) do |service_call|
       service_call.customer = service_call.organization.customers.first

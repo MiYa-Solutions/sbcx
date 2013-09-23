@@ -1,6 +1,6 @@
 <div class="well well_job_history well_job_show">
 
-    <div class="row-fluid">
+  <div class="row-fluid">
 
     <table class="table table-striped" id="event_log_in_service_call">
       <thead>
@@ -17,7 +17,7 @@
           <tr>
             <td><%= event.reference_id %></td>
             <td><%= event.name %></td>
-            <td><%= event.description %></td>
+            <td><%= textilize(event.description).try(:html_safe) %></td>
             <td><%= l event.created_at, :format => :default %></td>
             <td><%= event.creator.name %></td>
           </tr>
@@ -25,5 +25,5 @@
       </tbody>
     </table>
 
-    </div>
+  </div>
 </div>

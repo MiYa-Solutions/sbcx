@@ -2,8 +2,8 @@ class ServiceCallObserver < ActiveRecord::Observer
 
   def after_create(record)
     Rails.logger.debug { "invoked ServiceCallObserver after create" }
-    record.ref_id ||= record.id
-    record.save
+    #record.ref_id ||= record.id
+    #record.save
   end
 
   def after_close(service_call, transition)
@@ -14,6 +14,7 @@ class ServiceCallObserver < ActiveRecord::Observer
   def after_cancel(service_call, transition)
     service_call.events << ServiceCallCancelEvent.new unless service_call.events.last.instance_of?(ServiceCallCanceledEvent)
   end
+
   def after_un_cancel(service_call, transition)
     service_call.events << ServiceCallUnCancelEvent.new
   end
