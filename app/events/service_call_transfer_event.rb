@@ -31,10 +31,24 @@ class ServiceCallTransferEvent < ServiceCallEvent
 
       new_service_call = TransferredServiceCall.new
 
-      new_service_call.organization       = service_call.subcontractor.becomes(Organization)
-      new_service_call.provider           = service_call.organization.becomes(Provider)
-      new_service_call.customer           = service_call.customer
-      new_service_call.ref_id             = service_call.ref_id
+      new_service_call.organization = service_call.subcontractor.becomes(Organization)
+      new_service_call.provider     = service_call.organization.becomes(Provider)
+      new_service_call.customer     = service_call.customer
+      new_service_call.ref_id       = service_call.ref_id
+
+      new_service_call.company      = service_call.company
+      new_service_call.address1     = service_call.address1
+      new_service_call.address2     = service_call.address2
+      new_service_call.city         = service_call.city
+      new_service_call.state        = service_call.state
+      new_service_call.zip          = service_call.zip
+      new_service_call.country      = service_call.country
+      new_service_call.phone        = service_call.phone
+      new_service_call.mobile_phone = service_call.mobile_phone
+      new_service_call.work_phone   = service_call.work_phone
+      new_service_call.email        = service_call.email
+
+
       new_service_call.transferable       = service_call.re_transfer
       new_service_call.allow_collection   = service_call.allow_collection
       new_service_call.name               = service_call.name

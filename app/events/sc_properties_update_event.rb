@@ -1,8 +1,8 @@
-class ScPropertiesUpdateEvent < ServiceCallEvent
+class ScPropertiesUpdateEvent < ScPropSynchEvent
 
   def init
-    self.name         = I18n.t('service_call_properties_update_event.name')
-    self.description  = I18n.t('service_call_properties_update_event.description', user: creator.name)
+    self.name = I18n.t('service_call_properties_update_event.name')
+    self.description = I18n.t('service_call_properties_update_event.description', user: creator.name) unless self.description
     self.reference_id = 100042
   end
 
@@ -15,8 +15,7 @@ class ScPropertiesUpdateEvent < ServiceCallEvent
   end
 
   def update_provider
-    e                           = ScPropertiesUpdatedEvent.new(triggering_event: self)
-    e.properties[:updating_org] = creator.organization.name
+    e = ScPropertiesUpdatedEvent.new(triggering_event: self)
     prov_service_call.events << e
   end
 
@@ -26,11 +25,10 @@ class ScPropertiesUpdateEvent < ServiceCallEvent
 
   def process_event
 
-    #properties.each do |attr|
-    #  description += "\nattribute: #{attr} old value: #{properties[attr][0]}, updated value: #{properties[attr][1]}"
-    #end
-    self.description.concat "\n#{self.properties['changed_attrs']}"
-    self.save
+
+    set_description
+
+    self.save!
 
     super
 

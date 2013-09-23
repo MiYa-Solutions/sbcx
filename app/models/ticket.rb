@@ -58,7 +58,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :provider
   belongs_to :payment
   belongs_to :technician, class_name: User
-  has_many :events, as: :eventable
+  has_many :events, as: :eventable, :order => 'id DESC'
   has_many :notifications, as: :notifiable
   has_many :boms do
     def build(params)
@@ -99,7 +99,7 @@ class Ticket < ActiveRecord::Base
   attr_writer :tag_list
 
   # synch the associated contractor and subcontractor tickets
-  after_save TicketSynchService.new
+  before_update TicketSynchService.new
 
   ### TRANSFORM THE DATES BEFORE SAVING
   before_save :save_started_on_text
@@ -109,7 +109,7 @@ class Ticket < ActiveRecord::Base
 
                                                                                        # create a new customer in case one was asked for
   before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
-  after_create :set_name
+  before_create :set_name
 
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
   validates_presence_of :organization, :provider

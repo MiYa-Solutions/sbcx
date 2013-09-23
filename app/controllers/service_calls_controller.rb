@@ -45,33 +45,31 @@ class ServiceCallsController < ApplicationController
 
   def update
     @bom = Bom.new
-    if @service_call.update_attributes(permitted_params(@service_call).service_call)
-      respond_to do |format|
+    respond_to do |format|
+      if @service_call.update_attributes(permitted_params(@service_call).service_call)
+
         format.js {}
+
         format.html do
           flash[:success] = t('service_call.crud_messages.update.success')
           redirect_to service_call_path @service_call
         end
+
         format.mobile do
           flash[:success] = t('service_call.crud_messages.update.success')
           redirect_to service_call_path @service_call
         end
 
-        #format.json { respond_with_bip @service_call }
-        format.json { respond_with_bip(@service_call.becomes(ServiceCall)) }
-      end
-    else
-      respond_to do |format|
+        format.json { respond_with_bip @service_call }
+
+      else
         format.js { respond_bip_error @service_call }
         format.html do
           flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
           render :action => 'show'
         end
         format.json { respond_bip_error @service_call.becomes(ServiceCall) }
-
       end
-
-
     end
   end
 

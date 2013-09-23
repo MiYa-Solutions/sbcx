@@ -1,8 +1,8 @@
-class ScPropertiesUpdatedEvent < ServiceCallEvent
+class ScPropertiesUpdatedEvent < ScPropSynchEvent
 
   def init
-    self.name         = I18n.t('service_call_properties_updated_event.name')
-    self.description  = I18n.t('service_call_properties_updated_event.description', updating_org: self.properties[:updating_org])
+    self.name = I18n.t('service_call_properties_updated_event.name')
+    self.description = I18n.t('service_call_properties_updated_event.description', updating_org: triggering_event.user.organization.name) unless self.description
     self.reference_id = 100043
   end
 
@@ -23,30 +23,9 @@ class ScPropertiesUpdatedEvent < ServiceCallEvent
   end
 
   def process_event
-    attrs            = triggering_event.properties[:changed_attr]
-    self.description += attr
-
-    attrs.each do |key, value|
-      service_call.send("#{key}=", value[1])
-    end
-
-    service_call.save!
-    self.save!
-  end
-
-  private
-
-  # define hstore properties methods
-  %w[changed_attr updating_org].each do |key|
-    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("properties @> (? => ?)", key, value) }
-
-    define_method(key) do
-      properties && properties[key]
-    end
-
-    define_method("#{key}=") do |value|
-      self.properties = (properties || {}).merge(key => value)
-    end
+    self.properties = triggering_event.properties
+    synch_ticket
+    super
   end
 
 

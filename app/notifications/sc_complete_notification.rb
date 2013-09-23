@@ -8,7 +8,7 @@ class ScCompleteNotification < ServiceCallNotification
   end
 
   def default_content
-    I18n.t('notifications.sc_complete_notification.content', technician: service_call.technician.name, completed_at: service_call.completed_on)
+    I18n.t('notifications.sc_complete_notification.content', technician: service_call.technician.try(:name), completed_at: service_call.completed_on)
   end
 
 end

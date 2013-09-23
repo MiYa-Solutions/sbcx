@@ -56,6 +56,8 @@ class MyServiceCall < ServiceCall
     self.provider = self.organization.becomes(Provider)
   end
 
+  after_create :set_ref_id
+
 
   state_machine :status, :initial => :new do
 
@@ -186,6 +188,11 @@ class MyServiceCall < ServiceCall
     !self.work_done?
 
 
+  end
+
+  def set_ref_id
+    self.ref_id = self.id
+    update_column :ref_id, self.id
   end
 
 end
