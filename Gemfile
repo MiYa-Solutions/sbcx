@@ -36,6 +36,7 @@ gem 'money-rails'
 gem 'select2-rails', '3.3.1'
 gem 'bootstrap-editable-rails', '0.0.4'
 gem 'RedCloth', '~> 4.2.9', :require => 'redcloth'
+gem 'rails3_acts_as_paranoid', '~> 0.2.5'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'

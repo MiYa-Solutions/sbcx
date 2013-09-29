@@ -20,7 +20,7 @@
 
 class Bom < ActiveRecord::Base
   belongs_to :ticket
-  belongs_to :material
+  belongs_to :material, with_deleted: true
   belongs_to :buyer, :polymorphic => true
 
   stampable

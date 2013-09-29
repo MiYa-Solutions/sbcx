@@ -411,7 +411,8 @@ CREATE TABLE materials (
   cost_cents      INTEGER DEFAULT 0                                         NOT NULL,
   cost_currency   CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
   price_cents     INTEGER DEFAULT 0                                         NOT NULL,
-  price_currency  CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL
+  price_currency  CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
+  deleted_at      TIMESTAMP WITHOUT TIME ZONE
 );
 
 
@@ -1498,3 +1499,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130908213000');
 INSERT INTO schema_migrations (version) VALUES ('20130908213106');
 
 INSERT INTO schema_migrations (version) VALUES ('20130922221253');
+
+INSERT INTO schema_migrations (version) VALUES ('20130929170831');

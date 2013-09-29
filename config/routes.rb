@@ -54,7 +54,7 @@ Sbcx::Application.routes.draw do
 
   resources :organizations, only: [:new, :create, :edit, :show, :index, :update]
   resources :customers, only: [:new, :create, :edit, :show, :index, :update]
-  resources :materials, only: [:new, :create, :edit, :show, :index, :update] do
+  resources :materials, only: [:new, :create, :edit, :show, :index, :update, :destroy] do
     get :autocomplete_material_name, :on => :collection
   end
 

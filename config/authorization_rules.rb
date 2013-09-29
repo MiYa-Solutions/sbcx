@@ -50,6 +50,10 @@ authorization do
   end
   role :org_admin do
     includes :dispatcher
+    has_permission_on :materials, to: [:destroy] do
+      if_attribute :organization_id => is { user.organization_id }
+    end
+
     has_permission_on :my_users, :to => [:new, :create, :edit, :update, :show]
     has_permission_on :subcontractors, :to => [:new, :create]
     has_permission_on :providers, :to => [:new, :create]
