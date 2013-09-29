@@ -165,6 +165,22 @@ module ServiceCallsHelper
     end
   end
 
+  def billing_provider_collected_form(service_call)
+    simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.billing_status.provider_collected.form_classes") } do |f|
+      concat (hidden_field_tag "service_call[billing_status_event]", 'provider_collected')
+      concat (hidden_field_tag "service_call[collector_id]", service_call.provider_id)
+      concat (hidden_field_tag "service_call[collector_type]", 'Organization')
+      concat (f.input :payment_type, collection: payment_types)
+      concat (f.submit service_call.class.human_billing_status_event_name(:provider_collected).titleize,
+                       id:    'provider_collected_service_call_btn',
+                       class: StylingService.instance.get_style("service_call.forms.billing_status.provider_collected.button_classes"),
+                       title: I18n.t("service_call.forms.billing_status.provider_collected.tooltip"),
+                       rel:   'tooltip'
+             )
+    end
+
+  end
+
   def billing_collect_form(service_call)
     simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.billing_status.collect.form_classes") } do |f|
       concat (hidden_field_tag "service_call[billing_status_event]", 'collect')

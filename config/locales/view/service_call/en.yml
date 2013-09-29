@@ -71,6 +71,8 @@ en:
           tooltip: "Click to indicate the subcontractor has invoiced the customer"
         provider_invoiced:
           tooltip: "Click to indicate the Contractor has invoiced the customer"
+        provider_collected:
+          tooltip: "Click to indicate the Contractor has collected the payment from the customere"
         overdue:
           tooltip: "Click to indicate the payment for the service is overdue"
         collect:
