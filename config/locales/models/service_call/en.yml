@@ -235,3 +235,12 @@ en:
   service_call_subcon_cleared_event:
     name: "Subcontractor Cleared Payment"
     description: '%{subcon} has cleared the %{payment_type} payment for job %{ref}'
+  service_call_properties_update_event:
+    name: "Properties Update"
+    description: 'The following properties were updated by %{user}'
+
+  service_call_properties_updated_event:
+    name: "Properties Got Updated"
+    description: "The following job properties were updated by: %{updating_org}"
+  service_call_prop_synch_event:
+    description: '%{attr_name} - New Value: ''%{new_val}'', Old Value: ''%{old_val}'''

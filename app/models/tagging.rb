@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: taggings
+#
+#  id            :integer          not null, primary key
+#  tag_id        :integer
+#  taggable_id   :integer
+#  taggable_type :string(255)
+#  tagger_id     :integer
+#  tagger_type   :string(255)
+#  context       :string(128)
+#  created_at    :datetime
+#
+
 class Tagging < ActiveRecord::Base
   belongs_to :tag
   belongs_to :taggable, :polymorphic => true
@@ -9,9 +23,9 @@ class Tagging < ActiveRecord::Base
   private
 
   def remove_unused_tags
-      if tag.taggings.count.zero?
-        tag.destroy
-      end
+    if tag.taggings.count.zero?
+      tag.destroy
+    end
   end
 
 end
