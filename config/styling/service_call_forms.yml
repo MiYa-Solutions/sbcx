@@ -132,6 +132,10 @@ service_call:
       deposit_to_prov:
         form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
+      employee_deposit:
+        form_classes: "blue-button"
+        button_classes: "btn btn-large btn-primary"
+
 
   states:
     status:

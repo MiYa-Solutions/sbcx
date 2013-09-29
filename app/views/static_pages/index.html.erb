@@ -130,20 +130,12 @@
 
                <%= simple_form_for @message, :url => contact_us_path, :html => { :class => 'form-horizontal' } do |form| %>
 
-
-                   <%= simple_form_for @message, :url => contact_us_path, :html => { :class => 'form-horizontal' } do |form| %>
-
                        <%= form.input :name, :input_html => { :class => "login_hint", :title => '*Name', :name =>"name" } %>
                        <%= form.input :email, "type" => "email", :input_html => { :class => "login_hint", :title => '*Email', :name =>"email" } %>
                        <%= form.input :phone, :input_html => { :class => "login_hint", :title => '*Phone', :name =>"phone" } %>
                        <%= form.text_area :content, :rows => "4", :html => { :class => 'login_hint', :title => '*Note', :name =>"note" } %>
 
                        <%= form.submit I18n.t('general.general.contact_us'), :class => 'btn btn-large btn-primary' %> </br>
-
-                   <% end %>
-
-
-
                <% end %>
 
              </div>
