@@ -790,7 +790,7 @@ CREATE TABLE tickets (
   collector_type        CHARACTER VARYING(255),
   provider_status       INTEGER,
   work_status           INTEGER,
-  re_transfer           BOOLEAN,
+  re_transfer           BOOLEAN DEFAULT TRUE,
   payment_type          CHARACTER VARYING(255),
   subcon_payment        CHARACTER VARYING(255),
   provider_payment      CHARACTER VARYING(255),
@@ -1501,3 +1501,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130908213106');
 INSERT INTO schema_migrations (version) VALUES ('20130922221253');
 
 INSERT INTO schema_migrations (version) VALUES ('20130929170831');
+
+INSERT INTO schema_migrations (version) VALUES ('20130929210440');
