@@ -245,6 +245,10 @@ class TransferredServiceCall < ServiceCall
 
   end
 
+  # local transferred jobs don't have a ref_id set, therefore if not set then defaults to the id
+  def ref_id
+    read_attribute(:ref_id) || id
+  end
 
   def provider_settlement_allowed?
     (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)

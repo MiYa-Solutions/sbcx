@@ -251,7 +251,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def validate_circular_transfer
-    subcontractor_id != organization_id &&
+    subcontractor_id != organization_id && subcontractor_id != provider_id &&
         Ticket.where("ref_id = #{ref_id} AND organization_id = #{subcontractor_id}").size > 0
   end
 
