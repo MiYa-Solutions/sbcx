@@ -20,6 +20,7 @@
 
 class Material < ActiveRecord::Base
   stampable
+  acts_as_paranoid
   belongs_to :organization
   belongs_to :supplier
   has_many :boms
