@@ -20,15 +20,15 @@ class CustomersController < ApplicationController
     # todo create symbols for the notification strings
     if @customer.save
       respond_to do |format|
-        format.js { }
+        format.js {}
         format.html do
           flash[:success] = t 'customer.crud_messages.success', customer_name: @customer.name
-          redirect_back_or_to(@customer)
+          redirect_to(@customer)
         end
 
         format.mobile do
           flash[:success] = t 'customer.crud_messages.success', customer_name: @customer.name
-          redirect_back_or_to(@customer)
+          redirect_to(@customer)
         end
       end
     else
@@ -44,7 +44,7 @@ class CustomersController < ApplicationController
     #@customer = current_user.organization.customers.find(params[:id])
 
     respond_to do |format|
-      format.js { }
+      format.js {}
       format.any(:html, :mobile) do
         if @customer.update_attributes(permitted_params(nil).customer)
           flash[:success] = "Profile updated"
@@ -111,8 +111,8 @@ class CustomersController < ApplicationController
 
   def show
     if permitted_to! :show, Customer.find(params[:id])
-      @customer = Customer.find(params[:id])
-      @jobs = @customer.service_calls.where("tickets.type = 'MyServiceCall'").order('id desc').limit(5)
+      @customer   = Customer.find(params[:id])
+      @jobs       = @customer.service_calls.where("tickets.type = 'MyServiceCall'").order('id desc').limit(5)
       @agreements = CustomerAgreement.agreements_for(@customer)
     end
 

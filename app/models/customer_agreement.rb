@@ -22,7 +22,6 @@
 class CustomerAgreement < Agreement
 
   before_create :set_default_rule
-  after_create :activate
   state_machine :status, initial: :draft do
     state :draft, value: STATUS_DRAFT
     state :active, value: STATUS_ACTIVE do
