@@ -18,7 +18,7 @@ class ServiceCallRejectedEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.reject_work
+    service_call.reject_work(:state_only)
     super
   end
 end

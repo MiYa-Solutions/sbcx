@@ -9,7 +9,7 @@ class ServiceCallInvoicedEvent < ServiceCallEvent
 
   def process_event
 
-    service_call.subcon_invoiced_payment if service_call.can_subcon_invoiced_payment?
+    service_call.subcon_invoiced_payment(:state_only) if service_call.can_subcon_invoiced_payment?
     super
   end
 
@@ -18,7 +18,7 @@ class ServiceCallInvoicedEvent < ServiceCallEvent
   end
 
   def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
+    User.my_admins(service_call.organization.id)
   end
 
   def notification_class

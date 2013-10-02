@@ -185,6 +185,7 @@ describe "Service Call pages" do
 
         before do
           in_browser(:org) do
+            fill_autocomplete new_customer_fld, with: customer.name.chop, select: customer.name
             #auto_complete 'service_call_customer', customer.name
           end
         end
@@ -198,7 +199,6 @@ describe "Service Call pages" do
 
         it "should be created successfully" do
           expect do
-            fill_autocomplete new_customer_fld, with: customer.name.chop, select: customer.name
             click_button create_btn
           end.to change(ServiceCall, :count).by(1)
         end
@@ -1345,9 +1345,7 @@ describe "Service Call pages" do
                               end
 
                               it " service call should have the collected event associated " do
-                                service_call.reload
-                                service_call.events.pluck(:reference_id).should include(100024)
-                                should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_collected_event.description', subcontractor: service_call.subcontractor.name))
+                                should have_event('100024')
                               end
 
                             end
@@ -1377,8 +1375,7 @@ describe "Service Call pages" do
                                 end
 
                                 it 'service call should have the deposit_to_prov event associated ' do
-                                  @subcon_service_call.reload.events.pluck(:reference_id).should include(100022)
-                                  should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_deposit_event.description', provider: @subcon_service_call.provider.name))
+                                  should have_event('100022')
                                 end
 
                                 describe 'provider view' do
@@ -1407,7 +1404,7 @@ describe "Service Call pages" do
                                   end
 
                                   it 'should change the status to paid' do
-                                    should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.paid'))
+                                    should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
                                   end
 
                                   describe 'subcontractor view' do
@@ -1558,8 +1555,8 @@ describe "Service Call pages" do
                         end
 
                         it " service call should have the provider invoiced event associated " do
-                          @subcon_service_call.events.pluck(:reference_id).should include(100020)
-                          should have_selector('table#event_log_in_service_call td', text: I18n.t('service_call_provider_invoiced_event.description', provider: @subcon_service_call.provider.name))
+                          #@subcon_service_call.events.pluck(:reference_id).should include(100020)
+                          should have_event('100020')
                         end
 
 
@@ -1957,11 +1954,11 @@ describe "Service Call pages" do
                   click_button JOB_BTN_UN_CANCEL
                 end
 
-                it 'page should show a success message, cancel, transfer and start button with a new status' do
+                it 'page should show a success message, cancel, transfer and start button with a transferred status' do
                   should have_success_message
-                  should have_status(JOB_STATUS_NEW)
-                  should have_button(JOB_BTN_START)
-                  should have_button(JOB_BTN_TRANSFER)
+                  should have_status(JOB_STATUS_TRANSFERRED)
+                  should have_button(JOB_BTN_ACCEPT)
+                  should have_button(JOB_BTN_CANCEL_TRANSFER)
                   should have_button(JOB_BTN_CANCEL)
                   should have_event('100037')
                 end
@@ -2144,14 +2141,21 @@ describe "Service Call pages" do
 
                         it 'should show: close button, a cleared status and the clear event' do
                           should have_button(JOB_BTN_SUBCON_PAYMENT_CLEAR)
-                          should have_subcon_status(JOB_SUBCON_STATUS_CLEARED)
-                          should have_event('100041')
+                          should have_billing_status(JOB_BILLING_STATUS_CLEARED)
+                          should have_event('100034')
                         end
 
                         describe 'clear subcon payment' do
                           before do
                             click_button JOB_BTN_SUBCON_PAYMENT_CLEAR
                           end
+
+                          it 'should show: close button, a cleared status and the clear event' do
+                            should have_no_button(JOB_BTN_SUBCON_PAYMENT_CLEAR)
+                            should have_subcon_status(JOB_SUBCON_STATUS_CLEARED)
+                            should have_event('100041')
+                          end
+
                           describe 'close: ' do
                             before do
                               click_button JOB_BTN_CLOSE
@@ -2460,7 +2464,7 @@ describe "Service Call pages" do
               click_button save_btn_selector
             end
 
-            it { should have_selector("div.error") }
+            it { should have_selector("div.alert-error") }
           end
 
 

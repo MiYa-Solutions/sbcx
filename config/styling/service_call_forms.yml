@@ -179,6 +179,6 @@ service_call:
       subcon_claim_deposited: "status_blue"
       invoiced_by_prov: "status_blue"
       overdue: "status_red"
-      paid: "status_green"
+      paid: "status_blue"
       cleared: "status_green"
 

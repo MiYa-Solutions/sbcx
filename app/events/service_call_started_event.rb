@@ -22,7 +22,7 @@ class ServiceCallStartedEvent < ServiceCallEvent
   def process_event
     service_call.started_on = self.triggering_event.service_call.started_on
     if service_call.can_start_work?
-      service_call.start_work
+      service_call.start_work(:state_only)
     else
       service_call.save!
     end

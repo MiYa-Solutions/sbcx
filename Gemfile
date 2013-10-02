@@ -74,7 +74,7 @@ group :test do
   gem 'launchy', '2.1.0'
   gem 'mocha'
   gem 'capybara-screenshot', '0.3.4'
-  gem 'poltergeist', '1.2.0'
+  gem 'poltergeist', '1.4.1'
   gem 'shoulda'
   gem 'spork', '0.9.0'
   gem 'faye-websocket', '0.4.4'

@@ -8,10 +8,10 @@ class ServiceCallCompletedEvent < ScCompletionEvent
 
   def process_event
     service_call.completed_on = self.triggering_event.service_call.completed_on
-    service_call.complete_work
+    service_call.complete_work(:state_only)
     super
     invoke_affiliate_billing
-    CustomerBillingService.new(self).execute  if service_call.organization.my_customer?(service_call.customer)
+    CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
   end
 
   def update_provider

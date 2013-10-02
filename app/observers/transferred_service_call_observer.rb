@@ -38,8 +38,8 @@ class TransferredServiceCallObserver < ServiceCallObserver
   end
 
   def after_start_work(service_call, transition)
-    Rails.logger.debug { "invoked observer AFTER start \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ServiceCallStartEvent.new unless service_call.events.last.instance_of?(ServiceCallStartedEvent)
+    Rails.logger.debug { "invoked observer AFTER start \n #{service_call.inspect} \n #{transition.args.inspect}\n transition args: #{transition.args}" }
+    service_call.events << ServiceCallStartEvent.new unless transition.args.first == :state_only
   end
 
   def before_subcontractor_accepted(service_call, transition)
@@ -52,8 +52,8 @@ class TransferredServiceCallObserver < ServiceCallObserver
   end
 
   def after_reject(service_call, transition)
-    Rails.logger.debug { "invoked observer after reject \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.events << ServiceCallRejectEvent.new unless service_call.events.last.instance_of?(ServiceCallRejectedEvent)
+    Rails.logger.debug { "invoked observer after reject \n #{service_call.inspect} \n #{transition.inspect}\n transition args: #{transition.args}" }
+    service_call.events << ServiceCallRejectEvent.new unless transition.args.first == :state_only
   end
 
   def before_invoice_payment(service_call, transition)
@@ -62,7 +62,8 @@ class TransferredServiceCallObserver < ServiceCallObserver
   end
 
   def after_provider_invoiced_payment(service_call, transition)
-    service_call.events << ScProviderInvoicedEvent.new unless service_call.events.last.instance_of?(ScProviderInvoicedEvent)
+    Rails.logger.debug { "invoked observer after provider_invoiced \n #{service_call.inspect} \n #{transition.inspect}\n transition args: #{transition.args}" }
+    service_call.events << ScProviderInvoicedEvent.new unless transition.args.first == :state_only
   end
 
   def after_settle_provider(service_call, transition)

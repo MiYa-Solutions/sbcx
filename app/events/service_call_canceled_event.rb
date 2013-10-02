@@ -28,7 +28,7 @@ class ServiceCallCanceledEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.cancel
+    service_call.cancel(:state_only)
     super
   end
 

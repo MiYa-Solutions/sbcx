@@ -15,7 +15,8 @@ class ScProviderInvoicedEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.provider_invoiced_payment
+    # pass a :state_only argument to the observer indicating that only a state transition should be performed
+    service_call.provider_invoiced_payment(:state_only)
     super
   end
 

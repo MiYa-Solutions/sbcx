@@ -10,9 +10,8 @@ class ServiceCallObserver < ActiveRecord::Observer
     service_call.events << ScCloseEvent.new
   end
 
-  # todo the unless clause doesn't seem safe in case other events happen after the corresponding one - revise
   def after_cancel(service_call, transition)
-    service_call.events << ServiceCallCancelEvent.new unless service_call.events.last.instance_of?(ServiceCallCanceledEvent)
+    service_call.events << ServiceCallCancelEvent.new unless transition.args.first == :state_only
   end
 
   def after_un_cancel(service_call, transition)
@@ -46,18 +45,18 @@ class ServiceCallObserver < ActiveRecord::Observer
   # todo the unless clause doesn't seem safe in case other events happen after the corresponding one - revise
   def after_complete_work(service_call, transition)
     Rails.logger.debug { "invoked observer AFTER complete \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ServiceCallCompleteEvent.new unless service_call.events.last.instance_of?(ServiceCallCompletedEvent)
+    service_call.events << ServiceCallCompleteEvent.new unless transition.args.first == :state_only
   end
 
   # todo the unless clause doesn't seem safe in case other events happen after the corresponding one - revise
   def before_reject_work(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE reject \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ServiceCallRejectEvent.new unless service_call.events.last.instance_of?(ServiceCallRejectedEvent)
+    service_call.events << ServiceCallRejectEvent.new unless transition.args.first == :state_only
   end
 
   def after_subcon_invoiced_payment(service_call, transition)
     Rails.logger.debug { "invoked observer before subcon_invoice \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.events << ServiceCallInvoicedEvent.new unless service_call.events.last.instance_of?(ServiceCallInvoicedEvent)
+    service_call.events << ServiceCallInvoicedEvent.new unless transition.args.first == :state_only
   end
 
   def before_confirm_deposit_payment(service_call, transition)
