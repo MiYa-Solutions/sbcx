@@ -106,6 +106,8 @@ authorization do
       if_attribute :organization_id => is { user.organization.id }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :organization_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
       if_attribute :counterparty_id => is { user.organization.id }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :counterparty_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
 
+      # customer agreements
+      if_attribute type: 'CustomerAgreement', :organization_id => is { user.organization.id }
     end
     has_permission_on :agreements, :to => [:create] do
       if_attribute :organization_id => is { user.organization.id }

@@ -22,9 +22,13 @@
 class CustomerAgreement < Agreement
 
   before_create :set_default_rule
+  after_create :activate
   state_machine :status, initial: :draft do
     state :draft, value: STATUS_DRAFT
-    state :active, value: STATUS_ACTIVE
+    state :active, value: STATUS_ACTIVE do
+      validate ->(agr) { agr.check_rules }
+    end
+
     state :canceled, value: STATUS_CANCELED
 
     event :cancel do
@@ -36,8 +40,7 @@ class CustomerAgreement < Agreement
     end
   end
 
-  scope :agreements_for, ->(customer) {where("agreements.counterparty_id = ?", customer.id)}
-
+  scope :agreements_for, ->(customer) { where("agreements.counterparty_id = ?", customer.id) }
 
 
   private

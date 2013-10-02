@@ -65,7 +65,7 @@ class Agreement < ActiveRecord::Base
   scope :org_agreements, ->(org_id) { where(:organization_id => org_id) }
   scope :cparty_agreements, ->(org_id) { where(:counterparty_id => org_id) }
   scope :my_agreements, ->(org_id) { (org_agreements(org_id) | (cparty_agreements(org_id))) }
-  scope :our_agreements, ->(org, otherparty) { (org_agreements(org.id).where(:counterparty_id => otherparty.id).where(counterparty_type: otherparty.class.name ) | (cparty_agreements(org.id).where(:organization_id => otherparty.id).where(counterparty_type: otherparty.class.name ))) }
+  scope :our_agreements, ->(org, otherparty) { (org_agreements(org.id).where(:counterparty_id => otherparty.id).where(counterparty_type: otherparty.class.name) | (cparty_agreements(org.id).where(:organization_id => otherparty.id).where(counterparty_type: otherparty.class.name))) }
   scope :sibling_active_agreements, ->(agreement) { org_agreements(agreement.organization_id).where("counterparty_id = #{agreement.counterparty_id} AND type = '#{agreement.type}' AND status = #{Agreement::STATUS_ACTIVE}") - where(id: agreement.organization_id) }
   attr_accessor :change_reason
 
@@ -76,7 +76,7 @@ class Agreement < ActiveRecord::Base
       agreement.errors[:type] = t('activerecord.errors.agreement.attributes.type.blank')
     else # create the agreement subclass which is expected to be underscored
 
-      agreement = type.camelize.constantize.new
+      agreement      = type.camelize.constantize.new
       agreement.name = name
 
       if other_party_role.nil? # if the role of the other party is not specified, assume counterparty
@@ -139,6 +139,11 @@ class Agreement < ActiveRecord::Base
   def save_ends_on_text
     self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?
 
+  end
+
+  protected
+  def check_rules
+    errors.add :posting_rules, "Can't activate agreement without posting rules" unless rules.size > 0
   end
 
 

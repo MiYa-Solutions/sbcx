@@ -97,12 +97,6 @@ class OrganizationAgreement < Agreement
 
   end
 
-  protected
-
-  def check_rules
-    errors.add :posting_rules, "Can't activate agreement without posting rules" unless rules.size > 0
-  end
-
   private
   def end_date_validation
     errors.add :ends_at, I18n.t('activerecord.errors.agreement.ends_at_invalid', date: ends_at.strftime('%b, %d, %Y')) if self.ends_at && Ticket.created_after(self.organization_id, self.counterparty_id, self.ends_at).size > 0
