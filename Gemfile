@@ -23,7 +23,7 @@ gem 'devise', '2.0.0'
 gem 'simple_form', '2.0.2'
 gem 'declarative_authorization', '0.5.5'
 
-gem 'state_machine', '1.1.2'
+gem 'state_machine', '1.2.0'
 gem 'magiclabs-userstamp', '2.0.2'
 gem 'strong_parameters', '0.2.0'
 

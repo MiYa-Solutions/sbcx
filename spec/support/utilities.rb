@@ -139,8 +139,8 @@ def fill_autocomplete(field, options = {})
   page.execute_script %Q{ $('##{field}').trigger("keydown") }
   selector = "ul.ui-autocomplete a:contains('#{options[:select].gsub("'", "\\\\'")}')"
 
+  page.driver.render('./tmp/capybara/auto_complete-' + Time.now.strftime("%Y-%m-%d-%H_%M_%S_%L") + '.png', full: true)
   page.should have_selector selector
-  #page.driver.render('./tmp/capybara/auto_complete-' + Time.now.strftime("%Y-%m-%d-%H_%M_%S_%L") + '.png', full: true)
 
   page.execute_script "$(\"#{selector}\").mouseenter().click()"
 end
@@ -238,8 +238,8 @@ def create_transferred_job(user, provider, browser)
       fill_in 'service_call_customer_name', with: Faker::Name.name
       select provider.name, from: JOB_SELECT_PROVIDER
       select agr.name, from: JOB_SELECT_PROVIDER_AGR
-      check JOB_CBOX_ALLOW_COLLECTION
-      check JOB_CBOX_TRANSFERABLE
+      #check JOB_CBOX_ALLOW_COLLECTION
+      #check JOB_CBOX_TRANSFERABLE
       click_button JOB_BTN_CREATE
     end
   end
