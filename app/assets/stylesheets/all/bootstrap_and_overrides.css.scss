@@ -16,6 +16,10 @@ body {
 
 }
 
+.error_title {
+  margin-left: -1.5%;
+}
+
 .large_header {
   min-height: 50px;
 
@@ -33,10 +37,6 @@ body {
 
 .modal.fade.in {
   top: 60%;
-}
-
-.error_title {
-  margin-left: -1.5%;
 }
 
 
@@ -1428,7 +1428,7 @@ a:hover {
 
 #new_posting_rule {
   input, textarea {
-    width: 130px;
+    width: 100px;
   }
 
   #submit_posting_rules {
@@ -2559,43 +2559,7 @@ hr {
   float: left;
 }
 
-.agreement_posting_rules {
-  ul {
-    list-style: none;
-    margin: 0;
-  }
 
-
-
-  //li {
-  //
-  //
-  // input {
-  //   float: left;
-  //   display: inline;
-  //
-  // }
-  //
-  // label {
-  //   float: left;
-  //   display: inline;
-  // }
-  //
-  // img {
-  //   float: left;
-  //   display: inline;
-  // }
-    //float: left;
-    //margin: 0 10px;
-    //line-height: 16px;
-  //}
-  //
-  //li:last-child {
-  //  float: left;
-  //  margin-left: 0;
-  //
-  //}
-}
 
 
 .alerts_sidebar, .nav > li > a {
@@ -2937,7 +2901,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .posting_rules_inputs {
   margin-left: 5%;
   select {
-    width: 139px;
+    width: 100px;
   }
 
 }
@@ -3356,3 +3320,60 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   }
 
 }
+
+.ui-datepicker {
+  //margin-left: 100px;
+  z-index: 2000 !important;
+}
+
+#ui-datepicker-div {
+    z-index: 2000;
+}
+
+.profit_split_dropdown {
+  label {
+    display: none;
+  }
+}
+
+.agreement_profit_split {
+
+  #new_posting_rule input, #new_posting_rule textarea {
+    width: 100px;
+  }
+
+  input {
+    width: 100px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    line-height: 16px;
+    margin-right: 10px;
+  }
+
+  li:last-child {
+    float: inherit;
+  }
+}
+
+
+.agreement_posting_rules {
+  p {
+    color: #000000;
+    float: left;
+    font-style: italic;
+  }
+
+  small {
+    font-size: 11px;
+    color: #333333;
+  }
+}
+
+
