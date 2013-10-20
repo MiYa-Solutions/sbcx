@@ -784,7 +784,7 @@ CREATE TABLE tickets (
   settlement_date       TIMESTAMP WITHOUT TIME ZONE,
   name                  CHARACTER VARYING(255),
   scheduled_for         TIMESTAMP WITHOUT TIME ZONE,
-  transferable          BOOLEAN DEFAULT FALSE,
+  transferable          BOOLEAN DEFAULT TRUE,
   allow_collection      BOOLEAN DEFAULT TRUE,
   collector_id          INTEGER,
   collector_type        CHARACTER VARYING(255),
@@ -1503,3 +1503,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130922221253');
 INSERT INTO schema_migrations (version) VALUES ('20130929170831');
 
 INSERT INTO schema_migrations (version) VALUES ('20130929210440');
+
+INSERT INTO schema_migrations (version) VALUES ('20131020200548');
