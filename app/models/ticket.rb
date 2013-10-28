@@ -319,12 +319,32 @@ class Ticket < ActiveRecord::Base
 
   end
 
+  def subcon_entries
+    if subcontractor
+      acc = Account.for_affiliate(organization, subcontractor).first
+      acc ? entries.by_acc(acc) : []
+    else
+      []
+    end
+  end
+
+  def provider_entries
+    if provider
+      acc = Account.for_affiliate(organization, provider).first
+      acc ? entries.by_acc(acc) : []
+    else
+      []
+    end
+  end
+
   def counterparty
     case my_role
       when :prov
-        subcontractor
+        subcontractor ? [subcontractor] : nil
       when :subcon
-        provider
+        [provider]
+      when :broker
+        [provider, subcontractor]
       else
         raise "Unexpected role for #{self.class.name} id: #{self.id}"
     end

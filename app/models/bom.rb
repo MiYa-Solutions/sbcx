@@ -116,5 +116,19 @@ class Bom < ActiveRecord::Base
     end
     super
   end
+
+  # determines if the bom was paid by the org that owns the ticket
+  # the method addresses the use case where a User was the buyer of the part
+  # in case the org that owns the ticket is a broker, then it is considered "mine" (will return true) if the subcontractor is the buyer
+  def mine?
+    case buyer
+      when Organization
+        self.buyer == self.ticket.organization || (self.ticket.my_role == :broker && self.buyer == self.ticket.subcontractor.becomes(Organization))
+      when User
+        User.where(organization_id: self.organization.id).pluck(:id).include?(buyer.id)
+      else
+        raise "Unexpected buyer type (not user nor Organization): #{buyer.class}"
+    end
+  end
 end
 

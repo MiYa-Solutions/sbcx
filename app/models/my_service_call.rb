@@ -195,4 +195,9 @@ class MyServiceCall < ServiceCall
     update_column :ref_id, self.id
   end
 
+  def my_profit
+    payment = Money.new_with_amount(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents) / 100)
+    total_profit + payment # payment is always a negative number
+  end
+
 end

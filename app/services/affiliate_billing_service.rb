@@ -1,27 +1,37 @@
 class AffiliateBillingService
   def initialize(event)
-    @event   = event
-    @ticket  = event.eventable
-    @account = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'",
-                             @ticket.organization_id,
-                             @ticket.counterparty.id,
-                             ).first
+    @event              = event
+    @ticket             = event.eventable
+    @accounting_entries = {}
   end
 
-  def execute(agreement = nil)
-    agreement ||= find_affiliate_agreement
-    Rails.logger.debug { "BillingService execution for agreement: #{agreement.inspect}" }
-    posting_rules = agreement.find_posting_rules(@event)
-    Rails.logger.debug { "BillingService execution for posting rules: #{posting_rules.inspect}" }
+  def execute
+    @ticket.counterparty.each do |affiliate|
+      @account = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'",
+                               @ticket.organization_id,
+                               affiliate.id,
+      ).first
 
-    @accounting_entries = get_accounting_entries(posting_rules)
+
+      agreement = find_affiliate_agreement
+      Rails.logger.debug { "BillingService execution for agreement: #{agreement.inspect}" }
+      posting_rules = agreement.find_posting_rules(@event)
+      Rails.logger.debug { "BillingService execution for posting rules: #{posting_rules.inspect}" }
+
+      @accounting_entries[@account] = get_accounting_entries(posting_rules)
+
+    end
 
     AccountingEntry.transaction do
-      @account.lock!
-      @accounting_entries.each do |entry|
-        @account.entries << entry
+      @accounting_entries.each do |account, entries|
+        account.lock!
+        entries.each do |entry|
+          account.entries << entry
+        end
+
       end
     end
+
   end
 
   def find_affiliate_agreement
@@ -31,6 +41,12 @@ class AffiliateBillingService
         @event.eventable.subcon_agreement
       when :subcon
         @event.eventable.provider_agreement
+      when :broker
+        if @event.eventable.provider.becomes(Organization) == @account.accountable
+          @event.eventable.provider_agreement
+        elsif @event.eventable.subcontractor.becomes(Organization) == @account.accountable
+          @event.eventable.subcon_agreement
+        end
       else
         raise "Unexpected value when calling my_role"
     end
@@ -43,7 +59,7 @@ class AffiliateBillingService
   def get_accounting_entries(posting_rules)
     entries = []
     posting_rules.each do |rule|
-      entries.concat rule.get_entries(@event) if rule.applicable?(@event)
+      entries.concat rule.get_entries(@event, @account) if rule.applicable?(@event)
     end
     entries
   end

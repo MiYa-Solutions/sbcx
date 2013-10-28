@@ -267,6 +267,13 @@ class TransferredServiceCall < ServiceCall
         ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?) || self.subcontractor.nil?)
   end
 
+  def my_profit
+    income  = Money.new_with_amount(IncomeFromProvider.where(ticket_id: self.id).sum(:amount_cents) / 100)
+    payment = Money.new_with_amount(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents) / 100)
+    income + payment # payment is expected to be a negative number
+
+  end
+
 
   private
   def provider_is_not_a_member
