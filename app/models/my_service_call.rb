@@ -196,8 +196,14 @@ class MyServiceCall < ServiceCall
   end
 
   def my_profit
-    payment = Money.new_with_amount(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents) / 100)
-    total_profit + payment # payment is always a negative number
+    if PaymentToSubcontractor.where(ticket_id: self.id).size >0
+      payment = Money.new(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents), PaymentToSubcontractor.where(ticket_id: self.id).first.amount_currency)
+      total_profit + payment # payment is always a negative number
+    else
+      total_profit
+    end
+
+
   end
 
 end

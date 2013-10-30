@@ -268,8 +268,8 @@ class TransferredServiceCall < ServiceCall
   end
 
   def my_profit
-    income  = Money.new_with_amount(IncomeFromProvider.where(ticket_id: self.id).sum(:amount_cents) / 100)
-    payment = Money.new_with_amount(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents) / 100)
+    income  = Money.new(IncomeFromProvider.where(ticket_id: self.id).sum(:amount_cents))
+    payment = Money.new(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents))
     income + payment # payment is expected to be a negative number
 
   end
