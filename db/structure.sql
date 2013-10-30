@@ -1316,6 +1316,8 @@ CREATE INDEX users_preferences ON users USING GIN (preferences);
 -- PostgreSQL database dump complete
 --
 
+SET search_path TO "$user", PUBLIC;
+
 INSERT INTO schema_migrations (version) VALUES ('20120704151322');
 
 INSERT INTO schema_migrations (version) VALUES ('20120704181734');

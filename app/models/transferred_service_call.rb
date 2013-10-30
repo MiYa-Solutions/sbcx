@@ -274,6 +274,10 @@ class TransferredServiceCall < ServiceCall
 
   end
 
+  def validate_subcon
+    super
+    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer
+  end
 
   private
   def provider_is_not_a_member

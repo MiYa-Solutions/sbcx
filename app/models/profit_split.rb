@@ -159,16 +159,6 @@ class ProfitSplit < PostingRule
   end
 
   def charge_entries
-    #case @ticket.my_role
-    #  when :prov
-    #    organization_entries
-    #  when :subcon
-    #    counterparty_entries
-    #  when :broker
-    #    organization_entries + counterparty_entries
-    #  else
-    #    raise "Unrecognized role when creating profit split entries"
-    #end
     case @account.accountable
       when @ticket.subcontractor.becomes(Organization)
         organization_entries
@@ -180,38 +170,37 @@ class ProfitSplit < PostingRule
   end
 
   def collection_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         org_collection_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         cparty_collection_entries
       else
-        raise "Unrecognized role when creating profit split entries"
-
+        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
     end
   end
 
   def payment_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         org_payment_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         cparty_payment_entries
       else
-        raise "Unrecognized role when creating profit split entries"
-
+        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
     end
   end
 
   def settlement_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         organization_settlement_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         counterparty_settlement_entries
       else
-        raise "Unrecognized role when creting profit split entries"
+        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
     end
+
   end
 
   def cparty_payment_entries

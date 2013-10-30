@@ -133,18 +133,18 @@ def setup_org
   let!(:org) { org_admin_user.organization }
 end
 
+
 def fill_autocomplete(field, options = {})
-  fill_in field, :with => options[:with]
+  fill_in field, with: options[:with]
 
-  page.execute_script %Q{ $('##{field}').trigger("focus") }
-  page.execute_script %Q{ $('##{field}').trigger("keydown") }
-  selector = "ul.ui-autocomplete a:contains('#{options[:select].gsub("'", "\\\\'")}')"
+  page.execute_script %Q{ $('##{field}').trigger('focus') }
+  page.execute_script %Q{ $('##{field}').trigger('keydown') }
+  selector = %Q{ul.ui-autocomplete li.ui-menu-item a:contains("#{options[:select]}")}
 
-  page.driver.render('./tmp/capybara/auto_complete-' + Time.now.strftime("%Y-%m-%d-%H_%M_%S_%L") + '.png', full: true)
-  page.should have_selector selector
-
-  page.execute_script "$(\"#{selector}\").mouseenter().click()"
+  page.should have_selector('ul.ui-autocomplete li.ui-menu-item a')
+  page.execute_script %Q{ $('#{selector}').trigger('mouseenter').click() }
 end
+
 
 def setup_customer_agreement(org, customer)
   agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Customer'", org.id, customer.id).first
