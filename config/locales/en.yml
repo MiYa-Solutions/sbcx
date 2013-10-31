@@ -68,7 +68,7 @@ en:
       422_title: "The change you wanted was rejected (422)"
       422_content: "Maybe you tried to change something you don't have access to."
       500_title: "Server Error (500)"
-      500_content: "We're sorry, but something went wrong."
+      500_content: "Maybe you tried to change something you don't have access to."
 
       overdue: "This Job is overdue"
     emails:

@@ -21,6 +21,8 @@ en:
       send_inst: "Send me Instructions"
       advanced_settings: "Advanced Settings"
       see_example: "See Example"
+      total_balance: "Total Balance"
+      provider_balance: "Contractor Balance"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"

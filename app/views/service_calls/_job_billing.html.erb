@@ -1,6 +1,92 @@
 <div class="well well_job_history well_job_show">
 
   <div class="row-fluid">
+<!--There is only provider-->
+    <% if @service_call.subcon_balance.nil? %>
+        <% if  !@service_call.class == MyServiceCall && @service_call.work_accepted? %>
+
+            <% unless  @service_call.provider_balance.nil? %>
+                <div class="span4">
+                    <div class="smart_label">
+                      <ul>
+                        <li><h1><%= I18n.t('general.general.total_balance') %></h1></li>
+                        <li></li>
+                            <% if @service_call.provider_balance < 0 %>
+                                <li class="red-balance"><h1><span id="provider_balance_neg"><%= humanized_money_with_symbol @service_call.provider_balance %></span></h1></li>
+                            <% else %>
+                                <li class="green-balance"><h1><span id="provider_balance_pos"><%= humanized_money_with_symbol @service_call.provider_balance %></span></h1></li>
+                            <% end %>
+                      </ul>
+                    </div>
+                </div>
+            <% end %>
+        <% end %>
+
+
+
+   <!--my job but there is subco-->
+
+
+   <!--There are provider and subco-->
+    <% else %>
+        <% unless  @service_call.provider_balance.nil? %>
+
+        <div class="span4">
+          <div class="smart_label">
+            <ul>
+              <li><h1><%= I18n.t('general.general.total_balance') %></h1></li>
+              <li></li>
+              <% if (@service_call.provider_balance + @service_call.subcon_balance) < 0 %>
+                  <li class="red-balance"><h1><span id="providerSub_balance_neg"><%= humanized_money_with_symbol (@service_call.provider_balance + @service_call.subcon_balance) %></span></h1></li>
+              <% else %>
+                  <li class="green-balance"><h1><span id="providerSub_balance_pos"><%= humanized_money_with_symbol (@service_call.provider_balance + @service_call.subcon_balance) %></span></h1></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+
+        <div class="span4">
+          <div class="smart_label">
+            <ul>
+              <li><h1><%= I18n.t('general.general.provider_balance') %></h1></li>
+              <li></li>
+              <% if @service_call.provider_balance < 0 %>
+                  <li class="red-balance"><h1><span id="multi_provider_balance_neg"><%= humanized_money_with_symbol @service_call.provider_balance %></span></h1></li>
+              <% else %>
+                  <li class="green-balance"><h1><span id="multi_provider_balance_pos"><%= humanized_money_with_symbol @service_call.provider_balance %></span></h1></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+
+        <div class="span4">
+          <div class="smart_label">
+            <ul>
+              <li><h1><%= I18n.t('general.general.subcontractor_balance') %></h1></li>
+              <li></li>
+              <% if @service_call.provider_balance < 0 %>
+                  <li class="red-balance"><h1><span id="multi_subco_balance_neg"><%= humanized_money_with_symbol @service_call.subcon_balance %></span></h1></li>
+              <% else %>
+                  <li class="green-balance"><h1><span id="multi_subco_balance_pos"><%= humanized_money_with_symbol @service_call.subcon_balance %></span></h1></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+
+    <% end %>
+    <% end %>
+  </div>
+
+  <br>
+
+    <div class="row-fluid">
+
+
+    <!--<#% if @service_call.subcon_balance.nil? %>-->
+        <!--<#%= @service_call.provider_balance %>-->
+    <!--<#% else %>-->
+        <!--<#%= @service_call.provider_balance  + @service_call.subcon_balance  %>-->
+    <!--<#% end %>-->
 
     <table class="table table-striped" id="event_log_in_service_call">
       <thead>
@@ -9,7 +95,7 @@
         <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
         <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
         <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
-        <th><%= AccountingEntry.human_attribute_name(:status) %> </th>
+        <!--<th><#%= AccountingEntry.human_attribute_name(:status) %> </th>-->
         <th><%= AccountingEntry.human_attribute_name(:type) %></th>
         <th><%= AccountingEntry.human_attribute_name(:description) %></th>
         <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
@@ -22,7 +108,7 @@
             <td><%= entry.account.accountable.name %></td>
             <td><%= entry.account.accountable.class.model_name.human %></td>
             <td><%= l entry.created_at %></td>
-            <td><%= entry.human_status_name %></td>
+            <!--<td><#%= entry.human_status_name %></td>-->
             <td><%= entry.type.constantize.model_name.human %></td>
             <td><%= entry.description %></td>
             <td><%= humanized_money_with_symbol entry.amount %></td>
