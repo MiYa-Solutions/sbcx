@@ -54,17 +54,14 @@ class ServiceCall < Ticket
 
 
   validate :financial_data_change
-  # if im not the subcontractor of this service call then I'm the provider
-  def my_role
-    if subcontractor_id.nil?
-      if provider_id.nil? || provider_id == organization_id
-        @my_role = :prov
-      else
-        @my_role = :subcon
-      end
-    else
-      @my_role ||= self.organization_id == self.subcontractor_id ? :subcon : :prov
 
+  def my_role
+    if self.organization_id == self.subcontractor_id # am I the subcontractor?
+      @my_role = :subcon
+    elsif self.organization_id == self.provider_id # am I the provider?
+      @my_role = :prov
+    else # if I'm not the provider and not the subcontractor then I'm a broker
+      @my_role = :broker
     end
   end
 

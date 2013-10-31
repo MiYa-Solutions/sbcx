@@ -134,16 +134,30 @@ class Ticket < ActiveRecord::Base
   scope :canceled_status, -> { where("tickets.status = ?", STATUS_CANCELED) }
 
   def subcon_balance
-    if transferred?
-      account = Account.for_affiliate(self.organization, subcontractor).first
-      AccountingEntry.where(account_id: account.id, ticket_id: self.id).select([:amount_cents, :amount_currency]).map(&:amount).inject { |sum, n| sum + n }
+    if transferred? # this is an abstract class and so transferred is assumed to be implemented by the subclasses
+      affiliate_balance(subcontractor)
+    else
+      Money.new_with_amount(0)
     end
+
+  end
+
+  def affiliate_balance(affiliate)
+    account = Account.for_affiliate(self.organization, affiliate).first
+    if account && AccountingEntry.where(account_id: account.id, ticket_id: self.id).size > 0
+      # todo make the below calculation support multiple currencies
+      Money.new(AccountingEntry.where(account_id: account.id, ticket_id: self.id).sum(:amount_cents), AccountingEntry.where(account_id: account.id, ticket_id: self.id).first.amount_currency)
+    else
+      Money.new_with_amount(0)
+    end
+
   end
 
   def provider_balance
     if provider != organization
-      account = Account.for_affiliate(self.organization, provider).first
-      AccountingEntry.where(account_id: account.id, ticket_id: self.id).select([:amount_cents, :amount_currency]).map(&:amount).inject { |sum, n| sum + n }
+      affiliate_balance(provider)
+    else
+      Money.new_with_amount(0)
     end
   end
 
@@ -319,12 +333,32 @@ class Ticket < ActiveRecord::Base
 
   end
 
+  def subcon_entries
+    if subcontractor
+      acc = Account.for_affiliate(organization, subcontractor).first
+      acc ? entries.by_acc(acc) : []
+    else
+      []
+    end
+  end
+
+  def provider_entries
+    if provider
+      acc = Account.for_affiliate(organization, provider).first
+      acc ? entries.by_acc(acc) : []
+    else
+      []
+    end
+  end
+
   def counterparty
     case my_role
       when :prov
-        subcontractor
+        subcontractor ? [subcontractor] : nil
       when :subcon
-        provider
+        [provider]
+      when :broker
+        [provider, subcontractor]
       else
         raise "Unexpected role for #{self.class.name} id: #{self.id}"
     end

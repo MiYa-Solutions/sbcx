@@ -1849,7 +1849,7 @@ describe "Service Call pages" do
                   click_button accept_btn_selector
                   select org.name, from: subcontractor_select
                   click_button transfer_btn_selector
-                  page.driver.render("#{Rails.root}/tmp/capybara/after_click_sc_#{Time.now}.png", :full => true)
+                  #page.driver.render("#{Rails.root}/tmp/capybara/after_click_sc_#{Time.now}.png", :full => true)
                 end
               end
 

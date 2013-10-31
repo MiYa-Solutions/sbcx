@@ -267,6 +267,17 @@ class TransferredServiceCall < ServiceCall
         ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?) || self.subcontractor.nil?)
   end
 
+  def my_profit
+    income  = Money.new(IncomeFromProvider.where(ticket_id: self.id).sum(:amount_cents))
+    payment = Money.new(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents))
+    income + payment # payment is expected to be a negative number
+
+  end
+
+  def validate_subcon
+    super
+    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer
+  end
 
   private
   def provider_is_not_a_member

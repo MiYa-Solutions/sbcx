@@ -53,9 +53,10 @@ class ProfitSplit < PostingRule
     [:percentage]
   end
 
-  def get_entries(event)
-    @ticket = event.eventable
-    @event  = event
+  def get_entries(event, account)
+    @ticket  = event.eventable
+    @event   = event
+    @account = account
 
     case event.class.name
       when ServiceCallCompletedEvent.name, ServiceCallCompleteEvent.name
@@ -158,49 +159,48 @@ class ProfitSplit < PostingRule
   end
 
   def charge_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         organization_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         counterparty_entries
       else
-        raise "Unrecognized role when creating profit split entries"
+        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
     end
   end
 
   def collection_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         org_collection_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         cparty_collection_entries
       else
-        raise "Unrecognized role when creating profit split entries"
-
+        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
     end
   end
 
   def payment_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         org_payment_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         cparty_payment_entries
       else
-        raise "Unrecognized role when creating profit split entries"
-
+        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
     end
   end
 
   def settlement_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         organization_settlement_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         counterparty_settlement_entries
       else
-        raise "Unrecognized role when creting profit split entries"
+        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
     end
+
   end
 
   def cparty_payment_entries
@@ -412,7 +412,7 @@ class ProfitSplit < PostingRule
     entries = []
     entries << IncomeFromProvider.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to subcontractor owned account")
     @ticket.boms.each do |bom|
-      if bom.buyer == agreement.counterparty
+      if bom.mine?
         entries << MaterialReimbursement.new(event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
       end
     end

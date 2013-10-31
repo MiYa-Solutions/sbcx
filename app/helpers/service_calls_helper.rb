@@ -170,7 +170,7 @@ module ServiceCallsHelper
       concat (hidden_field_tag "service_call[billing_status_event]", 'provider_collected')
       concat (hidden_field_tag "service_call[collector_id]", service_call.provider_id)
       concat (hidden_field_tag "service_call[collector_type]", 'Organization')
-      concat (f.input :payment_type, collection: payment_types)
+      concat (f.input :payment_type, collection: payment_types, input_html: { id: 'provider_payment_type' })
       concat (f.submit service_call.class.human_billing_status_event_name(:provider_collected).titleize,
                        id:    'provider_collected_service_call_btn',
                        class: StylingService.instance.get_style("service_call.forms.billing_status.provider_collected.button_classes"),

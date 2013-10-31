@@ -41,6 +41,7 @@ JOB_SELECT_PROVIDER_AGR     = 'service_call_provider_agreement_id'
 JOB_SELECT_SUBCON_AGR       = 'service_call_subcon_agreement_id'
 JOB_SELECT_COLLECTOR        = 'service_call_collector_id'
 JOB_SELECT_PAYMENT          = 'service_call_payment_type'
+JOB_SELECT_PAYMENT_BY_PROV  = 'provider_payment_type'
 JOB_CBOX_ALLOW_COLLECTION   = 'service_call_allow_collection'
 JOB_CBOX_RE_TRANSFER        = 'service_call_re_transfer'
 JOB_CBOX_TRANSFERABLE       = 'service_call_transferable'
@@ -132,18 +133,18 @@ def setup_org
   let!(:org) { org_admin_user.organization }
 end
 
+
 def fill_autocomplete(field, options = {})
-  fill_in field, :with => options[:with]
+  fill_in field, with: options[:with]
 
-  page.execute_script %Q{ $('##{field}').trigger("focus") }
-  page.execute_script %Q{ $('##{field}').trigger("keydown") }
-  selector = "ul.ui-autocomplete a:contains('#{options[:select].gsub("'", "\\\\'")}')"
+  page.execute_script %Q{ $('##{field}').trigger('focus') }
+  page.execute_script %Q{ $('##{field}').trigger('keydown') }
+  selector = %Q{ul.ui-autocomplete li.ui-menu-item a:contains("#{options[:select]}")}
 
-  page.driver.render('./tmp/capybara/auto_complete-' + Time.now.strftime("%Y-%m-%d-%H_%M_%S_%L") + '.png', full: true)
-  page.should have_selector selector
-
-  page.execute_script "$(\"#{selector}\").mouseenter().click()"
+  page.should have_selector('ul.ui-autocomplete li.ui-menu-item a')
+  page.execute_script %Q{ $('#{selector}').trigger('mouseenter').click() }
 end
+
 
 def setup_customer_agreement(org, customer)
   agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Customer'", org.id, customer.id).first

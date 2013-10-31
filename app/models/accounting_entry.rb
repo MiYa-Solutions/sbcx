@@ -32,6 +32,8 @@ class AccountingEntry < ActiveRecord::Base
   before_create :set_amount_direction
 
   scope :by_account_and_datetime_range, ->(acc, range) { where(account_id: acc.id).where(created_at: range) }
+  scope :by_account_and_ticket, ->(acc, ticket) { where(account_id: acc.id).where(ticket_id: ticket.id) }
+  scope :by_acc, ->(acc) { where(account_id: acc.id) }
 
 
   # State machine  for ServiceCall status

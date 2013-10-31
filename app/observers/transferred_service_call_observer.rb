@@ -76,12 +76,4 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   end
 
-  def before_transfer(service_call, transition)
-    super
-    if service_call.validate_circular_transfer
-      service_call.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer')
-    end
-  end
-
-
 end

@@ -76,9 +76,10 @@ class ServiceCallEvent < Event
         new_bom.creator   = nil
         new_bom.updater   = nil
         # if the material buyer is the subcontractor or the technician make the buyer the owner of this service call
-        if new_bom.buyer.instance_of?(User) || new_bom.buyer == service_call.subcontractor
+        if new_bom.buyer.instance_of?(User) || new_bom.buyer == service_call.subcontractor.becomes(Organization)
           new_bom.buyer = service_call.organization
         end
+        # todo make atomic operation to allow a proper rollback
         prov_service_call.boms << new_bom
       end
     end

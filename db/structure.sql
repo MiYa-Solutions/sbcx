@@ -784,7 +784,7 @@ CREATE TABLE tickets (
   settlement_date       TIMESTAMP WITHOUT TIME ZONE,
   name                  CHARACTER VARYING(255),
   scheduled_for         TIMESTAMP WITHOUT TIME ZONE,
-  transferable          BOOLEAN DEFAULT FALSE,
+  transferable          BOOLEAN DEFAULT TRUE,
   allow_collection      BOOLEAN DEFAULT TRUE,
   collector_id          INTEGER,
   collector_type        CHARACTER VARYING(255),
@@ -1316,6 +1316,8 @@ CREATE INDEX users_preferences ON users USING GIN (preferences);
 -- PostgreSQL database dump complete
 --
 
+SET search_path TO "$user", PUBLIC;
+
 INSERT INTO schema_migrations (version) VALUES ('20120704151322');
 
 INSERT INTO schema_migrations (version) VALUES ('20120704181734');
@@ -1503,3 +1505,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130922221253');
 INSERT INTO schema_migrations (version) VALUES ('20130929170831');
 
 INSERT INTO schema_migrations (version) VALUES ('20130929210440');
+
+INSERT INTO schema_migrations (version) VALUES ('20131020200548');
