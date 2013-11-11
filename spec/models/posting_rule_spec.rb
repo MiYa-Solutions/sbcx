@@ -78,7 +78,7 @@ describe PostingRule do
 
   describe "validation" do
     before { rule.valid? }
-    [:agreement_id, :type, :rate, :rate_type].each do |attr|
+    [:agreement_id, :rate_type].each do |attr|
       it "must have a #{attr}" do
 
         rule.errors[attr].should_not be_empty

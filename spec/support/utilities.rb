@@ -158,6 +158,19 @@ def setup_customer_agreement(org, customer)
   Rails.logger.debug { "created account: #{account.inspect}" }
 end
 
+def setup_flat_fee_agreement(prov, subcon)
+  prov.subcontractors << subcon if prov.subcontrax_member?
+  subcon.providers << prov if subcon.subcontrax_member?
+  agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
+
+  FactoryGirl.create(:flat_fee, agreement: agreement)
+  agreement.name = "#{prov.name} (P), #{subcon.name} (S) FlatFee"
+  agreement.save!
+  agreement.status = OrganizationAgreement::STATUS_ACTIVE
+  agreement.save!
+  agreement
+end
+
 def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
   prov.subcontractors << subcon if prov.subcontrax_member?
   subcon.providers << prov if subcon.subcontrax_member?
@@ -254,12 +267,18 @@ def pay_with_cheque(collector = nil)
   click_button JOB_BTN_COLLECT
 end
 
-def transfer_job(job, subcon)
-  agr = Agreement.my_agreements(job.organization.id).cparty_agreements(subcon.id).with_status(:active).first
+def transfer_job(job, subcon, agreement = nil, props = {})
+
+  agreement ||= Agreement.my_agreements(job.organization.id).cparty_agreements(subcon.id).with_status(:active).first
+
   visit service_call_path(job)
+  click_link 'transfer_btn'
+  sleep 0.5
   select subcon.name, from: JOB_SELECT_SUBCONTRACTOR
-  select agr.name, from: JOB_SELECT_SUBCON_AGR
+  select agreement.name, from: JOB_SELECT_SUBCON_AGR
   check JOB_CBOX_RE_TRANSFER
   check JOB_CBOX_ALLOW_COLLECTION
+  yield if block_given? # used to fill additional agreement specific fields or any other action
   click_button JOB_BTN_TRANSFER
+
 end

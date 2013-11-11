@@ -34,7 +34,7 @@
 #  saturday_to    :time
 #
 
-class JobCharge < PostingRule
+class JobCharge < CustomerPostingRule
 
   def get_entries(event)
     @ticket = event.eventable
@@ -53,9 +53,9 @@ class JobCharge < PostingRule
 
   def customer_entries
     [
-        ServiceCallCharge.new(event: @event,
-                              ticket: @ticket,
-                              amount: charge_amount,
+        ServiceCallCharge.new(event:       @event,
+                              ticket:      @ticket,
+                              amount:      charge_amount,
                               description: "Entry to provider owned account")
     ]
   end
@@ -71,7 +71,7 @@ class JobCharge < PostingRule
   end
 
   def charge_amount
-   ( @ticket.total_price - (@ticket.total_price * (rate / 100.0)) ) + @ticket.total_price * (@ticket.tax / 100.0)
+    (@ticket.total_price - (@ticket.total_price * (rate / 100.0))) + @ticket.total_price * (@ticket.tax / 100.0)
   end
 
   def applicable?(event)

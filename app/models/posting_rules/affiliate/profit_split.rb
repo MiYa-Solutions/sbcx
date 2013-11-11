@@ -34,173 +34,25 @@
 #  saturday_to    :time
 #
 
-class ProfitSplit < PostingRule
+class ProfitSplit < AffiliatePostingRule
+
+  validates_presence_of :rate, :rate_type
+  validates_numericality_of :rate
 
   # define hstore properties methods
   %w[cheque_rate cheque_rate_type credit_rate credit_rate_type cash_rate cash_rate_type amex_rate amex_rate_type].each do |key|
-    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("properties @> (? => ?)", key, value) }
-
-    define_method(key) do
-      properties && properties[key]
-    end
-
-    define_method("#{key}=") do |value|
-      self.properties = (properties || {}).merge(key => value)
-    end
+    setup_hstore_attr(key)
   end
 
   def rate_types
     [:percentage]
   end
 
-  def get_entries(event, account)
-    @ticket  = event.eventable
-    @event   = event
-    @account = account
 
-    case event.class.name
-      when ServiceCallCompletedEvent.name, ServiceCallCompleteEvent.name
-        charge_entries
-      when ScSubconSettleEvent.name, ScSubconSettledEvent.name, ScProviderSettleEvent.name, ScProviderSettledEvent.name
-        settlement_entries
-      when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
-        cancellation_entries
-      when ScCollectEvent.name, ScCollectedEvent.name
-        collection_entries
-      when ServiceCallPaidEvent.name, ScProviderCollectedEvent.name
-        payment_entries
-
-      else
-        raise "Unexpected Event to be processed by ProfitSplit posting rule"
-    end
-  end
-
-  # todo implement timebound check
-  def applicable?(event)
-    case event.class.name
-      when ServiceCallCompletedEvent.name
-        true
-      when ServiceCallCompleteEvent.name
-        event.eventable.instance_of?(MyServiceCall) && event.eventable.transferred? ||
-            event.eventable.instance_of?(TransferredServiceCall)
-      when ScSubconSettleEvent.name
-        true
-      when ScProviderSettleEvent.name
-        true
-      when ScSubconSettledEvent.name
-        true
-      when ScProviderSettledEvent.name
-        true
-      when ServiceCallCancelEvent.name
-        true
-      when ServiceCallCanceledEvent.name
-        true
-      when ScCollectEvent.name
-        true
-      when ServiceCallPaidEvent.name
-        true
-      when ScCollectedEvent.name
-        true
-      when ScProviderCollectedEvent.name
-        true
-      else
-        false
-    end
-  end
-
-  def cash_fee
-    case cash_rate_type
-      when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount)* (cash_rate.delete(',').to_f / 100.0)
-      when 'flat_fee'
-        Money.new_with_amount(cash_rate.delete(',').to_f)
-      else
-        raise "Unexpected cash rate type for profit split rule. received #{cash_rate_type}, expected either percentage or flat_fee"
-    end
-  end
-
-  def credit_fee
-    case credit_rate_type
-      when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (credit_rate.delete(',').to_f / 100.0)
-      when 'flat_fee'
-        Money.new_with_amount(credit_rate.delete(',').to_f)
-      else
-        raise "Unexpected cash rate type for profit split rule. received #{credit_rate_type}, expected either percentage or flat_fee"
-    end
-  end
-
-  def amex_fee
-    case amex_rate_type
-      when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (amex_rate.delete(',').to_f / 100.0)
-      when 'flat_fee'
-        Money.new_with_amount(amex_rate.delete(',').to_f)
-      else
-        raise "Unexpected cash rate type for profit split rule. received #{amex_rate_type}, expected either percentage or flat_fee"
-    end
-  end
-
-  def cheque_fee
-    case cheque_rate_type
-      when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (cheque_rate.delete(',').to_f / 100.0)
-      when 'flat_fee'
-        Money.new_with_amount(cheque_rate.delete(',').to_f)
-      else
-        raise "Unexpected cash rate type for profit split rule. received #{cash_rate_type}, expected either percentage or flat_fee"
-    end
-  end
-
-  private
+  protected
 
   def counterparty_cut
     @ticket.total_profit * (rate / 100.0)
-  end
-
-  def charge_entries
-    case @account.accountable
-      when @ticket.subcontractor.becomes(Organization)
-        organization_entries
-      when @ticket.provider.becomes(Organization)
-        counterparty_entries
-      else
-        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
-    end
-  end
-
-  def collection_entries
-    case @account.accountable
-      when @ticket.subcontractor.becomes(Organization)
-        org_collection_entries
-      when @ticket.provider.becomes(Organization)
-        cparty_collection_entries
-      else
-        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
-    end
-  end
-
-  def payment_entries
-    case @account.accountable
-      when @ticket.subcontractor.becomes(Organization)
-        org_payment_entries
-      when @ticket.provider.becomes(Organization)
-        cparty_payment_entries
-      else
-        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
-    end
-  end
-
-  def settlement_entries
-    case @account.accountable
-      when @ticket.subcontractor.becomes(Organization)
-        organization_settlement_entries
-      when @ticket.provider.becomes(Organization)
-        counterparty_settlement_entries
-      else
-        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
-    end
-
   end
 
   def cparty_payment_entries
@@ -363,7 +215,7 @@ class ProfitSplit < PostingRule
     entries
   end
 
-  def organization_settlement_entries
+  def org_settlement_entries
     result = []
     total  = Money.new_with_amount(0)
 

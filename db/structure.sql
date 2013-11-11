@@ -762,14 +762,14 @@ ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
 --
 
 CREATE TABLE tickets (
-  id                    INTEGER                     NOT NULL,
+  id                    INTEGER                                                   NOT NULL,
   customer_id           INTEGER,
   notes                 TEXT,
   started_on            TIMESTAMP WITHOUT TIME ZONE,
   organization_id       INTEGER,
   completed_on          TIMESTAMP WITHOUT TIME ZONE,
-  created_at            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at            TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  created_at            TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
+  updated_at            TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
   status                INTEGER,
   subcontractor_id      INTEGER,
   technician_id         INTEGER,
@@ -807,7 +807,10 @@ CREATE TABLE tickets (
   email                 CHARACTER VARYING(255),
   subcon_agreement_id   INTEGER,
   provider_agreement_id INTEGER,
-  tax                   DOUBLE PRECISION DEFAULT 0.0
+  tax                   DOUBLE PRECISION DEFAULT 0.0,
+  subcon_fee_cents      INTEGER DEFAULT 0                                         NOT NULL,
+  subcon_fee_currency   CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
+  properties            hstore
 );
 
 
@@ -1299,6 +1302,13 @@ CREATE INDEX posting_rule_properties ON posting_rules USING GIN (properties);
 
 
 --
+-- Name: tickets_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX tickets_properties ON tickets USING GIN (properties);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1507,3 +1517,9 @@ INSERT INTO schema_migrations (version) VALUES ('20130929170831');
 INSERT INTO schema_migrations (version) VALUES ('20130929210440');
 
 INSERT INTO schema_migrations (version) VALUES ('20131020200548');
+
+INSERT INTO schema_migrations (version) VALUES ('20131103211129');
+
+INSERT INTO schema_migrations (version) VALUES ('20131103214024');
+
+INSERT INTO schema_migrations (version) VALUES ('20131103214326');

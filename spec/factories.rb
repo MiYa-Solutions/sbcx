@@ -333,6 +333,9 @@ FactoryGirl.define do
   factory :posting_rule do
     association :agreement
 
+    factory :flat_fee, class: FlatFee do
+      bom_reimbursement true
+    end
     factory :profit_split, class: ProfitSplit do
       rate 50
       cheque_rate 1.0

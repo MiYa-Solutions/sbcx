@@ -35,17 +35,17 @@
 #
 
 class PostingRule < ActiveRecord::Base
-  serialize :properties, ActiveRecord::Coders::Hstore
+  # creates the standard methods for an attribute that is stored in hstore column
+  def self.setup_hstore_attr(key)
+    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("properties @> (? => ?)", key, value) }
 
-  validates_presence_of :agreement_id, :rate, :rate_type, :type
-  validates_numericality_of :rate
+    define_method(key) do
+      properties && properties[key]
+    end
 
-  validate :ensure_state_before_change
-
-  belongs_to :agreement
-
-  def applicable?(event)
-    true
+    define_method("#{key}=") do |value|
+      self.properties = (properties || {}).merge(key => value)
+    end
   end
 
   def self.new_rule_from_params(type, params)
@@ -69,12 +69,89 @@ class PostingRule < ActiveRecord::Base
 
   end
 
-  def rate_types
-    [:percentage]
+  # the main method for getting the accounting entries applicable for a certain event and account
+  def get_entries(event, account)
+    @ticket  = event.eventable
+    @event   = event
+    @account = account
+
+    case event.class.name
+      when ServiceCallCompletedEvent.name, ServiceCallCompleteEvent.name
+        charge_entries
+      when ScSubconSettleEvent.name, ScSubconSettledEvent.name, ScProviderSettleEvent.name, ScProviderSettledEvent.name
+        settlement_entries
+      when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
+        cancellation_entries
+      when ScCollectEvent.name, ScCollectedEvent.name
+        collection_entries
+      when ServiceCallPaidEvent.name, ScProviderCollectedEvent.name
+        payment_entries
+
+      else
+        raise "Unexpected Event to be processed by ProfitSplit posting rule"
+    end
   end
 
-  def get_amount(ticket)
-    raise "Did you forget to implement the get_amount method for #{self.class}?"
+  def cash_fee
+    case cash_rate_type
+      when 'percentage'
+        (@ticket.total_price + @ticket.tax_amount)* (cash_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(cash_rate.delete(',').to_f)
+      else
+        raise "Unexpected cash rate type for profit split rule. received #{cash_rate_type}, expected either percentage or flat_fee"
+    end
+  end
+
+  def credit_fee
+    case credit_rate_type
+      when 'percentage'
+        (@ticket.total_price + @ticket.tax_amount) * (credit_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(credit_rate.delete(',').to_f)
+      else
+        raise "Unexpected cash rate type for profit split rule. received #{credit_rate_type}, expected either percentage or flat_fee"
+    end
+  end
+
+  def amex_fee
+    case amex_rate_type
+      when 'percentage'
+        (@ticket.total_price + @ticket.tax_amount) * (amex_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(amex_rate.delete(',').to_f)
+      else
+        raise "Unexpected cash rate type for profit split rule. received #{amex_rate_type}, expected either percentage or flat_fee"
+    end
+  end
+
+  def cheque_fee
+    case cheque_rate_type
+      when 'percentage'
+        (@ticket.total_price + @ticket.tax_amount) * (cheque_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(cheque_rate.delete(',').to_f)
+      else
+        raise "Unexpected cash rate type for profit split rule. received #{cash_rate_type}, expected either percentage or flat_fee"
+    end
+  end
+
+  serialize :properties, ActiveRecord::Coders::Hstore
+
+  validates_presence_of :agreement_id, :type
+
+
+  validate :ensure_state_before_change
+
+  belongs_to :agreement
+
+  def applicable?(event)
+    true
+  end
+
+
+  def rate_types
+    [:percentage]
   end
 
 

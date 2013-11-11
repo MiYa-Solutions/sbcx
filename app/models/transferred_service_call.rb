@@ -276,7 +276,7 @@ class TransferredServiceCall < ServiceCall
 
   def validate_subcon
     super
-    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer
+    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer && self.status_changed? && self.status == ServiceCall::STATUS_TRANSFERRED
   end
 
   private

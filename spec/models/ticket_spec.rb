@@ -84,9 +84,25 @@ describe Ticket do
    :technician_cost,
    :transferable?,
    :allow_collection?,
-   :collector, :payment_type, :subcon_payment, :provider_payment, :tax, :provider_balance, :subcon_balance].each do |attr|
+   :collector,
+   :payment_type,
+   :subcon_payment,
+   :provider_payment,
+   :tax,
+   :provider_balance,
+   :subcon_balance, :subcon_fee, :properties].each do |attr|
     it { should respond_to attr }
   end
+
+  describe 'verify money attributes' do
+
+    [:subcon_balance, :provider_balance, :subcon_fee].each do |money_attr|
+      it "#{money_attr} should be of type Money" do
+        should monetize money_attr
+      end
+    end
+  end
+
 
   it { should be_valid }
 
