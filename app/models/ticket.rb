@@ -51,7 +51,7 @@
 #
 
 class Ticket < ActiveRecord::Base
-  #attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor_id, :provider_id, :technician_id, :total_price
+  serialize :properties, ActiveRecord::Coders::Hstore
   monetize :subcon_fee_cents
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls

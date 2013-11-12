@@ -334,7 +334,6 @@ FactoryGirl.define do
     association :agreement
 
     factory :flat_fee, class: FlatFee do
-      bom_reimbursement true
     end
     factory :profit_split, class: ProfitSplit do
       rate 50

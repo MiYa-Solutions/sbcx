@@ -54,6 +54,7 @@ class ServiceCallTransferEvent < ServiceCallEvent
       new_service_call.name               = service_call.name
       new_service_call.notes              = service_call.notes
       new_service_call.provider_agreement = service_call.subcon_agreement
+      new_service_call.properties         = create_transfer_props(service_call)
       new_service_call.events << ServiceCallReceivedEvent.new(triggering_event: self, description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
 
       new_service_call.save!
@@ -74,5 +75,15 @@ class ServiceCallTransferEvent < ServiceCallEvent
     nil
   end
 
+  private
+
+  def create_transfer_props(job)
+    result = {}
+
+    result = result.merge('provider_fee' => job.properties['subcon_fee']) if job.properties['subcon_fee']
+    result = result.merge('bom_reimbursement' => job.properties['bom_reimbursement']) if job.properties['bom_reimbursement']
+
+    result
+  end
 
 end

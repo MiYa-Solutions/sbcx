@@ -381,6 +381,7 @@ describe 'Affiliate Billing Service' do
     let(:prov_acc) { Account.for(subcon, prov).first }
 
     let(:billing_service) { AffiliateBillingService.new(FactoryGirl.create(:service_call_completed_event)) }
+    let(:subcon_cut) { Money.new_with_amount(50) }
 
     subject { billing_service }
 
@@ -390,6 +391,7 @@ describe 'Affiliate Billing Service' do
         #Rails.logger.debug {"1. starting before transfer subcon_job: \n subcon_job.status: #{subcon_job.try(:status_name)}, \nsubcon_job.work_status: #{subcon_job.try(:work_status_name)}, \nsubcon_job.billing_status: #{subcon_job.try(:billing_status_name)}, \nsubcon_job.provider_status: #{subcon_job.try(:provider_status_name)}"}
         job.subcontractor    = subcon.becomes(Subcontractor)
         job.subcon_agreement = agreement
+        job.properties       = (job.properties || {}).merge('subcon_fee' => subcon_cut, 'bom_reimbursement' => 'false')
         job.transfer
         subcon_job.accept
         subcon_job.start_work
@@ -399,8 +401,7 @@ describe 'Affiliate Billing Service' do
         Rails.logger.debug { "1. ending before transfer subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
 
       end
-      # subcon cut is the total price minus the material cost + the reimbursement for the part
-      let(:subcon_cut) { Money.new_with_amount((300 - 20 - 10)* 0.5 + 20) }
+
       let(:amount_with_tax) { Money.new_with_amount(300 + (300 * (job.reload.tax / 100.0))) }
 
       describe 'with tax' do
@@ -427,12 +428,20 @@ describe 'Affiliate Billing Service' do
 
           end
 
-          it 'subcon account should have PaymentToSubcontractor + MaterialReimbursementToCparty entires' do
-            subcon_acc.entries.where(ticket_id: job.id).map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty]
+          it 'subcon account should have PaymentToSubcontractor entry' do
+            subcon_acc.entries.where(ticket_id: job.id).map(&:class).should =~ [PaymentToSubcontractor]
+          end
+
+          it 'subcon account should have IncomeFromProvider entry' do
+            prov_acc.reload.entries.where(ticket_id: subcon_job.ref_id).map(&:class).should =~ [IncomeFromProvider]
           end
 
           it 'subcon balance should be total + tax amount + material cost' do
             subcon_acc.balance.should eq -subcon_cut
+          end
+
+          it 'subcon balance should be total + tax amount + material cost' do
+            prov_acc.balance.should eq subcon_cut
           end
 
           describe 'after cash collection' do

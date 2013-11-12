@@ -33,19 +33,39 @@
 #  friday_to      :time
 #  saturday_to    :time
 #
-
+require 'hstore_setup_methods'
 class PostingRule < ActiveRecord::Base
   # creates the standard methods for an attribute that is stored in hstore column
-  def self.setup_hstore_attr(key)
-    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("properties @> (? => ?)", key, value) }
+  extend HstoreSetupMethods
 
-    define_method(key) do
-      properties && properties[key]
-    end
+  # define hstore properties methods
+  #%w[cheque_rate cheque_rate_type credit_rate credit_rate_type cash_rate cash_rate_type amex_rate amex_rate_type].each do |key|
+  %w[ cheque_rate
+    cheque_rate_type
+    credit_rate
+    credit_rate_type
+    cash_rate
+    cash_rate_type
+    amex_rate
+    amex_rate_type   ].each do |key, value|
+    setup_hstore_attr(key)
+  end
 
-    define_method("#{key}=") do |value|
-      self.properties = (properties || {}).merge(key => value)
-    end
+
+  serialize :properties, ActiveRecord::Coders::Hstore
+
+  validates_presence_of :agreement_id, :type
+
+  validate :ensure_state_before_change
+
+  belongs_to :agreement
+
+  def applicable?(event)
+    true
+  end
+
+  def rate_types
+    [:percentage]
   end
 
   def self.new_rule_from_params(type, params)
@@ -99,7 +119,7 @@ class PostingRule < ActiveRecord::Base
       when 'flat_fee'
         Money.new_with_amount(cash_rate.delete(',').to_f)
       else
-        raise "Unexpected cash rate type for profit split rule. received #{cash_rate_type}, expected either percentage or flat_fee"
+        Money.new_with_amount(0)
     end
   end
 
@@ -110,7 +130,7 @@ class PostingRule < ActiveRecord::Base
       when 'flat_fee'
         Money.new_with_amount(credit_rate.delete(',').to_f)
       else
-        raise "Unexpected cash rate type for profit split rule. received #{credit_rate_type}, expected either percentage or flat_fee"
+        Money.new_with_amount(0)
     end
   end
 
@@ -121,7 +141,7 @@ class PostingRule < ActiveRecord::Base
       when 'flat_fee'
         Money.new_with_amount(amex_rate.delete(',').to_f)
       else
-        raise "Unexpected cash rate type for profit split rule. received #{amex_rate_type}, expected either percentage or flat_fee"
+        Money.new_with_amount(0)
     end
   end
 
@@ -132,26 +152,8 @@ class PostingRule < ActiveRecord::Base
       when 'flat_fee'
         Money.new_with_amount(cheque_rate.delete(',').to_f)
       else
-        raise "Unexpected cash rate type for profit split rule. received #{cash_rate_type}, expected either percentage or flat_fee"
+        Money.new_with_amount(0)
     end
-  end
-
-  serialize :properties, ActiveRecord::Coders::Hstore
-
-  validates_presence_of :agreement_id, :type
-
-
-  validate :ensure_state_before_change
-
-  belongs_to :agreement
-
-  def applicable?(event)
-    true
-  end
-
-
-  def rate_types
-    [:percentage]
   end
 
 

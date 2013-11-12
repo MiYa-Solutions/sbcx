@@ -15,7 +15,7 @@ class ScCollectedEvent < ServiceCallEvent
   end
 
   def update_provider
-    nil
+    prov_service_call.events << ScCollectedEvent.new(triggering_event: self)
   end
 
   def process_event
@@ -24,7 +24,7 @@ class ScCollectedEvent < ServiceCallEvent
     AffiliateBillingService.new(self).execute
 
     # pass a :state_only argument to the observer indicating that only a state transition should be performed
-    service_call.subcon_collected_payment(:state_only)
+    service_call.subcon_collected_payment(:state_only) if service_call.can_subcon_collected_payment?
     super
   end
 

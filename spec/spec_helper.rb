@@ -9,6 +9,7 @@ require 'capybara-screenshot/rspec'
 require 'capybara/poltergeist'
 require 'declarative_authorization/maintenance'
 require 'money-rails/test_helpers'
+require 'active_attr/rspec'
 
 
 #uncomment the following line to use spork with the debugger
