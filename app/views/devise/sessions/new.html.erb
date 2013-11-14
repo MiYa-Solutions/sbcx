@@ -29,15 +29,21 @@
             <div class="sign_in_controls">
                       <%= f.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
             </div>
-
             <div class="form-actions">
                 <%= f.button :submit, "Sign in", :class => 'btn btn-large btn-primary' %>
-
             </div>
-
         <% end %>
-
       </div>
+  </div>
+
+    <br>
+    <br>
+    <div class="row-fluid">
+        <div class="span64">
+          <strong>Recommended Browsers</strong>
+          <p>For optimal performance of SubConTraX, we recommend using one of the browsers listed below:</p>
+          <%= image_tag "firefox64.png" %><%= image_tag "chrome64.png" %>
+        </div>
     </div>
 
   </div>

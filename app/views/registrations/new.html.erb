@@ -74,12 +74,25 @@
 
 
           <div class="form-actions">
-            <%= link_to 'Back', root_path, :class => 'btn btn-large', id: 'back_from_sign_up' %>
-            <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %>
-            <p>
-              By signing up, you accept SubConTraX's <strong><%= link_to 'Terms', '', "data-toggle" => "modal", "data-target" => "#termsModal" %></strong>
-              of use and <strong><%= link_to 'Privacy', '', "data-toggle" => "modal", "data-target" => "#privacyModal" %></strong> policy.
-            </p>
+            <div class="row-fluid">
+                  <div class="span8">
+
+                    <%= link_to 'Back', root_path, :class => 'btn btn-large', id: 'back_from_sign_up' %>
+                    <%= f.submit "Sign up", :class => 'btn btn-large btn-primary' %>
+                    <p>
+                      By signing up, you accept SubConTraX's <strong><%= link_to 'Terms', '', "data-toggle" => "modal", "data-target" => "#termsModal" %></strong>
+                      of use and <strong><%= link_to 'Privacy', '', "data-toggle" => "modal", "data-target" => "#privacyModal" %></strong> policy.
+                    </p>
+                  </div>
+
+                  <div class="span4">
+                    <strong>Recommended Browsers</strong>
+                    <p>For optimal performance of SubConTraX, we recommend using one of the browsers listed below:</p>
+                    <%= image_tag "firefox64.png" %><%= image_tag "chrome64.png" %>
+
+                  </div>
+
+            </div>
           </div>
 
       <% end %>
