@@ -62,6 +62,19 @@ describe "Agreement Pages" do
 
     end
 
+    describe "subcontracting agreement" do
+
+      before do
+        negotiate_member_pf_agreement(org_admin_user, org_admin_user2)
+      end
+
+      it 'should create accounts for both parties' do
+        Account.for_affiliate(org, org2).should exist
+        Account.for_affiliate(org2, org).should exist
+      end
+
+    end
+
 
   end
 
