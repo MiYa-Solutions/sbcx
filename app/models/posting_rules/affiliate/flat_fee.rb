@@ -23,7 +23,7 @@ class FlatFee < AffiliatePostingRule
     monetize :provider_fee_cents
 
     def attribute_names
-      [:bom_reimbursement, :subcon_fee]
+      [:bom_reimbursement, :subcon_fee, :provider_fee]
     end
 
     #after_initialize :init
@@ -38,18 +38,21 @@ class FlatFee < AffiliatePostingRule
 
   def counterparty_cut(ticket = nil)
     ticket ||= @ticket
+    amount = nil
 
     case ticket.my_role
       when :prov
-        get_transfer_props(ticket).subcon_fee
+        amount = get_transfer_props(ticket).subcon_fee
       when :subcon
-        get_transfer_props(ticket).provider_fee
+        amount = get_transfer_props(ticket).provider_fee
       when :broker
-        get_transfer_props(ticket).subcon_fee if @account.accountable == ticket.subcontractor.becomes(Organization)
-        get_transfer_props(ticket).provider_fee if @account.accountable == ticket.provider.becomes(Organization)
+        amount = get_transfer_props(ticket).subcon_fee if @account.accountable == ticket.subcontractor.becomes(Organization)
+        amount = get_transfer_props(ticket).provider_fee if @account.accountable == ticket.provider.becomes(Organization)
+
       else
         raise "Invalid ticket.my_role received when calculating counterpaty cut"
     end
+    amount
 
   end
 

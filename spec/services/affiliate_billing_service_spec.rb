@@ -386,10 +386,6 @@ describe 'Affiliate Billing Service' do
     let(:amount_with_tax) { Money.new_with_amount(300 + (300 * (job.reload.tax / 100.0))) }
 
     # subcon cut is the total price minus the material cost + the reimbursement for the part
-    let(:subcon_cut_with_cash) { subcon_cut - (amount_with_tax * (payment_terms[:cash_rate] / 100.0)) + Money.new_with_amount(20) }
-    let(:subcon_cut_with_credit) { subcon_cut - (amount_with_tax * (payment_terms[:credit_rate] / 100.0)) + Money.new_with_amount(20) }
-    let(:subcon_cut_with_cheque) { subcon_cut - (amount_with_tax * (payment_terms[:cheque_rate] / 100.0)) + Money.new_with_amount(20) }
-    let(:subcon_cut_with_amex) { subcon_cut - (amount_with_tax * (payment_terms[:amex_rate] / 100.0)) + Money.new_with_amount(20) }
 
     subject { billing_service }
 
@@ -399,6 +395,11 @@ describe 'Affiliate Billing Service' do
       let(:job_properties) { (job.properties || {}).merge('subcon_fee' => subcon_cut, 'bom_reimbursement' => 'true') }
       let(:bom1) { { quantity: 1, price: 100, cost: 10 } }
       let(:bom2) { { quantity: 1, price: 200, cost: 20 } }
+
+      let(:subcon_cut_with_cash) { subcon_cut - (amount_with_tax * (payment_terms[:cash_rate] / 100.0)) + Money.new_with_amount(20) }
+      let(:subcon_cut_with_credit) { subcon_cut - (amount_with_tax * (payment_terms[:credit_rate] / 100.0)) + Money.new_with_amount(20) }
+      let(:subcon_cut_with_cheque) { subcon_cut - (amount_with_tax * (payment_terms[:cheque_rate] / 100.0)) + Money.new_with_amount(20) }
+      let(:subcon_cut_with_amex) { subcon_cut - (amount_with_tax * (payment_terms[:amex_rate] / 100.0)) + Money.new_with_amount(20) }
 
 
       describe 'transferred job' do
@@ -592,10 +593,215 @@ describe 'Affiliate Billing Service' do
       end
     end
 
+    context 'when NOT reimbursed for boms' do
+      let(:subcon_cut) { Money.new_with_amount(50) }
+      let(:subcon_cut_with_boms) { subcon_cut }
+      let(:job_properties) { (job.properties || {}).merge('subcon_fee' => subcon_cut, 'bom_reimbursement' => 'false') }
+      let(:bom1) { { quantity: 1, price: 100, cost: 10 } }
+      let(:bom2) { { quantity: 1, price: 200, cost: 20 } }
+
+      let(:subcon_cut_with_cash) { subcon_cut - (amount_with_tax * (payment_terms[:cash_rate] / 100.0)) }
+      let(:subcon_cut_with_credit) { subcon_cut - (amount_with_tax * (payment_terms[:credit_rate] / 100.0)) }
+      let(:subcon_cut_with_cheque) { subcon_cut - (amount_with_tax * (payment_terms[:cheque_rate] / 100.0)) }
+      let(:subcon_cut_with_amex) { subcon_cut - (amount_with_tax * (payment_terms[:amex_rate] / 100.0)) }
+
+      describe 'transferred job' do
+        before do
+          Rails.logger.debug { "1. starting before transfer job: \n job.status: #{job.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+          #Rails.logger.debug {"1. starting before transfer subcon_job: \n subcon_job.status: #{subcon_job.try(:status_name)}, \nsubcon_job.work_status: #{subcon_job.try(:work_status_name)}, \nsubcon_job.billing_status: #{subcon_job.try(:billing_status_name)}, \nsubcon_job.provider_status: #{subcon_job.try(:provider_status_name)}"}
+          job.subcontractor    = subcon.becomes(Subcontractor)
+          job.subcon_agreement = agreement
+          job.properties       = job_properties
+          job.transfer
+          subcon_job.accept
+          subcon_job.start_work
+          add_bom_to_ticket subcon_job, bom1[:cost], bom1[:price], bom1[:quantity], prov
+          add_bom_to_ticket subcon_job, bom2[:cost], bom2[:price], bom2[:quantity], subcon
+          Rails.logger.debug { "1. ending before transfer job: \n job.status: #{job.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+          Rails.logger.debug { "1. ending before transfer subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+        end
+
+
+        describe 'with tax' do
+          before do
+            Rails.logger.debug { "2. starting before 'with tax' job: \n job.status: #{job.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+            Rails.logger.debug { "2. starting before 'with tax' subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+            subcon_job.tax = 7.0
+
+            Rails.logger.debug { "2. ending before 'with tax' job: \n job.status: #{job.status_name}, \njob.work_status: #{job.reload.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+            Rails.logger.debug { "2. ending before 'with tax' subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+          end
+
+          describe 'after completion' do
+            before do
+              Rails.logger.debug { "3. starting before 'after completion' job: \n job.status: #{job.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+              Rails.logger.debug { "3. starting before 'after completion' subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+              subcon_job.complete_work
+
+              Rails.logger.debug { "3. ending before 'after completion' job: \njob.status: #{job.status_name}, \njob.work_status: #{job.reload.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+              Rails.logger.debug { "3. ending before 'after completion' subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+            end
+
+            it 'subcon account should have PaymentToSubcontractor entry' do
+              subcon_acc.entries.where(ticket_id: job.id).map(&:class).should =~ [PaymentToSubcontractor]
+            end
+
+            it 'subcon account should have IncomeFromProvider entry' do
+              prov_acc.reload.entries.where(ticket_id: subcon_job.id).map(&:class).should =~ [IncomeFromProvider]
+            end
+
+            it 'subcon balance should be the flat fee amount + material cost' do
+              expect(subcon_acc.balance).to eq -subcon_cut_with_boms
+            end
+
+            it 'subcon balance should be flat fee amount + material cost' do
+              expect(prov_acc.balance).to eq subcon_cut_with_boms
+            end
+
+            describe 'after cash collection' do
+              before do
+                Rails.logger.debug { "4. starting before 'after cash collection' job: \n job.status: #{job.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+                Rails.logger.debug { "4. starting before 'after cash collection' subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+                subcon_job.invoice_payment
+                subcon_job.payment_type = :cash
+                subcon_job.collect_payment
+
+                Rails.logger.debug { "4. ending before 'after cash collection' job: \njob.status: #{job.reload.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+                Rails.logger.debug { "4. ending before 'after cash collection' subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+              end
+              it 'the subcon acc balance should be the total amount minus the subcon cut income' do
+                subcon_acc.balance.should eq (amount_with_tax - subcon_cut_with_cash)
+              end
+              it 'the provider acc balance should be the total amount minus the subcon cut withdrawal' do
+                prov_acc.balance.should eq -(amount_with_tax - subcon_cut_with_cash)
+              end
+
+              describe 'subcon deposited' do
+                before do
+                  Rails.logger.debug { "5. starting before 'subcon deposited' job: \n job.status: #{job.reload.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+                  Rails.logger.debug { "5. starting before 'subcon deposited' subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+                  subcon_job.deposit_to_prov_payment
+                  job.reload
+                  job.confirm_deposit_payment
+
+                  Rails.logger.debug { "5. ending before 'subcon deposited' job: \n job.status: #{job.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+                  Rails.logger.debug { "5. ending before 'subcon deposited' subcon_job: \n subcon_job.status: #{subcon_job.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+                end
+
+                it 'subcon account should be the subcon_cut for cash' do
+                  subcon_acc.balance.should eq -subcon_cut_with_cash
+                end
+
+                describe 'provider settled' do
+                  before do
+                    job.subcon_payment = :cash
+                    job.settle_subcon
+                  end
+
+                  it 'subcon account should be set to zero' do
+                    subcon_acc.balance.should eq Money.new_with_amount(0)
+                  end
+
+                  it 'provider account should be set to zero' do
+                    prov_acc.balance.should eq Money.new_with_amount(0)
+                  end
+
+                end
+
+                describe 'subcon settled' do
+                  before do
+                    Rails.logger.debug { "6. starting before 'subcon settled' job: \n job.status: #{job.reload.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+                    Rails.logger.debug { "6. starting before 'subcon settled' subcon_job: \n subcon_job.status: #{subcon_job.reload.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+                    subcon_job.provider_payment = :cash
+                    subcon_job.settle_provider
+
+                    Rails.logger.debug { "6. ending before 'subcon settled' job: \n job.status: #{job.reload.status_name}, \njob.work_status: #{job.work_status_name}, \njob.billing_status: #{job.billing_status_name}, \njob.subcontractor_status: #{job.subcontractor_status_name}" }
+                    Rails.logger.debug { "6. ending before 'subcon settled' subcon_job: \n subcon_job.status: #{subcon_job.reload.status_name}, \nsubcon_job.work_status: #{subcon_job.work_status_name}, \nsubcon_job.billing_status: #{subcon_job.billing_status_name}, \nsubcon_job.provider_status: #{subcon_job.provider_status_name}" }
+
+                  end
+
+                  it 'subcon account should be set to zero' do
+                    subcon_acc.balance.should eq Money.new_with_amount(0)
+                  end
+
+                  it 'provider account should be set to zero' do
+                    prov_acc.balance.should eq Money.new_with_amount(0)
+                  end
+
+                end
+              end
+
+            end
+
+            describe 'after credit collection' do
+              before do
+                subcon_job.invoice_payment
+                subcon_job.payment_type = :credit_card
+                subcon_job.collect_payment
+              end
+              it 'the subcon acc balance should be the total amount minus the subcon cut income' do
+                subcon_acc.balance.should eq (amount_with_tax - subcon_cut_with_credit)
+              end
+              it 'the provider acc balance should be the total amount minus the subcon cut withdrawal' do
+                prov_acc.balance.should eq -(amount_with_tax - subcon_cut_with_credit)
+              end
+
+            end
+
+            describe 'after amex collection' do
+              before do
+                subcon_job.invoice_payment
+                subcon_job.payment_type = :amex_credit_card
+                subcon_job.collect_payment
+              end
+              it 'the subcon acc balance should be the total amount minus the subcon cut income' do
+                subcon_acc.balance.should eq (amount_with_tax - subcon_cut_with_amex)
+              end
+              it 'the provider acc balance should be the total amount minus the subcon cut withdrawal' do
+                prov_acc.balance.should eq -(amount_with_tax - subcon_cut_with_amex)
+              end
+
+            end
+
+            describe 'after cheque collection' do
+              before do
+                subcon_job.invoice_payment
+                subcon_job.payment_type = :cheque
+                subcon_job.collect_payment
+              end
+              it 'the subcon acc balance should be the total amount minus the subcon cut income' do
+                subcon_acc.balance.should eq (amount_with_tax - subcon_cut_with_cheque)
+              end
+              it 'the provider acc balance should be the total amount minus the subcon cut withdrawal' do
+                prov_acc.balance.should eq -(amount_with_tax - subcon_cut_with_cheque)
+              end
+
+            end
+          end
+
+
+        end
+
+
+      end
+    end
+
     context 'when a broker' do
       let(:broker) { FactoryGirl.create(:member) }
-      let(:prov_agreement) { setup_profit_split_agreement(prov, broker, 50, payment_terms) }
-      let(:subcon_agreement) { setup_profit_split_agreement(broker, subcon, 40, payment_terms) }
+      let(:prov_job_properties) { (job.properties || {}).merge('subcon_fee' => provider_cut, 'bom_reimbursement' => 'false') }
+      let(:subcon_job_properties) { (broker_job.properties || {}).merge('subcon_fee' => subcon_cut, 'bom_reimbursement' => 'false') }
+      let(:prov_agreement) { setup_flat_fee_agreement(prov, broker, payment_terms) }
+      let(:subcon_agreement) { setup_flat_fee_agreement(broker, subcon, payment_terms) }
       let(:broker_job) { Ticket.find_by_ref_id_and_organization_id(job.ref_id, broker.id) }
 
       let(:broker_subcon_acc) { Account.for(broker, subcon).first }
@@ -604,29 +810,31 @@ describe 'Affiliate Billing Service' do
       let(:prov_broker_acc) { Account.for(prov, broker).first }
 
 
-      let(:subcon_cut) { Money.new_with_amount((300 - 20 - 10)* 0.4 + 30) }
+      let(:subcon_cut) { Money.new_with_amount(40) }
+      let(:provider_cut) { Money.new_with_amount(50) }
       let(:amount_with_tax) { Money.new_with_amount(300 + (300 * (job.reload.tax / 100.0))) }
-      let(:subcon_cut_with_cash) { (Money.new_with_amount(300 - 20 - 10) - (amount_with_tax * (payment_terms[:cash_rate] / 100.0)))* 0.4 + Money.new_with_amount(30) }
-      let(:subcon_cut_with_credit) { (Money.new_with_amount(300 - 20 - 10) - (amount_with_tax * (payment_terms[:credit_rate] / 100.0)))* 0.4 + Money.new_with_amount(30) }
-      let(:subcon_cut_with_cheque) { (Money.new_with_amount(300 - 20 - 10) - (amount_with_tax * (payment_terms[:cheque_rate] / 100.0)))* 0.4 + Money.new_with_amount(30) }
-      let(:subcon_cut_with_amex) { (Money.new_with_amount(300 - 20 - 10) - (amount_with_tax * (payment_terms[:amex_rate] / 100.0)))* 0.4 + Money.new_with_amount(30) }
+      let(:subcon_cut_with_cash) { (subcon_cut - (amount_with_tax * (payment_terms[:cash_rate] / 100.0))) }
+      let(:subcon_cut_with_credit) { (subcon_cut - (amount_with_tax * (payment_terms[:credit_rate] / 100.0))) }
+      let(:subcon_cut_with_cheque) { (subcon_cut - (amount_with_tax * (payment_terms[:cheque_rate] / 100.0))) }
+      let(:subcon_cut_with_amex) { (subcon_cut - (amount_with_tax * (payment_terms[:amex_rate] / 100.0))) }
 
-      let(:prov_income) { Money.new_with_amount((300 - 20 - 10)* 0.5 + 30) }
+      let(:prov_income) { Money.new_with_amount((300 - 20 - 10)) - subcon_cut }
       let(:broker_cut_with_cash) { prov_cut_with_cash - subcon_cut_with_cash }
       let(:broker_cut_with_credit) { prov_cut_with_credit - subcon_cut_with_credit }
       let(:broker_cut_with_cheque) { prov_cut_with_cheque - subcon_cut_with_cheque }
       let(:broker_cut_with_amex) { prov_cut_with_amex - subcon_cut_with_amex }
 
-      let(:prov_cut_with_cash) { (Money.new_with_amount(300 - 20 - 10) - (amount_with_tax * (payment_terms[:cash_rate] / 100.0)))* 0.5 }
-      let(:prov_cut_with_credit) { (Money.new_with_amount(300 - 20 - 10) - (amount_with_tax * (payment_terms[:credit_rate] / 100.0)))* 0.5 }
-      let(:prov_cut_with_cheque) { (Money.new_with_amount(300 - 20 - 10) - (amount_with_tax * (payment_terms[:cheque_rate] / 100.0)))* 0.5 }
-      let(:prov_cut_with_amex) { (Money.new_with_amount(300 - 20 - 10) - (amount_with_tax * (payment_terms[:amex_rate] / 100.0)))* 0.5 }
+      let(:prov_cut_with_cash) { amount_with_tax - (amount_with_tax * (payment_terms[:cash_rate] / 100.0)) - subcon_cut }
+      let(:prov_cut_with_credit) { amount_with_tax - (amount_with_tax * (payment_terms[:credit_rate] / 100.0)) - subcon_cut }
+      let(:prov_cut_with_cheque) { amount_with_tax - (amount_with_tax * (payment_terms[:cheque_rate] / 100.0)) - subcon_cut }
+      let(:prov_cut_with_amex) { amount_with_tax - (amount_with_tax * (payment_terms[:amex_rate] / 100.0)) - subcon_cut }
 
 
       before do
         with_user(prov.users.first) do
           job.subcontractor    = broker.becomes(Subcontractor)
           job.subcon_agreement = prov_agreement
+          job.properties       = prov_job_properties
           job.transfer
         end
 
@@ -635,6 +843,7 @@ describe 'Affiliate Billing Service' do
 
           broker_job.subcontractor    = subcon.becomes(Subcontractor)
           broker_job.subcon_agreement = subcon_agreement
+          broker_job.properties       = subcon_job_properties
           broker_job.transfer
         end
 
@@ -656,31 +865,29 @@ describe 'Affiliate Billing Service' do
           end
         end
 
-        it 'subcon account should have PaymentToSubcontractor + MaterialReimbursementToCparty entires' do
-          broker_subcon_acc.reload.entries.where(ticket_id: broker_job.id).map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty]
-          subcon_broker_acc.reload.entries.where(ticket_id: subcon_job.id).map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
+        it 'subcon account should have PaymentToSubcontractor without MaterialReimbursementToCparty entires' do
+          broker_subcon_acc.reload.entries.where(ticket_id: broker_job.id).map(&:class).should =~ [PaymentToSubcontractor]
+          subcon_broker_acc.reload.entries.where(ticket_id: subcon_job.id).map(&:class).should =~ [IncomeFromProvider]
         end
 
-        it 'provider account should have IncomeFromProvider + MaterialReimbursementToCparty entires' do
-          broker_prov_acc.reload.entries.where(ticket_id: broker_job.id).map(&:class).should =~ [IncomeFromProvider, MaterialReimbursement, MaterialReimbursement]
-          prov_broker_acc.reload.entries.where(ticket_id: job.id).map(&:class).should =~ [PaymentToSubcontractor, MaterialReimbursementToCparty, MaterialReimbursementToCparty]
+        it 'provider account should have IncomeFromProvider without MaterialReimbursementToCparty entires' do
+          broker_prov_acc.reload.entries.where(ticket_id: broker_job.id).map(&:class).should =~ [IncomeFromProvider]
+          prov_broker_acc.reload.entries.where(ticket_id: job.id).map(&:class).should =~ [PaymentToSubcontractor]
         end
 
 
-        it 'subcon balance should be total + tax amount + material cost' do
+        it 'subcon balance should be flat fee without material cost' do
           broker_subcon_acc.reload.balance.should eq -subcon_cut
           subcon_broker_acc.reload.balance.should eq subcon_cut
         end
 
-        it 'provider balance should be total + tax amount + material cost' do
-          broker_prov_acc.balance.should eq prov_income
-          prov_broker_acc.balance.should eq -prov_income
+        it 'provider balance should be flat fee without material cost' do
+          broker_prov_acc.reload.balance.should eq provider_cut
+          prov_broker_acc.reload.balance.should eq -provider_cut
         end
 
 
       end
-
-      pending 'ensure broker billing works well'
     end
 
   end
