@@ -1,0 +1,10 @@
+<% transfer_props.each do |key, value| %>
+    <tr>
+      <td><%= @service_call.class.human_attribute_name(key) %></td>
+      <td>
+        <span class="status_grey">
+          <h3><%= truncate(value, length: 15) if @service_call.subcontractor.present? %></h3>
+        </span>
+      </td>
+    </tr>
+<% end %>

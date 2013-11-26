@@ -95,182 +95,19 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def service_call_attributes
-    permitted_attributes = []
-    case obj.class.name
-      when MyServiceCall.name
-        if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :collector_id, :collector_type, :tag_list, :name, :subcon_agreement_id,
-                                  :provider_id,
-                                  :subcontractor_id,
-                                  :technician_id,
-                                  :started_on_text, :started_on,
-                                  :completed_on_text,
-                                  :scheduled_for_text,
-                                  :new_customer,
-                                  :address1,
-                                  :address2,
-                                  :company,
-                                  :city,
-                                  :state,
-                                  :zip,
-                                  :country,
-                                  :phone,
-                                  :mobile_phone,
-                                  :work_phone,
-                                  :email,
-                                  :notes,
-                                  :total_price, :allow_collection, :transferable, :re_transfer, :scheduled_for, :payment_type]
-        else # todo need to define the permitted params after giving it some thouhgt, as this is done just for alpha
-          permitted_attributes = [:status_event, :collector_id, :collector_type, :tag_list,
+    attrs = basic_service_call_attr |
+        sc_work_status_attr |
+        sc_billing_status_attrs |
+        sc_collection_attrs |
+        sc_financial_attrs |
+        sc_subcon_status_attrs |
+        sc_provider_status_attrs |
+        sc_transfer_attrs
 
-                                  :scheduled_for_text,
-                                  :address1,
-                                  :address2,
-                                  :company,
-                                  :city,
-                                  :state,
-                                  :zip,
-                                  :country,
-                                  :phone,
-                                  :mobile_phone,
-                                  :work_phone,
-                                  :email,
-                                  :notes,
-                                  :scheduled_for, :payment_type]
-        end
-
-        # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
-        permitted_attributes << :work_status_event unless obj.transferred? && obj.subcontractor.subcontrax_member?
-        permitted_attributes << :tax if obj.can_change_financial_data?
-        permitted_attributes.concat [:billing_status_event, :collector_id, :collector_type, :payment_type] if billing_allowed?
-        permitted_attributes.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
-
-      # todo refactor attributes to ensure agreement can't be changed after the job was created
-      when TransferredServiceCall.name
-        if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :started_on, :started_on_text, :tag_list, :name, :provider_agreement_id, :subcon_agreement_id,
-                                  :provider_id, :scheduled_for_text,
-                                  :subcontractor_id,
-                                  :technician_id,
-                                  :started_on_text,
-                                  :completed_on_text,
-                                  :new_customer,
-                                  :address1,
-                                  :address2,
-                                  :company,
-                                  :city,
-                                  :state,
-                                  :zip,
-                                  :country,
-                                  :phone,
-                                  :mobile_phone,
-                                  :work_phone,
-                                  :email,
-                                  :notes, :transferable, :allow_collection, :re_transfer, :payment_type]
-
-        elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
-          permitted_attributes = [:status_event, :tag_list,
-                                  :completed_on_text, :scheduled_for_text,
-                                  :address1,
-                                  :address2,
-                                  :company,
-                                  :city,
-                                  :state,
-                                  :zip,
-                                  :country,
-                                  :phone,
-                                  :mobile_phone,
-                                  :work_phone,
-                                  :email,
-                                  :notes, :payment_type]
-        elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
-          permitted_attributes = [:status_event, :tag_list, :name, :scheduled_for_text, :provider_agreement_id, :subcon_agreement_id,
-                                  :subcontractor_id,
-                                  :technician_id,
-                                  :started_on_text,
-                                  :completed_on_text,
-                                  :address1,
-                                  :address2,
-                                  :company,
-                                  :city,
-                                  :state,
-                                  :zip,
-                                  :country,
-                                  :phone,
-                                  :mobile_phone,
-                                  :work_phone,
-                                  :email,
-                                  :notes, :transferable, :re_transfer, :payment_type]
-        end
-
-        permitted_attributes.concat [:billing_status_event, :collector_id, :collector_type, :payment_type] if billing_allowed?
-        permitted_attributes << :work_status_event if obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?)
-        permitted_attributes << :allow_collection if obj.present? && !obj.provider.subcontrax_member?
-        permitted_attributes << :tax if obj.can_change_financial_data?
-        permitted_attributes.concat [:provider_status_event, :provider_payment] if provider_event_allowed?
-        permitted_attributes.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
-      else # new service call
-        if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
-          permitted_attributes = [:status_event, :tag_list, :customer_name, :scheduled_for_text, :name, :scheduled_for, :provider_agreement_id,
-                                  :provider_id,
-                                  :subcontractor_id,
-                                  :customer_id,
-                                  :technician_id,
-                                  :started_on_text,
-                                  :completed_on_text,
-                                  :new_customer,
-                                  :address1,
-                                  :address2,
-                                  :company,
-                                  :city,
-                                  :state,
-                                  :zip,
-                                  :country,
-                                  :phone,
-                                  :mobile_phone,
-                                  :work_phone,
-                                  :email,
-                                  :notes, :transferable, :allow_collection]
-        elsif user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
-          [:status_event,
-           :completed_on_text, :tag_list, :customer_name,
-           :address1,
-           :address2,
-           :company,
-           :city,
-           :state,
-           :zip,
-           :country,
-           :phone,
-           :mobile_phone,
-           :work_phone,
-           :email,
-           :notes]
-        elsif user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
-          [:status_event,
-           :subcontractor_id, :tag_list, :customer_name, :name,
-           :technician_id,
-           :started_on_text,
-           :completed_on_text,
-           :address1,
-           :address2,
-           :company,
-           :city,
-           :state,
-           :zip,
-           :country,
-           :phone,
-           :mobile_phone,
-           :work_phone,
-           :email,
-           :notes]
-        end
-    end
-
-    permitted_attributes.concat [:subcontractor_status_event, :subcon_payment] if subcontractor_status_allowed?
-
-    permitted_attributes
+    attrs.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
+    attrs
   end
+
 
   alias_method :my_service_call_attributes, :service_call_attributes
   alias_method :transferred_service_call_attributes, :service_call_attributes
@@ -558,6 +395,111 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = false if params[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
     end
     res
+
+  end
+
+  def basic_service_call_attr
+
+    basic_attr = [:started_on_text,
+                  :started_on,
+                  :completed_on_text,
+                  :scheduled_for_text,
+                  :scheduled_for,
+                  :address1,
+                  :address2,
+                  :company,
+                  :city,
+                  :state,
+                  :zip,
+                  :country,
+                  :phone,
+                  :mobile_phone,
+                  :work_phone,
+                  :email,
+                  :notes,
+                  :collector_id,
+                  :collector_type]
+
+    basic_attr = basic_attr | sc_technician_attr if user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
+    basic_attr = basic_attr | sc_dispatcher_attr if user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
+
+    basic_attr = basic_attr | sc_org_attr if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
+
+    basic_attr
+  end
+
+  def sc_technician_attr
+    [:status_event, :tag_list, :payment_type]
+  end
+
+  def sc_dispatcher_attr
+    sc_technician_attr | [:provider_id,
+                          :provider_agreement_id,
+                          :subcon_agreement_id,
+                          :subcontractor_id,
+                          :technician_id,
+                          :transferable,
+                          :re_transfer,
+                          :new_customer]
+  end
+
+  def sc_org_attr
+    sc_dispatcher_attr
+  end
+
+  def sc_work_status_attr
+    case obj.class.name
+      when MyServiceCall.name
+        # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
+        obj.transferred? && obj.subcontractor.subcontrax_member? ? [] : [:work_status_event]
+      when TransferredServiceCall.name
+        obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?) ? [:work_status_event] : []
+      else
+        []
+    end
+  end
+
+  def sc_billing_status_attrs
+    billing_allowed? ? [:billing_status_event, :collector_id, :collector_type, :payment_type] : []
+  end
+
+  def sc_collection_attrs
+    if user.roles.map(&:name).include?(Role::DISPATCHER_ROLE_NAME) || user.roles.map(&:name).include?(Role::ORG_ADMIN_ROLE_NAME)
+      case obj.class.name
+        when MyServiceCall.name
+          [:allow_collection]
+        when TransferredServiceCall.name
+          obj.present? && !obj.provider.subcontrax_member? ? [:allow_collection] : []
+        else
+          []
+      end
+    else
+      []
+    end
+  end
+
+  def sc_financial_attrs
+    obj && obj.can_change_financial_data? ? [:tax] : []
+  end
+
+  def sc_subcon_status_attrs
+    subcontractor_status_allowed? ? [:subcontractor_status_event, :subcon_payment] : []
+  end
+
+  def sc_provider_status_attrs
+    obj.instance_of?(TransferredServiceCall) && provider_event_allowed? ? [:provider_status_event, :provider_payment] : []
+  end
+
+  def sc_transfer_attrs
+    agr = nil
+    if obj && obj.subcon_agreement
+      agr = obj.subcon_agreement
+    else
+
+      agr = Agreement.find(params[:service_call][:subcon_agreement_id]) if params[:service_call] && params[:service_call][:subcon_agreement_id]
+    end
+
+    agr ? [properties: agr.get_transfer_props.map(&:attribute_names).flatten] : []
 
   end
 

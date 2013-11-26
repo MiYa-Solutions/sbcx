@@ -22,6 +22,10 @@ class FlatFee < AffiliatePostingRule
     monetize :subcon_fee_cents
     monetize :provider_fee_cents
 
+    def attribute_names
+      [:bom_reimbursement, :subcon_fee]
+    end
+
     #after_initialize :init
     private
 

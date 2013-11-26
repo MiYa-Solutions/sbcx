@@ -149,39 +149,7 @@ module ServiceCallsHelper
   end
 
   def transfer_form(service_call)
-
-    render 'service_calls/action_forms/transfer_form', job: service_call
-
-    #form      = simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.status.transfer.form_classes") } do |f|
-    #  concat (f.select :subcontractor_id, subcon_options, include_blank: true)
-    #  concat (f.input :subcon_agreement_id, collection: [])
-    #  concat (f.input :allow_collection)
-    #  concat (f.input :re_transfer)
-    #
-    #  concat (flat_fee_props(f))
-    #  concat (hidden_field_tag "service_call[status_event]", 'transfer')
-    #  concat (f.submit service_call.class.human_status_event_name(:transfer).titleize,
-    #                   id:      'service_call_transfer_btn',
-    #                   class:   "btn btn-large btn-primary",
-    #                   title:   'Click to transfer the Service Call to the Subcontractor you selected',
-    #                   rel:     'tooltip',
-    #                   confirm: ""
-    #         )
-    #end
-    #rule_form = content_tag :div, "STAM", class: "TEST CLASS"
-    #modal     = content_tag(:div, nil, id: 'transfer_modal', class: 'modal hide fade', tabindex: "-1", role: "dialog", "aria-labelledby" => "myModalLabel", "aria-hidden" => "true") do
-    #  concat content_tag(:div, "<h3>Transfer Job</h3>".html_safe, class: 'modal-header')
-    #
-    #  concat content_tag(:div, form, :class => "modal-body")
-    #
-    #  concat content_tag(:div, nil, class: "modal-footer")
-    #
-    #end
-    #
-    #button = link_to("Transfer", '#transfer_modal', class: "#{style("service_call.forms.status.transfer.button_classes")}", data: { toggle: 'modal' }, role: "button", id: "transfer_btn")
-    #
-    #
-    #button + modal
+    render 'service_calls/action_forms/status_forms/transfer_form', job: service_call
   end
 
   def flat_fee_props(f, visible = false)
@@ -192,6 +160,10 @@ module ServiceCallsHelper
 
       end
     end
+  end
+
+  def transfer_props
+    @service_call.transfer_props.map(&:attributes)
   end
 
 

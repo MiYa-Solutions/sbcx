@@ -158,10 +158,19 @@ def setup_customer_agreement(org, customer)
   Rails.logger.debug { "created account: #{account.inspect}" }
 end
 
-def setup_flat_fee_agreement(prov, subcon)
+def setup_flat_fee_agreement(prov, subcon, payment_rules = {})
   prov.subcontractors << subcon if prov.subcontrax_member?
   subcon.providers << prov if subcon.subcontrax_member?
   agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
+
+  payment_rules[:cash_rate]        ||= 0.0
+  payment_rules[:cheque_rate]      ||= 0.0
+  payment_rules[:credit_rate]      ||= 0.0
+  payment_rules[:amex_rate]        ||= 0.0
+  payment_rules[:cash_rate_type]   ||= :percentage
+  payment_rules[:cheque_rate_type] ||= :percentage
+  payment_rules[:amex_rate_type]   ||= :percentage
+  payment_rules[:credit_rate_type] ||= :percentage
 
   FactoryGirl.create(:flat_fee, agreement: agreement)
   agreement.name = "#{prov.name} (P), #{subcon.name} (S) FlatFee"

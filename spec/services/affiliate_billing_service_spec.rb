@@ -3,22 +3,23 @@ require 'spec_helper'
 describe 'Affiliate Billing Service' do
   let(:prov) { FactoryGirl.create(:member) }
   let(:subcon) { FactoryGirl.create(:member) }
+  let(:subcon_job) { Ticket.find_by_ref_id_and_organization_id(job.ref_id, subcon.id) }
 
+  let(:payment_terms) {
+    { :cash_rate        => 1.0,
+      :cheque_rate      => 2.0,
+      :credit_rate      => 3.0,
+      :amex_rate        => 4.0,
+      :cash_rate_type   => :percentage,
+      :amex_rate_type   => :percentage,
+      :cheque_rate_type => :percentage,
+      :credit_rate_type => :percentage
+    }
+  }
   describe 'profit_split' do
-    let(:payment_terms) do
-      { :cash_rate        => 1.0,
-        :cheque_rate      => 2.0,
-        :credit_rate      => 3.0,
-        :amex_rate        => 4.0,
-        :cash_rate_type   => :percentage,
-        :amex_rate_type   => :percentage,
-        :cheque_rate_type => :percentage,
-        :credit_rate_type => :percentage
-      }
-    end
+
     let(:agreement) { setup_profit_split_agreement(prov, subcon, 50, payment_terms) }
     let(:job) { FactoryGirl.create(:my_service_call, organization: agreement.organization, subcontractor: nil) }
-    let(:subcon_job) { Ticket.find_by_ref_id_and_organization_id(job.ref_id, subcon.id) }
     let(:customer) { job.customer }
     let(:customer_acc) { Account.for(prov, customer).first }
     let(:subcon_acc) { Account.for(prov, subcon).first }
@@ -374,7 +375,6 @@ describe 'Affiliate Billing Service' do
     let(:agreement) { setup_flat_fee_agreement(prov, subcon) }
 
     let(:job) { FactoryGirl.create(:my_service_call, organization: agreement.organization, subcontractor: nil) }
-    let(:subcon_job) { Ticket.find_by_ref_id_and_organization_id(job.ref_id, subcon.id) }
     let(:customer) { job.customer }
     let(:customer_acc) { Account.for(prov, customer).first }
     let(:subcon_acc) { Account.for(prov, subcon).first }
@@ -382,6 +382,14 @@ describe 'Affiliate Billing Service' do
 
     let(:billing_service) { AffiliateBillingService.new(FactoryGirl.create(:service_call_completed_event)) }
     let(:subcon_cut) { Money.new_with_amount(50) }
+
+    let(:amount_with_tax) { Money.new_with_amount(300 + (300 * (job.reload.tax / 100.0))) }
+
+    # subcon cut is the total price minus the material cost + the reimbursement for the part
+    let(:subcon_cut_with_cash) { subcon_cut - (amount_with_tax * (payment_terms[:cash_rate] / 100.0)) + Money.new_with_amount(20) }
+    let(:subcon_cut_with_credit) { subcon_cut - (amount_with_tax * (payment_terms[:credit_rate] / 100.0)) + Money.new_with_amount(20) }
+    let(:subcon_cut_with_cheque) { subcon_cut - (amount_with_tax * (payment_terms[:cheque_rate] / 100.0)) + Money.new_with_amount(20) }
+    let(:subcon_cut_with_amex) { subcon_cut - (amount_with_tax * (payment_terms[:amex_rate] / 100.0)) + Money.new_with_amount(20) }
 
     subject { billing_service }
 
@@ -402,7 +410,6 @@ describe 'Affiliate Billing Service' do
 
       end
 
-      let(:amount_with_tax) { Money.new_with_amount(300 + (300 * (job.reload.tax / 100.0))) }
 
       describe 'with tax' do
         before do
@@ -433,15 +440,15 @@ describe 'Affiliate Billing Service' do
           end
 
           it 'subcon account should have IncomeFromProvider entry' do
-            prov_acc.reload.entries.where(ticket_id: subcon_job.ref_id).map(&:class).should =~ [IncomeFromProvider]
+            prov_acc.reload.entries.where(ticket_id: subcon_job.id).map(&:class).should =~ [IncomeFromProvider]
           end
 
           it 'subcon balance should be total + tax amount + material cost' do
-            subcon_acc.balance.should eq -subcon_cut
+            expect(subcon_acc.balance).to eq -subcon_cut
           end
 
           it 'subcon balance should be total + tax amount + material cost' do
-            prov_acc.balance.should eq subcon_cut
+            expect(prov_acc.balance).to eq subcon_cut
           end
 
           describe 'after cash collection' do
@@ -576,7 +583,7 @@ describe 'Affiliate Billing Service' do
 
     end
 
-    describe 'broker' do
+    context 'when a broker' do
       let(:broker) { FactoryGirl.create(:member) }
       let(:prov_agreement) { setup_profit_split_agreement(prov, broker, 50, payment_terms) }
       let(:subcon_agreement) { setup_profit_split_agreement(broker, subcon, 40, payment_terms) }

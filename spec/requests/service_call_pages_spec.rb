@@ -374,7 +374,6 @@ describe "Service Call pages" do
 
       describe "multi user organization" do
 
-
         before do
           technician.valid?
           visit service_call_path service_call
@@ -2423,10 +2422,6 @@ describe "Service Call pages" do
           end
 
           it { should_not have_selector('error') }
-          it "should have a subcontractor select box" do
-            should have_selector("##{subcontractor_select}")
-
-          end
           it "should have a provider select box" do
             should have_selector(provider_select)
           end

@@ -135,7 +135,7 @@ class Agreement < ActiveRecord::Base
   end
 
   def get_transfer_props
-    rules.map(&:transfer_props)
+    rules.map(&:get_transfer_props)
   end
 
   private

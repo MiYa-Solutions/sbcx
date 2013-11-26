@@ -369,6 +369,20 @@ class Ticket < ActiveRecord::Base
     @tag_list || tags.map(&:name).join(", ")
   end
 
+  def transfer_props
+    subcon_agreement ? subcon_agreement.rules.map { |rule| rule.get_transfer_props(self) } : AffiliatePostingRule::TransferProperties.new
+  end
+
+  #def properties=(hash = {})
+  #  clean_hash = {}
+  #  white_list = transfer_props.map(&:attribute_names).flatten
+  #  hash.each do |key|
+  #    clean_hash.merge key if white_list.include? key.name
+  #  end
+  #
+  #  write_attribute(:properties, clean_hash)
+  #end
+
   protected
 
   def check_subcon_agreement

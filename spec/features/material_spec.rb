@@ -54,7 +54,7 @@ describe 'Material Pages', js: true do
 
         it 'should show no materials in the materials table' do
           should have_selector 'tbody#materials'
-          should have_selector 'tbody#materials tr', count: 1
+          should have_selector 'tbody#materials tr', count: 0
         end
 
       end
