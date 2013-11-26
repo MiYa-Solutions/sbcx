@@ -34,12 +34,13 @@ class ScSubconDepositedEvent < ServiceCallEvent
     props = { amount:      service_call.total_price + service_call.tax_amount,
               ticket:      service_call,
               event:       self,
+              agreement:   service_call.subcon_agreement,
               description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
 
 
     case service_call.payment_type
       when 'cash'
-        entry =  CashDepositFromSubcon.new(props)
+        entry = CashDepositFromSubcon.new(props)
       when 'credit_card'
         entry = CreditCardDepositFromSubcon.new(props)
       when 'amex_credit_card'

@@ -36,12 +36,9 @@ class Organization < ActiveRecord::Base
   end
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
-
   has_many :service_calls, :inverse_of => :organization
-
   has_many :events, as: :eventable
   has_many :materials
-
   has_many :accounts
   has_many :affiliates, through: :accounts, source: :accountable, :source_type => "Organization" do
     def build(params)
@@ -53,7 +50,6 @@ class Organization < ActiveRecord::Base
       affiliate
     end
   end
-
   has_many :agreements
   has_many :subcontracting_agreements do
     def build(params)
@@ -78,19 +74,18 @@ class Organization < ActiveRecord::Base
       unless provider.agreements.where(:counterparty_id => proxy_association.owner.id).first
         prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
         Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator }) { self.concat provider }
+        agr = provider.agreements.where(:counterparty_id => proxy_association.owner.id).first
+        agr.rules << FlatFee.new
+        agr.activate
+        Rails.logger.debug { "Created a default flat fee agreement for provider:\n#{agr.inspect}" }
+
       end
       proxy_association.owner.affiliates << provider unless proxy_association.owner.affiliates.include? provider
-      #Account.find_or_create_by_organization_id_and_accountable_id!(organization_id: proxy_association.owner.id, accountable_id: provider.id)
       provider
-
     end
-
   end
-
   has_many :boms, as: :buyer
-
   has_many :tags
-
   has_many :appointments
 
   ### VALIDATIONS:
@@ -121,7 +116,7 @@ class Organization < ActiveRecord::Base
   scope :search, ->(query) { where(arel_table[:name].matches("%#{query}%")) }
   scope :provider_search, ->(org_id, query) { (search(query).provider_members - where(id: org_id)| search(query).my_providers(org_id)).order('organizations.name') }
   scope :subcontractor_search, ->(org_id, query) { ((search(query).subcontractor_members - where(id: org_id)| search(query).my_subcontractors(org_id)).order('organizations.name')) }
-  scope :affiliate_search, ->(org_id, query) { (my_affiliates(org_id).search(query) | members.search(query) - where(id: org_id) ).order('organizations.name ASC') }
+  scope :affiliate_search, ->(org_id, query) { (my_affiliates(org_id).search(query) | members.search(query) - where(id: org_id)).order('organizations.name ASC') }
 
   def technicians(columns = "")
     User.my_technicians(self.id, columns)

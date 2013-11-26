@@ -59,7 +59,8 @@ CREATE TABLE accounting_entries (
   type             CHARACTER VARYING(255),
   description      CHARACTER VARYING(255),
   balance_cents    INTEGER DEFAULT 0                                         NOT NULL,
-  balance_currency CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL
+  balance_currency CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
+  agreement_id     INTEGER
 );
 
 
@@ -1523,3 +1524,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131103211129');
 INSERT INTO schema_migrations (version) VALUES ('20131103214024');
 
 INSERT INTO schema_migrations (version) VALUES ('20131103214326');
+
+INSERT INTO schema_migrations (version) VALUES ('20131126151013');

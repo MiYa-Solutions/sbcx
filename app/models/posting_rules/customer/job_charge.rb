@@ -56,6 +56,7 @@ class JobCharge < CustomerPostingRule
         ServiceCallCharge.new(event:       @event,
                               ticket:      @ticket,
                               amount:      charge_amount,
+                              agreement:   agreement,
                               description: "Entry to provider owned account")
     ]
   end
@@ -66,6 +67,7 @@ class JobCharge < CustomerPostingRule
         CanceledJobAdjustment.new(event:       @event,
                                   ticket:      @ticket,
                                   amount:      -charge_amount,
+                                  agreement:   agreement,
                                   description: "Reimbursement for a canceled job")
     ]
   end

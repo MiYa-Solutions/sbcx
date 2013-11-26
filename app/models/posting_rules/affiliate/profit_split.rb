@@ -58,12 +58,14 @@ class ProfitSplit < AffiliatePostingRule
         amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
         ticket:      @ticket,
         event:       @event,
+        agreement:   agreement,
         description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
     fee_props = { status:      AccountingEntry::STATUS_CLEARED,
                   ticket:      @ticket,
                   event:       @event,
+                  agreement:   agreement,
                   description: I18n.t("payment_fee.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
@@ -99,10 +101,10 @@ class ProfitSplit < AffiliatePostingRule
 
   def org_charge_entries
     entries = []
-    entries << PaymentToSubcontractor.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to provider owned account")
+    entries << PaymentToSubcontractor.new(agreement: agreement, event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to provider owned account")
     @ticket.boms.each do |bom|
       if bom.buyer == agreement.counterparty
-        entries << MaterialReimbursementToCparty.new(event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
+        entries << MaterialReimbursementToCparty.new(agreement: agreement, event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
       end
     end
     entries
@@ -110,10 +112,10 @@ class ProfitSplit < AffiliatePostingRule
 
   def cparty_charge_entries
     entries = []
-    entries << IncomeFromProvider.new(event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to subcontractor owned account")
+    entries << IncomeFromProvider.new(agreement: agreement, event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to subcontractor owned account")
     @ticket.boms.each do |bom|
       if bom.mine?
-        entries << MaterialReimbursement.new(event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
+        entries << MaterialReimbursement.new(agreement: agreement, event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
       end
     end
 

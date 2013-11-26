@@ -80,13 +80,13 @@ class AffiliatePostingRule < PostingRule
 
     case @ticket.provider_payment
       when 'cash'
-        result << CashPaymentFromAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << CashPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       when 'credit_card'
-        result << CreditPaymentFromAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << CreditPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       when 'amex_credit_card'
-        result << AmexPaymentFromAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << AmexPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       when 'cheque'
-        result << ChequePaymentFromAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << ChequePaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       else
 
     end
@@ -126,7 +126,7 @@ class AffiliatePostingRule < PostingRule
     deposit_fee    = deposit_entry ? deposit_entry.amount : Money.new_with_amount(0)
     adjustment     = payment_fee + collection_fee + deposit_fee
 
-    [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: -(original_entry.amount + adjustment), description: "Entry to provider owned account")]
+    [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount: -(original_entry.amount + adjustment), description: "Entry to provider owned account")]
   end
 
   def org_cancellation_entries
@@ -159,7 +159,7 @@ class AffiliatePostingRule < PostingRule
     deposit_fee    = deposit_entry ? deposit_entry.amount : Money.new_with_amount(0)
     adjustment     = payment_fee + collection_fee + deposit_fee
 
-    [CanceledJobAdjustment.new(event: @event, ticket: @ticket, amount: -(original_entry.amount + adjustment), description: "Entry to provider owned account")]
+    [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount: -(original_entry.amount + adjustment), description: "Entry to provider owned account")]
   end
 
   def org_collection_entries
@@ -168,11 +168,13 @@ class AffiliatePostingRule < PostingRule
                          amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
                          ticket:      @ticket,
                          event:       @event,
+                         agreement:   agreement,
                          description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
 
     fee_props = { status:      AccountingEntry::STATUS_CLEARED,
                   ticket:      @ticket,
                   event:       @event,
+                  agreement:   agreement,
                   description: I18n.t("payment_reimbursement.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
 
 
@@ -233,13 +235,13 @@ class AffiliatePostingRule < PostingRule
 
     case @ticket.subcon_payment
       when 'cash'
-        result << CashPaymentToAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << CashPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       when 'credit_card'
-        result << CreditPaymentToAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << CreditPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       when 'amex_credit_card'
-        result << AmexPaymentToAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << AmexPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       when 'cheque'
-        result << ChequePaymentToAffiliate.new(event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << ChequePaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       else
 
     end
@@ -255,6 +257,7 @@ class AffiliatePostingRule < PostingRule
         status:      AccountingEntry::STATUS_CLEARED,
         ticket:      @ticket,
         event:       @event,
+        agreement:   agreement,
         description: I18n.t("payment_fee.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
@@ -287,6 +290,7 @@ class AffiliatePostingRule < PostingRule
         status:      AccountingEntry::STATUS_CLEARED,
         ticket:      @ticket,
         event:       @event,
+        agreement:   agreement,
         description: I18n.t("payment_reimbursement.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
