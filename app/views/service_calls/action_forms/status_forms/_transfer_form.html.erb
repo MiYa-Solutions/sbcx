@@ -7,6 +7,7 @@
         <%= f.input :subcon_agreement_id, collection: [] %>
         <%= f.input :allow_collection %>
         <%= f.input :re_transfer %>
+        <%= f.input :notes %>
         <%= flat_fee_props(f) %>
         <%= hidden_field_tag "service_call[status_event]", 'transfer' %>
         <%= f.submit job.class.human_status_event_name(:transfer).titleize,
