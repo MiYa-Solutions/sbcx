@@ -55,10 +55,18 @@ class FlatFee < AffiliatePostingRule
 
   def org_charge_entries
     entries = []
-    entries << PaymentToSubcontractor.new(agreement: agreement, event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to provider owned account")
+    entries << PaymentToSubcontractor.new(agreement:   agreement,
+                                          event:       @event,
+                                          ticket:      @ticket,
+                                          amount:      counterparty_cut,
+                                          description: "Entry to provider owned account")
     @ticket.boms.each do |bom|
       if bom.buyer == agreement.counterparty
-        entries << MaterialReimbursementToCparty.new(agreement: agreement, event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
+        entries << MaterialReimbursementToCparty.new(agreement:   agreement,
+                                                     event:       @event,
+                                                     ticket:      @ticket,
+                                                     amount:      bom.total_cost,
+                                                     description: "Material Reimbursement to subcon")
       end
     end if get_transfer_props.bom_reimbursement?
     entries
@@ -72,55 +80,6 @@ class FlatFee < AffiliatePostingRule
         entries << MaterialReimbursement.new(agreement: agreement, event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
       end
     end if get_transfer_props.bom_reimbursement?
-
-    entries
-  end
-
-  def cparty_collection_entries
-    entries = []
-
-    collection_props = {
-        status:      AccountingEntry::STATUS_CLEARED,
-        amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
-        ticket:      @ticket,
-        event:       @event,
-        agreement:   agreement,
-        description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
-    }
-
-    fee_props = { status:      AccountingEntry::STATUS_CLEARED,
-                  ticket:      @ticket,
-                  event:       @event,
-                  agreement:   agreement,
-                  description: I18n.t("payment_fee.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
-    }
-
-    case @ticket.payment_type
-      when 'cash'
-        entries << CashCollectionForProvider.new(collection_props)
-        fee_props[:amount] = cash_fee * (rate / 100.0)
-        entries << CashPaymentFee.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0
-
-      when 'credit_card'
-        fee_props[:amount] = credit_fee * (rate / 100.0)
-        entries << CreditCardCollectionForProvider.new(collection_props)
-        entries << CreditPaymentFee.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0
-
-      when 'amex_credit_card'
-        fee_props[:amount] = amex_fee * (rate / 100.0)
-        entries << AmexCollectionForProvider.new(collection_props)
-        entries << AmexPaymentFee.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0
-
-      when 'cheque'
-        fee_props[:amount] = cheque_fee * (rate / 100.0)
-        entries << ChequeCollectionForProvider.new(collection_props)
-        entries << ChequePaymentFee.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0
-
-
-      else
-        raise "#{self.class.name}: Unexpected payment type (#{@ticket.payment_type}) when processing the event"
-
-    end
 
     entries
   end

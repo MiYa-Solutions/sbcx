@@ -172,7 +172,17 @@ def setup_flat_fee_agreement(prov, subcon, payment_rules = {})
   payment_rules[:amex_rate_type]   ||= :percentage
   payment_rules[:credit_rate_type] ||= :percentage
 
-  FactoryGirl.create(:flat_fee, agreement: agreement)
+  FactoryGirl.create(:flat_fee, agreement: agreement,
+                     cheque_rate:          payment_rules[:cheque_rate],
+                     cash_rate:            payment_rules[:cash_rate],
+                     credit_rate:          payment_rules[:credit_rate],
+                     amex_rate:            payment_rules[:amex_rate],
+                     cheque_rate_type:     payment_rules[:cheque_rate_type],
+                     cash_rate_type:       payment_rules[:cash_rate_type],
+                     credit_rate_type:     payment_rules[:credit_rate_type],
+                     amex_rate_type:       payment_rules[:amex_rate_type]
+  )
+
   agreement.name = "#{prov.name} (P), #{subcon.name} (S) FlatFee"
   agreement.save!
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
