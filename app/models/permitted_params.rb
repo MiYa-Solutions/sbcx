@@ -101,9 +101,9 @@ class PermittedParams < Struct.new(:params, :user, :obj)
         sc_collection_attrs |
         sc_financial_attrs |
         sc_subcon_status_attrs |
-        sc_provider_status_attrs |
-        sc_transfer_attrs
+        sc_provider_status_attrs
 
+    attrs.concat sc_transfer_attrs if sc_transfer_attrs.size > 0
     attrs.concat [:customer_id, :customer_name] if obj.nil? || obj.new?
     attrs
   end
@@ -504,7 +504,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       agr = Agreement.find(params[:service_call][:provider_agreement_id]) if params[:service_call] && params[:service_call][:provider_agreement_id]
     end
 
-    agr ? [properties: agr.get_transfer_props.map(&:attribute_names).flatten] : []
+    agr && agr.get_transfer_props.map(&:attribute_names).size > 0 ? [properties: agr.get_transfer_props.map(&:attribute_names).flatten] : []
   end
 
   def sc_subcon_transfer_props
@@ -516,7 +516,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       agr = Agreement.find(params[:service_call][:subcon_agreement_id]) if params[:service_call] && params[:service_call][:subcon_agreement_id]
     end
 
-    agr ? [properties: agr.get_transfer_props.map(&:attribute_names).flatten] : []
+    agr && agr.get_transfer_props.map(&:attribute_names).size > 0 ? [properties: agr.get_transfer_props.map(&:attribute_names).flatten] : []
   end
 
 end

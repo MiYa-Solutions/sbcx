@@ -154,7 +154,8 @@ module ServiceCallsHelper
 
   def subcon_transfer_props
     res_hash = {}
-    @service_call.subcon_transfer_props.map do |props|
+    # need to reload as the updated properties are not visible for some reason
+    @service_call.reload.subcon_transfer_props.map do |props|
       klass = props.class
       props.attributes.map do |key, val|
         unless [:prov_bom_reimbursement, :provider_fee].include? key
@@ -168,7 +169,8 @@ module ServiceCallsHelper
 
   def provider_transfer_props
     res_hash = {}
-    @service_call.provider_transfer_props.map do |props|
+    # need to reload as the updated properties are not visible for some reason
+    @service_call.reload.provider_transfer_props.map do |props|
       klass = props.class
       props.attributes.map do |key, val|
         unless [:bom_reimbursement, :subcon_fee].include? key

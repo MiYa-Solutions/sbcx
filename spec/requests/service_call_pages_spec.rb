@@ -2505,6 +2505,35 @@ describe "Service Call pages" do
           should have_selector('.alert-success')
         end
 
+        context 'when transferred to a member subcon' do
+          let(:subcon_agr) { setup_flat_fee_agreement(org, subcon) }
+          let(:subcon_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+          let(:subcon) { subcon_user.organization }
+          let(:job) { Ticket.find_by_organization_id(org.id) }
+          let(:subcon_job) { Ticket.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
+
+          before do
+            subcon_agr.reload
+            in_browser(:org) do
+              transfer_job(job, subcon, subcon_agr) do
+                check FF_CBOX_BOM_REIMBU
+                fill_in FF_INPUT_SUBCON_FEE, with: 100
+              end
+            end
+            in_browser(:subcon) do
+              sign_in(subcon_user)
+              visit service_call_path(subcon_job)
+            end
+          end
+
+          it 'should have an accept button' do
+            in_browser(:subcon) do
+              expect(page).to have_button(JOB_BTN_ACCEPT)
+            end
+          end
+        end
+
+
         describe "start the service call" do
           before do
             click_button start_btn_selector
