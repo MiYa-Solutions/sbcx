@@ -152,8 +152,32 @@ module ServiceCallsHelper
     render 'service_calls/action_forms/status_forms/transfer_form', job: service_call
   end
 
-  def transfer_props
-    @service_call.transfer_props.map(&:attributes)
+  def subcon_transfer_props
+    res_hash = {}
+    @service_call.subcon_transfer_props.map do |props|
+      klass = props.class
+      props.attributes.map do |key, val|
+        unless [:prov_bom_reimbursement, :provider_fee].include? key
+          formatted_val = props.send(key)
+          res_hash      = res_hash.merge klass.human_attribute_name(key) => formatted_val.instance_of?(Money) ? humanized_money_with_symbol(formatted_val) : formatted_val
+        end
+      end
+    end
+    res_hash
+  end
+
+  def provider_transfer_props
+    res_hash = {}
+    @service_call.provider_transfer_props.map do |props|
+      klass = props.class
+      props.attributes.map do |key, val|
+        unless [:bom_reimbursement, :subcon_fee].include? key
+          formatted_val = props.send(key)
+          res_hash      = res_hash.merge klass.human_attribute_name(key) => formatted_val.instance_of?(Money) ? humanized_money_with_symbol(formatted_val) : formatted_val
+        end
+      end
+    end
+    res_hash
   end
 
 

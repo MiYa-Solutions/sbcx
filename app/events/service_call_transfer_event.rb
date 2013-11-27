@@ -81,7 +81,7 @@ class ServiceCallTransferEvent < ServiceCallEvent
     result = {}
 
     result = result.merge('provider_fee' => job.properties['subcon_fee']) if job.properties['subcon_fee']
-    result = result.merge('bom_reimbursement' => job.properties['bom_reimbursement']) if job.properties['bom_reimbursement']
+    result = result.merge('prov_bom_reimbursement' => job.properties['bom_reimbursement']) if job.properties['bom_reimbursement']
 
     result
   end

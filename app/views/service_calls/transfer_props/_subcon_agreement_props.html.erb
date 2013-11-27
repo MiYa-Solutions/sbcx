@@ -1,0 +1,10 @@
+<% subcon_transfer_props.each do |key, value| %>
+    <tr>
+      <td><%= key %></td>
+      <td>
+        <span class="status_grey">
+          <h3><%= truncate(value.to_s, length: 15) if @service_call.subcontractor.present? %></h3>
+        </span>
+      </td>
+    </tr>
+<% end %>

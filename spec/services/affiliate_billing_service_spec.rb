@@ -55,7 +55,7 @@ describe 'Affiliate Billing Service' do
       end
 
       it 'the customer account balance should be the correct one' do
-        customer.account.balance.should eq Money.new_with_amount(300)+ Money.new_with_amount(300) * (job.tax / 100.0)
+        customer.account.reload.balance.should eq Money.new_with_amount(300)+ Money.new_with_amount(300) * (job.tax / 100.0)
       end
 
       describe 'cash payment' do

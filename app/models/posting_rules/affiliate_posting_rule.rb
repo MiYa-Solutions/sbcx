@@ -3,7 +3,9 @@ class AffiliatePostingRule < PostingRule
   def get_transfer_props(ticket = nil)
     ticket ||= @ticket
     if ticket
-      self.class::TransferProperties.new(ticket.properties)
+      white_list = self.class::TransferProperties.new.attribute_names
+      props      = ticket.properties.keep_if { |key, val| white_list.include? key.to_sym }
+      self.class::TransferProperties.new(props)
     else
       self.class::TransferProperties.new
     end

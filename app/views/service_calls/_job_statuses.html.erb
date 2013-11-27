@@ -85,7 +85,7 @@
                   </span>
               </td>
             </tr>
-            <%= render 'job_agreement_props' %>
+            <%= render 'service_calls/transfer_props/subcon_agreement_props' %>
             <tr>
               <td><%= @service_call.class.human_attribute_name(:subcon_agreement) %></td>
               <td>
@@ -141,6 +141,7 @@
                   </span>
               </td>
             </tr>
+            <%= render 'service_calls/transfer_props/prov_agreement_props' %>
             <tr>
               <td><%= @service_call.class.human_attribute_name(:provider_agreement) %></td>
               <td>
