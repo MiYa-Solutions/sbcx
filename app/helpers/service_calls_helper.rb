@@ -152,16 +152,6 @@ module ServiceCallsHelper
     render 'service_calls/action_forms/status_forms/transfer_form', job: service_call
   end
 
-  def flat_fee_props(f, visible = false)
-    content_tag(:div, style: 'display: none', id: 'FlatFee') do
-      f.fields_for :properties, FlatFee::TransferProperties.new do |props|
-        concat props.input :bom_reimbursement
-        concat props.input :subcon_fee
-
-      end
-    end
-  end
-
   def transfer_props
     @service_call.transfer_props.map(&:attributes)
   end

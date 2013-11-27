@@ -1,6 +1,7 @@
 namespace :db do
   task populate: :environment do
     require 'faker'
+    require 'job_charge'
     create_members
     create_providers
     create_subcontractors

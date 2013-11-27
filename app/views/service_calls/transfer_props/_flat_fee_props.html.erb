@@ -1,0 +1,6 @@
+<div style="display: none" id="FlatFee">
+  <%= f.fields_for :properties, FlatFee::TransferProperties.new do |props| %>
+      <%= props.input :bom_reimbursement %>
+      <%= props.input :subcon_fee %>
+  <% end %>
+</div>

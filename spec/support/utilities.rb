@@ -159,9 +159,10 @@ def setup_customer_agreement(org, customer)
 end
 
 def setup_flat_fee_agreement(prov, subcon, payment_rules = {})
-  prov.subcontractors << subcon if prov.subcontrax_member?
-  subcon.providers << prov if subcon.subcontrax_member?
-  agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
+  #prov.subcontractors << subcon if prov.subcontrax_member?
+  #subcon.providers << prov if subcon.subcontrax_member?
+  #agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
+  agreement = SubcontractingAgreement.create(organization: prov, counterparty: subcon, name: "#{prov.name} (P), #{subcon.name} (S) FlatFee", creator: User.find_by_email(User::SYSTEM_USER_EMAIL))
 
   payment_rules[:cash_rate]        ||= 0.0
   payment_rules[:cheque_rate]      ||= 0.0
@@ -183,8 +184,6 @@ def setup_flat_fee_agreement(prov, subcon, payment_rules = {})
                      amex_rate_type:       payment_rules[:amex_rate_type]
   )
 
-  agreement.name = "#{prov.name} (P), #{subcon.name} (S) FlatFee"
-  agreement.save!
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
   agreement.save!
   agreement

@@ -19,6 +19,7 @@
         </div>
       </div>
 
+      <%= render 'service_calls/transfer_props/prov_flat_fee_props', f: f %>
 
       <div class="control-group string mandatory">
         <label class="string optional control-label" for="customer_state"> <%= @service_call.class.human_attribute_name(:tag_list) %></label>

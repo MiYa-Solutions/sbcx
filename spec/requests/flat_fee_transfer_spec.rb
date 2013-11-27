@@ -1,7 +1,9 @@
 require 'spec_helper'
 
-FF_INPUT_SUBCON_FEE = 'service_call_properties_subcon_fee'
-FF_CBOX_BOM_REIMBU  = 'service_call_properties_bom_reimbursement'
+FF_INPUT_SUBCON_FEE     = 'service_call_properties_subcon_fee'
+FF_INPUT_PROV_FEE       = 'service_call_properties_provider_fee'
+FF_CBOX_BOM_REIMBU      = 'service_call_properties_bom_reimbursement'
+FF_CBOX_PROV_BOM_REIMBU = 'service_call_properties_prov_bom_reimbursement'
 
 describe 'Transfer with a flat fee agreement', js: true do
   self.use_transactional_fixtures = false
@@ -70,6 +72,39 @@ describe 'Transfer with a flat fee agreement', js: true do
       expect(subcon_job.properties['bom_reimbursement']).to eq '1'
     end
 
+
+  end
+
+  context 'when transferred from a local provider' do
+
+    let!(:agreement) { setup_flat_fee_agreement(FactoryGirl.create(:provider), org) }
+    let(:provider) { agreement.organization }
+    let(:local_job) { org.service_calls.last }
+
+    before do
+      in_browser(:org) do
+        sign_in(user)
+        visit new_service_call_path
+        select provider.name, from: JOB_SELECT_PROVIDER
+        select agreement.name, from: JOB_SELECT_PROVIDER_AGR
+        check FF_CBOX_PROV_BOM_REIMBU
+        fill_in FF_INPUT_PROV_FEE, with: 10
+        fill_autocomplete 'service_call_customer_name', with: job.customer.name[0..3]
+        click_button JOB_BTN_CREATE
+      end
+
+    end
+
+    it 'should be created successfully' do
+      expect(page).to have_success_message
+    end
+
+    it 'the created job should have transfer props' do
+      expect(local_job.properties['provider_fee']).to eq '10'
+    end
+    it 'the created job should have transfer props' do
+      expect(local_job.properties['prov_bom_reimbursement']).to eq '1'
+    end
 
   end
 

@@ -89,11 +89,13 @@ jQuery ->
   # dynamic subcon agreement selection
   update_agreement_select($('#service_call_subcontractor_id'), $('#service_call_subcon_agreement_id'))
   $('#service_call_subcontractor_id').change ->
+    $(agr_props).hide(400)
     update_agreement_select($('#service_call_subcontractor_id'), $('#service_call_subcon_agreement_id'))
 
   # dynamic provider agreement selection
   update_agreement_select($('#service_call_provider_id'), $('#service_call_provider_agreement_id'))
   $('#service_call_provider_id').change ->
+    $(agr_props).hide(400)
     update_agreement_select($('#service_call_provider_id'), $('#service_call_provider_agreement_id'))
 
   # dynamic subcon agreement properties

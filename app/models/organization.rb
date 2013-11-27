@@ -62,8 +62,11 @@ class Organization < ActiveRecord::Base
   has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}", uniq: true do
     def << (subcontractor)
       subcon_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-      Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator }) { self.concat subcontractor }
-      #Account.find_or_create_by_organization_id_and_accountable_id(organization_id: proxy_association.owner.id, accountable_id: subcontractor.id)
+      Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator, name: FlatFee.model_name.titleize }) { self.concat subcontractor }
+      agr = subcontractor.reverse_agreements.where(:organization_id => proxy_association.owner.id).first
+      agr.rules << FlatFee.new
+      agr.activate
+      Rails.logger.debug { "Created a default flat fee agreement for subcontractor:\n#{agr.inspect}" }
       proxy_association.owner.affiliates << subcontractor unless proxy_association.owner.affiliates.include? subcontractor
       subcontractor
     end

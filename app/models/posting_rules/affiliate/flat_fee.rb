@@ -15,6 +15,7 @@ class FlatFee < AffiliatePostingRule
 
   class TransferProperties < TicketProperties
     column :bom_reimbursement, :boolean
+    column :prov_bom_reimbursement, :boolean
     column :subcon_fee_cents, :integer
     column :subcon_fee_currency, :string
     column :provider_fee_cents, :integer
@@ -23,7 +24,7 @@ class FlatFee < AffiliatePostingRule
     monetize :provider_fee_cents
 
     def attribute_names
-      [:bom_reimbursement, :subcon_fee, :provider_fee]
+      [:bom_reimbursement, :prov_bom_reimbursement, :subcon_fee, :provider_fee]
     end
 
     #after_initialize :init
@@ -82,7 +83,7 @@ class FlatFee < AffiliatePostingRule
       if bom.mine?
         entries << MaterialReimbursement.new(agreement: agreement, event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
       end
-    end if get_transfer_props.bom_reimbursement?
+    end if get_transfer_props.prov_bom_reimbursement?
 
     entries
   end

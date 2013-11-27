@@ -8,7 +8,7 @@
         <%= f.input :allow_collection %>
         <%= f.input :re_transfer %>
         <%= f.input :notes %>
-        <%= flat_fee_props(f) %>
+        <%= render 'service_calls/transfer_props/flat_fee_props', f: f %>
         <%= hidden_field_tag "service_call[status_event]", 'transfer' %>
         <%= f.submit job.class.human_status_event_name(:transfer).titleize,
                      id:      'service_call_transfer_btn',

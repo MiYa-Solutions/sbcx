@@ -491,6 +491,23 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_transfer_attrs
+    sc_subcon_transfer_props | sc_provider_transfer_props
+
+  end
+
+  def sc_provider_transfer_props
+    agr = nil
+    if obj && obj.provider_agreement
+      agr = obj.provider_agreement
+    else
+
+      agr = Agreement.find(params[:service_call][:provider_agreement_id]) if params[:service_call] && params[:service_call][:provider_agreement_id]
+    end
+
+    agr ? [properties: agr.get_transfer_props.map(&:attribute_names).flatten] : []
+  end
+
+  def sc_subcon_transfer_props
     agr = nil
     if obj && obj.subcon_agreement
       agr = obj.subcon_agreement
@@ -500,7 +517,6 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     end
 
     agr ? [properties: agr.get_transfer_props.map(&:attribute_names).flatten] : []
-
   end
 
 end
