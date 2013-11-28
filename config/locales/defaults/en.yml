@@ -30,6 +30,8 @@ en:
       subcon_entries: "Subcontractor Billing Entries"
       provider_entries: "Contractor Billing Entries"
       get_entries: "Get Entries"
+      select_subcon: "Select Subcontractor"
+      transfer_job: "Transfer Job"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"
