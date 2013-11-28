@@ -74,7 +74,7 @@ describe 'Transferred Job', js: true do
         pending
       end
 
-      describe "transfer the job"  do
+      describe "transfer the job" do
         pending
       end
 
@@ -183,7 +183,7 @@ describe 'Transferred Job', js: true do
               should have_button(JOB_BTN_CANCEL)
               should have_button(JOB_BTN_COLLECT)
               should have_button(JOB_BTN_PROV_COLLECT)
-              should have_select(JOB_SELECT_PAYMENT, options: ["", Cash.model_name.human, CreditCard.model_name.human, Cheque.model_name.human])
+              should have_select(JOB_SELECT_PAYMENT, options: ["", Cash.model_name.human, CreditCard.model_name.human, Cheque.model_name.human, AmexCreditCard.model_name.human])
             end
 
             describe 'cancel the job' do
@@ -302,7 +302,7 @@ describe 'Transferred Job', js: true do
                   it 'actions should show cancel btn, settle btn and provider payment select' do
                     should have_button(JOB_BTN_CANCEL)
                     should have_button(JOB_BTN_SETTLE)
-                    should have_select(JOB_SELECT_PROVIDER_PAYMENT, options: [Cash.model_name.human, CreditCard.model_name.human, Cheque.model_name.human, ""])
+                    should have_select(JOB_SELECT_PROVIDER_PAYMENT, options: [AmexCreditCard.model_name.human, Cash.model_name.human, CreditCard.model_name.human, Cheque.model_name.human, ""])
                   end
 
                   describe 'cancel the job' do
@@ -330,7 +330,7 @@ describe 'Transferred Job', js: true do
                   describe 'settle with provider' do
                     before do
                       select Cash.model_name.human, from: JOB_SELECT_PROVIDER_PAYMENT
-                      click_button  JOB_BTN_SETTLE
+                      click_button JOB_BTN_SETTLE
                     end
 
                     it 'should show a success message' do

@@ -101,5 +101,22 @@ describe Organization do
     }.to change { Organization.count }.by(1)
   end
 
+  describe 'adding a provider' do
+    let(:prov) { FactoryGirl.create(:org_admin).organization }
+
+    before do
+      org.providers << prov
+    end
+
+    it 'should create a flat_fee agreement by default' do
+
+      agreements = Agreement.our_agreements(org, prov)
+      expect(agreements.size).to eq 1
+      expect(agreements.first).to be_active
+      expect(FlatFee.where(agreement_id: agreements.first.id).size).to eq 1
+
+    end
+  end
+
 
 end

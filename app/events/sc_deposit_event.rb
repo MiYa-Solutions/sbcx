@@ -27,10 +27,11 @@ class ScDepositEvent < ServiceCallEvent
 
   def update_provider_account
     account = Account.for_affiliate(service_call.organization, service_call.provider).lock(true).first
-    props = { amount:      service_call.total_price +  service_call.tax_amount,
-              ticket:      service_call,
-              event:       self,
-              description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
+    props   = { amount:      service_call.total_price + service_call.tax_amount,
+                ticket:      service_call,
+                event:       self,
+                agreement:   service_call.provider_agreement,
+                description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
 
     case service_call.payment_type
       when 'cash'

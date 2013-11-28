@@ -6,6 +6,8 @@ en:
     models:
       posting_rule: "Rule"
       profit_split: "Profit Split"
+      flat_fee: "Flat Fee"
+      job_charge: "Job Charge"
     attributes:
       profit_split:
         rate: "Subcontractor rate"

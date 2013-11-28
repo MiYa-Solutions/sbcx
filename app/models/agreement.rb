@@ -35,7 +35,7 @@ class Agreement < ActiveRecord::Base
 
   stampable
 
-  validates_presence_of :organization, :counterparty, :creator
+  validates_presence_of :organization, :counterparty, :creator, :name
 
   attr_writer :ends_at_text
   before_save :save_ends_on_text
@@ -134,6 +134,9 @@ class Agreement < ActiveRecord::Base
     { cod: 0, net_10: 10, net_15: 15, net_30: 30, net_60: 60, net_90: 90 }
   end
 
+  def get_transfer_props
+    rules.map(&:get_transfer_props)
+  end
 
   private
   def save_ends_on_text

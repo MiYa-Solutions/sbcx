@@ -36,12 +36,9 @@ class Organization < ActiveRecord::Base
   end
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
-
   has_many :service_calls, :inverse_of => :organization
-
   has_many :events, as: :eventable
   has_many :materials
-
   has_many :accounts
   has_many :affiliates, through: :accounts, source: :accountable, :source_type => "Organization" do
     def build(params)
@@ -53,7 +50,6 @@ class Organization < ActiveRecord::Base
       affiliate
     end
   end
-
   has_many :agreements
   has_many :subcontracting_agreements do
     def build(params)
@@ -66,8 +62,11 @@ class Organization < ActiveRecord::Base
   has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}", uniq: true do
     def << (subcontractor)
       subcon_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-      Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator }) { self.concat subcontractor }
-      #Account.find_or_create_by_organization_id_and_accountable_id(organization_id: proxy_association.owner.id, accountable_id: subcontractor.id)
+      Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator, name: FlatFee.model_name.titleize }) { self.concat subcontractor }
+      agr = subcontractor.reverse_agreements.where(:organization_id => proxy_association.owner.id).first
+      agr.rules << FlatFee.new
+      agr.activate
+      Rails.logger.debug { "Created a default flat fee agreement for subcontractor:\n#{agr.inspect}" }
       proxy_association.owner.affiliates << subcontractor unless proxy_association.owner.affiliates.include? subcontractor
       subcontractor
     end
@@ -77,20 +76,19 @@ class Organization < ActiveRecord::Base
     def << (provider)
       unless provider.agreements.where(:counterparty_id => proxy_association.owner.id).first
         prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator }) { self.concat provider }
+        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator, name: FlatFee.model_name.titleize }) { self.concat provider }
+        agr = provider.agreements.where(:counterparty_id => proxy_association.owner.id).first
+        agr.rules << FlatFee.new
+        agr.activate
+        Rails.logger.debug { "Created a default flat fee agreement for provider:\n#{agr.inspect}" }
+
       end
       proxy_association.owner.affiliates << provider unless proxy_association.owner.affiliates.include? provider
-      #Account.find_or_create_by_organization_id_and_accountable_id!(organization_id: proxy_association.owner.id, accountable_id: provider.id)
       provider
-
     end
-
   end
-
   has_many :boms, as: :buyer
-
   has_many :tags
-
   has_many :appointments
 
   ### VALIDATIONS:
@@ -121,7 +119,7 @@ class Organization < ActiveRecord::Base
   scope :search, ->(query) { where(arel_table[:name].matches("%#{query}%")) }
   scope :provider_search, ->(org_id, query) { (search(query).provider_members - where(id: org_id)| search(query).my_providers(org_id)).order('organizations.name') }
   scope :subcontractor_search, ->(org_id, query) { ((search(query).subcontractor_members - where(id: org_id)| search(query).my_subcontractors(org_id)).order('organizations.name')) }
-  scope :affiliate_search, ->(org_id, query) { (my_affiliates(org_id).search(query) | members.search(query) - where(id: org_id) ).order('organizations.name ASC') }
+  scope :affiliate_search, ->(org_id, query) { (my_affiliates(org_id).search(query) | members.search(query) - where(id: org_id)).order('organizations.name ASC') }
 
   def technicians(columns = "")
     User.my_technicians(self.id, columns)

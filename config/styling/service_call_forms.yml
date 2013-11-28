@@ -51,7 +51,7 @@ service_call:
         button_classes: "btn btn-large btn-danger"
       transfer:
         form_classes: "blue-button"
-        button_classes: "btn btn-large btn-primary tooltip"
+        button_classes: "btn btn-large btn-primary"
       cancel_transfer:
         form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"

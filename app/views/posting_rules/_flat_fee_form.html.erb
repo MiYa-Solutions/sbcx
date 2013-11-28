@@ -1,0 +1,31 @@
+<div class="posting_rules_inputs" xmlns="http://www.w3.org/1999/html">
+
+  <div class="agreement_posting_rules">
+
+    <%= simple_form_for(@posting_rule, as: :posting_rule, url: agreement_posting_rules_url(@posting_rule.agreement), method: :post, :html => { :class => 'form-horizontal' }) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+
+        <div class="row-fluid">
+
+          <%= f.hidden_field :agreement_id %>
+          <%= f.hidden_field :type, value: @posting_rule.class.name.underscore %>
+
+          <div class="agreement_profit_split">
+            <ul>
+              <li>
+                <%= f.hidden_field :rate_type, value: @posting_rule.rate_types.first %>
+              </li>
+              <li></li>
+            </ul>
+          </div>
+          <br>
+
+        </div>
+
+        <div class="form-actions">
+          <%= f.button :submit, :class => 'btn btn-primary', :id => 'submit_posting_rules' %>
+        </div>
+
+    <% end %>
+  </div>
+</div>

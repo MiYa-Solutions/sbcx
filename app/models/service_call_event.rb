@@ -112,6 +112,7 @@ class ServiceCallEvent < Event
     props = { amount:      -(service_call.total_price + (service_call.total_price * (service_call.tax / 100.0))),
               ticket:      ticket,
               event:       self,
+              agreement:   service_call.customer.agreements.first,
               description: I18n.t("payment.#{service_call.payment_type}.description", ticket: ticket.id).html_safe }
 
 

@@ -23,6 +23,7 @@ class SubcontractingAgreement < OrganizationAgreement
 
   after_initialize :set_cparty_type
 
+  private
   def set_cparty_type
     self.counterparty_type="Organization"
   end

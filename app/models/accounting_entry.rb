@@ -21,13 +21,14 @@ class AccountingEntry < ActiveRecord::Base
   monetize :amount_cents
   monetize :balance_cents
 
-  validates_presence_of :account_id, :status, :type, :description
+  validates_presence_of :account_id, :status, :type, :description, :agreement
   validates_presence_of :ticket_id, if: :validate_ticket_id?
   validate :event_requirement
 
   belongs_to :account, autosave: true
   belongs_to :ticket
   belongs_to :event
+  belongs_to :agreement
 
   before_create :set_amount_direction
 

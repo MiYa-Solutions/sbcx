@@ -51,7 +51,8 @@
 #
 
 class Ticket < ActiveRecord::Base
-  #attr_accessible :customer_id, :notes, :started_on, :completed_on, :completed_on_text, :started_on_text, :new_customer, :status_event, :subcontractor_id, :provider_id, :technician_id, :total_price
+  serialize :properties, ActiveRecord::Coders::Hstore
+  monetize :subcon_fee_cents
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
@@ -366,6 +367,36 @@ class Ticket < ActiveRecord::Base
 
   def tag_list
     @tag_list || tags.map(&:name).join(", ")
+  end
+
+  def transfer_props
+    subcon_transfer_props | provider_transfer_props
+  end
+
+  def subcon_transfer_props
+    subcon_agreement ? subcon_agreement.rules.map { |rule| rule.get_transfer_props(self) } : [AffiliatePostingRule::TransferProperties.new]
+  end
+
+  def provider_transfer_props
+    provider_agreement ? provider_agreement.rules.map { |rule| rule.get_transfer_props(self) } : [AffiliatePostingRule::TransferProperties.new]
+  end
+
+  def properties=(hash = {})
+    ##
+    # the commented code is used to filter out none valid props, it is commented as it is done in using strong paramenters
+    # in the controller. The code is left here in case we decide to move the implementation to the model
+    ##
+
+    #clean_hash = {}
+    #white_list = transfer_props.map(&:attribute_names).flatten
+    #hash.each do |key, value|
+    #  clean_hash = clean_hash.merge key => value if white_list.include? key.to_sym
+    #end
+    #write_attribute(:properties, clean_hash)
+
+    write_attribute(:properties, properties.merge(hash))
+    Rails.logger.debug { "wrote properties attribute for ticket.\nproperties: #{self.properties}\nTicket: #{self.inspect}" }
+
   end
 
   protected

@@ -332,6 +332,20 @@ FactoryGirl.define do
 
   factory :posting_rule do
     association :agreement
+    rate nil
+    rate_type nil
+
+    factory :flat_fee, class: FlatFee do
+      cheque_rate 1.0
+      cheque_rate_type :percentage
+      cash_rate 1.0
+      cash_rate_type :percentage
+      credit_rate 1.0
+      credit_rate_type :percentage
+      amex_rate 1.0
+      amex_rate_type :percentage
+      type "FlatFee"
+    end
 
     factory :profit_split, class: ProfitSplit do
       rate 50

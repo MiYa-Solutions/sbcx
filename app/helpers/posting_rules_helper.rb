@@ -9,8 +9,13 @@ module PostingRulesHelper
   end
 
   def posting_rule_types
-    Rails.logger.debug { "Need to reload all subclasses in dev mode" + ProfitSplit.name }
-    PostingRule.subclasses.map { |subclass| posting_rule_option(subclass) }
+    #Rails.logger.debug { "Need to reload all subclasses in dev mode" + ProfitSplit.name }
+    if @agreement.instance_of?(SubcontractingAgreement)
+      AffiliatePostingRule.subclasses.map { |subclass| posting_rule_option(subclass) }
+    else
+      CustomerPostingRule.subclasses.map { |subclass| posting_rule_option(subclass) }
+    end
+
   end
 
   def rate_types
@@ -23,8 +28,8 @@ module PostingRulesHelper
 
   def profit_split_payment_rates
     [
-        [I18n.t('general.rate_type.percentage'),'percentage'],
-        [I18n.t('general.rate_type.flat_fee'),'flat_fee']
+        [I18n.t('general.rate_type.percentage'), 'percentage'],
+        [I18n.t('general.rate_type.flat_fee'), 'flat_fee']
     ]
   end
 

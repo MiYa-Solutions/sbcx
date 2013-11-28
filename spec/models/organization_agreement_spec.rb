@@ -35,7 +35,7 @@ describe OrganizationAgreement do
   describe 'payment terms' do
 
     it 'the available payment terms' do
-      new_agreement.class.payment_options.should == [:cod, :net_10, :net_15, :net_30, :net_60, :net_90]
+      new_agreement.class.payment_options.should == { cod: 0, net_10: 10, net_15: 15, net_30: 30, net_60: 60, net_90: 90 }
     end
 
 
@@ -106,13 +106,13 @@ describe OrganizationAgreement do
           agreement_by_org.change_reason = nil
           expect {
             agreement_by_org.submit_change!
-          }.should_not raise_error { StateMachine::InvalidTransition }
+          }.to_not raise_error { StateMachine::InvalidTransition }
 
           agreement_by_org.change_reason = "change test"
 
           expect {
             agreement_by_org.submit_change!
-          }.should_not raise_error
+          }.to_not raise_error
 
         end
       end
@@ -187,8 +187,6 @@ describe OrganizationAgreement do
           agreement_by_org.change_reason = "Stam"
           agreement_by_org.accept
         end
-
-
       end
 
       it "acceptance should fail as only one active agreement should be allowed in a specific period" do
@@ -249,38 +247,7 @@ describe OrganizationAgreement do
         rule.should_not be_valid
         rule.errors[:agreement].should_not be_nil
       end
-
-      describe "adding a new agreement" do
-        before do
-          agreement_by_org.accept
-        end
-
-        let(:org) { agreement_by_org.organization }
-        let(:counterparty) { agreement_by_org.counterparty }
-        let(:another_agreement) { FactoryGirl.create(:organization_agreement, organization: org, counterparty: counterparty) }
-
-        it 'the new agreement is not valid as it overlaps the agreement period' do
-          another_agreement.change_reason = "stam"
-          another_agreement.submit_for_approval
-          another_agreement.accept
-          another_agreement.errors[:starts_at].should_not be_nil
-        end
-
-        it "new agreement is set to approved_pending when dates don't overlap" do
-          another_agreement.starts_at = agreement_by_org.ends_at + 1.day
-          another_agreement.save
-          another_agreement.change_reason = "stam"
-          another_agreement.submit_for_approval
-          another_agreement.accept
-          another_agreement.status_name.should be(:approved_pending)
-        end
-
-
-      end
-
     end
-
-
   end
 
   describe 'with local provider' do
@@ -291,7 +258,7 @@ describe OrganizationAgreement do
       expect do
         agr_with_local_subcon.activate!
       end.to raise_error(StateMachine::InvalidTransition)
-      Rails.logger.debug {"agr_with_local_subcon status: #{agr_with_local_subcon.status_name}"}
+      Rails.logger.debug { "agr_with_local_subcon status: #{agr_with_local_subcon.status_name}" }
     end
 
   end

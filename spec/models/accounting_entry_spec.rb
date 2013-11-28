@@ -37,7 +37,7 @@ describe AccountingEntry do
 
   describe "validation" do
     before { entry.valid? }
-    [:account_id, :status, :ticket_id, :event_id, :type, :description].each do |attr|
+    [:account_id, :ticket_id, :event_id, :type, :description].each do |attr|
       it "must have a #{attr}" do
 
         entry.errors[attr].should_not be_empty
@@ -47,11 +47,15 @@ describe AccountingEntry do
     it "amount should be Money object" do
       entry.amount.should be_a Money
     end
+
+    it { should validate_presence_of(:agreement) }
+    it { should validate_presence_of(:status) }
   end
 
   describe "associations" do
     it { should belong_to(:account) }
     it { should belong_to(:ticket) }
+    it { should belong_to(:agreement) }
   end
 
 end

@@ -149,21 +149,39 @@ module ServiceCallsHelper
   end
 
   def transfer_form(service_call)
-    simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.status.transfer.form_classes") } do |f|
-      concat (f.select :subcontractor_id, subcon_options, { include_blank: true })
-      concat (f.input :subcon_agreement_id, collection: [])
-      concat (f.input :allow_collection)
-      concat (f.input :re_transfer)
-      concat (hidden_field_tag "service_call[status_event]", 'transfer')
-      concat (f.submit service_call.class.human_status_event_name(:transfer).titleize,
-                       id:      'service_call_transfer_btn',
-                       class:   "btn btn-large btn-primary red-button",
-                       title:   'Click to transfer the Service Call to the Subcontractor you selected',
-                       rel:     'tooltip',
-                       confirm: ""
-             )
-    end
+    render 'service_calls/action_forms/status_forms/transfer_form', job: service_call
   end
+
+  def subcon_transfer_props
+    res_hash = {}
+    # need to reload as the updated properties are not visible for some reason
+    @service_call.reload.subcon_transfer_props.map do |props|
+      klass = props.class
+      props.attributes.map do |key, val|
+        unless [:prov_bom_reimbursement, :provider_fee].include? key
+          formatted_val = props.send(key)
+          res_hash      = res_hash.merge klass.human_attribute_name(key) => formatted_val.instance_of?(Money) ? humanized_money_with_symbol(formatted_val) : formatted_val
+        end
+      end
+    end
+    res_hash
+  end
+
+  def provider_transfer_props
+    res_hash = {}
+    # need to reload as the updated properties are not visible for some reason
+    @service_call.reload.provider_transfer_props.map do |props|
+      klass = props.class
+      props.attributes.map do |key, val|
+        unless [:bom_reimbursement, :subcon_fee].include? key
+          formatted_val = props.send(key)
+          res_hash      = res_hash.merge klass.human_attribute_name(key) => formatted_val.instance_of?(Money) ? humanized_money_with_symbol(formatted_val) : formatted_val
+        end
+      end
+    end
+    res_hash
+  end
+
 
   def billing_provider_collected_form(service_call)
     simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.billing_status.provider_collected.form_classes") } do |f|
@@ -260,18 +278,18 @@ module ServiceCallsHelper
     end
   end
 
-  # todo reject to inclulde also a rejection reason
-  #def work_reject_form(service_call)
-  #  simple_form_for service_call.becomes(ServiceCall) do |f|
-  #    concat (hidden_field_tag "service_call[work_status_event]", 'reject')
-  #    concat (f.submit service_call.class.human_work_status_event_name(:reject).titleize,
-  #                     id:    'reject_service_call_btn',
-  #                     class: "btn btn-large btn-danger",
-  #                     title: 'Click to reject this Service Call',
-  #                     rel:   'tooltip'
-  #           )
-  #  end
-  #end
+# todo reject to inclulde also a rejection reason
+#def work_reject_form(service_call)
+#  simple_form_for service_call.becomes(ServiceCall) do |f|
+#    concat (hidden_field_tag "service_call[work_status_event]", 'reject')
+#    concat (f.submit service_call.class.human_work_status_event_name(:reject).titleize,
+#                     id:    'reject_service_call_btn',
+#                     class: "btn btn-large btn-danger",
+#                     title: 'Click to reject this Service Call',
+#                     rel:   'tooltip'
+#           )
+#  end
+#end
 
   def subcon_options
     current_user.organization.subcontractors.collect do |subcon|
@@ -292,7 +310,7 @@ module ServiceCallsHelper
   private
 
   def agreement_data_tags(prov, subcon)
-    h(SubcontractingAgreement.my_agreements(prov.id).cparty_agreements(subcon.id).with_status(:active).map { |agr| [agr.name, agr.id] })
+    h(SubcontractingAgreement.my_agreements(prov.id).cparty_agreements(subcon.id).with_status(:active).map { |agr| [agr.name, agr.id, agr.rules.first.type] })
   end
 
   def collector_tag(service_call)
@@ -308,4 +326,5 @@ module ServiceCallsHelper
   def payment_tag(job)
 
   end
+
 end

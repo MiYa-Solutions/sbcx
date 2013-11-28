@@ -158,10 +158,38 @@ def setup_customer_agreement(org, customer)
   Rails.logger.debug { "created account: #{account.inspect}" }
 end
 
+def setup_flat_fee_agreement(prov, subcon, payment_rules = {})
+  agreement = SubcontractingAgreement.create(organization: prov, counterparty: subcon, name: "#{prov.name} (P), #{subcon.name} (S) FlatFee", creator: User.find_by_email(User::SYSTEM_USER_EMAIL))
+
+  payment_rules[:cash_rate]        ||= 0.0
+  payment_rules[:cheque_rate]      ||= 0.0
+  payment_rules[:credit_rate]      ||= 0.0
+  payment_rules[:amex_rate]        ||= 0.0
+  payment_rules[:cash_rate_type]   ||= :percentage
+  payment_rules[:cheque_rate_type] ||= :percentage
+  payment_rules[:amex_rate_type]   ||= :percentage
+  payment_rules[:credit_rate_type] ||= :percentage
+
+  FactoryGirl.create(:flat_fee, agreement: agreement,
+                     cheque_rate:          payment_rules[:cheque_rate],
+                     cash_rate:            payment_rules[:cash_rate],
+                     credit_rate:          payment_rules[:credit_rate],
+                     amex_rate:            payment_rules[:amex_rate],
+                     cheque_rate_type:     payment_rules[:cheque_rate_type],
+                     cash_rate_type:       payment_rules[:cash_rate_type],
+                     credit_rate_type:     payment_rules[:credit_rate_type],
+                     amex_rate_type:       payment_rules[:amex_rate_type]
+  )
+
+  agreement.status = OrganizationAgreement::STATUS_ACTIVE
+  agreement.save!
+  prov.affiliates << subcon if prov.subcontrax_member?
+  subcon.affiliates << prov if subcon.subcontrax_member?
+  agreement
+end
+
 def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
-  prov.subcontractors << subcon if prov.subcontrax_member?
-  subcon.providers << prov if subcon.subcontrax_member?
-  agreement = Agreement.where("organization_id = ? AND counterparty_id = ? AND counterparty_type = 'Organization'", prov.id, subcon.id).first
+  agreement = SubcontractingAgreement.create(organization: prov, counterparty: subcon, name: "#{prov.name} (P), #{subcon.name} (S) FlatFee", creator: User.find_by_email(User::SYSTEM_USER_EMAIL))
 
   payment_rules[:cash_rate]        ||= 1.0
   payment_rules[:cheque_rate]      ||= 2.5
@@ -182,10 +210,11 @@ def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
                      credit_rate_type:         payment_rules[:credit_rate_type],
                      amex_rate_type:           payment_rules[:amex_rate_type]
   )
-  agreement.name = "#{prov.name} (P), #{subcon.name} (S)"
-  agreement.save!
+
   agreement.status = OrganizationAgreement::STATUS_ACTIVE
   agreement.save!
+  prov.affiliates << subcon if prov.subcontrax_member?
+  subcon.affiliates << prov if subcon.subcontrax_member?
   agreement
 end
 
@@ -254,12 +283,18 @@ def pay_with_cheque(collector = nil)
   click_button JOB_BTN_COLLECT
 end
 
-def transfer_job(job, subcon)
-  agr = Agreement.my_agreements(job.organization.id).cparty_agreements(subcon.id).with_status(:active).first
+def transfer_job(job, subcon, agreement = nil, props = {})
+
+  agreement ||= Agreement.my_agreements(job.organization.id).cparty_agreements(subcon.id).with_status(:active).first
+
   visit service_call_path(job)
+  click_link 'transfer_btn'
+  sleep 0.5
   select subcon.name, from: JOB_SELECT_SUBCONTRACTOR
-  select agr.name, from: JOB_SELECT_SUBCON_AGR
+  select agreement.name, from: JOB_SELECT_SUBCON_AGR
   check JOB_CBOX_RE_TRANSFER
   check JOB_CBOX_ALLOW_COLLECTION
+  yield if block_given? # used to fill additional agreement specific fields or any other action
   click_button JOB_BTN_TRANSFER
+
 end

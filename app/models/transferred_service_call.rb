@@ -57,6 +57,8 @@ class TransferredServiceCall < ServiceCall
     self.subcontractor ||= self.organization.try(:becomes, Subcontractor)
   end
 
+  after_create :set_ref_id
+
   STATUS_ACCEPTED = 1201
   STATUS_REJECTED = 1202
 
@@ -246,9 +248,9 @@ class TransferredServiceCall < ServiceCall
   end
 
   # local transferred jobs don't have a ref_id set, therefore if not set then defaults to the id
-  def ref_id
-    read_attribute(:ref_id) || id
-  end
+  #def ref_id
+  #  read_attribute(:ref_id) || id
+  #end
 
   def provider_settlement_allowed?
     (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
@@ -276,7 +278,7 @@ class TransferredServiceCall < ServiceCall
 
   def validate_subcon
     super
-    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer
+    self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer && self.status_changed? && self.status == ServiceCall::STATUS_TRANSFERRED
   end
 
   private
@@ -292,6 +294,13 @@ class TransferredServiceCall < ServiceCall
     #if provider.subcontrax_member && ServiceCall.find_by_ref_id_and_organization_id(ref_id, provider_id).nil?
     #  errors.add(:provider, I18n.t('service_call.errors.cant_create_for_member'))
     #end
+  end
+
+  def set_ref_id
+    unless self.read_attribute(:ref_id)
+      self.ref_id = id
+      self.save!
+    end
   end
 
 

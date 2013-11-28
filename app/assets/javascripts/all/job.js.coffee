@@ -1,3 +1,36 @@
+agr_props = null
+show_agr_props = (obj) ->
+  if obj.data('props')
+    $(agr_props).hide(400)
+    agr_props = "#" + obj.data('props')
+    $(agr_props).show(400)
+  else
+    $(agr_props).hide(400)
+
+update_agreement_select = (affilaite_select, agreement_select) ->
+  options = affilaite_select.find(":selected").data("agreements")
+  if options
+    build_agreement_select(agreement_select, options)
+  else
+    hide_agreement_select(agreement_select)
+
+build_agreement_select = (obj, options) ->
+  $(agr_props).hide() if agr_props != null
+  $.each options, (key, value) ->
+    opt = $('<option></option>')
+    opt.attr("value", value[1])
+    opt.text(value[0])
+    opt.data('props', value[2])
+    obj.append(opt)
+  $("label[for='" + obj.attr('id') + "']").show(400)
+  obj.show(400)
+  show_agr_props(obj.find(":selected"))
+
+hide_agreement_select = (obj) ->
+  obj.empty()
+  obj.hide(400)
+  $("label[for='" + obj.attr('id') + "']").hide(400)
+
 jQuery ->
   $(".best_in_place").bind "ajax:success", ->
     $(this).JQtextile "textile", @innerHTML  if $(this).attr("data-type") is "textarea"
@@ -50,64 +83,27 @@ jQuery ->
           container = $("<span class='flash-error'></span>").html(response.responseText)
           container.purr()
 
-
   $('#service_call_customer_name').bind 'railsAutocomplete.select', (e, data)->
     $('#service_call_state').select2("val", data.item.state)
 
   # dynamic subcon agreement selection
-  if $('#service_call_subcontractor_id :selected').data('agreements')
-    options = $('#service_call_subcontractor_id :selected').data('agreements')
-    if options
-      $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").show(400)
-      $('#service_call_subcon_agreement_id').show(400)
-      $.each options, (key, value) ->
-        opt = $('<option></option>')
-        opt.attr("value", value[1])
-        opt.text(value[0])
-        $('#service_call_subcon_agreement_id').append(opt)
-    else
-      $('#service_call_subcon_agreement_id').hide(400)
-      $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").hide(400)
-
-  else
-    $('#service_call_subcon_agreement_id').hide()
-    $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").hide()
-
+  update_agreement_select($('#service_call_subcontractor_id'), $('#service_call_subcon_agreement_id'))
   $('#service_call_subcontractor_id').change ->
-    $('#service_call_subcon_agreement_id').empty()
-    options = $('#service_call_subcontractor_id :selected').data('agreements')
-    if options
-      $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").show(400)
-      $('#service_call_subcon_agreement_id').show(400)
-      $.each options, (key, value) ->
-        opt = $('<option></option>')
-        opt.attr("value", value[1])
-        opt.text(value[0])
-        $('#service_call_subcon_agreement_id').append(opt)
-    else
-      $('#service_call_subcon_agreement_id').hide(400)
-      $("label[for='" + $('#service_call_subcon_agreement_id').attr('id') + "']").hide(400)
-
+    $(agr_props).hide(400)
+    update_agreement_select($('#service_call_subcontractor_id'), $('#service_call_subcon_agreement_id'))
 
   # dynamic provider agreement selection
-  if $('#service_call_provider_id :selected').data('agreements')
-
-  else
-    $('#service_call_provider_agreement_id').hide()
-    $("label[for='" + $('#service_call_provider_agreement_id').attr('id') + "']").hide()
-
+  update_agreement_select($('#service_call_provider_id'), $('#service_call_provider_agreement_id'))
   $('#service_call_provider_id').change ->
-    $('#service_call_provider_agreement_id').empty()
-    options = $('#service_call_provider_id :selected').data('agreements')
-    if options
-      $("label[for='" + $('#service_call_provider_agreement_id').attr('id') + "']").show(400)
-      $('#service_call_provider_agreement_id').show(400)
-      $.each options, (key, value) ->
-        opt = $('<option></option>')
-        opt.attr("value", value[1])
-        opt.text(value[0])
-        $('#service_call_provider_agreement_id').append(opt)
-    else
-      $('#service_call_provider_agreement_id').hide(400)
-      $("label[for='" + $('#service_call_provider_agreement_id').attr('id') + "']").hide(400)
+    $(agr_props).hide(400)
+    update_agreement_select($('#service_call_provider_id'), $('#service_call_provider_agreement_id'))
+
+  # dynamic subcon agreement properties
+  $('#service_call_subcon_agreement_id').change ->
+    show_agr_props($('#service_call_subcon_agreement_id :selected'))
+
+  # dynamic provider agreement properties
+  $('#service_call_provider_agreement_id').change ->
+    show_agr_props($('#service_call_provider_agreement_id :selected'))
+
 

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'capybara/rspec'
+#require 'capybara/rspec'
 
 describe "Service Call pages" do
 
@@ -374,7 +374,6 @@ describe "Service Call pages" do
 
       describe "multi user organization" do
 
-
         before do
           technician.valid?
           visit service_call_path service_call
@@ -391,12 +390,6 @@ describe "Service Call pages" do
         before do
           in_browser(:org) do
             transfer_job(service_call, subcontractor)
-            #select subcontractor.name, from: subcontractor_select
-            #check re_transfer_cbox_selector
-            #check allow_collection_cbox_selector
-            #page.driver.render("#{Rails.root}/tmp/capybara/transfer_sc_#{Time.now}.png", :full => true)
-            #page.save_page
-            #click_button transfer_btn_selector
           end
           @subcon_service_call = ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id)
         end
@@ -1708,10 +1701,8 @@ describe "Service Call pages" do
             in_browser(:org2) do
               visit service_call_path @subcon_service_call
               click_button accept_btn_selector
-              check re_transfer_cbox_selector
-              check allow_collection_cbox_selector
-              select local_subcontractor.name, from: JOB_SELECT_SUBCONTRACTOR
-              click_button transfer_btn_selector
+
+              transfer_job(@subcon_service_call, local_subcontractor)
             end
           end
 
@@ -1797,7 +1788,7 @@ describe "Service Call pages" do
             in_browser(:org2) do
               visit service_call_path @subcon_service_call
               click_button accept_btn_selector
-              select org3.name, from: JOB_SELECT_SUBCONTRACTOR
+
 
             end
             in_browser(:org3) do
@@ -1809,7 +1800,7 @@ describe "Service Call pages" do
           it "created successfully" do
             expect do
               in_browser(:org2) do
-                click_button transfer_btn_selector
+                transfer_job(@subcon_service_call, org3)
               end
             end.to change(ServiceCall, :count).by(1)
           end
@@ -1817,10 +1808,7 @@ describe "Service Call pages" do
           describe "after transfer" do
             before do
               in_browser(:org2) do
-                check re_transfer_cbox_selector
-                #page.driver.render("#{Rails.root}/tmp/capybara/transfer_sc_2_#{Time.now}.png", :full => true)
-                #page.save_page
-                click_button transfer_btn_selector
+                transfer_job(@subcon_service_call, org3)
               end
             end
             it "should find the service call for the member subcontractor" do
@@ -1845,11 +1833,9 @@ describe "Service Call pages" do
 
               before do
                 in_browser(:org3) do
-                  visit service_call_path(third_service_call)
-                  click_button accept_btn_selector
-                  select org.name, from: subcontractor_select
-                  click_button transfer_btn_selector
-                  #page.driver.render("#{Rails.root}/tmp/capybara/after_click_sc_#{Time.now}.png", :full => true)
+                  visit service_call_path third_service_call
+                  click_button JOB_BTN_ACCEPT
+                  transfer_job third_service_call, org
                 end
               end
 
@@ -1876,23 +1862,16 @@ describe "Service Call pages" do
           subcon = FactoryGirl.create(:subcontractor)
           setup_profit_split_agreement(org, subcon).counterparty
         }
-        before do
-          Rails.logger.debug { "local subcontractor valid? #{local_subcontractor.valid?}" }
-          agr = Agreement.my_agreements(service_call.organization.id).cparty_agreements(local_subcontractor.id).with_status(:active).first
-          visit service_call_path service_call
-          select local_subcontractor.name, from: subcontractor_select
-          select agr.name, from: JOB_SELECT_SUBCON_AGR
-        end
 
         it "should not create another service call" do
-          expect { click_button transfer_btn_selector }.to_not change(ServiceCall, :count)
+          expect { transfer_job(service_call, local_subcontractor) }.to_not change(ServiceCall, :count)
         end
 
 
         describe 'successful transfer' do
 
           before do
-            click_button JOB_BTN_TRANSFER
+            transfer_job(service_call, local_subcontractor)
           end
 
           it 'should show the accept button' do
@@ -2443,10 +2422,6 @@ describe "Service Call pages" do
           end
 
           it { should_not have_selector('error') }
-          it "should have a subcontractor select box" do
-            should have_selector("##{subcontractor_select}")
-
-          end
           it "should have a provider select box" do
             should have_selector(provider_select)
           end
@@ -2529,6 +2504,35 @@ describe "Service Call pages" do
         it "should show a success message" do
           should have_selector('.alert-success')
         end
+
+        context 'when transferred to a member subcon' do
+          let(:subcon_agr) { setup_flat_fee_agreement(org, subcon) }
+          let(:subcon_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+          let(:subcon) { subcon_user.organization }
+          let(:job) { Ticket.find_by_organization_id(org.id) }
+          let(:subcon_job) { Ticket.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
+
+          before do
+            subcon_agr.reload
+            in_browser(:org) do
+              transfer_job(job, subcon, subcon_agr) do
+                check FF_CBOX_BOM_REIMBU
+                fill_in FF_INPUT_SUBCON_FEE, with: 100
+              end
+            end
+            in_browser(:subcon) do
+              sign_in(subcon_user)
+              visit service_call_path(subcon_job)
+            end
+          end
+
+          it 'should have an accept button' do
+            in_browser(:subcon) do
+              expect(page).to have_button(JOB_BTN_ACCEPT)
+            end
+          end
+        end
+
 
         describe "start the service call" do
           before do

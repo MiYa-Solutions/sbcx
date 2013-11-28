@@ -33,12 +33,28 @@
 #  friday_to      :time
 #  saturday_to    :time
 #
-
+require 'hstore_setup_methods'
 class PostingRule < ActiveRecord::Base
+  # creates the standard methods for an attribute that is stored in hstore column
+  extend HstoreSetupMethods
+
+  # define hstore properties methods
+  #%w[cheque_rate cheque_rate_type credit_rate credit_rate_type cash_rate cash_rate_type amex_rate amex_rate_type].each do |key|
+  %w[ cheque_rate
+    cheque_rate_type
+    credit_rate
+    credit_rate_type
+    cash_rate
+    cash_rate_type
+    amex_rate
+    amex_rate_type   ].each do |key, value|
+    setup_hstore_attr(key)
+  end
+
+
   serialize :properties, ActiveRecord::Coders::Hstore
 
-  validates_presence_of :agreement_id, :rate, :rate_type, :type
-  validates_numericality_of :rate
+  validates_presence_of :agreement_id, :type
 
   validate :ensure_state_before_change
 
@@ -46,6 +62,10 @@ class PostingRule < ActiveRecord::Base
 
   def applicable?(event)
     true
+  end
+
+  def rate_types
+    [:percentage]
   end
 
   def self.new_rule_from_params(type, params)
@@ -69,12 +89,71 @@ class PostingRule < ActiveRecord::Base
 
   end
 
-  def rate_types
-    [:percentage]
+  # the main method for getting the accounting entries applicable for a certain event and account
+  def get_entries(event, account)
+    @ticket  = event.eventable
+    @event   = event
+    @account = account
+
+    case event.class.name
+      when ServiceCallCompletedEvent.name, ServiceCallCompleteEvent.name
+        charge_entries
+      when ScSubconSettleEvent.name, ScSubconSettledEvent.name, ScProviderSettleEvent.name, ScProviderSettledEvent.name
+        settlement_entries
+      when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
+        cancellation_entries
+      when ScCollectEvent.name, ScCollectedEvent.name
+        collection_entries
+      when ServiceCallPaidEvent.name, ScProviderCollectedEvent.name
+        payment_entries
+
+      else
+        raise "Unexpected Event to be processed by ProfitSplit posting rule"
+    end
   end
 
-  def get_amount(ticket)
-    raise "Did you forget to implement the get_amount method for #{self.class}?"
+  def cash_fee
+    case cash_rate_type
+      when 'percentage'
+        (@ticket.total_price + @ticket.tax_amount)* (cash_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(cash_rate.delete(',').to_f)
+      else
+        Money.new_with_amount(0)
+    end
+  end
+
+  def credit_fee
+    case credit_rate_type
+      when 'percentage'
+        (@ticket.total_price + @ticket.tax_amount) * (credit_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(credit_rate.delete(',').to_f)
+      else
+        Money.new_with_amount(0)
+    end
+  end
+
+  def amex_fee
+    case amex_rate_type
+      when 'percentage'
+        (@ticket.total_price + @ticket.tax_amount) * (amex_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(amex_rate.delete(',').to_f)
+      else
+        Money.new_with_amount(0)
+    end
+  end
+
+  def cheque_fee
+    case cheque_rate_type
+      when 'percentage'
+        (@ticket.total_price + @ticket.tax_amount) * (cheque_rate.delete(',').to_f / 100.0)
+      when 'flat_fee'
+        Money.new_with_amount(cheque_rate.delete(',').to_f)
+      else
+        Money.new_with_amount(0)
+    end
   end
 
 
