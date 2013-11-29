@@ -28,7 +28,7 @@ en:
         mobile_phone: "Mobile"
       "flat_fee/transfer_properties":
         bom_reimbursement: "Parts Reimbursement"
-        prov_bom_reimbursement: "PROV BOM CHANGE ME in config/locales/en.yml"
+        prov_bom_reimbursement: "Parts Reimbursement"
         subcon_fee: "Subcontractor Fee"
         provider_fee: "My Fee"
         re_transfer: "Allow transfer"
