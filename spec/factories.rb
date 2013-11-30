@@ -363,5 +363,11 @@ FactoryGirl.define do
     end
   end
 
+  factory :invite do
+    association :organization, factory: :member
+    association :affiliate, factory: :member
+    sequence(:message) { |n| "invite message #{n}" }
+  end
+
 
 end

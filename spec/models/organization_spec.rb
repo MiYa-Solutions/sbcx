@@ -85,6 +85,7 @@ describe Organization do
   end
 
   describe "associations" do
+
     it { should have_many(:users) }
     it { should have_many(:service_calls) }
     it { should have_many(:customers) }
@@ -93,6 +94,9 @@ describe Organization do
     it { should have_many(:organization_roles) }
     it { should have_many(:subcontractors).through(:agreements).conditions("agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}") }
     it { should have_many(:providers).through(:reverse_agreements).conditions("agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}") }
+    it { should have_many(:affiliates).through(:accounts) }
+    it { should have_many(:invites) }
+    it { should have_many(:invite_req) }
   end
 
   it "saved successfully" do

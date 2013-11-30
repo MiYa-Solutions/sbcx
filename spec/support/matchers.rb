@@ -76,6 +76,7 @@ module Matchers
     end
 
   end
+
   class EventMatcher
     def initialize(number, text = nil)
       @number = number
@@ -134,7 +135,7 @@ module Matchers
     end
 
     def matches?(actual)
-      @errors = {}
+      @errors           = {}
       expected_elements = {
           :notification => "table tr.#{@notification_class}.#{@eventable_type}_#{@eventable_id}"
 
@@ -173,6 +174,30 @@ module Matchers
       message
     end
 
+  end
+
+  class ConstantMatcher
+    def initialize(const)
+      @const        = const
+      @tested_class = nil
+    end
+
+    def matches?(owner)
+      @tested_class = owner
+      owner.const_defined?(@const)
+    end
+
+    def failure_message
+      "expected #{@tested_class} to have a #{@const} constant"
+    end
+
+    def negative_failure_message
+      "expected #{@tested_class} to NOT have a #{@const} constant"
+    end
+  end
+
+  def have_constant(const)
+    ConstantMatcher.new(const)
   end
 
   def have_success_message(message = nil)
