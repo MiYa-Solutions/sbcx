@@ -3151,206 +3151,206 @@ hr {
     <div class="time">3 m 14 s</div>
 </em>settlement with provider (local)</span>
 <ul>
-    <li class="level test">
+<li class="level test">
 <span><em class="time">
     <div class="time">11.40 s</div>
 </em><em class="status">passed</em>settlement with provider (local) subcon view: settlement button and provider payment should be available</span>
-    </li>
-    <li class="level test">
+</li>
+<li class="level test">
 <span><em class="time">
     <div class="time">11.86 s</div>
 </em><em class="status">passed</em>settlement with provider (local) subcon view: should not allow settlement without choosing a payment</span>
-    </li>
-    <li class="level suite failed open">
+</li>
+<li class="level suite failed open">
 <span><em class="time">
     <div class="time">2 m 51 s</div>
 </em>user indicates the job is settled </span>
-        <ul>
-            <li class="level suite failed open">
+    <ul>
+        <li class="level suite failed open">
 <span><em class="time">
     <div class="time">53.22 s</div>
 </em>with cash</span>
-                <ul>
-                    <li class="level test">
+            <ul>
+                <li class="level test">
 <span><em class="time">
     <div class="time">12.05 s</div>
 </em><em class="status">passed</em>with cash subcontractor view: status should be set to Settled</span>
-                    </li>
-                    <li class="level test failed open">
+                </li>
+                <li class="level test failed open">
 <span><em class="time">
     <div class="time">12.70 s</div>
 </em><em
         class="status">error</em>with cash subcon view: account should have a cash payment entry with cleared status</span>
-                        <ul>
-                            <li class="text">
-                                <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2688:in `block (8 levels) in &lt;top (required)&gt;&#39;<br/></span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level suite failed open">
+                    <ul>
+                        <li class="text">
+                            <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2688:in `block (8 levels) in &lt;top (required)&gt;&#39;<br/></span>
+                        </li>
+                    </ul>
+                </li>
+                <li class="level suite failed open">
 <span><em class="time">
     <div class="time">28.47 s</div>
 </em>cancel the job: </span>
-                        <ul>
-                            <li class="level test">
+                    <ul>
+                        <li class="level test">
 <span><em class="time">
     <div class="time">15.20 s</div>
 </em><em class="status">passed</em>cancel the job:  trying to visit customer account should show no entries and not have the customer available </span>
-                            </li>
-                            <li class="level suite failed open">
+                        </li>
+                        <li class="level suite failed open">
 <span><em class="time">
     <div class="time">13.27 s</div>
 </em>affiliate account</span>
-                                <ul>
-                                    <li class="level test failed open">
+                            <ul>
+                                <li class="level test failed open">
 <span><em class="time">
     <div class="time">13.27 s</div>
 </em><em class="status">error</em>affiliate account subcon view: should show entry and a balance of the job subcon cut amount</span>
-                                        <ul>
-                                            <li class="text">
-                                                <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2716:in `block (10 levels) in &lt;top (required)&gt;&#39;<br/></span>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li class="level suite failed open">
+                                    <ul>
+                                        <li class="text">
+                                            <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2716:in `block (10 levels) in &lt;top (required)&gt;&#39;<br/></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="level suite failed open">
 <span><em class="time">
     <div class="time">51.60 s</div>
 </em>with credit card</span>
-                <ul>
-                    <li class="level test">
+            <ul>
+                <li class="level test">
 <span><em class="time">
     <div class="time">12.24 s</div>
 </em><em class="status">passed</em>with credit card subcontractor view: status should be set to Settled</span>
-                    </li>
-                    <li class="level test failed open">
+                </li>
+                <li class="level test failed open">
 <span><em class="time">
     <div class="time">12.29 s</div>
 </em><em class="status">error</em>with credit card subcon view: account should have a cash payment entry with deposited status</span>
-                        <ul>
-                            <li class="text">
-                                <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2744:in `block (8 levels) in &lt;top (required)&gt;&#39;<br/></span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level suite failed open">
+                    <ul>
+                        <li class="text">
+                            <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2744:in `block (8 levels) in &lt;top (required)&gt;&#39;<br/></span>
+                        </li>
+                    </ul>
+                </li>
+                <li class="level suite failed open">
 <span><em class="time">
     <div class="time">27.08 s</div>
 </em>cancel the job: </span>
-                        <ul>
-                            <li class="level test">
+                    <ul>
+                        <li class="level test">
 <span><em class="time">
     <div class="time">15.88 s</div>
 </em><em class="status">passed</em>cancel the job:  trying to visit customer account should show no entries and not have the customer available </span>
-                            </li>
-                            <li class="level suite failed open">
+                        </li>
+                        <li class="level suite failed open">
 <span><em class="time">
     <div class="time">11.20 s</div>
 </em>affiliate account</span>
-                                <ul>
-                                    <li class="level test failed open">
+                            <ul>
+                                <li class="level test failed open">
 <span><em class="time">
     <div class="time">11.20 s</div>
 </em><em class="status">failed</em>affiliate account subcon view: should show entry and a balance of the job subcon cut amount</span>
-                                        <ul>
-                                            <li class="text">
-                                                <span class="stderr">expected #has_selector?(&quot;td&quot;, {:text=&gt;&quot;material2&quot;}) to return true, got false<br/>./spec/support/utilities.rb:231:in `add_bom&#39;<br/>./spec/requests/account_pages_spec.rb:2047:in `block (4 levels) in &lt;top (required)&gt;&#39;<br/>./spec/support/utilities.rb:64:in `in_browser&#39;<br/>./spec/requests/account_pages_spec.rb:2042:in `block (3 levels) in &lt;top (required)&gt;&#39;<br/></span>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level suite ignored open">
+                                    <ul>
+                                        <li class="text">
+                                            <span class="stderr">expected #has_selector?(&quot;td&quot;, {:text=&gt;&quot;material2&quot;}) to return true, got false<br/>./spec/support/utilities.rb:231:in `add_bom&#39;<br/>./spec/requests/account_pages_spec.rb:2047:in `block (4 levels) in &lt;top (required)&gt;&#39;<br/>./spec/support/utilities.rb:64:in `in_browser&#39;<br/>./spec/requests/account_pages_spec.rb:2042:in `block (3 levels) in &lt;top (required)&gt;&#39;<br/></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="level suite ignored open">
 <span><em class="time">
     <div class="time">0 ms</div>
 </em>clear deposit</span>
-                        <ul>
-                            <li class="level test ignored open">
+                    <ul>
+                        <li class="level test ignored open">
 <span><em class="time">
     <div class="time">0 ms</div>
 </em><em class="status">ignored</em>clear deposit example at ./spec/requests/account_pages_spec.rb:2785</span>
-                                <ul>
-                                    <li class="text">
-                                        <span class="stdout">Pending: No reason given<br/></span>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li class="level suite failed open">
+                            <ul>
+                                <li class="text">
+                                    <span class="stdout">Pending: No reason given<br/></span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="level suite failed open">
 <span><em class="time">
     <div class="time">1 m 6 s</div>
 </em>with cheque</span>
-                <ul>
-                    <li class="level test">
+            <ul>
+                <li class="level test">
 <span><em class="time">
     <div class="time">12.01 s</div>
 </em><em class="status">passed</em>with cheque subcontractor view: status should be set to Settled</span>
-                    </li>
-                    <li class="level test failed open">
+                </li>
+                <li class="level test failed open">
 <span><em class="time">
     <div class="time">12.65 s</div>
 </em><em class="status">error</em>with cheque subcon view: account should have a cheque payment entry with cleared status</span>
-                        <ul>
-                            <li class="text">
-                                <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2804:in `block (8 levels) in &lt;top (required)&gt;&#39;<br/></span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level suite failed open">
+                    <ul>
+                        <li class="text">
+                            <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2804:in `block (8 levels) in &lt;top (required)&gt;&#39;<br/></span>
+                        </li>
+                    </ul>
+                </li>
+                <li class="level suite failed open">
 <span><em class="time">
     <div class="time">28.29 s</div>
 </em>cancel the job: </span>
-                        <ul>
-                            <li class="level test">
+                    <ul>
+                        <li class="level test">
 <span><em class="time">
     <div class="time">15.06 s</div>
 </em><em class="status">passed</em>cancel the job:  trying to visit customer account should show no entries and not have the customer available </span>
-                            </li>
-                            <li class="level suite failed open">
+                        </li>
+                        <li class="level suite failed open">
 <span><em class="time">
     <div class="time">13.23 s</div>
 </em>affiliate account</span>
-                                <ul>
-                                    <li class="level test failed open">
+                            <ul>
+                                <li class="level test failed open">
 <span><em class="time">
     <div class="time">13.23 s</div>
 </em><em class="status">error</em>affiliate account subcon view: should show entry and a balance of the job subcon cut amount</span>
-                                        <ul>
-                                            <li class="text">
-                                                <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2833:in `block (10 levels) in &lt;top (required)&gt;&#39;<br/></span>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="level suite open">
+                                    <ul>
+                                        <li class="text">
+                                            <span class="stderr">NoMethodError: undefined method `rules&#39; for nil:NilClass<br/>./spec/requests/account_pages_spec.rb:10:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:64:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:88:in `block (2 levels) in &lt;top (required)&gt;&#39;<br/>./spec/requests/account_pages_spec.rb:2833:in `block (10 levels) in &lt;top (required)&gt;&#39;<br/></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="level suite open">
 <span><em class="time">
     <div class="time">12.85 s</div>
 </em>clear deposit</span>
-                        <ul>
-                            <li class="level test">
+                    <ul>
+                        <li class="level test">
 <span><em class="time">
     <div class="time">12.85 s</div>
 </em><em class="status">passed</em>clear deposit provider status should turn to cleared</span>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</li>
 </ul>
 </li>
 </ul>
