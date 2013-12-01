@@ -1,0 +1,12 @@
+<%= simple_form_for(@invite, :html => { :class => 'form-horizontal' }) do |f| %>
+    <%= f.error_notification %>
+
+    <div class="form-inputs">
+      <%= f.input :message, as: :text %>
+      <%= f.hidden_field :affiliate_id, value: @invite.affiliate_id %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, id: 'invite_create_btn' %>
+    </div>
+<% end %>

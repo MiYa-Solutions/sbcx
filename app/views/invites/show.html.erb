@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Message:</b>
+  <%= @invite.message %>
+</p>
+
+<p>
+  <b>Organization:</b>
+  <%= @invite.organization_id %>
+</p>
+
+<p>
+  <b>Affiliate:</b>
+  <%= @invite.affiliate_id %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @invite.status %>
+</p>
+
+<%= invite_event_buttons(@invite) if permitted_to? :update, @invite %>
+
+
+<%= link_to 'Edit', edit_invite_path(@invite) %> |
+<%= link_to 'Back', invites_path %>

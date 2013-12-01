@@ -51,7 +51,9 @@ authorization do
   role :org_admin do
     includes :dispatcher
 
-    has_permission_on :invites, to: [:new, :show, :index] do
+    has_permission_on :invites, to: :new
+
+    has_permission_on :invites, to: [:show, :index] do
       if_attribute organization_id: is { user.organization_id }
       if_attribute affiliate_id: is { user.organization_id }
     end

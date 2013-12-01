@@ -1,11 +1,11 @@
-class InviteAcceptedNotification < Notification
+class InviteAcceptedNotification < InviteNotification
 
   def html_message
-    I18n.t('notifications.invite_accepted.html_message', affilaite: notifiable.affiliate.name, link: link_to(notifiable)).html_safe
+    I18n.t('notifications.invite_accepted.html_message', affilaite: notifiable.affiliate.name, link: invite_link).html_safe
   end
 
   def default_subject
-    I18n.t('notifications.invite_accepted.subject', affilaite: notifiable.affiliate.name)
+    I18n.t('notifications.invite_accepted.subject', affiliate: notifiable.affiliate.name)
   end
 
   def default_content

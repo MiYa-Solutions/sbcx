@@ -1,7 +1,7 @@
-class InviteDeclinedNotification < Notification
+class InviteDeclinedNotification < InviteNotification
 
   def html_message
-    I18n.t('notifications.invite_declined_notification.html_message', link: 'change_me').html_safe
+    I18n.t('notifications.invite_declined_notification.html_message', link: invite_link).html_safe
   end
 
   def default_subject

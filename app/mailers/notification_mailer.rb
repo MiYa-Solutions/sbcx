@@ -1,6 +1,8 @@
 class NotificationMailer < ActionMailer::Base
   default from: "notifications@subcontrax.com"
 
+  add_template_helper(ApplicationHelper)
+
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
@@ -21,6 +23,15 @@ class NotificationMailer < ActionMailer::Base
     define_method subclass.name.underscore do |subject, user, agreement|
       @agreement = agreement
       @user      = user
+
+      mail to: user.email, subject: subject
+    end
+  end
+
+  InviteNotification.subclasses.each do |subclass|
+    define_method subclass.name.underscore do |subject, user, invite|
+      @invite = invite
+      @user   = user
 
       mail to: user.email, subject: subject
     end
