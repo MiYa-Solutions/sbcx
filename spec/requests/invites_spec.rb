@@ -78,6 +78,11 @@ describe 'Invite Pages' do
             end
           end
 
+          it 'status should be set to accepted' do
+            expect(invite.reload).to be_accepted
+          end
+
+
           it 'should create a flat fee agreement' do
             agr_list = Agreement.our_agreements(org, affiliate).all
             expect(agr_list.size).to eq 2
@@ -92,6 +97,38 @@ describe 'Invite Pages' do
               rule = rule_list.first
               expect(rule).to be_instance_of(FlatFee)
             end
+          end
+
+          it 'should create two accounts' do
+            expect(Account.for_affiliate(org, affiliate).size).to eq 1
+            expect(Account.for_affiliate(affiliate, org).size).to eq 1
+          end
+
+          it 'should send a notification to the organization' do
+            in_browser(:org) do
+              visit notifications_path
+              expect(page).to have_notification(InviteAcceptedNotification, invite)
+            end
+          end
+        end
+
+        context 'when the affiliate declines the invite' do
+          before do
+            in_browser(:aff) do
+              visit invite_path(invite)
+              click_button INVITE_BTN_DECLINE
+            end
+          end
+
+          it 'should send a notification to the organization' do
+            in_browser(:org) do
+              visit notifications_path
+              expect(page).to have_notification(InviteDeclinedNotification, invite)
+            end
+          end
+
+          it 'status should be set to declined' do
+            expect(invite.reload).to be_declined
           end
 
         end

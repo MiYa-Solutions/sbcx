@@ -32,7 +32,7 @@ class Invite < ActiveRecord::Base
     state :accepted, value: STATUS_ACCEPTED
     state :declined, value: STATUS_DECLINED
 
-    after_transition any => :rejected do |invite|
+    after_transition any => :declined do |invite|
       invite.events << InviteDeclinedEvent.new
     end
 
@@ -45,7 +45,7 @@ class Invite < ActiveRecord::Base
     end
 
     event :decline do
-      transition :pending => :rejected
+      transition :pending => :declined
     end
   end
 

@@ -6,6 +6,7 @@ class InvitesController < ApplicationController
   # GET /invites
   # GET /invites.json
   def index
+    @invites = Invite.find_all_by_organization_id(current_user.organization_id)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @invites }

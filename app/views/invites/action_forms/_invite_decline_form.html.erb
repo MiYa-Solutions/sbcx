@@ -1,5 +1,5 @@
 <%= simple_form_for invite, html: { class: 'invite_accept_form' } do |f| %>
-    <%= f.hidden_field :event_name, value: 'decline' %>
+    <%= f.hidden_field :status_event, value: 'decline' %>
     <%= f.submit invite.class.human_status_event_name(:decline).titleize, id: 'invite_decline_btn' %>
 <% end %>
 
