@@ -1,35 +1,7 @@
 <div class="row-fluid">
   <div class="smart_label designed_tooltip">
     <ul>
-      <li><h1><%= t('general.general.billing') %></h1></li>
-
-
-      <% if @service_call.total_price > 0 %>
-          <li class="total_price">
-            <div class="total_bom">
-
-              <badge><%= t('general.general.total_price').html_safe %>
-                <span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span>
-              </badge>
-            </div>
-
-          </li>
-      <% end %>
-
-      <% if  @service_call.total_cost > 0 %>
-          <li class="total_price">
-            <div class="total_bom">
-
-              <badge><%= t('general.general.total_cost').html_safe %>
-                <span id='job_total_cost'> <%= humanized_money_with_symbol @service_call.total_cost %></span>
-              </badge>
-            </div>
-
-          </li>
-
-      <% end %>
-
-
+      <li><h1><%= t('general.general.customer_billing') %></h1></li>
       <li>
         <% if @service_call.can_change_boms? %>
             <%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>
@@ -111,7 +83,33 @@
     <% @service_call.boms.each do |bom| %>
           <%= render 'boms/bom', bom: bom %>
     <% end %>
+    <% if  @service_call.total_cost > 0 %>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><strong><%= t('general.general.total_cost').html_safe %></strong></td>
+          <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_cost %></h3></td>
+        </tr>
+
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><strong><%= t('general.general.total_price').html_safe %></strong></td>
+          <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_price %></h3></td>
+        </tr>
+
+
+    <% end %>
     </tbody>
   </table>
 
 </div>
+
