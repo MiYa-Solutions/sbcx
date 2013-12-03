@@ -43,4 +43,16 @@ en:
     name: "Accepted Subcontracting Agreement"
     description: '%{other_party} has accepted the terms of the subcontracting agreement'
 
+  new_invite_event:
+    name: "New Invitation"
+    description: '%{org} has invited %{affiliate} to become one of his affilates'
+
+  invite_accepted_event:
+    name: "Invitation Accepted"
+    description: '%{affiliate} has accepted the invitation from %{org}'
+
+  invite_declined_event:
+    name: "Invitation Declined"
+    description: '%{affiliate} has declined the invitation from %{org}'
+
 

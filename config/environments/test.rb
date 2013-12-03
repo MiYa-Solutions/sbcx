@@ -3,12 +3,6 @@ Sbcx::Application.configure do
   config.middleware.use(MyApp::DiagnosticMiddleware)
   # Settings specified here will take precedence over those in config/application.rb
 
-  config.autoload_paths                             += %W(#{config.root}/app/models/accounting_entries)
-  config.autoload_paths                             += %W(#{config.root}/app/models/payments)
-  config.autoload_paths                             += %W(#{config.root}/app/models/posting_rules)
-  config.autoload_paths                             += %W(#{config.root}/app/models/posting_rules/customer)
-  config.autoload_paths                             += %W(#{config.root}/app/models/posting_rules/affiliate)
-
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title><%= I18n.t('notification_mailer.invite_accepted.subject').html_safe %></title>
+  <%= render 'styling' %>
+</head>
+
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+  <tr>
+    <td align="center" valign="top" style="padding-top:20px;">
+      <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+        <tr>
+          <td align="center" valign="top">
+            <!-- // Begin Template Header \\ -->
+            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+              <tr>
+                <td class="headerContent">
+                  <img src="<%= image_url('LogoImg.png') %>" style="max-width:600px;" id="headerImage campaign-icon"/>
+
+                </td>
+              </tr>
+            </table>
+            <!-- // End Template Header \\ -->
+          </td>
+        </tr>
+        <tr>
+          <td align="center" valign="top">
+            <!-- // Begin Template Body \\ -->
+            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
+              <tr>
+                <td valign="top">
+
+                  <!-- // Begin Module: Standard Content \\ -->
+                  <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                    <tr>
+                      <td valign="top" class="bodyContent">
+                        <div>
+                          <h4 class="h4"><%= I18n.t('notification_mailer.invite_accepted.title').html_safe %></h4>
+                          <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>
+                          ,<br>
+                          <%= I18n.t('notification_mailer.invite_accepted.content').html_safe %>
+                          &nbsp;<strong><%= @invite.organization.name.html_safe %></strong>.
+                          <br>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" style="padding-top:0; padding-bottom:0;">
+                        <table border="0" cellpadding="10" cellspacing="0" width="100%" class="templateDataTable">
+                          <tr>
+                            <th scope="col" valign="top" width="25%" class="dataTableHeading">
+                              CHANGE ME:
+                            </th>
+                            <th scope="col" valign="top" width="75%" class="dataTableHeading">
+                              CHANGE ME
+                            </th>
+                          </tr>
+                          <tr>
+                            <td valign="top" class="dataTableContent">
+                              CHANGE_ME
+                            </td>
+                            <td valign="top" class="dataTableContent">
+                              <strong>CHANGE ME</strong>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td valign="top" class="dataTableContent">
+                              <%= @invite.class.human_attribute_name(:organization) %>:
+                            </td>
+                            <td valign="top" class="dataTableContent">
+                              <strong><%= @invite.affiliate.name %></strong><br>
+                              CHANGE ME
+                              <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td valign="top" class="dataTableContent">
+                              CHANGE ME
+                            </td>
+                            <td valign="top" class="dataTableContent">
+                              CHANGE ME
+
+                            </td>
+                          </tr>
+                          <tr>
+                            <td valign="top" class="dataTableContent">
+                              <%= @invite.class.human_attribute_name(:message) %>:
+                            </td>
+                            <td valign="top" class="dataTableContent">
+                              <strong><%= @invite.message %></strong>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" class="bodyContent">
+                        <div>
+                          <%= I18n.t('notification_mailer.received_new_service_call.bottom_content').html_safe %>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" valign="top" style="padding-top:0;">
+                        <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
+                          <tr>
+                            <td valign="middle" class="templateButtonContent">
+                              <div>
+                                <!--<a href="http://www.mandrill.com/" target="_blank">More Details</a>-->
+                                <%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, invite_url(@invite) %>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  <!-- // End Module: Standard Content \\ -->
+                </td>
+              </tr>
+            </table>
+            <!-- // End Template Body \\ -->
+          </td>
+        </tr>
+        <tr>
+          <%= render 'footer' %>
+        </tr>
+      </table>
+      <br/>
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>

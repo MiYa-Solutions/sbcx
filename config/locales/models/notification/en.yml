@@ -128,3 +128,18 @@ en:
       html_message: "The %{link} %{name} terms were accepted by ${other_party]"
       subject: 'Subcontracting agreement terms were accepted'
       content: 'The terms of the subcontracting agreement %{name}, were accepted by %{other_party}'
+
+    new_invite:
+      html_message: "%{org} has sent you an %{link} to join his affiliate network"
+      subject: '%{org} has invited you to become his affiliate'
+      content: '%{org} is inviting you to join his affiliate network which will allow you to outsource and receive jobs from one another'
+
+    invite_accepted:
+      html_message: "%{affiliate} has accepted your %{link} to join your affiliate network"
+      subject: 'Congratulations! %{affiliate} has accepted your invitation'
+      content: '%{affiliate} has accepted your invitation. You can start outsourcing and receiving jobs from one another.'
+
+    invite_declined:
+      html_message: "%{affiliate} has declined your %{link} to join your affiliate network"
+      subject: '%{affiliate} has declined your invitation'
+      content: '%{affiliate} has declined your invitation.'

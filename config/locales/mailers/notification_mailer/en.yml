@@ -140,3 +140,15 @@ en:
       subject: 'Contractor has confirmed Job is settled'
       content: 'Your confirmation is pending. The following contractor has indicated that the following job is settled: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account to confirm this action.'
+    new_invite:
+      subject: "Affiliate Invitation"
+      title: "New Invite"
+      content: "You were invited to join the affiliate network"
+    invite_declined:
+      subject: "Your Affiliate Invitation Was Declined"
+      title: "Invitation Declined"
+      content: "Your invitation was declined"
+    invite_accepted:
+      subject: "Your Affiliate Invitation Was Accepted"
+      title: "Invitation Accepted"
+      content: "Your invitation was accepted"

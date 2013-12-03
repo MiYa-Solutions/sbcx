@@ -54,11 +54,11 @@ class Notification < ActiveRecord::Base
   protected
 
   def default_subject
-    raise "You probably forgot to implement the default_subject method in #{self.class.name}"
+    raise NotImplementedError.new "You probably forgot to implement the default_subject method in #{self.class.name}"
   end
 
   def default_content
-    raise "You probably forgot to implement the default_content method in #{self.class.name}"
+    raise NotImplementedError.new "You probably forgot to implement the default_content method in #{self.class.name}"
   end
 
   private
