@@ -1,10 +1,5 @@
 require 'spec_helper'
 
-FF_INPUT_SUBCON_FEE     = 'service_call_properties_subcon_fee'
-FF_INPUT_PROV_FEE       = 'service_call_properties_provider_fee'
-FF_CBOX_BOM_REIMBU      = 'service_call_properties_bom_reimbursement'
-FF_CBOX_PROV_BOM_REIMBU = 'service_call_properties_prov_bom_reimbursement'
-
 describe 'Transfer with a flat fee agreement', js: true do
   self.use_transactional_fixtures = false
 
@@ -69,7 +64,7 @@ describe 'Transfer with a flat fee agreement', js: true do
     it 'subcon job has transfer attributes' do
       expect(subcon_job.properties).to_not be_empty
       expect(subcon_job.properties['provider_fee']).to eq '2'
-      expect(subcon_job.properties['bom_reimbursement']).to eq '1'
+      expect(subcon_job.properties['prov_bom_reimbursement']).to eq '1'
     end
 
 
@@ -147,7 +142,7 @@ describe 'Transfer with a flat fee agreement', js: true do
 
       it 'the created job should have transfer props' do
         expect(local_job.properties['provider_fee']).to eq '10'
-        expect(local_job.properties['prov_bom_reimbursement']).to eq '1'
+        expect(local_job.properties['prov_bom_reimbursement']).to eq '0'
       end
 
       context 'when completing job, the balance should reflect the bom reimbursement' do
