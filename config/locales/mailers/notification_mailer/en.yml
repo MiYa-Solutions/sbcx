@@ -141,14 +141,18 @@ en:
       content: 'Your confirmation is pending. The following contractor has indicated that the following job is settled: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account to confirm this action.'
     new_invite:
-      subject: "Affiliate Invitation"
-      title: "New Invite"
-      content: "You were invited to join the affiliate network"
+      subject: "Invitation from SubConTraX member"
+      title: "New Invitation"
+      content: "The following invitation has been sent to you by: "
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to accept or decline.'
     invite_declined:
-      subject: "Your Affiliate Invitation Was Declined"
-      title: "Invitation Declined"
-      content: "Your invitation was declined"
+      subject: "The invitation to join your network has been declined"
+      title: "Invitation has been Declined"
+      content: "Your invitation has been declined by: "
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
     invite_accepted:
-      subject: "Your Affiliate Invitation Was Accepted"
-      title: "Invitation Accepted"
-      content: "Your invitation was accepted"
+      subject: "The invitation to join your network has been accepted"
+      title: "Invitation has been accepted"
+      content: "Your invitation has been accepted by: "
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
+

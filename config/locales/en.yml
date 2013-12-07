@@ -43,7 +43,8 @@ en:
       myJob: "This is my Job (my Customer)"
       TransJob: "I'm the Subcontractor"
       member_icon: "This Affiliate is a member in the SubConTraX Network"
-      send_invite: "Send invitation to join the SubConTraX network. <br> See Promotion on the left"
+      send_invite: "Send your recommendation of SubConTraX."
+      add_member_invite: "Send invite to join your SubConTraX network. <br> Accepted invitation enables transferring and receiving of jobs."
       no_records: "No records, click 'New Affiliate' or search for affiliates to add new members to your network"
       no_job_records: "No records, click 'New Job' to add new contact"
       show_job: "Click to open Job ticket"
@@ -65,6 +66,7 @@ en:
       agr_no_add_rule: "You can't add rules in case the agreement is active or pending approval. \nTo edit the agreement, please cancel the agreement in the Actions section below, go back to the Affiliate page and add new agreement."
       agr_no_add_rule_pending: "You can't add rules in case the agreement is pending approval. \nTo edit the agreement, please delete the posting rules below and then add new rules."
       agr_select_rule: "Select 'Profit Split' from the dropdown and click on the Add button. \nPlease note you can enter more than one rule in the next following fields"
+
 
     errors:
       error: "Error"
@@ -121,7 +123,7 @@ en:
       provider: "Contractor"
       subcontractor: "Subcontractor"
       member: "SubConTraX member"
-      send_invite: "Send Invite"
+      send_invite: "Send Referral"
       my_jobs: "Jobs To Work On"
       scheduled_for: "Scheduled for"
       transferred_jobs: "Jobs that I Transferred"
@@ -155,9 +157,15 @@ en:
       show_appointments: "Show Appointments"
       active_jobs: "Active Jobs"
       all_jobs: "All Jobs"
+      new_invite_for: "New invite for: "
+      message: "Message:"
+      invite_status: "Invitation Status: "
+      note: "Note: "
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
     rate_type:
       percentage: "Percentage"
       flat_fee: "Flat Fee"
+    message:
+      invite_member: "I'd like to add you to my professional network on SubConTraX. \n \n"

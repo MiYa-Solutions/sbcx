@@ -64,7 +64,7 @@ en:
       status: "Status"
       customer: "Customer"
       role: "Role"
-      add_member: "Add Member"
+      add_member: "Send Invite"
       part: "Part"
       cost: "Cost"
       price: "Price"
@@ -77,7 +77,7 @@ en:
       agreement_rules: "Agreement Rules"
       payment_methods: "Payment Methods"
       add_payment: "Add Payment"
-      agreement_history: "Agreement History"
+      agreement_history: "History"
       my_job: "My Job"
       transferred_job: "Transferred Job"
       agreement: "Aggrement"
@@ -95,7 +95,8 @@ en:
       new_employee: "New Employee"
     messages:
       new_agreement: "Click to add new agreement"
-      invite_member: "Click to add an agreement and send invitation to join your network"
+      invite_member: "Send invite to join your SubConTraX network member."
+      invite_member_p2: "Accepted invitation enables transferring and receiving of jobs."
   affiliates:
     buttons:
       add_entry: "Add Entry"

@@ -1,23 +1,78 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "Invites") %>
 
-<p>
-  <b>Message:</b>
-  <%= @invite.message %>
-</p>
+<div class="well well_height">
+  <div class="row-fluid">
 
-<p>
-  <b>Organization:</b>
-  <%= @invite.organization.name %>
-</p>
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= t('general.general.invite_status') %> <%= @invite.human_status_name %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
 
-<p>
-  <b>Affiliate:</b>
-  <%= @invite.affiliate.name %>
-</p>
+  <br>
 
-<p>
-  <b>Status:</b>
-  <%= @invite.human_status_name %>
-</p>
+  <div class="row-fluid">
+    <p id="notice"><%= notice %></p>
 
-<%= invite_event_buttons(@invite) if permitted_to? :update, @invite %>
+    <div class="span6">
+         <table class="table table-striped table-condensed">
+           <tr>
+             <td>
+                <strong><%= Invite.human_attribute_name :message %></strong>
+             </td>
+             <td>
+               <%= @invite.message %>
+             </td>
+            </tr>
+           <tr>
+             <td>
+               <strong><%= Invite.human_attribute_name :organization %></strong>
+             </td>
+             <td>
+               <%= @invite.organization.name %>
+             </td>
+           </tr>
+           <tr>
+             <td>
+               <strong><%= Invite.human_attribute_name :affiliate %></strong>
+             </td>
+             <td>
+               <%= @invite.affiliate.name %>
+             </td>
+           </tr>
+           <tr>
+             <td>
+               <strong><%= Invite.human_attribute_name :status %></strong>
+             </td>
+             <td>
+               <%= @invite.human_status_name.titleize %>
+             </td>
+           </tr>
+          </table>
+
+      <%= invite_event_buttons(@invite) if permitted_to? :update, @invite %>
+
+
+      <br/>
+
+        <div class="form-actions">
+          <%= link_to I18n.t('general.general.back'), user_root_path, :class => 'btn btn-medium', id: 'back_notification_btn' %>
+
+        </div>
+      <!--End of span-->
+    </div>
+
+  </div>
+
+
+</div>
+
+
+
+
+
+
+
+

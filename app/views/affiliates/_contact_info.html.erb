@@ -7,10 +7,14 @@
             <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
                 <!--Archive is already at the bottom-->
             <% else %>
+                <!--<3%= image_tag("question24.png", :title => I18n.t('general.messages.add_member_invite'), :rel => 'tooltip') %>-->
+                <!--<#%= link_to(t('general.general.add_member'), '#invite_modal', class: "btn btn-medium btn-primary", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn") %>-->
+                <!---->
                 <!--<#%= link_to I18n.t('general.general.add_member'), "", class: "btn btn-large btn-primary" %>-->
             <% end %>
         <% else %>
-            <%= link_to I18n.t('general.general.send_invite'), '#', :class => 'btn btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
+            <%= image_tag("question24.png", :title => I18n.t('general.messages.send_invite'), :rel => 'tooltip') %>
+            <%= link_to I18n.t('general.general.send_invite'), '#', :class => 'btn btn-primary' %>
         <% end %>
       </li>
     </ul>
@@ -81,3 +85,4 @@
   <% end %>
   </div>
 </div>
+

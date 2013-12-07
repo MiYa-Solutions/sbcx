@@ -163,7 +163,7 @@ a {
 footer {
   margin-top: 0px;
   padding-top: 5px;
-  border-top: 1px solid #eaeaea;
+  //border-top: 1px solid #eaeaea;
   color: $grayLight;
 
   a {
@@ -334,7 +334,7 @@ footer {
   .btn-mini {
     min-width: 30px;
     font-size: 12px;
-    line-height: 12px;
+    line-height: 18px;
     padding: 2px 5px;
   }
 
@@ -389,7 +389,18 @@ footer {
 }
 
 #empty_agreement_notice {
-  margin-left: -30px;
+  //margin-left: -30px;
+  //display: block;
+  //width: 53%;
+
+  display: block;
+  margin-left: 0;
+  margin-right: 0;
+  width: 90%;
+
+  //.btn {
+  //  float: right;
+  //}
 }
 
 #agreement_description {
@@ -518,7 +529,7 @@ input, textarea {
     font-weight: normal;
     line-height: 28px;
     letter-spacing: .01em;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     font-family: Century Gothic;
 
 
@@ -529,7 +540,7 @@ input, textarea {
     text-transform: none;
     font-weight: normal;
     color: #000000;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     line-height: 28px;
     letter-spacing: .01em;
     font-family: Century Gothic;
@@ -554,7 +565,7 @@ input, textarea {
     color: $white;
     font-family: Century Gothic;
     font-size: 14px;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
   }
 
   ul {
@@ -593,7 +604,7 @@ input, textarea {
     font-weight: normal;
     line-height: 28px;
     letter-spacing: .01em;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     font-family: Century Gothic;
   }
 
@@ -625,7 +636,7 @@ input, textarea {
     color: $white;
     font-family: Century Gothic;
     font-size: 14px;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
   }
 
   ul {
@@ -668,7 +679,7 @@ input, textarea {
     //text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     line-height: 28px;
     letter-spacing: .01em;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     font-family: Century Gothic;
 
   }
@@ -678,7 +689,7 @@ input, textarea {
     color: $white;
     font-family: Century Gothic;
     font-size: 16px;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 
   }
 
@@ -717,7 +728,7 @@ input, textarea {
     font-weight: normal;
     letter-spacing: 0.01em;
     line-height: 28px;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     text-transform: capitalize;
   }
 
@@ -1079,6 +1090,10 @@ fieldset label {
     margin-right: 5px;
     padding-top: 3px;
   }
+
+  h3 {
+    line-height: 18px;
+  }
 }
 
 .dropdown-menu {
@@ -1356,13 +1371,10 @@ a:hover {
 .list_service_calls {
 
   address {
-    //margin-left: 100px;
-    //margin-top: 10px;
     background: none repeat scroll 0 0 #EEEEEE;
-    //margin-left: 14%;
-    margin-top: 10px;
+    margin-top: 0;
     padding: 7px;
-    width: 70%;
+    width: 90%;
   }
 
   h4 {
@@ -1431,7 +1443,7 @@ a:hover {
     font-size: 16px;
     font-weight: bold;
     letter-spacing: 0.01em;
-    line-height: 27px;
+    line-height: 18px;
     margin-bottom: 10px;
     margin-left: 0;
     text-align: center;
@@ -1686,7 +1698,7 @@ a:hover {
 }
 
 .affiliate_balance {
-  min-height: 350px;
+  min-height: 334px;
 }
 
 .agreement_rules {
@@ -1702,8 +1714,11 @@ a:hover {
 
 
 .affiliate_info {
-  min-height: 350px;
-
+  min-height: 334px;
+  .smart_label .btn-medium {
+    height: 18px;
+    width: auto;
+  }
   //.table-striped tbody tr:nth-child(2n) td, .table-striped tbody tr:nth-child(2n) th {
   //  width: 20%;
   //}
@@ -2500,7 +2515,7 @@ hr {
 
 
 .actions_affiliate_index {
-  width: 16%;
+  width: 18%;
 }
 
 .roles_table{
@@ -2519,6 +2534,11 @@ hr {
     float: left;
     margin-left: 0;
 
+  }
+
+  .label-info, .badge-info {
+    background-color: #3A87AD;
+    margin-right: -7px;
   }
 }
 
@@ -2939,7 +2959,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     text-transform: none;
     font-weight: normal;
     color: white;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     line-height: 28px;
     letter-spacing: .01em;
     font-family: Century Gothic;
@@ -2958,7 +2978,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     text-transform: none;
     font-weight: normal;
     color: #C09853;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     line-height: 28px;
     letter-spacing: .01em;
     font-family: Century Gothic;
@@ -3045,7 +3065,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 #job-search-results, .table th, .table td {
   font-size: 12px;
-  line-height: 20px;
+  line-height: 16px;
 }
 
 #job-search-results {
@@ -3165,8 +3185,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 .well_footer {
-  margin-top: -7px;
-  margin-bottom: -20px;
+  //margin-top: -7px;
+  //margin-bottom: -20px;
+  margin-bottom: -22px;
+  margin-top: 36px;
 }
 
 .welcome_benefits {
@@ -3362,7 +3384,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     font-weight: normal;
     font-size: 16px;
     font-family: Century Gothic;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 
   }
 
@@ -3370,6 +3392,136 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     margin-right: 1%;
   }
 
+
+}
+
+#invite_modal_index {
+
+  margin-left: -20%;
+  margin-top: -25%;
+  width: 40%;
+
+  #invite_notes {
+    height: 100px;
+  }
+
+
+  form {
+    margin: 0 0 1px;
+  }
+
+  .form-horizontal .control-label {
+    float: left;
+    padding-top: 5px;
+    text-align: left;
+    width: 80px;
+  }
+
+  .form-horizontal .controls {
+    margin-left: 80px;
+  }
+
+  input, textarea {
+    margin-left: 20%;
+    margin-top: -19px;
+    width: 75%;
+  }
+
+  #invite_message {
+    height: 250px;
+  }
+
+  h4{
+    width: 92%;
+    color: #FFFFFF;
+    font-family: Century Gothic;
+    font-size: 18px;
+    font-weight: normal;
+    letter-spacing: 0.01em;
+    line-height: 28px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    text-transform: capitalize;
+    background-color: #999999;
+    border-radius: 3px;
+    padding-bottom: 5px;
+    padding-left: 8px;
+  }
+
+
+  .control-group {
+    margin-bottom: 9px;
+    //margin-left: 10px;
+  }
+
+  #invite_create_btn {
+    float: left;
+    margin-left: 40%;
+    max-width: 28%;
+  }
+}
+
+
+#invite_modal {
+
+  margin-left: -20%;
+  margin-top: -25%;
+  width: 40%;
+
+  #invite_notes {
+    height: 100px;
+  }
+
+  .form-horizontal .control-label {
+    float: left;
+    padding-top: 5px;
+    text-align: left;
+    width: 80px;
+  }
+
+  .form-horizontal .controls {
+    margin-left: 80px;
+  }
+
+  //.modal-footer {
+  //  margin-bottom: -18px;
+  //
+  //}
+
+  #invite_message {
+    height: 250px;
+  }
+
+  h4{
+    width: 92%;
+    color: #FFFFFF;
+    font-family: Century Gothic;
+    font-size: 18px;
+    font-weight: normal;
+    letter-spacing: 0.01em;
+    line-height: 28px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    text-transform: capitalize;
+    background-color: #999999;
+    border-radius: 3px;
+    padding-bottom: 5px;
+    padding-left: 8px;
+  }
+
+
+  .control-group {
+    margin-bottom: 9px;
+    //margin-left: 10px;
+  }
+
+  #invite_create_btn {
+    float: left;
+    margin-left: 40%;
+  }
+
+
+  //.smart_label {
+  //  margin-top: -16px;
+  //}
 
 }
 
@@ -3391,7 +3543,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
      font-weight: normal;
      letter-spacing: 0.01em;
      line-height: 28px;
-     text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
      text-transform: capitalize;
      background-color: #999999;
      border-radius: 3px;
@@ -3522,6 +3674,62 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 .well_contact {
   margin-left: -0.5%;
+}
+
+#invite_accept_btn {
+  background-color: #5CB85C;
+  border-color: #4CAE4C;
+  color: #FFFFFF;
+  -moz-user-select: none;
+  background-image: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+#invite_decline_btn {
+  background-color: #D9534F;
+  border-color: #D43F3A;
+  color: #FFFFFF;
+  -moz-user-select: none;
+  background-image: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.invite_events {
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    line-height: 16px;
+    margin-right: 10px;
+  }
+
+  li:last-child {
+    float: inherit;
+  }
 }
 
 
