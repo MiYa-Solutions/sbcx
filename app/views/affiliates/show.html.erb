@@ -5,7 +5,8 @@
     <li><h1><%= Affiliate.model_name %>:</h1></li>
     <li><h2><%= @affiliate.name %></h2></li>
     <li>
-      <h2><%= link_to "Invite", { controller: 'invites', action: 'new', 'invite[affiliate_id]' => @affiliate.id }, id: 'affiliate_invite_btn' %></h2>
+      <!--<h2><#%= link_to "Invite", { controller: 'invites', action: 'new', 'invite[affiliate_id]' => @affiliate.id }, id: 'affiliate_invite_btn' %></h2>-->
+      <!--<#%= link_to("Transfer", '#transfer_modal', class: "btn btn-medium btn-primary", data: { toggle: 'modal' }, role: "button", id: "transfer_btn") %>-->
     </li>
     <li></li>
   </ul>
@@ -22,18 +23,26 @@
         <!--Agreements-->
         <% if @agreements.empty? %>
             </div>
-            <div class="span10">
 
-             <span class="alert alert-info" id="empty_agreement_notice">
-                    <%= I18n.t('general.messages.invite_member') %>
-               <%= button_tag I18n.t('general.general.new_agreement'), :class => 'btn btn-small btn-primary', id: 'new-agreement-button', data: { toggle: "collapse", target: "#add_new_agreement" } %>
-              </span>
-              <br><br>
+            <div class="span6">
 
-              <div class="bom collapse" id="add_new_agreement">
-                <%= render 'agreements/agreement_form', other_party: @affiliate %>
-              </div>
-            </div>
+                <div class="row-fluid alert alert-success" id="empty_agreement_notice">
+
+                       <%= I18n.t('general.messages.invite_member') %>
+                        <br><br>
+
+                       <%= link_to(t('general.general.add_member'), '#invite_modal', class: "btn btn-medium btn-success", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn") %>
+                        <br><br>
+
+                        <strong><%= I18n.t('general.general.note') %></strong><%= I18n.t('general.messages.invite_member_p2') %> <br>
+                       <!--<#%= button_tag I18n.t('general.general.new_agreement'), :class => 'btn btn-small btn-primary', id: 'new-agreement-button', data: { toggle: "collapse", target: "#add_new_agreement" } %>-->
+                </div>
+              <!--<br><br>-->
+
+              <!--<div class="bom collapse" id="add_new_agreement">-->
+                <!--<#%= render 'agreements/agreement_form', other_party: @affiliate %>-->
+              <!--</div>-->
+               </div>
 
         <% else %>
             <%= render :partial => 'affiliate_agreements' %>
@@ -55,3 +64,40 @@
 </div>
 </div>
 <!--End of Well-->
+
+
+
+<!--Send invite model-->
+<div id='invite_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+  <%= simple_form_for(Invite.new, :html => { :class => 'form-horizontal' }) do |f| %>
+      <div class="modal-header">
+
+        <div class="smart_label">
+          <ul>
+            <li><h1><%= t('general.general.new_invite_for') %> <%= @affiliate.name %></h1></li>
+            <li><button class="btn" data-dismiss="modal" aria-hidden="true"><%= t('general.general.close') %></button></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="modal-body">
+        <%= f.error_notification %>
+
+        <div class="row-fluid">
+
+          <div class="form-inputs">
+            <%= f.input :message, as: :text, :input_html => { :value => I18n.t('general.message.invite_member') + current_user.name  } %>
+            <%= f.hidden_field :affiliate_id, value: @affiliate.id %>
+          </div>
+
+
+        <br>
+        <%= f.button :submit , id: 'invite_create_btn', :value => t('general.general.add_member'), class: 'btn btn-large btn-primary' %>
+        </div>
+      </div>
+
+      <!--End of Form-->
+  <% end %>
+</div>
