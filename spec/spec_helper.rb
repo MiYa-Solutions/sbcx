@@ -21,6 +21,7 @@ Spork.prefork do
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
   # This file is copied to spec/ when you run 'rails generate rspec:install'
+  require 'factory_girl_rails'
   Capybara.javascript_driver = :poltergeist
 
   Capybara.register_driver :poltergeist do |app|
@@ -33,6 +34,15 @@ Spork.prefork do
 
   include Authorization::TestHelper
   include MoneyRails::TestHelpers
+
+  Spork.trap_method(Rails::Application, :eager_load!)
+  Spork.trap_method(Rails::Application, :reload_routes!)
+  Spork.trap_method(Rails::Application::RoutesReloader, :reload!)
+  #
+  #
+  #Spork.trap_class_method(FactoryGirl, :find_definitions)
+  #
+  #require File.expand_path(File.dirname(__FILE__) + '/../config/environment')
 
 
   # Requires supporting ruby files with custom matchers and macros, etc,
@@ -80,15 +90,23 @@ Spork.prefork do
       DatabaseCleaner.clean
       load "#{Rails.root}/db/seeds.rb"
     end
-
+    ActiveSupport::Dependencies.clear
   end
 end
 
 Spork.each_run do
-  # This code will be run each time you run your specs.
+  #FactoryGirl.reload
+  #Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
+  #  load model unless model == "/Users/mark/RubymineProjects/sbcx/app/models/permitted_params.rb"
+  #end
 
+  #require 'factory_girl_rails'
+  #FactoryGirl.factories.clear
+  # reload all the models
+  Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
+    load model unless model.include? 'permitted_params'
+  end
 end
-
 # --- Instructions ---
 # Sort the contents of this file into a Spork.prefork and a Spork.each_run
 # block.
@@ -117,6 +135,5 @@ end
 #
 # These instructions should self-destruct in 10 seconds.  If they don't, feel
 # free to delete them.
-
 
   

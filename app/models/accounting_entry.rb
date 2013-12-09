@@ -21,10 +21,8 @@ class AccountingEntry < ActiveRecord::Base
   monetize :amount_cents
   monetize :balance_cents
 
-  validates_presence_of :account_id, :status, :type, :description
-  validates_presence_of :agreement, unless: ->(entry) { entry.instance_of?(AdjustmentEntry) }
-  validates_presence_of :ticket_id, if: :validate_ticket_id?
-  validate :event_requirement
+  validates_presence_of :event, :account, :status, :type, :description
+  validates_presence_of :agreement, :ticket, unless: ->(entry) { entry.kind_of?(AdjustmentEntry) }
 
   belongs_to :account, autosave: true
   belongs_to :ticket
@@ -70,10 +68,6 @@ class AccountingEntry < ActiveRecord::Base
 
 
   protected
-  def validate_ticket_id?
-    true
-  end
-
   def set_amount_direction
     self.amount = self.amount * amount_direction
   end
@@ -83,12 +77,12 @@ class AccountingEntry < ActiveRecord::Base
   end
 
   private
-  def event_requirement
-    @errors.add :event_id, "can't be blank" unless event_id.present? || type == AdjustmentEntry.model_name
-  end
+  #def event_requirement
+  #  @errors.add :event_id, "can't be blank" unless event_id.present? || self.kind_of?(AdjustmentEntry)
+  #end
 
 end
 
-Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |file|
-  require_dependency file
-end
+#Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |file|
+#  require_dependency file
+#end

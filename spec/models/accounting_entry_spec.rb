@@ -36,13 +36,19 @@ describe AccountingEntry do
   end
 
   describe "validation" do
-    before { entry.valid? }
-    [:account_id, :ticket_id, :event_id, :type, :description].each do |attr|
-      it "must have a #{attr}" do
+    it { expect(entry).to validate_presence_of(:description) }
+    it { expect(entry).to validate_presence_of(:ticket) }
+    it { expect(entry).to validate_presence_of(:event) }
+    it { expect(entry).to validate_presence_of(:type) }
+    it { expect(entry).to validate_presence_of(:account) }
 
-        entry.errors[attr].should_not be_empty
-      end
-    end
+    #before { entry.valid? }
+    #[:account_id, :ticket_id, :event_id, :type, :description].each do |attr|
+    #  it "must have a #{attr}" do
+    #
+    #    entry.errors[attr].should_not be_empty
+    #  end
+    #end
 
     it "amount should be Money object" do
       entry.amount.should be_a Money

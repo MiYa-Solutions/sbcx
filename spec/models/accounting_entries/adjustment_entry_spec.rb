@@ -23,5 +23,6 @@ describe AdjustmentEntry do
       #expect(entry.ticket).to be ticket
       pending
     end
+
   end
 end

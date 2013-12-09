@@ -31,10 +31,6 @@ class AdjustmentEntry < AccountingEntry
     1
   end
 
-  def validate_ticket_id?
-    false
-  end
-
   private
   def the_ticket
     @the_ticket ||= find_the_ticket

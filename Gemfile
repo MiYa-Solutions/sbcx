@@ -67,7 +67,7 @@ end
 
 group :test do
   gem 'capybara', '2.1.0'
-  gem 'factory_girl_rails', '4.1.0'
+  gem 'factory_girl_rails', '4.1.0', require: false
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner', '~> 0.9.1'
   gem 'rb-fsevent', '0.9.1', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
@@ -76,6 +76,6 @@ group :test do
   gem 'capybara-screenshot', '0.3.4'
   gem 'poltergeist', '1.4.1'
   gem 'shoulda'
-  gem 'spork', '0.9.0'
+  gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.4.4'
 end
