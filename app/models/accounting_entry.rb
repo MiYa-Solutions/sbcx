@@ -21,7 +21,8 @@ class AccountingEntry < ActiveRecord::Base
   monetize :amount_cents
   monetize :balance_cents
 
-  validates_presence_of :account_id, :status, :type, :description, :agreement
+  validates_presence_of :account_id, :status, :type, :description
+  validates_presence_of :agreement, unless: ->(entry) { entry.instance_of?(AdjustmentEntry) }
   validates_presence_of :ticket_id, if: :validate_ticket_id?
   validate :event_requirement
 

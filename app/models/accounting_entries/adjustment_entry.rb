@@ -26,6 +26,7 @@ class AdjustmentEntry < AccountingEntry
   def ticket_ref_id
     @ticket_ref_id || ticket.try(:ref_id)
   end
+
   def amount_direction
     1
   end
@@ -42,6 +43,7 @@ class AdjustmentEntry < AccountingEntry
   def find_the_ticket
     Ticket.where("organization_id = ? AND ref_id = ?", account.organization.id, ticket_ref_id).first if ticket_ref_id.to_i > 0
   end
+
   def convert_ticket_ref_id
     self.ticket = the_ticket
   end
