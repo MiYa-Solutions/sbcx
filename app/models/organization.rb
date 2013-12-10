@@ -253,6 +253,10 @@ class Organization < ActiveRecord::Base
     Ticket.affiliated_jobs(self, org)
   end
 
+  def member?
+    self.subcontrax_member?
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0

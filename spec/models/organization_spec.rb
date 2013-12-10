@@ -82,6 +82,14 @@ describe Organization do
       org.errors[:organization_roles].should_not be_nil
     end
 
+    it 'should have a member? method which is an alias of subcontrax_member?' do
+      org.subcontrax_member = true
+      expect(org.member?).to eq org.subcontrax_member?
+      org.subcontrax_member = false
+      expect(org.member?).to eq org.subcontrax_member?
+    end
+
+
   end
 
   describe "associations" do
