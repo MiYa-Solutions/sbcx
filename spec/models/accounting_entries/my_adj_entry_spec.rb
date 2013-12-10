@@ -45,7 +45,14 @@ describe MyAdjEntry do
         AccountAdjustmentEvent.should_receive(:new).with(kind_of(Hash))
         entry.save!
       end
+
+      it 'entry status should be submitted a AccountAdjustment event' do
+        entry.save!
+        expect(entry.status).to eq MyAdjEntry::STATUS_SUBMITTED
+      end
+
     end
+
     context 'when the affiliate is NOT a subcon_member' do
       before do
         org2.stub(subcontrax_member?: false)
@@ -56,6 +63,12 @@ describe MyAdjEntry do
         AccountAdjustmentEvent.should_not_receive(:new)
         entry.save!
       end
+
+      it 'entry status should be submitted a AccountAdjustment event' do
+        entry.save!
+        expect(entry.status).to eq MyAdjEntry::STATUS_CLEARED
+      end
+
     end
   end
 
