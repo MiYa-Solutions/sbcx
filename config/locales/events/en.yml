@@ -63,4 +63,12 @@ en:
     name: "Account Balance Was Adjusted"
     description: 'The account balance was adjusted'
 
+  acc_adj_accepted_event:
+    name: "Affiliate accepted balance adjustment"
+    description: '%{aff} has accepted the adjustment (%{entry_id}) you submitted.'
+
+  acc_adj_accept_event:
+    name: 'Balance adjustment accepted'
+    description: "You accepted the balance adjustment (%{entry_id}) submitted by '%{aff}'"
+
 
