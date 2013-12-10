@@ -1,6 +1,7 @@
 require_relative 'adjustment_entry'
 class MyAdjEntry < AdjustmentEntry
 
+  after_create :create_event
 
   ##
   # State machines
@@ -23,6 +24,11 @@ class MyAdjEntry < AdjustmentEntry
       transition :submitted => :rejected
     end
 
+  end
+  private
+  def create_event
+    self.account.events <<
+        AccountAdjustmentEvent.new(entry_id: self.id.to_s) if account.accountable.member?
   end
 
 end
