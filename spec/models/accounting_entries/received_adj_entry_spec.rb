@@ -34,12 +34,21 @@ describe MyAdjEntry do
   end
 
   context 'when accepted' do
+    let(:event) { mock_model(AccAdjAcceptEvent, id: 1) }
     before do
-      entry.accept(false)
+      AccAdjAcceptEvent.stub(:new).and_return(event)
+
     end
 
     it 'should have an accept method which will transition to accepted' do
+      entry.accept(false)
       expect(entry).to be_accepted
+    end
+
+    it 'should create an AccAdjustmentAccepted event' do
+      AccAdjAcceptEvent.should_receive(:new)
+      #event.should_receive(:entry_id=)
+      entry.accept(false)
     end
   end
 
