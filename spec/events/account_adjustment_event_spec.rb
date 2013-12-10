@@ -15,35 +15,15 @@ describe AccountAdjustmentEvent do
       Account.stub(:for_affiliate => [acc])
     end
 
-    context 'when the affiliate is a member' do
-      before do
-        org2.stub(:subcontrax_member? => true)
-      end
-      it 'should create AccountAdjustedEvent' do
-        AccountAdjustedEvent.should_receive(:new)
-        event.save
-      end
-
-      it 'should save the entry id in the properties' do
-        event.save
-        expect(event.properties).to eq({ 'entry_id' => '1' })
-      end
-
+    it 'should create AccountAdjustedEvent' do
+      AccountAdjustedEvent.should_receive(:new)
+      event.save
     end
-    context 'when the affiliate is NOT a member' do
-      before do
-        org2.stub(:subcontrax_member? => false)
-      end
-      it 'should NOT create AccountAdjustedEvent' do
-        AccountAdjustedEvent.should_not_receive(:new)
-        event.save
-      end
 
-      it 'should save the entry id in the properties' do
-        event.save
-        expect(event.properties).to eq({ 'entry_id' => '1' })
-      end
-
+    it 'should save the entry id in the properties' do
+      event.save
+      expect(event.properties).to eq({ 'entry_id' => '1' })
+      expect(event.entry_id).to eq '1'
     end
 
   end

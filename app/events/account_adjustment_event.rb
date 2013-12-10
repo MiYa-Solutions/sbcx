@@ -2,7 +2,7 @@ require 'hstore_setup_methods'
 class AccountAdjustmentEvent < Event
   extend HstoreSetupMethods
 
-  setup_hstore_attr :entry_id
+  setup_hstore_attr 'entry_id'
 
   def init
     self.name         = I18n.t('account_adjustment_event.name')
@@ -12,7 +12,7 @@ class AccountAdjustmentEvent < Event
 
   def process_event
     affiliate_account.events <<
-        AccountAdjustedEvent.new(triggering_event: self) if affiliate.subcontrax_member?
+        AccountAdjustedEvent.new(triggering_event: self)
   end
 
   private
