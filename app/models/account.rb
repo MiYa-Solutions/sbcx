@@ -27,6 +27,8 @@ class Account < ActiveRecord::Base
       entry.save
     end
   end
+  has_many :events, as: :eventable
+
 
   alias_method :entries, :accounting_entries
 

@@ -39,6 +39,7 @@ describe Account do
     it { should belong_to(:organization) }
     it { should belong_to(:accountable) }
     it { should have_many(:accounting_entries) }
+    it { should have_many(:events) }
   end
 
 

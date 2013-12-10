@@ -55,4 +55,12 @@ en:
     name: "Invitation Declined"
     description: '%{affiliate} has declined the invitation from %{org}'
 
+  account_adjustment_event:
+    name: "Account Balance Adjustment"
+    description: ' Adjusted the account balance'
+
+  account_adjusted_event:
+    name: "Account Balance Was Adjusted"
+    description: 'The account balance was adjusted'
+
 
