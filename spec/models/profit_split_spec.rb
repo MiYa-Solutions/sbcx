@@ -92,7 +92,7 @@ describe ProfitSplit do
         job.complete_work
       end
 
-      let(:entries) { rule.get_entries(job.events.last) }
+      let(:entries) { rule.get_entries(job.events.first, Account.for_affiliate(org, org2).first) }
 
       it "should not create accounting entries" do
         entries.should be_empty

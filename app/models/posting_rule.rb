@@ -108,7 +108,7 @@ class PostingRule < ActiveRecord::Base
         payment_entries
 
       else
-        raise "Unexpected Event to be processed by ProfitSplit posting rule"
+        raise "Unexpected Event (#{event.class.name}) to be processed by ProfitSplit posting rule"
     end
   end
 
