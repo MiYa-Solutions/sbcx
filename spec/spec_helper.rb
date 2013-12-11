@@ -106,6 +106,15 @@ Spork.each_run do
   Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
     load model unless model.include? 'permitted_params'
   end
+  ##Dir["#{Rails.root}/app/events/**/*.rb"].each do |model|
+  ##  load model
+  ##end
+  #Dir["#{Rails.root}/app/services/**/*.rb"].each do |model|
+  #  load model
+  #end
+  #Dir["#{Rails.root}/app/notifications/**/*.rb"].each do |model|
+  #  load model
+  #end
 end
 # --- Instructions ---
 # Sort the contents of this file into a Spork.prefork and a Spork.each_run
