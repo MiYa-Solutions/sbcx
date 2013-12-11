@@ -71,4 +71,20 @@ en:
     name: 'Balance adjustment accepted'
     description: "You accepted the balance adjustment (%{entry_id}) submitted by '%{aff}'"
 
+  acc_adj_rejected_event:
+    name: "Affiliate rejected balance adjustment"
+    description: '%{aff} has rejected the adjustment (%{entry_id}) you submitted.'
+
+  acc_adj_reject_event:
+    name: 'Balance adjustment rejected'
+    description: "You rejected the balance adjustment (%{entry_id}) submitted by '%{aff}'"
+
+  acc_adj_canceled_event:
+    name: "Affiliate canceled balance adjustment"
+    description: '%{aff} has canceled the previously submitted balance adjustment (%{entry_id})'
+
+  acc_adj_cancel_event:
+    name: 'Balance adjustment canceled'
+    description: "You canceled the balance adjustment (%{entry_id}) you submitted"
+
 

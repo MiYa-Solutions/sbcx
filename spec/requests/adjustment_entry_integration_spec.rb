@@ -73,7 +73,7 @@ describe 'Adjustment Entry Integration' do
 
   end
 
-  context 'when rejected' do
+  context 'when rejected by the recipient' do
     before do
       subcon_entry.reject
     end
@@ -85,6 +85,18 @@ describe 'Adjustment Entry Integration' do
       expect(entry.reload).to be_rejected
     end
 
+    context 'when canceled by the initiator' do
+      before do
+        entry.reload.cancel!
+      end
+
+      it 'the subcon entry should be canceled' do
+        expect(subcon_entry.reload).to be_canceled
+      end
+      it 'the original entry should be accepted' do
+        expect(entry).to be_canceled
+      end
+    end
 
   end
 
