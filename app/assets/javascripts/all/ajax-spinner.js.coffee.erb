@@ -34,7 +34,8 @@ jQuery ->
 
     $('.ajax-form').bind("ajax:error", (e, xhr, status, error)->
         container = $("<span class='flash-error'></span>").html("The Following Error Occured:<br>#{xhr.responseText}")
-        container.purr()
+        container.purr
+            removeTimer: 7000
         spinner.remove()
     )
 
