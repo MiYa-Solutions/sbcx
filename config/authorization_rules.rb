@@ -58,7 +58,7 @@ authorization do
       if_attribute affiliate_id: is { user.organization_id }
     end
 
-    has_permission_on :invites, to: [:update] do
+    has_permission_on :invites, to: [:update, :edit] do
       if_attribute affiliate_id: is { user.organization_id }
     end
 

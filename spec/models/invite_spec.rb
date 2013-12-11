@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Invite do
   let(:invite) { Invite.new }
-  let(:org) { mock_model(Organization) }
-  let(:affiliate) { mock_model(Affiliate) }
+  let(:org) { FactoryGirl.build(:member) }
+  let(:affiliate) { FactoryGirl.build(:member) }
 
 
   subject { invite }
