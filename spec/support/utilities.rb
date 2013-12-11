@@ -227,8 +227,8 @@ def add_bom(name, cost, price, qty, buyer = nil)
   fill_in 'bom_quantity', with: qty
   select buyer, from: BOM_SELECT_BUYER if buyer.present?
   click_button 'add_part'
-  sleep 1
-  page.should have_selector "td", text: name # to ensure bom is added before moving to the next action (click visit etc.)
+                                      #sleep 1
+  page.has_selector? "td", text: name # to ensure bom is added before moving to the next action (click visit etc.)
   click_button 'new-bom-button'
 end
 
@@ -297,4 +297,31 @@ def transfer_job(job, subcon, agreement = nil, props = {})
   yield if block_given? # used to fill additional agreement specific fields or any other action
   click_button JOB_BTN_TRANSFER
 
+end
+
+def complete_job(job, boms = nil)
+  boms ||= [
+      { name: 'Part1', cost: 10, price: 100, quantity: 1 },
+      { name: 'Part1', cost: 20, price: 200, quantity: 1 }
+  ]
+
+  visit service_call_path(job)
+  click_button JOB_BTN_ACCEPT
+  click_button JOB_BTN_START
+
+  boms.each do |bom|
+    add_bom bom[:name], bom[:cost], bom[:price], bom[:quantity]
+  end
+
+  click_button JOB_BTN_COMPLETE
+end
+
+def select2_select(text, options)
+  page.find("#s2id_#{options[:from]} a").click
+  page.all("ul.select2-results li").each do |e|
+    if e.text == text
+      e.click
+      return
+    end
+  end
 end
