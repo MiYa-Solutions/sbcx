@@ -19,7 +19,7 @@ describe FlatFee do
     let(:org) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]).organization }
     let(:subcon) { setup_flat_fee_agreement(org, FactoryGirl.create(:subcontractor)).counterparty }
     let(:account) { Account.for_affiliate(org, subcon).first }
-    let(:agreement) { Agreement.our_agreements(org, subcon).first }
+    let(:agreement) { Agreement.our_agreements(org, subcon.becomes(Organization)).first }
     let(:the_rule) { agreement.rules.first }
     let(:job) { FactoryGirl.create(:my_service_call, organization: org, subcontractor: nil) }
 
@@ -188,7 +188,7 @@ describe FlatFee do
       let(:org) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]).organization }
       let(:subcon) { setup_flat_fee_agreement(org, FactoryGirl.create(:subcontractor)).counterparty }
       let(:account) { Account.for_affiliate(org, subcon).first }
-      let(:agreement) { Agreement.our_agreements(org, subcon).first }
+      let(:agreement) { Agreement.our_agreements(org, subcon.becomes(Organization)).first }
       let(:the_rule) { agreement.rules.first }
       let(:job) { FactoryGirl.create(:my_service_call, organization: org, subcontractor: nil) }
 
