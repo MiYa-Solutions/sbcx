@@ -5,7 +5,7 @@ class AccountingEntriesController < ApplicationController
   filter_resource_access
 
   def index
-    @account = Account.find(params[:accounting_entry][:account_id] ) if params[:accounting_entry].present? && params[:accounting_entry][:account_id].present?
+    @account = Account.find(params[:accounting_entry][:account_id]) if params[:accounting_entry].present? && params[:accounting_entry][:account_id].present?
     @accounts = current_user.organization.accounts
 
     respond_to do |format|
@@ -46,7 +46,7 @@ class AccountingEntriesController < ApplicationController
   def create
     #@accounting_entry = AccountingEntry.new(accounting_entry_params)
 
-    @account = Account.find(params[:accounting_entry][:account_id] ).lock! if params[:accounting_entry].present? && params[:accounting_entry][:account_id].present?
+    @account = Account.find(params[:accounting_entry][:account_id]).lock! if params[:accounting_entry].present? && params[:accounting_entry][:account_id].present?
     respond_to do |format|
       if @account && @account.entries << @accounting_entry
         format.html { redirect_to @accounting_entry.becomes(AccountingEntry), notice: 'Accounting entry was successfully created.' }
@@ -85,8 +85,9 @@ class AccountingEntriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
   def new_accounting_entry_from_params
-    @accounting_entry = AdjustmentEntry.new(accounting_entry_params)
+    @accounting_entry = MyAdjEntry.new(accounting_entry_params)
   end
 
   private
@@ -95,7 +96,7 @@ class AccountingEntriesController < ApplicationController
   # params.require(:person).permit(:name, :age)
   # Also, you can specialize this method with per-user checking of permissible attributes.
   def accounting_entry_params
-    params.require(:accounting_entry).permit(:account_id, :amount, :description,  :ticket_ref_id)
+    params.require(:accounting_entry).permit(:account_id, :amount, :description, :ticket_ref_id)
   end
 
 end

@@ -21,8 +21,9 @@ class AccountingEntry < ActiveRecord::Base
   monetize :amount_cents
   monetize :balance_cents
 
-  validates_presence_of :event, :account, :status, :type, :description
-  validates_presence_of :agreement, :ticket, unless: ->(entry) { entry.kind_of?(AdjustmentEntry) }
+  validates_presence_of :account, :status, :type, :description
+  validates_presence_of :event, :ticket, unless: ->(entry) { entry.instance_of?(MyAdjEntry) }
+  validates_presence_of :agreement, unless: ->(entry) { entry.kind_of?(AdjustmentEntry) }
 
   belongs_to :account, autosave: true
   belongs_to :ticket

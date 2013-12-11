@@ -1,4 +1,4 @@
-require_relative 'adjustment_entry'
+#require 'adjustment_entry'
 class ReceivedAdjEntry < AdjustmentEntry
 
 

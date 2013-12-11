@@ -1,8 +1,8 @@
-require_relative 'adjustment_entry'
+#require 'adjustment_entry'
 class MyAdjEntry < AdjustmentEntry
 
   after_create :invoke_event
-  before_validation :set_initial_status
+  before_create :set_initial_status
 
   ##
   # State machines

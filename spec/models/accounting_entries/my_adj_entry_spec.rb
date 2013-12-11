@@ -39,6 +39,8 @@ describe MyAdjEntry do
       before do
         org2.stub(subcontrax_member?: true)
         org2.stub(member?: true)
+        org.stub(subcontrax_member?: true)
+        org.stub(member?: true)
       end
 
       it 'should create a AccountAdjustment event' do
@@ -73,20 +75,41 @@ describe MyAdjEntry do
   end
 
   context 'when accepted' do
-    before do
-      entry.accept(false)
-    end
 
-    it 'should have an accept method which will transition to accepted' do
-      expect(entry).to be_accepted
+    describe 'when affiliate is a member' do
+      before do
+        org2.stub(subcontrax_member?: true)
+        org2.stub(member?: true)
+        org.stub(subcontrax_member?: true)
+        org.stub(member?: true)
+        Ticket.stub(where: [ticket])
+        entry.save
+        entry.accept(false)
+      end
+
+      it 'should have an accept method which will transition to accepted' do
+        expect(entry).to be_accepted
+      end
     end
   end
 
 
   context 'when rejected' do
-    it 'should have an accept method which will transition to rejected' do
-      entry.reject(false)
-      expect(entry).to be_rejected
+    context 'when the affiliate is a member' do
+      before do
+        org2.stub(subcontrax_member?: true)
+        org2.stub(member?: true)
+        org2.stub(subcontrax_member?: true)
+        org2.stub(member?: true)
+        org.stub(subcontrax_member?: true)
+        org.stub(member?: true)
+        Ticket.stub(where: [ticket])
+        entry.save
+        entry.reject(false)
+      end
+      it 'should have a reject method which will transition to rejected' do
+        expect(entry).to be_rejected
+      end
     end
   end
 

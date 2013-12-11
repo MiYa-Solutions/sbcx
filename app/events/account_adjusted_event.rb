@@ -1,9 +1,6 @@
-require 'hstore_setup_methods'
-class AccountAdjustedEvent < Event
-  extend HstoreSetupMethods
+class AccountAdjustedEvent < AdjustmentEvent
 
   setup_hstore_attr 'orig_entry_id'
-  setup_hstore_attr 'entry_id'
 
   alias_method :account, :eventable
 
@@ -14,9 +11,13 @@ class AccountAdjustedEvent < Event
   end
 
   def process_event
-    entry = ReceivedAdjEntry.new(amount: orig_entry.amount)
-    account.entries << entry
-    self.entry_id      = entry.id
+    new_entry = ReceivedAdjEntry.new(amount:        orig_entry.amount,
+                                     description:   orig_entry.description,
+                                     ticket:        ticket,
+                                     ticket_ref_id: orig_entry.ticket_ref_id,
+                                     event:         self)
+    account.entries << new_entry
+    self.entry_id      = new_entry.id
     self.orig_entry_id = orig_entry.id
     self.save!
   end
@@ -29,6 +30,10 @@ class AccountAdjustedEvent < Event
 
   def new_adj_entry
     @new_adj_entry ||= ReceivedAdjEntry.new(amount: orig_entry.amount)
+  end
+
+  def ticket
+    Ticket.find_by_organization_id_and_ref_id(account.organization_id, orig_entry.ticket.ref_id)
   end
 
 end

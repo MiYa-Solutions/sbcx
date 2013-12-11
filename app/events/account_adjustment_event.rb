@@ -11,6 +11,7 @@ class AccountAdjustmentEvent < Event
   end
 
   def process_event
+    update_entry_with_event
     affiliate_account.events <<
         AccountAdjustedEvent.new(triggering_event: self)
   end
@@ -18,11 +19,20 @@ class AccountAdjustmentEvent < Event
   private
 
   def affiliate_account
-    Account.for_affiliate(eventable.organization, eventable.accountable).first
+    Account.for_affiliate(eventable.accountable, eventable.organization).first
   end
 
   def affiliate
     eventable.accountable
+  end
+
+  def update_entry_with_event
+    entry.event = self
+    entry.save!
+  end
+
+  def entry
+    AccountingEntry.find(entry_id)
   end
 
 end
