@@ -17,6 +17,7 @@ describe MyAdjEntry do
     expect(entry.class).to have_constant(:STATUS_PENDING)
     expect(entry.class).to have_constant(:STATUS_ACCEPTED)
     expect(entry.class).to have_constant(:STATUS_REJECTED)
+    expect(entry.class).to have_constant(:STATUS_CANCELED)
   end
 
 
@@ -31,6 +32,11 @@ describe MyAdjEntry do
   it 'should respond to accepted?' do
 
     expect(entry).to respond_to(:accepted?)
+  end
+
+  it 'should respond to accepted?' do
+
+    expect(entry).to respond_to(:canceled?)
   end
 
   context 'when accepted' do
@@ -60,5 +66,12 @@ describe MyAdjEntry do
     end
   end
 
+  context 'when canceled' do
+    it 'should have a cancel method which will transition to cancled' do
+      entry.status = AdjustmentEntry::STATUS_REJECTED
+      entry.cancel(false)
+      expect(entry).to be_canceled
+    end
+  end
 
 end

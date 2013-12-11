@@ -28,6 +28,10 @@ describe MyAdjEntry do
     expect(entry).to respond_to(:accepted?)
   end
 
+  it 'should respond to canceled?' do
+    expect(entry).to respond_to(:canceled?)
+  end
+
   context 'when created' do
     let(:event) { mock_model(AccountAdjustmentEvent, save: true, :[]= => true, process_event: true, :eventable_id => 1, eventable_type: 'Account', properties: {}) }
     before do
@@ -90,9 +94,12 @@ describe MyAdjEntry do
       it 'should have an accept method which will transition to accepted' do
         expect(entry).to be_accepted
       end
+
+      it 'it should be the final state' do
+        expect(entry.status_events).to eq []
+      end
     end
   end
-
 
   context 'when rejected' do
     context 'when the affiliate is a member' do
@@ -109,6 +116,30 @@ describe MyAdjEntry do
       end
       it 'should have a reject method which will transition to rejected' do
         expect(entry).to be_rejected
+      end
+
+      it 'the next available events should be: cancel' do
+        expect(entry.status_events).to eq [:cancel]
+      end
+    end
+  end
+
+  context 'when canceled' do
+    context 'when the affiliate is a member' do
+      before do
+        org2.stub(subcontrax_member?: true)
+        org2.stub(member?: true)
+        org2.stub(subcontrax_member?: true)
+        org2.stub(member?: true)
+        org.stub(subcontrax_member?: true)
+        org.stub(member?: true)
+        Ticket.stub(where: [ticket])
+        entry.save
+        entry.status = AdjustmentEntry::STATUS_REJECTED
+        entry.cancel!(false)
+      end
+      it 'should have a cancel method which will transition to canceled' do
+        expect(entry).to be_canceled
       end
     end
   end

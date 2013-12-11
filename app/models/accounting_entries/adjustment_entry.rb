@@ -31,6 +31,23 @@ class AdjustmentEntry < AccountingEntry
     1
   end
 
+  ##
+  # state_machine statuses
+  ##
+
+  STATUS_ACCEPTED = 8001
+  STATUS_REJECTED = 8002
+  STATUS_CANCELED = 8003
+
+  state_machine :status do
+    state :canceled, value: STATUS_CANCELED
+
+    event :cancel do
+      transition :rejected => :canceled
+    end
+  end
+
+
   private
   def the_ticket
     @the_ticket ||= find_the_ticket

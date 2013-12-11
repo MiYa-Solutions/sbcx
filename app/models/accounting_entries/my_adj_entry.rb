@@ -8,9 +8,7 @@ class MyAdjEntry < AdjustmentEntry
   # State machines
   ##
 
-  STATUS_SUBMITTED = 8000
-  STATUS_ACCEPTED  = 8001
-  STATUS_REJECTED  = 8002
+  STATUS_SUBMITTED = 8020
 
   state_machine :status do
     state :submitted, value: STATUS_SUBMITTED

@@ -106,6 +106,9 @@ Spork.each_run do
   Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
     load model unless model.include? 'permitted_params'
   end
+  Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |model|
+    load model
+  end
   Dir["#{Rails.root}/app/events/**/*.rb"].each do |model|
     load model
   end
