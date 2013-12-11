@@ -63,6 +63,28 @@ describe 'Adjustment Entry Integration' do
       subcon_entry.accept
     end
 
+    it 'the subcon entry should be accepted' do
+      expect(subcon_entry).to be_accepted
+    end
+    it 'the original entry should be accepted' do
+      expect(entry.reload).to be_accepted
+    end
+
+
+  end
+
+  context 'when rejected' do
+    before do
+      subcon_entry.reject
+    end
+
+    it 'the subcon entry should be accepted' do
+      expect(subcon_entry).to be_rejected
+    end
+    it 'the original entry should be accepted' do
+      expect(entry.reload).to be_rejected
+    end
+
 
   end
 

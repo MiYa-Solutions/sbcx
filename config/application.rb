@@ -45,7 +45,8 @@ module Sbcx
     config.active_record.observers            = :my_service_call_observer,
         :transferred_service_call_observer,
         :event_observer,
-        :subcontracting_agreement_observer
+        :subcontracting_agreement_observer,
+        :received_adj_entry_observer
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.

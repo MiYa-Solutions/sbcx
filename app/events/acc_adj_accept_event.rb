@@ -7,16 +7,7 @@ class AccAdjAcceptEvent < AdjustmentEvent
   end
 
   def process_event
-    account.events << AccAdjAcceptedEvent.new(entry_id: orig_entry_id, triggering_event: self)
-  end
-
-  private
-
-  def orig_entry_id
-    AccountAdjustedEvent.where(eventable_id: account.id, eventable_type: 'Account').
-        where("properties @> (entry_id => ?)", entry_id).
-        first.
-        orig_entry_id
+    affiliate_account.events << AccAdjAcceptedEvent.new(entry_id: orig_entry_id, triggering_event: self)
   end
 
 end

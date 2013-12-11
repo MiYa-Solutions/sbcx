@@ -15,12 +15,24 @@ class AdjustmentEvent < Event
     eventable
   end
 
+  def affiliate_account
+    Account.for_affiliate(affiliate, account.organization).first
+  end
+
   def affiliate
     account.accountable
   end
 
   def entry
     AccountingEntry.find(entry_id)
+  end
+
+
+  def orig_entry_id
+    AccountAdjustedEvent.where(eventable_id: account.id, eventable_type: 'Account').
+        where("properties @> ('entry_id' => ?)", entry_id).
+        first.
+        orig_entry_id
   end
 
 end

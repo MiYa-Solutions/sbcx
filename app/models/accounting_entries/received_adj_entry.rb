@@ -22,16 +22,16 @@ class ReceivedAdjEntry < AdjustmentEntry
       transition :pending => :rejected
     end
 
-    ##
-    # actions to take place after transitions
-    ##
-    after_transition :pending => :accepted do |entry|
-      invoke_accepted_event(entry)
-    end
+    ###
+    ## actions to take place after transitions
+    ###
+    #after_transition :pending => :accepted do |entry|
+    #  invoke_accepted_event(entry)
+    #end
 
-    def invoke_accepted_event(entry)
-      entry.account.events << AccAdjAcceptEvent.new(entry_id: entry.id)
-    end
+    #def invoke_accepted_event(entry)
+    #  entry.account.events << AccAdjAcceptEvent.new(entry_id: entry.id)
+    #end
 
   end
 
