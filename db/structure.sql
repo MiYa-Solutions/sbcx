@@ -95,7 +95,8 @@ CREATE TABLE accounts (
   created_at       TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
   updated_at       TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
   balance_cents    INTEGER DEFAULT 0                                         NOT NULL,
-  balance_currency CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL
+  balance_currency CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
+  synch_status     INTEGER
 );
 
 
@@ -1577,3 +1578,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131103214326');
 INSERT INTO schema_migrations (version) VALUES ('20131126151013');
 
 INSERT INTO schema_migrations (version) VALUES ('20131128162923');
+
+INSERT INTO schema_migrations (version) VALUES ('20131212150135');

@@ -75,15 +75,34 @@ describe 'Adjustment Entry Integration' do
 
   context 'when rejected by the recipient' do
     before do
-      subcon_entry.reject
+      unless example.metadata[:skip_before]
+        subcon_entry.reject!
+      end
     end
 
-    it 'the subcon entry should be accepted' do
+    it 'the initiator account balance should NOT be updated when rejected', skip_before: true do
+      expect { subcon_entry.reject! }.to_not change { subcon_acc.reload.balance }
+    end
+
+    it 'the recipient account balance should be updated when rejected', skip_before: true do
+      expect { subcon_entry.reject! }.to change { prov_acc.reload.balance }.by(-entry.amount)
+    end
+
+    it 'the subcon entry should be rejected' do
       expect(subcon_entry).to be_rejected
     end
-    it 'the original entry should be accepted' do
+    it 'the original entry should be rejected' do
       expect(entry.reload).to be_rejected
     end
+
+    it 'the synch status for the initiator account for affiliate should be set to :out_of_synch' do
+      expect(subcon_acc.reload).to be_out_of_synch
+    end
+
+    it 'the synch status for the recipient account for affiliate should be set to :out_of_synch' do
+      expect(prov_acc.reload).to be_out_of_synch
+    end
+
 
     context 'when canceled by the initiator' do
       before do

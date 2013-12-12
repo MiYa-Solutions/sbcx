@@ -7,6 +7,8 @@ class AccAdjRejectEvent < AdjustmentEvent
   end
 
   def process_event
+    account.balance = account.balance - entry.amount
+    account.adjustment_rejected
     affiliate_account.events << AccAdjRejectedEvent.new(entry_id: affiliate_entry_id, triggering_event: self)
   end
 

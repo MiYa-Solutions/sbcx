@@ -24,6 +24,41 @@ describe Account do
     should respond_to(:accountable_type)
     should respond_to(:current_balance)
     should respond_to(:balance)
+    should respond_to(:synch_status)
+    expect(account).to respond_to(:adjustment_accepted)
+    expect(account).to respond_to(:rejected_adj_entries)
+    expect(account).to respond_to(:adjustment_rejected)
+    expect(account).to respond_to(:adjustment_canceled)
+
+
+  end
+
+  context 'synch state machine' do
+
+    it 'should have the proper constants' do
+      expect(account.class).to have_constant(:SYNCH_STATUS_NA)
+      expect(account.class).to have_constant(:SYNCH_STATUS_IN_SYNCH)
+      expect(account.class).to have_constant(:SYNCH_STATUS_OUT_OF_SYNCH)
+      expect(account.class).to have_constant(:SYNCH_STATUS_ADJ_SUBMITTED)
+    end
+
+    it 'should create the expected scope' do
+      expect(account.class).to respond_to(:with_synch_statuses)
+    end
+
+    it 'should have the proper statuses' do
+      expect(account).to respond_to(:synch_na?)
+      expect(account).to respond_to(:in_synch?)
+      expect(account).to respond_to(:out_of_synch?)
+      expect(account).to respond_to(:adjustment_submitted?)
+    end
+
+    it 'the events should be made private' do
+      expect(account).to_not respond_to(:synch)
+      expect(account).to_not respond_to(:un_synch)
+    end
+
+
   end
 
   describe "validation" do
