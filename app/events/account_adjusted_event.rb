@@ -24,7 +24,7 @@ class AccountAdjustedEvent < AdjustmentEvent
   private
 
   def create_the_matching_entry
-    new_entry = ReceivedAdjEntry.new(amount:        orig_entry.amount,
+    new_entry = ReceivedAdjEntry.new(amount:        -orig_entry.amount,
                                      description:   orig_entry.description,
                                      ticket:        ticket,
                                      ticket_ref_id: orig_entry.ticket_ref_id,

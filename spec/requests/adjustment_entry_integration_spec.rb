@@ -86,6 +86,11 @@ describe 'Adjustment Entry Integration' do
     expect(prov_acc.reload).to be_adjustment_submitted
   end
 
+  it 'the account balance difference should be zero' do
+    expect(subcon_acc.reload.balance + prov_acc.reload.balance).to eq 0
+  end
+
+
   context 'when accepted' do
     before do
       subcon_entry.accept unless example.metadata[:skip_accept]
@@ -106,6 +111,10 @@ describe 'Adjustment Entry Integration' do
       expect(entry.reload).to be_accepted
     end
 
+    it 'the account balance difference should be zero' do
+      expect(subcon_acc.reload.balance + prov_acc.reload.balance).to eq 0
+    end
+
 
   end
 
@@ -123,6 +132,18 @@ describe 'Adjustment Entry Integration' do
     it 'the recipient account balance should be updated when rejected', skip_before: true do
       expect { subcon_entry.reject! }.to change { prov_acc.reload.balance }.by(-entry.amount)
     end
+
+    it 'the account balance difference should not be zero' do
+      expect(subcon_acc.balance + prov_acc.balance).to_not eq 0
+    end
+
+    it 'initiator account status should be in synch', skip_before: true do
+      expect { subcon_entry.reject! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:out_of_synch)
+    end
+    it 'recipient account status should be in synch', skip_before: true do
+      expect { subcon_entry.reject! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:out_of_synch)
+    end
+
 
     it 'the subcon entry should be rejected' do
       expect(subcon_entry).to be_rejected
