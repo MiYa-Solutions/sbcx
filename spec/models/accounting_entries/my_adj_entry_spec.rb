@@ -118,9 +118,10 @@ describe MyAdjEntry do
         expect(entry).to be_rejected
       end
 
-      it 'the next available events should be: cancel' do
-        expect(entry.status_events).to eq [:cancel]
+      it 'the next available events for the initiator should be: cancel and accepted' do
+        expect(entry.status_events).to eq [:cancel, :accept]
       end
+
     end
   end
 

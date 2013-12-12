@@ -93,7 +93,7 @@ describe 'Adjustment Entry Integration' do
       it 'the subcon entry should be canceled' do
         expect(subcon_entry.reload).to be_canceled
       end
-      it 'the original entry should be accepted' do
+      it 'the original entry should be canceled' do
         expect(entry).to be_canceled
       end
     end

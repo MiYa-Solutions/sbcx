@@ -28,7 +28,7 @@ describe AccountAdjustedEvent do
 
     it 'should have the original entry id in the properties' do
       event.save!
-      expect(event.orig_entry_id).to eq orig_entry.id
+      expect(event.matching_entry_id).to eq orig_entry.id
     end
 
     it 'should have the new entry id in the properties' do

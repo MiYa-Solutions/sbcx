@@ -17,7 +17,7 @@ class MyAdjEntry < AdjustmentEntry
     state :accepted, value: STATUS_ACCEPTED
 
     event :accept do
-      transition :submitted => :accepted
+      transition [:submitted, :rejected] => :accepted
     end
 
     event :reject do

@@ -112,6 +112,9 @@ Spork.each_run do
   Dir["#{Rails.root}/app/events/**/*.rb"].each do |model|
     load model
   end
+  Dir["#{Rails.root}/app/observers/**/*.rb"].each do |model|
+    load model
+  end
   #Dir["#{Rails.root}/app/services/**/*.rb"].each do |model|
   #  load model
   #end

@@ -28,11 +28,11 @@ class AdjustmentEvent < Event
   end
 
 
-  def orig_entry_id
-    AccountAdjustedEvent.where(eventable_id: account.id, eventable_type: 'Account').
-        where("properties @> ('entry_id' => ?)", entry_id).
-        first.
-        orig_entry_id
+  def affiliate_entry_id
+    Event.where(eventable_id:   account.id,
+                eventable_type: 'Account',
+                type:           %w(AccountAdjustedEvent AccountAdjustmentEvent)
+    ).where("properties @> ('entry_id' => ?)", entry_id).first.matching_entry_id
   end
 
 end

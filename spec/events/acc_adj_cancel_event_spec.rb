@@ -7,7 +7,7 @@ describe AccAdjCancelEvent do
   let(:acc) { mock_model(Account, id: 1, name: 'Test Acc', organization: org, accountable: org2, events: []) }
   let(:orig_entry) { mock_model(MyAdjEntry, id: 1, save: true) }
   let(:entry) { mock_model(ReceivedAdjEntry, id: 2, save: true) }
-  let(:adj_event) { mock_model(AccountAdjustedEvent, id: 2, save: true, orig_entry_id: orig_entry.id) }
+  let(:adj_event) { mock_model(AccountAdjustedEvent, id: 2, save: true, matching_entry_id: orig_entry.id) }
   let(:event) { AccAdjCancelEvent.new(eventable: acc, entry_id: entry.id) }
 
 

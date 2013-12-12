@@ -1,8 +1,6 @@
-require 'hstore_setup_methods'
-class AccountAdjustmentEvent < Event
-  extend HstoreSetupMethods
+class AccountAdjustmentEvent < AdjustmentEvent
 
-  setup_hstore_attr 'entry_id'
+  setup_hstore_attr 'matching_entry_id'
 
   def init
     self.name         = I18n.t('account_adjustment_event.name')
@@ -16,23 +14,16 @@ class AccountAdjustmentEvent < Event
         AccountAdjustedEvent.new(triggering_event: self)
   end
 
+  def affiliate_entry_id
+    self.matching_entry_id
+  end
+
+
   private
-
-  def affiliate_account
-    Account.for_affiliate(eventable.accountable, eventable.organization).first
-  end
-
-  def affiliate
-    eventable.accountable
-  end
 
   def update_entry_with_event
     entry.event = self
     entry.save!
-  end
-
-  def entry
-    AccountingEntry.find(entry_id)
   end
 
 end
