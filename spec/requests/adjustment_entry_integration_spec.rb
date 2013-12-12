@@ -99,6 +99,7 @@ describe 'Adjustment Entry Integration' do
     it 'initiator account status should be in synch', skip_accept: true do
       expect { subcon_entry.accept! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
     end
+
     it 'recipient account status should be in synch', skip_accept: true do
       expect { subcon_entry.accept! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
     end
@@ -184,6 +185,41 @@ describe 'Adjustment Entry Integration' do
       end
     end
 
+  end
+
+  context 'when more then one entry is created' do
+    let(:second_entry) { create_adj_entry_for_ticket(prov_acc, 100, subcon_job) }
+    let(:matching_second_entry) { AccountingEntry.find second_entry.reload.event.affiliate_entry_id }
+    before do
+      second_entry
+    end
+
+    context 'when accepting first entry' do
+      before do
+        subcon_entry.accept! unless example.metadata[:skip_accept]
+      end
+
+      it 'original initiator account status should remain adjustment submitted in synch', skip_accept: true do
+        expect { subcon_entry.accept! }.to_not change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted)
+      end
+
+      it 'original recipient account status should remain adjustment submitted in synch', skip_accept: true do
+        expect { subcon_entry.accept! }.to_not change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted)
+      end
+
+      context 'when accepting the second entry' do
+        it 'original initiator account status should change to in synch' do
+          expect { matching_second_entry.accept! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
+        end
+
+        it 'original recipient account status should remain adjustment submitted in synch' do
+          expect { matching_second_entry.accept! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
+        end
+
+      end
+
+
+    end
   end
 
   pending 'second adjustment entry for the same ticket with a different amount'

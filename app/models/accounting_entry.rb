@@ -74,7 +74,7 @@ class AccountingEntry < ActiveRecord::Base
   end
 
   def amount_direction
-    raise "The ammount direction is not defined - you need to define amount_direction method for #{self.class}"
+    raise "The amount direction is not defined - you need to define amount_direction method for #{self.class}"
   end
 
   private

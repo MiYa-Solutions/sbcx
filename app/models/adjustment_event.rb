@@ -24,7 +24,7 @@ class AdjustmentEvent < Event
   end
 
   def entry
-    AccountingEntry.find(entry_id)
+    @entry ||= AccountingEntry.find(entry_id)
   end
 
 
