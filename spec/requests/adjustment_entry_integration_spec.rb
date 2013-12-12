@@ -43,7 +43,7 @@ describe 'Adjustment Entry Integration' do
   it 'recipient account balance is changing upon creation', skip_entry: true do
     balance_before = prov_acc.reload.balance
     entry
-    expect(prov_acc.reload.balance).to eq(balance_before + entry.amount)
+    expect(prov_acc.reload.balance).to eq(balance_before - entry.amount)
     # for some reason the below is not working
     #expect { entry }.to change { prov_acc.reload.balance }.by(- entry.amount)
   end
@@ -120,27 +120,25 @@ describe 'Adjustment Entry Integration' do
 
   context 'when rejected by the recipient' do
     before do
-      unless example.metadata[:skip_before]
-        subcon_entry.reject!
-      end
+      subcon_entry.reject! unless example.metadata[:skip_reject]
     end
 
-    it 'the initiator account balance should NOT be updated when rejected', skip_before: true do
+    it 'the initiator account balance should NOT be updated when rejected', skip_reject: true do
       expect { subcon_entry.reject! }.to_not change { subcon_acc.reload.balance }
     end
 
-    it 'the recipient account balance should be updated when rejected', skip_before: true do
-      expect { subcon_entry.reject! }.to change { prov_acc.reload.balance }.by(-entry.amount)
+    it 'the recipient account balance should be updated when rejected', skip_reject: true do
+      expect { subcon_entry.reject! }.to change { prov_acc.reload.balance }.by(entry.amount)
     end
 
     it 'the account balance difference should not be zero' do
       expect(subcon_acc.balance + prov_acc.balance).to_not eq 0
     end
 
-    it 'initiator account status should be in synch', skip_before: true do
+    it 'initiator account status should be out of synch', skip_reject: true do
       expect { subcon_entry.reject! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:out_of_synch)
     end
-    it 'recipient account status should be in synch', skip_before: true do
+    it 'recipient account status should be out of synch', skip_reject: true do
       expect { subcon_entry.reject! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:out_of_synch)
     end
 
@@ -152,19 +150,27 @@ describe 'Adjustment Entry Integration' do
       expect(entry.reload).to be_rejected
     end
 
-    it 'the synch status for the initiator account for affiliate should be set to :out_of_synch' do
-      expect(subcon_acc.reload).to be_out_of_synch
-    end
-
-    it 'the synch status for the recipient account for affiliate should be set to :out_of_synch' do
-      expect(prov_acc.reload).to be_out_of_synch
-    end
-
 
     context 'when canceled by the initiator' do
       before do
-        entry.reload.cancel!
+        entry.reload.cancel! unless example.metadata[:skip_cancel]
       end
+
+      it 'initiator account status should be back in synch', skip_cancel: true do
+        expect { entry.reload.cancel! }.to change { subcon_acc.reload.synch_status_name }.from(:out_of_synch).to(:in_synch)
+      end
+      it 'recipient account status should be back in synch', skip_cancel: true do
+        expect { entry.reload.cancel! }.to change { prov_acc.reload.synch_status_name }.from(:out_of_synch).to(:in_synch)
+      end
+
+      it 'the initiator account balance should be updated when canceled', skip_cancel: true do
+        expect { entry.reload.cancel! }.to change { subcon_acc.reload.balance }.by(-entry.amount)
+      end
+
+      it 'the recipient account balance should NOT be updated when canceled', skip_cancel: true do
+        expect { entry.reload.cancel! }.to_not change { prov_acc.reload.balance }
+      end
+
 
       it 'the subcon entry should be canceled' do
         expect(subcon_entry.reload).to be_canceled

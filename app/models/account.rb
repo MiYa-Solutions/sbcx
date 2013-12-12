@@ -88,7 +88,7 @@ class Account < ActiveRecord::Base
   end
 
   def adjustment_canceled(entry)
-    self.balance = self.balance - entry.amount
+    self.balance = self.balance - entry.amount if entry.instance_of?(MyAdjEntry)
     self.adjustment_accepted
   end
 

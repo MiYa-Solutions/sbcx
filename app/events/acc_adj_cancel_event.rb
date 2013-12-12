@@ -8,6 +8,7 @@ class AccAdjCancelEvent < AdjustmentEvent
 
   def process_event
     affiliate_account.events << AccAdjCanceledEvent.new(entry_id: affiliate_entry_id, triggering_event: self)
+    account.adjustment_canceled(entry)
   end
 
 end

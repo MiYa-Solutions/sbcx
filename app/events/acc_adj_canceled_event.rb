@@ -8,6 +8,7 @@ class AccAdjCanceledEvent < AdjustmentEvent
 
   def process_event
     entry.cancel!
+    account.adjustment_canceled(entry)
   end
 
 end
