@@ -171,6 +171,10 @@ describe 'Adjustment Entry Integration' do
         expect { entry.reload.cancel! }.to_not change { prov_acc.reload.balance }
       end
 
+      it 'the account balance difference should be back to zero' do
+        expect(subcon_acc.reload.balance + prov_acc.reload.balance).to eq 0
+      end
+
 
       it 'the subcon entry should be canceled' do
         expect(subcon_entry.reload).to be_canceled
