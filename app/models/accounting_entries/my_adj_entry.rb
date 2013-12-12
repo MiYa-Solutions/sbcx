@@ -8,7 +8,6 @@ class MyAdjEntry < AdjustmentEntry
   # State machines
   ##
 
-  STATUS_SUBMITTED = 8020
 
   state_machine :status do
     state :submitted, value: STATUS_SUBMITTED

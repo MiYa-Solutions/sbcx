@@ -12,6 +12,7 @@ class AccountAdjustmentEvent < AdjustmentEvent
     update_entry_with_event
     affiliate_account.events <<
         AccountAdjustedEvent.new(triggering_event: self)
+    account.adjustment_submitted
   end
 
   def affiliate_entry_id

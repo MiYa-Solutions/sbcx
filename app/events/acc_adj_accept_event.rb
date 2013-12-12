@@ -8,6 +8,7 @@ class AccAdjAcceptEvent < AdjustmentEvent
 
   def process_event
     affiliate_account.events << AccAdjAcceptedEvent.new(entry_id: affiliate_entry_id, triggering_event: self)
+    account.adjustment_accepted
   end
 
 end

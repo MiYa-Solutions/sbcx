@@ -14,6 +14,7 @@ class AccountAdjustedEvent < AdjustmentEvent
 
     triggering_event.save!
     self.save!
+    account.adjustment_submitted
   end
 
   def affiliate_entry_id

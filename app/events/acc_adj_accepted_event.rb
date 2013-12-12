@@ -8,6 +8,7 @@ class AccAdjAcceptedEvent < AdjustmentEvent
 
   def process_event
     entry.accept!
+    account.adjustment_accepted
   end
 
 end

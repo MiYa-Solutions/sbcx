@@ -53,7 +53,7 @@ class Account < ActiveRecord::Base
     state :adjustment_submitted, value: SYNCH_STATUS_ADJ_SUBMITTED
 
     event :synch do
-      transition any => :synch
+      transition any => :in_synch
     end
 
     event :un_synch do
@@ -69,6 +69,10 @@ class Account < ActiveRecord::Base
   # make state machine event methods private as they should only be invoked from the following methods
   private :synch, :un_synch, :adj_submitted
 
+  def adjustment_submitted
+    self.adj_submitted! unless self.out_of_synch?
+  end
+
   def adjustment_accepted
     if rejected_adj_entries.size > 0
       self.un_synch!
@@ -77,7 +81,6 @@ class Account < ActiveRecord::Base
     else
       self.synch!
     end
-
   end
 
   def adjustment_rejected
@@ -108,17 +111,17 @@ class Account < ActiveRecord::Base
 
 
   def rejected_adj_entries
-    get_adj_entries_by_type(:rejected)
+    adj_entries_by_type(:rejected)
   end
 
   def submitted_adj_entries
-    get_adj_entries_by_type(:submitted, :pending)
+    adj_entries_by_type(:submitted, :pending)
   end
 
   private
 
-  def get_adj_entries_by_type(*type_symbols)
-    self.entries.scoped.with_synch_statuses(type_symbols)
+  def adj_entries_by_type(*type_symbols)
+    AdjustmentEntry.where(account_id: self.id).with_statuses(type_symbols)
   end
 
   def set_initial_synch_status
