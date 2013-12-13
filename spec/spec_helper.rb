@@ -91,6 +91,9 @@ Spork.prefork do
       load "#{Rails.root}/db/seeds.rb"
     end
     ActiveSupport::Dependencies.clear
+
+    config.alias_it_should_behave_like_to :it_should, 'it should:'
+
   end
 end
 
@@ -122,6 +125,7 @@ Spork.each_run do
     load model
   end
 end
+
 # --- Instructions ---
 # Sort the contents of this file into a Spork.prefork and a Spork.each_run
 # block.

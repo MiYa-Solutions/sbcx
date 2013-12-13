@@ -9,6 +9,7 @@ class AccAdjRejectedEvent < AdjustmentEvent
   def process_event
     entry.reject!
     account.adjustment_rejected
+    notify User.my_admins(account.organization.id), AccAdjRejectedNotification, entry
   end
 
 end

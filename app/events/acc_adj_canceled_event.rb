@@ -9,6 +9,7 @@ class AccAdjCanceledEvent < AdjustmentEvent
   def process_event
     entry.cancel!
     account.adjustment_canceled(entry)
+    notify User.my_admins(account.organization.id), AccAdjCanceledNotification, entry
   end
 
 end
