@@ -2,6 +2,7 @@ en:
   activerecord:
     models:
       accounting_entry: "Balance"
+      adjustment_entry: Account Adjustment
     attributes:
       accounting_entry:
         ticket: "Job"

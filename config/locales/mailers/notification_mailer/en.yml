@@ -155,4 +155,24 @@ en:
       title: "Invitation has been accepted"
       content: "Your invitation has been accepted by: "
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
+    acc_adj_canceled:
+      subject: "Balance Adjustment Canceled"
+      title: "CHANGE ME"
+      content: "CHANGE ME"
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
+    acc_adj_accepted:
+      subject: Balance Adjustment Accepted
+      title: "CHANGE ME"
+      content: "CHANGE ME"
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
+    acc_adj_rejected:
+      subject: "Balance Adjustment Rejection"
+      title: "CHANGE ME"
+      content: "CHANGE ME"
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
+    account_adjusted:
+      subject: "Account Balance Adjustment"
+      title: "CHANGE ME"
+      content: "CHANGE ME"
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
 

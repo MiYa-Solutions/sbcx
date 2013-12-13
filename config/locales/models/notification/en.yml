@@ -143,3 +143,23 @@ en:
       html_message: "%{affiliate} has declined your %{link} to join your affiliate network"
       subject: '%{affiliate} has declined your invitation'
       content: '%{affiliate} has declined your invitation.'
+
+    acc_adj_canceled_notification:
+      html_message: "%{affiliate} has canceled the previously submitted %{link}"
+      subject: '%{affiliate} has canceled the account adjustment'
+      content: '%{affiliate} has canceled the account adjustment'
+
+    acc_adj_accepted_notification:
+      html_message: "%{affiliate} has accepted your %{link}"
+      subject: '%{affiliate} has accepted the account adjustment'
+      content: '%{affiliate} has accepted the account adjustment'
+
+    acc_adj_rejected_notification:
+      html_message: "%{affiliate} has rejected your %{link}"
+      subject: '%{affiliate} has rejected the account adjustment'
+      content: '%{affiliate} has rejected the account adjustment'
+
+    account_adjusted_notification:
+      html_message: '%{affiliate} is claiming that the your account balance should be adjusted and therefore submitted the %{link}'
+      subject:  "%{affiliate} has submitted a balance adjustment"
+      content: "%{affiliate} has submitted a balance adjustment"
