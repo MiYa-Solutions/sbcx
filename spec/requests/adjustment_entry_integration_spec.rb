@@ -195,7 +195,7 @@ describe 'Adjustment Entry Integration' do
     expect(subcon_entry).to be_can_reject
   end
 
-  shared_examples 'creates notification' do |klass, org_name|
+  shared_examples 'create notification' do |klass, org_name|
     it "#{klass} should be sent to #{org_name}" do
       expect(subject.notifications).to_not be_empty
       notifications = klass.find_all_by_notifiable_id_and_notifiable_type(subject.id, 'AccountingEntry')
@@ -204,10 +204,13 @@ describe 'Adjustment Entry Integration' do
     end
   end
 
+  RSpec.configure do |c|
+    c.alias_it_should_behave_like_to :it_should, 'it should:'
+  end
 
-  describe 'notification' do
+  describe 'submission notification' do
     subject { subcon_entry }
-    it_should_behave_like 'creates notification', AccountAdjustedNotification, 'subcon'
+    it_should 'create notification', AccountAdjustedNotification, 'subcon'
   end
 
   it_behaves_like 'both accounts submitted and in synch'
@@ -216,6 +219,12 @@ describe 'Adjustment Entry Integration' do
     before do
       subcon_entry.accept unless example.metadata[:skip_accept]
     end
+
+    describe 'acceptance notification' do
+      subject { entry }
+      it_should 'create notification', AccAdjAcceptedNotification, 'org (adjustment initiator)'
+    end
+
 
     it 'initiator account status should be in synch', skip_accept: true do
       expect { subcon_entry.accept! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)

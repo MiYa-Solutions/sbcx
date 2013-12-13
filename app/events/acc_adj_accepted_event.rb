@@ -9,6 +9,7 @@ class AccAdjAcceptedEvent < AdjustmentEvent
   def process_event
     entry.accept!
     account.adjustment_accepted
+    notify User.my_admins(account.organization.id), AccAdjAcceptedNotification, entry
   end
 
 end
