@@ -12,9 +12,7 @@ describe 'Adjustment Entry Integration' do
   let(:subcon_acc) { Account.for(prov, subcon).first }
   let(:prov_acc) { Account.for(subcon, prov).first }
   let(:entry) { create_adj_entry_for_ticket(subcon_acc, 100, job) }
-  let(:my_adj_event) { AccountAdjustmentEvent.find_by_eventable_id_and_eventable_type(entry.account.id, Account) }
-  let(:rec_adj_event) { AccountAdjustedEvent.find_by_triggering_event_id(my_adj_event.id) }
-  let(:subcon_entry) { ReceivedAdjEntry.find_by_event_id(rec_adj_event.id) }
+  let(:subcon_entry) { AccountingEntry.find(entry.reload.event.affiliate_entry_id) }
 
   before do
     job.subcontractor    = subcon.becomes(Subcontractor)
@@ -52,6 +50,104 @@ describe 'Adjustment Entry Integration' do
     it_behaves_like 'both accounts balance is in synch (not status)'
   end
 
+  shared_examples 'when more then one entry is created' do
+    let(:matching_second_entry) { AccountingEntry.find second_entry.reload.event.affiliate_entry_id }
+    before do
+      second_entry.reload
+    end
+
+    it_behaves_like 'both accounts balance is in synch (not status)'
+
+    context 'when accepting first entry' do
+      before do
+        subcon_entry.reload.accept! unless example.metadata[:skip_accept]
+      end
+
+      it 'original initiator account status should remain adjustment submitted in synch', skip_accept: true do
+        expect { subcon_entry.accept! }.to_not change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted)
+      end
+
+      it_behaves_like 'both accounts balance is in synch (not status)'
+
+      it 'original recipient account status should remain adjustment submitted in synch', skip_accept: true do
+        expect { subcon_entry.accept! }.to_not change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted)
+      end
+
+      context 'when accepting the second entry' do
+        it 'original initiator account status should change to in synch' do
+          expect { matching_second_entry.reload.accept! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
+        end
+
+        it 'original recipient account status should remain adjustment submitted in synch' do
+          expect { matching_second_entry.reload.accept! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
+        end
+
+        it_behaves_like 'both accounts balance is in synch (not status)'
+      end
+
+      context 'when rejecting the second entry' do
+        before do
+          matching_second_entry.reject! unless example.metadata[:skip_second_reject]
+        end
+        it 'original initiator account status should change to in synch', skip_second_reject: true do
+          expect { matching_second_entry.reload.reject! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:out_of_synch)
+        end
+
+        it 'original recipient account status should remain adjustment submitted in synch', skip_second_reject: true do
+          expect { matching_second_entry.reload.reject! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:out_of_synch)
+        end
+
+        it_behaves_like 'both accounts balance is NOT in synch (not status)'
+
+        context 'when cancelling the second entry' do
+          before do
+            second_entry.reload.cancel! unless example.metadata[:skip_second_cancel]
+          end
+          it 'original initiator account status should change to in synch', skip_second_cancel: true do
+            expect { second_entry.reload.cancel! }.to change { subcon_acc.reload.synch_status_name }.from(:out_of_synch).to(:in_synch)
+          end
+
+          it 'original recipient account status should remain adjustment submitted in synch', skip_second_cancel: true do
+            expect { second_entry.reload.cancel! }.to change { prov_acc.reload.synch_status_name }.from(:out_of_synch).to(:in_synch)
+          end
+
+          it_behaves_like 'both accounts balance is in synch (not status)'
+
+        end
+      end
+
+
+    end
+    context 'when rejecting first entry' do
+      before do
+        subcon_entry.accept! unless example.metadata[:skip_accept]
+      end
+
+      it 'original initiator account status should remain adjustment submitted in synch', skip_accept: true do
+        expect { subcon_entry.accept! }.to_not change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted)
+      end
+
+      it_behaves_like 'both accounts balance is in synch (not status)'
+
+      it 'original recipient account status should remain adjustment submitted in synch', skip_accept: true do
+        expect { subcon_entry.accept! }.to_not change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted)
+      end
+
+      context 'when accepting the second entry' do
+        it 'original initiator account status should change to in synch' do
+          expect { matching_second_entry.accept! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
+        end
+
+        it 'original recipient account status should remain adjustment submitted in synch' do
+          expect { matching_second_entry.accept! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
+        end
+
+        it_behaves_like 'both accounts balance is in synch (not status)'
+      end
+
+
+    end
+  end
 
   it 'entry created successfully' do
     expect(entry).to_not be_nil
@@ -201,106 +297,16 @@ describe 'Adjustment Entry Integration' do
 
   end
 
-  context 'when more then one entry is created' do
-    let(:second_entry) { create_adj_entry_for_ticket(prov_acc, 100, subcon_job) }
-    let(:matching_second_entry) { AccountingEntry.find second_entry.reload.event.affiliate_entry_id }
-    before do
-      second_entry
-    end
-
-    it_behaves_like 'both accounts balance is in synch (not status)'
-
-    context 'when accepting first entry' do
-      before do
-        subcon_entry.accept! unless example.metadata[:skip_accept]
-      end
-
-      it 'original initiator account status should remain adjustment submitted in synch', skip_accept: true do
-        expect { subcon_entry.accept! }.to_not change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted)
-      end
-
-      it_behaves_like 'both accounts balance is in synch (not status)'
-
-      it 'original recipient account status should remain adjustment submitted in synch', skip_accept: true do
-        expect { subcon_entry.accept! }.to_not change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted)
-      end
-
-      context 'when accepting the second entry' do
-        it 'original initiator account status should change to in synch' do
-          expect { matching_second_entry.accept! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
-        end
-
-        it 'original recipient account status should remain adjustment submitted in synch' do
-          expect { matching_second_entry.accept! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
-        end
-
-        it_behaves_like 'both accounts balance is in synch (not status)'
-      end
-
-      context 'when rejecting the second entry' do
-        before do
-          matching_second_entry.reject! unless example.metadata[:skip_second_reject]
-        end
-        it 'original initiator account status should change to in synch', skip_second_reject: true do
-          expect { matching_second_entry.reject! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:out_of_synch)
-        end
-
-        it 'original recipient account status should remain adjustment submitted in synch', skip_second_reject: true do
-          expect { matching_second_entry.reject! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:out_of_synch)
-        end
-
-        it_behaves_like 'both accounts balance is NOT in synch (not status)'
-
-        context 'when cancelling the second entry' do
-          before do
-            second_entry.reload.cancel! unless example.metadata[:skip_second_cancel]
-          end
-          it 'original initiator account status should change to in synch', skip_second_cancel: true do
-            expect { second_entry.reload.cancel! }.to change { subcon_acc.reload.synch_status_name }.from(:out_of_synch).to(:in_synch)
-          end
-
-          it 'original recipient account status should remain adjustment submitted in synch', skip_second_cancel: true do
-            expect { second_entry.reload.cancel! }.to change { prov_acc.reload.synch_status_name }.from(:out_of_synch).to(:in_synch)
-          end
-
-          it_behaves_like 'both accounts balance is in synch (not status)'
-
-        end
-      end
-
-
-    end
-    context 'when rejecting first entry' do
-      before do
-        subcon_entry.accept! unless example.metadata[:skip_accept]
-      end
-
-      it 'original initiator account status should remain adjustment submitted in synch', skip_accept: true do
-        expect { subcon_entry.accept! }.to_not change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted)
-      end
-
-      it_behaves_like 'both accounts balance is in synch (not status)'
-
-      it 'original recipient account status should remain adjustment submitted in synch', skip_accept: true do
-        expect { subcon_entry.accept! }.to_not change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted)
-      end
-
-      context 'when accepting the second entry' do
-        it 'original initiator account status should change to in synch' do
-          expect { matching_second_entry.accept! }.to change { subcon_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
-        end
-
-        it 'original recipient account status should remain adjustment submitted in synch' do
-          expect { matching_second_entry.accept! }.to change { prov_acc.reload.synch_status_name }.from(:adjustment_submitted).to(:in_synch)
-        end
-
-        it_behaves_like 'both accounts balance is in synch (not status)'
-      end
-
-
+  context 'when the recipient of the first entry creates another entry' do
+    it_behaves_like 'when more then one entry is created' do
+      let(:second_entry) { create_adj_entry_for_ticket(prov_acc, 100, subcon_job) }
     end
   end
 
-  pending 'second adjustment entry for the same ticket with a different amount'
+  context 'when the initiator of the first entry creates another entry' do
+    it_behaves_like 'when more then one entry is created' do
+      let(:second_entry) { create_adj_entry_for_ticket(subcon_acc, 30, job) }
+    end
+  end
 
 end
