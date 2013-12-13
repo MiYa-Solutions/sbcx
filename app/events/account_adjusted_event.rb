@@ -15,6 +15,8 @@ class AccountAdjustedEvent < AdjustmentEvent
     triggering_event.save!
     self.save!
     account.adjustment_submitted
+
+    notify User.my_admins(account.organization.id), AccountAdjustedNotification, entry
   end
 
   def affiliate_entry_id

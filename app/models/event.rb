@@ -79,15 +79,14 @@ class Event < ActiveRecord::Base
     raise "Event base class was invoked instead of one of the sub-classes. Did you forget to implement init for: #{self.class.name} ?"
   end
 
-  def notify(users, notification_class)
-
+  def notify(users, notification_class, notifiable = nil)
+    notifiable ||= eventable
     users.each do |user|
       notification = notification_class.new(user: user)
       unless user == creator #eventable.updater
-        eventable.notifications << notification
+        notifiable.notifications << notification
         notification.deliver
       end
-
     end
 
   end

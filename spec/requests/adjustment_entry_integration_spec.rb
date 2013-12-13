@@ -195,8 +195,19 @@ describe 'Adjustment Entry Integration' do
     expect(subcon_entry).to be_can_reject
   end
 
-  it 'notification should be sent to subcon' do
-    pending
+  shared_examples 'creates notification' do |klass, org_name|
+    it "#{klass} should be sent to #{org_name}" do
+      expect(subject.notifications).to_not be_empty
+      notifications = klass.find_all_by_notifiable_id_and_notifiable_type(subject.id, 'AccountingEntry')
+      expect(notifications).to_not be_empty
+      expect(notifications.map(&:user)).to eq subject.account.organization.users
+    end
+  end
+
+
+  describe 'notification' do
+    subject { subcon_entry }
+    it_should_behave_like 'creates notification', AccountAdjustedNotification, 'subcon'
   end
 
   it_behaves_like 'both accounts submitted and in synch'

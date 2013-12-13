@@ -23,6 +23,8 @@ class AdjustmentEntry < AccountingEntry
   validates_numericality_of :ticket_ref_id
   attr_writer :ticket_ref_id
 
+  has_many :notifications, as: :notifiable
+
   def ticket_ref_id
     @ticket_ref_id || ticket.try(:ref_id)
   end
