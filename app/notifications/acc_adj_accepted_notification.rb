@@ -5,11 +5,11 @@ class AccAdjAcceptedNotification < AdjustmentEntryNotification
   end
 
   def default_subject
-    I18n.t('notifications.acc_adj_accepted_notification.subject', affiliate: affiliate)
+    I18n.t('notifications.acc_adj_accepted_notification.subject', affiliate: affiliate.name)
   end
 
   def default_content
-    I18n.t('notifications.acc_adj_accepted_notification.content', affiliate: affiliate)
+    I18n.t('notifications.acc_adj_accepted_notification.content', affiliate: affiliate.name)
   end
 
 end

@@ -53,9 +53,10 @@ JOB_PROVIDER_STATUS      = 'span#service_call_provider_status'
 JOB_WORK_STATUS          = 'span#service_call_work_status'
 JOB_BILLING_STATUS       = 'span#service_call_billing_status'
 
-ACC_SELECT          = 'account'
-ACC_BTN_GET_ENTRIES = 'get-entries-btn'
-AFF_SPAN_BALANCE    = 'span#balance'
+ACC_SELECT            = 'account'
+ACC_BTN_GET_ENTRIES   = 'get-entries-btn'
+AFF_SPAN_BALANCE      = 'span#balance'
+AFF_SPAN_SYNCH_STATUS = 'span#synch_status'
 
 BOM_SELECT_BUYER = 'bom_buyer_id'
 

@@ -73,6 +73,7 @@ Spork.prefork do
     config.include(Matchers)
     config.include(ServiceCallMatchers)
     config.include(AccountingMatchers)
+    config.include(AccountingEntryMatchers)
     config.include Capybara::DSL
     #config.include Capybara::RSpecMatchers
 

@@ -29,11 +29,25 @@ describe 'Adjustment Entry Acceptance', js: true do
     end
   end
 
+  it 'initiator account synch status is set to Adjustment Submitted' do
+    in_browser(:org) do
+      visit affiliate_path(org2)
+      expect(page).to have_synch_status('Adjustment Submitted')
+    end
+  end
+
+  it 'recipient account synch status is set to Adjustment Submitted' do
+    in_browser(:org2) do
+      visit affiliate_path(org)
+      expect(page).to have_synch_status('Adjustment Submitted')
+    end
+  end
+
   context 'recipient view of the adjustment entry' do
     before do
       in_browser(:org2) do
         visit notifications_path
-        page.find(AE_NOTIFICATION_LINK).click
+        page.find(AE_ADJUSTED_NOTIF_LINK).click
       end
 
     end
@@ -52,7 +66,7 @@ describe 'Adjustment Entry Acceptance', js: true do
     before do
       in_browser(:org2) do
         visit notifications_path
-        page.find(AE_NOTIFICATION_LINK).click
+        page.find(AE_ADJUSTED_NOTIF_LINK).click
         click_button AE_BTN_ACCEPT
       end
     end
@@ -65,6 +79,108 @@ describe 'Adjustment Entry Acceptance', js: true do
       expect(page).to have_entry_status('Accepted')
 
     end
+
+    it 'the initiator gets a notification' do
+
+      in_browser(:org) do
+        visit notifications_path
+        expect(page).to have_content(I18n.t('notifications.acc_adj_accepted_notification.content', affiliate: org2.name))
+      end
+
+    end
+
+    it 'recipient account synch status is set to Adjustment Submitted' do
+      in_browser(:org2) do
+        visit affiliate_path(org)
+        expect(page).to have_synch_status('In Synch')
+      end
+    end
+    it 'initiator account synch status is set to Adjustment Submitted' do
+      in_browser(:org) do
+        visit affiliate_path(org2)
+        expect(page).to have_synch_status('In Synch')
+      end
+    end
+
+  end
+
+  context 'when the recipient rejects the notification' do
+    before do
+      in_browser(:org2) do
+        visit notifications_path
+        page.find(AE_ADJUSTED_NOTIF_LINK).click
+        click_button AE_BTN_REJECT
+      end
+    end
+
+    it 'should show success message' do
+      expect(page).to have_success_message
+    end
+
+    it 'the entry status should be accepted' do
+      expect(page).to have_entry_status('Rejected')
+
+    end
+
+    it 'the initiator gets a notification' do
+
+      in_browser(:org) do
+        visit notifications_path
+        expect(page).to have_content(I18n.t('notifications.acc_adj_rejected_notification.content', affiliate: org2.name))
+      end
+
+    end
+
+    it 'recipient account synch status is set to Adjustment Submitted' do
+      in_browser(:org2) do
+        visit affiliate_path(org)
+        expect(page).to have_synch_status('Out Of Synch')
+      end
+    end
+
+    it 'initiator account synch status is set to Adjustment Submitted' do
+      in_browser(:org) do
+        visit affiliate_path(org2)
+        expect(page).to have_synch_status('Out Of Synch')
+      end
+    end
+
+    it 'the initiator should see a cancel button' do
+      in_browser(:org) do
+        visit notifications_path
+        page.find(AE_REJECTED_NOTIF_LINK).click
+
+        expect(page).to have_button(AE_BTN_CANCEL)
+        expect(page).to_not have_button(AE_BTN_ACCEPT)
+        expect(page).to_not have_button(AE_BTN_REJECT)
+      end
+    end
+
+    context 'when the initiator cancels the adjustment' do
+      before do
+        in_browser(:org) do
+          visit notifications_path
+          page.find(AE_REJECTED_NOTIF_LINK).click
+          click_button AE_BTN_CANCEL
+        end
+      end
+
+      it 'initiator account synch status is set to In Synch' do
+        in_browser(:org) do
+          visit affiliate_path(org2)
+          expect(page).to have_synch_status('In Synch')
+        end
+      end
+
+      it 'recipient account synch status is set to In Synch' do
+        in_browser(:org2) do
+          visit affiliate_path(org)
+          expect(page).to have_synch_status('In Synch')
+        end
+      end
+
+    end
+
   end
 
 

@@ -94,7 +94,19 @@ class AccountingEntriesController < ApplicationController
   # params.require(:person).permit(:name, :age)
   # Also, you can specialize this method with per-user checking of permissible attributes.
   def accounting_entry_params
-    params.require(:accounting_entry).permit(:account_id, :amount, :description, :ticket_ref_id)
+    params.require(:accounting_entry).permit(*determine_params)
+  end
+
+  def determine_params
+    [:account_id, :amount, :description, :ticket_ref_id] + event_param
+  end
+
+  def event_param
+    if @accounting_entry
+      @accounting_entry.allowed_status_events.include?(params[:accounting_entry][:status_event].try(:to_sym)) ? [:status_event] : []
+    else
+      []
+    end
   end
 
 end

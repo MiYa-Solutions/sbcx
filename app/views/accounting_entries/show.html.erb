@@ -8,7 +8,8 @@
 
 <p>
   <b>Status:</b>
-  <%= @accounting_entry.status_name %>
+  <!--This span with status needs to be maintained to accommodate auto testing-->
+  <span id="accounting_entry_status"><%= @accounting_entry.status_name %></span>
 </p>
 
 <p>
