@@ -33,9 +33,18 @@ describe 'Adjustment Entry', js: true do
       before do
         in_browser(:org) do
           create_adj_entry org1_org2_acc, 10, job
-          page.has_selector?('span.alert-success', visible: false)
         end
       end
+
+      it 'should have notification' do
+        in_browser(:org2) do
+          visit notifications_path
+        end
+
+        expect(page).to have_content(I18n.t('notifications.account_adjusted_notification.content', affiliate: org.name))
+
+      end
+
 
       it 'should show a success message' do
         pending 'need to find a good way to test this'

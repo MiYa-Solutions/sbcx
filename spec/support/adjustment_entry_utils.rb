@@ -15,6 +15,7 @@ def create_adj_entry(acc, amount, ticket)
   fill_in AE_INPUT_DESCRIPTION, with: 'test description'
   fill_in AE_INPUT_TICKET, with: ticket.ref_id
   click_button AE_BTN_ADD_ENTRY
+  page.has_selector?('li.add_button span.alert-success')
 end
 
 def create_adj_entry_for_ticket(acc, amount, ticket)

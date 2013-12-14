@@ -25,7 +25,7 @@ Spork.prefork do
   Capybara.javascript_driver = :poltergeist
 
   Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, :debug => false)
+    Capybara::Poltergeist::Driver.new(app, :debug => false) #, :js_errors => false)
   end
 
   Capybara.ignore_hidden_elements = false
