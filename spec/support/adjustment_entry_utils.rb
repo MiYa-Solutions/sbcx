@@ -3,6 +3,10 @@ AE_BTN_ADD_ENTRY     = 'add_entry'
 AE_INPUT_AMOUNT      = 'accounting_entry_amount'
 AE_INPUT_DESCRIPTION = 'accounting_entry_description'
 AE_INPUT_TICKET      = 'accounting_entry_ticket_ref_id'
+AE_BTN_ACCEPT        = 'adjustment_entry_accept_btn'
+AE_BTN_REJECT        = 'adjustment_entry_reject_btn'
+AE_BTN_CANCEL        = 'adjustment_entry_cancel_btn'
+AE_NOTIFICATION_LINK = 'table.table tbody tr.account_adjusted_notification:last-child td:nth-child(2) a'
 
 def create_adj_entry(acc, amount, ticket)
   visit accounting_entries_path

@@ -71,7 +71,12 @@ class AdjustmentEntry < AccountingEntry
   end
 
   def check_ticket_ref_id
-    errors.add :ticket_ref_id, "Invalid ticket reference" if the_ticket.nil?
+    #errors.add :ticket_ref_id, "Invalid ticket reference" if the_ticket.nil?
+    errors.add :ticket_ref_id, "Invalid ticket reference" unless ticket_belongs_to_org?
+  end
+
+  def ticket_belongs_to_org?
+    the_ticket && the_ticket.organization == account.organization
   end
 
 end

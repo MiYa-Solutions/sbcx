@@ -1,8 +1,14 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <b>ID:</b>
+  <!--This span with ID needs to be maintained to accomodate auto testing-->
+  <span id="accounting_entry_id"><%= @accounting_entry.id %></span>
+</p>
+
+<p>
   <b>Status:</b>
-  <%= @accounting_entry.status %>
+  <%= @accounting_entry.status_name %>
 </p>
 
 <p>
@@ -11,8 +17,8 @@
 </p>
 
 <p>
-  <b>Amount cents:</b>
-  <%= @accounting_entry.amount_cents %>
+  <b>Amount</b>
+  <%= @accounting_entry.amount %>
 </p>
 
 <p>
@@ -22,7 +28,7 @@
 
 <p>
   <b>Ticket:</b>
-  <%= @accounting_entry.ticket_id %>
+  <%= @accounting_entry.ticket_ref_id %>
 </p>
 
 <p>
@@ -30,6 +36,4 @@
   <%= @accounting_entry.account_id %>
 </p>
 
-
-<%= link_to 'Edit', edit_accounting_entry_path(@accounting_entry) %> |
-<%= link_to 'Back', accounting_entries_path %>
+<%= adjustment_entry_actions %>

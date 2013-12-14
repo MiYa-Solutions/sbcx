@@ -42,7 +42,7 @@
                           <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>
                           ,<br>
                           <%= I18n.t('notification_mailer.acc_adj_canceled.content').html_safe %>
-                          &nbsp;<strong><%= @entry.organization.name.html_safe %></strong>.
+                          &nbsp;<strong><%= @entry.account.organization.name.html_safe %></strong>.
                           <br>
                         </div>
                       </td>

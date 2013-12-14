@@ -21,6 +21,11 @@ class ReceivedAdjEntry < AdjustmentEntry
 
   end
 
+  def allowed_status_events
+    self.status_events & [:accept, :reject]
+  end
+
+
   private
 
 

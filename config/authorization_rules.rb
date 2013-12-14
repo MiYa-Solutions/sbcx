@@ -75,7 +75,13 @@ authorization do
     has_permission_on :subcontractors, :to => [:new, :create]
     has_permission_on :providers, :to => [:new, :create]
     has_permission_on :affiliates, :to => [:new, :create]
-    has_permission_on :accounting_entries, :to => [:new, :create, :show, :index]
+    has_permission_on :accounting_entries, :to => [:new, :create, :index]
+    has_permission_on :accounting_entries, :to => [:show] do
+      if_attribute :account => { organization_id: is { user.organization_id } }
+    end
+    has_permission_on :accounting_entries, :to => [:update] do
+      if_attribute :type => is_in { %w(MyAdjEntry ReceivedAdjEntry) }, :account => { organization_id: is { user.organization_id } }
+    end
 
 
     has_permission_on :organizations, to: [:show, :edit, :update] do

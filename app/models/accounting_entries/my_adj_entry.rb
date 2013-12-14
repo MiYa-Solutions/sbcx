@@ -24,6 +24,11 @@ class MyAdjEntry < AdjustmentEntry
     end
 
   end
+
+  def allowed_status_events
+    self.status_events & [:cancel]
+  end
+
   private
   def invoke_event
     self.account.events <<

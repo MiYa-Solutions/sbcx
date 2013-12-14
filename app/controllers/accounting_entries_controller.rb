@@ -61,11 +61,9 @@ class AccountingEntriesController < ApplicationController
   # PATCH/PUT /accounting_entries/1
   # PATCH/PUT /accounting_entries/1.json
   def update
-    @accounting_entry = AccountingEntry.find(params[:id])
-
     respond_to do |format|
       if @accounting_entry.update_attributes(accounting_entry_params)
-        format.html { redirect_to @accounting_entry, notice: 'Accounting entry was successfully updated.' }
+        format.html { redirect_to @accounting_entry.becomes(AccountingEntry), :flash => { :success => 'Accounting entry was successfully updated.' } }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

@@ -7,6 +7,11 @@ describe 'Adjustment Entry Integration' do
     expect(entry).to_not be_nil
   end
 
+  it 'entry for a ticket that does not belong to the initiating org should fail validation' do
+    e = MyAdjEntry.new(account: prov_acc, amount: 100, description: "Test", ticket_ref_id: subcon_job.id)
+    expect(e).to_not be_valid
+  end
+
   it 'initiator account balance is changing upon creation', skip_entry: true do
     balance_before = subcon_acc.reload.balance
     entry
