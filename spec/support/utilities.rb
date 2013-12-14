@@ -218,6 +218,21 @@ def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
   agreement
 end
 
+def create_profit_split_agreement(org, affiliate, payment_rules = {})
+  payment_rules[:cash_rate]        ||= 1.0
+  payment_rules[:cheque_rate]      ||= 2.5
+  payment_rules[:credit_rate]      ||= 2.9
+  payment_rules[:amex_rate]        ||= 3.0
+  payment_rules[:cash_rate_type]   ||= :percentage
+  payment_rules[:cheque_rate_type] ||= :percentage
+  payment_rules[:amex_rate_type]   ||= :percentage
+  payment_rules[:credit_rate_type] ||= :percentage
+  payment_rules[:rate]             ||= 50
+
+  setup_profit_split_agreement(org, affiliate, payment_rules[:rate])
+
+end
+
 
 def add_bom(name, cost, price, qty, buyer = nil)
   click_button JOB_BTN_ADD_BOM
