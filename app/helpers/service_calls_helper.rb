@@ -48,21 +48,21 @@ module ServiceCallsHelper
       end
     end
   end
-
-  (TransferredServiceCall.state_machine(:status).events.map(&:name) | MyServiceCall.state_machine(:status).events.map(&:name)).each do |event|
-    define_method("#{event}_form") do |service_call|
-      simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.status.#{event}.form_classes") } do |f|
-        concat (hidden_field_tag "service_call[status_event]", "#{event}")
-        concat (f.submit service_call.class.human_status_event_name(event).titleize,
-                         id:    "#{event}_service_call_btn",
-                         class: StylingService.instance.get_style("service_call.forms.status.#{event}.button_classes"),
-                         title: I18n.t("service_call.forms.status.#{event}.tooltip"),
-                         rel:   'tooltip'
-               )
-      end
-    end
-  end
-
+  #
+  #(TransferredServiceCall.state_machine(:status).events.map(&:name) | MyServiceCall.state_machine(:status).events.map(&:name)).each do |event|
+  #  define_method("#{event}_form") do |service_call|
+  #    simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.status.#{event}.form_classes") } do |f|
+  #      concat (hidden_field_tag "service_call[status_event]", "#{event}")
+  #      concat (f.submit service_call.class.human_status_event_name(event).titleize,
+  #                       id:    "#{event}_service_call_btn",
+  #                       class: StylingService.instance.get_style("service_call.forms.status.#{event}.button_classes"),
+  #                       title: I18n.t("service_call.forms.status.#{event}.tooltip"),
+  #                       rel:   'tooltip'
+  #             )
+  #    end
+  #  end
+  #end
+  #
   (TransferredServiceCall.state_machine(:billing_status).events.map(&:name) | MyServiceCall.state_machine(:billing_status).events.map(&:name)).each do |event|
     define_method("billing_#{event}_form") do |service_call|
       simple_form_for service_call.becomes(ServiceCall), html: { class: style("service_call.forms.billing_status.#{event}.form_classes") } do |f|
@@ -90,15 +90,17 @@ module ServiceCallsHelper
 
   def status_forms(service_call)
     service_call.status_events.collect do |event|
-      concat(content_tag :li, send("#{event}_form".to_sym, service_call))
+      #concat(content_tag :li, send("#{event}_form".to_sym, service_call))
+      concat(render "service_calls/action_forms/status_forms/#{event}_form", job: service_call)
     end
   end
 
   def work_status_forms(service_call)
-    Rails.logger.debug { "ServiceCallsHelper: permitted to see work_status?: #{permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)}" }
+    #Rails.logger.debug { "ServiceCallsHelper: permitted to see work_status?: #{permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)}" }
     concat(content_tag :h3, t('headers.work_actions')) unless service_call.work_status_events.empty?
     service_call.work_status_events.collect do |event|
-      concat(content_tag :li, send("work_#{event}_form".to_sym, service_call))
+      #concat(content_tag :li, send("work_#{event}_form".to_sym, service_call))
+      concat(render "service_calls/action_forms/work_status_forms/#{event}_form", job: service_call)
     end
   end
 
@@ -107,6 +109,7 @@ module ServiceCallsHelper
       concat(content_tag :h3, t('headers.billing_actions')) unless service_call.billing_status_events.empty?
       service_call.billing_status_events.collect do |event|
         concat(content_tag :li, send("billing_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :billing_status_event, event.to_s)
+        #render "service_calls/action_forms/billing_status_forms/#{event}_form"
       end
     end
 
@@ -118,6 +121,7 @@ module ServiceCallsHelper
 
       service_call.subcontractor_status_events.collect do |event|
         concat(content_tag :li, send("subcon_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event, event.to_s)
+        #render "service_calls/action_forms/subcon_status_forms/#{event}_form"
       end
     end
   end
@@ -127,6 +131,7 @@ module ServiceCallsHelper
       concat(content_tag :h3, t('headers.provider_actions')) unless service_call.provider_status_events.empty?
       service_call.provider_status_events.collect do |event|
         concat(content_tag :li, send("provider_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event, event.to_s)
+        #render "service_calls/action_forms/provider_status_forms/#{event}_form"
       end
     end
 

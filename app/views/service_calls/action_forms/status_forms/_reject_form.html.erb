@@ -1,0 +1,10 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { class: style('service_call.forms.work_status.reject.form_classes') } do |f| %>
+    <%= hidden_field_tag 'service_call[status_event]', 'reject' %>
+    <%= f.submit job.class.human_status_event_name(:reject).titleize,
+                 id:    'reject_service_call_btn',
+                 class: style('service_call.forms.status.reject.button_classes'),
+                 title: I18n.t('service_call.forms.status.reject.tooltip'),
+                 rel:   'tooltip'
+    %>
+<% end %>
+
