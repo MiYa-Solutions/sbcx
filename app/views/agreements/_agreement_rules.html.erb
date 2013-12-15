@@ -7,10 +7,10 @@
         <% if @agreement.active? %>
             <%= image_tag("question24.png", :title => I18n.t('general.messages.agr_no_add_rule'), :rel => 'tooltip', "data-placement" => "left") %>
             <a href="#" class="btn btn-primary disabled"><%= t('general.general.add_rule') %></a>
-       <!--<#% elsif @agreement.pending_approval? %>-->
-           <!--<#%= image_tag("question24.png", :title => I18n.t('general.messages.agr_no_add_rule_pending'), :rel => 'tooltip', "data-placement" => "left") %>-->
-           <!--<a href="#" class="btn btn-primary disabled"><#%= t('general.general.add_rule') %></a>-->
-       <% else %>
+            <!--<#% elsif @agreement.pending_approval? %>-->
+            <!--<#%= image_tag("question24.png", :title => I18n.t('general.messages.agr_no_add_rule_pending'), :rel => 'tooltip', "data-placement" => "left") %>-->
+            <!--<a href="#" class="btn btn-primary disabled"><#%= t('general.general.add_rule') %></a>-->
+        <% else %>
             <%= image_tag("question24.png", :title => I18n.t('general.messages.agr_add_rule'), :rel => 'tooltip', "data-placement" => "left") %>
             <%= link_to I18n.t('general.general.add_rule'), '#', :class => 'btn btn-small btn-primary', id: 'new-rule-button', data: { toggle: "collapse", target: "#posting_rules" } unless @agreement.posting_rules.size >0 %>
         <% end %>
