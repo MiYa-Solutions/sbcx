@@ -149,9 +149,18 @@ authorization do
       if_attribute :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :organization_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
       if_attribute :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :counterparty_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids }
 
+      # when the status is pending_org_approval or rejected_by_cpartyonly an org user can update
+      if_attribute :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is_in { [OrganizationAgreement::STATUS_PENDING_ORG_APPROVAL, OrganizationAgreement::STATUS_REJECTED_BY_CPARTY] }, :organization_id => is { user.organization.id }
+
+      # when the status is pending_cparty_approval or rejected_by_org an org user can update
+      if_attribute :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is_in { [OrganizationAgreement::STATUS_PENDING_CPARTY_APPROVAL, OrganizationAgreement::STATUS_REJECTED_BY_ORG] }, :counterparty_id => is { user.organization.id }
+
+
+      # cancel and replaced should not change
+
       # when the status is not active nor draft allow only the party that needs to respond to the other's update
-      if_attribute :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :counterparty_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
-      if_attribute :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :organization_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
+      #if_attribute :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :counterparty_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
+      #if_attribute :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :organization_id => is { user.organization_id }, :status => is_not_in { [OrganizationAgreement::STATUS_ACTIVE, OrganizationAgreement::STATUS_DRAFT] }, :updater => { :organization_id => is_not { user.organization.id } }
 
       # when customer agreement ensure the user org is the organization of the agreement
       if_attribute :type => is { 'CustomerAgreement' }, organization_id: is { user.organization_id }

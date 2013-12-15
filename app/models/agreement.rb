@@ -34,6 +34,7 @@ class Agreement < ActiveRecord::Base
   accepts_nested_attributes_for :payments
 
   stampable
+  has_paper_trail if: ->(agr) { agr.status_changed? }
 
   validates_presence_of :organization, :counterparty, :creator, :name
 
