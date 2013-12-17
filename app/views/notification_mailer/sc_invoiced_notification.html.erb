@@ -7,6 +7,7 @@
 </head>
 
 <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+<!--<#%= link_to "#{ServiceCall.name.humanize} #{@service_call.ref_id}", @service_call.becomes(ServiceCall) %>-->
 
 <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
   <tr>
@@ -18,7 +19,9 @@
             <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
               <tr>
                 <td class="headerContent">
+                  <!-- // Begin Module: Standard Header Image \\ -->
                   <img src="http://www.subcontrax.com/assets/LogoImg.png" style="max-width:600px;" id="headerImage campaign-icon"/>
+                  <!-- // End Module: Standard Header Image \\ -->
 
                 </td>
               </tr>
@@ -33,7 +36,7 @@
               <tr>
                 <td valign="top">
 
-                  <!-- // Begin Module: Standard Content \\ --  >
+                  <!-- // Begin Module: Standard Content \\ -->
                   <table border="0" cellpadding="20" cellspacing="0" width="100%">
                     <tr>
                       <td valign="top" class="bodyContent">
@@ -87,18 +90,19 @@
                           </tr>
                           <tr>
                             <td valign="top" class="dataTableContent">
-                              <%= @service_call.class.human_attribute_name(:completed_on_text) %>:
+                              <%= @service_call.class.human_attribute_name(:scheduled_for) %>:
                             </td>
                             <td valign="top" class="dataTableContent">
-                              <strong><%= @service_call.completed_on_text %></strong>
+                              <strong><%= I18n.l @service_call.scheduled_for, format: :default %></strong>
+
                             </td>
                           </tr>
                           <tr>
                             <td valign="top" class="dataTableContent">
-                              <%= @service_call.class.human_attribute_name(:scheduled_for) %>:
+                              <%= @service_call.class.human_attribute_name(:completed_on) %>:
                             </td>
                             <td valign="top" class="dataTableContent">
-                              <strong><%= @service_call.scheduled_for %></strong>
+                              <strong><%= I18n.l @service_call.completed_on, format: :default %></strong>
                             </td>
                           </tr>
                           <tr>
@@ -115,7 +119,7 @@
                     <tr>
                       <td valign="top" class="bodyContent">
                         <div>
-                          <%= I18n.t('notification_mailer.completed_service_call.bottom_content').html_safe %>
+                          <%= I18n.t('notification_mailer.sc_accepted_notification.bottom_content').html_safe %>
                         </div>
                       </td>
                     </tr>
@@ -145,7 +149,7 @@
           <%= render 'footer' %>
         </tr>
       </table>
-      <br/>
+      <br>
     </td>
   </tr>
 </table>

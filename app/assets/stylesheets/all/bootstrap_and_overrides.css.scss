@@ -709,6 +709,77 @@ input, textarea {
 
   }
 
+  li:nth-child(3) {
+    float: right;
+  }
+
+  .adjustment_submitted {
+    span {
+    //background-color: #737373;
+    //background-image: -moz-linear-gradient(center top , #888888, #555555);
+    //background-repeat: repeat-x;
+    //line-height: 20px;
+    //margin-top: 3px;
+    //padding-bottom: 4px;
+    //padding-left: 4px;
+    //padding-right: 4px;
+      -moz-border-bottom-colors: none;
+      -moz-border-left-colors: none;
+      -moz-border-right-colors: none;
+      -moz-border-top-colors: none;
+      background-color: #F5F5F5;
+      background-image: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6);
+      background-repeat: repeat-x;
+      border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+      border-image: none;
+      border-radius: 4px;
+      border-style: solid;
+      border-width: 1px;
+      color: #333333;
+      cursor: pointer;
+      font-family: Arial;
+      font-size: 13px;
+      padding: 6px;
+      text-align: center;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+      vertical-align: middle;
+    }
+  }
+
+  .out_of_synch {
+    span {
+    //background-color: #DA4E49;
+    //background-image: -moz-linear-gradient(center top , #EE5F5B, #BD362F);
+    //background-repeat: repeat-x;
+    //border-color: #BD362F #BD362F #802420;
+    //line-height: 20px;
+    //margin-top: 3px;
+    //padding-bottom: 4px;
+    //padding-left: 4px;
+    //padding-right: 4px;
+
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DA4E49;
+    background-image: -moz-linear-gradient(center top , #EE5F5B, #BD362F);
+    background-repeat: repeat-x;
+    border-color: #BD362F #BD362F #802420;
+    border-image: none;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: Arial;
+    font-size: 13px;
+    padding: 6px;
+    text-align: center;
+    text-shadow: none;
+    vertical-align: middle;
+    }
+  }
 
 }
 
@@ -1435,7 +1506,7 @@ a:hover {
   background-color: #EEEEEE;
   padding-bottom: 8px;
   padding-left: 15%;
-  padding-top: 8px;
+  padding-top: 12px;
 
   h3 {
     background-color: #999999;
@@ -1698,7 +1769,9 @@ a:hover {
 }
 
 .affiliate_balance {
-  min-height: 334px;
+  //min-height: 334px;
+  height: 334px;
+  overflow: auto;
 }
 
 .agreement_rules {
@@ -3714,6 +3787,67 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   font-family: inherit;
 }
 
+#adjustment_entry_accept_btn {
+  background-color: #5CB85C;
+  border-color: #4CAE4C;
+  color: #FFFFFF;
+  -moz-user-select: none;
+  background-image: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-family: inherit;
+  float: left;
+  margin-right: 8px;
+}
+
+#adjustment_entry_reject_btn {
+  background-color: #D9534F;
+  border-color: #D43F3A;
+  color: #FFFFFF;
+  -moz-user-select: none;
+  background-image: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-family: inherit;
+  float: left;
+}
+
+#adjustment_entry_cancel_btn {
+  background-color: #D9534F;
+  border-color: #D43F3A;
+  color: #FFFFFF;
+  -moz-user-select: none;
+  background-image: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-family: inherit;
+  float: left;
+}
+
 .invite_events {
 
   ul {
@@ -3730,6 +3864,17 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   li:last-child {
     float: inherit;
   }
+}
+
+#accounting_entry_status {
+  color: #FFFFFF;
+  font-family: Century Gothic;
+  font-size: 18px;
+  font-weight: normal;
+  letter-spacing: 0.01em;
+  line-height: 28px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  text-transform: capitalize;
 }
 
 

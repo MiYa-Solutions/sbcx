@@ -35,6 +35,10 @@ en:
       customer_billing: "Customer Billing"
       subcon_fee: "Subcontractor Fee"
       provider_fee: "Provider Fee"
+      account_balance_status: "Account Balance Status: "
+      account_adjusted_status: "Account Adjusted Status: "
+      amount: "Amount"
+      account_id: "Account Number"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"

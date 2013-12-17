@@ -81,7 +81,7 @@ en:
     sc_provider_invoiced_notification:
       html_message: 'You should no longer handle the %{link} payment collection, as the %{provider} has invoiced the customer.'
       subject: 'The Contractor invoiced job %{ref}'
-      content: '%{provider} has invoiced the customer, therefore you are no longer expeceted to handle the payment collection.'
+      content: '%{provider} has invoiced the customer, therefore you are no longer expected to handle the payment collection.'
     sc_subcon_deposited_notification:
       html_message: '%{subcontractor}, claims he deposited the payment for %{link}. Please confirm by clicking the button'
       subject: 'Payment Deposited For %{ref}'

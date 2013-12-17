@@ -1,40 +1,71 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, I18n.t('notification_mailer.account_adjusted.title').html_safe) %>
 
-<p>
-  <b>ID:</b>
-  <!--This span with ID needs to be maintained to accomodate auto testing-->
-  <span id="accounting_entry_id"><%= @accounting_entry.id %></span>
-</p>
+<div class="well well_height">
+  <div class="row-fluid">
 
-<p>
-  <b>Status:</b>
-  <!--This span with status needs to be maintained to accommodate auto testing-->
-  <span id="accounting_entry_status"><%= @accounting_entry.status_name %></span>
-</p>
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= t('general.general.account_adjusted_status') %></h1></li>
+        <li><h1><span id="accounting_entry_status"><%= @accounting_entry.status_name %></span></h1></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
 
-<p>
-  <b>Event:</b>
-  <%= @accounting_entry.event_id %>
-</p>
+  <br>
 
-<p>
-  <b>Amount</b>
-  <%= @accounting_entry.amount %>
-</p>
+  <div class="row-fluid">
+    <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Amount currency:</b>
-  <%= @accounting_entry.amount_currency %>
-</p>
+    <div class="span6">
+      <table class="table table-striped table-condensed">
+        <tr>
+          <td>
+            <strong><%= t('general.general.amount') %></strong>
+          </td>
+          <td>
+            <%= @accounting_entry.amount %>&nbsp<%= @accounting_entry.amount_currency %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><%= t('general.general.job_number') %></strong>
+          </td>
+          <td>
+            <%= @accounting_entry.ticket_ref_id %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><%= t('general.general.account_id') %></strong>
+          </td>
+          <td>
+            <%= @accounting_entry.account_id %>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong><%= t('general.general.status') %></strong>
+          </td>
+          <td>
+            <%= @accounting_entry.human_status_name.titleize %>
+          </td>
+        </tr>
+      </table>
 
-<p>
-  <b>Ticket:</b>
-  <%= @accounting_entry.ticket_ref_id %>
-</p>
+      <%= adjustment_entry_actions %>
 
-<p>
-  <b>Account:</b>
-  <%= @accounting_entry.account_id %>
-</p>
 
-<%= adjustment_entry_actions %>
+      <br>
+      <br>
+
+      <div class="form-actions">
+        <%= link_to I18n.t('general.general.back'), user_root_path, :class => 'btn btn-medium', id: 'back_notification_btn' %>
+      </div>
+      <!--End of span-->
+    </div>
+
+  </div>
+
+
+</div>
