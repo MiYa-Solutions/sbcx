@@ -23,24 +23,26 @@
           <td>
             <strong><%= t('general.general.amount') %></strong>
           </td>
+          <% if @accounting_entry.amount < 0 %>
+              <td class="negative"><%= humanized_money_with_symbol @accounting_entry.amount %></td>
+          <% else %>
+              <td class="positive"><%= humanized_money_with_symbol @accounting_entry.amount %></td>
+          <% end %>
+         </tr>
+        <tr>
           <td>
-            <%= @accounting_entry.amount %>&nbsp<%= @accounting_entry.amount_currency %>
+            <strong><%= t('general.general.job_name') %></strong>
+          </td>
+          <td>
+            <%= link_to @accounting_entry.ticket.try(:name), service_call_path(@accounting_entry) %>
           </td>
         </tr>
         <tr>
           <td>
-            <strong><%= t('general.general.job_number') %></strong>
+            <strong><%= t('general.general.description') %></strong>
           </td>
           <td>
-            <%= @accounting_entry.ticket_ref_id %>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong><%= t('general.general.account_id') %></strong>
-          </td>
-          <td>
-            <%= @accounting_entry.account_id %>
+            <%= @accounting_entry.description %>
           </td>
         </tr>
         <tr>
@@ -53,7 +55,7 @@
         </tr>
       </table>
 
-      <%= adjustment_entry_actions %>
+      <%= adjustment_entry_actions(@accounting_entry, "entry_large_btn")%>
 
 
       <br>
@@ -64,6 +66,24 @@
       </div>
       <!--End of span-->
     </div>
+    <!--End of row-->
+  </div>
+
+
+  <div class="row-fluid ">
+    <div class="span6">
+      <div class="pending_adj_entry">
+        <h4>All Adjustments Pending my Approval</h4>
+        <%= render 'adj_entry_table', entries: @accounting_entry.account.adj_entries %>
+      </div>
+    </div>
+    <div class="span6">
+      <div class="pending_adj_entry">
+        <h4>All Adjustments that have been declined</h4>
+        <%= render 'adj_entry_table', entries: @accounting_entry.account.adj_entries %>
+      </div>
+    </div>
+
 
   </div>
 

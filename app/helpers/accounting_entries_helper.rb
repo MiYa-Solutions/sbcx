@@ -17,12 +17,14 @@ module AccountingEntriesHelper
     options
   end
 
-  def adjustment_entry_actions
-    content_tag_for :ul, @accounting_entry, class: 'adj_entry_events unstyled' do
-      @accounting_entry.allowed_status_events.each do |event|
-        concat(content_tag :li, render("accounting_entries/action_forms/#{event}_form", entry: @accounting_entry))
+  def adjustment_entry_actions(entry, klass = '')
+    content_tag_for :ul, entry, class: "adj_entry_events unstyled" do
+      entry.allowed_status_events.each do |event|
+        concat(content_tag :li, render("accounting_entries/action_forms/#{event}_form", entry: entry, css_class: klass))
       end
     end
 
   end
+
+
 end

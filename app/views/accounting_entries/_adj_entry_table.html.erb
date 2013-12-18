@@ -1,0 +1,37 @@
+<table class="table table-striped">
+        <thead>
+        <th><%= t('general.general.amount') %></th>
+        <th><%= t('general.general.job_name') %></th>
+        <th><%= t('general.general.status') %></th>
+        <th><%= t('general.general.actions') %></th>
+        </thead>
+        <tbody>
+        <% entries.each do |entry| %>
+            <tr>
+              <% if entry.amount < 0 %>
+                  <td class="negative"><%= humanized_money_with_symbol entry.amount %></td>
+              <% else %>
+                  <td class="positive"><%= humanized_money_with_symbol entry.amount %></td>
+              <% end %>
+
+              <td>
+                <%= link_to entry.ticket.try(:name), entry.ticket.becomes(entry.ticket.class.superclass) %>
+              </td>
+              <!--<td>-->
+                <!--<#%= entry.description %>-->
+              <!--</td>-->
+              <td class="status_adj_entry">
+                <%= image_tag("question16.png", :title => (t('general.general.description') + ":\n" + entry.description), :rel => 'tooltip') %>
+                <%= entry.human_status_name.titleize %>
+              </td>
+              <td class="actions_adj_entry">
+                <%= adjustment_entry_actions(entry, "entry_small_btn") %>
+              </td>
+
+
+
+            </tr>
+
+        <%end %>
+        </tbody>
+      </table>

@@ -5,8 +5,13 @@
     <li><h1><%= Affiliate.model_name %>:</h1></li>
     <li><h2><%= @affiliate.name %></h2></li>
     <!--<li><h2 class="<#%= @account.synch_status_name %>"><span id="synch_status"><#%= @account.human_synch_status_name.titleize %></span></h2></li>-->
-    <li><h2 class="<%= @account.synch_status_name %>"><span id="synch_status" data-toggle="modal" data-target="#invite_modal"><%= @account.human_synch_status_name.titleize %></span></h2></li>
-    <li><h2> <%= t('general.general.account_balance_status') %></h2></li>
+    <% if @account.balance < 0 %>
+        <li class="red-balance"><h1><%= I18n.t('general.general.total_balance').html_safe + "&nbsp;".html_safe %>
+          <span id="balance"><%= humanized_money_with_symbol @account.balance %></span></h1></li>
+    <% else %>
+        <li class="green-balance"><h1><%= I18n.t('general.general.total_balance').html_safe + "&nbsp;".html_safe %>
+          <span id="balance"><%= humanized_money_with_symbol @account.balance %></span></h1></li>
+    <% end %>
   </ul>
 </div>
 
@@ -48,7 +53,10 @@
 
             <div class="span6">
 
+              <% if @affiliate.member? %>
+
               <%= render :partial => 'affiliate_balance' if @account.present? %>
+              <% end %>
               <!-- <#% unless @affiliate.service_calls.empty? %>-->
               <%= render :partial => 'affiliate_jobs' %>
               <!-- <#% end  %> -->

@@ -21,7 +21,7 @@ en:
       send_inst: "Send me Instructions"
       advanced_settings: "Advanced Settings"
       see_example: "See Example"
-      total_balance: "Total Balance"
+      total_balance: "Total Account Balance"
       provider_balance: "Contractor Balance"
       subcontractor_balance: "Subcontractor Balance"
       billing_summary: "Billing Summary"
@@ -35,10 +35,11 @@ en:
       customer_billing: "Customer Billing"
       subcon_fee: "Subcontractor Fee"
       provider_fee: "Provider Fee"
-      account_balance_status: "Account Balance Status: "
+      account_balance_status: "Balance Status "
       account_adjusted_status: "Account Adjusted Status: "
       amount: "Amount"
       account_id: "Account Number"
+      pending_jobs: "Jobs in Progress"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"
@@ -47,6 +48,8 @@ en:
       profit_split_m1: "Enter a number from 1-100 that represents the subcontractor share of the profit in percentage."
       profit_split_m2: "Use the following options to enter fees that should be taking into consideration when calculating the profit of each party."
       profit_split_m3: "For example: In case you collect the customer payment by yourself and your credit card fee is <strong>2%</strong>, you would want to exclude that fee from the profit share.                 You should therefore; enter <strong>'2'</strong> in the <strong>'Credit rate'</strong> field and select <strong>'Percentage'</strong> from the dropdown menu."
+      add_agreement: "You can set Terms and Conditions for your working agreement with your affiliate.\n Click on the “Add Agreement” button to add a new working agreement."
+      adj_tooltip: "Click on the status button to get information and guidelines for the different statuses"
     message:
       contact_us: "Please fill out the form below and we will contact you shortly."
       forgot_pass: "Forgot your password?"

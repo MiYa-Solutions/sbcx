@@ -66,6 +66,10 @@ class Account < ActiveRecord::Base
 
   end
 
+  def adj_entries
+    AdjustmentEntry.find_all_by_account_id(self.id)
+  end
+
   # make state machine event methods private as they should only be invoked from the following methods
   private :synch, :un_synch, :adj_submitted
 

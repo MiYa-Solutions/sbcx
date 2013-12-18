@@ -1,35 +1,145 @@
 <div class="affiliate_balance">
   <!--Need to maintain the span with id="synch_status" to not break the tests-->
   <!--<#%= Account.human_attribute_name(:synch_status) %>-->
-  <!--<span id="synch_status"><%= @account.human_synch_status_name.titleize %></span>-->
+  <!--<span id="synch_status"><#%= @account.human_synch_status_name.titleize %></span>-->
 
-  <div class="smart_label">
+  <div class="smart_label smart_label_adj">
     <ul>
-      <li><h1><%= I18n.t('general.general.balance') %></h1></li>
-      <li></li>
-      <% if @account.balance < 0 %>
-          <li class="red-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %>
-            <span id="balance"><%= humanized_money_with_symbol @account.balance %></span></h1></li>
-      <% else %>
-          <li class="green-balance"><h1><%= I18n.t('general.general.total').html_safe + "&nbsp;".html_safe %>
-            <span id="balance"><%= humanized_money_with_symbol @account.balance %></span></h1></li>
-      <% end %>
+      <li><h1> <%= t('general.general.account_balance_status') %></h1></li>
+      <li>
+        <%= image_tag("question24.png", :title => I18n.t('general.messages.adj_tooltip'), :rel => 'tooltip', "data-placement" => "left", id: "adj_entry_img") %>
+      </li>
+      <li>
+        <h3 class="<%= @account.synch_status_name %>"><span id="synch_status" data-toggle="modal" data-target="#adj_entry_modal"><%= @account.human_synch_status_name.titleize %></span></h3>
+      </li>
+
     </ul>
   </div>
 
   <div id="accounting_entries">
-    <%= render 'accounting_entries/accounting_entries_table', account: @account %>
+    <%= render 'accounting_entries/adj_entry_table', entries: @account.adj_entries if @account.adj_entries.size > 0  %>
+    <!--<#%= render 'accounting_entries/accounting_entries_table', account: @account %>-->
   </div>
 
-  <div class="form-actions">
-    <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#balanceDetails">
-      <%= I18n.t('general.general.more_details') %>
-    </button>
+  <!--<div class="form-actions">-->
+    <!--<button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#balanceDetails">-->
+      <!--<#%= I18n.t('general.general.more_details') %>-->
+    <!--</button>-->
+  <!--</div>-->
+
+</div>
+
+
+
+<div id="adj_entry_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <% if @account.out_of_synch? %>
+        <h3><%= t('general.general.account_balance_status') + " " %><span class="negative"><%= @account.human_synch_status_name.titleize %></span></h3>
+    <% else %>
+        <% if @account.adjustment_submitted? %>
+           <h3><%= t('general.general.account_balance_status') + " " %><%= @account.human_synch_status_name.titleize %></h3>
+        <% else %>
+        <h3><%= t('general.general.account_balance_status') + " " %><span class="positive"><%= @account.human_synch_status_name.titleize %></span></h3>
+        <% end %>
+    <% end %>
+
+  </div>
+
+  <div class="modal-body">
+
+    <% if @account.out_of_synch? %>
+    <span class="negative_small">The account balance status is out of sync.</span> (for more information read the "Out of Sync" section below).<br>
+    Please cancel all adjustments entries that have been rejected by <strong> <%= @affiliate.name %> </strong>  by clicking the cancel button in every line of the "Pending your Action" table.
+    <% else %>
+        <% if @account.adjustment_submitted? %>
+            The account balance status is pending (for more information read the "Adjustment Pending" section below).<br>
+            Please Accept or Reject all pending adjustments by clicking the relevant button in every table entry in the "Balance Status" section.
+        <% else %>
+            <span class="positive_small">Great News! The account balance status is In Sync.</span> No action is needed. (for more information read the "In Sync" section below).
+        <% end %>
+    <% end %>
+    <hr>
+
+    <div class="rou-fluid statuses_adj_modal">
+      <h4>Status: In Sync</h4>
+      <table class="table">
+        <tr>
+          <td><strong><%= t('general.general.description') %></strong></td>
+          <td>This is the default status, indicating that there are no pending or rejected adjustment entries.</td>
+        </tr>
+        <tr>
+          <td><strong><%= t('general.general.actions') %></strong></td>
+          <td><strong>None.</strong></td>
+        </tr>
+      </table>
+   </div>
+    <br>
+    <div class="rou-fluid statuses_adj_modal">
+      <h4>Status: Adjustment Pending</h4>
+      <table class="table">
+        <tr>
+          <td><strong><%= t('general.general.description') %></strong></td>
+          <td>
+            The account balance status is pending due to any of the following reasons:<br>
+            <ol>
+              <li>One or more billing entries have been submitted to your account by <%= @affiliate.name %></li>
+              <li>You have submitted one or more billing entries to <%= @affiliate.name %>.</li>
+            </ol>
+            The account status will return to "In Sync" upon approval of all pending adjustments
+          </td>
+        </tr>
+        <tr>
+          <td><strong><%= t('general.general.actions') %></strong></td>
+          <td>
+            <ul>
+              <li>Adjustment entries submitted by you: <strong>None.</strong> (<%= @affiliate.name %> has to accept or reject all pending adjustments).</li>
+              <li>Adjustment entries submitted by <%= @affiliate.name %>: <strong>Accept or Reject all pending adjustments.</strong></li>
+            </ul>
+        </tr>
+      </table>
+    </div>
+    <br>
+
+    <div class="rou-fluid statuses_adj_modal">
+      <h4>Status: Out of Sync</h4>
+      <table class="table">
+        <tr>
+          <td><strong><%= t('general.general.description') %></strong></td>
+          <td>
+            At least one of the submitted adjustment entries has been rejected either by you or by  <%= @affiliate.name %>. As a result the two accounts are now out of sync.<br>
+            The account balance status will return to "In Sync" upon cancellation of all rejected adjustments.
+          </td>
+        </tr>
+        <tr>
+          <td><strong><%= t('general.general.actions') %></strong></td>
+          <td>
+            <ul>
+              <li>Adjustment entries rejected by you: <strong>Cancel all adjustments.</strong> (you may submit new adjustment entries to replace the ones you have rejected).</li>
+              <li>Adjustment entries submitted by <%= @affiliate.name %>: <strong>None.</strong>(all adjustments have to be canceled by <%= @affiliate.name %>).</li>
+            </ul>
+        </tr>
+      </table>
+    </div>
+    <!--end of modal-body-->
+  </div>
+
+  <div class="modal-footer">
+     <button class="btn" data-dismiss="modal" aria-hidden="true"><%= I18n.t('general.general.close') %></button>
   </div>
 
 </div>
 
-<div id="balanceDetails" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+
+
+
+
+
+
+  <div id="balanceDetails" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel"><%= I18n.t('general.general.balance') %></h3>

@@ -1,4 +1,4 @@
 <%= simple_form_for entry.becomes(AccountingEntry), html: { class: 'adj_entry_accept_form' } do |f| %>
     <%= f.hidden_field :status_event, value: 'accept' %>
-    <%= f.submit entry.class.human_status_event_name(:accept).titleize, id: 'adjustment_entry_accept_btn' %>
+    <%= f.submit entry.class.human_status_event_name(:accept).titleize, id: 'adjustment_entry_accept_btn', class: css_class %>
 <% end %>

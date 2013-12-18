@@ -16,6 +16,14 @@ en:
         status:
           states:
             cleared: Cleared
+      my_adj_entry:
+        status:
+          states:
+            rejected: LiLi
+      recieved_adj_entry:
+        status:
+          states:
+            rejected: LuLu
   payment_reimbursement:
     cash:
       description: 'Reimbursement for cash payment clearing for %{ticket}'

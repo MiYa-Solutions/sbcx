@@ -72,15 +72,14 @@
   <div class="form-actions">
     <% if @affiliate.subcontrax_member==true %>
         <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
-        <% if  @affiliate.id.in? affiliate_ids %>
-            <%= link_to 'Archive', affiliate_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
-        <% end %>
+        <!--<#% if  @affiliate.id.in? affiliate_ids %>-->
+            <!--<#%= link_to 'Archive', affiliate_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>-->
+        <!--<#% end %>-->
 
     <% else %>
         <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
         <%= link_to 'Edit', edit_affiliate_path(@affiliate), :class => 'btn btn-medium btn-primary' %>
-        <%= link_to 'Archive', '#', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>
-        <!--<#%= link_to 'Archive', affiliates_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>-->
+        <!--<#%= link_to 'Archive', '#', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>-->
 
   <% end %>
   </div>
