@@ -58,6 +58,14 @@ describe OrganizationAgreement do
 
     end
 
+    context 'ensure AgrSubmittedEvent is created' do
+      let(:new_agr_event) { AgrNewSubconEvent.find_by_eventable_id_and_eventable_type(agreement_by_org.id, 'Agreement') }
+
+      it 'expect the event to exist' do
+        expect(new_agr_event).to_not be_nil
+      end
+    end
+
 
     describe "after submission validation" do
       before do
@@ -68,6 +76,14 @@ describe OrganizationAgreement do
           agreement_by_org.submit_for_approval
         end
 
+      end
+
+      context 'ensure AgrSubmittedEvent is created' do
+        let(:submission_event) { AgrSubmittedEvent.find_by_eventable_id_and_eventable_type(agreement_by_org.id, 'Agreement') }
+
+        it 'expect the event to exist' do
+          expect(submission_event).to_not be_nil
+        end
       end
 
       it "status should be pending cparty approval" do
@@ -246,6 +262,37 @@ describe OrganizationAgreement do
         rule.rate = 34
         rule.should_not be_valid
         rule.errors[:agreement].should_not be_nil
+      end
+    end
+
+    context 'when negotiating', :versioning => true do
+
+      before do
+        with_user org_user do
+          agreement_by_org.name          = 'Original Name'
+          agreement_by_org.change_reason = 'Reason for creation'
+          agreement_by_org.submit_for_approval
+        end
+
+        with_user cparty_user do
+          agreement_by_org.name          = 'Changed Name'
+          agreement_by_org.change_reason = 'Reason for changed name'
+          agreement_by_org.submit_change
+          Rails.logger.debug { "Stam for breakpoint" }
+        end
+      end
+
+      context 'when the counterparty submits a change ' do
+        let(:change_event) { AgrChangeSubmittedEvent.find_by_eventable_id_and_eventable_type(agreement_by_org.id, 'Agreement') }
+
+        it 'the agreement should have a AgrChangeSubmittedEvent' do
+          expect(change_event).to_not be_nil
+        end
+
+
+        it 'the AgrChangeSubmittedEvent description should show the difference between both versions' do
+          expect(change_event.reload.description).to include('agr_diff_table')
+        end
       end
     end
   end

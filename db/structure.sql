@@ -362,7 +362,7 @@ CREATE TABLE events (
   id                  INTEGER                     NOT NULL,
   name                CHARACTER VARYING(255),
   type                CHARACTER VARYING(255),
-  description         CHARACTER VARYING(255),
+  description         TEXT,
   eventable_type      CHARACTER VARYING(255),
   eventable_id        INTEGER,
   created_at          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -1641,3 +1641,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131212150135');
 INSERT INTO schema_migrations (version) VALUES ('20131215030926');
 
 INSERT INTO schema_migrations (version) VALUES ('20131215150115');
+
+INSERT INTO schema_migrations (version) VALUES ('20131222211257');

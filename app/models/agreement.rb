@@ -24,7 +24,7 @@ class Agreement < ActiveRecord::Base
 
   belongs_to :organization
   belongs_to :counterparty, polymorphic: true
-  has_many :events, as: :eventable
+  has_many :events, as: :eventable, :order => 'id DESC'
   has_many :notifications, as: :notifiable
   has_many :posting_rules
   alias_method :rules, :posting_rules
