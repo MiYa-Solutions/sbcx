@@ -28,10 +28,6 @@ describe OrganizationAgreement do
 
   subject { new_agreement }
 
-  before do
-
-  end
-
   describe 'payment terms' do
 
     it 'the available payment terms' do
@@ -41,7 +37,7 @@ describe OrganizationAgreement do
 
   end
 
-  describe "created by org lifecycle" do
+  describe "created by org lifecycle", :versioning => true do
     let!(:agreement_by_org) { FactoryGirl.create(:organization_agreement) }
     let!(:org_user) { agreement_by_org.organization.org_admins.first }
     let!(:cparty_user) { agreement_by_org.counterparty.org_admins.first }
@@ -192,7 +188,7 @@ describe OrganizationAgreement do
 
     end
 
-    describe "after activation" do
+    describe 'after acceptance', :versioning => true do
       before do
         with_user org_user do
           agreement_by_org.change_reason = "Stam"
@@ -278,7 +274,6 @@ describe OrganizationAgreement do
           agreement_by_org.name          = 'Changed Name'
           agreement_by_org.change_reason = 'Reason for changed name'
           agreement_by_org.submit_change
-          Rails.logger.debug { "Stam for breakpoint" }
         end
       end
 
@@ -293,6 +288,15 @@ describe OrganizationAgreement do
         it 'the AgrChangeSubmittedEvent description should show the difference between both versions' do
           expect(change_event.reload.description).to include('agr_diff_table')
         end
+      end
+
+      it 'acceptance is not allowed after making a change' do
+        with_user org_user do
+          agreement_by_org.name = 'Changed Name'
+          agreement_by_org.save
+          expect(agreement_by_org.can_accept?).to be_false
+        end
+
       end
     end
   end

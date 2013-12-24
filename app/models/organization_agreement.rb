@@ -83,7 +83,7 @@ class OrganizationAgreement < Agreement
     end
 
     event :accept do
-      transition [:pending_org_approval, :pending_cparty_approval] => :active
+      transition [:pending_org_approval, :pending_cparty_approval] => :active, unless: ->(agreement) { agreement.changed_from_previous_ver? }
     end
 
     event :reject do
@@ -96,6 +96,11 @@ class OrganizationAgreement < Agreement
     end
 
   end
+
+  def changed_from_previous_ver?
+    AgrVersionDiffService.new(self, self.previous_version).different?
+  end
+
 
   private
   def end_date_validation
@@ -126,5 +131,6 @@ class OrganizationAgreement < Agreement
     end
     test_hash.size > 0
   end
+
 
 end

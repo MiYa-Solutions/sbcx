@@ -139,6 +139,10 @@ class Agreement < ActiveRecord::Base
     rules.map(&:get_transfer_props)
   end
 
+  def human_payment_terms
+    I18n.t("agreement.payment_options.#{payment_terms}")
+  end
+
   private
   def save_ends_on_text
     self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?

@@ -8,35 +8,28 @@
   </thead>
   <tbody>
 
-  <%= render 'agreements/agreement_diff/diff_table_row',
-             attr_name: @v1.class.human_attribute_name(:name),
-             v1:        @v1.name,
-             v2:        @v2.name %>
-  <%= render 'agreements/agreement_diff/diff_table_row',
-             attr_name: @v1.class.human_attribute_name(:description),
-             v1:        @v1.description,
-             v2:        @v2.description %>
-  <%= render 'agreements/agreement_diff/diff_table_row',
-             attr_name: @v1.class.human_attribute_name(:status),
-             v1:        @v1.human_status_name,
-             v2:        @v2.human_status_name %>
-  <%= render 'agreements/agreement_diff/diff_table_row',
-             attr_name: @v1.class.human_attribute_name(:starts_at),
-             v1:        @v1.starts_at ? l(@v1.starts_at) : '',
-             v2:        @v2.starts_at ? l(@v2.starts_at) : '' %>
-  <%= render 'agreements/agreement_diff/diff_table_row',
-             attr_name: @v1.class.human_attribute_name(:ends_at),
-             v1:        @v1.ends_at ? l(@v1.ends_at) : '',
-             v2:        @v2.ends_at ? l(@v2.ends_at) : '' %>
-  <%= render 'agreements/agreement_diff/diff_table_row',
-             attr_name: @v1.class.human_attribute_name(:payment_terms),
-             v1:        @v1.payment_terms,
-             v2:        @v2.payment_terms %>
+  <% {
+             name:          :name,
+             description:   :description,
+             status:        :human_status_name,
+             starts_at:     :starts_at,
+             ends_at:       :ends_at,
+             payment_terms: :human_payment_terms
 
-  <tr class="<%= 'changed' if @v1.rules.first != @v2.rules.first %>">
+     }.each do |attr, method| %>
+      <%= render 'agreements/agreement_diff/diff_table_row',
+                 attr_name: Agreement.human_attribute_name(attr),
+                 v1:        @v1.send(method),
+                 v2:        @v2.send(method)
+      %>
+  <% end %>
+
+  <% #todo replace the below with a proper helper       %>
+  <% #todo replace the support for multiple rules       %>
+  <tr class="<%= 'changed' if controller.rules_diff.size > 0 %>">
     <td>Rules</td>
     <td>
-      <%= render "posting_rules/rule_diff/#{@v1.rules.first.class.name.underscore}_table", rule: AgrVersionDiffService.get_rules_for_versions(@v1, @v2).first %>
+      <%= render "posting_rules/rule_diff/#{@v1.rules.first.class.name.underscore}_table", rule: controller.rules_diff.first ? controller.rules_diff.first : @v1.rules.first %>
     </td>
     <td>
       <%= render "posting_rules/rule_diff/#{@v2.rules.first.class.name.underscore}_table", rule: @v2.rules.first %>
