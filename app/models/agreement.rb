@@ -143,6 +143,10 @@ class Agreement < ActiveRecord::Base
     I18n.t("agreement.payment_options.#{payment_terms}")
   end
 
+  def diff_from_prev_ver?(attr)
+    previous_version[attr] != self[attr]
+  end
+
   private
   def save_ends_on_text
     self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?

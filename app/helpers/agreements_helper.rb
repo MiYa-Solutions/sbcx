@@ -20,7 +20,7 @@ module AgreementsHelper
   end
 
   def agreement_payment_options
-    @agreement.class.payment_options.keys.map {|key| [key, t("agreement.payment_options.#{key}")]}
+    @agreement.class.payment_options.keys.map { |key| [key, t("agreement.payment_options.#{key}")] }
   end
 
   def agreement_option(klass)
@@ -35,10 +35,11 @@ module AgreementsHelper
     ]
 
   end
+
   def role_options_for_agreement(klass)
     [
-            [klass.human_attribute_name(:organization), 'organization'],
-            [klass.human_attribute_name(:counterparty), 'counterparty']
+        [klass.human_attribute_name(:organization), 'organization'],
+        [klass.human_attribute_name(:counterparty), 'counterparty']
     ]
   end
 
@@ -55,14 +56,14 @@ module AgreementsHelper
             when :submit_for_approval
               concat (label_tag 'agr_submission_form', 'Submit Agreement for Approval', class: "title")
               concat (content_tag :li, agr_submission_form(agreement),
-                     class: "cancel_agreement")
+                                  class: "cancel_agreement")
               concat (label_tag 'agr_submission_form', 'Enter comments, if any, and click the Submit button', class: "subtitle")
             when :activate
               concat (content_tag :li, agr_activation_form(agreement), class: "agreement_fields")
             when :submit_change
               concat (label_tag 'agr_change_submission_form', 'Enter comments, if any, and click the Submit Change button', class: "title")
               concat (content_tag :li, agr_change_submission_form(agreement),
-                     class: "cancel_agreement")
+                                  class: "cancel_agreement")
             when :accept
               concat (content_tag :li, agr_accept_form(agreement))
             when :reject
@@ -70,7 +71,7 @@ module AgreementsHelper
             when :cancel
               concat (label_tag 'agr_cancel_form', 'Cancel Agreement', class: "title")
               concat (content_tag :li, agr_cancel_form(agreement),
-                     class: "cancel_agreement")
+                                  class: "cancel_agreement")
               concat (label_tag 'agr_cancel_form', 'Enter the reason you wish to cancel the agreement, and click the Cancel button', class: "subtitle")
             else
               concat(content_tag :li, agreement.class.human_status_event_name(event))
@@ -180,6 +181,10 @@ module AgreementsHelper
 
     end
 
+  end
+
+  def if_changed(attr)
+    @agreement.diff_from_prev_ver?(attr) ? 'changed' : ''
   end
 
 
