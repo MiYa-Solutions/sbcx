@@ -11,36 +11,40 @@ class NotificationMailer < ActionMailer::Base
                                                                                                 # todo make more effiecient - in production does not load second level subclasses
   Dir.glob("#{Rails.root}/app/notifications/*.rb").sort.each { |file| require_dependency file } #if Rails.env == "development"
   ServiceCallNotification.subclasses.each do |subclass|
-    define_method subclass.name.underscore do |subject, user, service_call|
+    define_method subclass.name.underscore do |subject, user, service_call, event|
       @service_call = service_call
       @user         = user
+      @event        = event
 
       mail to: user.email, subject: subject
     end
   end
 
   AgreementNotification.subclasses.each do |subclass|
-    define_method subclass.name.underscore do |subject, user, agreement|
+    define_method subclass.name.underscore do |subject, user, agreement, event|
       @agreement = agreement
       @user      = user
+      @event     = event
 
       mail to: user.email, subject: subject
     end
   end
 
   InviteNotification.subclasses.each do |subclass|
-    define_method subclass.name.underscore do |subject, user, invite|
+    define_method subclass.name.underscore do |subject, user, invite, event|
       @invite = invite
       @user   = user
+      @event  = event
 
       mail to: user.email, subject: subject
     end
   end
 
   AdjustmentEntryNotification.subclasses.each do |subclass|
-    define_method subclass.name.underscore do |subject, user, entry|
+    define_method subclass.name.underscore do |subject, user, entry, event|
       @entry = entry
       @user  = user
+      @event = event
 
       mail to: user.email, subject: subject
     end

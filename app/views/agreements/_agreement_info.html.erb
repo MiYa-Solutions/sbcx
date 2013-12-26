@@ -15,25 +15,33 @@
     <tbody>
     <tr>
       <td><%= I18n.t('general.general.name') %></td>
-      <td><h4><%= best_in_place @agreement.becomes(Agreement), :name %></h4></td>
+      <td>
+        <h4><%= best_in_place @agreement.becomes(Agreement), :name, classes: "track_change #{if_changed(:name)}" %></h4>
+      </td>
     </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:payment_terms) %></td>
-      <td><h4><%= best_in_place @agreement.becomes(Agreement), :payment_terms, :type => :select, collection: agreement_payment_options %></h4></td>
+      <td>
+        <h4><%= best_in_place @agreement.becomes(Agreement), :payment_terms, :type => :select, collection: agreement_payment_options, classes: "track_change #{if_changed(:payment_terms)}" %></h4>
+      </td>
     </tr>
 
     <% unless @agreement.starts_at.blank? %>
         <tr>
           <td><%= @agreement.class.human_attribute_name(:starts_at) %></td>
 
-          <td><h4><%= I18n.l @agreement.starts_at, format: :default %></h4></td>
+          <td>
+            <h4><%= I18n.l @agreement.starts_at, format: :default, classes: "track_change #{if_changed(:starts_at)}" %></h4>
+          </td>
 
         </tr>
     <% end %>
 
     <tr>
       <td><%= @agreement.class.human_attribute_name(:ends_at) %></td>
-      <td><h4><%= best_in_place @agreement.becomes(Agreement), :ends_at_text, :type => :date %></h4></td>
+      <td>
+        <h4><%= best_in_place @agreement.becomes(Agreement), :ends_at_text, :type => :date, classes: "track_change #{if_changed(:ends_at)}" %></h4>
+      </td>
     </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:status) %></td>

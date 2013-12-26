@@ -20,6 +20,7 @@ class Notification < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :notifiable, polymorphic: true
+  belongs_to :event
 
   NOTIFICATION_UNREAD = 0
   NOTIFICATION_READ   = 1
@@ -48,7 +49,7 @@ class Notification < ActiveRecord::Base
   # this method assumes that the NotificationMailer has a method by the name of the notification class
   def deliver
     mailer_method = self.class.name.underscore #.sub("_notification", "")
-    NotificationMailer.send(mailer_method, default_subject, user, notifiable).deliver
+    NotificationMailer.send(mailer_method, default_subject, user, notifiable, event).deliver
   end
 
   protected

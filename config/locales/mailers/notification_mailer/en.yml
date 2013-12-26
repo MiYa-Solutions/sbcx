@@ -27,6 +27,18 @@ en:
       content: 'New Subcontractor Agreement was submitted to you by:'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
 
+    agr_change_submitted_notification:
+      title: 'Subcontractor Agreement Negotiation: Change Submitted'
+      subject: 'New Change Submitted For A Subcontractor Agreement'
+      content: 'a chnage was made to an agreement which is currently being negotiated:'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
+
+    agr_change_rejected_notification:
+      title: 'Subcontractor Agreement Negotiation: Change Rejected'
+      subject: 'Change Was Rejected For A Subcontractor Agreement'
+      content: 'The change was rejected'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
+
     agr_accepted_subcon_notification:
       title: 'New Subcontractor Agreement has been Accepted'
       subject: 'New Subcontractor Agreement has been Accepted'

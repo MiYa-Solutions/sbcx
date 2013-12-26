@@ -38,6 +38,8 @@ describe AffiliatePostingRule do
     should respond_to :get_entries
   end
 
+  pending 'inherits the agreement permissions'
+
   pending '#org_payment_entries and #cparty_payment_entries methods'
 
 end
