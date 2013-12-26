@@ -98,7 +98,7 @@ class OrganizationAgreement < Agreement
   end
 
   def changed_from_previous_ver?
-    AgrVersionDiffService.new(self, self.previous_version).different?
+    AgrVersionDiffService.new(self, self.previous_version).different? || self.rules_changed_from_prev_ver?
   end
 
 

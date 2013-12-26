@@ -1,4 +1,10 @@
+require 'hstore_setup_methods'
 class AgrChangeSubmittedEvent < AgreementEvent
+
+  extend HstoreSetupMethods
+
+  setup_hstore_attr 'change_reason'
+
 
   def init
     self.name         = I18n.t('agr_change_submitted_event.name')
@@ -13,16 +19,9 @@ class AgrChangeSubmittedEvent < AgreementEvent
   private
 
   def description_with_change_diff
-    AgrVersionDiffService.new(last_version, before_last_version).html_description
+    "#{change_reason} \n #{AgrVersionDiffService.new(agreement.last_version, agreement.before_last_version).html_description}"
 
   end
 
-  def last_version
-    agreement.previous_version
-  end
-
-  def before_last_version
-    agreement.previous_version.try(:previous_version) || last_version
-  end
 
 end

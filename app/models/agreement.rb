@@ -143,11 +143,37 @@ class Agreement < ActiveRecord::Base
     I18n.t("agreement.payment_options.#{payment_terms}")
   end
 
-  def diff_from_prev_ver?(attr)
-    previous_version[attr] != self[attr]
+  def attr_changed_from_prev_ver?(attr)
+    previous_version.nil? ? false : previous_version[attr] != self[attr]
   end
 
+  def rules_changed_from_prev_ver?
+    if self.live?
+      cut_off_date = self.versions.size > 0 ? self.versions.last.created_at : self.created_at
+    else
+      cut_off_date = self.version.previous.nil? ? self.created_at : self.version.previous.try(:created_at)
+    end
+
+    PaperTrail::Version.where(item_type: 'PostingRule', assoc_id: self.id).
+        where('created_at > ?', cut_off_date).size > 0
+
+  end
+
+  def last_version
+    self.previous_version
+  end
+
+  def before_last_version
+    self.previous_version.try(:previous_version) || last_version
+  end
+
+  def version_posting_rules
+    self.live? ? posting_rules : rules_for_version(self.version)
+  end
+
+
   private
+
   def save_ends_on_text
     self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?
 

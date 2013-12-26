@@ -39,7 +39,7 @@
           <th><%= I18n.t('general.general.actions') %></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="<%= 'changed' if @agreement.rules_changed_from_prev_ver? %>">
         <% @agreement.posting_rules.each do |rule| %>
             <tr>
               <td><%= rule.id %></td>

@@ -70,5 +70,22 @@ describe Agreement do
 
   end
 
+  context '#posting_rule_versions', versioning: true do
+    let(:agr) { FactoryGirl.create(:agreement) }
+    let(:rule1) { agr.rules.first }
+    let(:rule2) { FactoryGirl.create(:flat_fee, agreement: agr) }
+
+
+    before do
+
+      rule1.update_attributes(rate: 30)
+
+    end
+
+    it 'should return 3 versions' do
+      expect(agr.posting_rule_versions.size).to eq 3
+    end
+  end
+
 
 end

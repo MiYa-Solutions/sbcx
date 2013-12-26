@@ -22,6 +22,7 @@ class AgrVersionDiffService < AbstractController::Base
     @rules_diff ||= PaperTrail::Version.where(item_type: 'PostingRule', assoc_id: @v1).
         where('created_at < ? AND created_at > ?', @v1.version.try(:created_at), @v2.version.try(:created_at)).
         all.map(&:reify)
+
   end
 
   def different?

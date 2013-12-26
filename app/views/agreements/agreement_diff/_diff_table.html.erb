@@ -2,8 +2,8 @@
   <thead>
   <tr>
     <td>Attribute Name</td>
-    <td>Previous Value</td>
     <td>Current Value</td>
+    <td>Previous Value</td>
   </tr>
   </thead>
   <tbody>
@@ -24,15 +24,16 @@
       %>
   <% end %>
 
-  <% #todo replace the below with a proper helper       %>
-  <% #todo replace the support for multiple rules       %>
+  <% #todo replace the below with a proper helper        %>
+  <% #todo replace the support for multiple rules        %>
   <tr class="<%= 'changed' if controller.rules_diff.size > 0 %>">
     <td>Rules</td>
     <td>
-      <%= render "posting_rules/rule_diff/#{@v1.rules.first.class.name.underscore}_table", rule: controller.rules_diff.first ? controller.rules_diff.first : @v1.rules.first %>
+      <%= render "posting_rules/rule_diff/#{@v1.rules.first.class.name.underscore}_table", rule: @v1.rules.first %>
     </td>
     <td>
-      <%= render "posting_rules/rule_diff/#{@v2.rules.first.class.name.underscore}_table", rule: @v2.rules.first %>
+      <% the_rule = controller.rules_diff.first ? controller.rules_diff.first : @v1.rules.first %>
+      <%= render "posting_rules/rule_diff/#{the_rule.class.name.underscore}_table", rule: the_rule %>
     </td>
   </tr>
 

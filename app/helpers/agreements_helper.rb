@@ -184,7 +184,7 @@ module AgreementsHelper
   end
 
   def if_changed(attr)
-    @agreement.diff_from_prev_ver?(attr) ? 'changed' : ''
+    @agreement.attr_changed_from_prev_ver?(attr) ? 'changed' : ''
   end
 
 

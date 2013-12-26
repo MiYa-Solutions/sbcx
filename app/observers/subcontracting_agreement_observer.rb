@@ -11,7 +11,7 @@ class SubcontractingAgreementObserver < ActiveRecord::Observer
   end
 
   def after_submit_change(agreement, transition)
-    agreement.events << AgrChangeSubmittedEvent.new
+    agreement.events << AgrChangeSubmittedEvent.new(change_reason: agreement.change_reason)
   end
 
   def after_submit_for_approval(agreement, transition)
