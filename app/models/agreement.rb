@@ -159,6 +159,16 @@ class Agreement < ActiveRecord::Base
 
   end
 
+  def changed_since_prev_version?
+    AgrVersionDiffHelper.new.agr_diff_attrs.each do |attr|
+      return true if  attr_changed_from_prev_ver? attr
+    end
+
+    return true if rules_changed_from_prev_ver?
+
+    false
+  end
+
   def last_version
     self.previous_version
   end

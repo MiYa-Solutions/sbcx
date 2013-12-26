@@ -26,15 +26,8 @@ class SubcontractingAgreementObserver < ActiveRecord::Observer
     agreement.events << AgrSubconAcceptedEvent.new
   end
 
-  private
-
-  def description_with_reason(agreement)
-    change_reason = agreement.change_reason ? agreement.change_reason : ""
-    other_party   = agreement.updater.organization == agreement.organization ? agreement.organization : agreement.counterparty
-
-    description_with_reason = I18n.t('events.agreement.submitted.description', originator: agreement.creator.organization.name, counterparty: other_party.name) +
-        ": " + change_reason
-
+  def after_reject(agreement, transition)
+    agreement.events << AgrChangeRejectedEvent.new(change_reason: agreement.change_reason)
   end
 
 end
