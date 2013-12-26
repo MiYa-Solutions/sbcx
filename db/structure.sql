@@ -902,7 +902,11 @@ CREATE TABLE users (
   mobile_phone           CHARACTER VARYING(255),
   work_phone             CHARACTER VARYING(255),
   preferences            hstore,
-  time_zone              CHARACTER VARYING(255)
+  time_zone              CHARACTER VARYING(255),
+  confirmation_token     CHARACTER VARYING(255),
+  confirmed_at           TIMESTAMP WITHOUT TIME ZONE,
+  confirmation_sent_at   TIMESTAMP WITHOUT TIME ZONE,
+  unconfirmed_email      CHARACTER VARYING(255)
 );
 
 
@@ -1383,6 +1387,13 @@ CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON tagg
 
 
 --
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_confirmation_token ON users USING BTREE (confirmation_token);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1646,3 +1657,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131215150115');
 INSERT INTO schema_migrations (version) VALUES ('20131222211257');
 
 INSERT INTO schema_migrations (version) VALUES ('20131226183502');
+
+INSERT INTO schema_migrations (version) VALUES ('20131226221754');
