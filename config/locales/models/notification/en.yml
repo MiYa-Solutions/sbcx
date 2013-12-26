@@ -92,6 +92,10 @@ en:
         html_message: '%{creator} has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
         subject: 'New Subcontractor Agreement'
         content: 'Please review and activate the agreement in order to receive new Service Calls.'
+      agr_change_submitted_notification:
+        html_message: '%{creator} has submitted a change to the agreement being negotiated. Please click on %{link} to review the changes.'
+        subject: 'Subcontractor Agreement Negotiation: Change Submitted'
+        content: 'Please review the changes to agreement %{id} and either accept them or suggest your own.'
       activated_subcon_agreement:
         html_message: '%{updater} has activated the Subcontractor Agreement. You can click on %{link} to review it.'
         subject: 'A Subcontractor Agreement Was Activated'

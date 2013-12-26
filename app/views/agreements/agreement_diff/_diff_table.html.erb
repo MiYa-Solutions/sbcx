@@ -1,9 +1,9 @@
 <table class="agr_diff_table">
   <thead>
   <tr>
-    <td>Attribute Name</td>
-    <td>Current Value</td>
-    <td>Previous Value</td>
+    <th>Attribute Name</th>
+    <th>Current Value</th>
+    <th>Previous Value</th>
   </tr>
   </thead>
   <tbody>
@@ -24,8 +24,8 @@
       %>
   <% end %>
 
-  <% #todo replace the below with a proper helper        %>
-  <% #todo replace the support for multiple rules        %>
+  <% #todo replace the below with a proper helper         %>
+  <% #todo replace the support for multiple rules         %>
   <tr class="<%= 'changed' if controller.rules_diff.size > 0 %>">
     <td>Rules</td>
     <td>

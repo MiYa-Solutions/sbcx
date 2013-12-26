@@ -485,7 +485,8 @@ CREATE TABLE notifications (
   updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   notifiable_id   INTEGER,
   notifiable_type CHARACTER VARYING(255),
-  type            CHARACTER VARYING(255)
+  type            CHARACTER VARYING(255),
+  event_id        INTEGER
 );
 
 
@@ -1643,3 +1644,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131215030926');
 INSERT INTO schema_migrations (version) VALUES ('20131215150115');
 
 INSERT INTO schema_migrations (version) VALUES ('20131222211257');
+
+INSERT INTO schema_migrations (version) VALUES ('20131226183502');

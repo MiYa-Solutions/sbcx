@@ -82,7 +82,7 @@ class Event < ActiveRecord::Base
   def notify(users, notification_class, notifiable = nil)
     notifiable ||= eventable
     users.each do |user|
-      notification = notification_class.new(user: user)
+      notification = notification_class.new(user: user, event: self)
       unless user == creator #eventable.updater
         notifiable.notifications << notification
         notification.deliver
