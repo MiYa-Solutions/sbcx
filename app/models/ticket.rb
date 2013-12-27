@@ -107,6 +107,7 @@ class Ticket < ActiveRecord::Base
   before_save :save_completed_on_text
   before_save :save_scheduled_for_text
   before_save :assign_tags
+  before_save :create_appointment
 
                                                                                        # create a new customer in case one was asked for
   before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
@@ -442,6 +443,10 @@ class Ticket < ActiveRecord::Base
 
   def total_price_validation
     errors.add :total_price, "is not a number" unless !total_price.nil? && total_price.instance_of?(BigDecimal)
+  end
+
+  def create_appointment
+    appointments << Appointment.new(organization: organization, title: "STAM")
   end
 
 end

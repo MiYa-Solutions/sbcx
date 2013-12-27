@@ -178,9 +178,9 @@ describe Ticket do
     end
 
     it 'should create an appointment', skip_create: true do
-      meeting = mock_model(Appointment)
+      meeting = mock_model(Appointment, :[]= => true, :appointable_id= => true, save: true, :title= => true)
       Appointment.stub(new: meeting)
-      Appointment.should_receive(:new)
+      Appointment.should_receive(:new).with(organization: service_call.organization, title: "STAM")
       service_call.save!
     end
   end
