@@ -42,13 +42,14 @@ class Organization < ActiveRecord::Base
   has_many :events, as: :eventable
   has_many :materials
   has_many :accounts
+  has_one :parent_org, class_name: 'Organization'
   has_many :affiliates, through: :accounts, source: :accountable, :source_type => "Organization" do
     def build(params)
-      affiliate        = Affiliate.new(params)
-      #proxy_association.owner.accounts.build(accountable: affiliate)
-      affiliate.status = STATUS_LOCAL_ENABLED
-      proxy_association.owner.providers << affiliate if affiliate.organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
-      proxy_association.owner.subcontractors << affiliate if affiliate.organization_role_ids.include? OrganizationRole::SUBCONTRACTOR_ROLE_ID
+      affiliate            = Affiliate.new(params)
+      affiliate.status     = STATUS_LOCAL_ENABLED
+      affiliate.parent_org = proxy_association.owner
+      #proxy_association.owner.providers << affiliate if affiliate.organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
+      #proxy_association.owner.subcontractors << affiliate if affiliate.organization_role_ids.include? OrganizationRole::SUBCONTRACTOR_ROLE_ID
       affiliate
     end
   end
@@ -63,6 +64,12 @@ class Organization < ActiveRecord::Base
   has_many :reverse_agreements, class_name: "Agreement", :foreign_key => "counterparty_id"
   has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}", uniq: true do
     def << (subcontractor)
+
+      unless subcontractor.member?
+        subcontractor.parent_org_id = proxy_association.owner.id
+        return subcontractor unless subcontractor.valid?
+      end
+
       unless subcontractor.reverse_agreements.where(:organization_id => proxy_association.owner.id).first
         subcon_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
         Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator, name: FlatFee.model_name.titleize }) { self.concat subcontractor }
@@ -79,6 +86,11 @@ class Organization < ActiveRecord::Base
   end
   has_many :providers, class_name: "Organization", :through => :reverse_agreements, source: :organization, :conditions => "agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}", uniq: true do
     def << (provider)
+      unless provider.member?
+        provider.parent_org_id = proxy_association.owner.id
+        return provider unless provider.valid?
+      end
+
       unless provider.agreements.where(:counterparty_id => proxy_association.owner.id, counterparty_type: 'Organization').first
         prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
         Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator, name: FlatFee.model_name.titleize }) { self.concat provider }
@@ -87,7 +99,6 @@ class Organization < ActiveRecord::Base
         agr.status = Agreement::STATUS_ACTIVE
         agr.save!
         Rails.logger.debug { "Created a default flat fee agreement for provider:\n#{agr.inspect}" }
-
       end
       proxy_association.owner.affiliates << provider unless proxy_association.owner.affiliates.include? provider
       provider
@@ -100,6 +111,8 @@ class Organization < ActiveRecord::Base
   ### VALIDATIONS:
 
   accepts_nested_attributes_for :users, :agreements, :reverse_agreements
+
+  validates_uniqueness_of :name, scope: :parent_org_id, unless: ->(subcon) { subcon.member? }
 
   validates :name, { presence: true, length: { maximum: 255 } }
 

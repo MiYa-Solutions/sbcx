@@ -575,7 +575,8 @@ CREATE TABLE organizations (
   subcontrax_member BOOLEAN,
   status            INTEGER,
   created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL
+  updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  parent_org_id     INTEGER
 );
 
 
@@ -1659,3 +1660,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131222211257');
 INSERT INTO schema_migrations (version) VALUES ('20131226183502');
 
 INSERT INTO schema_migrations (version) VALUES ('20131226221754');
+
+INSERT INTO schema_migrations (version) VALUES ('20131227192918');

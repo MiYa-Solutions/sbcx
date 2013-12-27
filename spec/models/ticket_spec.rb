@@ -182,6 +182,7 @@ describe Ticket do
       Appointment.stub(new: meeting)
       Appointment.should_receive(:new).with(organization: service_call.organization,
                                             title:        anything(),
+                                            description:  anything(),
                                             starts_at:    an_instance_of(ActiveSupport::TimeWithZone),
                                             ends_at:      an_instance_of(ActiveSupport::TimeWithZone))
       service_call.save!

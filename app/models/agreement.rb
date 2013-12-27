@@ -29,7 +29,6 @@ class Agreement < ActiveRecord::Base
   has_many :posting_rules
   alias_method :rules, :posting_rules
   has_many :payments
-  has_many :tickets
 
   accepts_nested_attributes_for :payments
 

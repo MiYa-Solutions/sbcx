@@ -89,6 +89,20 @@ describe Organization do
       expect(org.member?).to eq org.subcontrax_member?
     end
 
+    it 'local org should be unique for member' do
+      org2 = FactoryGirl.build(:member_org)
+
+      local_org1 = FactoryGirl.build(:local_org)
+      local_org2 = FactoryGirl.build(:local_org, name: local_org1.name)
+
+      org.affiliates << local_org1
+      expect(local_org1).to be_valid
+
+      expect { org.affiliates << local_org2 }.to raise_error(ActiveRecord::RecordInvalid)
+      expect { org2.affiliates << local_org2 }.to_not raise_error(ActiveRecord::RecordInvalid)
+
+    end
+
 
   end
 
