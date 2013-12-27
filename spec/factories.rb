@@ -303,9 +303,9 @@ FactoryGirl.define do
     ends_at 1.year.from_now
 
     after(:build) do |agr|
-      agr.organization = FactoryGirl.build(:member)
-      agr.counterparty = FactoryGirl.build(:member)
-      agr.creator      = FactoryGirl.build(:org_admin, organization: agr.organization)
+      agr.organization = FactoryGirl.create(:member)
+      agr.counterparty = FactoryGirl.create(:member)
+      agr.creator      = FactoryGirl.create(:org_admin, organization: agr.organization)
     end
 
     after(:create) do |agr|

@@ -86,7 +86,7 @@ class Ticket < ActiveRecord::Base
 
   alias_method :entries, :accounting_entries
 
-  scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov} AND subcontractor_id = #{subcon} and created_at > '#{after}'") }
+  scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov.id} AND subcontractor_id = #{subcon.id} and created_at > '#{after}'") }
   scope :affiliated_jobs, ->(org, affiliate) { where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id)) }
   scope :customer_jobs, ->(org, customer) { where(organization_id: org.id).where(customer_id: customer.id) }
 
