@@ -15,6 +15,7 @@ describe AccAdjAcceptedEvent do
   context 'when created' do
 
     before do
+      acc.stub(adjustment_accepted: true)
       Account.stub(:for_affiliate => [acc])
       AccountingEntry.stub(:find).with('1') { orig_entry }
       AccountingEntry.stub(:find).with('2') { entry }

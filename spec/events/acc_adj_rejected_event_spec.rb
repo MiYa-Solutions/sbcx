@@ -4,7 +4,9 @@ describe AccAdjRejectedEvent do
 
   let(:org) { mock_model(Organization, id: 1, name: 'Test Org1', providers: [], subcontractors: []) }
   let(:org2) { mock_model(Organization, id: 2, name: 'Test Org2', providers: [], subcontractors: []) }
-  let(:acc) { mock_model(Account, id: 1, name: 'Test Org Acc', organization: org, accountable: org2, events: [], entries: []) }
+  let(:acc) { mock_model(Account, id: 1, name: 'Test Acc', organization: org, accountable: org2,
+                         events:      [], balance: Money.new_with_amount(0),
+                         :balance=    => Money.new_with_amount(-10), adjustment_rejected: true) }
   let(:aff_acc) { mock_model(Account, id: 2, name: 'Test Aff Acc', organization: org2, accountable: org, events: [], entries: []) }
   let(:orig_entry) { mock_model(MyAdjEntry, id: '1', save: true, amount: Money.new_with_amount(100), reject!: true) }
   let(:entry) { mock_model(ReceivedAdjEntry, id: '2', save: true, amount: Money.new_with_amount(100), reject!: true) }

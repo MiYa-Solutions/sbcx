@@ -41,12 +41,21 @@ describe Material do
   end
 
   describe "validation" do
-    before { material.valid? }
-    [:supplier, :status, :organization, :name, :price, :cost].each do |attr|
+    #before { material.valid? }
+    [:supplier, :status, :organization, :name].each do |attr|
       it "must have a #{attr}" do
-        should validate_presence_of attr
+        expect(material).to validate_presence_of attr
       end
     end
+
+    context 'verify money attributes' do
+      [:cost, :price].each do |money_attr|
+        it "#{money_attr} should be of type Money" do
+          expect(material).to monetize(money_attr)
+        end
+      end
+    end
+
 
     it "status should initialize to available" do
       material.status.should == Material::STATUS_AVAILABLE
@@ -57,20 +66,4 @@ describe Material do
     end
   end
 
-  describe "when a new supplier name provided" do
-
-    let(:material) { FactoryGirl.build(:material) }
-
-    before do
-      material.supplier      = nil
-      material.supplier_name = "New Test Supplier"
-
-    end
-
-    it "should create the new supplier" do
-      expect { material.save }.to change(Supplier.count).by (1)
-    end
-
-
-  end
 end

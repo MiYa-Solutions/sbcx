@@ -180,7 +180,10 @@ describe Ticket do
     it 'should create an appointment', skip_create: true do
       meeting = mock_model(Appointment, :[]= => true, :appointable_id= => true, save: true, :title= => true)
       Appointment.stub(new: meeting)
-      Appointment.should_receive(:new).with(organization: service_call.organization, title: "STAM")
+      Appointment.should_receive(:new).with(organization: service_call.organization,
+                                            title:        anything(),
+                                            starts_at:    an_instance_of(ActiveSupport::TimeWithZone),
+                                            ends_at:      an_instance_of(ActiveSupport::TimeWithZone))
       service_call.save!
     end
   end

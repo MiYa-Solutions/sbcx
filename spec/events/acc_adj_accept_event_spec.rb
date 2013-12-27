@@ -14,9 +14,10 @@ describe AccAdjAcceptEvent do
   context 'when created' do
 
     before do
+      acc.stub(adjustment_accepted: true)
       Account.stub(:for_affiliate => [acc])
       AccAdjAcceptedEvent.stub(:new).with(kind_of(Hash)).and_return(double('AccAdjAcceptedEvent'))
-      AccountAdjustedEvent.stub_chain(:where, :where).and_return([adj_event])
+      Event.stub_chain(:where, :where).and_return([adj_event])
     end
 
     it 'should create AccAdjAcceptEvent' do
@@ -47,7 +48,7 @@ describe AccAdjAcceptEvent do
     end
 
     it 'should have a description taken from I18n' do
-      expect(event.description).to eq I18n.t('acc_adj_accept_event.description', entry_id: entry.id, aff: org.name)
+      expect(event.description).to eq I18n.t('acc_adj_accept_event.description', entry_id: entry.id, aff: org2.name)
     end
 
     it 'should have a description taken from I18n' do

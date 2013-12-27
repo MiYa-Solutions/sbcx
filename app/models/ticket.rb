@@ -107,7 +107,7 @@ class Ticket < ActiveRecord::Base
   before_save :save_completed_on_text
   before_save :save_scheduled_for_text
   before_save :assign_tags
-  before_save :create_appointment
+  after_save :create_appointment
 
                                                                                        # create a new customer in case one was asked for
   before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
@@ -446,7 +446,11 @@ class Ticket < ActiveRecord::Base
   end
 
   def create_appointment
-    appointments << Appointment.new(organization: organization, title: "STAM")
+    appointments << Appointment.new(organization: organization,
+                                    starts_at:    self.scheduled_for,
+                                    ends_at:      self.scheduled_for + 3600,
+                                    title:        I18n.t('appointment.auto_title', id: self.ref_id),
+                                    description:  I18n.t('appointment.auto_description', id: self.ref_id)) if self.scheduled_for_changed?
   end
 
 end

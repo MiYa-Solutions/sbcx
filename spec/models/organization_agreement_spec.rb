@@ -28,6 +28,11 @@ describe OrganizationAgreement do
 
   subject { new_agreement }
 
+  describe 'association' do
+    it { should have_many(:subcon_tickets) }
+    it { should have_many(:prov_tickets) }
+  end
+
   describe 'payment terms' do
 
     it 'the available payment terms' do
@@ -234,13 +239,15 @@ describe OrganizationAgreement do
 
       describe 'changing the end date' do
         before do
-          FactoryGirl.create(:my_service_call, organization: agreement_by_org.organization, subcontractor: agreement_by_org.counterparty.becomes(Subcontractor))
+          job                  = FactoryGirl.create(:my_service_call, organization: agreement_by_org.organization, subcontractor: agreement_by_org.counterparty.becomes(Subcontractor))
+          job.subcon_agreement = agreement_by_org
+          job.save!
           agreement_by_org.update_attributes(ends_at: 1.day.ago)
         end
         it "ends_at can't be set to a date earlier than the last job" do
 
 
-          agreement_by_org.should_not be_valid
+          agreement_by_org.reload.should_not be_valid
 
         end
       end

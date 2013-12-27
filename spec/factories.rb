@@ -257,8 +257,8 @@ FactoryGirl.define do
     association :supplier
     name Faker::Name.name
     description Faker::Lorem.paragraph(1)
-    cost 123.4
-    price 254.7
+    cost Money.new_with_amount(123.4)
+    price Money.new_with_amount(254.7)
   end
 
   factory :bom do

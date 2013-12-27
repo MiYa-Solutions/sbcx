@@ -4,9 +4,11 @@ describe AccAdjRejectEvent do
 
   let(:org) { mock_model(Organization, id: 1, name: 'Test Org1', providers: [], subcontractors: []) }
   let(:org2) { mock_model(Organization, id: 2, name: 'Test Org2', providers: [], subcontractors: []) }
-  let(:acc) { mock_model(Account, id: 1, name: 'Test Acc', organization: org, accountable: org2, events: []) }
-  let(:orig_entry) { mock_model(MyAdjEntry, id: 1, save: true) }
-  let(:entry) { mock_model(ReceivedAdjEntry, id: 2, save: true) }
+  let(:acc) { mock_model(Account, id: 1, name: 'Test Acc', organization: org, accountable: org2,
+                         events:      [], balance: Money.new_with_amount(0),
+                         :balance=    => Money.new_with_amount(-10), adjustment_rejected: true) }
+  let(:orig_entry) { mock_model(MyAdjEntry, id: 1, save: true, amount: Money.new_with_amount(-10)) }
+  let(:entry) { mock_model(ReceivedAdjEntry, id: 2, save: true, amount: Money.new_with_amount(10)) }
   let(:adj_event) { mock_model(AccountAdjustedEvent, id: 2, save: true, matching_entry_id: orig_entry.id) }
   let(:event) { AccAdjRejectEvent.new(eventable: acc, entry_id: entry.id) }
 
@@ -14,9 +16,12 @@ describe AccAdjRejectEvent do
   context 'when created' do
 
     before do
+      AccountingEntry.stub(:find).with(orig_entry.id.to_s) { orig_entry }
+      AccountingEntry.stub(:find).with(entry.id.to_s) { entry }
+
       Account.stub(:for_affiliate => [acc])
       AccAdjRejectedEvent.stub(:new).with(kind_of(Hash)).and_return(double('AccAdjRejectedEvent'))
-      AccountAdjustedEvent.stub_chain(:where, :where).and_return([adj_event])
+      Event.stub_chain(:where, :where).and_return([adj_event])
     end
 
     it 'should create AccAdjRejectedEvent' do
@@ -47,7 +52,7 @@ describe AccAdjRejectEvent do
     end
 
     it 'should have a description taken from I18n' do
-      expect(event.description).to eq I18n.t('acc_adj_reject_event.description', entry_id: entry.id, aff: org.name)
+      expect(event.description).to eq I18n.t('acc_adj_reject_event.description', entry_id: entry.id, aff: org2.name)
     end
 
     it 'should have a description taken from I18n' do

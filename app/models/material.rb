@@ -25,13 +25,11 @@ class Material < ActiveRecord::Base
   belongs_to :supplier
   has_many :boms
 
-  validates_presence_of :supplier, :organization, :status, :name, :price, :cost, allow_blank: false
+  validates_presence_of :supplier, :organization, :status, :name, allow_blank: false
   validates_uniqueness_of :name, scope: [:organization_id, :supplier_id]
 
   monetize :cost_cents
   monetize :price_cents
-
-  before_validation :create_supplier, if: "supplier == nil"
 
   scope :my_materials, ->(org_id) { where("organization_id = ?", org_id) }
 
@@ -66,16 +64,6 @@ class Material < ActiveRecord::Base
     event :back_in_stock do
       transition :out_of_stock => :available
     end
-  end
-
-  def create_supplier
-    unless @supplier_name.nil?
-      role          = OrganizationRole.find(OrganizationRole::SUPPLIER_ROLE_ID)
-      self.supplier = Supplier.new(name: @supplier_name, organiztion_roles: [role])
-      self.organization.suppliers << self.supplier
-
-    end
-
   end
 
 end

@@ -4,10 +4,11 @@ describe AccountAdjustedEvent do
 
   let(:org) { mock_model(Organization, id: 1, name: 'Test Org1', providers: [], subcontractors: []) }
   let(:org2) { mock_model(Organization, id: 2, name: 'Test Org2', providers: [], subcontractors: []) }
-  let(:acc) { mock_model(Account, id: 1, name: 'Test Org', organization: org, accountable: org2, events: [], entries: []) }
-  let(:orig_entry) { mock_model(MyAdjEntry, id: '1', save: true, amount: Money.new_with_amount(100)) }
-  let(:entry) { mock_model(ReceivedAdjEntry, id: '2', save: true, amount: Money.new_with_amount(100)) }
-  let(:invoking_event) { mock_model(AccountAdjustmentEvent, eventable: acc, entry_id: 1) }
+  let(:acc) { mock_model(Account, id: 1, name: 'Test Org', organization: org, accountable: org2, events: [], entries: [], adjustment_submitted: true) }
+  let(:ticket) { mock_model(Ticket, id: 1, name: 'Test Ticket', organization: org, events: [], entries: []) }
+  let(:orig_entry) { mock_model(MyAdjEntry, id: 1, save: true, amount: Money.new_with_amount(100), ticket: ticket, ticket_ref_id: '1') }
+  let(:entry) { mock_model(ReceivedAdjEntry, id: 2, save: true, amount: Money.new_with_amount(100)) }
+  let(:invoking_event) { mock_model(AccountAdjustmentEvent, eventable: acc, entry_id: 1, :matching_entry_id= => 2, save!: true) }
   let(:event) { AccountAdjustedEvent.new(eventable: acc, triggering_event: invoking_event) }
 
 
@@ -15,8 +16,10 @@ describe AccountAdjustedEvent do
 
     before do
       Account.stub(:for_affiliate => [acc])
-      AccountingEntry.stub(:find).with(1) { orig_entry }
-      AccountingEntry.stub(:find).with(2) { entry }
+      AccountingEntry.stub(:find).with(orig_entry.id).and_return(orig_entry)
+      AccountingEntry.stub(:find).with(orig_entry.id.to_s).and_return(orig_entry)
+      AccountingEntry.stub(:find).with(entry.id).and_return(entry)
+      AccountingEntry.stub(:find).with(entry.id.to_s).and_return(entry)
       ReceivedAdjEntry.stub(new: entry)
     end
 
@@ -28,12 +31,12 @@ describe AccountAdjustedEvent do
 
     it 'should have the original entry id in the properties' do
       event.save!
-      expect(event.matching_entry_id).to eq orig_entry.id
+      expect(event.matching_entry_id).to eq orig_entry.id.to_s
     end
 
     it 'should have the new entry id in the properties' do
       event.save
-      expect(event.entry_id).to eq entry.id
+      expect(event.entry_id).to eq entry.id.to_s
     end
   end
 

@@ -4,7 +4,7 @@ describe AccAdjCancelEvent do
 
   let(:org) { mock_model(Organization, id: 1, name: 'Test Org1', providers: [], subcontractors: []) }
   let(:org2) { mock_model(Organization, id: 2, name: 'Test Org2', providers: [], subcontractors: []) }
-  let(:acc) { mock_model(Account, id: 1, name: 'Test Acc', organization: org, accountable: org2, events: []) }
+  let(:acc) { mock_model(Account, id: 1, name: 'Test Acc', organization: org, accountable: org2, events: [], adjustment_canceled: true) }
   let(:orig_entry) { mock_model(MyAdjEntry, id: 1, save: true) }
   let(:entry) { mock_model(ReceivedAdjEntry, id: 2, save: true) }
   let(:adj_event) { mock_model(AccountAdjustedEvent, id: 2, save: true, matching_entry_id: orig_entry.id) }
@@ -14,9 +14,12 @@ describe AccAdjCancelEvent do
   context 'when created' do
 
     before do
+      AccountingEntry.stub(:find).with(orig_entry.id.to_s).and_return(orig_entry)
+      AccountingEntry.stub(:find).with(entry.id.to_s).and_return(entry)
+      acc.stub(adjustment_accepted: true)
       Account.stub(:for_affiliate => [acc])
       AccAdjCanceledEvent.stub(:new).with(kind_of(Hash)).and_return(double('AccAdjCanceledEvent'))
-      AccountAdjustedEvent.stub_chain(:where, :where).and_return([adj_event])
+      Event.stub_chain(:where, :where).and_return([adj_event])
     end
 
     it 'should create AccAdjCancelEvent' do

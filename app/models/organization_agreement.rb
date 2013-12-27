@@ -21,7 +21,10 @@
 
 class OrganizationAgreement < Agreement
 
-  # first we will define the organization state values
+  has_many :subcon_tickets, class_name: 'Ticket', foreign_key: 'subcon_agreement_id'
+  has_many :prov_tickets, class_name: 'Ticket', foreign_key: 'provider_agreement_id'
+
+                                # first we will define the organization state values
   STATUS_PENDING_ORG_APPROVAL    = 11000
   STATUS_PENDING_CPARTY_APPROVAL = 11001
   STATUS_REJECTED_BY_ORG         = 11002
@@ -104,7 +107,7 @@ class OrganizationAgreement < Agreement
 
   private
   def end_date_validation
-    if self.ends_at && tickets.size > 0 && Ticket.created_after(self.organization, self.counterparty, self.ends_at).size > 0
+    if self.ends_at && (subcon_tickets.size > 0 || prov_tickets.size > 0) && Ticket.created_after(self.organization, self.counterparty, self.ends_at).size > 0
       errors.add :ends_at, I18n.t('activerecord.errors.agreement.ends_at_invalid', date: ends_at.strftime('%b, %d, %Y'))
     end
   end
