@@ -39,5 +39,9 @@ describe Notification do
     end
   end
 
+  describe 'associations' do
+    it { expect(notification).to belong_to(:event) }
+  end
+
 
 end

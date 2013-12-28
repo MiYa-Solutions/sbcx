@@ -21,6 +21,17 @@ en:
       affiliate:
         address1: "Address"
       agreement:
+      subcontracting_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Contractor"
+        counterparty: "Subcontractor"
+      supplier_agreement:
+        name: "Name"
+        description: "Description"
+        organization: "Supplier"
+        counterparty: "Supplier Customer"
+
     state_machines:
       organization_agreement:
         status:
@@ -39,19 +50,6 @@ en:
             rejected_by_org: "Rejected By The Contractor"
             rejected_by_cparty: "Rejected By The Subcontractor"
             canceled: "Canceled"
-            canceled: "Replaced With Another Agreement"
-
-      subcontracting_agreement:
-        name: "Name"
-        description: "Description"
-        organization: "Contractor"
-        counterparty: "Subcontractor"
-      supplier_agreement:
-        name: "Name"
-        description: "Description"
-        organization: "Supplier"
-        counterparty: "Supplier Customer"
-
     events:
       agreement:
         new_subcon_agreement:

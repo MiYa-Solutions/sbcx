@@ -24,16 +24,16 @@ class Agreement < ActiveRecord::Base
 
   belongs_to :organization
   belongs_to :counterparty, polymorphic: true
-  has_many :events, as: :eventable
+  has_many :events, as: :eventable, :order => 'id DESC'
   has_many :notifications, as: :notifiable
   has_many :posting_rules
   alias_method :rules, :posting_rules
   has_many :payments
-  has_many :tickets
 
   accepts_nested_attributes_for :payments
 
   stampable
+  has_paper_trail if: ->(agr) { agr.status_changed? }
 
   validates_presence_of :organization, :counterparty, :creator, :name
 
@@ -138,7 +138,51 @@ class Agreement < ActiveRecord::Base
     rules.map(&:get_transfer_props)
   end
 
+  def human_payment_terms
+    I18n.t("agreement.payment_options.#{payment_terms}")
+  end
+
+  def attr_changed_from_prev_ver?(attr)
+    previous_version.nil? ? false : previous_version[attr] != self[attr]
+  end
+
+  def rules_changed_from_prev_ver?
+    if self.live?
+      cut_off_date = self.versions.size > 0 ? self.versions.last.created_at : self.created_at
+    else
+      cut_off_date = self.version.previous.nil? ? self.created_at : self.version.previous.try(:created_at)
+    end
+
+    PaperTrail::Version.where(item_type: 'PostingRule', assoc_id: self.id).
+        where('created_at > ?', cut_off_date).size > 0
+
+  end
+
+  def changed_since_prev_version?
+    AgrVersionDiffHelper.new.agr_diff_attrs.each do |attr|
+      return true if  attr_changed_from_prev_ver? attr
+    end
+
+    return true if rules_changed_from_prev_ver?
+
+    false
+  end
+
+  def last_version
+    self.previous_version
+  end
+
+  def before_last_version
+    self.previous_version.try(:previous_version) || last_version
+  end
+
+  def version_posting_rules
+    self.live? ? posting_rules : rules_for_version(self.version)
+  end
+
+
   private
+
   def save_ends_on_text
     self.ends_at = Time.zone.parse(@ends_at_text) if @ends_at_text.present?
 

@@ -25,7 +25,7 @@ describe NewInviteEvent do
     notification = mock_model(NewInviteNotification, save: true, :[]= => true, deliver: true, :[] => true)
     NewInviteNotification.stub(:new).and_return(notification)
 
-    NewInviteNotification.should_receive(:new).with(user: aff_user).and_return(notification)
+    NewInviteNotification.should_receive(:new).with(user: aff_user, event: anything()).and_return(notification)
     notification.should_receive(:deliver)
 
     event.save

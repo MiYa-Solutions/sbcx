@@ -21,7 +21,10 @@
 
 class OrganizationAgreement < Agreement
 
-  # first we will define the organization state values
+  has_many :subcon_tickets, class_name: 'Ticket', foreign_key: 'subcon_agreement_id'
+  has_many :prov_tickets, class_name: 'Ticket', foreign_key: 'provider_agreement_id'
+
+                                # first we will define the organization state values
   STATUS_PENDING_ORG_APPROVAL    = 11000
   STATUS_PENDING_CPARTY_APPROVAL = 11001
   STATUS_REJECTED_BY_ORG         = 11002
@@ -83,7 +86,7 @@ class OrganizationAgreement < Agreement
     end
 
     event :accept do
-      transition [:pending_org_approval, :pending_cparty_approval] => :active
+      transition [:pending_org_approval, :pending_cparty_approval] => :active, unless: ->(agreement) { agreement.changed_from_previous_ver? }
     end
 
     event :reject do
@@ -97,9 +100,16 @@ class OrganizationAgreement < Agreement
 
   end
 
+  def changed_from_previous_ver?
+    AgrVersionDiffService.new(self, self.previous_version).different? || self.rules_changed_from_prev_ver?
+  end
+
+
   private
   def end_date_validation
-    errors.add :ends_at, I18n.t('activerecord.errors.agreement.ends_at_invalid', date: ends_at.strftime('%b, %d, %Y')) if self.ends_at && Ticket.created_after(self.organization_id, self.counterparty_id, self.ends_at).size > 0
+    if self.ends_at && (subcon_tickets.size > 0 || prov_tickets.size > 0) && Ticket.created_after(self.organization, self.counterparty, self.ends_at).size > 0
+      errors.add :ends_at, I18n.t('activerecord.errors.agreement.ends_at_invalid', date: ends_at.strftime('%b, %d, %Y'))
+    end
   end
 
   def ensure_state_before_change
@@ -126,5 +136,6 @@ class OrganizationAgreement < Agreement
     end
     test_hash.size > 0
   end
+
 
 end

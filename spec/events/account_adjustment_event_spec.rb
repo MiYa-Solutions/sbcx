@@ -4,8 +4,8 @@ describe AccountAdjustmentEvent do
 
   let(:org) { mock_model(Organization, id: 1, name: 'Test Org1', providers: [], subcontractors: []) }
   let(:org2) { mock_model(Organization, id: 2, name: 'Test Org2', providers: [], subcontractors: []) }
-  let(:acc) { mock_model(Account, id: 1, name: 'Test Org', organization: org, accountable: org2, events: []) }
-  let(:entry) { mock_model(MyAdjEntry, id: 1, save: true) }
+  let(:acc) { mock_model(Account, id: 1, name: 'Test Org', organization: org, accountable: org2, events: [], adjustment_submitted: true) }
+  let(:entry) { mock_model(MyAdjEntry, id: 1, save: true, :event= => true, save!: true) }
   let(:event) { AccountAdjustmentEvent.new(eventable: acc, entry_id: entry.id) }
 
 
@@ -13,6 +13,10 @@ describe AccountAdjustmentEvent do
 
     before do
       Account.stub(:for_affiliate => [acc])
+      AccountingEntry.stub(:find).with(entry.id).and_return(entry)
+      AccountingEntry.stub(:find).with(entry.id.to_s).and_return(entry)
+      ReceivedAdjEntry.stub(new: entry)
+
     end
 
     it 'should create AccountAdjustedEvent' do

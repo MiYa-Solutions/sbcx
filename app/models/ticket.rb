@@ -86,7 +86,7 @@ class Ticket < ActiveRecord::Base
 
   alias_method :entries, :accounting_entries
 
-  scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov} AND subcontractor_id = #{subcon} and created_at > '#{after}'") }
+  scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov.id} AND subcontractor_id = #{subcon.id} and created_at > '#{after}'") }
   scope :affiliated_jobs, ->(org, affiliate) { where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id)) }
   scope :customer_jobs, ->(org, customer) { where(organization_id: org.id).where(customer_id: customer.id) }
 
@@ -107,6 +107,7 @@ class Ticket < ActiveRecord::Base
   before_save :save_completed_on_text
   before_save :save_scheduled_for_text
   before_save :assign_tags
+  after_save :create_appointment
 
                                                                                        # create a new customer in case one was asked for
   before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
@@ -442,6 +443,14 @@ class Ticket < ActiveRecord::Base
 
   def total_price_validation
     errors.add :total_price, "is not a number" unless !total_price.nil? && total_price.instance_of?(BigDecimal)
+  end
+
+  def create_appointment
+    appointments << Appointment.new(organization: organization,
+                                    starts_at:    self.scheduled_for,
+                                    ends_at:      self.scheduled_for + 3600,
+                                    title:        I18n.t('appointment.auto_title', id: self.ref_id),
+                                    description:  I18n.t('appointment.auto_description', id: self.ref_id)) if self.scheduled_for_changed?
   end
 
 end

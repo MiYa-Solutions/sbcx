@@ -16,9 +16,9 @@ class FlatFee < AffiliatePostingRule
   class TransferProperties < TicketProperties
     column :bom_reimbursement, :boolean
     column :prov_bom_reimbursement, :boolean
-    column :subcon_fee_cents, :integer
+    column :subcon_fee_cents, :integer, 0
     column :subcon_fee_currency, :string
-    column :provider_fee_cents, :integer
+    column :provider_fee_cents, :integer, 0
     column :provider_fee_currency, :string
     monetize :subcon_fee_cents
     monetize :provider_fee_cents

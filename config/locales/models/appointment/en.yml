@@ -1,4 +1,7 @@
 en:
+  appointment:
+    auto_title: 'Job(%{id}) Scheduled Meeting'
+    auto_description: 'This meeting was created automatically since you updated the job scheduled time'
   activerecord:
     models:
       appointment: "Meetings"

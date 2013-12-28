@@ -53,7 +53,7 @@
 require 'spec_helper'
 
 describe Ticket do
-  let(:service_call) { FactoryGirl.build(:transferred_sc_with_new_customer) }
+  let(:service_call) { FactoryGirl.build(:my_job) }
 
   subject { service_call }
 
@@ -95,7 +95,9 @@ describe Ticket do
   end
 
   describe 'verify money attributes' do
-
+    before do
+      service_call.save!
+    end
     [:subcon_balance, :provider_balance, :subcon_fee].each do |money_attr|
       it "#{money_attr} should be of type Money" do
         should monetize money_attr
@@ -104,18 +106,20 @@ describe Ticket do
   end
 
 
-  it { should be_valid }
-
   it 'name should be set after create to a concatenation of tags and address' do
 
     service_call.tag_list = "Test Tag, Test Tag2"
     service_call.address1 = "Test Address"
     service_call.save
-    service_call.name.should == "Test Tag, Test Tag2: Test Address"
+    service_call.reload.name.should == "Test Tag, Test Tag2: Test Address"
 
   end
 
   describe "validation" do
+    it 'should be valid' do
+      should be_valid
+    end
+
     it 'organization must be present' do
       should validate_presence_of(:organization)
     end
@@ -131,10 +135,10 @@ describe Ticket do
       should_not be_valid
     end
 
-    it 'when the provider is not present' do
-      service_call.provider = nil
-      should_not be_valid
-    end
+    #it 'when the provider is not present' do
+    #  service_call.provider = nil
+    #  should_not be_valid
+    #end
 
     it 'my job when transferred an agreement must be present' do
       sc = FactoryGirl.create(:my_service_call)
@@ -144,8 +148,9 @@ describe Ticket do
     end
 
     it 'subcon agreement must be one that matches the roles on the ticket' do
-      service_call.save
-      agr                           = setup_profit_split_agreement(service_call.subcontractor, service_call.organization)
+      service_call.subcontractor    = FactoryGirl.build(:member_org).becomes(Subcontractor)
+      agr                           = FactoryGirl.build(:subcon_agreement, organization: service_call.subcontractor, counterparty: service_call.organization)
+      agr.status                    = Agreement::STATUS_ACTIVE
       service_call.subcon_agreement = agr
 
       service_call.should_not be_valid
@@ -164,6 +169,24 @@ describe Ticket do
     it { should belong_to :collector }
     it { should belong_to :subcon_agreement }
     it { should belong_to :provider_agreement }
+  end
+
+  context 'when created' do
+    before do
+      service_call.scheduled_for = Time.zone.now
+      service_call.save! unless example.metadata[:skip_create]
+    end
+
+    it 'should create an appointment', skip_create: true do
+      meeting = mock_model(Appointment, :[]= => true, :appointable_id= => true, save: true, :title= => true)
+      Appointment.stub(new: meeting)
+      Appointment.should_receive(:new).with(organization: service_call.organization,
+                                            title:        anything(),
+                                            description:  anything(),
+                                            starts_at:    an_instance_of(ActiveSupport::TimeWithZone),
+                                            ends_at:      an_instance_of(ActiveSupport::TimeWithZone))
+      service_call.save!
+    end
   end
 
 end

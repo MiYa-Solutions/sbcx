@@ -98,7 +98,7 @@
                               <%= @service_call.class.human_attribute_name(:scheduled_for) %>:
                             </td>
                             <td valign="top" class="dataTableContent">
-                              <strong><%= I18n.l @service_call.scheduled_for, format: :default %></strong>
+                              <strong><%= I18n.l @service_call.scheduled_for, format: :default if @service_call.scheduled_for %></strong>
 
                             </td>
                           </tr>

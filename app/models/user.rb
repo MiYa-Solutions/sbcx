@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
     end
 
     define_method("#{key}=") do |value|
-      self.preferences = (preferences || { }).merge(key => value)
+      self.preferences = (preferences || {}).merge(key => value)
     end
   end
 
@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
 
   SYSTEM_USER_EMAIL = ENV["SYSTEM_USER_EMAIL"] ? ENV["SYSTEM_USER_EMAIL"] : "system@subcontrax.com"
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   belongs_to :organization
   model_stamper

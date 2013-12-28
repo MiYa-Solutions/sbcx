@@ -38,6 +38,12 @@ class PostingRule < ActiveRecord::Base
   # creates the standard methods for an attribute that is stored in hstore column
   extend HstoreSetupMethods
 
+  has_paper_trail meta: { assoc_id: :agreement_id }
+
+  def agreement_version_id
+
+  end
+
   # define hstore properties methods
   #%w[cheque_rate cheque_rate_type credit_rate credit_rate_type cash_rate cash_rate_type amex_rate amex_rate_type].each do |key|
   %w[ cheque_rate
@@ -54,7 +60,7 @@ class PostingRule < ActiveRecord::Base
 
   serialize :properties, ActiveRecord::Coders::Hstore
 
-  validates_presence_of :agreement_id, :type
+  validates_presence_of :agreement, :type
 
   validate :ensure_state_before_change
 

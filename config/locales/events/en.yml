@@ -43,6 +43,10 @@ en:
     name: "Accepted Subcontracting Agreement"
     description: '%{other_party} has accepted the terms of the subcontracting agreement'
 
+  agr_change_rejected_event:
+    name: "Rejected Subcontracting Agreement Change"
+    description: '%{other_party} has rejected the last change submitted'
+
   new_invite_event:
     name: "New Invitation"
     description: '%{org} has invited %{affiliate} to become one of his affilates'

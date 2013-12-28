@@ -28,8 +28,9 @@ describe OrganizationAgreement do
 
   subject { new_agreement }
 
-  before do
-
+  describe 'association' do
+    it { should have_many(:subcon_tickets) }
+    it { should have_many(:prov_tickets) }
   end
 
   describe 'payment terms' do
@@ -41,7 +42,7 @@ describe OrganizationAgreement do
 
   end
 
-  describe "created by org lifecycle" do
+  describe "created by org lifecycle", :versioning => true do
     let!(:agreement_by_org) { FactoryGirl.create(:organization_agreement) }
     let!(:org_user) { agreement_by_org.organization.org_admins.first }
     let!(:cparty_user) { agreement_by_org.counterparty.org_admins.first }
@@ -58,6 +59,14 @@ describe OrganizationAgreement do
 
     end
 
+    context 'ensure AgrSubmittedEvent is created' do
+      let(:new_agr_event) { AgrNewSubconEvent.find_by_eventable_id_and_eventable_type(agreement_by_org.id, 'Agreement') }
+
+      it 'expect the event to exist' do
+        expect(new_agr_event).to_not be_nil
+      end
+    end
+
 
     describe "after submission validation" do
       before do
@@ -68,6 +77,14 @@ describe OrganizationAgreement do
           agreement_by_org.submit_for_approval
         end
 
+      end
+
+      context 'ensure AgrSubmittedEvent is created' do
+        let(:submission_event) { AgrSubmittedEvent.find_by_eventable_id_and_eventable_type(agreement_by_org.id, 'Agreement') }
+
+        it 'expect the event to exist' do
+          expect(submission_event).to_not be_nil
+        end
       end
 
       it "status should be pending cparty approval" do
@@ -176,7 +193,7 @@ describe OrganizationAgreement do
 
     end
 
-    describe "after activation" do
+    describe 'after acceptance', :versioning => true do
       before do
         with_user org_user do
           agreement_by_org.change_reason = "Stam"
@@ -222,13 +239,15 @@ describe OrganizationAgreement do
 
       describe 'changing the end date' do
         before do
-          FactoryGirl.create(:my_service_call, organization: agreement_by_org.organization, subcontractor: agreement_by_org.counterparty.becomes(Subcontractor))
+          job                  = FactoryGirl.create(:my_service_call, organization: agreement_by_org.organization, subcontractor: agreement_by_org.counterparty.becomes(Subcontractor))
+          job.subcon_agreement = agreement_by_org
+          job.save!
           agreement_by_org.update_attributes(ends_at: 1.day.ago)
         end
         it "ends_at can't be set to a date earlier than the last job" do
 
 
-          agreement_by_org.should_not be_valid
+          agreement_by_org.reload.should_not be_valid
 
         end
       end
@@ -247,6 +266,94 @@ describe OrganizationAgreement do
         rule.should_not be_valid
         rule.errors[:agreement].should_not be_nil
       end
+
+      it 'cancelling the agreement is successful' do
+        agreement_by_org.cancel!
+        expect(agreement_by_org).to be_canceled
+      end
+    end
+
+    context 'when negotiating', :versioning => true do
+
+      before do
+        with_user org_user do
+          agreement_by_org.name          = 'Original Name'
+          agreement_by_org.change_reason = 'Reason for creation'
+          agreement_by_org.submit_for_approval
+        end
+
+        with_user cparty_user do
+          agreement_by_org.name          = 'Changed Name'
+          agreement_by_org.change_reason = 'Reason for changed name'
+          agreement_by_org.submit_change
+        end
+      end
+
+
+      it 'acceptance is not allowed after making a change' do
+        with_user org_user do
+          agreement_by_org.name = 'Changed Name'
+          agreement_by_org.save
+          expect(agreement_by_org.can_accept?).to be_false
+        end
+
+      end
+
+      context 'when the counterparty submits a change ' do
+        let(:change_event) { AgrChangeSubmittedEvent.find_by_eventable_id_and_eventable_type(agreement_by_org.id, 'Agreement') }
+
+        it 'the agreement should have a AgrChangeSubmittedEvent' do
+          expect(change_event).to_not be_nil
+        end
+
+
+        it 'the AgrChangeSubmittedEvent description should show the difference between both versions' do
+          expect(change_event.reload.description).to include('agr_diff_table')
+        end
+      end
+
+      context 'when deleting the rules' do
+
+        before do
+          with_user org_user do
+            agreement_by_org.rules.destroy_all
+          end
+        end
+
+        it 'name should be allowed to change (no validation on rule existence)' do
+          with_user org_user do
+            agreement_by_org.name = 'a new name'
+            expect(agreement_by_org).to be_valid
+          end
+
+        end
+
+
+      end
+
+      context 'when the contractor rejects the changes' do
+        before do
+          with_user org_user do
+            agreement_by_org.update_attributes(status_event: 'reject', change_reason: 'the rejection reason') unless example.metadata[:skip_reject]
+          end
+        end
+
+        it 'rejection should be successful' do
+          expect(agreement_by_org).to be_rejected_by_org
+        end
+
+        it 'the rejection reason should propagate to the event' do
+          expect(agreement_by_org.events.first.change_reason).to eq 'the rejection reason'
+        end
+
+        it 'should trigger the rejected event', skip_reject: true do
+          event = mock_model(AgrChangeRejectedEvent, :eventable_id= => 1, :[]= => true, save: true)
+          AgrChangeRejectedEvent.stub(new: event)
+          AgrChangeRejectedEvent.should_receive(:new)
+          agreement_by_org.update_attributes(status_event: 'reject', change_reason: 'the rejection reason')
+        end
+      end
+
     end
   end
 

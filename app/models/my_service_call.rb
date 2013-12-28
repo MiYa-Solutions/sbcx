@@ -53,7 +53,7 @@
 class MyServiceCall < ServiceCall
 
   before_validation do
-    self.provider = self.organization.becomes(Provider)
+    self.provider = self.organization.becomes(Provider) if self.organization
   end
 
   after_create :set_ref_id

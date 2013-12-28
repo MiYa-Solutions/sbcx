@@ -1,4 +1,7 @@
 en:
+  help:
+    flat_fee:
+      description: 'FlatFee allows you to transfer a job to one of your affiliates while specifying the subcontracting fee for the job. The subcontracting fee is dynamic and determined per each job'
   activerecord:
     errors:
       posting_rule:

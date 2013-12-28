@@ -1,0 +1,33 @@
+<table>
+
+  <thead>
+  <tr>
+    <h4><%= ProfitSplit.model_name.human %></h4>
+  </tr>
+  </thead>
+
+  <tbody>
+
+  <tr>
+    <td><%= PostingRule.human_attribute_name(:id) %></td>
+    <td><%= rule.id %></td>
+  </tr>
+
+  <tr>
+    <td><%= PostingRule.human_attribute_name(:rate) %></td>
+    <td><%= rule.rate %></td>
+  </tr>
+
+  <tr>
+    <td><%= PostingRule.human_attribute_name(:rate_type) %></td>
+    <td><%= rule.rate_type %></td>
+  </tr>
+
+  <tr>
+    <td><%= PostingRule.human_attribute_name(:properties) %></td>
+    <td><%= render 'posting_rules/rule_diff/profit_split_props', rule: rule %></td>
+  </tr>
+
+  </tbody>
+
+</table>

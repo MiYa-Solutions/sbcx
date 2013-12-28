@@ -59,9 +59,11 @@ describe FlatFee do
         props.should respond_to(:bom_reimbursement)
       end
 
-      it 'should have subcon_fee method with a default of zero' do
+      it 'should have monetized subcon_fee method with a default of zero' do
         props.should respond_to(:subcon_fee)
-        props.subcon_fee.should == Money.new_with_amount(0)
+        #props.should monetize(:subcon_fee)
+        expect(props).to monetize(:subcon_fee)
+        #props.subcon_fee.should == Money.new_with_amount(0)
       end
 
       it 'should load the ticket properties after transfer' do
@@ -166,6 +168,7 @@ describe FlatFee do
     let(:bom2_cost) { 0.49 }
     let(:bom2_price) { 0.75 }
     let(:bom2_qty) { 1 }
+    let(:total_price) { Money.new_with_amount(bom1_price*bom1_qty + bom2_price*bom2_qty) }
     let(:subcon_flat_fee) { Money.new_with_amount(10) }
 
 
@@ -191,28 +194,25 @@ describe FlatFee do
       let(:agreement) { Agreement.our_agreements(org, subcon.becomes(Organization)).first }
       let(:the_rule) { agreement.rules.first }
       let(:job) { FactoryGirl.create(:my_service_call, organization: org, subcontractor: nil) }
+      let(:event) { job.events.first }
 
       before do
         job.subcon_agreement = agreement
         job.subcontractor    = subcon.becomes(Subcontractor)
-        job.subcon_fee       = subcon_flat_fee
+        #job.subcon_fee       = subcon_flat_fee
+        job.properties       = (job.properties || {}).merge('subcon_fee' => subcon_flat_fee)
         job.transfer
         job.accept_work
 
         job.start_work
 
-        add_bom_to_ticket(job, cost: bom1_cost, price: bom1_price, quantity: bom1_qty, buyer: job.organization)
-        add_bom_to_ticket(job, cost: bom2_cost, price: bom2_price, quantity: bom2_qty, buyer: job.organization)
+        add_bom_to_ticket(job, bom1_cost, bom1_price, bom1_qty, job.organization)
+        add_bom_to_ticket(job, bom2_cost, bom2_price, bom2_qty, job.organization)
 
         job.complete_work
 
       end
       describe 'entries for CompleteEvent' do
-
-
-        before do
-          job.complete_work
-        end
 
         it 'one entry for the subcon account with the subcon flat fee' do
           the_rule.get_entries(event, account).map(&:class).should =~ [PaymentToSubcontractor]
@@ -222,7 +222,6 @@ describe FlatFee do
       describe 'entries for ScCollectEvent' do
 
         before do
-          job.complete_work
           job.subcon_invoiced_payment
           job.payment_type = 'cash'
           job.collector    = job.subcontractor
@@ -230,7 +229,8 @@ describe FlatFee do
         end
 
         it 'should create collection entries' do
-          the_rule.get_entries(event, account).sum(&:amount).should == subcon_flat_fee
+          the_rule.get_entries(event, account).map(&:class).should =~ [CashCollectionFromSubcon]
+          the_rule.get_entries(event, account).sum(&:amount).should == total_price
         end
 
       end
