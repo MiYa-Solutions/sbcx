@@ -1,5 +1,95 @@
-<p>Welcome <%= @resource.email %>!</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title><%= I18n.t('notification_mailer.sign_up_confirmation.subject').html_safe %></title>
+  <%= render 'notification_mailer/styling' %>
+</head>
 
-<p>You can confirm your account email through the link below:</p>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+  <tr>
+    <td align="center" valign="top" style="padding-top:20px;">
+      <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+        <tr>
+          <td align="center" valign="top">
+            <!-- // Begin Template Header \\ -->
+            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+              <tr>
+                <td class="headerContent">
+                  <img src="http://www.subcontrax.com/assets/LogoImg.png" style="max-width:600px;" id="headerImage campaign-icon"/>
+                </td>
+              </tr>
+            </table>
+            <!-- // End Template Header \\ -->
+          </td>
+        </tr>
+        <tr>
+          <td align="center" valign="top">
+            <!-- // Begin Template Body \\ -->
+            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
+              <tr>
+                <td valign="top">
+
+                  <!-- // Begin Module: Standard Content \\ -->
+                  <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                    <tr>
+                      <td valign="top" class="bodyContent">
+                        <div>
+                          <h4 class="h4"><%= I18n.t('notification_mailer.sign_up_confirmation.title').html_safe %></h4>
+                          <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@resource.first_name} #{@resource.last_name}" + "," %><br>
+                          <%= I18n.t('notification_mailer.sign_up_confirmation.content').html_safe %>
+                          <br>
+                          <%= I18n.t('notification_mailer.sign_up_confirmation.content_p2').html_safe %>
+                          <br><br>
+                          <%= I18n.t('notification_mailer.sign_up_confirmation.content_p3').html_safe %>
+                          <br>
+                          <%= I18n.t('notification_mailer.sign_up_confirmation.content_p4').html_safe %>
+                          <br>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+
+                    </tr>
+                    <tr>
+                      <td valign="top" class="bodyContent">
+                        <div>
+                          <%= I18n.t('notification_mailer.sign_up_confirmation.bottom_content').html_safe %>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center" valign="top" style="padding-top:0;">
+                        <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
+                          <tr>
+                            <td valign="middle" class="templateButtonContent">
+                              <div>
+                                <%= link_to '<input class="btn btm-primary" type="button" value="Confirm my account">'.html_safe, confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %>
+                                                       </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  <!-- // End Module: Standard Content \\ -->
+                </td>
+              </tr>
+            </table>
+            <!-- // End Template Body \\ -->
+          </td>
+        </tr>
+        <tr>
+          <%= render 'notification_mailer/footer' %>
+        </tr>
+      </table>
+      <br/>
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>

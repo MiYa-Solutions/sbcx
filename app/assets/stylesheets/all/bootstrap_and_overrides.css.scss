@@ -374,6 +374,10 @@ footer {
     margin-left: -18px;
     margin-top: 0.701em;
   }
+
+  .control-group {
+    margin-left: 4px;
+  }
 }
 
 #adj_entry_img {
@@ -459,6 +463,19 @@ footer {
     min-width: 40px;
     text-align: center;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  }
+}
+
+#boms-table-summary{
+
+  float: right;
+  width: 30%;
+  margin-top: -10px;
+}
+
+#boms-table {
+  .icon-pencil {
+    float: right;
   }
 }
 
@@ -1338,7 +1355,7 @@ a:hover {
 }
 
 .job_details_block {
-  min-height: 205px;
+  min-height: 170px;
 
 }
 
@@ -1447,14 +1464,23 @@ a:hover {
   }
 
   input, textarea {
-    width: 60%;
+    width: 80%;
   }
 
   .select2-container, .select2-drop, .select2-search, .select2-search input {
-    width: 62%;
+    width: 82%;
   }
 
 }
+
+.select2-container-multi .select2-choices {
+  border-radius: 4px;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input {
+  padding: 4px;
+}
+
 
 .list_service_calls {
 
@@ -1537,6 +1563,8 @@ a:hover {
     text-align: center;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
     width: 200px;
+    padding-bottom: 3px;
+    padding-top: 3px;
   }
 
   .btn-large {
@@ -3140,7 +3168,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 .note_area_job {
-  margin-left: 2.5%;
+  margin-left: 3.5%;
   min-height: 187px;
   width: 95%;
 
@@ -3944,6 +3972,12 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .changed {
   font-weight: bold;
   color: #DA4E49;
+}
+
+#confirm_email_btn {
+  text-shadow: 0 0 0 rgba(255, 255, 255, 0.5);
+  margin-left: 1px;
+
 }
 
 

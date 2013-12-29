@@ -29,7 +29,14 @@
 
     <li class="nav-header"><i class="icon-signal"></i> <%= I18n.t('general.general.billing') %></li>
     <li><%= link_to AccountingEntry.name.tableize.humanize , accounting_entries_path %></li>
+
+
   </ul>
+  <br>
+
+  <% unless current_user.confirmed? %>
+   <%= link_to(t('general.general.confirm_email'), '#', class: "btn btn-mini btn-danger", id: "confirm_email_btn", :title => I18n.t('general.messages.confirm_email').html_safe, :rel => 'tooltip', "data-placement" => "right") %>
+  <% end %>
 
 
 </div>
