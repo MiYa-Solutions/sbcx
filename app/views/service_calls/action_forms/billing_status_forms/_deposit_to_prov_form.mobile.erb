@@ -1,0 +1,10 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
+    <%= hidden_field_tag 'service_call[billing_status_event]', 'deposit_to_prov' %>
+    <%= f.submit job.class.human_billing_status_event_name(:deposit_to_prov).titleize,
+                 id:    'deposit_to_prov_service_call_btn',
+                 class: 'btn btn-large btn-primary',
+                 title: I18n.t('service_call.forms.billing_status.deposit_to_prov.tooltip'),
+                 rel:   'tooltip'
+    %>
+<% end %>
+
