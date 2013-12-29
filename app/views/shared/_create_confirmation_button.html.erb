@@ -1,0 +1,12 @@
+<%= simple_form_for(current_user, :as => User, :url => confirmation_path(User), :html => { :method => :post }) do |f| %>
+    <%= f.hidden_field :email, value: current_user.email %>
+
+    <div class="actions">
+      <%= f.button :submit, t('general.general.confirm_email'),
+                   class:           'btn btn-mini btn-danger',
+                   id:              'confirm_email_btn',
+                   :rel             => 'tooltip',
+                   "data-placement" => "right",
+                   :title           => I18n.t('general.messages.confirm_email').html_safe %>
+    </div>
+<% end %>
