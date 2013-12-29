@@ -16,18 +16,20 @@ en:
         confirm_settled:
           tooltip: "Click to confirm this job has been settled"
         settle:
-          tooltip: "Click here to indicate the"
+          tooltip: "Click here to indicate the subcontracting fee is settled"
       provider_status:
         mark_as_settled:
           tooltip: "click to indicate this job has settled with the subcontractor"
-        subcon_confirmed:
-          tooltip: "Click here to indicate the subcontractor has confirmed this job as settled"
-        subcon_marked_as_settled:
-          tooltip: "click here if the subcontractor claims this is settled"
+        provider_confirmed:
+          tooltip: "Click here to indicate the provider has confirmed this job as settled"
+        provider_marked_as_settled:
+          tooltip: "click here if the contractor claims this is settled"
         confirm_settled:
           tooltip: "Click to confirm this job has been settled"
         settle:
-          tooltip: "Click here to indicate the"
+          tooltip: "Click here to indicate the contractor fees has been settled"
+        clear:
+          tooltip: "Click here to indicate the contractor fees have been cleared"
       status:
         accept:
           tooltip: "Click to accept the transferred job"
@@ -87,6 +89,12 @@ en:
           tooltip: "Click to indicate the subcontractor has deposited the customer payment"
         confirm_deposit:
           tooltip: "Click to confirm the subcontractor has deposited the customer payment"
+        deposit_to_prov:
+          tooltip: "Click to indicate the customer payment was delivered to the contractor"
+        employee_deposit:
+          tooltip: "Click to indicate the customer payment was delivered to the contractor by an employee"
+        prov_confirmed_deposit:
+          tooltip: "Click to indicate the contractor has confirmed receiving of the customer payment"
         clear:
           tooltip: "Click to indicate the payment was cleared"
 

@@ -1,0 +1,12 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { class: 'green-button' } do |f| %>
+    <%= hidden_field_tag 'service_call[billing_status_event]', 'paid' %>
+    <%= f.input :payment_type, collection: payment_types %>
+    <%= hidden_field_tag 'service_call[collector_id]', current_user.id %>
+    <%= f.submit job.class.human_billing_status_event_name(:paid).titleize,
+                 id:    'job_paid_btn',
+                 class: 'btn btn-large btn-success',
+                 title: I18n.t('service_call.forms.billing_status.paid.tooltip'),
+                 rel:   'tooltip'
+    %>
+<% end %>
+
