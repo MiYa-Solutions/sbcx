@@ -83,33 +83,38 @@
     <% @service_call.boms.each do |bom| %>
           <%= render 'boms/bom', bom: bom %>
     <% end %>
-    <% if  @service_call.total_cost > 0 %>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+
+    </tbody>
+  </table>
+    <!--<#% if  @service_call.total_cost > 0 %>-->
+
+  <table class="table table-striped" id="boms-table-summary">
+    <tbody>
+        <tr class="bom_table_summary">
+          <td><strong><%= @service_call.class.human_attribute_name(:tax) %></strong>
+            <% if permitted_attribute? @service_call, :tax %>
+                &nbsp;<i class="icon-pencil"></i>
+            <% end %></td>
+          <td class="bom_label">
+           <h3>
+           <%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>  %
+          </h3>
+          </td>
+        </tr>
+
+        <tr class="bom_table_summary">
           <td><strong><%= t('general.general.total_cost').html_safe %></strong></td>
           <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_cost %></h3></td>
         </tr>
 
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><strong><%= t('general.general.total_price').html_safe %></strong></td>
+        <tr class="bom_table_summary">
+         <td><strong><%= t('general.general.total_price').html_safe %></strong></td>
           <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_price %></h3></td>
         </tr>
-
-
-    <% end %>
     </tbody>
   </table>
+    <!--<#% end %>-->
+
 
 </div>
 

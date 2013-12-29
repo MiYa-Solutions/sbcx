@@ -40,6 +40,7 @@ en:
       amount: "Amount"
       account_id: "Account Number"
       pending_jobs: "Jobs in Progress"
+      confirm_email: "Confirm Email"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"
@@ -50,6 +51,7 @@ en:
       profit_split_m3: "For example: In case you collect the customer payment by yourself and your credit card fee is <strong>2%</strong>, you would want to exclude that fee from the profit share.                 You should therefore; enter <strong>'2'</strong> in the <strong>'Credit rate'</strong> field and select <strong>'Percentage'</strong> from the dropdown menu."
       add_agreement: "You can set Terms and Conditions for your working agreement with your affiliate.\n Click on the “Add Agreement” button to add a new working agreement."
       adj_tooltip: "Click on the status button to get information and guidelines for the different statuses"
+      confirm_email: "Click to confirm your email address"
     message:
       contact_us: "Please fill out the form below and we will contact you shortly."
       forgot_pass: "Forgot your password?"

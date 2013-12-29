@@ -6,4 +6,12 @@ en:
         address1: "Address"
         mobile_phone: "Mobile"
 
+    errors:
+      attributes:
+            password:
+              blank: "Name field can't be blank"
+      messages:
+        update_error: "There can be only one system owner"
+
   admin_role: "you are not allowed to add an admin role to this organization"
+

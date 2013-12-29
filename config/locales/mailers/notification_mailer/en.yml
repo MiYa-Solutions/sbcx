@@ -30,7 +30,7 @@ en:
     agr_change_submitted_notification:
       title: 'Subcontractor Agreement Negotiation: Change Submitted'
       subject: 'New Change Submitted For A Subcontractor Agreement'
-      content: 'a chnage was made to an agreement which is currently being negotiated:'
+      content: 'a change has been made to an agreement which is currently being negotiated:'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
 
     agr_change_rejected_notification:
@@ -127,6 +127,11 @@ en:
       subject: 'Subcontractor has Confirmed Settlement'
       content: 'Please note that commission fees have been confirmed as settled by Subcontractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_subcon_cleared_notification:
+      title: 'Payment has been cleared by Subcontractor'
+      subject: 'Payment has been cleared by Subcontractor'
+      content: 'Please note that payment has been cleared by Subcontractor Name: '
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_provider_confirmed_settled_notification:
       title: 'Contractor has Confirmed Settlement'
       subject: 'Contractor has Confirmed Settlement'
@@ -146,6 +151,11 @@ en:
       title: 'Payment has been collected by Subcontractor'
       subject: 'Payment has been collected by Subcontractor'
       content: 'Please note that payment has been collected by Subcontractor Name: '
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_properties_updated:
+      title: 'Job details have been updated'
+      subject: 'Job details have been updated'
+      content: 'Please note that one or more details have been updated by Subcontractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_provider_settled_notification:
       title: 'Contractor has confirmed Job is settled'
@@ -187,4 +197,13 @@ en:
       title: "Account Balance Adjustment"
       content: "The following balance adjustment has been submitted to your account by: "
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
+    sign_up_confirmation:
+      subject: "Thank you for registering with SubConTraX"
+      title: "Thank you for registering with SubConTraX!"
+      content: "Please note you will need to confirm your email address within 10 days to activate your account."
+      content_p2: "We will contact you shortly to schedule your training session."
+      content_p3: "Best Regards,"
+      content_p4: "The SubConTraX team"
+      bottom_content: 'You can click on "Confirm Email" below to complete your account activation.'
+
 

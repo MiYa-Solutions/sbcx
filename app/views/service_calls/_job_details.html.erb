@@ -3,20 +3,12 @@
 <div class="smart_label">
   <ul>
     <li><h1><%= I18n.t('general.general.job_details') %></h1></li>
-    <!--<li><#%= render 'appointments/add_appointment', appointable: @service_call %></li>-->
     <li>
       <!--<button type="button" class="btn btn-medium" data-toggle="modal" data-target="#myMeetings">-->
       <!--<#%= I18n.t('general.general.show_appointments') %>-->
       <!--</button>-->
     </li>
     <li></li>
-    <!--<#% unless @service_call.events.empty? %>-->
-    <!--<li>-->
-    <!--<button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#myModal" id="job_history_btn">-->
-    <!--<#%= I18n.t('general.general.job_history') %>-->
-    <!--</button>-->
-    <!--</li>-->
-    <!--<#% end %>-->
   </ul>
 </div>
 <br>
@@ -32,22 +24,13 @@
       <li>
         <a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""><i class="icon-pencil"></i></a>
 
-        <!--todo cleanup-->
           <span class="tags" id="tags_list" data-url="<%= service_call_path(@service_call) %>" data-resrouce="service_call" data-value="<%= @service_call.tag_list %>" data-toggle="manual" data-type="select2" data-original-title="Enter tags">
             <% @service_call.tags.each do |tag| %>
               <span class="label"><%= tag.name %></span>
             <% end %>
           </span>
         <%= image_tag("question16.png", :title => I18n.t('general.messages.edit_job_tag'), :rel => 'tooltip') %>
-        <!--<a href="#" id="tags-edit-1" data-resrouce="service_call" data-editable="tags_list" class=""><i class="icon-pencil"></i></a>-->
-
-      </li>
-      <!--<li id='tag_list'>-->
-      <!--<#%= @service_call.tag_list %>-->
-
-      <!--</li>-->
-      <!--<li> <#%= button_tag 'Update Tags', id: "stam", data: { toggle: 'collapse', target: '#tags' }, class: "" %></li>-->
-      <!--<li> <a href="#" id="stam"  data-resrouce="service_call" data-toggle="collapse" data-target="#tags"><i class="icon-pencil"></i></a></li>-->
+        </li>
       <li></li>
 
     </ul>
@@ -139,16 +122,16 @@
 
         <br>
     <% end %>
-    <ul class="unstyled list_service_calls">
-      <li><label><%= @service_call.class.human_attribute_name(:tax) %> (%) </label></li>
-      <li>
-        <% if permitted_attribute? @service_call, :tax %>
-            &nbsp;<i class="icon-pencil"></i>
-        <% end %>
-        <%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>
-       </li>
-      <li></li>
-    </ul>
+    <!--<ul class="unstyled list_service_calls">-->
+      <!--<li><label><$%= @service_call.class.human_attribute_name(:tax) %> (%) </label></li>-->
+      <!--<li>-->
+        <!--<#% if permitted_attribute? @service_call, :tax %>-->
+            <!--&nbsp;<i class="icon-pencil"></i>-->
+        <!--<#% end %>-->
+        <!--<#%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>-->
+       <!--</li>-->
+      <!--<li></li>-->
+    <!--</ul>-->
 
     <br>
 
