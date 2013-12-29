@@ -1,0 +1,1 @@
+SIGNUP_SELECT_INDUSTRY = 'organization_industry_select'

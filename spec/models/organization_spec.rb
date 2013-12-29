@@ -26,8 +26,7 @@ require 'spec_helper'
 
 describe Organization do
 
-  let(:user) { FactoryGirl.build(:org_admin) }
-  let(:org) { user.organization }
+  let(:org) { FactoryGirl.build(:member_org) }
 
   subject { org }
 
@@ -90,6 +89,7 @@ describe Organization do
     end
 
     it 'local org should be unique for member' do
+      org.save!
       org2 = FactoryGirl.build(:member_org)
 
       local_org1 = FactoryGirl.build(:local_org)
@@ -131,6 +131,7 @@ describe Organization do
     let(:prov) { FactoryGirl.create(:org_admin).organization }
 
     before do
+      org.save!
       org.providers << prov
     end
 
@@ -142,6 +143,56 @@ describe Organization do
       expect(FlatFee.where(agreement_id: agreements.first.id).size).to eq 1
 
     end
+  end
+
+  describe 'industry' do
+
+    it 'the class should have the list of industries' do
+      expect(Organization.industries).to eq([:locksmith,
+                                             :security_systems,
+                                             :carpet_cleaning,
+                                             :plumbing,
+                                             :electricity,
+                                             :construction,
+                                             :transportation,
+                                             :landscaping,
+                                             :towing,
+                                             :auto_repair,
+                                             :glass_repair])
+    end
+    it 'should respond to #intrustry and #industry=' do
+      expect(org).to respond_to(:industry)
+      expect(org).to respond_to(:industry=)
+    end
+    it 'should validate that the industry is one of the allowed industries' do
+      org.industry = :invalid_industry
+      expect(org).to_not be_valid
+      org.industry = 'locksmith'
+      expect(org).to be_valid
+    end
+
+    it 'should validate presence of industry' do
+      expect(org).to validate_presence_of(:industry)
+    end
+    it 'should validate presence of other_industry when industry is set to other' do
+      org.industry = 'locksmith'
+      expect(org).to be_valid
+      expect(org.errors).to_not have_key(:other_industry)
+      org.industry = 'other'
+      expect(org).to_not be_valid
+      expect(org.errors).to have_key(:other_industry)
+    end
+    it '#industry_name' do
+      org.industry = 'locksmith'
+      expect(org.industry_name).to eq 'Locksmith'
+      org.industry = 'other'
+      expect(org.industry_name).to eq 'Other'
+    end
+    it 'Organization class has #human_industry_name' do
+      expect(Organization.human_industry_name('locksmith')).to eq 'Locksmith'
+      expect(Organization.human_industry_name('no_name')).to eq ''
+    end
+
   end
 
 
