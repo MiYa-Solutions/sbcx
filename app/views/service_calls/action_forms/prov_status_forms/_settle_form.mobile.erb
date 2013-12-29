@@ -1,0 +1,11 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { id: 'provider_status_settle', class: 'button-green' } do |f| %>
+    <%= f.input :provider_payment, collection: payment_types, input_html: { id: 'service_call_provider_payment' } %>
+    <%= hidden_field_tag 'service_call[provider_status_event]', 'settle' %>
+    <%= f.submit job.class.human_provider_status_event_name(:settle).titleize,
+                 id:    'settle_service_call_btn',
+                 class: 'btn btn-large btn-success',
+                 title: I18n.t('service_call.forms.provider_status.settle.tooltip'),
+                 rel:   'tooltip'
+    %>
+<% end %>
+

@@ -1,0 +1,60 @@
+<%= link_to(job.class.human_status_event_name(:transfer), '#transfer_modal', class: "#{style("service_call.forms.status.transfer.button_classes")}", data: { toggle: 'modal' }, role: "button", id: "transfer_btn") %>
+
+
+<div id='transfer_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.transfer_job') %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+    <%= simple_form_for job.becomes(ServiceCall), html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
+        <div class="row-fluid">
+          <div class="span6">
+
+            <div class="control-group string mandatory">
+              <label class="string optional control-label" for="service_call_subcontractor_id"> <%= I18n.t('general.general.select_subcon') %></label>
+
+              <div class="controls">
+                <%= f.select :subcontractor_id, subcon_options, include_blank: true %>
+              </div>
+            </div>
+
+            <%= f.input :subcon_agreement_id, collection: [] %>
+            <%= f.input :allow_collection %>
+            <%= f.input :re_transfer %>
+
+            <%= render 'service_calls/transfer_props/flat_fee_props', f: f %>
+            <%= hidden_field_tag "service_call[status_event]", 'transfer' %>
+
+          </div>
+          <div class="span6">
+            <%= f.input :notes %>
+          </div>
+
+        </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <%= f.submit job.class.human_status_event_name(:transfer).titleize,
+                       id:      'service_call_transfer_btn',
+                       class:   "btn btn-large btn-primary",
+                       title:   'Click to transfer the job to the Subcontractor you selected',
+                       rel:     'tooltip',
+                       confirm: "" %>
+
+
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+
+    <% end %>
+    </div>

@@ -1,0 +1,10 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { class: style('service_call.forms.work_status.un_cancel.form_classes') } do |f| %>
+    <%= hidden_field_tag 'service_call[status_event]', 'un_cancel' %>
+    <%= f.submit job.class.human_status_event_name(:un_cancel).titleize,
+                 id:    'un_cancel_service_call_btn',
+                 class: style('service_call.forms.status.un_cancel.button_classes'),
+                 title: I18n.t('service_call.forms.status.un_cancel.tooltip'),
+                 rel:   'tooltip'
+    %>
+<% end %>
+

@@ -1,0 +1,10 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { class: 'red-button' } do |f| %>
+    <%= hidden_field_tag 'service_call[billing_status_event]', 'overdue' %>
+    <%= f.submit job.class.human_billing_status_event_name(:overdue).titleize,
+                 id:    'overdue_service_call_btn',
+                 class: 'btn btn-large btn-danger',
+                 title: I18n.t('service_call.forms.billing_status.overdue.tooltip'),
+                 rel:   'tooltip'
+    %>
+<% end %>
+

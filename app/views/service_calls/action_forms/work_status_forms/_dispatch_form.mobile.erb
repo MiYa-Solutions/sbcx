@@ -1,0 +1,12 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
+    <%= hidden_field_tag 'service_call[work_status_event]', 'dispatch' %>
+    <%= f.input :technician_id, collection: f.object.organization.technicians, label_method: :name, value_method: :id %>
+    <%= f.submit job.class.human_work_status_event_name(:dispatch).titleize,
+                 id:    'dispatch_service_call_btn',
+                 class: 'btn btn-large btn-primary',
+                 title: I18n.t('service_call.forms.work_status.dispatch.tooltip'),
+                 rel:   'tooltip'
+    %>
+<% end %>
+
+

@@ -31,7 +31,7 @@ describe "Service Call pages" do
   accept_btn                     = '#accept_service_call_btn'
   accept_btn_selector            = 'accept_service_call_btn'
   reject_btn_selector            = 'reject_service_call_btn'
-  settle_btn_selector            = 'settle_service_call_btn'
+  settle_btn_selector            = 'provider_settle_service_call_btn'
   start_btn                      = '#start_service_call_btn'
   start_btn_selector             = 'start_service_call_btn'
   complete_btn_selector          = 'complete_service_call_btn'
@@ -744,7 +744,7 @@ describe "Service Call pages" do
               in_browser(:org2) do
                 visit service_call_path @subcon_service_call
                 select technician.name, from: technician_select
-                click_button dispatch_btn_selector
+                click_button JOB_BTN_DISPATCH
               end
 
               in_browser(:org) { visit service_call_path service_call }
@@ -1256,7 +1256,8 @@ describe "Service Call pages" do
 
                       before do
                         in_browser(:org2) do
-                          click_button invoice_btn_selector
+                          visit service_call_path @subcon_service_call
+                          click_button JOB_BTN_INVOICE
                         end
 
                         in_browser(:org) { visit service_call_path service_call }
@@ -1582,7 +1583,7 @@ describe "Service Call pages" do
                       in_browser(:org2) do
                         visit service_call_path @subcon_service_call
                         select Cash.model_name.human, from: JOB_SELECT_PROVIDER_PAYMENT
-                        click_button settle_btn_selector
+                        click_button JOB_BTN_SETTLE
                       end
 
                       in_browser(:org) { visit service_call_path service_call }
@@ -1638,7 +1639,7 @@ describe "Service Call pages" do
                       in_browser(:org) do
                         visit service_call_path service_call
                         select Cash.model_name.human, from: JOB_SELECT_SUBCON_PAYMENT
-                        click_button settle_btn_selector
+                        click_button JOB_BTN_SETTLE
                       end
                     end
 
@@ -2025,7 +2026,7 @@ describe "Service Call pages" do
                 describe 'mark as settled' do
                   before do
                     select Cash.model_name.human, from: JOB_SELECT_SUBCON_PAYMENT
-                    click_button settle_btn_selector
+                    click_button JOB_BTN_SETTLE
                   end
 
                   it 'should change the subcontractor status to settled' do
@@ -2166,7 +2167,7 @@ describe "Service Call pages" do
           in_browser(:org) do
             visit service_call_path service_call
             select technician.name, from: technician_select
-            click_button dispatch_btn_selector
+            click_button JOB_BTN_DISPATCH
             service_call.reload
           end
 
