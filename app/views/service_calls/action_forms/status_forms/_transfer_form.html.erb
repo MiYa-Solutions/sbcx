@@ -1,4 +1,4 @@
-<%= link_to("Transfer", '#transfer_modal', class: "#{style("service_call.forms.status.transfer.button_classes")}", data: { toggle: 'modal' }, role: "button", id: "transfer_btn") %>
+<%= link_to(job.class.human_status_event_name(:transfer), '#transfer_modal', class: "#{style("service_call.forms.status.transfer.button_classes")}", data: { toggle: 'modal' }, role: "button", id: "transfer_btn") %>
 
 
 <div id='transfer_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -13,7 +13,7 @@
       </ul>
     </div>
 
-   </div>
+  </div>
 
   <div class="modal-body">
     <%= simple_form_for job.becomes(ServiceCall), html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
@@ -22,6 +22,7 @@
 
             <div class="control-group string mandatory">
               <label class="string optional control-label" for="service_call_subcontractor_id"> <%= I18n.t('general.general.select_subcon') %></label>
+
               <div class="controls">
                 <%= f.select :subcontractor_id, subcon_options, include_blank: true %>
               </div>
@@ -41,19 +42,19 @@
 
         </div>
 
-  </div>
+        </div>
 
-  <div class="modal-footer">
-    <%= f.submit job.class.human_status_event_name(:transfer).titleize,
-                 id:      'service_call_transfer_btn',
-                 class:   "btn btn-large btn-primary",
-                 title:   'Click to transfer the job to the Subcontractor you selected',
-                 rel:     'tooltip',
-                 confirm: "" %>
+        <div class="modal-footer">
+          <%= f.submit job.class.human_status_event_name(:transfer).titleize,
+                       id:      'service_call_transfer_btn',
+                       class:   "btn btn-large btn-primary",
+                       title:   'Click to transfer the job to the Subcontractor you selected',
+                       rel:     'tooltip',
+                       confirm: "" %>
 
 
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-  </div>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
 
     <% end %>
-</div>
+    </div>

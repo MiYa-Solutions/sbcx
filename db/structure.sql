@@ -362,7 +362,7 @@ CREATE TABLE events (
   id                  INTEGER                     NOT NULL,
   name                CHARACTER VARYING(255),
   type                CHARACTER VARYING(255),
-  description         CHARACTER VARYING(255),
+  description         TEXT,
   eventable_type      CHARACTER VARYING(255),
   eventable_id        INTEGER,
   created_at          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -485,7 +485,8 @@ CREATE TABLE notifications (
   updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   notifiable_id   INTEGER,
   notifiable_type CHARACTER VARYING(255),
-  type            CHARACTER VARYING(255)
+  type            CHARACTER VARYING(255),
+  event_id        INTEGER
 );
 
 
@@ -574,7 +575,8 @@ CREATE TABLE organizations (
   subcontrax_member BOOLEAN,
   status            INTEGER,
   created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL
+  updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  parent_org_id     INTEGER
 );
 
 
@@ -901,7 +903,11 @@ CREATE TABLE users (
   mobile_phone           CHARACTER VARYING(255),
   work_phone             CHARACTER VARYING(255),
   preferences            hstore,
-  time_zone              CHARACTER VARYING(255)
+  time_zone              CHARACTER VARYING(255),
+  confirmation_token     CHARACTER VARYING(255),
+  confirmed_at           TIMESTAMP WITHOUT TIME ZONE,
+  confirmation_sent_at   TIMESTAMP WITHOUT TIME ZONE,
+  unconfirmed_email      CHARACTER VARYING(255)
 );
 
 
@@ -922,6 +928,41 @@ CACHE 1;
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE versions (
+  id         INTEGER                NOT NULL,
+  item_type  CHARACTER VARYING(255) NOT NULL,
+  item_id    INTEGER                NOT NULL,
+  event      CHARACTER VARYING(255) NOT NULL,
+  whodunnit  CHARACTER VARYING(255),
+  object     TEXT,
+  created_at TIMESTAMP WITHOUT TIME ZONE,
+  assoc_id   INTEGER
+);
+
+
+--
+-- Name: versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE versions_id_seq
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+--
+-- Name: versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 
 
 --
@@ -1069,6 +1110,13 @@ ALTER TABLE ONLY tickets ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq' ::
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq' :: REGCLASS);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq' :: REGCLASS);
 
 
 --
@@ -1248,6 +1296,14 @@ ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --
+-- Name: versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY versions
+ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: events_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1332,6 +1388,13 @@ CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON tagg
 
 
 --
+-- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_confirmation_token ON users USING BTREE (confirmation_token);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1343,6 +1406,13 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING BTREE (email);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING BTREE (reset_password_token);
+
+
+--
+-- Name: index_versions_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_versions_on_item_type_and_item_id ON versions USING BTREE (item_type, item_id);
 
 
 --
@@ -1580,3 +1650,15 @@ INSERT INTO schema_migrations (version) VALUES ('20131126151013');
 INSERT INTO schema_migrations (version) VALUES ('20131128162923');
 
 INSERT INTO schema_migrations (version) VALUES ('20131212150135');
+
+INSERT INTO schema_migrations (version) VALUES ('20131215030926');
+
+INSERT INTO schema_migrations (version) VALUES ('20131215150115');
+
+INSERT INTO schema_migrations (version) VALUES ('20131222211257');
+
+INSERT INTO schema_migrations (version) VALUES ('20131226183502');
+
+INSERT INTO schema_migrations (version) VALUES ('20131226221754');
+
+INSERT INTO schema_migrations (version) VALUES ('20131227192918');

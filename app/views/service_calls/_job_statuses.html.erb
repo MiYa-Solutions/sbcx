@@ -62,7 +62,7 @@
           <tr>
             <td>
               <!--Customized Tooltip-->
-            <% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>
+              <% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>
              <span class="badge custom_tooltip">
                   <div class="hover">
                     <!--<#%= humanized_money_with_symbol @service_call.transfer_props.first.subcon_fee  %>-->
@@ -105,7 +105,9 @@
               <td><strong><%= @service_call.class.human_attribute_name(:subcon_agreement) %></strong></td>
               <td>
                  <span class="status_grey">
-                 <h3><%= link_to truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15), agreement_path(@service_call.subcon_agreement), title: "#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}" if @service_call.subcontractor.present? %>
+                 <h3><%= link_to(truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15),
+                                 @service_call.subcon_agreement.becomes(Agreement),
+                                 title: "#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}") if @service_call.subcon_agreement.present? && @service_call.subcontractor.present? %>
                  </h3></span>
 
               </td>
@@ -133,7 +135,7 @@
           <tr>
             <td>
               <% if @service_call.provider_transfer_props.first.attribute_names.size > 0 %>
-              <!--Customized Tooltip-->
+                  <!--Customized Tooltip-->
                  <span class="badge custom_tooltip">
                       <div class="hover">
                         <%= humanized_money_with_symbol @service_call.provider_transfer_props.first.provider_fee %>
@@ -141,7 +143,7 @@
                       </div>
                    </span>
               <% end %>
-                   <strong><%= @service_call.class.human_attribute_name(:provider_status) %></strong>
+              <strong><%= @service_call.class.human_attribute_name(:provider_status) %></strong>
             </td>
             <td class="show_more_button">
               <button class="btn btn-mini btn-primary" type="button" id="show_prov_statuses" data-toggle="collapse" data-target="#prov_statuses">
@@ -175,7 +177,7 @@
               </td>
             </tr>
             <tr>
-              <td> <strong><%= @service_call.class.human_attribute_name(:provider_status) %></strong></td>
+              <td><strong><%= @service_call.class.human_attribute_name(:provider_status) %></strong></td>
               <td>
                   <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
                       <h3><%= @service_call.human_provider_status_name %></h3>
