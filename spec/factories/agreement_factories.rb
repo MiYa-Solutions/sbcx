@@ -10,6 +10,9 @@ FactoryGirl.define do
     after(:build) do |agr|
       agr.posting_rules << FactoryGirl.build(:flat_fee_rule, agreement: agr)
       agr.creator = agr.organization.users.first
+      agr.save!
+      agr.organization.subcontractors << agr.counterparty
+      agr.counterparty.providers << agr.organization
     end
   end
 

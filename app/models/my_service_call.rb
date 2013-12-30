@@ -112,6 +112,7 @@ class MyServiceCall < ServiceCall
   BILLING_STATUS_COLLECTED_BY_SUBCON    = 4106
   BILLING_STATUS_SUBCON_CLAIM_DEPOSITED = 4107
   BILLING_STATUS_CLEARED                = 4108
+  BILLING_STATUS_REJECTED               = 4109
 
 
   # if collection is not allowed for this service call, then the initial status is set to na - not applicable
@@ -129,6 +130,7 @@ class MyServiceCall < ServiceCall
     end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :cleared, value: BILLING_STATUS_CLEARED
+    state :rejected, value: BILLING_STATUS_REJECTED
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -142,6 +144,9 @@ class MyServiceCall < ServiceCall
 
     event :clear do
       transition :paid => :cleared, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
+    end
+    event :reject do
+      transition :paid => :rejected, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
     end
 
     event :invoice do

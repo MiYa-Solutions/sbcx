@@ -25,6 +25,7 @@ shared_context 'transferred job' do
   include_context 'basic job testing'
   let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: org) }
   let(:subcon) { subcon_agr.counterparty }
+  let(:subcon_user) { subcon_agr.counterparty.users.first }
   let(:subcon_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
 
   def transfer_the_job
