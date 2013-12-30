@@ -22,3 +22,18 @@ en:
   errors:
     messages:
       one_system_owner: "There can be only one system owner"
+
+  organization:
+    industries:
+      locksmith: Locksmith
+      other: Other
+      security_systems: Security Systems
+      carpet_cleaning: Carpet Cleaning
+      plumbing: Plumbing
+      electricity: Electricity
+      construction: Construction
+      transportation: Transportation
+      landscaping: Landscaping
+      towing: Towing
+      auto_repair: Auto Repair
+      glass_repair: Glass Repair

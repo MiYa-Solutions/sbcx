@@ -576,7 +576,9 @@ CREATE TABLE organizations (
   status            INTEGER,
   created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  parent_org_id     INTEGER
+  parent_org_id     INTEGER,
+  industry          CHARACTER VARYING(255),
+  other_industry    CHARACTER VARYING(255)
 );
 
 
@@ -1662,3 +1664,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131226183502');
 INSERT INTO schema_migrations (version) VALUES ('20131226221754');
 
 INSERT INTO schema_migrations (version) VALUES ('20131227192918');
+
+INSERT INTO schema_migrations (version) VALUES ('20131229193157');

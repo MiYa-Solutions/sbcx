@@ -24,6 +24,27 @@
 
 class Organization < ActiveRecord::Base
 
+  def self.industries
+    [
+        :locksmith,
+        :security_systems,
+        :carpet_cleaning,
+        :plumbing,
+        :electricity,
+        :construction,
+        :transportation,
+        :landscaping,
+        :towing,
+        :auto_repair,
+        :glass_repair,
+        :other
+    ]
+  end
+
+  def self.human_industry_name(industry)
+    (industry && industries.include?(industry.to_sym)) ? I18n.t("organization.industries.#{industry}") : ''
+  end
+
   ### ASSOCIATIONS:
   has_many :invites
   has_many :invite_req, class_name: 'Invite', foreign_key: 'affiliate_id'
@@ -117,9 +138,10 @@ class Organization < ActiveRecord::Base
   validates :name, { presence: true, length: { maximum: 255 } }
 
   validate :has_at_least_one_role
-  validates_presence_of :organization_roles
+  validates_presence_of :organization_roles, :industry
   validates_with OneOwnerValidator
   validates_uniqueness_of :name, scope: [:subcontrax_member], if: Proc.new { |org| org.subcontrax_member }
+  validate :check_industry
 
   ### EAGER LOADS:
   includes :organization_roles
@@ -270,9 +292,26 @@ class Organization < ActiveRecord::Base
     self.subcontrax_member?
   end
 
+  def industry_name
+    other_industry || Organization.human_industry_name(industry)
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0
+  end
+
+  def check_industry
+    errors.add :industry, "Invalid industry provided" unless industry_valid?
+    errors.add :other_industry, "You must specify the other industry when choosing other" if other_industry_missing?
+  end
+
+  def industry_valid?
+    self.industry && self.class.industries.include?(self.industry.to_sym)
+  end
+
+  def other_industry_missing?
+    industry && industry.to_sym == :other && other_industry.blank?
   end
 
 
