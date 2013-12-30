@@ -32,6 +32,9 @@ JOB_BTN_CONFIRM_SETTLEMENT      = 'confirm_settled_subcon_service_call_btn'
 JOB_BTN_CONFIRM_PROV_SETTLEMENT = 'confirm_settled_prov_service_call_btn'
 JOB_BTN_CLOSE                   = 'close_service_call_btn'
 JOB_BTN_HISTORY                 = 'job_history_btn'
+JOB_BTN_PAYMENT_REJECTED        = 'reject_payment_service_call_btn'
+JOB_BTN_PAYMENT_DEPOSITED       = 'deposited_service_call_btn'
+
 
 JOB_SELECT_SUBCON_PAYMENT   = 'service_call_subcon_payment'
 JOB_SELECT_PROVIDER_PAYMENT = 'service_call_provider_payment'

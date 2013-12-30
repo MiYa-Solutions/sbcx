@@ -169,6 +169,7 @@ describe 'Job Billing' do
 
               it 'should have create a ScPaymentRejectedEvent', skip_reject: true do
                 expect { job.update_attributes(billing_status_event: 'reject') }.to change { ScPaymentRejectedEvent.count }.by(1)
+                expect(ScPaymentRejectedEvent.last.service_call).to eq(job)
               end
 
             end

@@ -94,6 +94,7 @@ en:
             paid: "Paid"
             overdue: "Overdue"
             cleared: "Cleared"
+            rejected: "Rejected"
             collected_by_employee: "Employee Collected"
       transferred_service_call:
         status:

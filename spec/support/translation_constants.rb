@@ -16,6 +16,7 @@ JOB_BILLING_STATUS_DEPOSITED_TO_PROV     = I18n.t('activerecord.state_machines.t
 JOB_BILLING_STATUS_DEPOSIT_CONFIRMED     = I18n.t('activerecord.state_machines.transferred_service_call.billing_status.states.deposited')
 JOB_BILLING_STATUS_PAID                  = I18n.t('activerecord.state_machines.my_service_call.billing_status.states.paid')
 JOB_BILLING_STATUS_CLEARED               = I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared')
+JOB_BILLING_STATUS_REJECTED              = I18n.t('activerecord.state_machines.my_service_call.billing_status.states.rejected')
 
 JOB_PROVIDER_STATUS_SETTLED = I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.settled')
 JOB_PROVIDER_STATUS_CLEARED = I18n.t('activerecord.state_machines.transferred_service_call.provider_status.states.cleared')

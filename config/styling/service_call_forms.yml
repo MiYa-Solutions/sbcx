@@ -181,4 +181,5 @@ service_call:
       overdue: "status_red"
       paid: "status_blue"
       cleared: "status_green"
+      rejected: "status_red"
 
