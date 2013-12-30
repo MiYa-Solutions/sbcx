@@ -8,7 +8,7 @@
     <div class="well well_signin">
 
 
-      <div class="smart_label"  >
+      <div class="smart_label">
         <ul>
           <li><h1><%= I18n.t('general.message.forgot_pass') %></h1></li>
           <li>
@@ -20,6 +20,8 @@
 
       <div class="row-fluid">
         <div class="span6">
+
+          <p class="p_align">Enter you email address and click on the button below to receive instructions on how to reset your password. </p>
 
           <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }, :html => { :class => 'form-horizontal' }) do |f| %>
               <%= f.error_notification %>

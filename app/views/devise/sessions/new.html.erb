@@ -34,16 +34,32 @@
             </div>
         <% end %>
       </div>
+
+      <div class="span6">
+        <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+            <strong>Didn't receive email confirmation instructions?</strong>
+            <%= link_to "Click here", new_confirmation_path(resource_name) %>
+        <% end %>
+      </div>
+
+
   </div>
+
+
 
     <br>
     <br>
     <div class="row-fluid">
-        <div class="span64">
+        <div class="span6">
           <strong>Recommended Browsers</strong>
           <p>For optimal performance of SubConTraX, we recommend using one of the browsers listed below:</p>
           <%= image_tag "firefox64.png" %><%= image_tag "chrome64.png" %>
         </div>
+
+
+
+
+
     </div>
 
   </div>

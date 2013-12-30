@@ -1339,10 +1339,14 @@ a:hover {
 .welcome_alerts {
 
   strong {
-    font-size: 12px;
+    font-size: 10px;
     line-height: 14px;
 
   }
+}
+
+#notifications, .table th, .table td {
+  line-height: 10px;
 }
 
 #welcome_notifications {
@@ -2550,6 +2554,11 @@ hr {
 .well_signin {
   min-height: 575px;
   margin-left: -0.5%;
+
+  .p_align {
+    margin-left: 1.5%;
+  }
+
 }
 
 .well_job_history {
@@ -2763,6 +2772,25 @@ hr {
   position: fixed;
   top: 60px;
   width: 13.97%;
+
+  .alert-danger {
+    border-color: #B94A48
+  }
+
+  .alert {
+    padding: 6px 2px 0 14px;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 12px;
+    margin: -2px 3px 4px -2px;
+  }
+
+  form {
+    margin: 0 0 10px;
+  }
+
 }
 
 @media (max-width: 767px) {
@@ -3137,8 +3165,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 #job-search-results, .table th, .table td {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 10px;
+  line-height: 12px;
 }
 
 #job-search-results {
@@ -3974,9 +4002,33 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 #confirm_email_btn {
+  margin-left: 15%;
   text-shadow: 0 0 0 rgba(255, 255, 255, 0.5);
-  margin-left: 1px;
 
+}
+
+
+#calendar {
+
+ h2 {
+  font-size: 12px;
+  margin-top: -7px;
+  white-space: nowrap;
+ }
+}
+
+.reset_pass {
+  .form-horizontal .control-label {
+    float: left;
+    margin-left: 5px;
+    padding-top: 5px;
+    text-align: left;
+    width: 220px;
+  }
+
+  .form-horizontal .controls {
+    margin-left: 190px;
+  }
 }
 
 

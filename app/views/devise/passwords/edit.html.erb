@@ -1,19 +1,48 @@
-<h2>Change your password</h2>
+<div class="background_welcome">
+  <%= image_tag("bg7.jpg", id: "background_welcome") %>
+</div>
 
-<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= f.error_notification %>
+<div class="row-fluid">
+  <div class="span1"></div>
+  <div class="span10">
+    <div class="well well_signin">
 
-  <%= f.input :reset_password_token, :as => :hidden %>
-  <%= f.full_error :reset_password_token %>
 
-  <div class="inputs">
-    <%= f.input :password, :label => "New password", :required => true %>
-    <%= f.input :password_confirmation, :label => "Confirm your new password", :required => true %>
+      <div class="smart_label"  >
+        <ul>
+          <li><h1><%= I18n.t('general.message.reset_pass') %></h1></li>
+          <li>
+          </li>
+        </ul>
+      </div>
+
+      <br>
+
+      <div class="row-fluid">
+        <div class="span6 reset_pass">
+
+
+
+          <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }, :html => { :class => 'form-horizontal' }) do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :reset_password_token, :as => :hidden %>
+              <%= f.full_error :reset_password_token %>
+
+              <%= f.input :password, :label => "New password", :required => true %>
+              <%= f.input :password_confirmation, :label => "Confirm your new password", :required => true %>
+
+
+              <div class="form-actions">
+                <%= f.button :submit, I18n.t('general.general.reset_pass'), :class => 'btn btn-large btn-primary' %>
+
+              </div>
+
+          <% end %>
+
+        </div>
+      </div>
+
+    </div>
+
   </div>
-
-  <div class="actions">
-    <%= f.button :submit, "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "links" %>
+</div>
