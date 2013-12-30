@@ -138,10 +138,12 @@ class Organization < ActiveRecord::Base
   validates :name, { presence: true, length: { maximum: 255 } }
 
   validate :has_at_least_one_role
-  validates_presence_of :organization_roles, :industry
+  validates_presence_of :organization_roles
+  validates_presence_of :industry, unless: ->(org) { org.kind_of?(Affiliate) }
+
   validates_with OneOwnerValidator
   validates_uniqueness_of :name, scope: [:subcontrax_member], if: Proc.new { |org| org.subcontrax_member }
-  validate :check_industry
+  validate :check_industry, unless: ->(org) { org.kind_of?(Affiliate) }
 
   ### EAGER LOADS:
   includes :organization_roles

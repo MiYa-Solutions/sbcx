@@ -125,6 +125,9 @@ Spork.each_run do
   Dir["#{Rails.root}/app/notifications/**/*.rb"].each do |model|
     load model
   end
+  Dir["#{Rails.root}/spec/support/**/*.rb"].each do |model|
+    load model
+  end
 end
 
 # --- Instructions ---

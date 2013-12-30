@@ -4,12 +4,17 @@ FactoryGirl.define do
     sequence(:name) { |n| "Organization #{n}" }
     sequence(:email) { |n| "org_person_#{n}@example.com" }
     organization_roles [OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID), OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)]
+    industry Organization.industries.first
 
     factory :member_org, class: Organization do
       subcontrax_member true
       after(:build) do |org|
-        org.users = [FactoryGirl.build(:user, organization: org)]
+        org.users << FactoryGirl.build(:user, organization: org)
       end
+    end
+
+    factory :affiliate, class: Affiliate do
+
     end
   end
 

@@ -158,7 +158,7 @@ describe Organization do
                                              :landscaping,
                                              :towing,
                                              :auto_repair,
-                                             :glass_repair])
+                                             :glass_repair, :other])
     end
     it 'should respond to #intrustry and #industry=' do
       expect(org).to respond_to(:industry)
