@@ -4,9 +4,9 @@
 
   <div class="row-fluid">
     <div class="span6">
-      <div class="smart_label"  >
+      <div class="smart_label">
         <ul>
-          <li><h1>My Profile</h1> </li>
+          <li><h1>My Profile</h1></li>
           <li>
           </li>
         </ul>
@@ -18,10 +18,14 @@
   <div class="row-fluid">
     <div class="span6">
       <table class="table table-striped table-condensed" id="org_details_in_my_profile">
-      <tbody>
+        <tbody>
         <tr>
           <td>Name:</td>
           <td><h4><%= @current_user.first_name %> <%= @current_user.last_name %></h4></td>
+        </tr>
+        <tr>
+          <td><%= Organization.human_attribute_name(:industry) %></td>
+          <td><h4><%= @current_user.industry_name %></h4></td>
         </tr>
         <tr>
           <td>Email:</td>
@@ -73,36 +77,36 @@
           <td><h4><%= @organization.website %></h4></td>
         </tr>
         <tr>
-        <td>Users:</td>
-        <td>
-          <% for user in @users %>
-              <table class="table_unstyled">
-                <tbody>
-                <tr>
-                  <td>
-                    <%= link_to user.email, my_user_path(user) %>
-                  </td>
-                  <td>
-                    <% user.roles.each do |role| %>
-                        (<%= role.name %>)
-                    <% end %>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-          <% end %>
-        </td>
+          <td>Users:</td>
+          <td>
+            <% for user in @users %>
+                <table class="table_unstyled">
+                  <tbody>
+                  <tr>
+                    <td>
+                      <%= link_to user.email, my_user_path(user) %>
+                    </td>
+                    <td>
+                      <% user.roles.each do |role| %>
+                          (<%= role.name %>)
+                      <% end %>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+            <% end %>
+          </td>
         </tr>
-    </tbody>
-    </table>
-  </div>
+        </tbody>
+      </table>
+    </div>
 
- </div>
+  </div>
 
 
   <div class="form-actions" id="org_users">
     <!--<#%= link_to 'Edit', edit_organization_path, :class => 'btn btn-medium' %>-->
-    <%= link_to 'Edit Profile' , edit_user_registration_path, id: 'reset_password', :class => 'btn btn-medium btn-info', id: 'edit_profile' %>
+    <%= link_to 'Edit Profile', edit_user_registration_path, id: 'reset_password', :class => 'btn btn-medium btn-info', id: 'edit_profile' %>
   </div>
 
 </div>

@@ -1,34 +1,13 @@
-<!--#  id                :integer         not null, primary key-->
-<!--#  name              :string(255)-->
-<!--#  telephone         :string(255)-->
-<!--#  website           :string(255)-->
-<!--#  company           :string(255)-->
-<!--#  address1          :string(255)-->
-<!--#  address2          :string(255)-->
-<!--#  city              :string(255)-->
-<!--#  state             :string(255)-->
-<!--#  zip               :string(255)-->
-<!--#  country           :string(255)-->
-<!--#  mobile            :string(255)-->
-<!--#  work_phone        :string(255)-->
-<!--#  email             :string(255)-->
-<!--#  subcontrax_member :boolean-->
-<!--#  status            :integer-->
-<!--#  created_at        :datetime        not null-->
-<!--#  updated_at        :datetime        not null-->
-<!--#-->
-
 <%= render 'shared/error_messages', object: f.object %>
 
 <%= f.input :name, autofocus: true %>
-<!--<#%= f.association :organization_roles, :collection => OrganizationRole.all(:order => 'name'), as: :check_boxes %> -->
+
+<%= f.input :industry, collection: industry_options %>
+<%= f.input :other_industry, wrapper_html: { class: 'hidden' } %>
 
 <% if !f.object.new_record? %>
     <%= f.input :status_event, collection: f.object.status_transitions, label_method: :human_to_name, value_method: :event, :include_blank => f.object.human_status_name %>
 <% end %>
-
-<!--<#%= f.input :company %>-->
-
 
 <%= f.input :address1 %>
 
@@ -48,7 +27,8 @@
 
 <div class="control-group string mandatory">
   <label class="string optional control-label" for="customer_state">State</label>
-      <div class="controls">
+
+  <div class="controls">
     <%= render 'organizations/subregion_select', f: f %>
   </div>
 </div>
