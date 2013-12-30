@@ -185,8 +185,9 @@ describe Organization do
     it '#industry_name' do
       org.industry = 'locksmith'
       expect(org.industry_name).to eq 'Locksmith'
-      org.industry = 'other'
-      expect(org.industry_name).to eq 'Other'
+      org.industry       = 'other'
+      org.other_industry = 'other name'
+      expect(org.industry_name).to eq 'other name'
     end
     it 'Organization class has #human_industry_name' do
       expect(Organization.human_industry_name('locksmith')).to eq 'Locksmith'

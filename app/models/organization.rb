@@ -42,7 +42,7 @@ class Organization < ActiveRecord::Base
   end
 
   def self.human_industry_name(industry)
-    industries.include?(industry.to_sym) ? I18n.t("organization.industries.#{industry}") : ''
+    (industry && industries.include?(industry.to_sym)) ? I18n.t("organization.industries.#{industry}") : ''
   end
 
   ### ASSOCIATIONS:
@@ -293,7 +293,7 @@ class Organization < ActiveRecord::Base
   end
 
   def industry_name
-    Organization.human_industry_name(industry)
+    other_industry || Organization.human_industry_name(industry)
   end
 
   private
