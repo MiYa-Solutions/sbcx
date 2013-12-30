@@ -1,16 +1,13 @@
 <div class="sidebar-nav-fixed">
+  <% unless current_user.confirmed? %>
+      <div class="alert alert-danger">
+         <p>Your email address has not been confirmed yet!</p>
+        <%= render 'shared/create_confirmation_button' %>
+      </div>
+  <% end %>
 
-  <div class="alert alert-danger">
-     <p>Your email address has not been confirmed yet!</p>
-
-        <% unless current_user.confirmed? %>
-            <%= render 'shared/create_confirmation_button' %>
-        <% end %>
-  </div>
 
   <div class="well sidebar-nav">
-
-
 
 
     <ul class="nav nav-list">
