@@ -10,4 +10,5 @@ $ ->
     #    url = "/customers?organization_id=#{org_id}&form_id=#{form_id}"
     #    $.ajax(url)
     #    $('select', select_wrapper).attr("disabled", "enabled")
-    $('#service_call_customer').attr("data-ref-id", $('select#service_call_provider_id').val())
+    #$('#service_call_customer').attr("data-ref-id", $('select#service_call_provider_id').val())
+    $('#service_call_customer_name').attr("data-ref-id", $('select#service_call_provider_id').val())
