@@ -1,5 +1,7 @@
 class Invite < ActiveRecord::Base
 
+  stampable
+
   ##
   # Associations
   ##

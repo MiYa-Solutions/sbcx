@@ -12,6 +12,10 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     res
   end
 
+  def admin_user
+    params.permit!
+  end
+
   def posting_rule
     if params[:posting_rule].nil?
       params.permit

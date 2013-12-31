@@ -42,7 +42,7 @@ describe 'Job Billing' do
           end
         end
 
-        it 'billing status should be set to invoiced' do
+        it 'billing status should be set to paid' do
           expect(job).to be_payment_paid
         end
 

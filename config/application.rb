@@ -86,6 +86,7 @@ module Sbcx
 
     config.exceptions_app = self.routes
 
+    I18n.config.enforce_available_locales = true
 
   end
 end

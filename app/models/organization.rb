@@ -74,15 +74,15 @@ class Organization < ActiveRecord::Base
       affiliate
     end
   end
-  has_many :agreements
-  has_many :subcontracting_agreements do
+  has_many :agreements, inverse_of: :organization
+  has_many :subcontracting_agreements, inverse_of: :organization do
     def build(params)
       agreement                  = super
       agreement.counterparty_type= "Organization"
       agreement
     end
   end
-  has_many :reverse_agreements, class_name: "Agreement", :foreign_key => "counterparty_id"
+  has_many :reverse_agreements, class_name: "Agreement", :foreign_key => "counterparty_id", inverse_of: :organization
   has_many :subcontractors, class_name: "Organization", through: :agreements, source: :counterparty, source_type: "Organization", :conditions => "agreements.type = 'SubcontractingAgreement' AND agreements.status = #{OrganizationAgreement::STATUS_ACTIVE}", uniq: true do
     def << (subcontractor)
 
