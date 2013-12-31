@@ -64,7 +64,8 @@ Sbcx::Application.routes.draw do
     get :autocomplete_material_name, :on => :collection
   end
 
-  match 'welcome' => 'static_pages#welcome', :as => :user_root
+  match 'welcome' => 'static_pages#welcome', :as => :welcome
+  match 'home' => 'static_pages#home', :as => :user_root
   match 'contact_us' => 'contact_us#new', as: :contact_us, via: :get
   match 'contact_us' => 'contact_us#create', as: :contact_us, via: :post
 

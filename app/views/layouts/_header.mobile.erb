@@ -1,24 +1,30 @@
 <% if user_signed_in? %>
 
-     <div data-role="header">
-        <div class="miya_logo">
-          <img src="/assets/logo2.png" alt="MiYa"/>
-        </div>
-        <h1 ><%= yield(:title) || "Untitled" %>
-                <%= link_to image_tag("/assets/ImgPlus.png", :border => 0), "#side_bar", id: "panel_page", "data-position-to" => "origin", "data-rel" => "popup", "data-transition" => "slide" %>
-        </h1>
+    <div data-role="header">
+      <div class="miya_logo">
+        <img src="/assets/logo2.png" alt="MiYa"/>
+      </div>
+      <h1><%= yield(:title) || "Untitled" %>
+        <%= link_to image_tag("/assets/ImgPlus.png", :border => 0), "#side_bar", id: "panel_page", "data-position-to" => "origin", "data-rel" => "popup", "data-transition" => "slide" %>
+      </h1>
 
+    </div>
+    <% if mobile_device? %>
+        <%= link_to "Full Site", :mobile => 0 %>
+    <% else %>
+        <%= link_to "Mobile Site", :mobile => 1 %>
+    <% end %>
+
+
+<% else %>
+
+    <div data-role="header">
+      <div class="header_sign_out">
+        <h1>Closed BETA</h1>
       </div>
 
-  <% else %>
-
-     <div data-role="header">
-        <div class="header_sign_out">
-        <h1>Closed BETA</h1>
-        </div>
-
-     </div>
-  <% end %>
+    </div>
+<% end %>
 
 
 
