@@ -187,5 +187,25 @@ module AgreementsHelper
     @agreement.attr_changed_from_prev_ver?(attr) ? 'changed' : ''
   end
 
+  def agreement_pending_my_action?(agreement)
+    my_org = current_user.organization
+
+    case agreement.status_name
+      when :draft
+        agreement.creator.organization == my_org ? true : false
+      when :pending_org_approval
+        agreement.organization == my_org ? true : false
+      when :pending_cparty_approval
+        agreement.organization == my_org ? false : true
+      when :rejected_by_org
+        agreement.organization == my_org ? false : true
+      when :rejected_by_cparty
+        agreement.organization == my_org ? true : false
+      else
+        false
+    end
+
+  end
+
 
 end
