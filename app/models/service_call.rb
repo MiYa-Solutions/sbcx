@@ -50,6 +50,7 @@
 #  tax                   :float            default(0.0)
 #
 
+require_relative '../../lib/invoice'
 class ServiceCall < Ticket
 
 
@@ -236,6 +237,10 @@ class ServiceCall < Ticket
   end
 
   alias_method :can_change_financial_data?, :can_change_boms?
+
+  def invoice
+    Invoice.new(self)
+  end
 
   private
   def financial_data_change

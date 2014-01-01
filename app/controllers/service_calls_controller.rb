@@ -18,9 +18,19 @@ class ServiceCallsController < ApplicationController
   end
 
   def show
-    #@service_call = ServiceCall.find(params[:id])
-    @customer = Customer.new
-    @bom      = Bom.new
+    respond_to do |format|
+      format.html do
+        @customer = Customer.new
+        @bom      = Bom.new
+      end
+      format.pdf do
+        send_data @service_call.invoice.generate_pdf(view_context),
+                  filename:    "invoice_#{@service_call.ref_id}.pdf",
+                  type:        "application/pdf",
+                  disposition: "inline"
+      end
+    end
+
   end
 
   def new
