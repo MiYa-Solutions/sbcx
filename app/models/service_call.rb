@@ -50,7 +50,6 @@
 #  tax                   :float            default(0.0)
 #
 
-require_relative '../../lib/invoice'
 class ServiceCall < Ticket
 
 

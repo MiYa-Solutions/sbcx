@@ -30,4 +30,12 @@ class Affiliate < Organization
     self.valid?
   end
 
+  def invited?(org)
+    Invite.where(organization_id: org.id, affiliate_id: self.id).count > 0
+  end
+
+  def invites_by_org(org)
+    Invite.where(organization_id: org.id, affiliate_id: self.id).all
+  end
+
 end

@@ -1,0 +1,6 @@
+<tr>
+  <td><%= l invite.created_at %></td>
+  <td><%= invite.human_status_name %></td>
+  <td><%= invite.message %></td>
+  <td><%= invite_event_buttons(invite) if permitted_to? :update, invite %></td>
+</tr>
