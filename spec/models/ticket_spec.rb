@@ -148,8 +148,10 @@ describe Ticket do
     end
 
     it 'subcon agreement must be one that matches the roles on the ticket' do
-      service_call.subcontractor    = FactoryGirl.build(:member_org).becomes(Subcontractor)
-      agr                           = FactoryGirl.build(:subcon_agreement, organization: service_call.subcontractor, counterparty: service_call.organization)
+      mem                           = FactoryGirl.create(:member_org)
+      service_call.subcontractor    = mem.becomes(Subcontractor)
+      agr                           = FactoryGirl.create(:subcon_agreement, organization: mem,
+                                                         counterparty:                    service_call.organization)
       agr.status                    = Agreement::STATUS_ACTIVE
       service_call.subcon_agreement = agr
 
