@@ -6,7 +6,7 @@ describe MyAdjEntry do
   let(:org2) { mock_model(Organization, id: 2) }
   let(:acc) { mock_model(Account, id: 1, organization: org, accountable: org2, changed_for_autosave?: true, save: true, events: []) }
   let(:event) { mock_model(Event, id: 1) }
-  let(:ticket) { mock_model(Ticket, id: 1, save: true, ref_id: 1) }
+  let(:ticket) { mock_model(Ticket, id: 1, save: true, ref_id: 1, organization: org) }
   let(:entry) { MyAdjEntry.new(ticket: ticket, account: acc, event: event, description: 'test', ticket_ref_id: ticket.id) }
 
   it 'should have a state machine constants defined for the various states' do
