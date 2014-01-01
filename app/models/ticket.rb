@@ -144,6 +144,17 @@ class Ticket < ActiveRecord::Base
 
   end
 
+  def customer_balance
+    account = Account.for_customer(customer).first
+    if account && AccountingEntry.where(account_id: account.id, ticket_id: self.id).size > 0
+      # todo make the below calculation support multiple currencies
+      Money.new(AccountingEntry.where(account_id: account.id, ticket_id: self.id).sum(:amount_cents), AccountingEntry.where(account_id: account.id, ticket_id: self.id).first.amount_currency)
+    else
+      Money.new_with_amount(0)
+    end
+
+  end
+
   def affiliate_balance(affiliate)
     account = Account.for_affiliate(self.organization, affiliate).first
     if account && AccountingEntry.where(account_id: account.id, ticket_id: self.id).size > 0
@@ -347,6 +358,15 @@ class Ticket < ActiveRecord::Base
   def provider_entries
     if provider
       acc = Account.for_affiliate(organization, provider).first
+      acc ? entries.by_acc(acc) : []
+    else
+      []
+    end
+  end
+
+  def customer_entries
+    if customer
+      acc = Account.for_customer(organization, customer).first
       acc ? entries.by_acc(acc) : []
     else
       []

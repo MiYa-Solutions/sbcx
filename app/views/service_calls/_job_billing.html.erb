@@ -29,6 +29,10 @@
             <td><strong> <%= t('general.general.my_profit').html_safe %></strong></td>
             <td><h3><%= humanized_money_with_symbol @service_call.my_profit %></h3></td>
           </tr>
+          <tr>
+            <td><strong> <%= "Customer Balance" %></strong></td>
+            <td><h3><%= humanized_money_with_symbol @service_call.customer_balance %></h3></td>
+          </tr>
           </tbody>
         </table>
 
