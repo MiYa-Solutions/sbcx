@@ -47,7 +47,7 @@
               <%= link_to I18n.t('general.general.edit'), edit_affiliate_path(affiliate), :class => 'btn btn-mini' %>
             </li>
             <li>
-              <%= link_to I18n.t('general.general.send_invite'), "#", :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
+              <%= link_to(I18n.t('general.general.send_invite'), "#invite_modal_index_#{affiliate.id}", class: "btn btn-mini btn-primary", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip') %>
             </li>
 
           </ul>

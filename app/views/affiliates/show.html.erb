@@ -26,6 +26,7 @@
         <!--Contact Info-->
         <%= render :partial => 'contact_info' %>
         <div><%= render 'invites/invites_from_affiliate', affiliate: @affiliate if current_user.organization.becomes(Affiliate).invited?(@affiliate) %></div>
+        <div><%= render 'invites/invites_to_affiliate', affiliate: @affiliate if @affiliate.local? && @affiliate.invited?(current_user.organization) %></div>
         <!--Agreements-->
         <% if @agreements.empty? %>
             </div>

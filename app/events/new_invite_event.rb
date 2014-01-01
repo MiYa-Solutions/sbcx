@@ -7,7 +7,12 @@ class NewInviteEvent < Event
   end
 
   def process_event
-    notify User.my_admins(eventable.affiliate_id), NewInviteNotification
+    if eventable.affiliate.member?
+      notify User.my_admins(eventable.affiliate_id), NewInviteNotification
+    else
+      notify [User.new(email: eventable.affiliate.email)], SbcxReferenceNotification
+    end
+
   end
 
 end
