@@ -189,4 +189,7 @@ describe Ticket do
     end
   end
 
+  pending '#customer_balance'
+  pending '#customer_entries'
+
 end

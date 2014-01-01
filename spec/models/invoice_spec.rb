@@ -9,4 +9,6 @@ describe Invoice do
     expect(invoice).to respond_to(:generate_pdf)
   end
 
+  pending 'good way to test the generated pdf'
+
 end

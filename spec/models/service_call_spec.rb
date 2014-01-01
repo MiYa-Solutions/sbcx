@@ -184,4 +184,6 @@ describe ServiceCall do
 
   end
 
+  pending '#invoice - pdf creation and correctenss'
+
 end
