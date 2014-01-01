@@ -49,21 +49,7 @@
                   </tr>
               </tbody>
             </table>
-                <% when :subcon %>
-            <table class="table table-striped table-condensed table-sbcx">
-              <tbody>
-                  <tr>
-                    <td><strong><%= I18n.t('general.general.subcontractor_balance') %></strong></td>
-                    <td><button class="btn btn-mini btn-primary" type="button" id="show_subconractor_entries" data-toggle="collapse" data-target="#subco_billing_entries" ><%= I18n.t('general.general.get_entries') %></button></td>
 
-                    <% if @service_call.subcon_balance < 0 %>
-                        <td class="negative"><%= humanized_money_with_symbol @service_call.subcon_balance %></td>
-                    <% else %>
-                        <td class="positive"><%= humanized_money_with_symbol @service_call.subcon_balance %></td>
-                    <% end %>
-                  </tr>
-              </tbody>
-            </table>
                <% when :broker %>
             <table class="table table-striped table-condensed table-sbcx">
               <tbody>
@@ -87,6 +73,26 @@
               </tr>
              </tbody>
           </table>
+
+
+        <% else %>
+
+
+        <table class="table table-striped table-condensed table-sbcx">
+          <tbody>
+          <tr>
+            <td><strong><%= I18n.t('general.general.subcontractor_balance') %></strong></td>
+            <td><button class="btn btn-mini btn-primary" type="button" id="show_subconractor_entries" data-toggle="collapse" data-target="#subco_billing_entries" ><%= I18n.t('general.general.get_entries') %></button></td>
+
+            <% if @service_call.subcon_balance < 0 %>
+                <td class="negative"><%= humanized_money_with_symbol @service_call.subcon_balance %></td>
+            <% else %>
+                <td class="positive"><%= humanized_money_with_symbol @service_call.subcon_balance %></td>
+            <% end %>
+          </tr>
+          </tbody>
+        </table>
+
         <% end %>
 
 

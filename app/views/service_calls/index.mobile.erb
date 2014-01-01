@@ -23,9 +23,9 @@
             <%= link_to sc.try(:name), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
             <% end %>
 
-            <p class="service_call_status">
+            <span class="service_call_status">
               <%= sc.human_status_name %>
-            </p>
+            </span>
 
           </li>
        <% end %>
@@ -45,9 +45,9 @@
                 <% else %>
                     <%= link_to sc.customer.try(:name), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
                 <% end %>
-                <p class="service_call_status">
+                <span class="service_call_status">
                   <%= sc.human_status_name %>
-                </p>
+                </span>
 
               </li>
           <% end %>

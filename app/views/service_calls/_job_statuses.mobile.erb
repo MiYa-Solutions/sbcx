@@ -1,89 +1,131 @@
-<h3><%= I18n.t('general.general.job_statuses')%></h3>
+<% unless @service_call.subcon_na? %>
 
-<div class="job_status_list">
-  <ul data-role="listview">
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:status) %></div>
-        <div class="ui-block-b">
-            <span class="<%= StylingService.instance.get_style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
-                <%= @service_call.human_status_name %>
-          </span>
-        </div>
-      </div>
-    </li>
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:work_status) %></div>
-        <div class="ui-block-b">
-           <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.work_status_name}") %>" id="service_call_work_status">
-                <%= @service_call.human_work_status_name %>
-          </span>
-        </div>
-      </div>
-    </li>
-    <% unless @service_call.subcon_na? %>
-        <li data-role="list-divider"><%= @service_call.class.human_attribute_name(:subcontractor_status) %></li>
+    <div data-role="collapsible" data-theme="d">
 
-        <li class="ui-li ui-li-static">
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor) %></div>
-            <div class="ui-block-b">
-              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_name">
-                <%= link_to @service_call.subcontractor.try(:name), affiliate_path(@service_call.subcontractor.id) %>
-              </span>
-            </div>
-          </div>
-        </li>
-        <li class="ui-li ui-li-static">
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor_status) %></div>
-            <div class="ui-block-b">
-              <span class="<%= StylingService.instance.get_style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_status">
-                    <%= @service_call.human_subcontractor_status_name %>
-              </span>
-            </div>
-          </div>
-        </li>
-    <% end %>
-    <% unless @service_call.class == MyServiceCall %>
-        <li data-role="list-divider"><%= @service_call.class.human_attribute_name(:provider_status) %></li>
-        <li class="ui-li ui-li-static">
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
-            <div class="ui-block-b">
-              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
+      <h3><%= @service_call.class.human_attribute_name(:subcontractor_status).titleize %>
+        <% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>
+            <span class="blue_badge_collape" id="affiliate_status_fee">
+                    <badge><%= humanized_money_with_symbol @service_call.subcon_transfer_props.first.subcon_fee %></badge>
+            </span>
+        <% end %>
+     <span class="greay_badge_collape">
+                 <badge> <%= @service_call.human_subcontractor_status_name %></badge>
+     </span>
+     </h3>
+
+    <div class="job_status_list">
+      <ul data-role="listview">
+
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor) %></div>
+                <div class="ui-block-b">
+                  <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_name">
+                    <%= link_to @service_call.subcontractor.try(:name), affiliate_path(@service_call.subcontractor.id) %>
+                  </span>
+                </div>
+              </div>
+            </li>
+
+            <%= render 'service_calls/transfer_props/subcon_agreement_props' %>
+
+
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcon_agreement) %></div>
+                <div class="ui-block-b">
+                   <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_agr">
+                     <%= link_to(truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15),
+                                 @service_call.subcon_agreement.becomes(Agreement),
+                                 title: "#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}") if @service_call.subcon_agreement.present? && @service_call.subcontractor.present? %>
+
+                  </span>
+                </div>
+              </div>
+            </li>
+
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:status) %></div>
+                <div class="ui-block-b">
+                      <span class="<%= StylingService.instance.get_style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="service_call_subcontractor_status">
+                            <%= @service_call.human_subcontractor_status_name %>
+                      </span>
+                </div>
+              </div>
+            </li>
+
+      </ul>
+    </div>
+
+<!--end of subcon status-->
+    </div>
+<% end %>
+
+
+<!--Contractor statuses-->
+<% unless @service_call.class == MyServiceCall %>
+
+
+
+    <div data-role="collapsible" data-theme="d">
+
+      <h3><%= @service_call.class.human_attribute_name(:provider_status).titleize %>
+        <% if @service_call.provider_transfer_props.first.attribute_names.size > 0 %>
+            <span class="blue_badge_collape" id="affiliate_status_fee">
+                    <badge><%= humanized_money_with_symbol @service_call.provider_transfer_props.first.provider_fee %></badge>
+            </span>
+        <% end %>
+        <span class="blue_badge_collape">
+                 <badge> <%= @service_call.human_provider_status_name %></badge>
+     </span>
+      </h3>
+
+      <div class="job_status_list">
+        <ul data-role="listview">
+
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
+              <div class="ui-block-b">
+                  <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
                     <%= link_to @service_call.provider.try(:name), affiliate_path(@service_call.provider.id) %>
-
-              </span>
+                  </span>
+              </div>
             </div>
-          </div>
-        </li>
-        <li class="ui-li ui-li-static">
-          <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider_status) %></div>
-            <div class="ui-block-b">
-              <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
-                    <%= @service_call.human_provider_status_name %>
-              </span>
+          </li>
+
+          <%= render 'service_calls/transfer_props/prov_agreement_props' %>
+
+
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider_agreement) %></div>
+              <div class="ui-block-b">
+                   <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_agr">
+                     <%= link_to(truncate("#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}", length: 15),
+                                 @service_call.provider_agreement.becomes(Agreement),
+                                 title: "#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}") if @service_call.provider_agreement.present? %>
+
+                  </span>
+              </div>
             </div>
-          </div>
-        </li>
-    <% end %>
+          </li>
 
-    <li data-role="list-divider"><%= @service_call.class.human_attribute_name(:billing_status) %></li>
+          <li class="ui-li ui-li-static">
+            <div class="ui-grid-a">
+              <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:status) %></div>
+              <div class="ui-block-b">
+                      <span class="<%= StylingService.instance.get_style("service_call.states.subcontractor_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
+                            <%= @service_call.human_provider_status_name %>
+                      </span>
+              </div>
+            </div>
+          </li>
 
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider_status) %></div>
-        <div class="ui-block-b">
-          <span class="<%= StylingService.instance.get_style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
-                <%= @service_call.human_billing_status_name %>
-          </span>
-        </div>
+        </ul>
       </div>
-    </li>
 
-  </ul>
-
+<!--end of contractor status-->
 </div>
+<% end %>

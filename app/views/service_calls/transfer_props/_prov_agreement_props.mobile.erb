@@ -1,10 +1,16 @@
 <% provider_transfer_props.each do |key, value| %>
-    <tr>
-      <td><strong><%= key %></strong></td>
-      <td>
-        <span class="status_grey">
-          <h3><%= truncate(value.to_s, length: 15) if @service_call.subcontractor.present? %></h3>
-        </span>
-      </td>
-    </tr>
+
+    <li class="ui-li ui-li-static">
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= key %></div>
+        <div class="ui-block-b">
+             <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" >
+                     <%= truncate(value.to_s, length: 15) if @service_call.subcontractor.present? %>
+             </span>
+        </div>
+
+      </div>
+    </li>
+
 <% end %>

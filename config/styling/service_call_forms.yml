@@ -2,138 +2,138 @@ service_call:
   forms:
     subcontractor_status:
       mark_as_settled:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       subcon_confirmed:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       subcon_marked_as_settled:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       confirm_settled:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       settle:
-        form_classes: "blue-button"
+#        form_classes: ""
         button_classes: "btn btn-large btn-primary"
       clear:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-success"
 
     provider_status:
       mark_as_settled:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-primary"
       subcon_confirmed:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       subcon_marked_as_settled:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-primary"
       confirm_settled:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       settle:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       clear:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-success"
     status:
       accept:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       un_accept:
-        form_classes: "red-button"
+#        form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
       reject:
-        form_classes: "red-button"
+#        form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
       transfer:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-primary"
       cancel_transfer:
-        form_classes: "red-button"
+#        form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
       cancel:
-        form_classes: "red-button"
+#        form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
       close:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       activate:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       un_cancel:
-        form_classes: "red-button"
+#        form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
     work_status:
       start:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       accept:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       reject:
-        form_classes: "red-button"
+#        form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
       un_accept:
-        form_classes: "red-button"
+#        form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
       dispatch:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       reset:
-        form_classes: ""
+#        form_classes: ""
         button_classes: "btn btn-large btn-info"
       complete:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
     billing_status:
       invoice:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       subcon_invoiced:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       provider_invoiced:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       overdue:
-        form_classes: "red-button"
+#        form_classes: "red-button"
         button_classes: "btn btn-large btn-danger"
       collect:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       deposited:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       paid:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       clear:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-primary"
       subcon_collected:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       subcon_deposited:
-        form_classes: "green-button"
+#        form_classes: "green-button"
         button_classes: "btn btn-large btn-success"
       confirm_deposit:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       prov_confirmed_deposit:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       provider_collected:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       deposit_to_prov:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
       employee_deposit:
-        form_classes: "blue-button"
+#        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
 
 

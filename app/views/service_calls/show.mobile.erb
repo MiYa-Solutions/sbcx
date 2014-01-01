@@ -13,7 +13,49 @@
     <span class="job_source_label">
       <badge><%= @service_call.ref_id %></badge>
     </span>
-   </div>
+
+  </div>
+
+    <div class="job_show_status">
+      <ul data-role="listview">
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:status) %></div>
+            <div class="ui-block-b">
+            <span class="<%= StylingService.instance.get_style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
+                <%= @service_call.human_status_name %>
+          </span>
+            </div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:work_status) %></div>
+            <div class="ui-block-b">
+           <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.work_status_name}") %>" id="service_call_work_status">
+                <%= @service_call.human_work_status_name %>
+          </span>
+            </div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:billing_status) %></div>
+            <div class="ui-block-b">
+          <span class="<%= StylingService.instance.get_style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
+                <%= @service_call.human_billing_status_name %>
+          </span>
+            </div>
+          </div>
+        </li>
+       </ul>
+    </div>
+
+</div>
+
+
+<div data-role="collapsible-set" data-inset="false">
+
 
   <!--Job Actions  -->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
@@ -24,9 +66,12 @@
 
   </div>
 
-  <!--Job Status-->
+
+  <!--Parts and Labor-->
   <div data-role="collapsible" data-theme="d">
-    <%= render :partial => 'job_statuses' %>
+    <h3><%= I18n.t('general.general.parts_labor')%></h3>
+
+    <%= render :partial => 'job_boms.mobile' %>
   </div>
 
 
@@ -42,34 +87,9 @@
      </span>
     </h3>
 
-    <div class="miya_blue_button_bom">
-      <%= link_to I18n.t('general.general.add_part'), new_service_call_bom_path(@service_call), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" if @service_call.can_change_boms?%>
-    </div>
-
-    <% unless @service_call.can_change_boms? %>
-       <p><%= I18n.t('general.messages.cant_add_parts').html_safe %></p>
-    <% end %>
-
-    <ul data-role="listview">
-      <% @service_call.boms.each do |bom| %>
-          <li class=" job_billing">
-            <%= link_to bom.material_name, edit_service_call_bom_path(@service_call, bom), "data-transition" => "slide" %>
-             <p class= "billing_price_label"><%= Bom.human_attribute_name(:price) %></p>
-             <p class="billing_price"><%= humanized_money_with_symbol bom.total_price %></p>
-
-          </li>
-      <% end %>
-      <br>
-    </ul>
+    <%= render :partial => 'job_billing.mobile' %>
 
   </div>
-
-
-  <!--Job Contact Details-->
-  <div data-role="collapsible" data-collapsed="true" data-theme="d">
-    <%= render :partial => 'job_customer_info' %>
-  </div>
-
 
 
   <!--Job Info-->
@@ -77,6 +97,13 @@
     <%= render :partial => 'job_info_mobile' %>
   </div>
 
+  <!--Affiliates Status-->
+  <%= render :partial => 'job_statuses' %>
+
+  <!--Job Contact Details-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <%= render :partial => 'job_customer_info' %>
+  </div>
 
   <!--Appointment-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">

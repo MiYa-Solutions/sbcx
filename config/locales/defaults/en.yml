@@ -42,6 +42,10 @@ en:
       pending_jobs: "Jobs in Progress"
       confirm_email: "Confirm Email"
       reset_pass: "Reset Password"
+      fee: "Fee"
+      parts_labor: "Parts and Labor"
+      update_tax: "Tax (%)"
+      tax_update: "Update Tax"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"

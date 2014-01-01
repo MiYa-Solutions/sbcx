@@ -2,7 +2,8 @@
     <%= hidden_field_tag 'service_call[billing_status_event]', 'deposited' %>
     <%= f.submit job.class.human_billing_status_event_name(:deposited).titleize,
                  id:    'deposited_service_call_btn',
-                 class: 'btn btn-large btn-success',
+                 class: "ui-btn-up-b ui-btn-hidden",
+                 "data-theme" => "b",
                  title: I18n.t('service_call.forms.billing_status.deposited.tooltip'),
                  rel:   'tooltip'
     %>
