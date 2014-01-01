@@ -34,8 +34,6 @@ class Bom < ActiveRecord::Base
   monetize :price_cents
 
   before_validation :set_material
-  before_validation :set_default_cost
-  before_validation :set_default_price
   before_validation :set_default_buyer
 
   # virtual attributes
@@ -50,22 +48,6 @@ class Bom < ActiveRecord::Base
     self.price * self.quantity unless self.quantity.nil?
   end
 
-  def set_default_cost
-    if self.cost.nil?
-      unless self.material.nil?
-        self.cost = self.material.cost
-      end
-    end
-
-  end
-
-  def set_default_price
-    if self.price.nil?
-      unless self.material.nil?
-        self.price = self.material.price
-      end
-    end
-  end
 
   def set_material
 

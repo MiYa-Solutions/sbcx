@@ -73,13 +73,6 @@ describe Bom do
   describe "default values" do
     let(:valid_bom) { FactoryGirl.create(:bom) }
 
-    it "defaults to the associated material cost" do
-      valid_bom.cost.should == valid_bom.material.cost
-    end
-    it "defaults to the associated material price" do
-      valid_bom.price.should == valid_bom.material.price
-    end
-
     describe "default values are not set when a value is present" do
       before do
         valid_bom.price = valid_bom.material.price + Money.new_with_amount(2)
