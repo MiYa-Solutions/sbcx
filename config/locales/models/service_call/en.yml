@@ -49,11 +49,12 @@ en:
       service_call:
         work_status:
           events:
+            accept: LiLI
           states:
             accepted: "Accepted"
             rejected: "Rejected"
             in_progress: "In Progress"
-            dispatched: "Dispatched"
+            dispatched: "Lulu"
             done: "Completed"
             pending: "Pending"
         subcontractor_status:
@@ -75,7 +76,7 @@ en:
         status:
           events:
             transfer: "Transfer"
-            dispatch: "Dispatch"
+            dispatch: "Lala"
           states:
             new: "New"
             transferred: "Transferred"
@@ -95,12 +96,16 @@ en:
             overdue: "Overdue"
             cleared: "Cleared"
             collected_by_employee: "Employee Collected"
+
+        work_status:
+          events:
+            dispach: Lulu
       transferred_service_call:
         status:
           events:
             transfer: "Transfer Again"
-            accept: "Accept"
-            dispatch: "Dispatch"
+            accept: "PiPi"
+            dispatch: "LtLt"
             work_done: "Completed"
 
           states:

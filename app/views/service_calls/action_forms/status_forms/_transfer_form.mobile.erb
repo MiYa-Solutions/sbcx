@@ -1,60 +1,62 @@
-<%= link_to(job.class.human_status_event_name(:transfer), '#transfer_modal', class: "#{style("service_call.forms.status.transfer.button_classes")}", data: { toggle: 'modal' }, role: "button", id: "transfer_btn") %>
+<%= link_to job.class.human_status_event_name(:transfer), "#transfer_modal", "data-rel" => "popup", "data-transition" => "pop", "class" => "ui-btn-up-d", "data-role" => "button", "data-theme" => "d", id: 'transfer_btn' %>
 
 
-<div id='transfer_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
+<div data-role="popup" id="transfer_modal" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
 
-    <div class="smart_label">
-      <ul>
-        <li><h1><%= I18n.t('general.general.transfer_job') %></h1></li>
-        <li>
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        </li>
-      </ul>
-    </div>
-
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1><%= I18n.t('general.general.transfer_job') %></h1>
   </div>
+  <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
 
-  <div class="modal-body">
     <%= simple_form_for job.becomes(ServiceCall), html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
-        <div class="row-fluid">
-          <div class="span6">
 
-            <div class="control-group string mandatory">
-              <label class="string optional control-label" for="service_call_subcontractor_id"> <%= I18n.t('general.general.select_subcon') %></label>
+        <div class="transfer_job_form">
+          <br>
+          <label class="string optional control-label" for="service_call_subcontractor_id"> <%= I18n.t('general.general.select_subcon') %></label>
 
-              <div class="controls">
-                <%= f.select :subcontractor_id, subcon_options, include_blank: true %>
-              </div>
-            </div>
+          <%= f.select :subcontractor_id, subcon_options, include_blank: true %>
+          <%= f.select :subcon_agreement_id, collection: [] %>
 
-            <%= f.input :subcon_agreement_id, collection: [] %>
-            <%= f.input :allow_collection %>
-            <%= f.input :re_transfer %>
-
-            <%= render 'service_calls/transfer_props/flat_fee_props', f: f %>
-            <%= hidden_field_tag "service_call[status_event]", 'transfer' %>
-
-          </div>
-          <div class="span6">
-            <%= f.input :notes %>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:allow_collection) %></div>
+            <div class="ui-block-b collection"> <%= f.input :allow_collection %></div>
           </div>
 
-        </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:re_transfer) %></div>
+            <div class="ui-block-b collection"> <%= f.input :re_transfer %></div>
+          </div>
 
-        </div>
+          <%= render 'service_calls/transfer_props/flat_fee_props', f: f %>
+          <%= hidden_field_tag "service_call[status_event]", 'transfer' %>
 
-        <div class="modal-footer">
+          <%= f.input :notes %>
+
+         </div>
+
           <%= f.submit job.class.human_status_event_name(:transfer).titleize,
                        id:      'service_call_transfer_btn',
-                       class:   "btn btn-large btn-primary",
+                       class: "ui-btn-up-b ui-btn-hidden",
+                       "data-theme" => "b",
                        title:   'Click to transfer the job to the Subcontractor you selected',
                        rel:     'tooltip',
                        confirm: "" %>
 
-
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        </div>
-
+          <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
     <% end %>
-    </div>
+
+  </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+

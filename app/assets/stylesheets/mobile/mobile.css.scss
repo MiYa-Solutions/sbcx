@@ -136,19 +136,22 @@ footer {
 
     //background: linear-gradient(#5F9CC5, #396B9E) repeat scroll 0 0 #396B9E;
     //border: 1px solid #044062;
-    border: none;
-    color: #000000;
-    font-weight: bold;
-    //text-shadow: 0 1px 0 #194B7E;
-    text-transform: uppercase;
-    min-height: 11px;
+    //border: none;
+    //color: #000000;
+    //font-weight: bold;
+    ////text-shadow: 0 1px 0 #194B7E;
+    //text-transform: uppercase;
+    //min-height: 11px;
 
 
   }
 
   .red-button {
     span > .ui-btn-text {
-      color: #DA4E49;
+      //color: #DA4E49;
+      color: #FFFFFF;
+      font-weight: bold;
+      text-shadow: 0 1px 1px #194B7E;
 
 
     }
@@ -156,14 +159,20 @@ footer {
 
   .blue-button {
     span > .ui-btn-text {
-      color: #3A87AD;
+      //color: #3A87AD;
+      color: #FFFFFF;
+      font-weight: bold;
+      text-shadow: 0 1px 1px #194B7E;
 
     }
   }
 
   .green-button {
     span > .ui-btn-text {
-      color: #44ad3f;
+      //color: #44ad3f;
+      color: #FFFFFF;
+      font-weight: bold;
+      text-shadow: 0 1px 1px #194B7E;
 
 
     }
@@ -179,8 +188,11 @@ footer {
 }
 
 #jobs_index_address {
-  width: 45%;
-  padding-left: 5px;
+  //width: 45%;
+  //padding-left: 5px;
+  font-size: 12px;
+  margin-top: 1px;
+  width: 175px;
 }
 
 #jobs_welcome{
@@ -282,6 +294,31 @@ footer {
   margin-top: 10px;
 }
 
+.job_show_status {
+
+  margin-bottom: 14px;
+
+  .ui-content .ui-listview {
+    margin: -20px -15px -9px;
+  }
+
+  .ui-grid-a, .ui-grid-b, .ui-grid-c, .ui-grid-d {
+    margin-top: -2px;
+    overflow: hidden;
+    padding-bottom: 1px;
+  }
+
+  .ui-li .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li {
+    display: block;
+    padding: 6px 15px;
+  }
+
+  .ui-li-last {
+    padding-bottom: 3px;
+  }
+
+}
+
 .job_status_list {
   margin-top: 10px;
 
@@ -292,7 +329,32 @@ footer {
     border-radius: 0 2em 2em 0;
     width: 50%;
   }
+
+
+  .status_grey {
+    float: right;
+  }
+
 }
+
+.parts_labor {
+
+  margin-top: 11px;
+
+  p {
+    margin-top: 5px;
+  }
+}
+
+#service_call_subcontractor_name {
+
+  .ui-link {
+  display: block;
+  padding: 2px;
+  }
+}
+
+
 
 .job_info_list {
   margin-top: 12px;
@@ -313,6 +375,12 @@ footer {
 
 .service-call-actions {
   width: 80%;
+  margin-top: -18px;
+}
+
+#affiliate_status_fee {
+  margin-left: 1%;
+  margin-right: -23px;
 }
 
 
@@ -442,11 +510,20 @@ input.ui-input-text, textarea.ui-input-text {
 }
 
 .appointment_date_label {
-  right: 11%;
+  color: #3A87AD;
+  font-size: 10px;
   margin-top: -10px;
   position: absolute;
+  right: 11%;
+  text-overflow: ellipsis;
   top: 50%;
-  color: #3A87AD;
+  width: 76px;
+}
+
+.appointment_name {
+  font-size: 12px;
+  margin-top: 1px;
+  width: 175px;
 }
 
 .member_label_mobile {
@@ -487,6 +564,81 @@ input.ui-input-text, textarea.ui-input-text {
   h1 {
   width: 60%;
   text-align: left;
+  }
+}
+
+#update_tax {
+  min-width: 300px;
+  margin-right: 5%;
+
+  div.ui-slider {
+    width: 50%;
+  }
+}
+
+
+.subcon_entries_page {
+
+  .ui-block-a {
+    width: 20%;
+    font-size: 12px;
+  }
+
+  .ui-block-b {
+    width: 40%;
+    font-size: 12px;
+  }
+
+  .ui-block-c {
+    width: 40%;
+    font-size: 12px;
+  }
+}
+
+#entries_header {
+
+
+    margin-left: 4%;
+    padding-left: 1%;
+    text-align: left;
+    width: 80%;
+
+}
+
+
+.job_billing_info {
+  margin-top: 10px;
+
+  .shift_total_price  {
+    margin-left: 18%;
+  }
+
+
+  .red_badge {
+    color: #AB2525;
+    font-size: 14px;
+    font-weight: bold;
+    left: 60%;
+    margin-top: -18px;
+    position: absolute;
+  }
+
+  .green_badge {
+    color: #44AD3F;
+    font-size: 14px;
+    font-weight: bold;
+    left: 60%;
+    margin-top: -18px;
+    position: absolute;
+  }
+
+  .black_badge {
+    color: #000000;
+    font-size: 14px;
+    font-weight: bold;
+    left: 60%;
+    margin-top: -18px;
+    position: absolute;
   }
 }
 
@@ -604,6 +756,27 @@ input.ui-input-text, textarea.ui-input-text {
     text-shadow: 0 1px 1px #194B7E;
   }
 }
+
+.greay_badge_collape {
+  background-color: #FFFFFF;
+  border-radius: 1em 1em 1em 1em;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  height: 9px;
+  //margin-left: 100px;
+  margin-top: -10px;
+  padding: 2px 4px 3px;
+  text-align: center;
+  margin-left: 10%;
+
+  badge {
+    color: #3A87AD;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    text-shadow: none;
+  }
+}
+
 
 
 .alert_label_mobile {
@@ -855,14 +1028,22 @@ input.ui-input-text, textarea.ui-input-text {
 .service_calls_index {
 
   .service_call_status {
-    margin-left: 70%;
-    margin-top: -24px;
-    font-size: 10px;
-    text-align: left;
+    //margin-left: 70%;
+    //margin-top: -24px;
+    //font-size: 10px;
+    //text-align: left;
+    //color: #3A87AD;
+    //text-transform: uppercase;
+    //line-height: 12px;
+    //margin-right: 4%;
     color: #3A87AD;
-    text-transform: uppercase;
-    line-height: 12px;
-    margin-right: 4%;
+    font-size: 12px;
+    margin-top: -10px;
+    position: absolute;
+    right: 11%;
+    text-overflow: ellipsis;
+    top: 50%;
+    width: 76px;
   }
 
   .service_call_status_red {
@@ -1092,6 +1273,7 @@ input.ui-input-text, textarea.ui-input-text {
 }
 
 .job_billing {
+
   .billing_price {
     color: #3A87AD;
     font-size: 14px;
@@ -1732,7 +1914,7 @@ div.ui-slider {
 }
 
 .job_header {
-  margin-bottom: -12px;
+  margin-bottom: 25px;
   margin-top: -12px;
 
   h3{
@@ -1804,6 +1986,3 @@ div.ui-slider {
 #side_bar {
   margin-left: 35%;
 }
-
-
-

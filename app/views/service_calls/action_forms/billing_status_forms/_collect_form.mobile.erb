@@ -5,7 +5,8 @@
     <%= f.input :payment_type, collection: payment_types %>
     <%= f.submit job.class.human_billing_status_event_name(:collect).titleize,
                  id:    'collect_service_call_btn',
-                 class: 'btn btn-large btn-primary',
+                 class: "ui-btn-up-b ui-btn-hidden",
+                 "data-theme" => "b",
                  title: I18n.t('service_call.forms.billing_status.collect.tooltip'),
                  rel:   'tooltip'
     %>
