@@ -135,7 +135,7 @@ module ServiceCallsHelper
   private
 
   def agreement_data_tags(prov, subcon)
-    h(SubcontractingAgreement.my_agreements(prov.id).cparty_agreements(subcon.id).with_status(:active).map { |agr| [agr.name, agr.id, agr.rules.first.type] })
+    h(SubcontractingAgreement.my_agreements(prov.id).cparty_agreements(subcon.id).with_status(:active).map { |agr| [agr.name, agr.id, agr.rules.first.try(:type)] })
   end
 
   def collector_tag(service_call)

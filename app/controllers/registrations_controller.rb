@@ -36,7 +36,7 @@ class RegistrationsController < Devise::RegistrationsController
     if ENV['LOCK_SBCX_REG'].present? && params[:naul].nil?
       redirect_to contact_us_path, notice: "SubConTraX is in closed BETA mode. If you would like to join our beta user group please contact us using the form below."
     end
-    resource      = build_resource({ })
+    resource      = build_resource({})
     @user         = User.new
     @organization = @user.build_organization
 
@@ -53,7 +53,7 @@ class RegistrationsController < Devise::RegistrationsController
 
     if resource.save
       if resource.active_for_authentication?
-        set_flash_message :notice, :signed_up if is_navigational_format?
+        set_flash_message :success, :signed_up if is_navigational_format?
         sign_in(resource_name, resource)
         respond_with resource, :location => after_sign_up_path_for(resource)
       else
@@ -78,7 +78,7 @@ class RegistrationsController < Devise::RegistrationsController
   # From MiYa: need to override for strong parameters
   def build_resource(hash=nil)
     #hash          ||= params[resource_name].permit(*permitted_params(nil).new_user_attributes) || { }
-    hash          ||= permitted_params(nil).registration || { }
+    hash          ||= permitted_params(nil).registration || {}
     self.resource = resource_class.new_with_session(hash, session)
   end
 
@@ -88,5 +88,10 @@ class RegistrationsController < Devise::RegistrationsController
     permitted_params(nil).registration
     #params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
+
+  def after_sign_up_path_for(resource)
+    welcome_path
+  end
+
 
 end

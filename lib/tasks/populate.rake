@@ -222,6 +222,7 @@ end
 
 def set_org_attr(params)
   params[:email]      = params[:email] || Faker::Internet.email
+  params[:industry]   = params[:industry] || Organization.industries.first
   params[:name]       = params[:name] || Faker::Name.name
   params[:phone]      = params[:phone] || Faker::PhoneNumber.phone_number
   params[:mobile]     = params[:mobile] || Faker::PhoneNumber.phone_number

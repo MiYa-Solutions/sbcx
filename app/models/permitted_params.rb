@@ -12,6 +12,10 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     res
   end
 
+  def admin_user
+    params.permit!
+  end
+
   def posting_rule
     if params[:posting_rule].nil?
       params.permit
@@ -148,7 +152,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def organization_attributes
-    [:address1,
+    [:industry, :other_industry,
+     :address1,
      :address2,
      :city,
      :company,

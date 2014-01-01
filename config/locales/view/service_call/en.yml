@@ -97,5 +97,7 @@ en:
           tooltip: "Click to indicate the contractor has confirmed receiving of the customer payment"
         clear:
           tooltip: "Click to indicate the payment was cleared"
+        reject:
+          tooltip: "Click to indicate the customer payment was rejected"
 
 

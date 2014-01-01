@@ -1,0 +1,53 @@
+<div class="well welcome_jobs">
+
+
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.open_jobs') %></h1></li>
+      <li></li>
+      <li><%= link_to I18n.t('general.general.see_all'), service_calls_path, :class => 'btn btn-primary' %></li>
+
+    </ul>
+  </div>
+
+  <br>
+
+  <% if !@service_calls.empty? %>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th><%= AccountingEntry.human_attribute_name(:id) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:description) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:status) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:address) %></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <% @service_calls.each do |sc| %>
+            <tr>
+              <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
+              <td><%= link_to sc.type.tableize.humanize, service_call_path(sc) %></td>
+              <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
+
+              <!--<td><#%= sc.provider.try(:name) %></td>-->
+              <!--<td><#%= sc.subcontractor.try(:name) %></td>-->
+              <td><%= sc.try(:address1) %></td>
+              <!--<td>-->
+              <!--<#%= link_to 'Edit', edit_service_call_path(sc), :class => 'btn btn-mini' %>-->
+              <!--<#%= link_to 'Show', sc.becomes(ServiceCall), :class => 'btn btn-mini btn-danger' %>-->
+              <!--</td>-->
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+  <% else %>
+      <span class="alert alert-info" id="empty_search_result_notice">No Service Calls</span>
+      <br>
+      <br>
+  <% end %>
+
+
+</div>

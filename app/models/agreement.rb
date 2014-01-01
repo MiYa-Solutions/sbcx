@@ -22,7 +22,7 @@
 class Agreement < ActiveRecord::Base
 
 
-  belongs_to :organization
+  belongs_to :organization, inverse_of: :agreements
   belongs_to :counterparty, polymorphic: true
   has_many :events, as: :eventable, :order => 'id DESC'
   has_many :notifications, as: :notifiable

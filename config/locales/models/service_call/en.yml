@@ -89,12 +89,14 @@ en:
         billing_status:
           events:
             clear: 'Clear'
+            subcon_invoiced: LILI
           states:
             collected_by_subcon: "Collected (Subcontractor)"
             subcon_claim_deposited: "Subcontractor Deposited?"
             paid: "Paid"
             overdue: "Overdue"
             cleared: "Cleared"
+            rejected: "Rejected"
             collected_by_employee: "Employee Collected"
 
         work_status:

@@ -19,7 +19,7 @@ Role.find_or_create_by_name(Role::TECHNICIAN_ROLE_NAME)
 
 owner_org = Organization.find_by_email('info@miyasolutions.com')
 if owner_org.nil?
-  owner_org = Organization.new(email: 'info@miyasolutions.com', name: 'MiYa Solutions LLC')
+  owner_org = Organization.new(email: 'info@miyasolutions.com', name: 'MiYa Solutions LLC', industry: :other, other_industry: 'Software')
   owner_org.organization_roles << OrganizationRole.find(OrganizationRole::OWNER_ROLE_ID)
   owner_org.save
 

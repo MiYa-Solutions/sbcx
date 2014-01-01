@@ -5,6 +5,17 @@ class StaticPagesController < ApplicationController
   def welcome
     if user_signed_in?
       respond_to do |format|
+        format.html
+        format.mobile
+      end
+    else
+      redirect_to new_user_session_path, notice: t('devise.failure.unauthenticated')
+    end
+  end
+
+  def home
+    if user_signed_in?
+      respond_to do |format|
         format.html do
           @notifications = current_user.notifications
           @service_calls = current_user.organization.service_calls
@@ -13,7 +24,7 @@ class StaticPagesController < ApplicationController
 
         format.mobile do
           @notifications = current_user.notifications
-          @appointments = current_user.organization.appointments
+          @appointments  = current_user.organization.appointments
         end
 
       end

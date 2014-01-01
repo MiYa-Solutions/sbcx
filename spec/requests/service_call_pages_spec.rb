@@ -8,7 +8,6 @@ describe "Service Call pages" do
   # ==============================================================
   service_call_started_on        = '.service_call_started_on'
   service_call_completed_on      = '.service_call_completed_on'
-  subcontractor_select           = 'service_call_subcontractor_id'
   provider_select                = 'select#service_call_provider_id'
   technician_select              = 'service_call_technician_id'
   collector_select               = 'select#service_call_collector_id'
@@ -23,15 +22,12 @@ describe "Service Call pages" do
   # ==============================================================
   # buttons to click and inspect
   # ==============================================================
-  transfer_btn_selector          = 'service_call_transfer_btn'
   dispatch_btn                   = '#service_call_dispatch_btn'
-  dispatch_btn_selector          = 'service_call_dispatch_btn'
   create_btn                     = 'service_call_create_btn'
   create_btn_selector            = 'service_call_create_btn'
   accept_btn                     = '#accept_service_call_btn'
   accept_btn_selector            = 'accept_service_call_btn'
   reject_btn_selector            = 'reject_service_call_btn'
-  settle_btn_selector            = 'provider_settle_service_call_btn'
   start_btn                      = '#start_service_call_btn'
   start_btn_selector             = 'start_service_call_btn'
   complete_btn_selector          = 'complete_service_call_btn'
@@ -2370,6 +2366,27 @@ describe "Service Call pages" do
 
                   it 'should have billing status paid, buttons' do
                     should have_billing_status(JOB_BILLING_STATUS_COLLECTED_BY_EMPLOYEE)
+                  end
+
+                  context 'when employee deposits the payment' do
+                    before do
+                      click_button JOB_BTN_PAYMENT_DEPOSITED
+                    end
+
+                    it 'should change the billing status to paid' do
+                      expect(page).to have_billing_status(JOB_BILLING_STATUS_PAID)
+                    end
+
+                    context 'when check payment is rejected' do
+                      before do
+                        click_button JOB_BTN_PAYMENT_REJECTED
+                      end
+
+                      it 'should change the billing status to rejected' do
+                        expect(page).to have_billing_status(JOB_BILLING_STATUS_REJECTED)
+                        expect(page).to have_event(100044)
+                      end
+                    end
                   end
                 end
 

@@ -91,4 +91,8 @@ en:
     name: 'Balance adjustment canceled'
     description: "You canceled the balance adjustment (%{entry_id}) you submitted"
 
+  sc_payment_rejected_event:
+    name: 'Customer Payment Rejected'
+    description: "The customer payment was rejected e.g. the check has bounced or payment was rejected by the credit card company."
+
 

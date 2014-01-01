@@ -7,6 +7,7 @@ FactoryGirl.define do
   factory :org, class: Organization do
     sequence(:name) { |n| "Organization #{n}" }
     sequence(:email) { |n| "org_person_#{n}@example.com" }
+    industry Organization.industries.first
 
     factory :supplier, class: Supplier do
       the_role = OrganizationRole.find_by_id(OrganizationRole::SUPPLIER_ROLE_ID)
@@ -43,6 +44,7 @@ FactoryGirl.define do
   factory :member, class: Organization do
     sequence(:name) { |n| "Organization Member#{n}" }
     sequence(:email) { |n| "member_person_#{n}@example.com" }
+    industry Organization.industries.first
 
     prov_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
     sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
@@ -59,6 +61,7 @@ FactoryGirl.define do
   factory :member_with_no_user, class: Organization do
     sequence(:name) { |n| "Organization Member#{n}" }
     sequence(:email) { |n| "member_person_#{n}@example.com" }
+    industry Organization.industries.first
 
     prov_role = OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID)
     sub_role  = OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)

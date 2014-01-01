@@ -120,6 +120,82 @@ ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
 
 
 --
+-- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE active_admin_comments (
+  id            INTEGER                     NOT NULL,
+  namespace     CHARACTER VARYING(255),
+  body          TEXT,
+  resource_id   CHARACTER VARYING(255)      NOT NULL,
+  resource_type CHARACTER VARYING(255)      NOT NULL,
+  author_id     INTEGER,
+  author_type   CHARACTER VARYING(255),
+  created_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  updated_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
+
+
+--
+-- Name: active_admin_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE active_admin_comments_id_seq
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+--
+-- Name: active_admin_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
+
+
+--
+-- Name: admin_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE admin_users (
+  id                     INTEGER                                                NOT NULL,
+  email                  CHARACTER VARYING(255) DEFAULT '' :: CHARACTER VARYING NOT NULL,
+  encrypted_password     CHARACTER VARYING(255) DEFAULT '' :: CHARACTER VARYING NOT NULL,
+  reset_password_token   CHARACTER VARYING(255),
+  reset_password_sent_at TIMESTAMP WITHOUT TIME ZONE,
+  remember_created_at    TIMESTAMP WITHOUT TIME ZONE,
+  sign_in_count          INTEGER DEFAULT 0,
+  current_sign_in_at     TIMESTAMP WITHOUT TIME ZONE,
+  last_sign_in_at        TIMESTAMP WITHOUT TIME ZONE,
+  current_sign_in_ip     CHARACTER VARYING(255),
+  last_sign_in_ip        CHARACTER VARYING(255),
+  created_at             TIMESTAMP WITHOUT TIME ZONE                            NOT NULL,
+  updated_at             TIMESTAMP WITHOUT TIME ZONE                            NOT NULL
+);
+
+
+--
+-- Name: admin_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE admin_users_id_seq
+START WITH 1
+INCREMENT BY 1
+NO MINVALUE
+NO MAXVALUE
+CACHE 1;
+
+
+--
+-- Name: admin_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE admin_users_id_seq OWNED BY admin_users.id;
+
+
+--
 -- Name: agreements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -406,7 +482,9 @@ CREATE TABLE invites (
   affiliate_id    INTEGER,
   status          INTEGER,
   created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL
+  updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  creator_id      INTEGER,
+  updater_id      INTEGER
 );
 
 
@@ -576,7 +654,9 @@ CREATE TABLE organizations (
   status            INTEGER,
   created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  parent_org_id     INTEGER
+  parent_org_id     INTEGER,
+  industry          CHARACTER VARYING(255),
+  other_industry    CHARACTER VARYING(255)
 );
 
 
@@ -983,6 +1063,20 @@ ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq' 
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('active_admin_comments_id_seq' :: REGCLASS);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id_seq' :: REGCLASS);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY agreements ALTER COLUMN id SET DEFAULT nextval('agreements_id_seq' :: REGCLASS);
 
 
@@ -1133,6 +1227,22 @@ ADD CONSTRAINT accounting_entries_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY accounts
 ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY active_admin_comments
+ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY admin_users
+ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
 
 
 --
@@ -1322,6 +1432,41 @@ CREATE INDEX index_accounts_on_accountable_id_and_accountable_type ON accounts U
 --
 
 CREATE INDEX index_accounts_on_organization_id ON accounts USING BTREE (organization_id);
+
+
+--
+-- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING BTREE (author_type, author_id);
+
+
+--
+-- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING BTREE (namespace);
+
+
+--
+-- Name: index_active_admin_comments_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING BTREE (resource_type, resource_id);
+
+
+--
+-- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_admin_users_on_email ON admin_users USING BTREE (email);
+
+
+--
+-- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USING BTREE (reset_password_token);
 
 
 --
@@ -1662,3 +1807,11 @@ INSERT INTO schema_migrations (version) VALUES ('20131226183502');
 INSERT INTO schema_migrations (version) VALUES ('20131226221754');
 
 INSERT INTO schema_migrations (version) VALUES ('20131227192918');
+
+INSERT INTO schema_migrations (version) VALUES ('20131229193157');
+
+INSERT INTO schema_migrations (version) VALUES ('20131230231007');
+
+INSERT INTO schema_migrations (version) VALUES ('20131230231018');
+
+INSERT INTO schema_migrations (version) VALUES ('20131231165209');

@@ -11,7 +11,7 @@
   <ul class="nav">
     <li>
       <% if user_signed_in? %>
-          <%= link_to image_tag("LogoImg.png", alt: "MiYa"), url_for({ :controller => '/static_pages', :action => 'welcome' }) %>
+          <%= link_to image_tag("LogoImg.png", alt: "MiYa"), url_for({ :controller => '/static_pages', :action => 'home' }) %>
 
       <% else %>
           <%= link_to image_tag("LogoImg.png", alt: "MiYa"), url_for({ :controller => '/static_pages', :action => 'index' }) %>
@@ -62,7 +62,9 @@
                 <li class="login_info"><a><%= current_user.name %></a></li>
                 <li class="login_info"><a><%= current_user.email %></a></li>
                 <li class="divider"></li>
-                <li><%= link_to "Profile", profile_path, id: 'profile_header_link' %></li>
+                <li><%= link_to I18n.t('general.general.help'), welcome_path, id: 'help_link' %></li>
+                <li class="divider"></li>
+                <li><%= link_to I18n.t('general.general.profile'), profile_path, id: 'profile_header_link' %></li>
                 <li><%= link_to I18n.t('general.general.contact_us'), contact_us_path %></li>
                 <li><%= link_to I18n.t('general.general.miya_billing') %></li>
                 <li class="divider"></li>

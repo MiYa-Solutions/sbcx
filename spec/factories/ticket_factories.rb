@@ -5,6 +5,7 @@ FactoryGirl.define do
 
     after(:build) do |job|
       job.customer = FactoryGirl.build(:member_customer, organization: job.organization)
+      job.organization.customers << job.customer
       job.provider = job.organization.becomes(Provider)
     end
 
@@ -23,5 +24,34 @@ FactoryGirl.define do
     association :organization, factory: :member_org, strategy: :build
 
   end
+
+  factory :mem_material, class: Material do
+    association :organization, factory: :member_org, strategy: :build
+    name Faker::Name.name
+    description Faker::Lorem.paragraph(1)
+    cost Money.new_with_amount(123.4)
+    price Money.new_with_amount(254.7)
+
+    after(:build) do |mat|
+      mat.supplier = mat.organization.becomes(Supplier)
+    end
+  end
+
+  factory :ticket_bom, class: Bom do
+    association :material, factory: :mem_material, strategy: :build
+    association :ticket, factory: :my_job, strategy: :build
+    buyer 'You forgot to specify a buyer when creating the bom'
+    quantity 3
+    cost Money.new_with_amount 10
+    price Money.new_with_amount 100
+
+    after(:build) do |bom|
+      bom.ticket.save!
+      bom.material.save!
+      bom.material_id = bom.material.id
+      bom.buyer = bom.ticket.provider unless bom.buyer
+    end
+  end
+
 end
 

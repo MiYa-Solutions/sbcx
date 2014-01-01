@@ -1,5 +1,9 @@
 Sbcx::Application.routes.draw do
 
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  root to: 'static_pages#index'
+
+
   resources :invites
 
 
@@ -40,10 +44,9 @@ Sbcx::Application.routes.draw do
   resources :notifications, only: [:show, :index, :update, :destroy]
 
 
-  root to: 'static_pages#index'
-
   # overriding the devise registration controller
   devise_for :users, :controllers => { :registrations => "registrations", :passwords => "passwords", :sessions => "sessions" }
+  ActiveAdmin.routes(self)
 
   devise_scope :user do
     match "/profile" => "registrations#show"
@@ -61,10 +64,12 @@ Sbcx::Application.routes.draw do
     get :autocomplete_material_name, :on => :collection
   end
 
-  match 'welcome' => 'static_pages#welcome', :as => :user_root
+  match 'welcome' => 'static_pages#welcome', :as => :welcome
+  match 'home' => 'static_pages#home', :as => :user_root
   match 'contact_us' => 'contact_us#new', as: :contact_us, via: :get
   match 'contact_us' => 'contact_us#create', as: :contact_us, via: :post
 
+  ActiveAdmin.routes(self)
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -12,8 +12,12 @@ class ApplicationController < ActionController::Base
 
   before_filter :prepare_for_mobile
 
-  def permitted_params(obj)
-    @permitted_params ||= PermittedParams.new(params, current_user, obj)
+  def permitted_params(obj = nil)
+    if params[:controller].include?('admin/')
+      @permitted_params ||= PermittedParams.new(params, current_user, obj).admin_user
+    else
+      @permitted_params ||= PermittedParams.new(params, current_user, obj)
+    end
   end
 
   helper_method :permitted_params
