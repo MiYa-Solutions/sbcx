@@ -242,6 +242,10 @@ class ServiceCall < Ticket
     Invoice.new(self)
   end
 
+  def already_invoiced?
+    invoice.date ? true : false
+  end
+
   private
   def financial_data_change
     errors.add :tax, "Can't change tax when job is completed or transferred" if !self.system_update && self.changed_attributes.has_key?('tax') && !can_change_financial_data?

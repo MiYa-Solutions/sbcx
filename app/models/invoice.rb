@@ -50,8 +50,8 @@ class Invoice
   end
 
   def date
-    event = @job.events.where(reference_id: 100018).first
-    event ? event.created_at : Time.zone.now
+    event = @job.events.where(reference_id: [100018, 100019, 100020]).first
+    event ? event.created_at : nil
   end
 
   def total_before_tax
