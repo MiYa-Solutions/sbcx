@@ -67,12 +67,15 @@
                               <strong><%= @agreement.id %></strong>
                             </td>
                           </tr>
-                          <td valign="top" class="dataTableContent">
-                            <%= AgrChangeSubmittedEvent.human_attribute_name(:change_reason) %>
-                          </td>
-                          <td valign="top" class="dataTableContent">
-                            <strong><%= @event.change_reason %></strong>
-                          </td>
+                          <tr>
+                              <td valign="top" class="dataTableContent">
+                                <%= AgrChangeSubmittedEvent.human_attribute_name(:change_reason) %>
+                            </td>
+                             <td valign="top" class="dataTableContent">
+                             <strong><%= @event.change_reason %></strong>
+                            </td>
+                          </tr>
+                          <tr>
                           <td valign="top" class="dataTableContent">
                             <%= AgrChangeSubmittedEvent.human_attribute_name(:description) %>
                           </td>

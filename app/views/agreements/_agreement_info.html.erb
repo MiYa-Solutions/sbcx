@@ -15,16 +15,17 @@
     <tbody>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:status) %></td>
-      <td>
-        <% if agreement_pending_my_action?(@agreement)  %>
-          <h4 class="agr_pending_approval"><%= t('general.general.agr_pending_apr')  %></h4>
-        <% end %>
+      <td class="agr_status">
 
-        <% if @agreement.canceled? || @agreement.rejected_by_org? %>
-            <h4 class="agr_pending_approval"><%= @agreement.human_status_name %></h4>
-        <% end %>
+            <h4 class="<%= @agreement.status_name %>"><%= @agreement.human_status_name %>
 
+         <% if agreement_pending_my_action?(@agreement) %>
+            <%= image_tag("question16.png", :title => I18n.t("agreement.status.tooltip.my_#{@agreement.status_name}"), :rel => 'tooltip', "data-placement" => "left") %>
+         <% else %>
+            <%= image_tag("question16.png", :title => I18n.t("agreement.status.tooltip.his_#{@agreement.status_name}"), :rel => 'tooltip', "data-placement" => "left") %>
 
+      <% end %>
+            </h4>
 
       </td>
     </tr>

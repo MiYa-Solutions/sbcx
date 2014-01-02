@@ -170,7 +170,7 @@ en:
     sbcx_reference_notification:
       subject: "%{org} invites you to join SubconTraX"
       title: "Join SubconTraX for FREE"
-      content: "%{org} is already using SubconTraX and thinks you should too - %{message} "
+      content: "is already using SubconTraX and and would like to invite you to try it"
       bottom_content: 'Please click on the link below for more details'
     invite_declined:
       subject: "The invitation to join your network has been declined"

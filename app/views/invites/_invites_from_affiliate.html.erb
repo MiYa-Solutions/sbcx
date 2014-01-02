@@ -1,18 +1,24 @@
-<h4>Invites Received From Affiliate</h4>
-<table>
-  <thead>
-  <tr>
-    <th><%= Invite.human_attribute_name(:created_at) %></th>
-    <th><%= Invite.human_attribute_name(:status) %></th>
-    <th><%= Invite.human_attribute_name(:message) %></th>
-    <th><%= 'Actions' %></th>
-  </tr>
-  </thead>
+<div class="smart_label">
+  <ul>
+    <li><h1><%= I18n.t('general.messages.aff_invited_me')%></h1></li>
+    <li></li>
+  </ul>
+</div>
 
-  <tbody>
+
+<br>
+
+<div class="row-fluid">
+
+  <p>
+  <strong><%= I18n.t('general.general.note') %></strong><%= I18n.t('general.messages.aff_invited_me_p2') %>
+  </p>
+  <br>
+
   <% current_user.organization.becomes(Affiliate).invites_by_org(affiliate).each do |invite| %>
       <%= render invite %>
   <% end %>
-  </tbody>
 
-</table>
+
+
+</div>

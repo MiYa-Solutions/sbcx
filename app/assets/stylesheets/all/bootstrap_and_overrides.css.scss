@@ -257,7 +257,7 @@ footer {
 
   .bottom_block {
     margin-top: 15px;
-    min-height: 255px;
+    min-height: 291px;
   }
 }
 
@@ -3481,11 +3481,13 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 }
 
-#invite_modal_index {
+.invite_modal_index {
 
   margin-left: -20%;
   margin-top: -25%;
   width: 40%;
+
+
 
   #invite_notes {
     height: 100px;
@@ -4033,6 +4035,24 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 .agr_pending_approval {
   color: red;
+}
+
+
+.agr_status {
+
+  .pending_org_approval, rejected_by_cparty, canceled  {
+    color: red;
+  }
+
+  .active {
+    color: #3A87AD;
+  }
+
+   img {
+     margin-top: -5px;
+   }
+
+
 }
 
 

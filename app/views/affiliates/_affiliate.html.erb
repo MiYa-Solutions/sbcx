@@ -55,7 +55,7 @@
               <%= link_to I18n.t('general.general.edit'), edit_affiliate_path(affiliate), :class => 'btn btn-mini' %>
             </li>
             <li>
-              <%= link_to(I18n.t('general.general.send_invite'), "#invite_modal_index_#{affiliate.id}", class: "btn btn-mini btn-primary", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip') %>
+              <%= link_to(I18n.t('general.general.send_invite'), "#referral_modal_index_#{affiliate.id}", class: "btn btn-mini btn-primary", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip') %>
             </li>
 
           </ul>
@@ -81,7 +81,7 @@
 </tr>
 
 
-<div id='<%= "invite_modal_index_#{affiliate.id}" %>' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id='<%= "invite_modal_index_#{affiliate.id}" %>' class='modal hide fade invite_modal_index'  style="margin-left: -20%; margin-top: -25%; width: 40%;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
   <%= simple_form_for(Invite.new, :html => { :class => 'form-horizontal' }) do |f| %>
       <div class="modal-header">
@@ -104,6 +104,46 @@
 
           <div class="form-inputs">
             <%= f.input :message, as: :text, :input_html => { :value => I18n.t('general.message.invite_member') + current_user.name } %>
+            <%= f.hidden_field :affiliate_id, value: affiliate.id %>
+          </div>
+
+          <br>
+          <%= f.button :submit, id: 'invite_create_btn', :value => t('general.general.add_member'), class: 'btn btn-large btn-primary' %>
+
+        </div>
+
+      </div>
+
+
+      <!--End of Form-->
+  <% end %>
+</div>
+
+
+
+<div id='<%= "referral_modal_index_#{affiliate.id}" %>' class='modal hide fade invite_modal_index'  style="margin-left: -20%; margin-top: -25%; width: 40%;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+  <%= simple_form_for(Invite.new, :html => { :class => 'form-horizontal' }) do |f| %>
+      <div class="modal-header">
+
+        <div class="smart_label">
+          <ul>
+            <li><h1><%= t('general.general.new_referral_for') %> <%= affiliate.name %></h1></li>
+            <li>
+              <button class="btn" data-dismiss="modal" aria-hidden="true"><%= t('general.general.close') %></button>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="modal-body">
+        <%= f.error_notification %>
+
+        <div class="row-fluid">
+
+          <div class="form-inputs">
+            <%= f.input :message, as: :text, :input_html => { :value => I18n.t('general.message.send_referral') + current_user.name } %>
             <%= f.hidden_field :affiliate_id, value: affiliate.id %>
           </div>
 

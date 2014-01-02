@@ -1,6 +1,28 @@
-<tr>
-  <td><%= l invite.created_at %></td>
-  <td><%= invite.human_status_name %></td>
-  <td><%= invite.message %></td>
-  <td><%= invite_event_buttons(invite) if permitted_to? :update, invite %></td>
-</tr>
+<table class="table table-striped table-condensed">
+  <tr>
+    <td>
+      <strong><%= Invite.human_attribute_name(:created_at) %></strong>
+    </td>
+    <td>
+      <%= l invite.created_at %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong><%= Invite.human_attribute_name(:status) %></strong>
+    </td>
+    <td>
+      <%= invite.human_status_name.titleize %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong><%= Invite.human_attribute_name :message %></strong>
+    </td>
+    <td>
+      <%= invite.message %>
+    </td>
+  </tr>
+</table>
+
+<%= invite_event_buttons(invite) if permitted_to? :update, invite %>

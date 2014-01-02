@@ -65,3 +65,24 @@ en:
       net_30: Net + 30
       net_60: Net + 60
       net_90: Net + 90
+
+    status:
+      tooltip:
+        my_active: "The agreement is Active"
+        his_active: "The agreement is Active"
+        my_replaced: "The agreement has been replaced"
+        his_replaced: "The agreement has been replaced"
+        my_canceled: "The agreement has been canceled"
+        his_canceled: "The agreement has been canceled"
+        my_rejected_by_cparty: "The agreement has been rejected"
+        his_rejected_by_cparty: "The agreement has been rejected"
+        my_rejected_by_org: "The agreement has been rejected"
+        his_rejected_by_org: "The agreement has been rejected"
+        my_pending_cparty_approval: "The agreement is pending your approval"
+        his_pending_cparty_approval: "The agreement is pending approval of your affiliate"
+        my_pending_org_approval: "The agreement is pending your approval"
+        his_pending_org_approval: "The agreement is pending approval of your affiliate"
+        my_draft: "The agreement has not been submitted yet"
+        his_draft: "The agreement has not been submitted yet"
+
+

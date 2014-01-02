@@ -13,6 +13,8 @@
             <li class="green-balance"><h1><%= I18n.t('general.general.total_balance').html_safe + "&nbsp;".html_safe %>
               <span id="balance"><%= humanized_money_with_symbol @account.balance %></span></h1></li>
         <% end %>
+    <% else %>
+        <li></li>
     <% end %>
   </ul>
 </div>
@@ -25,35 +27,44 @@
       <div class="span6">
         <!--Contact Info-->
         <%= render :partial => 'contact_info' %>
-        <div><%= render 'invites/invites_from_affiliate', affiliate: @affiliate if current_user.organization.becomes(Affiliate).invited?(@affiliate) %></div>
-        <div><%= render 'invites/invites_to_affiliate', affiliate: @affiliate if @affiliate.local? && @affiliate.invited?(current_user.organization) %></div>
+
+        <!--To fix in Modal-->
+        <!--<div><@%= render 'invites/invites_from_affiliate', affiliate: @affiliate if current_user.organization.becomes(Affiliate).invited?(@affiliate) %></div>-->
+        <!--<div><@%= render 'invites/invites_to_affiliate', affiliate: @affiliate if @affiliate.local? && @affiliate.invited?(current_user.organization) %></div>-->
+        <!--<div><@%= render 'invites/invites_to_affiliate', affiliate: @affiliate if @affiliate.invited?(current_user.organization) %></div>-->
+
         <!--Agreements-->
         <% if @agreements.empty? %>
             </div>
 
+
             <div class="span6">
-              <div><%= render 'invites/invites_to_affiliate', affiliate: @affiliate if @affiliate.invited?(current_user.organization) %></div>
+                <% if @affiliate.invited?(current_user.organization) || current_user.organization.becomes(Affiliate).invited?(@affiliate) %>
+                    <% if @affiliate.invited?(current_user.organization) %>
+                    <!--He invited me, so You recived an invitation from: -->
+                       <%= render 'invites/invites_to_affiliate', affiliate: @affiliate if @affiliate.invited?(current_user.organization) %>
+                    <% end %>
+                    <% if current_user.organization.becomes(Affiliate).invited?(@affiliate) %>
+                       <!--I invited him-->
+                        <%= render 'invites/invites_from_affiliate', affiliate: @affiliate if current_user.organization.becomes(Affiliate).invited?(@affiliate) %>
 
-              <div class="row-fluid alert alert-success" id="empty_agreement_notice">
+                    <% end %>
+                <% else %>
+                        <div class="row-fluid alert alert-success" id="empty_agreement_notice">
+                          <%= I18n.t('general.messages.invite_member') %>
+                          <br><br>
+                          <%= link_to(t('general.general.add_member'), '#invite_modal', class: "btn btn-medium btn-success", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn") %>
+                          <br><br>
+                          <strong><%= I18n.t('general.general.note') %></strong><%= I18n.t('general.messages.invite_member_p2') %>
+                          <br>
+                        </div>
+               <% end %>
 
-                <%= I18n.t('general.messages.invite_member') %>
-                <br><br>
-
-                <%= link_to(t('general.general.add_member'), '#invite_modal', class: "btn btn-medium btn-success", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn") %>
-                <br><br>
-
-                <strong><%= I18n.t('general.general.note') %></strong><%= I18n.t('general.messages.invite_member_p2') %>
-                <br>
-                <!--<#%= button_tag I18n.t('general.general.new_agreement'), :class => 'btn btn-small btn-primary', id: 'new-agreement-button', data: { toggle: "collapse", target: "#add_new_agreement" } %>-->
-              </div>
-              <!--<br><br>-->
-
-              <!--<div class="bom collapse" id="add_new_agreement">-->
-              <!--<#%= render 'agreements/agreement_form', other_party: @affiliate %>-->
-              <!--</div>-->
             </div>
 
         <% else %>
+
+
             <%= render :partial => 'affiliate_agreements' %>
             </div>
 
