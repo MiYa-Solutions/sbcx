@@ -46,6 +46,8 @@ en:
       parts_labor: "Parts and Labor"
       update_tax: "Tax (%)"
       tax_update: "Update Tax"
+      full_site: "Full Site"
+      agr_pending_apr: "Pending My Approval"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"

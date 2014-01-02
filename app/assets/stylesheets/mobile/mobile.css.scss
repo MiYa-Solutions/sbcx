@@ -188,11 +188,11 @@ footer {
 }
 
 #jobs_index_address {
-  //width: 45%;
   //padding-left: 5px;
   font-size: 12px;
   margin-top: 1px;
-  width: 175px;
+  //width: 175px;
+  width: 48%;
 }
 
 #jobs_welcome{
@@ -523,7 +523,9 @@ input.ui-input-text, textarea.ui-input-text {
 .appointment_name {
   font-size: 12px;
   margin-top: 1px;
-  width: 175px;
+  //width: 175px;
+  width: 48%;
+
 }
 
 .member_label_mobile {
@@ -722,6 +724,7 @@ input.ui-input-text, textarea.ui-input-text {
     font-size: 14px;
     margin-left: 60%;
     text-align: center;
+    text-shadow: none;
   }
 
   badge {
@@ -777,6 +780,18 @@ input.ui-input-text, textarea.ui-input-text {
   }
 }
 
+#affiliate_show_balance {
+  margin-bottom: -8px;
+  margin-top: -7px;
+}
+
+#full_site_btn {
+  padding-bottom: 7px;
+
+ .ui-btn-left {
+   left: 70%;
+ }
+}
 
 
 .alert_label_mobile {

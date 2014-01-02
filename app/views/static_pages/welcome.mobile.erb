@@ -25,13 +25,16 @@
 
 
   <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= Appointment.model_name.human.pluralize %></li>
+
   <% @appointments.each do |appointment| %>
     <li class="inline_mobile service_calls_index">
       <p class="ui-li-aside-blue ui-li-desc-blue">
         <badge><%= appointment.appointable.id %></badge>
       </p>
-      <%= link_to appointment.appointable.try(:name), appointment_path(appointment), "data-transition" => "slide", class: "appointment_name" %>
+      <span class="appointment_name">
+      <%= link_to appointment.appointable.try(:name), appointment_path(appointment), "data-transition" => "slide" %>
 
+        </span>
       <span class="appointment_date_label">
                 <%= appointment.starts_at_date_text %>, <%= appointment.starts_at_time_text %>
       </span>

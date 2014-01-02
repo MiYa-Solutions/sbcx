@@ -14,6 +14,26 @@
   <table class="table table-striped table-condensed">
     <tbody>
     <tr>
+      <td><%= @agreement.class.human_attribute_name(:status) %></td>
+      <td>
+        <% if agreement_pending_my_action?(@agreement)  %>
+          <h4 class="agr_pending_approval"><%= t('general.general.agr_pending_apr')  %></h4>
+        <% end %>
+
+        <% if @agreement.canceled? || @agreement.rejected_by_org? %>
+            <h4 class="agr_pending_approval"><%= @agreement.human_status_name %></h4>
+        <% end %>
+
+
+
+      </td>
+    </tr>
+
+
+
+
+
+    <tr>
       <td><%= I18n.t('general.general.name') %></td>
       <td>
         <h4><%= best_in_place @agreement.becomes(Agreement), :name, classes: "track_change #{if_changed(:name)}" %></h4>
@@ -42,10 +62,6 @@
       <td>
         <h4><%= best_in_place @agreement.becomes(Agreement), :ends_at_text, :type => :date, classes: "track_change #{if_changed(:ends_at)}" %></h4>
       </td>
-    </tr>
-    <tr>
-      <td><%= @agreement.class.human_attribute_name(:status) %></td>
-      <td><h4><%= @agreement.human_status_name %></h4></td>
     </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:organization) %></td>
