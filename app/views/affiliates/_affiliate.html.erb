@@ -24,9 +24,9 @@
 
   </td>
   <!--<#% if @account.balance > 0 %>-->
-          <!--<td class="green_balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
+  <!--<td class="green_balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
   <!--<#% else %>-->
-          <!--<td class="green-balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
+  <!--<td class="green-balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
   <!--<#% end %>-->
 
   <td class="actions_affiliate_index">
@@ -36,7 +36,7 @@
               <ul>
                 <li class="add_member">
                   <!--<#%= link_to I18n.t('general.general.add_member'), affiliate_path(affiliate), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.invite_member').html_safe, :rel => 'tooltip' %>-->
-                  <%= link_to(t('general.general.add_member'), '#invite_modal_index', class: "btn btn-mini btn-success", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.invite_member').html_safe, :rel => 'tooltip') %>
+                  <%= link_to(t('general.general.add_member'), "#invite_modal_index_#{affiliate.id}", class: "btn btn-mini btn-success", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.invite_member').html_safe, :rel => 'tooltip') %>
 
                 </li>
 
@@ -55,7 +55,7 @@
               <%= link_to I18n.t('general.general.edit'), edit_affiliate_path(affiliate), :class => 'btn btn-mini' %>
             </li>
             <li>
-              <%= link_to I18n.t('general.general.send_invite'), "#", :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip' %>
+              <%= link_to(I18n.t('general.general.send_invite'), "#invite_modal_index_#{affiliate.id}", class: "btn btn-mini btn-primary", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip') %>
             </li>
 
           </ul>
@@ -81,7 +81,7 @@
 </tr>
 
 
-<div id='invite_modal_index' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id='<%= "invite_modal_index_#{affiliate.id}" %>' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
   <%= simple_form_for(Invite.new, :html => { :class => 'form-horizontal' }) do |f| %>
       <div class="modal-header">
@@ -89,7 +89,9 @@
         <div class="smart_label">
           <ul>
             <li><h1><%= t('general.general.new_invite_for') %> <%= affiliate.name %></h1></li>
-            <li><button class="btn" data-dismiss="modal" aria-hidden="true"><%= t('general.general.close') %></button></li>
+            <li>
+              <button class="btn" data-dismiss="modal" aria-hidden="true"><%= t('general.general.close') %></button>
+            </li>
           </ul>
         </div>
 
@@ -101,17 +103,16 @@
         <div class="row-fluid">
 
           <div class="form-inputs">
-            <%= f.input :message, as: :text, :input_html => { :value => I18n.t('general.message.invite_member') + current_user.name  } %>
+            <%= f.input :message, as: :text, :input_html => { :value => I18n.t('general.message.invite_member') + current_user.name } %>
             <%= f.hidden_field :affiliate_id, value: affiliate.id %>
           </div>
 
           <br>
-          <%= f.button :submit , id: 'invite_create_btn', :value => t('general.general.add_member'), class: 'btn btn-large btn-primary' %>
+          <%= f.button :submit, id: 'invite_create_btn', :value => t('general.general.add_member'), class: 'btn btn-large btn-primary' %>
 
         </div>
 
       </div>
-
 
 
       <!--End of Form-->

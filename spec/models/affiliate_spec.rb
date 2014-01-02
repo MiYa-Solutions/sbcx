@@ -7,4 +7,7 @@ describe Affiliate do
     expect(aff).to_not validate_presence_of(:industry)
   end
 
+  pending '#invited(org)'
+  pending '#invites_by_org(org)'
+
 end

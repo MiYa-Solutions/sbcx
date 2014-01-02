@@ -177,8 +177,10 @@ authorization do
     end
 
     has_permission_on :posting_rules, :to => [:new, :update, :edit, :create, :destroy] do
-      if_attribute :agreement => { :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :counterparty_id => is { user.organization_id } }
-      if_attribute :agreement => { :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :organization_id => is { user.organization_id } }
+
+      # The reason the below is commented - when the agreement is active DONT allow the changing of the rules
+      #if_attribute :agreement => { :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :counterparty_id => is { user.organization_id } }
+      #if_attribute :agreement => { :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is { OrganizationAgreement::STATUS_ACTIVE }, :organization_id => is { user.organization_id } }
 
       # when the agreement status is draft
       if_attribute :agreement => { :type => is_in { ['SubcontractingAgreement', 'OrganizationAgreement'] }, :status => is { OrganizationAgreement::STATUS_DRAFT }, :organization_id => is { user.organization_id }, :creator_id => is_in { user.organization.user_ids } }

@@ -294,6 +294,10 @@ class Organization < ActiveRecord::Base
     self.subcontrax_member?
   end
 
+  def local?
+    !member?
+  end
+
   def industry_name
     other_industry || Organization.human_industry_name(industry)
   end

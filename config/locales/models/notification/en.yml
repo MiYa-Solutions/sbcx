@@ -142,6 +142,11 @@ en:
       subject: '%{org} has invited you to become his affiliate'
       content: '%{org} is inviting you to join his affiliate network which will allow you to outsource and receive jobs from one another'
 
+    sbcx_reference_notification:
+      html_message: "%{org} is inviting you to join SubconTraX"
+      subject: '%{org} is inviting you to join SubconTraX'
+      content: '%{org} is inviting you to join SubconTraX for FREE: %{message}'
+
     invite_accepted:
       html_message: "%{affiliate} has accepted your %{link} to join your affiliate network"
       subject: 'Congratulations! %{affiliate} has accepted your invitation'

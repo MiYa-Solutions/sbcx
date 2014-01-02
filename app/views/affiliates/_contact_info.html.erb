@@ -14,7 +14,8 @@
             <% end %>
         <% else %>
             <%= image_tag("question24.png", :title => I18n.t('general.messages.send_invite'), :rel => 'tooltip') %>
-            <%= link_to I18n.t('general.general.send_invite'), '#', :class => 'btn btn-primary' %>
+            <%= link_to(I18n.t('general.general.send_invite'), '#invite_modal', class: "btn btn-medium btn-success", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn") %>
+
         <% end %>
       </li>
     </ul>
@@ -73,7 +74,7 @@
     <% if @affiliate.subcontrax_member==true %>
         <%= link_to 'Back', affiliates_path, :class => 'btn btn-medium' %>
         <!--<#% if  @affiliate.id.in? affiliate_ids %>-->
-            <!--<#%= link_to 'Archive', affiliate_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>-->
+        <!--<#%= link_to 'Archive', affiliate_path(@affiliate), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>-->
         <!--<#% end %>-->
 
     <% else %>
@@ -81,7 +82,7 @@
         <%= link_to 'Edit', edit_affiliate_path(@affiliate), :class => 'btn btn-medium btn-primary' %>
         <!--<#%= link_to 'Archive', '#', :confirm => 'Are you sure?', :class => 'btn btn-medium btn-danger' %>-->
 
-  <% end %>
+    <% end %>
   </div>
 </div>
 

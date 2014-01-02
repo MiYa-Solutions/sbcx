@@ -40,6 +40,7 @@ gem 'RedCloth', '~> 4.2.9', :require => 'redcloth'
 gem 'rails3_acts_as_paranoid', '~> 0.2.5'
 gem 'activeadmin'
 gem 'meta_search', '>= 1.1.0.pre'
+gem 'prawn', '~> 0.13.1'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'

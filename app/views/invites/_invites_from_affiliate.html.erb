@@ -1,0 +1,18 @@
+<h4>Invites Received From Affiliate</h4>
+<table>
+  <thead>
+  <tr>
+    <th><%= Invite.human_attribute_name(:created_at) %></th>
+    <th><%= Invite.human_attribute_name(:status) %></th>
+    <th><%= Invite.human_attribute_name(:message) %></th>
+    <th><%= 'Actions' %></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% current_user.organization.becomes(Affiliate).invites_by_org(affiliate).each do |invite| %>
+      <%= render invite %>
+  <% end %>
+  </tbody>
+
+</table>
