@@ -75,6 +75,7 @@ en:
           events:
             invoice: I Invoiced
             provider_invoiced: Contractor
+            subcon_invoiced: Subcontractor
       my_service_call:
         status:
           events:
