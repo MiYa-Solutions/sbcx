@@ -1,3 +1,4 @@
+require 'abstract'
 module ServiceCallsHelper
   include PaymentHelper
 
@@ -17,10 +18,7 @@ module ServiceCallsHelper
   end
 
   def status_forms(service_call)
-    service_call.status_events.collect do |event|
-      #concat(content_tag :li, send("#{event}_form".to_sym, service_call))
-      concat(render "service_calls/action_forms/status_forms/#{event}_form", job: service_call)
-    end
+    JobStatusFormsRenderer.new(service_call, self).render
   end
 
   def work_status_forms(service_call)
@@ -149,6 +147,51 @@ module ServiceCallsHelper
   end
 
   def payment_tag(job)
+
+  end
+
+
+  class FormRenderer
+    include Abstract
+
+    def initialize(obj, view)
+      @obj  = obj
+      @view = view
+    end
+
+    abstract_methods :render
+
+  end
+
+  class JobStatusFormsRenderer < FormRenderer
+
+    VIEW_PATH = 'service_calls/action_forms/status_forms/'
+
+    def view_map
+      {
+          cancel:          'cancel_form',
+          un_cancel:       'un_cancel_form',
+          accept:          'accept_form',
+          un_accept:       'un_accept_form',
+          reject:          'reject_form',
+          transfer:        'transfer_form',
+          close:           'close_form',
+          cancel_transfer: 'cancel_transfer_form'
+      }
+    end
+
+    def render
+
+      available_events.each do |event|
+        @view.concat(@view.render VIEW_PATH + view_map[event], job: @obj)
+      end
+
+    end
+
+    private
+    def available_events
+      @obj.status_events
+    end
 
   end
 
