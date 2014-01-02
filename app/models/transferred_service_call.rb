@@ -206,7 +206,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? && sc.subcontractor }
+      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? && !sc.subcon_na? }
     end
 
     event :provider_invoiced do

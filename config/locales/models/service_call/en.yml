@@ -72,6 +72,9 @@ en:
             paid: "Paid"
             pending: "Pending"
             invoiced_by_prov: "Invoiced (Contractor)"
+          events:
+            invoice: I Invoiced
+            provider_invoiced: Contractor
       my_service_call:
         status:
           events:

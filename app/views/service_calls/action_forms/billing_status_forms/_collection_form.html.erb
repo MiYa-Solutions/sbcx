@@ -1,0 +1,19 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
+
+    <%= f.input :billing_status, collection: billing_events_collection(job), as: :radio_buttons, name: 'billing_status_event' %>
+
+    <% if job.organization.multi_user? %>
+        <%= f.label :collector %>
+        <%= collector_tag(job) %>
+    <% end %>
+
+    <%= f.input :payment_type, collection: payment_types %>
+    <%= f.submit job.class.human_billing_status_event_name(:collect).titleize,
+                 id:          'collect_service_call_btn',
+                 class:       "ui-btn-up-b ui-btn-hidden",
+                 "data-theme" => "b",
+                 title:       I18n.t('service_call.forms.billing_status.collect.tooltip'),
+                 rel:         'tooltip'
+    %>
+<% end %>
+

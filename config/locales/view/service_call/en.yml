@@ -69,6 +69,9 @@ en:
       billing_status:
         invoice:
           tooltip: "Click to indicate the client was presented with an invoice for the service"
+        invoice:
+          btn_name: Invoice
+          tooltip: "Click to indicate the client was presented with an invoice for the service"
         subcon_invoiced:
           tooltip: "Click to indicate the subcontractor has invoiced the customer"
         provider_invoiced:

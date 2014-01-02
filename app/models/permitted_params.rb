@@ -7,7 +7,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       self[:params][attribute] = attribute_val
     end
 
-    res = send("#{resource}_attributes").include?(attribute)
+    method_sym = "#{resource}_attributes".to_sym
+    res        = send(method_sym).include?(attribute)
     self[:params][attribute] = old_val unless attribute_val.nil?
     res
   end

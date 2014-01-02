@@ -31,11 +31,11 @@ module ServiceCallsHelper
   end
 
   def billing_status_forms(service_call)
+
     if service_call.allow_collection? || service_call.instance_of?(MyServiceCall)
-      concat(content_tag :h3, t('headers.billing_actions')) unless service_call.billing_status_events.empty?
-      service_call.billing_status_events.collect do |event|
-        #concat(content_tag :li, send("billing_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :billing_status_event, event.to_s)
-        concat(render "service_calls/action_forms/billing_status_forms/#{event}_form", job: service_call)
+      unless service_call.billing_status_events.empty?
+        concat(content_tag :h3, t('headers.billing_actions'))
+        JobBillingFormsRenderer.new(service_call, self).render
       end
     end
 
@@ -129,8 +129,23 @@ module ServiceCallsHelper
     res
   end
 
+  def billing_events_collection(job)
+    events_collection(job, :billing_status, job.billing_status_events)
+  end
 
   private
+
+  def events_collection(job, state_machine_name, events = [])
+    events.map do |event|
+      if permitted_params(job).permitted_attribute?('service_call', "#{state_machine_name}_event".to_sym, event)
+        [
+            #I18n.t("activerecord.state_machines.#{job.class.name.underscore}.#{state_machine_name}.events.#{event}"),
+            job.class.send("human_#{state_machine_name}_event_name", event),
+            event
+        ]
+      end
+    end
+  end
 
   def agreement_data_tags(prov, subcon)
     h(SubcontractingAgreement.my_agreements(prov.id).cparty_agreements(subcon.id).with_status(:active).map { |agr| [agr.name, agr.id, agr.rules.first.try(:type)] })
@@ -159,13 +174,31 @@ module ServiceCallsHelper
       @view = view
     end
 
-    abstract_methods :render
+    def render
+      rendered = []
+
+      available_events.each do |event|
+        # don't render the same form twice
+        unless rendered.include? view_map[event]
+          @view.concat(@view.render form_view_home_path + view_map[event], job: @obj)
+          rendered << view_map[event]
+        end
+      end
+
+    end
+
+
+    abstract_methods :view_map, :available_events, :form_view_home_path
 
   end
 
   class JobStatusFormsRenderer < FormRenderer
 
-    VIEW_PATH = 'service_calls/action_forms/status_forms/'
+    protected
+
+    def form_view_home_path
+      'service_calls/action_forms/status_forms/'
+    end
 
     def view_map
       {
@@ -180,17 +213,49 @@ module ServiceCallsHelper
       }
     end
 
-    def render
-
-      available_events.each do |event|
-        @view.concat(@view.render VIEW_PATH + view_map[event], job: @obj)
-      end
-
-    end
-
-    private
+    protected
     def available_events
       @obj.status_events
+    end
+
+  end
+
+  class JobBillingFormsRenderer < FormRenderer
+
+    protected
+
+    def form_view_home_path
+      'service_calls/action_forms/billing_status_forms/'
+    end
+
+    def view_map
+      {
+          clear:                    'clear_form',
+
+          collect:                  'collection_form',
+          provider_collected:       'collection_form',
+          subcon_collected:         'collection_form',
+
+          confirm_deposit:          'confirm_deposit_form',
+          prov_confirmed_deposit:   'prov_confirmed_deposit_form',
+
+          deposit_to_prov:          'deposit_form',
+          subcon_deposited_to_prov: 'deposit_form',
+          deposited:                'deposit_form',
+          employee_deposit:         'deposit_form',
+
+          invoice:                  'invoice_form',
+          subcon_invoiced:          'invoice_form',
+          provider_invoiced:        'invoice_form',
+
+          paid:                     'paid_form',
+          reject:                   'reject_form',
+          overdue:                  'overdue_form'
+      }
+    end
+
+    def available_events
+      @obj.billing_status_events
     end
 
   end
