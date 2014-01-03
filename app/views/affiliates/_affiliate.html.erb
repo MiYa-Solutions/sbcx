@@ -13,11 +13,15 @@
 
   <td><%= affiliate.phone %></td>
   <td><%= link_to affiliate.email, "mailto:#{affiliate.email}" %></td>
-
-  <td>
-
-
-  </td>
+  <% if affiliate.account_for(current_user.organization).balance < 0 %>
+      <td class="red-balance">
+        <%= humanized_money_with_symbol affiliate.account_for(current_user.organization).balance %>
+      </td>
+  <% else %>
+      <td class="green-balance">
+        <%= humanized_money_with_symbol affiliate.account_for(current_user.organization).balance %>
+      </td>
+  <% end %>
   <!--<#% if @account.balance > 0 %>-->
   <!--<td class="green_balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
   <!--<#% else %>-->
