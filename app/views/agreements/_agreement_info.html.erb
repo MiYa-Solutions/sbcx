@@ -14,6 +14,27 @@
   <table class="table table-striped table-condensed">
     <tbody>
     <tr>
+      <td><%= @agreement.class.human_attribute_name(:status) %></td>
+      <td class="agr_status">
+
+            <h4 class="<%= @agreement.status_name %>"><%= @agreement.human_status_name %>
+
+         <% if agreement_pending_my_action?(@agreement) %>
+            <%= image_tag("question16.png", :title => I18n.t("agreement.status.tooltip.my_#{@agreement.status_name}"), :rel => 'tooltip', "data-placement" => "left") %>
+         <% else %>
+            <%= image_tag("question16.png", :title => I18n.t("agreement.status.tooltip.his_#{@agreement.status_name}"), :rel => 'tooltip', "data-placement" => "left") %>
+
+      <% end %>
+            </h4>
+
+      </td>
+    </tr>
+
+
+
+
+
+    <tr>
       <td><%= I18n.t('general.general.name') %></td>
       <td>
         <h4><%= best_in_place @agreement.becomes(Agreement), :name, classes: "track_change #{if_changed(:name)}" %></h4>
@@ -42,10 +63,6 @@
       <td>
         <h4><%= best_in_place @agreement.becomes(Agreement), :ends_at_text, :type => :date, classes: "track_change #{if_changed(:ends_at)}" %></h4>
       </td>
-    </tr>
-    <tr>
-      <td><%= @agreement.class.human_attribute_name(:status) %></td>
-      <td><h4><%= @agreement.human_status_name %></h4></td>
     </tr>
     <tr>
       <td><%= @agreement.class.human_attribute_name(:organization) %></td>

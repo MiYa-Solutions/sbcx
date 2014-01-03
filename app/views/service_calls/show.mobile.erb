@@ -20,7 +20,7 @@
       <ul data-role="listview">
         <li class="ui-li ui-li-static">
           <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:status) %></div>
+            <div class="ui-block-a"><%= t('general.general.work') %></div>
             <div class="ui-block-b">
             <span class="<%= StylingService.instance.get_style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
                 <%= @service_call.human_status_name %>
@@ -40,7 +40,7 @@
         </li>
         <li class="ui-li ui-li-static">
           <div class="ui-grid-a">
-            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:billing_status) %></div>
+            <div class="ui-block-a"><%= t('general.general.customer_payment') %></div>
             <div class="ui-block-b">
           <span class="<%= StylingService.instance.get_style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
                 <%= @service_call.human_billing_status_name %>

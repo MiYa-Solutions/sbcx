@@ -52,20 +52,29 @@
     <div data-role="header" data-theme="a" class="ui-corner-top">
       <h1>BETA VERSION</h1>
     </div>
+
     <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
       <br><h3 class="ui-title">This action can't be completed </h3>
       <p>Please log into to your SubConTraX account from your PC to complete this action.</p>
       <!--  <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="c">Cancel</a>-->
       <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="b">Close</a>
     </div>
+    <!--end of beta popup-->
   </div>
 
-  <div data-role="header">
+  <div data-role="header" id="full_site_btn">
 
     <div class="miya_logo">
       <img src="/assets/logo2.png" alt="MiYa"/>
     </div>
-    <h1 >Closed BETA</h1>
+    <h1></h1>
+        <% if mobile_device? %>
+        <%= link_to I18n.t('general.general.full_site'), :mobile => 0, "data-role" => "button", "data-mini" => "true", :class => "ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b", id: "sss" %>
+
+
+  <% else %>
+            <%= link_to "Mobile Site", :mobile => 1 %>
+        <% end %>
 
   </div>
   <!-- /header -->

@@ -63,6 +63,14 @@
                               <strong><%= @agreement.id %></strong>
                             </td>
                           </tr>
+                          <tr>
+                               <td valign="top" class="dataTableContent">
+                                <%= AgrChangeSubmittedEvent.human_attribute_name(:description) %>
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @event.description %></strong>
+                              </td>
+                          </tr>
                           <!--<tr>-->
                           <!--<td valign="top" class="dataTableContent">-->
                           <!--<#%= @agreement.class.human_attribute_name(:description) %>-->

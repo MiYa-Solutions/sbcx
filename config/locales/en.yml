@@ -66,6 +66,7 @@ en:
       agr_no_add_rule: "You can't add rules in case the agreement is active or pending approval. \nTo edit the agreement, please cancel the agreement in the Actions section below, go back to the Affiliate page and add new agreement."
       agr_no_add_rule_pending: "You can't add rules in case the agreement is pending approval. \nTo edit the agreement, please delete the posting rules below and then add new rules."
       agr_select_rule: "Select 'Profit Split' from the dropdown and click on the Add button. \nPlease note you can enter more than one rule in the next following fields"
+      agr_no_add_rule_no_active: "You can add rules only in case the agreement is not Pending or a Draft."
 
 
     errors:
@@ -171,3 +172,4 @@ en:
       flat_fee: "Flat Fee"
     message:
       invite_member: "I'd like to add you to my professional network on SubConTraX. \n \n"
+      send_referral: "Hi, I'm using SubConTraX and would like to invite you to try it. \n \n"

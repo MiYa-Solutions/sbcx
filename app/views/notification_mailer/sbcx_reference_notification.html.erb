@@ -39,10 +39,9 @@
                       <td valign="top" class="bodyContent">
                         <div>
                           <h4 class="h4"><%= I18n.t('notification_mailer.sbcx_reference_notification.title').html_safe %></h4>
-                          <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>
-                          ,<br>
-                          <%= I18n.t('notification_mailer.sbcx_reference_notification.content', org: @invite.organization.name, message: @invite.message).html_safe %>
-                          &nbsp;<strong><%= @invite.organization.name.html_safe %></strong>.
+                          <%= @invite.organization.name.html_safe %>
+                          <% @invite.organization.name %><%= I18n.t('notification_mailer.sbcx_reference_notification.content').html_safe %>
+
                           <br>
                         </div>
                       </td>

@@ -23,7 +23,7 @@
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= PostingRule.human_attribute_name(:rate_type) %> </div>
-        <div class="ui-block-b"><%= rule.rate_type.humanize %></div>
+        <div class="ui-block-b"><%= rule.rate_type.try(:humanize) %></div>
       </div>
     </li>
     <li class="ui-li ui-li-static">
