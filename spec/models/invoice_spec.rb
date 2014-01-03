@@ -1,11 +1,11 @@
 require 'spec_helper'
-require_relative '../../lib/invoice'
 
 describe Invoice do
-  let(:job) { mock_model(ServiceCall) }
+  let(:job) { FactoryGirl.build(:my_job) }
   let(:invoice) { Invoice.new(job) }
 
   it 'should have a generate_pdf method' do
+    MyServiceCall.stub(find_by_ref_id: job)
     expect(invoice).to respond_to(:generate_pdf)
   end
 
