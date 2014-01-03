@@ -38,4 +38,8 @@ class Affiliate < Organization
     Invite.where(organization_id: org.id, affiliate_id: self.id).all
   end
 
+  def account_for(org)
+    Account.for_affiliate(org, self).first
+  end
+
 end
