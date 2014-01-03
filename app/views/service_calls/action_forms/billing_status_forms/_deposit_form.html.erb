@@ -1,0 +1,20 @@
+<%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
+    <% if deposit_events(job).size > 1 %>
+        <%= f.input :billing_status,
+                    collection: deposit_events(job),
+                    as:         :radio_buttons,
+                    label:      I18n.t('service_call.forms.billing_status.collection.label'),
+                    input_html: { name: 'service_call[billing_status_event]' } %>
+    <% else %>
+        <% event = deposit_events(job).first.second %>
+        <%= hidden_field_tag 'service_call[billing_status_event]', event %>
+    <% end %>
+
+    <%= f.submit I18n.t('service_call.forms.billing_status.deposit.btn_name'),
+                 id:    'deposit_to_prov_service_call_btn',
+                 class: 'btn btn-large btn-primary',
+                 title: I18n.t('service_call.forms.billing_status.deposit.tooltip'),
+                 rel:   'tooltip'
+    %>
+<% end %>
+

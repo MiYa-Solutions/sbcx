@@ -69,9 +69,16 @@ en:
       billing_status:
         invoice:
           tooltip: "Click to indicate the client was presented with an invoice for the service"
-        invoice:
           btn_name: Invoice
-          tooltip: "Click to indicate the client was presented with an invoice for the service"
+          label: Who Invoiced?
+        collection:
+          tooltip: "Click to indicate the customer payment was collected"
+          btn_name: Collect
+          label: Who Collected?
+        deposit:
+          tooltip: "Click to indicate the customer payment was deposited at the contractor"
+          btn_name: Deposit
+          label: Who Deposited?
         subcon_invoiced:
           tooltip: "Click to indicate the subcontractor has invoiced the customer"
         provider_invoiced:
