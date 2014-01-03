@@ -51,6 +51,7 @@ en:
       work: "Job's"
       customer_payment: "Customer Payment"
       new_referral_for: "Recommend SubConTraX To:"
+      payment_type: "Select Payment Method"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"

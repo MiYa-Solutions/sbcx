@@ -65,20 +65,21 @@
 
               <% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>
                   <strong>  <%= @service_call.class.human_attribute_name(:subcontractor_status) %></strong>
-             <span class="badge custom_tooltip">
-                  <div class="hover">
-                    <!--<#%= humanized_money_with_symbol @service_call.transfer_props.first.subcon_fee  %>-->
-                    <%= humanized_money_with_symbol @service_call.subcon_transfer_props.first.subcon_fee %>
-                    <div class="tooltip"><%= I18n.t('general.general.subcon_fee') %></div>
-                  </div>
-               </span>
+                 <span class="badge custom_tooltip">
+                      <div class="hover">
+                        <!--<#%= humanized_money_with_symbol @service_call.transfer_props.first.subcon_fee  %>-->
+                        <%= humanized_money_with_symbol @service_call.subcon_transfer_props.first.subcon_fee %>
+                        <div class="tooltip"><%= I18n.t('general.general.subcon_fee') %></div>
+                      </div>
+                  </span>
               <% end %>
 
               </td>
             <td class="show_more_button">
                     <span class="<%= style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="show_subco_statuses">
                        <%= link_to @service_call.human_subcontractor_status_name, "#subco_statuses", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
-                  </span>
+                      <i class="icon-chevron-down"></i>
+                    </span>
            </td>
           </tr>
           </tbody>
@@ -149,6 +150,7 @@
             <td class="show_more_button">
                   <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="show_prov_statuses">
                        <%= link_to @service_call.human_provider_status_name, "#prov_statuses", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+                    <i class="icon-chevron-down"></i>
                   </span>
               <!--<i class="icon-chevron-down"></i>-->
 

@@ -15,7 +15,7 @@
         <%= collector_tag(job) %>
     <% end %>
 
-    <%= f.input :payment_type, collection: payment_types %>
+    <%= f.input :payment_type, collection: payment_types, label: t('general.general.payment_type') %>
     <%= f.submit I18n.t('service_call.forms.billing_status.collection.btn_name'),
                  id:          'collect_service_call_btn',
                  class:       'btn btn-large btn-primary',

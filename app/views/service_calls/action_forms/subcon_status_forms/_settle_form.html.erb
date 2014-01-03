@@ -1,6 +1,6 @@
 <%= simple_form_for job.becomes(ServiceCall), html: { id: 'subcon_status_settle', class: 'blue-button' } do |f| %>
     <%= hidden_field_tag 'service_call[subcontractor_status_event]', 'settle' %>
-    <%= f.input :subcon_payment, collection: payment_types %>
+    <%= f.input :subcon_payment, collection: payment_types, label: I18n.t('service_call.forms.subcontractor_status.settle.label') %>
     <%= f.submit job.class.human_subcontractor_status_event_name(:settle).titleize,
                  id:    'settle_service_call_btn',
                  class: 'btn btn-large btn-primary',

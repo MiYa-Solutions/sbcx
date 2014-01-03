@@ -1,5 +1,6 @@
-<%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
-    <% if billing_events_collection(job).size > 1 %>
+<%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button', id: 'job_actions_invoice' } do |f| %>
+
+     <% if billing_events_collection(job).size > 1 %>
         <%= f.input :billing_status,
                     collection: billing_events_collection(job),
                     as:         :radio_buttons,
