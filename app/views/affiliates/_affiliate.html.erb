@@ -17,11 +17,6 @@
   <td>
 
 
-
-
-
-
-
   </td>
   <!--<#% if @account.balance > 0 %>-->
   <!--<td class="green_balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
@@ -81,81 +76,9 @@
 </tr>
 
 
-<div id='<%= "invite_modal_index_#{affiliate.id}" %>' class='modal hide fade invite_modal_index'  style="margin-left: -20%; margin-top: -25%; width: 40%;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-  <%= simple_form_for(Invite.new, :html => { :class => 'form-horizontal' }) do |f| %>
-      <div class="modal-header">
-
-        <div class="smart_label">
-          <ul>
-            <li><h1><%= t('general.general.new_invite_for') %> <%= affiliate.name %></h1></li>
-            <li>
-              <button class="btn" data-dismiss="modal" aria-hidden="true"><%= t('general.general.close') %></button>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="modal-body">
-        <%= f.error_notification %>
-
-        <div class="row-fluid">
-
-          <div class="form-inputs">
-            <%= f.input :message, as: :text, :input_html => { :value => I18n.t('general.message.invite_member') + current_user.name } %>
-            <%= f.hidden_field :affiliate_id, value: affiliate.id %>
-          </div>
-
-          <br>
-          <%= f.button :submit, id: 'invite_create_btn', :value => t('general.general.add_member'), class: 'btn btn-large btn-primary' %>
-
-        </div>
-
-      </div>
-
-
-      <!--End of Form-->
-  <% end %>
-</div>
+<%= render 'affiliate_invite', affiliate: affiliate %>
 
 
 
-<div id='<%= "referral_modal_index_#{affiliate.id}" %>' class='modal hide fade invite_modal_index'  style="margin-left: -20%; margin-top: -25%; width: 40%;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-  <%= simple_form_for(Invite.new, :html => { :class => 'form-horizontal' }) do |f| %>
-      <div class="modal-header">
-
-        <div class="smart_label">
-          <ul>
-            <li><h1><%= t('general.general.new_referral_for') %> <%= affiliate.name %></h1></li>
-            <li>
-              <button class="btn" data-dismiss="modal" aria-hidden="true"><%= t('general.general.close') %></button>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="modal-body">
-        <%= f.error_notification %>
-
-        <div class="row-fluid">
-
-          <div class="form-inputs">
-            <%= f.input :message, as: :text, :input_html => { :value => I18n.t('general.message.send_referral') + current_user.name } %>
-            <%= f.hidden_field :affiliate_id, value: affiliate.id %>
-          </div>
-
-          <br>
-          <%= f.button :submit, id: 'invite_create_btn', :value => t('general.general.add_member'), class: 'btn btn-large btn-primary' %>
-
-        </div>
-
-      </div>
-
-
-      <!--End of Form-->
-  <% end %>
-</div>
+<%= render 'affiliate_referral', affiliate: affiliate %>
 
