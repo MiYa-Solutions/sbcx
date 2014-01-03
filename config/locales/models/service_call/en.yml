@@ -49,7 +49,7 @@ en:
       service_call:
         work_status:
           events:
-            accept: LiLI
+            accept: "Accept"
           states:
             accepted: "Accepted"
             rejected: "Rejected"
@@ -113,9 +113,9 @@ en:
         status:
           events:
             transfer: "Transfer Again"
-            accept: "PiPi"
-            dispatch: "LtLt"
-            work_done: "Completed"
+            accept: "Accept"
+            dispatch: "Dispatch"
+            work_done: "Complete"
 
           states:
             transferred: "Passed On"

@@ -48,9 +48,9 @@ en:
       tax_update: "Update Tax"
       full_site: "Full Site"
       agr_pending_apr: "Pending My Approval"
-      work: "Work"
+      work: "Job's"
       customer_payment: "Customer Payment"
-      new_referral_for: "Recommand SubConTrax To:"
+      new_referral_for: "Recommend SubConTraX To:"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"
@@ -65,6 +65,7 @@ en:
       aff_invited_me: "Invites Sent To You"
       aff_invited_me_p2: "Please Accept or Reject the invitation"
       I_invited_Aff: "Invites Sent To: "
+      click_more: "Click for more details"
     message:
       contact_us: "Please fill out the form below and we will contact you shortly."
       forgot_pass: "Forgot your password?"
