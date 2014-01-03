@@ -171,6 +171,7 @@ class MyServiceCall < ServiceCall
 
     event :paid do
       transition [:invoiced, :invoiced_by_subcon, :overdue] => :paid, if: ->(sc) { !sc.canceled? && !sc.organization.multi_user? }
+      transition :rejected => :paid, if: ->(sc) { !sc.canceled? }
     end
 
     event :subcon_collected do

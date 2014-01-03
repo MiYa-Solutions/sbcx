@@ -118,7 +118,7 @@ class ServiceCall < Ticket
     end
 
     event :dispatch do
-      transition :pending => :dispatched, if: lambda { |sc| !sc.canceled? && sc.organization.multi_user? }
+      transition :pending => :dispatched, if: ->(sc) { !sc.canceled? && sc.organization.multi_user? && !sc.transferred? }
     end
 
     event :reset do

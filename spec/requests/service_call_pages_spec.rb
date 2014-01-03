@@ -1320,8 +1320,8 @@ describe "Service Call pages" do
                               should have_selector 'div.alert-success'
                             end
 
-                            it 'should have an employee deposit button' do
-                              should have_button employee_deposit_btn_selector
+                            it 'should have a deposit button' do
+                              should have_button JOB_BTN_DEPOSIT
                             end
 
                             describe 'provider view' do
@@ -1343,7 +1343,7 @@ describe "Service Call pages" do
                             describe 'subcontractor deposits the payment' do
 
                               before do
-                                click_button employee_deposit_btn_selector
+                                click_button JOB_BTN_PAYMENT_DEPOSITED
                               end
 
                               it 'clicking deposit should update the billing status to claimed deposited' do
@@ -1351,12 +1351,12 @@ describe "Service Call pages" do
                               end
 
                               it 'should show the deposit to prov button' do
-                                should have_button deposit_to_prov_btn_selector
+                                should have_button JOB_BTN_PAYMENT_DEPOSITED
                               end
 
                               describe 'successful deposit to provider' do
                                 before do
-                                  click_button deposit_to_prov_btn_selector
+                                  click_button JOB_BTN_PAYMENT_DEPOSITED
                                 end
 
                                 it 'should change the billing status to deposited and not show a provider confirmed button' do
@@ -1385,7 +1385,7 @@ describe "Service Call pages" do
                                   before do
                                     in_browser(:org) do
                                       visit service_call_path(service_call)
-                                      click_button confirm_deposit_btn_selector
+                                      click_button JOB_BTN_CONFIRM_DEPOSIT
                                     end
                                   end
 
@@ -2052,6 +2052,7 @@ describe "Service Call pages" do
 
                   describe 'invoice by provider' do
                     before do
+                      choose JOB_RADIO_I_INVOICED
                       click_button JOB_BTN_INVOICE
                     end
 

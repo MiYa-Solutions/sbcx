@@ -214,7 +214,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :provider_collected do
-      transition [:invoiced_by_prov, :invoiced] => :deposited
+      transition [:invoiced_by_subcon, :invoiced_by_prov, :invoiced] => :deposited
     end
 
     event :collect do
