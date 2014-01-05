@@ -52,9 +52,15 @@ class MyServiceCallObserver < ServiceCallObserver
 
   def after_collect_payment(service_call, transition)
     Rails.logger.debug { "invoked AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    #service_call.collector_type = "User"
+    service_call.collector_type = 'User'
     service_call.events << ScCollectedByEmployeeEvent.new
 
+  end
+
+  def after_deposited_payment(service_call, transition)
+    Rails.logger.debug { "invoked AFTER deposited \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    service_call.collector_type = 'User'
+    service_call.events << ScEmployeeDepositedEvent.new
   end
 
   def before_overdue_payment(service_call, transition)

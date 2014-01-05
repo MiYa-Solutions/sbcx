@@ -397,11 +397,9 @@ describe 'My Service Call Integration Spec' do
                       job.work_status_events.should =~ []
                     end
 
-
                     it 'available payment events are deposit' do
                       job.billing_status_events.should =~ [:deposited]
                     end
-
 
                     it 'collect event is associated with the job' do
                       job.events.map(&:class).should =~ [ServiceCallStartEvent,
@@ -432,20 +430,37 @@ describe 'My Service Call Integration Spec' do
                         job.update_attributes(billing_status_event: 'deposited')
                       end
 
+                      it 'status should be open' do
+                        expect(job).to be_open
+                      end
 
-                      it 'status should be open'
+                      it 'work status should be done' do
+                        expect(job).to be_work_done
+                      end
 
-                      it 'work status should be done'
+                      it 'payment status should be cleared' do
+                        expect(job.billing_status_name).to eq :cleared
+                      end
 
-                      it 'payment status should be deposited by employee'
+                      it 'available status events should be cancel' do
+                        job.status_events.should =~ [:cancel]
+                      end
 
-                      it 'available status events should be cancel'
+                      it 'there should be no available work events' do
+                        job.work_status_events.should =~ []
+                      end
 
-                      it 'there should be no available work events'
+                      it 'there should be no available payment events as this is a cash payment (no clearing)' do
+                        job.billing_status_events.should eq []
+                      end
 
-                      it 'there should be no available payment events as this is a cash payment (no clearing)'
-
-                      it 'deposit event is associated with the job'
+                      it 'employee deposited event is associated with the job' do
+                        job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                           ServiceCallCompleteEvent,
+                                                           ServiceCallInvoiceEvent,
+                                                           ScCollectedByEmployeeEvent,
+                                                           ScEmployeeDepositedEvent]
+                      end
 
                     end
                   end

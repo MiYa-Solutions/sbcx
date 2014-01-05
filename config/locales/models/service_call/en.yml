@@ -210,6 +210,9 @@ en:
   sc_collected_by_employee_event:
     name: "Payment has been collected by an employee"
     description: "The payment for this Job has been collected by %{employee}"
+  sc_employee_deposited_event:
+    name: "A job payment has been deposited"
+    description: "The payment for this which has been collected by %{employee}, has been deposited"
   service_call_subcon_clear_event:
     name: 'The subcontractor (%{subcon}) has cleared the payment'
     description: 'The payment for this Job has been cleared by the subcontractor (%{subcon})'
