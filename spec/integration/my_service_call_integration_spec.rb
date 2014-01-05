@@ -44,9 +44,10 @@ describe 'My Service Call Integration Spec' do
       context 'when I start the job' do
 
         context 'multi user organization' do
-
-          before do
-            org.users << FactoryGirl.build(:my_technician)
+          let!(:technician) do
+            tech = FactoryGirl.build(:my_technician)
+            org.users << tech
+            tech
           end
 
           it 'available work events should be dispatch and not start' do
@@ -55,11 +56,8 @@ describe 'My Service Call Integration Spec' do
 
           context 'when dispatching' do
 
-            let(:technician) { org.users.technicians.first }
-
             before do
-              job.technician = technician
-              job.dispatch_work
+              job.update_attributes(technician: technician, work_status_event: 'dispatch')
             end
 
             it 'status should be Open' do
@@ -92,6 +90,197 @@ describe 'My Service Call Integration Spec' do
 
             it 'dispatch notification is sent to the technician' do
               technician.notifications.map(&:class).should =~ [ScDispatchNotification]
+            end
+
+            context 'when collecting payment' do
+
+              before do
+                job.start_work!
+                add_bom_to_job job
+                job.complete_work!
+                job.invoice_payment!
+              end
+
+              it 'payment events are collect' do
+                job.billing_status_events.should =~ [:collect, :overdue]
+              end
+
+              context 'when collecting cash' do
+                before do
+                  job.update_attributes(billing_status_event: 'collect',
+                                        payment_type:         'cash',
+                                        collector:            technician)
+                end
+
+                it 'status should be open' do
+                  expect(job).to be_open
+                end
+
+                it 'work status should be done' do
+                  expect(job).to be_work_done
+                end
+
+                it 'payment status should be collected' do
+                  expect(job).to be_payment_collected_by_employee
+                end
+
+                it 'available status events should be cancel' do
+                  job.status_events.should =~ [:cancel]
+                end
+
+                it 'there should be no available work events' do
+                  job.work_status_events.should =~ []
+                end
+
+                it 'available payment events are deposit' do
+                  job.billing_status_events.should =~ [:deposited]
+                end
+
+                it 'collect event is associated with the job' do
+                  job.events.map(&:class).should =~ [ServiceCallDispatchEvent,
+                                                     ServiceCallStartEvent,
+                                                     ServiceCallCompleteEvent,
+                                                     ServiceCallInvoiceEvent,
+                                                     ScCollectedByEmployeeEvent]
+                end
+
+                it 'the org admin is allowed to invoke the deposit event' do
+                  params = ActionController::Parameters.new({ service_call: {
+                      billing_status_event: 'deposited'
+                  } })
+                  p      = PermittedParams.new(params, org_admin, job)
+                  expect(p.service_call).to include('billing_status_event')
+                end
+
+                it 'the technician is not allowed to invoke the deposit event' do
+                  params = ActionController::Parameters.new({ service_call: {
+                      billing_status_event: 'deposited'
+                  } })
+                  p      = PermittedParams.new(params, technician, job)
+                  expect(p.service_call).to_not include('billing_status_event')
+                end
+
+                context 'when the employee deposits the payment' do
+
+                  before do
+                    job.update_attributes(billing_status_event: 'deposited')
+                  end
+
+                  it 'status should be open' do
+                    expect(job).to be_open
+                  end
+
+                  it 'work status should be done' do
+                    expect(job).to be_work_done
+                  end
+
+                  it 'payment status should be cleared' do
+                    expect(job.billing_status_name).to eq :cleared
+                  end
+
+                  it 'available status events should be cancel and close' do
+                    job.status_events.should =~ [:cancel, :close]
+                  end
+
+                  it 'there should be no available work events' do
+                    job.work_status_events.should =~ []
+                  end
+
+                  it 'there should be no available payment events as this is a cash payment (no clearing)' do
+                    job.billing_status_events.should eq []
+                  end
+
+                  it 'employee deposited event is associated with the job' do
+                    job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                       ServiceCallDispatchEvent,
+                                                       ServiceCallCompleteEvent,
+                                                       ServiceCallInvoiceEvent,
+                                                       ScCollectedByEmployeeEvent,
+                                                       ScEmployeeDepositedEvent]
+                  end
+
+                end
+              end
+
+              context 'when collecting none cash payment' do
+
+                before do
+                  job.update_attributes(billing_status_event: 'collect',
+                                        payment_type:         'credit_card',
+                                        collector:            technician)
+                end
+
+                it 'status should be open' do
+                  expect(job).to be_open
+                end
+
+                it 'work status should be done' do
+                  expect(job).to be_work_done
+                end
+
+                it 'payment status should be collected' do
+                  expect(job).to be_payment_collected_by_employee
+                end
+
+                it 'available status events should be cancel' do
+                  job.status_events.should =~ [:cancel]
+                end
+
+                it 'there should be no available work events' do
+                  job.work_status_events.should =~ []
+                end
+
+                it 'available payment events are deposit' do
+                  job.billing_status_events.should =~ [:deposited]
+                end
+
+                it 'collect event is associated with the job' do
+                  job.events.map(&:class).should =~ [ServiceCallDispatchEvent,
+                                                     ServiceCallStartEvent,
+                                                     ServiceCallCompleteEvent,
+                                                     ServiceCallInvoiceEvent,
+                                                     ScCollectedByEmployeeEvent]
+                end
+
+                it 'the org admin is allowed to invoke the deposit event' do
+                  params = ActionController::Parameters.new({ service_call: {
+                      billing_status_event: 'deposited'
+                  } })
+                  p      = PermittedParams.new(params, org_admin, job)
+                  expect(p.service_call).to include('billing_status_event')
+                end
+
+                it 'the technician is not allowed to invoke the deposit event' do
+                  params = ActionController::Parameters.new({ service_call: {
+                      billing_status_event: 'deposited'
+                  } })
+                  p      = PermittedParams.new(params, technician, job)
+                  expect(p.service_call).to_not include('billing_status_event')
+                end
+
+
+                context 'when the employee deposits the payment' do
+
+                  it 'only the org admin is allowed to invoke the deposit event'
+
+                  it 'status should be open'
+
+                  it 'work status should be done'
+
+                  it 'payment status should be deposited by employee'
+
+                  it 'available status events should be cancel'
+
+                  it 'there should be no available work events'
+
+                  it 'available payment events are reject and clear'
+
+                  it 'deposit event is associated with the job'
+
+                end
+
+              end
+
             end
 
           end
@@ -233,278 +422,132 @@ describe 'My Service Call Integration Spec' do
 
               context 'when I collect the customer payment' do
 
-                context 'single user organization' do
 
-                  context 'when collecting cash' do
+                context 'when collecting cash' do
 
+                  before do
+                    job.update_attributes(billing_status_event: 'paid', payment_type: 'cash')
+                  end
+
+                  it 'status should be open' do
+                    expect(job).to be_open
+                  end
+
+                  it 'work status should be done' do
+                    expect(job).to be_work_done
+                  end
+
+                  it 'payment status should be cleared' do
+                    expect(job).to be_payment_cleared
+                  end
+
+                  it 'available status events should be cancel and close' do
+                    job.status_events.should =~ [:cancel, :close]
+                  end
+
+                  it 'there should be no available work events' do
+                    job.work_status_events.should =~ []
+                  end
+
+
+                  it 'available payment events are paid and overdue' do
+                    job.billing_status_events.should =~ []
+                  end
+
+                  it 'invoice event is associated with the job' do
+                    job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                       ServiceCallCompleteEvent,
+                                                       ServiceCallInvoiceEvent,
+                                                       ServiceCallPaidEvent]
+                  end
+
+                end
+
+                context 'when collecting none cash payment' do
+
+                  before do
+                    job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque')
+                  end
+
+                  it 'status should be open' do
+                    expect(job).to be_open
+                  end
+
+                  it 'work status should be done' do
+                    expect(job).to be_work_done
+                  end
+
+                  it 'payment status should be paid' do
+                    expect(job).to be_payment_paid
+                  end
+
+                  it 'available status events should be cancel' do
+                    job.status_events.should =~ [:cancel]
+                  end
+
+                  it 'there should be no available work events' do
+                    job.work_status_events.should =~ []
+                  end
+
+
+                  it 'available payment events are reject and clear' do
+                    job.billing_status_events.should =~ [:reject, :clear]
+                  end
+
+                  it 'paid event is associated with the job' do
+                    job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                       ServiceCallCompleteEvent,
+                                                       ServiceCallInvoiceEvent,
+                                                       ServiceCallPaidEvent]
+                  end
+
+                  context 'when payment is rejected' do
                     before do
-                      job.update_attributes(billing_status_event: 'paid', payment_type: 'cash')
+                      job.update_attributes(billing_status_event: 'reject')
                     end
 
-                    it 'status should be open' do
-                      expect(job).to be_open
+                    it 'payment status is set to rejected' do
+                      expect(job).to be_payment_rejected
                     end
 
-                    it 'work status should be done' do
-                      expect(job).to be_work_done
+                    it 'should have the payment rejected event associated' do
+                      job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                         ServiceCallCompleteEvent,
+                                                         ServiceCallInvoiceEvent,
+                                                         ServiceCallPaidEvent,
+                                                         ScPaymentRejectedEvent]
                     end
 
-                    it 'payment status should be cleared' do
+                    it 'should have paid as a payment event' do
+                      job.billing_status_events.should =~ [:paid]
+                    end
+                  end
+                  context 'when payment is cleared' do
+                    before do
+                      job.update_attributes(billing_status_event: 'clear')
+                    end
+
+                    it 'payment status is set to rejected' do
                       expect(job).to be_payment_cleared
                     end
 
-                    it 'available status events should be cancel and close' do
-                      job.status_events.should =~ [:cancel, :close]
+                    it 'should have the payment rejected event associated' do
+                      job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                         ServiceCallCompleteEvent,
+                                                         ServiceCallInvoiceEvent,
+                                                         ServiceCallPaidEvent,
+                                                         ScClearCustomerPaymentEvent]
                     end
 
-                    it 'there should be no available work events' do
-                      job.work_status_events.should =~ []
-                    end
-
-
-                    it 'available payment events are paid and overdue' do
+                    it 'should have no payment events' do
                       job.billing_status_events.should =~ []
                     end
-
-                    it 'invoice event is associated with the job' do
-                      job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                         ServiceCallCompleteEvent,
-                                                         ServiceCallInvoiceEvent,
-                                                         ServiceCallPaidEvent]
-                    end
-
-                  end
-
-                  context 'when collecting none cash payment' do
-
-                    before do
-                      job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque')
-                    end
-
-                    it 'status should be open' do
-                      expect(job).to be_open
-                    end
-
-                    it 'work status should be done' do
-                      expect(job).to be_work_done
-                    end
-
-                    it 'payment status should be paid' do
-                      expect(job).to be_payment_paid
-                    end
-
-                    it 'available status events should be cancel' do
-                      job.status_events.should =~ [:cancel]
-                    end
-
-                    it 'there should be no available work events' do
-                      job.work_status_events.should =~ []
-                    end
-
-
-                    it 'available payment events are reject and clear' do
-                      job.billing_status_events.should =~ [:reject, :clear]
-                    end
-
-                    it 'paid event is associated with the job' do
-                      job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                         ServiceCallCompleteEvent,
-                                                         ServiceCallInvoiceEvent,
-                                                         ServiceCallPaidEvent]
-                    end
-
-                    context 'when payment is rejected' do
-                      before do
-                        job.update_attributes(billing_status_event: 'reject')
-                      end
-
-                      it 'payment status is set to rejected' do
-                        expect(job).to be_payment_rejected
-                      end
-
-                      it 'should have the payment rejected event associated' do
-                        job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                           ServiceCallCompleteEvent,
-                                                           ServiceCallInvoiceEvent,
-                                                           ServiceCallPaidEvent,
-                                                           ScPaymentRejectedEvent]
-                      end
-
-                      it 'should have paid as a payment event' do
-                        job.billing_status_events.should =~ [:paid]
-                      end
-                    end
-                    context 'when payment is cleared' do
-                      before do
-                        job.update_attributes(billing_status_event: 'clear')
-                      end
-
-                      it 'payment status is set to rejected' do
-                        expect(job).to be_payment_cleared
-                      end
-
-                      it 'should have the payment rejected event associated' do
-                        job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                           ServiceCallCompleteEvent,
-                                                           ServiceCallInvoiceEvent,
-                                                           ServiceCallPaidEvent,
-                                                           ScClearCustomerPaymentEvent]
-                      end
-
-                      it 'should have no payment events' do
-                        job.billing_status_events.should =~ []
-                      end
-                    end
-
-                  end
-                end
-
-                context 'multi user organization' do
-                  let!(:technician) do
-                    tech = FactoryGirl.build(:my_technician)
-                    org.users << tech
-                    tech
-                  end
-
-                  it 'payment events are collect' do
-                    job.billing_status_events.should =~ [:collect, :overdue]
-                  end
-
-                  context 'when collecting cash' do
-                    before do
-                      job.update_attributes(billing_status_event: 'collect',
-                                            payment_type:         'cash',
-                                            collector:            technician)
-                    end
-
-                    it 'status should be open' do
-                      expect(job).to be_open
-                    end
-
-                    it 'work status should be done' do
-                      expect(job).to be_work_done
-                    end
-
-                    it 'payment status should be collected' do
-                      expect(job).to be_payment_collected_by_employee
-                    end
-
-                    it 'available status events should be cancel' do
-                      job.status_events.should =~ [:cancel]
-                    end
-
-                    it 'there should be no available work events' do
-                      job.work_status_events.should =~ []
-                    end
-
-                    it 'available payment events are deposit' do
-                      job.billing_status_events.should =~ [:deposited]
-                    end
-
-                    it 'collect event is associated with the job' do
-                      job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                         ServiceCallCompleteEvent,
-                                                         ServiceCallInvoiceEvent,
-                                                         ScCollectedByEmployeeEvent]
-                    end
-
-                    it 'the org admin is allowed to invoke the deposit event' do
-                      params = ActionController::Parameters.new({ service_call: {
-                          billing_status_event: 'deposited'
-                      } })
-                      p      = PermittedParams.new(params, org_admin, job)
-                      expect(p.service_call).to include('billing_status_event')
-                    end
-
-                    it 'the technician is not allowed to invoke the deposit event' do
-                      params = ActionController::Parameters.new({ service_call: {
-                          billing_status_event: 'deposited'
-                      } })
-                      p      = PermittedParams.new(params, technician, job)
-                      expect(p.service_call).to_not include('billing_status_event')
-                    end
-
-                    context 'when the employee deposits the payment' do
-
-                      before do
-                        job.update_attributes(billing_status_event: 'deposited')
-                      end
-
-                      it 'status should be open' do
-                        expect(job).to be_open
-                      end
-
-                      it 'work status should be done' do
-                        expect(job).to be_work_done
-                      end
-
-                      it 'payment status should be cleared' do
-                        expect(job.billing_status_name).to eq :cleared
-                      end
-
-                      it 'available status events should be cancel' do
-                        job.status_events.should =~ [:cancel]
-                      end
-
-                      it 'there should be no available work events' do
-                        job.work_status_events.should =~ []
-                      end
-
-                      it 'there should be no available payment events as this is a cash payment (no clearing)' do
-                        job.billing_status_events.should eq []
-                      end
-
-                      it 'employee deposited event is associated with the job' do
-                        job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                           ServiceCallCompleteEvent,
-                                                           ServiceCallInvoiceEvent,
-                                                           ScCollectedByEmployeeEvent,
-                                                           ScEmployeeDepositedEvent]
-                      end
-
-                    end
-                  end
-
-                  context 'when collecting none cash payment' do
-                    it 'status should be open'
-
-                    it 'work status should be done'
-
-                    it 'payment status should be collected'
-
-                    it 'available status events should be cancel'
-
-                    it 'there should be no available work events'
-
-                    it 'available payment events are reject and clear'
-
-                    it 'collect event is associated with the job'
-
-                    context 'when the employee deposits the payment' do
-
-                      it 'only the org admin is allowed to invoke the deposit event'
-
-                      it 'status should be open'
-
-                      it 'work status should be done'
-
-                      it 'payment status should be deposited by employee'
-
-                      it 'available status events should be cancel'
-
-                      it 'there should be no available work events'
-
-                      it 'available payment events are reject and clear'
-
-                      it 'deposit event is associated with the job'
-
-                    end
-
                   end
 
                 end
               end
             end
+
 
           end
 
