@@ -19,7 +19,7 @@ FactoryGirl.define do
   end
 
   factory :user do
-    association :organization, factory: :member_org
+    association :organization, factory: :member_org, strategy: :build
     sequence(:email) { |n| "org_admin_#{n}@example.com" }
     first_name Faker::Name.name
     password "foobar"
@@ -28,12 +28,12 @@ FactoryGirl.define do
     roles the_roles
   end
 
-  factory :additional_user, class: User do
-    sequence(:email) { |n| "org_admin_#{n}@example.com" }
+  factory :my_technician, class: User do
+    sequence(:email) { |n| "org_technician_#{n}@example.com" }
     first_name Faker::Name.name
     password "foobar"
     password_confirmation "foobar"
-    the_roles = [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME)]
+    the_roles = [Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]
     roles the_roles
   end
 

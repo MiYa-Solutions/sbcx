@@ -379,6 +379,16 @@ describe "Service Call pages" do
           should have_button(JOB_BTN_DISPATCH)
         end
 
+        context 'when technician collects the payment' do
+          it 'technician should not be allowed to mark the job as deposited' do
+            pending
+          end
+          it 'org admin is allowed to mark the job as deposited' do
+            pending
+          end
+
+        end
+
       end
 
       describe "transfer my service call to a member subcontractor" do
