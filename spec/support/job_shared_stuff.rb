@@ -3,7 +3,7 @@ shared_context 'basic job testing' do
   let(:user) { FactoryGirl.build(:user) }
   let(:org) { user.organization }
   let(:job) { FactoryGirl.build(:my_job, organization: org) }
-  let!(:org_admin) { org.users.first }
+  let(:org_admin) { org.users.admins.first }
 
   def add_bom_to_job(ticket, cost = nil, price = nil, quantity = nil, buyer = nil, material = nil)
     cost     ||= 10

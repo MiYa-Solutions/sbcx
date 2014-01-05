@@ -410,10 +410,28 @@ describe 'My Service Call Integration Spec' do
                                                          ScCollectedByEmployeeEvent]
                     end
 
+                    it 'the org admin is allowed to invoke the deposit event' do
+                      params = ActionController::Parameters.new({ service_call: {
+                          billing_status_event: 'deposited'
+                      } })
+                      p      = PermittedParams.new(params, org_admin, job)
+                      expect(p.service_call).to include('billing_status_event')
+                    end
+
+                    it 'the technician is not allowed to invoke the deposit event' do
+                      params = ActionController::Parameters.new({ service_call: {
+                          billing_status_event: 'deposited'
+                      } })
+                      p      = PermittedParams.new(params, technician, job)
+                      expect(p.service_call).to_not include('billing_status_event')
+                    end
 
                     context 'when the employee deposits the payment' do
 
-                      it 'only the org admin is allowed to invoke the deposit event'
+                      before do
+                        job.update_attributes(billing_status_event: 'deposited')
+                      end
+
 
                       it 'status should be open'
 

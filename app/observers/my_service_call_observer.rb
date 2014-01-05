@@ -50,9 +50,10 @@ class MyServiceCallObserver < ServiceCallObserver
     service_call.events << ServiceCallPaidEvent.new
   end
 
-  def before_collect_payment(service_call, transition)
-    Rails.logger.debug { "invoked BEFORE collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.collector_type = "User"
+  def after_collect_payment(service_call, transition)
+    Rails.logger.debug { "invoked AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    #service_call.collector_type = "User"
+    service_call.events << ScCollectedByEmployeeEvent.new
 
   end
 
