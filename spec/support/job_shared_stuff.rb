@@ -25,7 +25,7 @@ end
 
 shared_context 'transferred job' do
   include_context 'basic job testing'
-  let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: org) }
+  let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
   let(:subcon) { subcon_agr.counterparty }
   let(:subcon_user) { subcon_agr.counterparty.users.first }
   let(:subcon_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
@@ -34,6 +34,7 @@ shared_context 'transferred job' do
     subcon_agr.save!
     job.save!
     job.update_attributes(subcontractor:    subcon.becomes(Subcontractor),
+                          properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => 'true' },
                           subcon_agreement: subcon_agr,
                           status_event:     'transfer')
   end

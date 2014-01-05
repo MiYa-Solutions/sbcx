@@ -5,7 +5,6 @@ describe 'My Service Call Integration Spec' do
   context 'when I do the work' do
     include_context 'basic job testing'
 
-
     context 'when I create the job' do
       before do
         with_user(user) do
@@ -422,7 +421,6 @@ describe 'My Service Call Integration Spec' do
 
               context 'when I collect the customer payment' do
 
-
                 context 'when collecting cash' do
 
                   before do
@@ -522,6 +520,7 @@ describe 'My Service Call Integration Spec' do
                       job.billing_status_events.should =~ [:paid]
                     end
                   end
+
                   context 'when payment is cleared' do
                     before do
                       job.update_attributes(billing_status_event: 'clear')
@@ -545,23 +544,29 @@ describe 'My Service Call Integration Spec' do
                   end
 
                 end
-              end
-            end
 
+              end
+
+            end
 
           end
 
-
         end
-
 
       end
 
     end
+
   end
 
   context 'when I transfer to a member affiliate' do
-    pending
+    include_context 'transferred job'
+    before do
+      transfer_the_job
+    end
+    it 'the job status should be transferred' do
+      expect(job).to be_transferred
+    end
   end
 
   context 'when I transfer to a local affiliate' do
