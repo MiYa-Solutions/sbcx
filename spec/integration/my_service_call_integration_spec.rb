@@ -55,21 +55,44 @@ describe 'My Service Call Integration Spec' do
 
           context 'when dispatching' do
 
-            it 'status should be Dispatched'
+            let(:technician) { org.users.technicians.first }
 
-            it 'work status should be dispatched'
+            before do
+              job.technician = technician
+              job.dispatch_work
+            end
 
-            it 'payment status should be pending'
+            it 'status should be Open' do
+              expect(job).to be_open
+            end
 
-            it 'available status events should be cancel'
+            it 'work status should be dispatched' do
+              expect(job).to be_work_dispatched
+            end
 
-            it 'available work events should be start'
+            it 'payment status should be pending' do
+              expect(job).to be_payment_pending
+            end
 
-            it ' there should be no available payment events'
+            it 'available status events should be cancel' do
+              job.status_events.should =~ [:cancel]
+            end
 
-            it 'dispatch event is associated with the job'
+            it 'available work events should be start' do
+              job.work_status_events.should =~ [:start]
+            end
 
-            it 'dispatch notification is sent to the technician'
+            it ' there should be no available payment events' do
+              job.billing_status_events.should =~ []
+            end
+
+            it 'dispatch event is associated with the job' do
+              job.events.map(&:class).should =~ [ServiceCallDispatchEvent]
+            end
+
+            it 'dispatch notification is sent to the technician' do
+              technician.notifications.map(&:class).should =~ [ScDispatchNotification]
+            end
 
           end
 
