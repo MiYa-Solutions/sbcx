@@ -3,28 +3,55 @@ require 'spec_helper'
 describe 'My Service Call Integration Spec' do
 
   context 'when I do the work' do
+    include_context 'basic job testing'
+
 
     context 'when I create the job' do
+      before do
+        with_user(user) do
+          org.save!
+          job.save!
+        end
+      end
+      it 'should be created successfully' do
+        expect(job).to be_valid
+      end
 
-      it 'should be created successfully'
+      it 'status should be New' do
+        expect(job).to be_new
+      end
 
-      it 'status should be New'
+      it 'work status should be pending' do
+        expect(job).to be_work_pending
+      end
 
-      it 'work status should be pending'
+      it 'payment status should be pending' do
+        expect(job).to be_payment_pending
+      end
 
-      it 'payment status should be pending'
+      it 'available status events should be cancel' do
+        job.status_events.should =~ [:cancel, :transfer]
+      end
 
-      it 'available status events should be cancel'
+      it 'available work events should be start' do
+        job.work_status_events.should =~ [:start]
+      end
 
-      it 'available work events should be start'
-
-      it ' there should be no available payment events'
+      it ' there should be no available payment events' do
+        expect(job.billing_status_events).to be_empty
+      end
 
       context 'when I start the job' do
 
         context 'multi user organization' do
 
-          it 'available work events should be dispatch and not start'
+          before do
+            org.users << FactoryGirl.build(:additional_user)
+          end
+
+          it 'available work events should be dispatch and not start' do
+            job.work_status_events.should =~ [:dispatch]
+          end
 
           context 'when dispatching' do
 

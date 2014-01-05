@@ -7,7 +7,6 @@ describe 'Job Billing' do
     include_context 'basic job testing'
     before do
       with_user(user) do
-        org.save!
         job.start_work
         add_bom_to_job job
         job.complete_work

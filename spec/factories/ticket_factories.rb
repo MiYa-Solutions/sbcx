@@ -7,6 +7,7 @@ FactoryGirl.define do
       job.customer = FactoryGirl.build(:member_customer, organization: job.organization)
       job.organization.customers << job.customer
       job.provider = job.organization.becomes(Provider)
+      job.organization.users << FactoryGirl.build(:user, organization: job.organization)
     end
 
     factory :my_transferred_job, class: MyServiceCall do
