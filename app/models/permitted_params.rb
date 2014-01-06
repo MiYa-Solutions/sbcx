@@ -374,16 +374,16 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
     if obj.present? && obj.allow_collection?
       if params[:service_call]
-        res = is_billing_event_allowed? params[:service_call]
+        res = billing_event_allowed? params[:service_call]
       else
-        res = is_billing_event_allowed? params
+        res = billing_event_allowed? params
       end
     end
 
     res
   end
 
-  def is_billing_event_allowed?(params_to_check)
+  def billing_event_allowed?(params_to_check)
     res = true
     res = false if params_to_check[:billing_status_event] == 'provider_invoiced' && obj.provider.subcontrax_member?
     res = false if params_to_check[:billing_status_event] == 'provider_collected' && obj.provider.subcontrax_member?
@@ -449,7 +449,9 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_technician_attr
-    [:status_event, :tag_list, :payment_type]
+    attr = []
+    attr << :status_event if sc_status_event_permitted?
+    attr | [:tag_list, :payment_type]
   end
 
   def sc_dispatcher_attr
@@ -465,6 +467,13 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
   def sc_org_attr
     sc_dispatcher_attr
+  end
+
+  def sc_status_event_permitted?
+    params_to_check = params[:service_call] ? params[:service_call] : params
+    res             = true
+    res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.instance_of?(TransferredServiceCall)
+    res
   end
 
   def sc_work_status_attr

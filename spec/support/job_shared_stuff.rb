@@ -21,13 +21,25 @@ shared_context 'basic job testing' do
                                      buyer:    buyer)
   end
 
+  def event_permitted_for_job?(state_machine_name, event_name, user, job)
+    params = ActionController::Parameters.new({ service_call: {
+        "#{state_machine_name}_event".to_sym => event_name
+    } })
+    p      = PermittedParams.new(params, user, job)
+    p.service_call.include?("#{state_machine_name}_event")
+  end
+
 end
 
 shared_context 'transferred job' do
   include_context 'basic job testing'
   let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
   let(:subcon) { subcon_agr.counterparty }
-  let(:subcon_user) { subcon_agr.counterparty.users.first }
+  let(:subcon_admin) do
+    u = FactoryGirl.build(:user, organization: subcon)
+    subcon.users << u
+    u
+  end
   let(:subcon_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
 
   def transfer_the_job

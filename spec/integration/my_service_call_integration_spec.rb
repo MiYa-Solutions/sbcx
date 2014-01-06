@@ -144,19 +144,11 @@ describe 'My Service Call Integration Spec' do
                 end
 
                 it 'the org admin is allowed to invoke the deposit event' do
-                  params = ActionController::Parameters.new({ service_call: {
-                      billing_status_event: 'deposited'
-                  } })
-                  p      = PermittedParams.new(params, org_admin, job)
-                  expect(p.service_call).to include('billing_status_event')
+                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
                 end
 
                 it 'the technician is not allowed to invoke the deposit event' do
-                  params = ActionController::Parameters.new({ service_call: {
-                      billing_status_event: 'deposited'
-                  } })
-                  p      = PermittedParams.new(params, technician, job)
-                  expect(p.service_call).to_not include('billing_status_event')
+                  expect(event_permitted_for_job?('billing_status', 'deposited', technician, job)).to be_false
                 end
 
                 context 'when the employee deposits the payment' do
@@ -564,9 +556,137 @@ describe 'My Service Call Integration Spec' do
     before do
       transfer_the_job
     end
+
+    it 'a job for the subcon should be created' do
+      expect(subcon_job).to be_instance_of(TransferredServiceCall)
+    end
+
     it 'the job status should be transferred' do
       expect(job).to be_transferred
     end
+
+    it 'the subcon job status should be new' do
+      expect(subcon_job).to be_new
+    end
+
+    it 'job work status should be pending' do
+      expect(job).to be_work_pending
+    end
+
+    it 'subcon job work status should be pending' do
+      expect(subcon_job).to be_work_pending
+    end
+
+    it 'job payment status should be pending' do
+      expect(job).to be_payment_pending
+    end
+
+    it 'subcon job payment status should be pending' do
+      expect(subcon_job).to be_payment_pending
+    end
+
+    it 'job available status events should be cancel' do
+      job.status_events.should =~ [:cancel, :cancel_transfer]
+    end
+
+    it 'subcon job available status events should be accept reject and cancel' do
+      subcon_job.status_events.should =~ [:accept, :reject, :cancel]
+    end
+
+    it 'cancel should not be permitted job the subcon job' do
+      expect(event_permitted_for_job?('status', 'cancel', subcon_admin, subcon_job)).to be_false
+    end
+
+    it 'job should have accept and reject as available work events' do
+      expect(job.work_status_events).to eq [:accept, :reject]
+    end
+
+    it 'accept and reject are not permitted events for job when submitted by a user' do
+      expect(event_permitted_for_job?('work_status', 'accept', org_admin, job)).to be_false
+      expect(event_permitted_for_job?('work_status', 'reject', org_admin, job)).to be_false
+    end
+
+    it 'subcon job should not have available work events' do
+      expect(subcon_job.work_status_events).to eq [:start]
+    end
+
+    it 'subcon job should not be permitted to start the job' do
+      expect(event_permitted_for_job?('work_status', 'start', subcon_admin, subcon_job)).to be_false
+    end
+
+    it 'there should be no available payment events for the job' do
+      expect(job.billing_status_events).to be_empty
+    end
+
+    it 'there should be no available payment events for the subcon job' do
+      expect(subcon_job.billing_status_events).to be_empty
+    end
+
+    context 'when subcon accepts the job' do
+      before do
+        subcon_job.update_attributes(status_event: 'accept')
+      end
+
+      it 'the job status should be transferred' do
+        expect(job).to be_transferred
+      end
+
+      it 'the subcon job status should be accepted' do
+        expect(subcon_job).to be_accepted
+      end
+
+      it 'job work status should be accepted' do
+        expect(job.reload).to be_work_accepted
+      end
+
+      it 'subcon job work status should be pending' do
+        expect(subcon_job).to be_work_pending
+      end
+
+      it 'job payment status should be pending' do
+        expect(job).to be_payment_pending
+      end
+
+      it 'subcon job payment status should be pending' do
+        expect(subcon_job).to be_payment_pending
+      end
+
+      it 'job available status events should be cancel' do
+        job.status_events.should =~ [:cancel, :cancel_transfer]
+      end
+
+      it 'subcon job available status events should be cancel and transfer' do
+        subcon_job.status_events.should =~ [:cancel, :transfer]
+      end
+
+      it 'job should start as available work events' do
+        expect(job.reload.work_status_events).to eq [:start]
+      end
+
+      it 'start is not permitted events for job when submitted by a user' do
+        expect(event_permitted_for_job?('work_status', 'start', org_admin, job)).to be_false
+      end
+
+      it 'subcon job should have start as the available work event' do
+        expect(subcon_job.work_status_events).to eq [:start]
+      end
+
+      it 'subcon job should be permitted to start the job' do
+        expect(event_permitted_for_job?('work_status', 'start', subcon_admin, subcon_job)).to be_true
+      end
+
+      it 'there should be no available payment events for the job' do
+        expect(job.billing_status_events).to be_empty
+      end
+
+      it 'there should be no available payment events for the subcon job' do
+        expect(subcon_job.billing_status_events).to be_empty
+      end
+
+
+    end
+
+
   end
 
   context 'when I transfer to a local affiliate' do

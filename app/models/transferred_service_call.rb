@@ -80,7 +80,7 @@ class TransferredServiceCall < ServiceCall
       transition :new => :accepted
     end
 
-    # todo reinstantiate once we decide to implement the un_accept event
+    # todo reinstate once we decide to implement the un_accept event
     #event :un_accept do
     #  transition :accepted => :rejected, unless: ->(sc) { sc.work_done? }
     #end

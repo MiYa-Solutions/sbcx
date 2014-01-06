@@ -113,9 +113,10 @@ class ServiceCall < Ticket
       transition :pending => :rejected, if: lambda { |sc| !sc.canceled? && sc.transferred? }
     end
 
-    event :un_accept do
-      transition :accepted => :rejected, if: lambda { |sc| !sc.canceled? && sc.transferred? }
-    end
+    # todo reinstate once we decide to implement the un_accept event
+    #event :un_accept do
+    #  transition :accepted => :rejected, if: lambda { |sc| !sc.canceled? && sc.transferred? }
+    #end
 
     event :dispatch do
       transition :pending => :dispatched, if: ->(sc) { !sc.canceled? && sc.organization.multi_user? && !sc.transferred? }
