@@ -49,7 +49,7 @@ en:
       service_call:
         work_status:
           events:
-            accept: LiLI
+            accept: "Accept"
           states:
             accepted: "Accepted"
             rejected: "Rejected"
@@ -57,8 +57,13 @@ en:
             dispatched: "Lulu"
             done: "Completed"
             pending: "Pending"
+        provider_status:
+          evnets:
+            provider_marked_as_settled: "Marked as Settled"
+
         subcontractor_status:
           events:
+            subcon_marked_as_settled: "Marked as Settled"
           states:
             pending: "Pending"
             claimed_as_settled: "Claimed As Settled"
@@ -98,14 +103,20 @@ en:
             clear: 'Clear'
             subcon_invoiced: LILI
           states:
-            collected_by_subcon: "Collected (Subcontractor)"
-            subcon_claim_deposited: "Subcontractor Deposited?"
             paid: "Paid"
             overdue: "Overdue"
             cleared: "Cleared"
             rejected: "Rejected"
+            deposited: "Deposit Confirmed"
+            deposited_to_prov: "Deposited to Contractor"
+            deposited_to_subcon: "Deposited to Subcontractor"
+            collected_by_provider: "Contractor Collected"
+            invoiced_by_subcon: "Subcontractor Invoiced"
+            invoiced_by_provider: "Contractor Invoiced"
+            provider_claim_deposited: "Contractor Deposited?"
             collected_by_employee: "Employee Collected"
-
+            collected_by_subcon: "Subcontractor Collected"
+            subcon_claim_deposited: "Subcontractor Deposited?"
         work_status:
           events:
             dispach: Lulu
@@ -113,9 +124,9 @@ en:
         status:
           events:
             transfer: "Transfer Again"
-            accept: "PiPi"
-            dispatch: "LtLt"
-            work_done: "Completed"
+            accept: "Accept"
+            dispatch: "Dispatch"
+            work_done: "Complete"
 
           states:
             transferred: "Passed On"
@@ -138,8 +149,16 @@ en:
         billing_status:
           states:
             collected: "Collected"
-            deposited_to_prov: "Deposited"
+            deposited_to_prov: "Deposited to Contractor"
+            deposited_to_subcon: "Deposited to Subcontractor"
             deposited: "Deposit Confirmed"
+            collected_by_provider: "Contractor Collected"
+            invoiced_by_subcon: "Subcontractor Invoiced"
+            invoiced_by_provider: "Contractor Invoiced"
+            provider_claim_deposited: "Contractor Deposited?"
+            collected_by_employee: "Employee Collected"
+            collected_by_subcon: "Subcontractor Collected"
+            subcon_claim_deposited: "Subcontractor Deposited?"
         provider_status:
           states:
             settled: "Settled"

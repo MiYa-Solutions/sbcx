@@ -19,12 +19,13 @@
 
         <div class="row-fluid">
 
+
           <div class="form-inputs">
             <%= f.input :message, as: :text, :input_html => { :value => I18n.t('general.message.invite_member') + current_user.name } %>
             <%= f.hidden_field :affiliate_id, value: affiliate.id %>
           </div>
 
-          <br>
+          <br>    <br>
           <%= f.button :submit, id: 'invite_create_btn', :value => t('general.general.add_member'), class: 'btn btn-large btn-primary' %>
 
         </div>

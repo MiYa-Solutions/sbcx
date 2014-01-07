@@ -1080,6 +1080,10 @@ fieldset label {
   h3 {
     font-size: 12px;
   }
+
+  a {
+    color: #3A87AD;
+  }
 }
 
 .fee_badge {
@@ -1109,6 +1113,10 @@ fieldset label {
   h3 {
     font-size: 12px;
   }
+
+  a {
+    color: #44ad3f;
+  }
 }
 
 .status_grey {
@@ -1121,6 +1129,9 @@ fieldset label {
   h3 {
     font-size: 12px;
   }
+  a {
+    color: #696969;
+  }
 }
 
 .status_red {
@@ -1132,6 +1143,9 @@ fieldset label {
   display: block;
   h3 {
     font-size: 12px;
+  }
+  a {
+    color: #DA4E49;
   }
 }
 
@@ -1184,9 +1198,16 @@ fieldset label {
 
 #block_job_statuses_actions {
   a {
+    //color: #696969;
+    text-decoration: underline;
+  }
+
+.affiiate_statuses {
+  a {
     color: #696969;
     text-decoration: underline;
   }
+}
 
   a:hover {
     background-color: #3A87AD;
@@ -1194,18 +1215,24 @@ fieldset label {
   }
 
   .table th, .table td {
-    max-width: 100px;
+    max-width: 160px;
   }
 
   .badge {
     margin-right: 5px;
     padding-top: 3px;
+    display: inline;
+    margin-right: 5px;
+    padding-top: 3px;
+    width: 30px;
   }
 
   h3 {
     line-height: 18px;
   }
 }
+
+
 
 .dropdown-menu {
   a {
@@ -1594,11 +1621,18 @@ a:hover {
     //width: 68%;
   }
 
-  .radio input[type="radio"], .checkbox input[type="checkbox"] {
+  .checkbox input[type="checkbox"] {
     float: right;
     margin-right: 50%;
     margin-top: -1.499em;
   }
+
+   .radio input[type="radio"] {
+    float: left;
+    margin-right: 5%;
+    margin-top: 3px;
+    }
+
 
   #transfer_btn {
     border-radius: 10px 10px 10px 10px;
@@ -3213,6 +3247,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     text-transform: capitalize;
 
   }
+  font-weight: bold;
 }
 
 .background_welcome {
@@ -3510,12 +3545,16 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   input, textarea {
     margin-left: 20%;
-    margin-top: -19px;
+    margin-top: -10px;
     width: 75%;
   }
 
   #invite_message {
     height: 250px;
+  }
+
+  h1 {
+    max-width: 300px;
   }
 
   h4 {
@@ -3543,6 +3582,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     float: left;
     margin-left: 40%;
     max-width: 28%;
+    margin-top: 2px;
   }
 }
 
@@ -3622,6 +3662,11 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     padding-bottom: 5px;
     padding-left: 8px;
   }
+
+  h1 {
+    max-width: 300px;
+  }
+
 
   .control-group {
     margin-bottom: 9px;
@@ -4054,6 +4099,19 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 
 }
+
+.roles_user_show {
+  span {
+    float: left;
+    margin-bottom: 2px;
+    margin-right: 2px;
+  }
+}
+
+#roles_user_index {
+   width: 35%;
+ }
+
 
 
 

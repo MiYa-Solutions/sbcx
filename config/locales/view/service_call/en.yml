@@ -8,28 +8,31 @@ en:
     forms:
       subcontractor_status:
         mark_as_settled:
-          tooltip: "click to indicate this job has settled with the subcontractor"
+          tooltip: "click to indicate that this job has settled with the subcontractor"
         subcon_confirmed:
-          tooltip: "Click here to indicate the subcontractor has confirmed this job as settled"
+          tooltip: "Click here to indicate that the subcontractor has confirmed this job as settled"
         subcon_marked_as_settled:
-          tooltip: "click here if the subcontractor claims this is settled"
+          tooltip: "click here if the subcontractor claims that this job has been settled"
+          btn_name: "Marked as Settled"
         confirm_settled:
           tooltip: "Click to confirm this job has been settled"
         settle:
-          tooltip: "Click here to indicate the subcontracting fee is settled"
+          tooltip: "Click here to indicate that the subcontractor fee is settled"
+          label: "Select Payment Method"
       provider_status:
         mark_as_settled:
-          tooltip: "click to indicate this job has settled with the subcontractor"
+          tooltip: "click to indicate that this job has settled with the subcontractor"
         provider_confirmed:
-          tooltip: "Click here to indicate the provider has confirmed this job as settled"
+          tooltip: "Click here to indicate that the provider has confirmed this job as settled"
         provider_marked_as_settled:
-          tooltip: "click here if the contractor claims this is settled"
+          tooltip: "click here if the contractor claims this job has been settled"
         confirm_settled:
           tooltip: "Click to confirm this job has been settled"
         settle:
-          tooltip: "Click here to indicate the contractor fees has been settled"
+          tooltip: "Click here to indicate that the contractor fees has been settled"
+          label: "Select Payment Method"
         clear:
-          tooltip: "Click here to indicate the contractor fees have been cleared"
+          tooltip: "Click here to indicate that the contractor fees have been cleared"
       status:
         accept:
           tooltip: "Click to accept the transferred job"
@@ -68,46 +71,46 @@ en:
 
       billing_status:
         invoice:
-          tooltip: "Click to indicate the client was presented with an invoice for the service"
+          tooltip: "Click to indicate an invoice has been submitted to the customer"
           btn_name: Invoice
-          label: Who Invoiced?
+          label: "Job's Invoiced By:"
         collection:
-          tooltip: "Click to indicate the customer payment was collected"
+          tooltip: "Click to indicate the customer payment has been collected"
           btn_name: Collect
-          label: Who Collected?
+          label: Who's Collected?
         deposit:
-          tooltip: "Click to indicate the customer payment was deposited at the contractor"
+          tooltip: "Click to indicate that customer payment has been deposited for the contractor"
           btn_name: Deposit
-          label: Who Deposited?
+          label: Who's Deposited?
         subcon_invoiced:
-          tooltip: "Click to indicate the subcontractor has invoiced the customer"
+          tooltip: "Click to indicate that the subcontractor has invoiced the customer"
         provider_invoiced:
-          tooltip: "Click to indicate the Contractor has invoiced the customer"
+          tooltip: "Click to indicate that the Contractor has invoiced the customer"
         provider_collected:
-          tooltip: "Click to indicate the Contractor has collected the payment from the customere"
+          tooltip: "Click to indicate that the Contractor has collected the payment from the customer"
         overdue:
-          tooltip: "Click to indicate the payment for the service is overdue"
+          tooltip: "Click to indicate that the payment for the service is overdue"
         collect:
-          tooltip: "Click if the payment for the service was collected by an employee"
+          tooltip: "Click if the payment for the service has been collected by an employee"
         deposited:
-          tooltip: "Click to indicate the collected payment was deposited and so can be marked as paid"
+          tooltip: "Click to indicate that the collected payment has been deposited and can be marked as Paid"
         paid:
-          tooltip: "Click to indicate the customer has paid for the service"
+          tooltip: "Click to indicate that the customer has paid for the service"
         subcon_collected:
-          tooltip: "Click to indicate the subcontractor has collected the payment from the customer"
+          tooltip: "Click to indicate that the subcontractor has collected the payment from the customer"
         subcon_deposited:
-          tooltip: "Click to indicate the subcontractor has deposited the customer payment"
+          tooltip: "Click to indicate that the subcontractor has deposited the customer payment"
         confirm_deposit:
-          tooltip: "Click to confirm the subcontractor has deposited the customer payment"
+          tooltip: "Click to confirm that the subcontractor has deposited the customer payment"
         deposit_to_prov:
-          tooltip: "Click to indicate the customer payment was delivered to the contractor"
+          tooltip: "Click to indicate that customer payment has been delivered to the contractor"
         employee_deposit:
-          tooltip: "Click to indicate the customer payment was delivered to the contractor by an employee"
+          tooltip: "Click to indicate that customer payment has been delivered to the contractor by an employee"
         prov_confirmed_deposit:
-          tooltip: "Click to indicate the contractor has confirmed receiving of the customer payment"
+          tooltip: "Click to indicate that the contractor has confirmed receiving of the customer payment"
         clear:
-          tooltip: "Click to indicate the payment was cleared"
+          tooltip: "Click to indicate that payment had been cleared"
         reject:
-          tooltip: "Click to indicate the customer payment was rejected"
+          tooltip: "Click to indicate that customer payment has been rejected"
 
 

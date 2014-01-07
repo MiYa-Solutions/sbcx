@@ -28,6 +28,7 @@
         <tr>
           <th>Name</th>
           <th>Email</th>
+          <th>Roles</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -36,14 +37,21 @@
             <tr>
               <td><%= link_to "#{user.first_name} #{user.last_name}", my_user_path(user) %></td>
               <td><%= user.email %></td>
+              <td class="roles_user_show" id="roles_user_index">
+                <% for role in user.roles %>
+                    <table>
+                      <tbody>
+                      <tr>
+                        <span class="label label-info"><%= role.name %></span>
+                      </tr>
+                      </tbody>
+                    </table>
+                <% end %>
+              </td>
               <td>
-                <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                            edit_my_user_path(user), :class => 'btn btn-mini' %>
-                <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                            my_user_path(user),
-                            :method  => :delete,
-                            :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
-                            :class   => 'btn btn-mini btn-danger' %>
+                <%= link_to t('.edit', :default => t("helpers.links.edit")),edit_my_user_path(user), :class => 'btn btn-mini' %>
+                <%= link_to t('general.general.show'), my_user_path(user), :class => 'btn btn-mini btn-primary' %>
+
               </td>
             </tr>
         <% end %>

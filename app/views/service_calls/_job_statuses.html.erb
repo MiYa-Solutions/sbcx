@@ -23,7 +23,7 @@
     <table class="table table-striped table-condensed table-sbcx">
       <tbody>
       <tr>
-        <td><strong> <%= @service_call.class.human_attribute_name(:status) %></strong></td>
+        <td><strong> <%= t('general.general.work') %></strong></td>
         <td>
           <span class="<%= style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
           <h3><%= @service_call.human_status_name %></h3>
@@ -40,7 +40,7 @@
       </tr>
       <% unless @service_call.instance_of?(TransferredServiceCall) && @service_call.payment_na? %>
           <tr>
-            <td><strong><%= @service_call.class.human_attribute_name(:billing_status) %></strong></td>
+            <td><strong><%= t('general.general.customer_payment') %></strong></td>
             <td>
               <h3><span class="<%= style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
                   <%= @service_call.human_billing_status_name %>
@@ -62,32 +62,32 @@
           <tr>
             <td>
               <!--Customized Tooltip-->
+
               <% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>
-             <span class="badge custom_tooltip">
-                  <div class="hover">
-                    <!--<#%= humanized_money_with_symbol @service_call.transfer_props.first.subcon_fee  %>-->
-                    <%= humanized_money_with_symbol @service_call.subcon_transfer_props.first.subcon_fee %>
-                    <div class="tooltip"><%= I18n.t('general.general.subcon_fee') %></div>
-                  </div>
-               </span>
+                  <strong>  <%= @service_call.class.human_attribute_name(:subcontractor_status) %></strong>
+                 <span class="badge custom_tooltip">
+                      <div class="hover">
+                        <!--<#%= humanized_money_with_symbol @service_call.transfer_props.first.subcon_fee  %>-->
+                        <%= humanized_money_with_symbol @service_call.subcon_transfer_props.first.subcon_fee %>
+                        <div class="tooltip"><%= I18n.t('general.general.subcon_fee') %></div>
+                      </div>
+                  </span>
               <% end %>
 
-              <strong>  <%= @service_call.class.human_attribute_name(:subcontractor_status) %></strong></td>
+              </td>
             <td class="show_more_button">
-
-              <button class="btn btn-mini btn-primary" type="button" id="show_subco_statuses" data-toggle="collapse" data-target="#subco_statuses">
-                <%= @service_call.human_subcontractor_status_name %>
-                <i class="icon-chevron-down icon-white"></i>
-              </button>
-              <!--<#%= button_tag t('general.general.show_details'), :class => 'btn btn-mini btn-primary', id: 'show_subco_statuses', data: { toggle: "collapse", target: "#subco_statuses" } %>-->
-            </td>
+                    <span class="<%= style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="show_subco_statuses">
+                       <%= link_to @service_call.human_subcontractor_status_name, "#subco_statuses", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+                      <i class="icon-chevron-down"></i>
+                    </span>
+           </td>
           </tr>
           </tbody>
         </table>
       </li>
       <li>
         <div class="collapse" id="subco_statuses">
-          <table class="table table-striped table-condensed table-sbcx">
+          <table class="table table-striped table-condensed table-sbcx affiiate_statuses">
             <tbody>
 
             <tr>
@@ -136,20 +136,25 @@
             <td>
               <% if @service_call.provider_transfer_props.first.attribute_names.size > 0 %>
                   <!--Customized Tooltip-->
-                 <span class="badge custom_tooltip">
+
+              <strong><%= @service_call.class.human_attribute_name(:provider_status) %></strong>
+
+                     <span class="badge custom_tooltip">
                       <div class="hover">
                         <%= humanized_money_with_symbol @service_call.provider_transfer_props.first.provider_fee %>
                         <div class="tooltip"><%= I18n.t('general.general.provider_fee') %></div>
                       </div>
                    </span>
               <% end %>
-              <strong><%= @service_call.class.human_attribute_name(:provider_status) %></strong>
             </td>
             <td class="show_more_button">
-              <button class="btn btn-mini btn-primary" type="button" id="show_prov_statuses" data-toggle="collapse" data-target="#prov_statuses">
-                <%= @service_call.human_provider_status_name %>
-                <i class="icon-chevron-down icon-white"></i>
-              </button>
+                  <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="show_prov_statuses">
+                       <%= link_to @service_call.human_provider_status_name, "#prov_statuses", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+                    <i class="icon-chevron-down"></i>
+                  </span>
+              <!--<i class="icon-chevron-down"></i>-->
+
+
             </td>
           </tr>
           </tbody>
@@ -157,8 +162,9 @@
       </li>
       <li>
         <div class="collapse" id="prov_statuses">
-          <table class="table table-striped table-condensed table-sbcx">
+          <table class="table table-striped table-condensed table-sbcx affiiate_statuses">
             <tbody>
+
             <tr>
               <td><strong><%= @service_call.class.human_attribute_name(:provider) %></strong></td>
               <td>
