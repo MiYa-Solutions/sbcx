@@ -1068,6 +1068,20 @@ fieldset label {
 
 }
 
+.link_blue {
+  color: #3A87AD;
+  font-size: 12px;
+  line-height: 12px;
+  padding-right: 10px;
+  display: block;
+
+  a {
+    color: #3A87AD;
+    text-decoration: underline;
+  }
+
+}
+
 .status_blue {
 
   color: #3A87AD;
@@ -2319,15 +2333,15 @@ div.DTTT_collection {
   border-color: black;
   border-width: 1px;
   color: #3A87AD;
-  height: 500px;
+  height: 300px;
 
-  //input, textarea {
-  //  width: 100%;
-  //}
+  input, textarea {
+    width: 100%;
+  }
 
   .radio input[type="radio"], .checkbox input[type="checkbox"] {
     float: left;
-    margin-left: -18px;
+    margin-left: -50%;
     margin-top: 0.501em;
   }
 
@@ -2335,7 +2349,7 @@ div.DTTT_collection {
     line-height: 18px;
     position: relative;
     right: -21px;
-    top: -19px;
+    //top: -19px;
   }
 
   .form-horizontal .control-label {
@@ -2374,7 +2388,7 @@ div.DTTT_collection {
 }
 
 #add_appointment_job_show {
-  margin-left: 50%;
+  //margin-left: 50%;
 }
 
 .carousel .item > img {
@@ -2596,7 +2610,7 @@ hr {
 }
 
 .well_job_history {
-  min-height: 575px;
+  min-height: 423px;
 
 }
 
@@ -2957,11 +2971,16 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   }
 }
 
+
 .add_meeting_button_job {
   button {
     float: right;
   }
 
+}
+
+#appointment_description {
+ height: 80px;
 }
 
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
@@ -2988,6 +3007,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   border-style: none solid solid;
   border-width: medium 1px 1px;
   margin-top: -2px;
+  min-height: 575px;
 }
 
 .nav-tabs > li {
@@ -3801,6 +3821,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 .job_billing_summary {
+  min-height: 112px;
+
   h3 {
     color: #3A87AD;
     font-size: 14px;
@@ -4111,6 +4133,12 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 #roles_user_index {
    width: 35%;
  }
+
+.bom_table_summary {
+  .icon-pencil {
+    float: right;
+  }
+}
 
 
 

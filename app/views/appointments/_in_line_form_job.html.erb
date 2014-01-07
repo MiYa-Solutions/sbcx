@@ -1,29 +1,56 @@
 <div class="alert add_meeting_frame" >
 
 <%= simple_form_for(appointment, :html => { :class => 'form-horizontal ajax-form' }, remote: true) do |f| %>
-    <br>
-
     <div class="row-fluid">
       <a href="#" data-toggle="collapse" data-target="#new_meeting" class="close">×</a>
     </div>
     <%= f.error_notification %>
 
+     <div class="row">
+       <div class="span8">
+         <%= f.input :title %>
+       </div>
+     </div>
+      <div class="row">
+        <div class="span4">
+          <%= f.input :all_day %>
 
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4">
+          <%= f.input :starts_at_date_text, input_html: {class: 'datepicker'} %>
+        </div>
+        <div class="span4">
+          <%= f.input :starts_at_time_text, input_html: {class: 'timepicker'}%>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4">
+          <%= f.input :ends_at_date_text, input_html: {class: 'datepicker'} %>
+        </div>
+        <div class="span4">
+          <%= f.input :ends_at_time_text, input_html: {class: 'timepicker'}%>
+        </div>
+      </div>
 
-    <%= f.input :title %>
-    <%= f.input :all_day %>
-    <%= f.input :starts_at_date_text, input_html: {class: 'datepicker'} %>
-    <%= f.input :starts_at_time_text , input_html: {class: 'timepicker'}%>
-    <%= f.input :ends_at_date_text , input_html: {class: 'datepicker'} %>
-    <%= f.input :ends_at_time_text  , input_html: {class: 'timepicker'}%>
-    <%= f.input :description %>
-    <%= f.input :appointable_id, :as => :hidden, :input_html => { :value => appointment.appointable.id } %>
-    <%= f.input :appointable_type, :as => :hidden, :input_html => { :value => appointment.appointable.class } %>
+      <div class="row">
+        <div class="span8">
+          <%= f.input :description %>
+          <%= f.input :appointable_id, :as => :hidden, :input_html => { :value => appointment.appointable.id } %>
+          <%= f.input :appointable_type, :as => :hidden, :input_html => { :value => appointment.appointable.class } %>
+        </div>
 
-    <!--<div class="form-actions">-->
+      </div>
+      <div class="row">
+        <div class="span2"></div>
+        <div class="span2">
+          <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary ajax-btn", id: 'add_appointment_job_show' %>
+
+        </div>
+      </div>
 
       <!--<#%= link_to I18n.t('general.general.close'), "#", class: "btn btn-medium", :data-toggle => "collapse", :data-target =>"#new_meeting" %>-->
-      <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary ajax-btn", id: 'add_appointment_job_show' %>
 
       <br>
       <div id="ajax-msg"></div>

@@ -29,7 +29,7 @@ en:
       billing_entries: "All Billing Entries"
       subcon_entries: "Subcontractor Billing Entries"
       provider_entries: "Contractor Billing Entries"
-      get_entries: "Get Entries"
+      get_entries: "Get Billing Entries"
       select_subcon: "Select Subcontractor"
       transfer_job: "Transfer Job"
       customer_billing: "Customer Billing"
