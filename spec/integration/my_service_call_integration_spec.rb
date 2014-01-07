@@ -734,6 +734,66 @@ describe 'My Service Call Integration Spec' do
           expect(subcon_job.billing_status_events).to be_empty
         end
 
+        context 'when subcon completes the job' do
+          before do
+            add_bom_to_job subcon_job
+            subcon_job.update_attributes(work_status_event: 'complete')
+          end
+
+          it 'the job status should be transferred' do
+            expect(job.reload).to be_transferred
+          end
+
+          it 'the subcon job status should be accepted' do
+            expect(subcon_job).to be_accepted
+          end
+
+          it 'job work status should be in progress' do
+            expect(job.reload).to be_work_done
+          end
+
+          it 'subcon job work status should be in progress' do
+            expect(subcon_job).to be_work_done
+          end
+
+          it 'job payment status should be pending' do
+            expect(job).to be_payment_pending
+          end
+
+          it 'subcon job payment status should be pending' do
+            expect(subcon_job).to be_payment_pending
+          end
+
+          it 'job available status events should be cancel abd cancel_transfer' do
+            job.reload.status_events.should =~ [:cancel]
+          end
+
+          it 'subcon job available status events should be cancel' do
+            subcon_job.status_events.should =~ [:cancel]
+          end
+
+          it 'there are no available work status events for job' do
+            expect(job.reload.work_status_events).to be_empty
+          end
+
+          it 'there are no available work status events for subcon job' do
+            expect(subcon_job.work_status_events).to be_empty
+          end
+
+          it 'job available payment events are invoice and invoiced by subcon, but invoice by subcon is not permitted for a user' do
+            expect(job.reload.billing_status_events).to eq [:invoice, :subcon_invoiced]
+            expect(event_permitted_for_job?('billing_status', 'invoice', org_admin, job)).to be_true
+            expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_false
+          end
+
+          it 'subcon job should have invoice and provider invoiced as the available payment events, but provider invoiced is not permitted' do
+            expect(subcon_job.billing_status_events).to eq [:invoice, :provider_invoiced]
+            expect(event_permitted_for_job?('billing_status', 'invoice', subcon_admin, subcon_job)).to be_true
+            expect(event_permitted_for_job?('billing_status', 'provider_invoiced', subcon_admin, subcon_job)).to be_false
+          end
+
+        end
+
       end
 
 
