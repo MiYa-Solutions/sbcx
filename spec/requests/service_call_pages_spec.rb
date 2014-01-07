@@ -484,70 +484,6 @@ describe "Service Call pages" do
 
         end
 
-        describe 'subcon canceled' do
-          before do
-            in_browser(:org2) do
-              visit service_call_path @subcon_service_call
-              click_button JOB_BTN_CANCEL
-            end
-          end
-
-          it 'subcon view: the page should show the correct status, event and buttons' do
-            in_browser(:org2) do
-              should have_status(JOB_STATUS_CANCELED)
-              should have_event('100003')
-              should_not have_button(JOB_BTN_COMPLETE)
-              should_not have_button(JOB_BTN_UN_CANCEL)
-            end
-          end
-
-          it 'provider view: the status should be canceled, have the associated event and have no buttons' do
-            in_browser(:org) do
-              visit service_call_path(service_call)
-              should have_status(JOB_STATUS_CANCELED)
-              should have_event('100004')
-              should_not have_button(JOB_BTN_COMPLETE)
-              should have_button(JOB_BTN_UN_CANCEL)
-            end
-          end
-
-          it 'provider view: should have canceled notification' do
-            in_browser(:org) do
-              visit notifications_path
-              should have_notification(ScCanceledNotification, service_call)
-            end
-
-          end
-
-          describe 'provider to un-cancel' do
-            before do
-              in_browser(:org) do
-                visit service_call_path service_call
-                click_button JOB_BTN_UN_CANCEL
-              end
-            end
-
-            it 'page should show a success message, cancel, transfer and start button with a new status' do
-              should have_success_message
-              should have_status(JOB_STATUS_TRANSFERRED)
-              should_not have_button(JOB_BTN_START)
-              should_not have_button(JOB_BTN_TRANSFER)
-              should have_button(JOB_BTN_CANCEL)
-              should have_button(JOB_BTN_CANCEL_TRANSFER)
-              should have_event('100037')
-            end
-
-            it 'subcon view: should get a un-canceled notification' do
-              in_browser(:org2) do
-                visit notifications_path
-                should have_notification(ScUnCanceledNotification, @subcon_service_call)
-              end
-            end
-          end
-
-
-        end
-
         describe "subcontractor browser" do
           let(:subcon_service_call) { ServiceCall.find_by_organization_id_and_ref_id(subcontractor.id, service_call.ref_id) }
 
@@ -2042,7 +1978,7 @@ describe "Service Call pages" do
 
                   it 'should have the invoice, subcon invoiced and cancel buttons' do
                     should have_button(JOB_BTN_INVOICE)
-                    should have_button(JOB_BTN_SUBCON_INVOICED)
+                    should have_unchecked_field JOB_RADIO_SUBCON_INVOICED
                     should have_button(JOB_BTN_CANCEL)
                   end
 
@@ -2062,8 +1998,9 @@ describe "Service Call pages" do
 
                   describe 'invoice by provider' do
                     before do
-                      choose JOB_RADIO_I_INVOICED
+                      find("##{JOB_RADIO_I_INVOICED}").trigger('click')
                       click_button JOB_BTN_INVOICE
+
                     end
 
                     it 'should show a success message and changed the payment status to invoiced' do
@@ -2379,9 +2316,12 @@ describe "Service Call pages" do
                     should have_billing_status(JOB_BILLING_STATUS_COLLECTED_BY_EMPLOYEE)
                   end
 
-                  context 'when employee deposits the payment' do
+                  context 'when the employer marks that the employee deposited the payment' do
                     before do
-                      click_button JOB_BTN_PAYMENT_DEPOSITED
+                      in_browser(:org) do
+                        visit service_call_path(service_call)
+                        click_button JOB_BTN_PAYMENT_DEPOSITED
+                      end
                     end
 
                     it 'should change the billing status to paid' do
@@ -2584,7 +2524,8 @@ describe "Service Call pages" do
             end
 
             it "should show the provider invoice button" do
-              should have_button provider_invoiced_btn_selector
+              should have_button JOB_BTN_INVOICE
+              should have_unchecked_field JOB_RADIO_PROV_INVOICED
             end
 
           end

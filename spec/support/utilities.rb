@@ -35,6 +35,8 @@ JOB_BTN_HISTORY                 = 'job_history_btn'
 JOB_BTN_PAYMENT_REJECTED        = 'reject_payment_service_call_btn'
 JOB_BTN_PAYMENT_DEPOSITED       = 'deposit_service_call_btn'
 JOB_RADIO_I_INVOICED            = 'service_call_billing_status_invoice'
+JOB_RADIO_PROV_INVOICED         = 'service_call_billing_status_provider_invoiced'
+JOB_RADIO_SUBCON_INVOICED       = 'service_call_billing_status_subcon_invoiced'
 
 
 JOB_SELECT_SUBCON_PAYMENT   = 'service_call_subcon_payment'
