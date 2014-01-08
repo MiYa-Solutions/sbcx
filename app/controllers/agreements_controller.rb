@@ -57,7 +57,8 @@ class AgreementsController < ApplicationController
   end
 
   def show
-
+    @affiliate = @agreement.organization if current_user.organization == @agreement.counterparty
+    @affiliate = @agreement.counterparty if current_user.organization == @agreement.organization
   end
 
   def new_agreement_from_params

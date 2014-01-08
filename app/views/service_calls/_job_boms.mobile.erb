@@ -1,0 +1,63 @@
+<div class="miya_blue_button_bom">
+  <%= link_to I18n.t('general.general.add_part'), new_service_call_bom_path(@service_call), "data-role" => "button", "data-theme" => "b", "data-mini" => "true", "data-icon" => "arrow-r", "data-iconpos" => "right", "data-transition" => "slide" if @service_call.can_change_boms?%>
+</div>
+
+<div class="parts_labor">
+    <ul data-role="listview">
+      <% @service_call.boms.each do |bom| %>
+          <li class="job_billing">
+            <%= link_to bom.material_name, edit_service_call_bom_path(@service_call, bom), "data-transition" => "slide" %>
+            <p class= "billing_price_label"><%= Bom.human_attribute_name(:price) %></p>
+            <p class="billing_price"><%= humanized_money_with_symbol bom.total_price %></p>
+
+          </li>
+      <% end %>
+      <br>
+    </ul>
+
+
+            <!--My Job Dispatched and and not transferred-->
+            <% if @service_call.class == MyServiceCall && @service_call.work_dispatched? && !@service_call.transferred?   %>
+                 <p><%= I18n.t('general.messages.no_bom_start_dispached').html_safe %></p>
+             <% end %>
+
+            <!--My Job and not transferred-->
+            <% if @service_call.class == MyServiceCall && @service_call.work_pending? && !@service_call.transferred? %>
+                <% if @service_call.organization.multi_user? %>
+                        <p><%= I18n.t('general.messages.no_bom_start_users').html_safe %></p>
+                    <% else %>
+                        <p><%= I18n.t('general.messages.no_bom_start').html_safe %></p>
+                <% end %>
+            <% end %>
+
+            <!--My Job and I transferred to local-->
+            <% if @service_call.instance_of?(MyServiceCall) && @service_call.work_pending? && @service_call.transferred? && !@service_call.subcontractor.subcontrax_member? %>
+                <p><%= I18n.t('general.messages.no_bom_transferred_to_local').html_safe %></p>
+            <% end %>
+
+            <!-- My Job, and I transferred to local, accepted and pending my START-->
+            <% if  @service_call.class == MyServiceCall && @service_call.work_accepted? %>
+                <p><%= I18n.t('general.messages.no_bom_transferred_accepted').html_safe %></p>
+            <% end %>
+
+            <!--My Job and I transferred to subco member-->
+            <% if @service_call.class == MyServiceCall && (@service_call.work_pending? || @service_call.work_accepted?) && @service_call.transferred? && @service_call.subcontractor.subcontrax_member? %>
+                <p><%= I18n.t('general.messages.no_bom_transferred_to_member').html_safe %></p>
+            <% end %>
+
+            <!--Job transferred from local/subco-->
+            <% if @service_call.class == TransferredServiceCall && @service_call.work_pending? && !@service_call.accepted? && !@service_call.work_done?  %>
+                <p><%= I18n.t('general.messages.no_bom_transferred_from_provider').html_safe %></p>
+            <% end %>
+
+            <!--Job transferred, accepted and pending my START-->
+            <% if @service_call.class == TransferredServiceCall && @service_call.accepted? && !@service_call.work_done? %>
+                <p><%= I18n.t('general.messages.no_bom_transferred_accepted').html_safe %></p>
+            <% end %>
+
+            <!--Job completed-->
+            <% if @service_call.work_done? %>
+                <p><%= I18n.t('general.messages.no_bom_completed').html_safe %></p>
+            <% end %>
+
+</div>
