@@ -1,22 +1,16 @@
 <tr xmlns="http://www.w3.org/1999/html">
+
   <td class="member_logo">
     <% if affiliate.subcontrax_member? %>
-        <!--<span class="member_label">-->
-        <!--<badge><i class="icon-user icon-white"></i></badge>-->
-        <!--</span>-->
         <%= image_tag("member.png", :title => I18n.t('general.messages.member_icon'), :rel => 'tooltip') %>
+     <% end %>
+   </td>
 
-    <% end %>
-
-  </td>
   <td><%= link_to affiliate.name, affiliate_path(affiliate) %></td>
-
   <td><%= affiliate.phone %></td>
   <td><%= link_to affiliate.email, "mailto:#{affiliate.email}" %></td>
 
-
   <% if  affiliate.account_for(current_user.organization).try(:balance).present? %>
-
       <% if affiliate.account_for(current_user.organization).balance < 0 %>
           <td class="red_balance">
             <%= humanized_money_with_symbol affiliate.account_for(current_user.organization).balance %>
@@ -30,75 +24,41 @@
               <td>$0</td>
           <% end %>
       <% end %>
-
-
   <% else %><td></td>
   <% end %>
 
 
-
-
-  <!--<#% if @account.balance > 0 %>-->
-  <!--<td class="green_balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
-  <!--<#% else %>-->
-  <!--<td class="green-balance"><#%= humanized_money_with_symbol @account.balance %></td>-->
-  <!--<#% end %>-->
-
   <td class="actions_affiliate_index">
     <% if affiliate.subcontrax_member? %>
         <% unless  affiliate.id.in? affiliate_ids %>
-            <div class="miya_buttons_grid">
-              <ul>
+           <div class="miya_buttons_grid">
+             <ul>
                 <li class="add_member">
-                  <!--<#%= link_to I18n.t('general.general.add_member'), affiliate_path(affiliate), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.invite_member').html_safe, :rel => 'tooltip' %>-->
                   <%= link_to(t('general.general.add_member'), "#invite_modal_index_#{affiliate.id}", class: "btn btn-mini btn-success", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.invite_member').html_safe, :rel => 'tooltip') %>
-
-                </li>
-
-              </ul>
-
-            </div>
+               </li>
+             </ul>
+          </div>
         <% end %>
-
     <% else %>
         <div class="miya_buttons_grid">
           <ul>
-            <!--<li>-->
-            <!--<#%= link_to 'Archive', affiliate_path(affiliate), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->
-            <!--</li>-->
-            <li>
-              <%= link_to I18n.t('general.general.edit'), edit_affiliate_path(affiliate), :class => 'btn btn-mini' %>
-            </li>
-            <li>
-              <%= link_to(I18n.t('general.general.send_invite'), "#referral_modal_index_#{affiliate.id}", class: "btn btn-mini btn-primary", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip') %>
-            </li>
-
+            <li><%= link_to I18n.t('general.general.edit'), edit_affiliate_path(affiliate), :class => 'btn btn-mini' %></li>
+            <li><%= link_to(I18n.t('general.general.send_invite'), "#referral_modal_index_#{affiliate.id}", class: "btn btn-mini btn-primary", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.send_invite').html_safe, :rel => 'tooltip') %></li>
           </ul>
         </div>
     <% end %>
-
   </td>
 
   <td>
     <% if affiliate.provider? %>
         <%= image_tag("prov24.png", :title => I18n.t('general.messages.provider_icon').html_safe, :rel => 'tooltip') %>
-
     <% end %>
     <% if affiliate.subcontractor? %>
         <%= image_tag("sub24.png", :title => I18n.t('general.messages.subco_icon').html_safe, :rel => 'tooltip') %>
-
     <% end %>
-
-
   </td>
-
-
 </tr>
-
 
 <%= render 'affiliate_invite', affiliate: affiliate %>
 
-
-
 <%= render 'affiliate_referral', affiliate: affiliate %>
-

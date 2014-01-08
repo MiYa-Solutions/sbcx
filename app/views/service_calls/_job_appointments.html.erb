@@ -1,8 +1,24 @@
-<div class="well well_job_history well_job_show">
-  <div class="row-fluid row_homepage">
-    <br>
+<div class="well well_job_show well_job_history">
+  <div class="row-fluid my_jobs">
+
+    <%= render :partial => 'job_actions_statuses' %>
 
     <div class="span8">
+
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= I18n.t('general.general.appointments').html_safe %></h1></li>
+          <li>
+            <button class="btn btn-primary btn-medium" data-toggle="collapse" data-target="#new_meeting" id="new_meeting_in_Job_show">
+              <%= I18n.t('general.general.add_new_appointment') %></button>
+          </li>
+        </ul>
+      </div>
+
+      <div id="new_meeting" class="collapse">
+        <%= render 'appointments/in_line_form_job', appointment: @service_call.appointments.build %>
+      </div>
+      <br>
       <table class="table table-striped" id="event_log_in_service_call">
         <thead>
         <tr>
@@ -16,36 +32,21 @@
         <% @service_call.appointments.each do |appointment| %>
 
             <tr id="appointment_<%= appointment.id %>">
-              <%= render 'appointments/appointment', appointment: appointment %>
+              <!--<#%= render 'appointments/appointment', appointment: appointment %>-->
             </tr>
         <% end %>
         </tbody>
       </table>
 
+      <br>
+      <div class="row-fluid calendar_job" id="calendar"></div>
+
+
+
+
+      <!--end of span8-->
     </div>
 
-    <div class="span3 add_meeting_button_job">
-      <button class="btn btn-primary btn-medium" data-toggle="collapse" data-target="#new_meeting" id="new_meeting_in_Job_show">
-       <%= I18n.t('general.general.add_new_appointment') %></button>
-    </div>
-    <!--<#%= render 'appointments/add_appointment', appointable: @service_call %>-->
-  </div>
-
-
-  <br>
-  <div class="row-fluid calendar_job">
-
-        <div class="span8" id="calendar"></div>
-
-        <div class="span4 note_meeting">
-          <div id="new_meeting" class="collapse">
-           <%= render 'appointments/in_line_form_job', appointment: @service_call.appointments.build %>
-          </div>
-        </div>
 
   </div>
-
-
 </div>
-
-

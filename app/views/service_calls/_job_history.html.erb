@@ -1,6 +1,21 @@
-<div class="well well_job_history well_job_show">
+<div class="well well_job_show well_job_history">
+  <div class="row-fluid my_jobs">
 
-  <div class="row-fluid">
+    <%= render :partial => 'job_actions_statuses' %>
+
+
+<!--<div class="well well_job_history well_job_show">-->
+
+  <div class="span8">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.job_history').html_safe %></h1></li>
+        <li>
+        </li>
+      </ul>
+    </div>
+    <br>
 
     <table class="table table-striped" id="event_log_in_service_call">
       <thead>
@@ -26,4 +41,7 @@
     </table>
 
   </div>
+
+
+ </div>
 </div>
