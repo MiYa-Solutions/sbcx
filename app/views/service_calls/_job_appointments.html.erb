@@ -29,19 +29,20 @@
         </tr>
         </thead>
         <tbody id="appointments">
-        <% @service_call.appointments.each do |appointment| %>
+        <% unless @service_call.appointments.empty? %>
+            <% @service_call.appointments.each do |appointment| %>
 
-            <tr id="appointment_<%= appointment.id %>">
-              <!--<#%= render 'appointments/appointment', appointment: appointment %>-->
-            </tr>
+                <tr id="appointment_<%= appointment.id %>">
+                  <%= render 'appointments/appointment', appointment: appointment unless appointment.new_record? %>
+                </tr>
+            <% end %>
         <% end %>
         </tbody>
       </table>
 
       <br>
+
       <div class="row-fluid calendar_job" id="calendar"></div>
-
-
 
 
       <!--end of span8-->

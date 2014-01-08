@@ -1,4 +1,7 @@
 jQuery ->
+  $('#job_appointments').on 'shown.bs.tab', ->
+    $("#calendar").fullCalendar('render')
+
   date = new Date()
   d = date.getDate()
   m = date.getMonth()
@@ -26,7 +29,7 @@ jQuery ->
     selectable: true
     selectHelper: true
 
-    # a future calendar might have many sources.
+  # a future calendar might have many sources.
     eventSources: [
       url: "/appointments"
       ignoreTimezone: false
@@ -37,19 +40,19 @@ jQuery ->
 
 
 
-    #http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
-    eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
-      updateEvent event
+      #http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
+      eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
+        updateEvent event
 
 
-    # http://arshaw.com/fullcalendar/docs/event_ui/eventResize/
-    eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
-      updateEvent event
+      # http://arshaw.com/fullcalendar/docs/event_ui/eventResize/
+      eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
+        updateEvent event
 
 
-    # http://arshaw.com/fullcalendar/docs/mouse/eventClick/
-    eventClick: (event, jsEvent, view) ->
-      window.location.replace "/appointments/" + event.id + "/edit"
+      # http://arshaw.com/fullcalendar/docs/mouse/eventClick/
+      eventClick: (event, jsEvent, view) ->
+        window.location.replace "/appointments/" + event.id + "/edit"
 
 
   updateEvent = (the_event) ->
