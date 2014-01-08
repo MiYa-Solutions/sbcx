@@ -49,7 +49,7 @@
 
   <div class="ui-grid-a">
     <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
-    <div class="ui-block-b"><%= f.input :scheduled_for_text, input_html: { class: "mobi-datetime", value: (Time.now) } %></div>
+    <div class="ui-block-b"><%= f.text_field :scheduled_for, class: "mobi-datetime", value: (Time.now) %></div>
   </div>
 </div>
 
