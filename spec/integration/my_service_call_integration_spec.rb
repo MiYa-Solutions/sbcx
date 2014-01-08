@@ -792,6 +792,10 @@ describe 'My Service Call Integration Spec' do
             expect(event_permitted_for_job?('billing_status', 'provider_invoiced', subcon_admin, subcon_job)).to be_false
           end
 
+          context 'when subcon invoices' do
+
+          end
+
         end
 
       end
