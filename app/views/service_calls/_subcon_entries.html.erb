@@ -1,0 +1,39 @@
+<div class="collapse" id="subco_billing_entries">
+  <div class="row-fluid">
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.subcon_entries').html_safe %></h1>
+        <li></li>
+      </ul>
+    </div>
+
+    <table class="table table-striped" id="subcon_entries_in_service_call">
+      <thead>
+      <tr>
+        <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+        <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
+        <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
+        <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
+        <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+        <th><%= AccountingEntry.human_attribute_name(:description) %></th>
+        <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @service_call.subcon_entries.each do |entry| %>
+          <tr>
+            <td><%= entry.id %></td>
+            <td><%= entry.account.accountable.name %></td>
+            <td><%= entry.account.accountable.class.model_name.human %></td>
+            <td><%= l entry.created_at %></td>
+            <td><%= entry.type.constantize.model_name.human %></td>
+            <td><%= entry.description %></td>
+            <td><%= humanized_money_with_symbol entry.amount %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <br>
+</div>

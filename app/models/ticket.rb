@@ -366,7 +366,7 @@ class Ticket < ActiveRecord::Base
 
   def customer_entries
     if customer
-      acc = Account.for_customer(organization, customer).first
+      acc = Account.for_customer(customer).first
       acc ? entries.by_acc(acc) : []
     else
       []
