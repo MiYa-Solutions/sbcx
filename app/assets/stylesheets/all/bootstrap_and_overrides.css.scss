@@ -2610,8 +2610,13 @@ hr {
 }
 
 .well_job_history {
-  min-height: 423px;
+  min-height: 515px;
 
+}
+
+#job_show_tab {
+  margin-left: 12px;
+  width: 67%;
 }
 
 .navbar .nav .active > a, .navbar .nav .active > a:hover {
@@ -3007,7 +3012,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   border-style: none solid solid;
   border-width: medium 1px 1px;
   margin-top: -2px;
-  min-height: 575px;
+  min-height: 483px;
 }
 
 .nav-tabs > li {

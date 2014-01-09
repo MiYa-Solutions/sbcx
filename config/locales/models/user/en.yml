@@ -1,4 +1,6 @@
 en:
+  flash:
+    update_error: "z,jsdf"
   activerecord:
     attributes:
       user:
@@ -12,6 +14,11 @@ en:
               blank: "Name field can't be blank"
       messages:
         update_error: "There can be only one system owner"
+
+  errors:
+    messages:
+      one_system_owner: "There can be only one system owner"
+      update_error: "z,jsdf"
 
   admin_role: "you are not allowed to add an admin role to this organization"
 

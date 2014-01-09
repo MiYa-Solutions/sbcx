@@ -17,6 +17,9 @@
     <tbody>
     <% @agreement.events.each do |event| %>
         <tr>
+       <% if event.name == "agr_new_subcon" %>
+              jahcbab
+      <% else %>
           <td>
             <%= event.name %>
           </td>
@@ -30,6 +33,7 @@
             <%= event.creator.name %>
           </td>
         </tr>
+      <% end %>
     <% end %>
     </tbody>
   </table>
