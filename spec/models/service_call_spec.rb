@@ -53,7 +53,9 @@
 require 'spec_helper'
 
 describe ServiceCall do
-  let(:service_call) { FactoryGirl.build(:transferred_sc_with_new_customer) }
+  include_context 'transferred job'
+
+  let(:service_call) { job }
 
   subject { service_call }
 
@@ -98,12 +100,14 @@ describe ServiceCall do
     it { should_not be_valid }
   end
   describe "when provider is not present" do
+
     before do
-      service_call.provider     = nil
-      service_call.new_customer = nil
+      transfer_the_job
+      subcon_job.provider     = nil
+      subcon_job.new_customer = nil
     end
 
-    it { should_not be_valid }
+    it { expect(subcon_job).to_not be_valid }
   end
 
   it 'should not allow to change the tax if the work is done' do
@@ -115,11 +119,13 @@ describe ServiceCall do
   end
 
   it 'should not allow to change the tax if transferred' do
-    service_call.status = ServiceCall::STATUS_TRANSFERRED
-    service_call.name   = "lklklk"
-    service_call.should be_valid
-    service_call.tax = 5.0
-    service_call.should_not be_valid
+    transfer_the_job
+    subcon_job.status        = ServiceCall::STATUS_TRANSFERRED
+    subcon_job.subcontractor = FactoryGirl.create(:local_subcon)
+    subcon_job.name          = "lklklk"
+    subcon_job.should be_valid
+    subcon_job.tax = 5.0
+    subcon_job.should_not be_valid
   end
 
   it 'should allow to change the tax when the work is in progress' do

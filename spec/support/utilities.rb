@@ -242,6 +242,7 @@ end
 
 
 def add_bom(name, cost, price, qty, buyer = nil)
+  click_link 'Job Billing'
   click_button JOB_BTN_ADD_BOM
   fill_in 'bom_material_name', with: name
   fill_in 'bom_cost', with: cost
