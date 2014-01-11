@@ -55,20 +55,27 @@ class BomsController < ApplicationController
   # POST /boms
   # POST /boms.json
   def create
-
     respond_to do |format|
-      if @bom.save
+      if @bom.ticket.can_change_boms? && @bom.save
         format.html { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
         format.mobile { redirect_to service_call_path(@bom.ticket.id), notice: 'Bom was successfully created.' }
         format.js {}
         format.json { render json: @bom, status: :created, location: @bom }
       else
-        format.html { render :new }
-        format.mobile do
-          @ticket = ServiceCall.find(params[:service_call_id]).becomes(ServiceCall)
+
+        format.html do
+          @bom.ticket.errors.add :boms, I18n.t('general.job.errors.can_add_bom')
           render :new
         end
-        format.json { render json: @bom.errors, status: :unprocessable_entity }
+
+        format.mobile do
+          @ticket = @bom.ticket
+          render :new
+        end
+        format.json do
+          @bom.errors.add :ticket, I18n.t('general.job.errors.can_add_bom')
+          render json: @bom.errors, status: :unprocessable_entity
+        end
         format.js {}
       end
     end

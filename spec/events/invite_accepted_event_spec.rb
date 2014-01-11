@@ -20,7 +20,7 @@ describe InviteAcceptedEvent do
     end
     InviteAcceptedNotification.stub(:new => notification)
 
-    InviteAcceptedNotification.should_receive(:new).with(user: org_user)
+    InviteAcceptedNotification.should_receive(:new).with(user: org_user, event: event)
     #invite.notifications.should_receive(:<<).with(notification)
     #notification.should_receive(:save)
     notification.should_receive(:deliver)

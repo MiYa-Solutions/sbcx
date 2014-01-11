@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe NewInviteEvent do
   let(:org) { mock_model(Organization, id: 1000, name: 'Test Org') }
-  let(:affiliate) { mock_model(Affiliate, id: 2000, name: 'Test Affiliate') }
+  let(:affiliate) { mock_model(Affiliate, id: 2000, name: 'Test Affiliate', member?: true) }
   let(:org_user) { mock_model(User, organization: org) }
   let(:aff_user) { mock_model(User, organization: affiliate) }
   let(:invite) { mock_model(Invite, organization: org, organization_id: org.id, affiliate_id: affiliate.id, affiliate: affiliate, message: 'stam', notifications: []) }
