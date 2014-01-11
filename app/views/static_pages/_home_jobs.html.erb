@@ -5,12 +5,10 @@
     <ul>
       <li><h1><%= I18n.t('general.general.open_jobs') %></h1></li>
       <li></li>
-      <li><%= link_to I18n.t('general.general.see_all'), service_calls_path, :class => 'btn btn-primary' %></li>
+      <li><%= link_to I18n.t('general.general.see_all'), service_calls_path, :class => 'btn btn-mini btn-primary' %></li>
 
     </ul>
   </div>
-
-  <br>
 
   <% if !@service_calls.empty? %>
 

@@ -9,37 +9,44 @@
   </ul>
 </div>
 
-<div class="row-fluid well_height job_show_well">
-   <div class="span4">
-        <%= render :partial => 'job_actions_statuses' %>
-   </div>
+<div class="row-fluid">
+  <div class="well_height job_show_well">
 
-   <div class="span8" id="job_show_tab">
-  <ul class="nav nav-tabs" id="myJobShowTab">
-    <li class="active"><a href="#jobMain" data-toggle="tab"><%= I18n.t('general.general.job_main') %></a></li>
-    <li><a href="#jobBilling" data-toggle="tab"><%= I18n.t('general.general.job_billing') %></a></li>
-    <li><a href="#job_appointments" data-toggle="tab"><%= I18n.t('general.general.appointments') %></a></li>
-    <li><a href="#jobHistory" data-toggle="tab"><%= I18n.t('general.general.job_history') %></a></li>
+       <div class="span4" id="job_statuses_tab">
+            <%= render :partial => 'job_actions_statuses' %>
+       </div>
 
-  </ul>
+       <div class="span8" id="job_show_tab">
 
-  <div class="tab-content">
+         <ul class="nav nav-tabs" id="myJobShowTab">
+            <li class="active"><a href="#jobMain" data-toggle="tab"><%= I18n.t('general.general.job_main') %></a></li>
+            <li><a href="#jobBilling" data-toggle="tab"><%= I18n.t('general.general.job_billing') %></a></li>
+            <li><a href="#job_appointments" data-toggle="tab"><%= I18n.t('general.general.appointments') %></a></li>
+            <li><a href="#jobHistory" data-toggle="tab"><%= I18n.t('general.general.job_history') %></a></li>
 
-        <div class="tab-pane active" id="jobMain"><%= render 'job_details' %></div>
-        <div class="tab-pane" id="jobBilling"><%= render 'job_billing' %></div>
-        <div class="tab-pane" id="job_appointments"><%= render 'job_appointments' %></div>
-        <div class="tab-pane" id="jobHistory"><%= render 'job_history' %></div>
+          </ul>
+
+             <div class="tab-content">
+
+              <div class="tab-pane active" id="jobMain"><%= render 'job_details' %></div>
+              <div class="tab-pane" id="jobBilling"><%= render 'job_billing' %></div>
+              <div class="tab-pane" id="job_appointments"><%= render 'job_appointments' %></div>
+              <div class="tab-pane" id="jobHistory"><%= render 'job_history' %></div>
+
+             </div>
+
+          <script>
+              $(function () {
+                  $('#myJobShowTab a:first').tab('show');
+              })
+          </script>
+
+       </div>
 
 
-  </div>
-
-  <script>
-      $(function () {
-          $('#myJobShowTab a:first').tab('show');
-      })
-  </script>
-
-   </div>
+    <!--end well-->
+</div>
+<!--end row-->
 </div>
 
 

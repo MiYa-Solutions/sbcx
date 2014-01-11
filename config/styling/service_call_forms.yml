@@ -66,7 +66,7 @@ service_call:
         button_classes: "btn btn-large btn-primary"
       un_cancel:
 #        form_classes: "red-button"
-        button_classes: "btn btn-large btn-danger"
+        button_classes: "btn btn-large btn-primary"
     work_status:
       start:
 #        form_classes: "green-button"
@@ -79,7 +79,7 @@ service_call:
         button_classes: "btn btn-large btn-danger"
       un_accept:
 #        form_classes: "red-button"
-        button_classes: "btn btn-large btn-danger"
+        button_classes: "btn btn-large btn-primary"
       dispatch:
 #        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"

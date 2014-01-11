@@ -4,12 +4,12 @@
     <ul>
       <li><h1><%= Notification.model_name.human %></h1></li>
       <li></li>
-      <li><%= link_to I18n.t('general.general.see_all'), notifications_path, :class => 'btn btn-primary' %></li>
+      <li><%= link_to I18n.t('general.general.see_all'), notifications_path, :class => 'btn  btn-mini btn-primary' %></li>
 
     </ul>
   </div>
 
-  <br>
+
 
   <% if !@notifications.empty? %>
 

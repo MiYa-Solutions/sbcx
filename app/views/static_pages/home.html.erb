@@ -15,9 +15,7 @@
         </ul>
       </div>
 
-      <br>
-
-      <table class="table table-striped">
+     <table class="table table-striped">
         <thead>
         <tr>
           <th><%= Affiliate.model_name.human %></th>
@@ -62,18 +60,17 @@
 
   <!--Calendar-->
   <div class="span6" id="home-incoming">
-    <div class="well">
+    <div class="well welcome_jobs">
       <div class="smart_label">
         <ul>
           <li><h1><%= I18n.t('general.general.calendar') %></h1></li>
-          <li><%= link_to I18n.t('general.general.show_more'), calendar_path, :class => 'btn' %>
+          <li><%= link_to I18n.t('general.general.show_more'), calendar_path, :class => 'btn btn-mini' %>
 
-            <%= link_to t('general.general.new_appointment'), new_service_call_path, :class => 'btn btn-primary', id: 'new-appointment-button' %>
+            <%= link_to t('general.general.new_appointment'), new_service_call_path, :class => 'btn btn-mini btn-primary', id: 'new-appointment-button' %>
 
           </li>
         </ul>
       </div>
-      <br>
 
       <div id="calendar"></div>
       <br>
