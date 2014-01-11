@@ -1,5 +1,49 @@
 require 'spec_helper'
 
+shared_context 'when canceling the job' do
+  before do
+    job_to_cancel.update_attributes(status_event: 'cancel') unless example.metadata[:skip_cancel]
+  end
+
+  it 'should allow to cancel the job', skip_cancel: true do
+    expect(job_to_cancel.status_events).to include(:cancel)
+  end
+end
+
+shared_examples 'provider job is canceled' do
+  it 'job status should be canceled' do
+    expect(job.reload).to be_canceled
+  end
+end
+
+shared_examples 'subcon job is canceled' do
+
+  it 'subcon job status should be canceled' do
+    expect(subcon_job.reload).to be_canceled
+  end
+end
+
+shared_context 'when the subcon cancels the job' do
+  include_context 'when canceling the job' do
+    let(:job_to_cancel) { subcon_job }
+  end
+end
+
+shared_context 'when the provider cancels the job' do
+  include_context 'when canceling the job' do
+    let(:job_to_cancel) { job }
+  end
+end
+
+shared_examples 'provider job canceled after completion' do
+  pending 'verify reimbursement'
+end
+
+shared_examples 'subcon job canceled after completion' do
+  pending 'verify reimbursement'
+end
+
+
 describe 'My Service Call Integration Spec' do
 
   context 'when I do the work' do
@@ -39,6 +83,12 @@ describe 'My Service Call Integration Spec' do
       it ' there should be no available payment events' do
         expect(job.billing_status_events).to be_empty
       end
+
+      context 'when prov cancels' do
+        include_context 'when the provider cancels the job'
+        it_should_behave_like 'provider job is canceled'
+      end
+
 
       context 'when I start the job' do
 
@@ -272,7 +322,15 @@ describe 'My Service Call Integration Spec' do
 
               end
 
+              context 'when prov cancels' do
+                include_context 'when the provider cancels the job'
+                it_should_behave_like 'provider job is canceled'
+                it_should_behave_like 'provider job canceled after completion'
+              end
+
+
             end
+
 
           end
 
@@ -545,6 +603,7 @@ describe 'My Service Call Integration Spec' do
 
         end
 
+
       end
 
     end
@@ -622,6 +681,18 @@ describe 'My Service Call Integration Spec' do
       expect(subcon_job.billing_status_events).to be_empty
     end
 
+    context 'when prov cancels' do
+      include_context 'when the provider cancels the job'
+      it_should_behave_like 'provider job is canceled'
+      it_should_behave_like 'subcon job is canceled'
+    end
+
+    context 'when the subcon cancels' do
+      include_context 'when the subcon cancels the job'
+      it_should_behave_like 'provider job is canceled'
+      it_should_behave_like 'subcon job is canceled'
+    end
+
     context 'when subcon accepts the job' do
 
       before do
@@ -660,7 +731,7 @@ describe 'My Service Call Integration Spec' do
         subcon_job.status_events.should =~ [:cancel, :transfer]
       end
 
-      it 'job avilable work events are start, but start is not permitted for a user' do
+      it 'job available work events are start, but start is not permitted for a user' do
         expect(job.reload.work_status_events).to eq [:start]
         expect(event_permitted_for_job?('work_status', 'start', org_admin, job)).to be_false
       end
@@ -801,6 +872,10 @@ describe 'My Service Call Integration Spec' do
       end
 
 
+    end
+
+    context 'when subcon rejects the job' do
+      pending
     end
 
 
