@@ -284,10 +284,10 @@ class Ticket < ActiveRecord::Base
 
   # this validator runs only for a specific state of a service call
   def validate_technician
-    if organization.multi_user? && !transferred?
+    if organization.multi_user? && !transferred? && !canceled?
       self.errors.add :technician, "You must specify a technician" unless self.technician
     else
-      self.technician = organization.users.first unless transferred?
+      self.technician = organization.users.first unless (transferred? || canceled?)
     end
 
   end
