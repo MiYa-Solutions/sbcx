@@ -865,19 +865,123 @@ describe 'My Service Call Integration Spec' do
 
           context 'when subcon invoices' do
 
+            before do
+              subcon_job.update_attributes(billing_status_event: 'invoice')
+            end
+
+            it 'the job status should be transferred' do
+              expect(job.reload).to be_transferred
+            end
+
+            it 'the subcon job status should be accepted' do
+              expect(subcon_job).to be_accepted
+            end
+
+            it 'job work status should be completed' do
+              expect(job.reload).to be_work_done
+            end
+
+            it 'subcon job work status should be completed' do
+              expect(subcon_job).to be_work_done
+            end
+
+            it 'job payment status should be pending' do
+              expect(job.reload).to be_payment_invoiced_by_subcon
+            end
+
+            it 'subcon job payment status should be invoiced' do
+              expect(subcon_job).to be_payment_invoiced
+            end
+
+            it 'job available status events should be cancel' do
+              job.reload.status_events.should =~ [:cancel]
+            end
+
+            it 'subcon job available status events should be cancel' do
+              subcon_job.status_events.should =~ [:cancel]
+            end
+
+            it 'there are no available work status events for job' do
+              expect(job.reload.work_status_events).to be_empty
+            end
+
+            it 'there are no available work status events for subcon job' do
+              expect(subcon_job.work_status_events).to be_empty
+            end
+
+            it 'job available payment events are collect and collected by subcon, but collected by subcon is not permitted for a user' do
+              expect(job.reload.billing_status_events).to eq [:overdue, :collect, :subcon_collected]
+              expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
+              expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_false
+            end
+
+            it 'subcon job should have collect and provider collected as the available payment events, but provider collected is not permitted' do
+              expect(subcon_job.billing_status_events).to eq [:provider_collected, :collect]
+              expect(event_permitted_for_job?('billing_status', 'collect', subcon_admin, subcon_job)).to be_true
+              expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
+            end
+
+            context 'when prov cancels' do
+              include_context 'when the provider cancels the job'
+              it_should_behave_like 'provider job is canceled'
+              it_should_behave_like 'subcon job is canceled'
+            end
+
+            context 'when the subcon cancels' do
+              include_context 'when the subcon cancels the job'
+              it_should_behave_like 'provider job is canceled'
+              it_should_behave_like 'subcon job is canceled'
+            end
+
+
           end
 
+          context 'when prov cancels' do
+            include_context 'when the provider cancels the job'
+            it_should_behave_like 'provider job is canceled'
+            it_should_behave_like 'subcon job is canceled'
+          end
+
+          context 'when the subcon cancels' do
+            include_context 'when the subcon cancels the job'
+            it_should_behave_like 'provider job is canceled'
+            it_should_behave_like 'subcon job is canceled'
+          end
+
+
+        end
+
+        context 'when prov cancels' do
+          include_context 'when the provider cancels the job'
+          it_should_behave_like 'provider job is canceled'
+          it_should_behave_like 'subcon job is canceled'
+        end
+
+        context 'when the subcon cancels' do
+          include_context 'when the subcon cancels the job'
+          it_should_behave_like 'provider job is canceled'
+          it_should_behave_like 'subcon job is canceled'
         end
 
       end
 
+      context 'when prov cancels' do
+        include_context 'when the provider cancels the job'
+        it_should_behave_like 'provider job is canceled'
+        it_should_behave_like 'subcon job is canceled'
+      end
+
+      context 'when the subcon cancels' do
+        include_context 'when the subcon cancels the job'
+        it_should_behave_like 'provider job is canceled'
+        it_should_behave_like 'subcon job is canceled'
+      end
 
     end
 
     context 'when subcon rejects the job' do
       pending
     end
-
 
   end
 
