@@ -19,7 +19,7 @@ FactoryGirl.define do
   factory :agreement_for_subcon, class: SubcontractingAgreement do
     association :organization, factory: :member_org, strategy: :build
     association :counterparty, factory: :member_org, strategy: :build
-    sequence(:name) { |n| "Subcontracting Agreement #{n}" }
+    sequence(:name) { |n| "Subcon Agreement #{n}" }
     description Faker::Lorem.paragraph(1)
     starts_at Time.zone.now
     ends_at 1.year.from_now

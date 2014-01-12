@@ -32,7 +32,7 @@ shared_context 'basic job testing' do
 end
 
 shared_context 'transferred job' do
-  include_context 'basic job testing'
+  include_context 'basic job testing' unless example.metadata[:skip_basic_job]
   let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
   let(:subcon) { subcon_agr.counterparty }
   let(:subcon_admin) do
@@ -46,7 +46,7 @@ shared_context 'transferred job' do
 end
 
 shared_context 'job transferred to local subcon' do
-  include_context 'basic job testing'
+  include_context 'basic job testing' unless example.metadata[:skip_basic_job]
   let(:subcon) { FactoryGirl.build(:local_org) }
   let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization, counterparty: subcon) }
 
@@ -56,7 +56,7 @@ shared_context 'job transferred from a local provider' do
 
   include_context 'basic job testing'
   let(:provider) { FactoryGirl.build(:local_org) }
-  let(:job) { FactoryGirl.build(:job_transferred_from_local, organization: org) }
+  let(:job) { FactoryGirl.build(:transferred_job, organization: org, provider: provider.becomes(Provider)) }
 
 end
 

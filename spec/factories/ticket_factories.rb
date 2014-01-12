@@ -20,10 +20,11 @@ FactoryGirl.define do
       end
     end
 
-    factory :job_transferred_from_local, class: TransferredServiceCall do
+    factory :transferred_job, class: TransferredServiceCall do
+      association :provider, factory: :member_org, strategy: :build
       after(:build) do |job|
         prov = FactoryGirl.build(:local_provider)
-        job.organization.save!
+        job.organization.users.first.save!
         prov.save!
         job.provider_agreement = FactoryGirl.build(:agreement_for_subcon, organization: prov.becomes(Organization), counterparty: job.organization)
         job.provider           = prov
