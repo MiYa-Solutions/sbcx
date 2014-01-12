@@ -1218,8 +1218,9 @@ describe 'My Service Call Integration Spec' do
             expect(job.subcontractor_status_name).to eq :pending
           end
 
-          it 'should have no job available subcon events' do
+          it 'job subcon events should be: settle' do
             expect(job.subcontractor_status_events).to eq [:settle]
+            expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
           end
 
           context 'when canceled' do
