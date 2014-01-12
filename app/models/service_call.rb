@@ -162,6 +162,13 @@ class ServiceCall < Ticket
       Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
+    after_transition any => :settled do |service_call, transition|
+      if service_call.subcon_payment == 'cash'
+        service_call.subcontractor_status = SUBCON_STATUS_CLEARED
+        service_call.save
+      end
+    end
+
     event :subcon_confirmed do
       transition :claim_settled => :settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? }
     end
