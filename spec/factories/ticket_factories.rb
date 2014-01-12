@@ -22,6 +22,7 @@ FactoryGirl.define do
 
     factory :transferred_job, class: TransferredServiceCall do
       association :provider, factory: :member_org, strategy: :build
+      allow_collection true
       after(:build) do |job|
         prov = FactoryGirl.build(:local_provider)
         job.organization.users.first.save!

@@ -53,10 +53,16 @@ shared_context 'job transferred to local subcon' do
 end
 
 shared_context 'job transferred from a local provider' do
+  let(:collect?) { defined?(collection_allowed?) && collection_allowed? ? true : false }
+  let(:can_transfer?) { defined?(transfer_allowed?) && transfer_allowed? ? true : false }
 
   include_context 'basic job testing'
   let(:provider) { FactoryGirl.build(:local_org) }
-  let(:job) { FactoryGirl.build(:transferred_job, organization: org, provider: provider.becomes(Provider)) }
+  let(:job) { FactoryGirl.build(:transferred_job,
+                                organization:     org,
+                                provider:         provider.becomes(Provider),
+                                allow_collection: collect?,
+                                transferable:     can_transfer?) }
 
 end
 
