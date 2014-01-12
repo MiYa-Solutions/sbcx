@@ -52,6 +52,14 @@ shared_context 'job transferred to local subcon' do
 
 end
 
+shared_context 'job transferred from a local provider' do
+
+  include_context 'basic job testing'
+  let(:provider) { FactoryGirl.build(:local_org) }
+  let(:job) { FactoryGirl.build(:job_transferred_from_local, organization: org) }
+
+end
+
 def transfer_the_job
   subcon_agr.save!
   job.save!
@@ -60,3 +68,47 @@ def transfer_the_job
                         subcon_agreement: subcon_agr,
                         status_event:     'transfer')
 end
+
+shared_context 'when canceling the job' do
+  before do
+    job_to_cancel.update_attributes(status_event: 'cancel') unless example.metadata[:skip_cancel]
+  end
+
+  it 'should allow to cancel the job', skip_cancel: true do
+    expect(job_to_cancel.status_events).to include(:cancel)
+  end
+end
+
+shared_examples 'provider job is canceled' do
+  it 'job status should be canceled' do
+    expect(job.reload).to be_canceled
+  end
+end
+
+shared_examples 'subcon job is canceled' do
+
+  it 'subcon job status should be canceled' do
+    expect(subcon_job.reload).to be_canceled
+  end
+end
+
+shared_context 'when the subcon cancels the job' do
+  include_context 'when canceling the job' do
+    let(:job_to_cancel) { subcon_job }
+  end
+end
+
+shared_context 'when the provider cancels the job' do
+  include_context 'when canceling the job' do
+    let(:job_to_cancel) { job }
+  end
+end
+
+shared_examples 'provider job canceled after completion' do
+  pending 'verify reimbursement'
+end
+
+shared_examples 'subcon job canceled after completion' do
+  pending 'verify reimbursement'
+end
+
