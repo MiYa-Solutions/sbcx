@@ -885,7 +885,7 @@ describe 'My Service Call Integration Spec' do
               expect(subcon_job).to be_work_done
             end
 
-            it 'job payment status should be pending' do
+            it 'job payment status should be invoiced by subcon' do
               expect(job.reload).to be_payment_invoiced_by_subcon
             end
 
@@ -1137,6 +1137,60 @@ describe 'My Service Call Integration Spec' do
           context 'when canceled' do
             include_context 'when the provider cancels the job'
             it_should_behave_like 'provider job is canceled'
+            it_should_behave_like 'provider job canceled after completion'
+          end
+
+          context 'when subcon invoices' do
+            before do
+              job.update_attributes(billing_status_event: 'subcon_invoiced')
+            end
+
+            it 'the job status should be transferred' do
+              expect(job).to be_transferred
+            end
+
+            it 'job work status should be completed' do
+              expect(job).to be_work_done
+            end
+
+            it 'job payment status should be invoiced by subcon' do
+              expect(job).to be_payment_invoiced_by_subcon
+            end
+
+            it 'there are no available work status events for job' do
+              expect(job.work_status_events).to be_empty
+            end
+
+            it 'job available payment events are overdue, collect and collected by subcon' do
+              expect(job.billing_status_events).to eq [:overdue, :collect, :subcon_collected]
+              expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
+              expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
+              expect(event_permitted_for_job?('billing_status', 'overdue', org_admin, job)).to be_true
+            end
+
+            context 'when canceled' do
+              include_context 'when the provider cancels the job'
+              it_should_behave_like 'provider job is canceled'
+              it_should_behave_like 'provider job canceled after completion'
+            end
+
+            context 'when prov collects' do
+              pending
+            end
+
+            context 'when subcon collects' do
+              pending
+            end
+
+            context 'when payment is overdue' do
+              pending
+            end
+
+
+          end
+
+          context 'when the prov invoices' do
+            pending
           end
 
 
