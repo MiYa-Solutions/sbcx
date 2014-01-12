@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Transferred Service Call Integration Spec' do
 
-  context 'when transferred from a local provider' do
+  context 'when transferred from a local provider and doing the job' do
     include_context 'job transferred from a local provider'
 
     it 'should be instance of TransferredServiceCall' do
@@ -59,11 +59,11 @@ describe 'Transferred Service Call Integration Spec' do
         job.update_attributes(status_event: 'accept')
       end
 
-      it 'status should be new' do
+      it 'status should be accepted' do
         expect(job.status_name).to eq :accepted
       end
 
-      it 'the available status events should be: cancel, accept and reject' do
+      it 'the available status events should be: cancel and transfer' do
         expect(job.status_events).to eq [:transfer, :cancel]
         expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
         expect(event_permitted_for_job?('status', 'transfer', org_admin, job)).to be_true
@@ -96,6 +96,66 @@ describe 'Transferred Service Call Integration Spec' do
       it 'start should be available as the only work status event' do
         expect(job.work_status_events).to eq [:start]
         expect(event_permitted_for_job?('work_status', 'start', org_admin, job)).to be_true
+      end
+
+      context 'when canceled' do
+        include_context 'when canceling the job' do
+          let(:job_to_cancel) { job }
+        end
+        it_behaves_like 'provider job is canceled'
+      end
+
+      context 'when started the work' do
+
+        before do
+          job.update_attributes(work_status_event: 'start')
+        end
+
+        it 'status should be accepted' do
+          expect(job.status_name).to eq :accepted
+        end
+
+        it 'the available status events should be: cancel and transfer' do
+          expect(job.status_events).to eq [:cancel]
+          expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
+        end
+
+        it 'provider status should be pending' do
+          expect(job.provider_status_name).to eq :pending
+        end
+
+        it 'there should be no available provider events' do
+          expect(job.provider_status_events).to eq []
+        end
+
+        it 'subcon status should be na' do
+          expect(job.subcontractor_status_name).to eq :na
+        end
+
+        it 'payment status should be pending' do
+          expect(job.billing_status_name).to eq :pending
+        end
+
+        it 'there should be no available payment status events' do
+          expect(job.billing_status_events).to eq []
+        end
+
+        it 'work status should be in progress' do
+          expect(job.work_status_name).to eq :in_progress
+        end
+
+        it 'complete should be available as the only work status event' do
+          expect(job.work_status_events).to eq [:complete]
+          expect(event_permitted_for_job?('work_status', 'complete', org_admin, job)).to be_true
+        end
+
+        context 'when canceled' do
+          include_context 'when canceling the job' do
+            let(:job_to_cancel) { job }
+          end
+          it_behaves_like 'provider job is canceled'
+        end
+
       end
 
     end
