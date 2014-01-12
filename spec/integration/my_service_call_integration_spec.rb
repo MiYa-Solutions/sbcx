@@ -986,7 +986,45 @@ describe 'My Service Call Integration Spec' do
   end
 
   context 'when I transfer to a local affiliate' do
-    pending
+    include_context 'job transferred to local subcon'
+    before do
+      transfer_the_job
+    end
+
+    it 'the job status should be transferred' do
+      expect(job).to be_transferred
+    end
+
+    it 'a job for the subcon should not be created' do
+      expect(TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id)).to be_nil
+    end
+
+    it 'job work status should be pending' do
+      expect(job).to be_work_pending
+    end
+
+    it 'job payment status should be pending' do
+      expect(job).to be_payment_pending
+    end
+
+    it 'job available status events should be cancel' do
+      job.status_events.should =~ [:cancel, :cancel_transfer]
+    end
+
+    it 'job should have accept and reject as available work events' do
+      expect(job.work_status_events).to eq [:accept, :reject]
+    end
+
+    it 'accept and reject are permitted events for job when submitted by a user' do
+      expect(event_permitted_for_job?('work_status', 'accept', org_admin, job)).to be_true
+      expect(event_permitted_for_job?('work_status', 'reject', org_admin, job)).to be_true
+    end
+
+    it 'there should be no available payment events for the job' do
+      expect(job.billing_status_events).to be_empty
+    end
+
+
   end
 
 end

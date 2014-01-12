@@ -42,13 +42,21 @@ shared_context 'transferred job' do
   end
   let(:subcon_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
 
-  def transfer_the_job
-    subcon_agr.save!
-    job.save!
-    job.update_attributes(subcontractor:    subcon.becomes(Subcontractor),
-                          properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => 'true' },
-                          subcon_agreement: subcon_agr,
-                          status_event:     'transfer')
-  end
 
+end
+
+shared_context 'job transferred to local subcon' do
+  include_context 'basic job testing'
+  let(:subcon) { FactoryGirl.build(:local_org) }
+  let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization, counterparty: subcon) }
+
+end
+
+def transfer_the_job
+  subcon_agr.save!
+  job.save!
+  job.update_attributes(subcontractor:    subcon.becomes(Subcontractor),
+                        properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => 'true' },
+                        subcon_agreement: subcon_agr,
+                        status_event:     'transfer')
 end
