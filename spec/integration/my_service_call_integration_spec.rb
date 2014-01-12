@@ -1391,12 +1391,47 @@ describe 'My Service Call Integration Spec' do
                     expect(job.billing_status_events).to be_empty
                   end
 
-                  it 'subcon status should be settled' do
+                  it 'subcon status should be cleared' do
                     expect(job.subcontractor_status_name).to eq :cleared
                   end
 
                   it 'there are no available subcon events' do
                     expect(job.subcontractor_status_events).to eq []
+                  end
+
+                end
+                context 'when none cash settled with the subcon' do
+                  before do
+                    job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'credit_card')
+                  end
+
+                  it 'the job status should be transferred' do
+                    expect(job).to be_transferred
+                  end
+
+                  it 'job work status should be completed' do
+                    expect(job).to be_work_done
+                  end
+
+                  it 'job payment status should be cleared' do
+                    expect(job.billing_status_name).to eq :cleared
+                  end
+
+                  it 'there are no available work status events for job' do
+                    expect(job.work_status_events).to eq []
+                  end
+
+                  it 'job available payment events are deposited' do
+                    expect(job.billing_status_events).to eq []
+                  end
+
+                  it 'subcon status should be settled' do
+                    expect(job.subcontractor_status_name).to eq :settled
+                  end
+
+                  it 'available subcon events are clear' do
+                    expect(job.subcontractor_status_events).to eq [:clear]
+                    expect(event_permitted_for_job?('subcontractor_status', 'clear', org_admin, job)).to be_true
                   end
 
                 end
