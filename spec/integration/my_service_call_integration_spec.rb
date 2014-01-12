@@ -84,11 +84,14 @@ describe 'My Service Call Integration Spec' do
         expect(job.billing_status_events).to be_empty
       end
 
-      context 'when prov cancels' do
+      it 'subcontractor status should be na' do
+        expect(job.subcontractor_status_name).to eq :na
+      end
+
+      context 'when canceled' do
         include_context 'when the provider cancels the job'
         it_should_behave_like 'provider job is canceled'
       end
-
 
       context 'when I start the job' do
 
@@ -681,6 +684,23 @@ describe 'My Service Call Integration Spec' do
       expect(subcon_job.billing_status_events).to be_empty
     end
 
+    it 'job subcon status should be pending' do
+      expect(job.subcontractor_status_name).to eq :pending
+    end
+
+    it 'the job should have no available subcon events' do
+      expect(job.subcontractor_status_events).to eq []
+    end
+
+    it 'subcon_job prov status should be pending' do
+      expect(subcon_job.provider_status_name).to eq :pending
+    end
+
+    it 'subcon_job should have no available provider events' do
+      expect(subcon_job.provider_status_events).to eq []
+    end
+
+
     context 'when prov cancels' do
       include_context 'when the provider cancels the job'
       it_should_behave_like 'provider job is canceled'
@@ -749,6 +769,23 @@ describe 'My Service Call Integration Spec' do
         expect(subcon_job.billing_status_events).to be_empty
       end
 
+      it 'job subcon status should be pending' do
+        expect(job.subcontractor_status_name).to eq :pending
+      end
+
+      it 'the job should have no available subcon events' do
+        expect(job.subcontractor_status_events).to eq []
+      end
+
+      it 'subcon_job prov status should be pending' do
+        expect(subcon_job.provider_status_name).to eq :pending
+      end
+
+      it 'subcon_job should have no available provider events' do
+        expect(subcon_job.provider_status_events).to eq []
+      end
+
+
       context 'when the subcon start the job' do
 
         before do
@@ -804,6 +841,23 @@ describe 'My Service Call Integration Spec' do
         it 'there should be no available payment events for the subcon job' do
           expect(subcon_job.billing_status_events).to be_empty
         end
+
+        it 'job subcon status should be pending' do
+          expect(job.subcontractor_status_name).to eq :pending
+        end
+
+        it 'the job should have no available subcon events' do
+          expect(job.subcontractor_status_events).to eq []
+        end
+
+        it 'subcon_job prov status should be pending' do
+          expect(subcon_job.provider_status_name).to eq :pending
+        end
+
+        it 'subcon_job should have no available provider events' do
+          expect(subcon_job.provider_status_events).to eq []
+        end
+
 
         context 'when subcon completes the job' do
           before do
@@ -862,6 +916,27 @@ describe 'My Service Call Integration Spec' do
             expect(event_permitted_for_job?('billing_status', 'invoice', subcon_admin, subcon_job)).to be_true
             expect(event_permitted_for_job?('billing_status', 'provider_invoiced', subcon_admin, subcon_job)).to be_false
           end
+
+          it 'job subcon status should be pending' do
+            expect(job.reload.subcontractor_status_name).to eq :pending
+          end
+
+          it 'there should be no available events for the subcontractor status ' do
+            expect(job.reload.subcontractor_status_events).to eq []
+            #expect(job.reload.subcontractor_status_events).to eq [:settle, :subcon_marked_as_settled]
+            #expect(event_permitted_for_job?('subcontractor_status', 'settle', subcon_admin, subcon_job)).to be_true
+            #expect(event_permitted_for_job?('subcontractor_status', 'subcon_marked_as_settled', subcon_admin, subcon_job)).to be_false
+            #
+          end
+
+          it 'subcon_job prov status should be pending' do
+            expect(subcon_job.provider_status_name).to eq :pending
+          end
+
+          it 'subcon_job should have no available provider events' do
+            expect(subcon_job.provider_status_events).to eq []
+          end
+
 
           context 'when subcon invoices' do
 
@@ -1024,6 +1099,15 @@ describe 'My Service Call Integration Spec' do
       expect(job.billing_status_events).to be_empty
     end
 
+    it 'subcon status should be pending' do
+      expect(job.subcontractor_status_name).to eq :pending
+    end
+
+    it 'should have no job available subcon events' do
+      expect(job.subcontractor_status_events).to eq []
+    end
+
+
     context 'when canceled' do
       include_context 'when the provider cancels the job'
       it_should_behave_like 'provider job is canceled'
@@ -1060,6 +1144,15 @@ describe 'My Service Call Integration Spec' do
         expect(job.billing_status_events).to be_empty
       end
 
+      it 'subcon status should be pending' do
+        expect(job.subcontractor_status_name).to eq :pending
+      end
+
+      it 'should have no job available subcon events' do
+        expect(job.subcontractor_status_events).to eq []
+      end
+
+
       context 'when canceled' do
         include_context 'when the provider cancels the job'
         it_should_behave_like 'provider job is canceled'
@@ -1095,6 +1188,15 @@ describe 'My Service Call Integration Spec' do
         it 'there should be no available payment events for the job' do
           expect(job.billing_status_events).to be_empty
         end
+
+        it 'subcon status should be pending' do
+          expect(job.subcontractor_status_name).to eq :pending
+        end
+
+        it 'should have no job available subcon events' do
+          expect(job.subcontractor_status_events).to eq []
+        end
+
 
         context 'when canceled' do
           include_context 'when the provider cancels the job'
@@ -1134,6 +1236,14 @@ describe 'My Service Call Integration Spec' do
             expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_true
           end
 
+          it 'subcon status should be pending' do
+            expect(job.subcontractor_status_name).to eq :pending
+          end
+
+          it 'should have no job available subcon events' do
+            expect(job.subcontractor_status_events).to eq [:settle]
+          end
+
           context 'when canceled' do
             include_context 'when the provider cancels the job'
             it_should_behave_like 'provider job is canceled'
@@ -1168,14 +1278,96 @@ describe 'My Service Call Integration Spec' do
               expect(event_permitted_for_job?('billing_status', 'overdue', org_admin, job)).to be_true
             end
 
+            it 'subcon status should be pending' do
+              expect(job.subcontractor_status_name).to eq :pending
+            end
+
+            it 'should have no job available subcon events' do
+              expect(job.subcontractor_status_events).to eq [:settle]
+            end
+
+
             context 'when canceled' do
               include_context 'when the provider cancels the job'
               it_should_behave_like 'provider job is canceled'
               it_should_behave_like 'provider job canceled after completion'
             end
 
-            context 'when prov collects' do
-              pending
+            context 'when prov collects cash' do
+
+              describe 'for a multi user organization' do
+                before do
+                  job.update_attributes(billing_status_event: 'collect', payment_type: 'cash', collector: job.organization)
+                end
+
+                it 'the job status should be transferred' do
+                  expect(job).to be_transferred
+                end
+
+                it 'job work status should be completed' do
+                  expect(job).to be_work_done
+                end
+
+                it 'job payment status should be paid' do
+                  expect(job.billing_status_name).to eq :collected_by_employee
+                end
+
+                it 'there are no available work status events for job' do
+                  expect(job.work_status_events).to be_empty
+                end
+
+                it 'job available payment events are deposited' do
+                  expect(job.billing_status_events).to eq [:deposited]
+                end
+
+                it 'subcon status should be pending' do
+                  expect(job.subcontractor_status_name).to eq :pending
+                end
+
+                it 'job available subcon events are settle' do
+                  expect(job.subcontractor_status_events).to eq [:settle]
+                  expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                end
+
+              end
+              describe 'for a single user organization' do
+                before do
+                  job.organization.users.map { |user| user.destroy unless user == org_admin }
+                  job.organization.reload
+                  job.update_attributes(billing_status_event: 'paid', payment_type: 'cash')
+                end
+
+                it 'the job status should be transferred' do
+                  expect(job).to be_transferred
+                end
+
+                it 'job work status should be completed' do
+                  expect(job).to be_work_done
+                end
+
+                it 'job payment status should be cleared' do
+                  expect(job.billing_status_name).to eq :cleared
+                end
+
+                it 'there are no available work status events for job' do
+                  expect(job.work_status_events).to be_empty
+                end
+
+                it 'job available payment events are deposited' do
+                  expect(job.billing_status_events).to be_empty
+                end
+
+                it 'subcon status should be pending' do
+                  expect(job.subcontractor_status_name).to eq :pending
+                end
+
+                it 'job available subcon events are settle' do
+                  expect(job.subcontractor_status_events).to eq [:settle]
+                  expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                end
+
+              end
+
             end
 
             context 'when subcon collects' do
