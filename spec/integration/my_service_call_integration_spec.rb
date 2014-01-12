@@ -823,7 +823,7 @@ describe 'My Service Call Integration Spec' do
             expect(job.reload).to be_work_done
           end
 
-          it 'subcon job work status should be in progress' do
+          it 'subcon job work status should be done' do
             expect(subcon_job).to be_work_done
           end
 
@@ -1099,6 +1099,47 @@ describe 'My Service Call Integration Spec' do
         context 'when canceled' do
           include_context 'when the provider cancels the job'
           it_should_behave_like 'provider job is canceled'
+        end
+
+        context 'when the job is completed' do
+
+          before do
+            add_bom_to_job job
+            job.update_attributes(work_status_event: 'complete')
+          end
+
+          it 'the job status should be transferred' do
+            expect(job).to be_transferred
+          end
+
+          it 'job work status should be done' do
+            expect(job).to be_work_done
+          end
+
+          it 'job payment status should be pending' do
+            expect(job).to be_payment_pending
+          end
+
+          it 'job available status events should be cancel abd cancel_transfer' do
+            job.status_events.should =~ [:cancel]
+          end
+
+          it 'there are no available work status events for job' do
+            expect(job.work_status_events).to be_empty
+          end
+
+          it 'job available payment events are invoice and invoiced by subcon' do
+            expect(job.reload.billing_status_events).to eq [:invoice, :subcon_invoiced]
+            expect(event_permitted_for_job?('billing_status', 'invoice', org_admin, job)).to be_true
+            expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_true
+          end
+
+          context 'when canceled' do
+            include_context 'when the provider cancels the job'
+            it_should_behave_like 'provider job is canceled'
+          end
+
+
         end
 
 
