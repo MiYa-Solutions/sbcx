@@ -1024,6 +1024,44 @@ describe 'My Service Call Integration Spec' do
       expect(job.billing_status_events).to be_empty
     end
 
+    context 'when canceled' do
+      include_context 'when the provider cancels the job'
+      it_should_behave_like 'provider job is canceled'
+    end
+
+    context 'when accepting on behalf of the subcon' do
+
+      before do
+        job.update_attributes(work_status_event: 'accept')
+      end
+
+      it 'the job status should be transferred' do
+        expect(job).to be_transferred
+      end
+
+      it 'job work status should be accepted' do
+        expect(job).to be_work_accepted
+      end
+
+      it 'job payment status should be pending' do
+        expect(job).to be_payment_pending
+      end
+
+      it 'job available status events should be cancel abd cancel_transfer' do
+        job.status_events.should =~ [:cancel, :cancel_transfer]
+      end
+
+      it 'job available work events are start' do
+        expect(job.reload.work_status_events).to eq [:start]
+        expect(event_permitted_for_job?('work_status', 'start', org_admin, job)).to be_true
+      end
+
+      it 'there should be no available payment events for the job' do
+        expect(job.billing_status_events).to be_empty
+      end
+
+    end
+
 
   end
 
