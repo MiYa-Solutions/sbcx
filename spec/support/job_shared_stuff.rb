@@ -5,12 +5,13 @@ shared_context 'basic job testing' do
   let(:job) { FactoryGirl.build(:my_job, organization: org) }
   let(:org_admin) { org.users.admins.first }
 
-  def add_bom_to_job(ticket, cost = nil, price = nil, quantity = nil, buyer = nil, material = nil)
-    cost     ||= 10
-    price    ||= 100
-    quantity ||= 1
-    buyer    ||= ticket.organization
-    material ||= FactoryGirl.build(:mem_material, organization: ticket.organization)
+  def add_bom_to_job(ticket, options = {})
+
+    cost     = options[:cost] || 10
+    price    = options[:price] || 100
+    quantity = options[:quantity] || 100
+    buyer    = options[:buyer] || ticket.organization
+    material = options[:material] || FactoryGirl.build(:mem_material, organization: ticket.organization)
 
     ticket.boms << FactoryGirl.build(:ticket_bom,
                                      ticket:   ticket,
