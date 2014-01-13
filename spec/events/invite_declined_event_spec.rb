@@ -25,7 +25,7 @@ describe InviteDeclinedEvent do
     notification = mock_model(InviteDeclinedNotification, save: true, :[]= => true, deliver: true, :[] => true, notifiable: invite)
     InviteDeclinedNotification.stub(:new => notification)
 
-    InviteDeclinedNotification.should_receive(:new).with(user: org_user).and_return(notification)
+    InviteDeclinedNotification.should_receive(:new).with(user: org_user, event: event).and_return(notification)
     notification.should_receive(:deliver)
 
     event.save

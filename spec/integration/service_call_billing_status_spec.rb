@@ -84,7 +84,7 @@ describe 'Job Billing' do
         job.properties = (job.properties || {}).merge('subcon_fee' => '100', 'bom_reimbursement' => 'false')
         transfer_the_job
       end
-      with_user(subcon_user) do
+      with_user(subcon_admin) do
         subcon_job.accept!
         subcon_job.start_work!
         add_bom_to_job subcon_job
@@ -105,7 +105,7 @@ describe 'Job Billing' do
 
     context 'when invoiced by subcon' do
       before do
-        with_user(subcon_user) do
+        with_user(subcon_admin) do
           subcon_job.update_attributes(billing_status_event: 'invoice')
         end
       end
@@ -117,7 +117,7 @@ describe 'Job Billing' do
 
       context 'when cheque collected' do
         before do
-          with_user(subcon_user) do
+          with_user(subcon_admin) do
             subcon_job.update_attributes(payment_type:         'cheque',
                                          billing_status_event: 'collect')
 
@@ -131,7 +131,7 @@ describe 'Job Billing' do
 
         context 'when deposited to prov' do
           before do
-            with_user(subcon_user) do
+            with_user(subcon_admin) do
               subcon_job.update_attributes(billing_status_event: 'deposit_to_prov')
             end
           end

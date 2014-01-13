@@ -1,6 +1,6 @@
 shared_context 'acceptance tests with a single member' do
 
-  let(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  let(:org_admin_user) { FactoryGirl.create(:user) }
   let(:org) { org_admin_user.organization }
   let(:customer) { FactoryGirl.create(:customer, organization: org) }
 

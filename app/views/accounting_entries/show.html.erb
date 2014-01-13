@@ -5,7 +5,7 @@
 
     <div class="smart_label">
       <ul>
-        <li><h1><%= t('general.general.account_adjusted_status') %></h1></li>
+        <li><h1><%= @accounting_entry.class.model_name.human %>:</h1></li>
         <li><h1><span id="accounting_entry_status"><%= @accounting_entry.status_name %></span></h1></li>
         <li></li>
       </ul>
@@ -21,6 +21,15 @@
       <table class="table table-striped table-condensed">
         <tr>
           <td>
+            <strong><%= @accounting_entry.class.human_attribute_name(:id) %></strong>
+          </td>
+          <td id="accounting_entry_id">
+            <%= @accounting_entry.try(:id) %>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
             <strong><%= t('general.general.amount') %></strong>
           </td>
           <% if @accounting_entry.amount < 0 %>
@@ -28,7 +37,7 @@
           <% else %>
               <td class="positive"><%= humanized_money_with_symbol @accounting_entry.amount %></td>
           <% end %>
-         </tr>
+        </tr>
         <tr>
           <td>
             <strong><%= t('general.general.job_name') %></strong>
@@ -55,7 +64,7 @@
         </tr>
       </table>
 
-      <%= adjustment_entry_actions(@accounting_entry, "entry_large_btn")%>
+      <%= adjustment_entry_actions(@accounting_entry, "entry_large_btn") %>
 
 
       <br>

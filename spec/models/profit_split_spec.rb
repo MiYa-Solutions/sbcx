@@ -95,12 +95,7 @@ describe ProfitSplit do
       let(:entries) { rule.get_entries(job.events.first, Account.for_affiliate(org, org2).first) }
 
       it "should not create accounting entries" do
-        entries.should be_empty
-      end
-      describe "ticket owner is the provider" do
-        it "should have a PaymentToSubcontractor entry with the correct amount" do
-          entries.should include
-        end
+        expect { entries }.to raise_error
       end
     end
 

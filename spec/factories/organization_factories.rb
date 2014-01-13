@@ -16,6 +16,14 @@ FactoryGirl.define do
     factory :affiliate, class: Affiliate do
 
     end
+
+    factory :local_provider, class: Provider do
+
+    end
+
+    factory :local_subcon, class: Subcontractor do
+
+    end
   end
 
   factory :user do

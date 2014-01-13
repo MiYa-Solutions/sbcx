@@ -8,7 +8,23 @@ class ScStartNotification < ServiceCallNotification
   end
 
   def default_content
-    I18n.t('notifications.sc_start_notification.content', started_at: service_call.started_on, technician: service_call.technician.name)
+
+    I18n.t('notifications.sc_start_notification.content', started_at: service_call.started_on, technician: technician_name)
+  end
+
+  private
+
+  def technician_name
+    case service_call.my_role
+      when :prov
+        service_call.technician ? service_call.technician.name : service_call.subcontractor.name
+      when :subcon
+        service_call.technician.name
+      when :broker
+        service_call.subcontractor.name
+      else
+    end
+
   end
 
 end

@@ -2,19 +2,21 @@ require 'spec_helper'
 
 describe BomsController do
 
-  let(:job) { FactoryGirl.create(:my_service_call) }
-  let(:user) { User.my_admins(job.organization.id).first }
+  include_context 'transferred job'
 
   before do
-    sign_in(user)
+
+    user.save!
+    job.save!
+    sign_in(org_admin)
   end
 
   describe 'POST #create' do
 
     it 'should not create a bom when the job is transferred' do
-      job.transfer!
+      transfer_the_job
       expect do
-        post_with(user, :create, service_call_id: job.id ,bom: {
+        post_with(org_admin, :create, service_call_id: job.id, bom: {
             material_name: "lock",
             quantity:      "1",
             price:         "100",

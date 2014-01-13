@@ -9,9 +9,26 @@ FactoryGirl.define do
 
     after(:build) do |agr|
       agr.posting_rules << FactoryGirl.build(:flat_fee_rule, agreement: agr)
+      agr.organization.users << FactoryGirl.build(:user, organization: agr.organization)
       agr.creator = agr.organization.users.first
       agr.save!
       agr.organization.subcontractors << agr.counterparty
+      agr.counterparty.providers << agr.organization
+    end
+  end
+  factory :agreement_for_subcon, class: SubcontractingAgreement do
+    association :organization, factory: :member_org, strategy: :build
+    association :counterparty, factory: :member_org, strategy: :build
+    sequence(:name) { |n| "Subcon Agreement #{n}" }
+    description Faker::Lorem.paragraph(1)
+    starts_at Time.zone.now
+    ends_at 1.year.from_now
+
+    after(:build) do |agr|
+      agr.posting_rules << FactoryGirl.build(:flat_fee_rule, agreement: agr)
+      #agr.counterparty.users << FactoryGirl.build(:user, organization: agr.counterparty)
+      agr.creator = agr.counterparty.users.first
+      agr.save!
       agr.counterparty.providers << agr.organization
     end
   end

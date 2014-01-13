@@ -22,7 +22,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
 
   def process_event
     update_subcon_account
-    service_call.subcon_deposited_payment
+    service_call.subcon_deposited_payment if service_call.can_subcon_deposited_payment?
     super
   end
 

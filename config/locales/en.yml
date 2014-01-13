@@ -37,6 +37,9 @@ en:
       subcontractor_created: "Subcontractor creates successfully!"
 
   general:
+    job:
+      errors:
+        can_add_bom: You are not allowed to add boms to this job
     messages:
       provider_icon: "This Affiliate is your Contractor"
       subco_icon: "This Affiliate is your Subcontractor"

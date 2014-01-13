@@ -53,7 +53,7 @@ describe 'Adjustment Entry Acceptance', js: true do
     end
 
     it 'should show the adjustment entry' do
-      expect(page).to have_selector('span#accounting_entry_id')
+      expect(page).to have_selector('td#accounting_entry_id')
     end
 
     it 'should have the accept and reject buttons' do
