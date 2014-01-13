@@ -1,4 +1,4 @@
-<%= simple_form_for job.becomes(ServiceCall), html: { class: style('service_call.forms.status.accept.form_classes') } do |f| %>
+    <%= simple_form_for job.becomes(ServiceCall), html: { class: style('service_call.forms.status.accept.form_classes') } do |f| %>
     <%= hidden_field_tag 'service_call[status_event]', 'accept' %>
     <%= f.submit job.class.human_status_event_name(:accept).titleize,
                  id:    'accept_service_call_btn',

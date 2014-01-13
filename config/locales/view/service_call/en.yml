@@ -41,7 +41,7 @@ en:
         reject:
           tooltip: "Click to reject the job"
         transfer:
-          tooltip: "Click to outsource the job to one of your Contractor the"
+          tooltip: "Click to submit the job to a subcontractor in your network"
         cancel_transfer:
           tooltip: "Click cancel the outsourcing of this job"
         cancel:

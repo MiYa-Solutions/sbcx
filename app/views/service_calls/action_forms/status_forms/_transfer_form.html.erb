@@ -1,5 +1,12 @@
-<%= link_to(job.class.human_status_event_name(:transfer), '#transfer_modal', class: "#{style("service_call.forms.status.transfer.button_classes")}", data: { toggle: 'modal' }, role: "button", id: "transfer_btn") %>
-
+<div class="transfer_btn">
+    <%= link_to(job.class.human_status_event_name(:transfer), '#transfer_modal',
+                class: "#{style("service_call.forms.status.transfer.button_classes")}",
+                data: { toggle: 'modal' },
+                title: I18n.t('service_call.forms.status.transfer.tooltip'),
+                rel:   'tooltip',
+                role: "button",
+                id: "transfer_btn") %>
+</div>
 
 <div id='transfer_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
@@ -45,6 +52,7 @@
         </div>
 
         <div class="modal-footer">
+          <div class="transfer_btn_modal">
           <%= f.submit job.class.human_status_event_name(:transfer).titleize,
                        id:      'service_call_transfer_btn',
                        class:   "btn btn-large btn-primary",
@@ -52,7 +60,7 @@
                        rel:     'tooltip',
                        confirm: "" %>
 
-
+          </div>
           <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         </div>
 

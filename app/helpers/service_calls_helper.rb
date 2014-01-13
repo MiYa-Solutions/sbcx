@@ -8,7 +8,7 @@ module ServiceCallsHelper
 
 
   def event_list(service_call)
-    content_tag_for :ul, service_call, class: 'service_call_events unstyled' do
+    content_tag_for :div, service_call, class: 'service_call_events unstyled' do
       status_forms(service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :status_event)
       work_status_forms(service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)
       billing_status_forms(service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :billing_status_event)
