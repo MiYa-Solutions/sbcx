@@ -151,7 +151,8 @@ describe Ticket do
       mem                           = FactoryGirl.create(:member_org)
       service_call.subcontractor    = mem.becomes(Subcontractor)
       agr                           = FactoryGirl.create(:subcon_agreement, organization: mem,
-                                                         counterparty:                    service_call.organization)
+                                                         counterparty:                    service_call.organization,
+                                                         creator:                         mem.users.first)
       agr.status                    = Agreement::STATUS_ACTIVE
       service_call.subcon_agreement = agr
 

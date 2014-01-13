@@ -43,6 +43,9 @@ en:
     name: "Accepted Subcontracting Agreement"
     description: '%{other_party} has accepted the terms of the subcontracting agreement'
 
+  agr_change_submitted_event:
+    name: Agreement Change
+
   agr_change_rejected_event:
     name: "Rejected Subcontracting Agreement Change"
     description: '%{other_party} has rejected the last change submitted'
