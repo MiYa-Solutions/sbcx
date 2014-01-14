@@ -1,0 +1,82 @@
+<div class="well well_help">
+
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= t('general.general.manage_jobs') %></h1></li>
+      <li></li>
+    </ul>
+  </div>
+
+  <p>
+    Manage jobs and opportunities that you are currently working on, where the customer is yours, or the ones that have been submitted to you by contractors in your network.
+    Using SubConTraX you can also monitor jobs and opportunities that you have outsourced to other subcontractors in your network.
+    <br><br>
+    Click below to learn more about how to:
+  <ul class="bullet_points">
+    <li>Open new jobs and update their progress and billing statuses</li>
+    <li>Submit jobs to subcontractors in your network</li>
+    <li>Receive jobs from contractors in your network, and more...</li>
+  </ul>
+  <%= link_to(I18n.t('general.general.learn_more'), "#helpJobs", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+
+  </p>
+
+  <div id="helpJobs" class="collapse">
+
+    <div class="panel-group help_collapse" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+              Affiliates Homepage
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              The <%= link_to "Affiliates Homepage", affiliates_path %> includes a table of all the contractors and subcontractors in your network (local and SubConTraX Members).
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+              Affiliate Page
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              Clicking on any line in the Affiliates Page table will take you the <strong>Affiliate Page</strong>.
+              <%= image_tag("question16.png", :title =>  "<img src='http://www.subcontrax.com/assets/3Screens_gray2.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              This page includes all the information you need in order to work with your affiliate; Contact info, Work Agreements, Joint Projects and Balance Information.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+              New Affiliate - Local
+            </a>
+          </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              To add a local affiliate (not a SubConTraX member) click on the <%= link_to "New Affiliate", new_affiliate_path %>  button in the Affiliates Page.
+              Once you fill out the form and submit it, you will get to the Affiliate Homepage.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

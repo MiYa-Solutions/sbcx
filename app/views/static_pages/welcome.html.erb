@@ -5,93 +5,13 @@
 <div class="row-fluid row_homepage">
 
     <div class="span6">
-      <div class="well well_help">
-
-        <div class="smart_label">
-          <ul>
-            <li><h1><%= t('general.general.your_network') %></h1></li>
-            <li></li>
-          </ul>
-        </div>
-
-        <p>
-          Your affiliates are contractors and subcontractors that you work with on joint projects.
-          SubConTraX allows you to work with your local affiliates, as well as with other SubConTraX members.
-          <br><br>
-          Click Here to learn more about how to:
-          <ul class="bullet_points">
-            <li>Add your local affiliates to your network</li>
-            <li>Search and invite SubConTraX members to join your network</li>
-            <li>Propose, negotiate, sign and manage work agreements with SubConTraX members, and more...</li>
-          </ul>
-          <%= link_to(I18n.t('general.general.learn_more'), "#helpNetwork", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
-
-        </p>
-
-            <div id="helpNetwork" class="collapse">
-
-                  <div class="panel-group help_collapse" id="accordion">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                          Affiliates Homepage
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse">
-                      <div class="panel-body help_panel_collapse">
-                        <p>
-                          The <%= link_to "Affiliates Homepage", affiliates_path %> includes a table of all the contractors and subcontractors in your network (local and SubConTraX Members).
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                          Affiliate Page
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse">
-                      <div class="panel-body help_panel_collapse">
-                        <p>
-                        Clicking on any line in the Affiliates Page table will take you the Affiliate Page [1].
-                        <img src="<%= image_url('question16.png') %>" style="max-width:600px;" rel="popover" data-html="true"  data-content="<%= image_url('question16.png') %>">
-                        This page includes all the information you need in order to work with your affiliate;
-                        Contact info, Work Agreements, Joint Projects and Balance Information.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                          Collapsible Group Item #3
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="collapseThree" class="panel-collapse collapse">
-                      <div class="panel-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-            </div>
-
-       </div>
+      <!--Your Network-->
+      <%= render :partial => 'help_network' %>
     </div>
 
     <div class="span6">
-      <div class="well well_help">
-
-
-      </div>
+      <!--Manage Jobs-->
+      <%= render :partial => 'help_jobs' %>
     </div>
 
 </div>
