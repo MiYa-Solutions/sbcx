@@ -699,6 +699,7 @@ describe 'Transferred Service Call Integration Spec' do
             user.save!
             job.update_attributes(status_event: 'accept')
             transfer_the_job
+            user.destroy # a workaround for the factory to ensure a single user org
           end
 
           it 'the job should be a transferred service call' do
@@ -892,8 +893,8 @@ describe 'Transferred Service Call Integration Spec' do
                   expect(job.subcontractor_status_name).to eq :pending
                 end
 
-                it 'there should be no available subcon events' do
-                  expect(job.subcontractor_status_events).to eq []
+                it 'settlement with the subcon should be allowed' do
+                  expect(job.subcontractor_status_events).to eq [:settle]
                 end
 
                 it 'payment status should be pending' do
@@ -949,8 +950,8 @@ describe 'Transferred Service Call Integration Spec' do
                     expect(job.subcontractor_status_name).to eq :pending
                   end
 
-                  it 'there should be no available subcon events' do
-                    expect(job.subcontractor_status_events).to eq []
+                  it 'settlement with the subcon should be allowed' do
+                    expect(job.subcontractor_status_events).to eq [:settle]
                   end
 
                   it 'payment status should be invoiced' do
@@ -1008,8 +1009,8 @@ describe 'Transferred Service Call Integration Spec' do
                         expect(job.subcontractor_status_name).to eq :pending
                       end
 
-                      it 'there should be no available subcon events' do
-                        expect(job.subcontractor_status_events).to eq []
+                      it 'settlement with the subcon should be allowed' do
+                        expect(job.subcontractor_status_events).to eq [:settle]
                       end
 
                       it 'payment status should be collected' do
@@ -1041,8 +1042,8 @@ describe 'Transferred Service Call Integration Spec' do
                           job.update_attributes(billing_status_event: 'deposit_to_prov')
                         end
 
-                        it 'status should be accepted' do
-                          expect(job.status_name).to eq :accepted
+                        it 'status should be transferred' do
+                          expect(job.status_name).to eq :transferred
                         end
 
                         it 'the available status events should be: cancel' do
@@ -1058,8 +1059,8 @@ describe 'Transferred Service Call Integration Spec' do
                           expect(job.provider_status_events).to eq []
                         end
 
-                        it 'subcon status should be na' do
-                          expect(job.subcontractor_status_name).to eq :na
+                        it 'subcon status should be pending' do
+                          expect(job.subcontractor_status_name).to eq :pending
                         end
 
                         it 'payment status should be deposited_to_prov' do
@@ -1091,8 +1092,8 @@ describe 'Transferred Service Call Integration Spec' do
                             job.update_attributes(billing_status_event: 'prov_confirmed_deposit')
                           end
 
-                          it 'status should be accepted' do
-                            expect(job.status_name).to eq :accepted
+                          it 'status should be transferred' do
+                            expect(job.status_name).to eq :transferred
                           end
 
                           it 'the available status events should be: cancel' do
@@ -1109,8 +1110,8 @@ describe 'Transferred Service Call Integration Spec' do
                             expect(event_permitted_for_job?('provider_status', 'settle', org_admin, job)).to be_true
                           end
 
-                          it 'subcon status should be na' do
-                            expect(job.subcontractor_status_name).to eq :na
+                          it 'subcon status should be pending' do
+                            expect(job.subcontractor_status_name).to eq :pending
                           end
 
                           it 'payment status should be deposited' do
@@ -1144,14 +1145,13 @@ describe 'Transferred Service Call Integration Spec' do
                                 job.update_attributes(provider_status_event: 'settle', provider_payment: 'cash')
                               end
 
-                              it 'status should be accepted' do
-                                expect(job.status_name).to eq :accepted
+                              it 'status should be transferred' do
+                                expect(job.status_name).to eq :transferred
                               end
 
                               it 'the available status events should be: cancel' do
-                                expect(job.status_events).to eq [:cancel, :close]
+                                expect(job.status_events).to eq [:cancel]
                                 expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
-                                expect(event_permitted_for_job?('status', 'close', org_admin, job)).to be_true
                               end
 
                               it 'provider status should be cleared' do
@@ -1162,8 +1162,8 @@ describe 'Transferred Service Call Integration Spec' do
                                 expect(job.provider_status_events).to eq []
                               end
 
-                              it 'subcon status should be na' do
-                                expect(job.subcontractor_status_name).to eq :na
+                              it 'subcon status should be pending' do
+                                expect(job.subcontractor_status_name).to eq :pending
                               end
 
                               it 'payment status should be deposited' do
@@ -1196,8 +1196,8 @@ describe 'Transferred Service Call Integration Spec' do
                                 job.update_attributes(provider_status_event: 'settle', provider_payment: 'cheque')
                               end
 
-                              it 'status should be accepted' do
-                                expect(job.status_name).to eq :accepted
+                              it 'status should be transferred' do
+                                expect(job.status_name).to eq :transferred
                               end
 
                               it 'the available status events should be: cancel' do
@@ -1214,8 +1214,8 @@ describe 'Transferred Service Call Integration Spec' do
                                 expect(event_permitted_for_job?('provider_status', 'clear', org_admin, job)).to be_true
                               end
 
-                              it 'subcon status should be na' do
-                                expect(job.subcontractor_status_name).to eq :na
+                              it 'subcon status should be pending' do
+                                expect(job.subcontractor_status_name).to eq :pending
                               end
 
                               it 'payment status should be deposited' do
@@ -1247,14 +1247,13 @@ describe 'Transferred Service Call Integration Spec' do
                                   job.update_attributes(provider_status_event: 'clear')
                                 end
 
-                                it 'status should be accepted' do
-                                  expect(job.status_name).to eq :accepted
+                                it 'status should be transferred' do
+                                  expect(job.status_name).to eq :transferred
                                 end
 
                                 it 'the available status events should be: cancel' do
-                                  expect(job.status_events).to eq [:cancel, :close]
+                                  expect(job.status_events).to eq [:cancel]
                                   expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
-                                  expect(event_permitted_for_job?('status', 'close', org_admin, job)).to be_true
                                 end
 
                                 it 'provider status should be cleared' do
@@ -1265,8 +1264,8 @@ describe 'Transferred Service Call Integration Spec' do
                                   expect(job.provider_status_events).to eq []
                                 end
 
-                                it 'subcon status should be na' do
-                                  expect(job.subcontractor_status_name).to eq :na
+                                it 'subcon status should be pending' do
+                                  expect(job.subcontractor_status_name).to eq :pending
                                 end
 
                                 it 'payment status should be deposited' do
@@ -1292,7 +1291,7 @@ describe 'Transferred Service Call Integration Spec' do
                                   it_behaves_like 'provider job canceled after completion'
                                 end
 
-
+                                context 'when setteling with the subcon'
                                 context 'when closing the job' do
                                   before do
                                     job.update_attributes(status_event: 'close')
