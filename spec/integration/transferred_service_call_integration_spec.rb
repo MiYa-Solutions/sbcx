@@ -1293,6 +1293,7 @@ describe 'Transferred Service Call Integration Spec' do
 
                                 context 'when setteling with the subcon'
                                 context 'when closing the job' do
+                                  # stam
                                   before do
                                     job.update_attributes(status_event: 'close')
                                   end
