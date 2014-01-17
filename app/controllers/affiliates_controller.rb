@@ -44,9 +44,9 @@ class AffiliatesController < ApplicationController
 
   def index
     if params[:search].nil?
-      @affiliates = Affiliate.my_affiliates(current_user.organization.id).order("organizations.id DESC").paginate(page: params[:page], per_page: 5)
+      @affiliates = Affiliate.the_affiliates(current_user.organization).paginate(page: params[:page], per_page: 10)
     else
-      @affiliates = Affiliate.affiliate_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 8)
+      @affiliates = Affiliate.affiliate_search(current_user.organization.id, params[:search]).paginate(page: params[:page], per_page: 10)
     end
   end
 

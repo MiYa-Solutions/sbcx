@@ -223,8 +223,8 @@ GEM
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
-    pg (0.14.1)
-    pg (0.14.1-x86-mingw32)
+    pg (0.17.1)
+    pg (0.17.1-x86-mingw32)
     pg-hstore (1.1.7)
     poltergeist (1.4.1)
       capybara (~> 2.1.0)
@@ -384,7 +384,7 @@ DEPENDENCIES
   newrelic_rpm
   nifty-generators
   paper_trail (~> 3.0.0)
-  pg (= 0.14.1)
+  pg (= 0.17.1)
   poltergeist (= 1.4.1)
   prawn (~> 0.13.1)
   quiet_assets

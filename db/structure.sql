@@ -3,10 +3,18 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = ON;
 SET check_function_bodies = FALSE;
 SET client_min_messages = WARNING;
+
+--
+-- Name: postgres; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -20,6 +28,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
 
 
 --
@@ -349,40 +371,6 @@ CACHE 1;
 --
 
 ALTER SEQUENCE boms_id_seq OWNED BY boms.id;
-
-
---
--- Name: categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE categories (
-  id                 INTEGER                     NOT NULL,
-  categorizable_type CHARACTER VARYING(255),
-  categorizable_id   INTEGER,
-  name               CHARACTER VARYING(255),
-  description        CHARACTER VARYING(255),
-  created_at         TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at         TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-
-
---
--- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE categories_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
-
-
---
--- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
 
 
 --
@@ -987,8 +975,7 @@ CREATE TABLE users (
   confirmation_token     CHARACTER VARYING(255),
   confirmed_at           TIMESTAMP WITHOUT TIME ZONE,
   confirmation_sent_at   TIMESTAMP WITHOUT TIME ZONE,
-  unconfirmed_email      CHARACTER VARYING(255),
-  roles_mask             INTEGER
+  unconfirmed_email      CHARACTER VARYING(255)
 );
 
 
@@ -1100,13 +1087,6 @@ ALTER TABLE ONLY assignments ALTER COLUMN id SET DEFAULT nextval('assignments_id
 --
 
 ALTER TABLE ONLY boms ALTER COLUMN id SET DEFAULT nextval('boms_id_seq' :: REGCLASS);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq' :: REGCLASS);
 
 
 --
@@ -1276,14 +1256,6 @@ ADD CONSTRAINT boms_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY appointments
 ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
-
-
---
--- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY categories
-ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
 
 
 --
@@ -1689,8 +1661,6 @@ INSERT INTO schema_migrations (version) VALUES ('20130104150624');
 
 INSERT INTO schema_migrations (version) VALUES ('20130113000418');
 
-INSERT INTO schema_migrations (version) VALUES ('20130113015506');
-
 INSERT INTO schema_migrations (version) VALUES ('20130113015616');
 
 INSERT INTO schema_migrations (version) VALUES ('20130113015617');
@@ -1816,5 +1786,3 @@ INSERT INTO schema_migrations (version) VALUES ('20131230231007');
 INSERT INTO schema_migrations (version) VALUES ('20131230231018');
 
 INSERT INTO schema_migrations (version) VALUES ('20131231165209');
-
-INSERT INTO schema_migrations (version) VALUES ('20140103225158');
