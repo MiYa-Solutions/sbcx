@@ -41,6 +41,7 @@ test:
   adapter: postgresql
   database: subcontrax-test<%= ENV['TEST_ENV_NUMBER'] %>
   host: localhost
+  port: 5433
   username: postgres
   password: Maxim2012
 
