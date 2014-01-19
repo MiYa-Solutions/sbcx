@@ -66,6 +66,10 @@ class Event < ActiveRecord::Base
 
   before_validation :set_default_creator, :init
 
+  def self.background_process(the_id)
+    Event.find(the_id).process_event
+  end
+
   # todo add a state machine to capture event status and processing times
   def process_event
     raise "Event base class was invoked instead of one of the sub-classes"

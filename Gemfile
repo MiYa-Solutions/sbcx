@@ -43,6 +43,7 @@ gem 'activeadmin'
 gem 'meta_search', '>= 1.1.0.pre'
 gem 'prawn', '~> 0.13.1'
 gem 'rails_12factor'
+gem 'queue_classic', '2.2.3'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'

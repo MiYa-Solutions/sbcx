@@ -4,6 +4,6 @@ class EventObserver < ActiveRecord::Observer
     Rails.logger.debug model.inspect
     model.user = model.updater
 
-    model.process_event
+    QC.enqueue "Event.background_process", model.id
   end
 end
