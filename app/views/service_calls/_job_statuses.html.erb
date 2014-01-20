@@ -11,6 +11,9 @@
               <% end %>
               <%= image_tag("myJobLarge.png", :title => I18n.t('general.messages.myJob').html_safe, :rel => 'tooltip') %>
           <% else %>
+              <% if @service_call.transferred? %>
+                  <%= image_tag("Itransferred.png", :title => I18n.t('general.messages.transferred_job').html_safe, :rel => 'tooltip') %>
+              <% end %>
               <%= image_tag("Incoming.png", :title => I18n.t('general.messages.incoming_job').html_safe, :rel => 'tooltip') %>
           <% end %>
 

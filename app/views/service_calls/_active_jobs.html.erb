@@ -109,6 +109,8 @@
                   <%= image_tag("ItransferredS.png", :title => I18n.t('general.messages.transferred_job').html_safe, :rel => 'tooltip') %>
                   <% if sc.class == MyServiceCall %>
                       <%= image_tag("myJob.png", :title => I18n.t('general.messages.myJob').html_safe, :rel => 'tooltip') %>
+                  <% else %>
+                      <%= image_tag("IncomingS.png", :title => I18n.t('general.messages.incoming_job').html_safe, :rel => 'tooltip') %>
                   <% end %>
 
                 </td>
