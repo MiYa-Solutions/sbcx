@@ -4,6 +4,10 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
+# Ignore application configuration
+/config/application.yml
+/config/database.yml
+
 # Ignore bundler config
 /.bundle
 
@@ -28,10 +32,6 @@ bundler_stubs/
 
 # ignore local configuration
 /config/config.yml
-
-# Ignore application configuration
-/config/application.yml
-/config/database.yml
 
 #ignore zeus file
 custom_plan.rb

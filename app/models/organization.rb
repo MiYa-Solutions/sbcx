@@ -63,7 +63,7 @@ class Organization < ActiveRecord::Base
   has_many :events, as: :eventable
   has_many :materials
   has_many :accounts
-  has_one :parent_org, class_name: 'Organization'
+  belongs_to :parent_org, class_name: 'Organization', foreign_key: 'parent_org_id'
   has_many :affiliates, through: :accounts, source: :accountable, :source_type => "Organization" do
     def build(params)
       affiliate            = Affiliate.new(params)

@@ -1,14 +1,6 @@
 class AffiliatesController < ApplicationController
   before_filter :authenticate_user!
 
-  #filter_access_to :new, model: Organization
-  #filter_access_to :create, model: Organization
-  #filter_access_to :edit, model: Organization, attribute_check: true
-  #filter_access_to :update, model: Organization, attribute_check: true
-  #filter_access_to :show, model: Organization, attribute_check: true
-  #filter_access_to :index, model: Organization
-  #
-  #filter_access_to :all, model: Organization, attribute_check: true
   filter_resource_access
 
   def new
@@ -36,7 +28,7 @@ class AffiliatesController < ApplicationController
     # no need for the below as declarative_authorization filter_resource_access takes care of it
     #@affiliate = Affiliate.find(params[:id])
     if @affiliate.update_attributes(permitted_params(@affiliate).affiliate)
-      redirect_to @affiliate, :notice => "Successfully updated provider."
+      redirect_to @affiliate, flash: { success: t('affiliate.flash_messages.updated_successfully', name: @affiliate.name) }
     else
       render :action => :edit
     end

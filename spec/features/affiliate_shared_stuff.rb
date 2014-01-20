@@ -1,0 +1,1 @@
+AFF_INPUT_NAME = 'affiliate_name'
