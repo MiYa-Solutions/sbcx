@@ -42,7 +42,11 @@ gem 'rails3_acts_as_paranoid', '~> 0.2.5'
 gem 'activeadmin'
 gem 'meta_search', '>= 1.1.0.pre'
 gem 'prawn', '~> 0.13.1'
-gem 'rails_12factor'
+
+group :production do
+  gem 'rails_12factor'
+end
+
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'
