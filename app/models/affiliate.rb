@@ -25,9 +25,9 @@
 class Affiliate < Organization
 
   def save
-    self.parent_org.providers << self if self.organization_role_ids.include? OrganizationRole::PROVIDER_ROLE_ID
-    self.parent_org.subcontractors << self if self.organization_role_ids.include? OrganizationRole::SUBCONTRACTOR_ROLE_ID
-    self.valid?
+    self.parent_org.providers << self if !self.parent_org.providers.include?(self) && self.organization_role_ids.include?(OrganizationRole::PROVIDER_ROLE_ID)
+    self.parent_org.subcontractors << self if !self.parent_org.subcontractors.include?(self) && self.organization_role_ids.include?(OrganizationRole::SUBCONTRACTOR_ROLE_ID)
+    super
   end
 
   def invited?(org)

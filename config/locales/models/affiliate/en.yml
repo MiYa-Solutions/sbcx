@@ -8,3 +8,7 @@ en:
         address1: "Address"
         phone: "Phone"
         mobile: "Mobile"
+  affiliate:
+    flash_messages:
+      created_successfully: '%{name} was created successfully!'
+      updated_successfully: '%{name} was updated successfully!'
