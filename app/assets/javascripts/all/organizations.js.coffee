@@ -17,4 +17,6 @@ jQuery ->
       $('#user_organization_attributes_other_industry'))
   $('#organization_industry').change ->
     simple_form_obj_to_show($('#organization_industry'), $('#organization_other_industry'))
+  $('#affiliate_industry').change ->
+    simple_form_obj_to_show($('#affiliate_industry'), $('#affiliate_other_industry'))
 
