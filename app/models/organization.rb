@@ -303,6 +303,10 @@ class Organization < ActiveRecord::Base
     other_industry || Organization.human_industry_name(industry)
   end
 
+  def open_jobs
+    ServiceCall.open_jobs(self).all
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0

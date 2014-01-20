@@ -54,7 +54,7 @@ en:
             accepted: "Accepted"
             rejected: "Rejected"
             in_progress: "In Progress"
-            dispatched: "Lulu"
+            dispatched: "Dispatched"
             done: "Completed"
             pending: "Pending"
         provider_status:
@@ -90,6 +90,7 @@ en:
             transfer: "Transfer"
             dispatch: "Lala"
           states:
+            open: Open
             new: "New"
             transferred: "Transferred"
             dispatched: "Dispatched"

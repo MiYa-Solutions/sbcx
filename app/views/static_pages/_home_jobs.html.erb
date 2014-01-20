@@ -15,27 +15,20 @@
       <table class="table table-striped">
         <thead>
         <tr>
-          <th><%= AccountingEntry.human_attribute_name(:id) %></th>
-          <th><%= AccountingEntry.human_attribute_name(:description) %></th>
-          <th><%= AccountingEntry.human_attribute_name(:status) %></th>
-          <th><%= AccountingEntry.human_attribute_name(:address) %></th>
+          <th><%= ServiceCall.human_attribute_name(:ref_id) %></th>
+          <th><%= ServiceCall.human_attribute_name(:name) %></th>
+          <th><%= ServiceCall.human_attribute_name(:status) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:amount) %></th>
 
         </tr>
         </thead>
         <tbody>
         <% @service_calls.each do |sc| %>
             <tr>
-              <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
-              <td><%= link_to sc.type.tableize.humanize, service_call_path(sc) %></td>
+              <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
+              <td><%= link_to sc.name, service_call_path(sc) %></td>
               <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
-
-              <!--<td><#%= sc.provider.try(:name) %></td>-->
-              <!--<td><#%= sc.subcontractor.try(:name) %></td>-->
-              <td><%= sc.try(:address1) %></td>
-              <!--<td>-->
-              <!--<#%= link_to 'Edit', edit_service_call_path(sc), :class => 'btn btn-mini' %>-->
-              <!--<#%= link_to 'Show', sc.becomes(ServiceCall), :class => 'btn btn-mini btn-danger' %>-->
-              <!--</td>-->
+              <td><%= link_to humanized_money_with_symbol(sc.total_price + sc.tax_amount), service_call_path(sc) %></td>
             </tr>
         <% end %>
         </tbody>
