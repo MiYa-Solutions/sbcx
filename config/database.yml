@@ -14,7 +14,7 @@
 #
 development:
   adapter: postgresql
-  database: subcontrax-dev
+  database: postgres
   host: localhost
   username: postgres
   password: Maxim2012
@@ -23,7 +23,7 @@ development:
   # domain socket that doesn't need configuration. Windows does not have
   # domain sockets, so uncomment these lines.
   #host: localhost
-  #port: 5432
+  port: 5433
 
   # Schema search path. The server defaults to $user,public
   #schema_search_path: myapp,sharedapp,public
@@ -41,6 +41,7 @@ test:
   adapter: postgresql
   database: subcontrax-test<%= ENV['TEST_ENV_NUMBER'] %>
   host: localhost
+  port: 5433
   username: postgres
   password: Maxim2012
 

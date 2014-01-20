@@ -31,6 +31,7 @@ bundler_stubs/
 
 # Ignore application configuration
 /config/application.yml
+/config/database.yml
 
 #ignore zeus file
 custom_plan.rb

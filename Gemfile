@@ -1,4 +1,5 @@
 source 'http://rubygems.org'
+ruby '1.9.3'
 
 gem 'rails', '3.2.16'
 gem 'jquery-rails', '2.1.4'
@@ -16,7 +17,7 @@ gem 'newrelic_rpm'
 
 gem 'american_date', '1.0.0'
 
-gem 'pg', '0.14.1'
+gem 'pg', '0.17.1'
 gem 'activerecord-postgres-hstore', '0.7.5'
 
 gem 'devise', '2.0.0'
@@ -29,7 +30,7 @@ gem 'strong_parameters', '0.2.0'
 gem 'paper_trail', '~> 3.0.0'
 
 gem 'best_in_place', git: 'git://github.com/MiYa-Solutions/best_in_place.git'
-gem 'thin', '1.5.0'
+gem 'unicorn', '~> 4.8.0'
 gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 
@@ -41,6 +42,7 @@ gem 'rails3_acts_as_paranoid', '~> 0.2.5'
 gem 'activeadmin'
 gem 'meta_search', '>= 1.1.0.pre'
 gem 'prawn', '~> 0.13.1'
+gem 'rails_12factor'
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'
@@ -65,7 +67,7 @@ group :assets do
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
   gem 'jquery-datatables-rails'
-  gem 'jquery-ui-rails', '4.0.1'
+  gem 'jquery-ui-rails', '4.1.1'
   gem 'fullcalendar-rails', '1.5.4.0'
 end
 

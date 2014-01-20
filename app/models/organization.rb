@@ -154,6 +154,7 @@ class Organization < ActiveRecord::Base
   scope :subcontractors, -> { includes(:organization_roles).where("organization_roles.id = ? ", OrganizationRole::SUBCONTRACTOR_ROLE_ID) }
   scope :subcontractor_members, -> { members.subcontractors }
   scope :provider_members, -> { members.providers }
+  scope :the_affiliates, ->(org) { joins("INNER JOIN agreements on ((agreements.organization_id = organizations.id OR agreements.counterparty_id = organizations.id) AND agreements.counterparty_type = 'Organization') WHERE (agreements.organization_id = #{org.id} OR agreements.counterparty_id = #{org.id}) AND organizations.id != #{org.id}").uniq }
   scope :associated_providers, -> { providers.includes(:agreements) }
   scope :associated_subcontractors, -> { subcontractors.includes(:reverse_agreements) }
   scope :my_providers, ->(org_id) { associated_providers.where('agreements.counterparty_id = ?', org_id) - where(id: org_id) }

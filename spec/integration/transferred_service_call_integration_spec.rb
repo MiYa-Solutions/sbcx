@@ -1291,49 +1291,117 @@ describe 'Transferred Service Call Integration Spec' do
                                   it_behaves_like 'provider job canceled after completion'
                                 end
 
-                                context 'when setteling with the subcon'
-                                context 'when closing the job' do
-                                  # stam
-                                  before do
-                                    job.update_attributes(status_event: 'close')
-                                  end
+                                context 'when settling with the subcon' do
 
-                                  it 'status should be closed' do
-                                    expect(job.status_name).to eq :closed
-                                  end
+                                  context 'when using a cheque' do
 
-                                  it 'there should be no available status events' do
-                                    expect(job.status_events).to eq []
-                                  end
+                                    before do
+                                      job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'cheque')
+                                    end
 
-                                  it 'provider status should be cleared' do
-                                    expect(job.provider_status_name).to eq :cleared
-                                  end
+                                    it 'status should be transferred' do
+                                      expect(job.status_name).to eq :transferred
+                                    end
 
-                                  it 'there should be no provider status events available' do
-                                    expect(job.provider_status_events).to eq []
-                                  end
+                                    it 'the available status events should be: cancel' do
+                                      expect(job.status_events).to eq [:cancel]
+                                      expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
+                                    end
 
-                                  it 'subcon status should be na' do
-                                    expect(job.subcontractor_status_name).to eq :na
-                                  end
+                                    it 'provider status should be cleared' do
+                                      expect(job.provider_status_name).to eq :cleared
+                                    end
 
-                                  it 'payment status should be deposited' do
-                                    expect(job.billing_status_name).to eq :deposited
-                                  end
+                                    it 'there should be no provider status events available' do
+                                      expect(job.provider_status_events).to eq []
+                                    end
 
-                                  it 'there should be no available payment events' do
-                                    expect(job.billing_status_events).to eq []
-                                  end
+                                    it 'subcon status should be settled' do
+                                      expect(job.subcontractor_status_name).to eq :settled
+                                    end
 
-                                  it 'work status should be done' do
-                                    expect(job.work_status_name).to eq :done
-                                  end
+                                    it 'payment status should be deposited' do
+                                      expect(job.billing_status_name).to eq :deposited
+                                    end
 
-                                  it 'there should be no available work status events' do
-                                    expect(job.work_status_events).to eq []
-                                  end
+                                    it 'there should be no available payment events' do
+                                      expect(job.billing_status_events).to eq []
+                                    end
 
+                                    it 'work status should be done' do
+                                      expect(job.work_status_name).to eq :done
+                                    end
+
+                                    it 'there should be no available work status events' do
+                                      expect(job.work_status_events).to eq []
+                                    end
+
+                                    it 'subcon status available events should be clear' do
+                                      expect(job.subcontractor_status_events).to eq [:clear]
+                                    end
+
+                                    context 'when canceled' do
+                                      include_context 'when canceling the job' do
+                                        let(:job_to_cancel) { job }
+                                      end
+                                      it_behaves_like 'provider job canceled after completion'
+                                    end
+
+                                    context 'when the subcontractor cheque payment is cleared' do
+                                      before do
+                                        job.update_attributes(subcontractor_status_event: 'clear')
+                                      end
+
+                                      it 'subcon status should be cleared' do
+                                        expect(job.subcontractor_status_name).to eq :cleared
+                                      end
+
+                                      context 'when closing the job' do
+
+                                        before do
+                                          job.update_attributes(status_event: 'close')
+                                        end
+
+                                        it 'status should be closed' do
+                                          expect(job.status_name).to eq :closed
+                                        end
+
+                                        it 'there should be no available status events' do
+                                          expect(job.status_events).to eq []
+                                        end
+
+                                        it 'provider status should be cleared' do
+                                          expect(job.provider_status_name).to eq :cleared
+                                        end
+
+                                        it 'there should be no provider status events available' do
+                                          expect(job.provider_status_events).to eq []
+                                        end
+
+                                        it 'subcon status should be cleared' do
+                                          expect(job.subcontractor_status_name).to eq :cleared
+                                        end
+
+                                        it 'payment status should be deposited' do
+                                          expect(job.billing_status_name).to eq :deposited
+                                        end
+
+                                        it 'there should be no available payment events' do
+                                          expect(job.billing_status_events).to eq []
+                                        end
+
+                                        it 'work status should be done' do
+                                          expect(job.work_status_name).to eq :done
+                                        end
+
+                                        it 'there should be no available work status events' do
+                                          expect(job.work_status_events).to eq []
+                                        end
+
+
+                                      end
+                                    end
+                                  end
 
                                 end
 
