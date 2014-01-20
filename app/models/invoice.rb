@@ -63,23 +63,23 @@ class Invoice
   end
 
   def tax
-    @job.tax
+    @job.tax || ''
   end
 
   def tax_amount
-    @job.tax_amount
+    @job.tax_amount || ''
   end
 
   def company_name
-    @company.company
+    @company.name || ''
   end
 
   def company_address1
-    @company.address1
+    @company.address1 || ''
   end
 
   def company_address2
-    @company.address2
+    @company.address2 || ''
   end
 
   def company_city_and_state
@@ -136,7 +136,6 @@ class Invoice
       # Add the font style and size
       font "Helvetica"
       font_size 9
-
 
       text_box @invoice.company_name, :at => [address_x, cursor]
       move_down lineheight_y
