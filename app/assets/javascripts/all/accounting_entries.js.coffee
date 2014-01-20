@@ -11,7 +11,7 @@ jQuery ->
         sButtonText: "Save <span class=\"caret\" />"
         aButtons: ["csv", "xls", "pdf"]
       ],
-      sSwfPath: "copy_csv_xls_pdf.swf"
+      sSwfPath: "assets/media/swf/copy_csv_xls_pdf.swf"
     bProcessing: true
     bStateSave: true
     bServerSide: true
