@@ -88,6 +88,10 @@
                  <badge><%= Bom.human_attribute_name(:cost) %> <%= '&nbsp;'.html_safe %>
                    <span id='job_total_cost'><%= humanized_money_with_symbol @service_call.total_cost %></span></badge>
      </span>
+     <span class="blue_badge_collape">
+                 <badge><%= ServiceCall.human_attribute_name(:total) %> <%= '&nbsp;'.html_safe %>
+                   <span id='job_total_cost'><%= humanized_money_with_symbol @service_call.total %></span></badge>
+     </span>
     </h3>
 
     <%= render :partial => 'job_billing.mobile' %>

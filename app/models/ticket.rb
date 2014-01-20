@@ -183,6 +183,10 @@ class Ticket < ActiveRecord::Base
     total_price * (tax / 100.0)
   end
 
+  def total
+    total_price + tax_amount
+  end
+
   def completed_on_text
     @completed_on_text || completed_on.try(:strftime, "%B %d, %Y %H:%M")
 

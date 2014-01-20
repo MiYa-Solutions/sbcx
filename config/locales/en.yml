@@ -153,6 +153,7 @@ en:
       save_changes: "Save Changes"
       appointments: "Appointments"
       total_price: 'Total Price: &nbsp;'
+      total: 'Total: &nbsp;'
       total_cost: 'Total Cost: &nbsp;'
       billing: "Billing"
       no_address: "No Address"

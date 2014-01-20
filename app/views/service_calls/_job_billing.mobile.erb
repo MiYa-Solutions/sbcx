@@ -4,21 +4,24 @@
     <li>
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= t('general.general.total_price').html_safe %></div>
-        <div class="ui-block-b"><span class="shift_total_price"> <%= humanized_money_with_symbol @service_call.total_price %></span></div>
+        <div class="ui-block-b">
+          <span class="shift_total_price"> <%= humanized_money_with_symbol @service_call.total_price %></span></div>
       </div>
     </li>
     <li>
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= t('general.general.total_cost').html_safe %></div>
-        <div class="ui-block-b"><span class="shift_total_price"><%= humanized_money_with_symbol @service_call.total_cost %></span></div>
+        <div class="ui-block-b">
+          <span class="shift_total_price"><%= humanized_money_with_symbol @service_call.total_cost %></span></div>
       </div>
     </li>
     <li>
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= t('general.general.my_profit').html_safe %></div>
-      <div class="ui-block-b"><span class="shift_total_price"><%= humanized_money_with_symbol @service_call.my_profit %></span></div>
-    </div>
-  </li>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= t('general.general.my_profit').html_safe %></div>
+        <div class="ui-block-b">
+          <span class="shift_total_price"><%= humanized_money_with_symbol @service_call.my_profit %></span></div>
+      </div>
+    </li>
 
     <!--Tax-->
     <% if (permitted_attribute? @service_call, :tax) %>
@@ -39,8 +42,15 @@
 
     <% end %>
 
+    <li>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= t('general.general.total').html_safe %></div>
+        <div class="ui-block-b">
+          <span class="shift_total_price"><%= humanized_money_with_symbol @service_call.total %></span></div>
+      </div>
+    </li>
 
-  <% case @service_call.my_role when :subcon %>
+    <% case @service_call.my_role when :subcon %>
         <li class="affiliate_balance_billing">
 
           <%= link_to I18n.t('general.general.provider_balance'), "#provider_entries", "data-rel" => "popup", "data-transition" => "pop" %>
@@ -54,53 +64,53 @@
         </li>
 
 
-      <% when :broker %>
-            <li class="affiliate_balance_billing">
+    <% when :broker %>
+        <li class="affiliate_balance_billing">
 
-              <!--<#%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-transition" => "slide" %>-->
-              <%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-rel" => "popup", "data-transition" => "pop" %>
-
-
-              <p>
-                <% if @service_call.subcon_balance < 0 %>
-                    <span class="red_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-                <% else %>
-                    <span class="green_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-                <% end %>
-              </p>
-            </li>
-
-          <li class="affiliate_balance_billing">
-            <%= link_to I18n.t('general.general.provider_balance'), "#provider_entries", "data-rel" => "popup", "data-transition" => "pop" %>
-
-            <p>
-                        <% if @service_call.provider_balance < 0 %>
-                            <span class="red_badge"><%= humanized_money_with_symbol @service_call.provider_balance %></span>
-                        <% else %>
-                            <span class="green_badge"><%= humanized_money_with_symbol @service_call.provider_balance %></span>
-                        <% end %>
-                    </p>
-          </li>
+          <!--<#%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-transition" => "slide" %>-->
+          <%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-rel" => "popup", "data-transition" => "pop" %>
 
 
-        <% else %>
+          <p>
+            <% if @service_call.subcon_balance < 0 %>
+                <span class="red_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
+            <% else %>
+                <span class="green_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
+            <% end %>
+          </p>
+        </li>
+
+        <li class="affiliate_balance_billing">
+          <%= link_to I18n.t('general.general.provider_balance'), "#provider_entries", "data-rel" => "popup", "data-transition" => "pop" %>
+
+          <p>
+            <% if @service_call.provider_balance < 0 %>
+                <span class="red_badge"><%= humanized_money_with_symbol @service_call.provider_balance %></span>
+            <% else %>
+                <span class="green_badge"><%= humanized_money_with_symbol @service_call.provider_balance %></span>
+            <% end %>
+          </p>
+        </li>
+
+
+    <% else %>
         <!--I'm the provider and has a subcon-->
-                <li class="affiliate_balance_billing">
+        <li class="affiliate_balance_billing">
 
-                  <%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-rel" => "popup", "data-transition" => "pop" %>
-                  <p>
-                    <% if @service_call.subcon_balance < 0 %>
-                        <span class="red_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-                    <% else %>
-                        <span class="green_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-                    <% end %>
-                  </p>
-                </li>
-       <% end %>
+          <%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-rel" => "popup", "data-transition" => "pop" %>
+          <p>
+            <% if @service_call.subcon_balance < 0 %>
+                <span class="red_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
+            <% else %>
+                <span class="green_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
+            <% end %>
+          </p>
+        </li>
+    <% end %>
 
   </ul>
 
-     <br>
+  <br>
 
   <!--end of billing-->
 </div>
@@ -116,7 +126,7 @@
   </div>
 
   <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
-  <br>
+    <br>
     <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' }, :remote => true do |f| %>
 
 
@@ -133,20 +143,20 @@
         <br>
         <%= link_to I18n.t('general.general.back'), service_call_path(@service_call), "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>
 
-  <% end %>
-     <br>
+    <% end %>
+    <br>
   </div>
 </div>
 
 
 <!--Subcon Entries Popup-->
- <div data-role="popup" id="subcon_entries" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
+<div data-role="popup" id="subcon_entries" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
 
-    <div data-role="header" data-theme="a" class="ui-corner-top">
-      <h1 id="entries_header" ><%= t('general.general.subcon_entries') %></h1>
-      <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1 id="entries_header"><%= t('general.general.subcon_entries') %></h1>
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
-    </div>
+  </div>
 
   <div data-role="content">
 
@@ -174,7 +184,8 @@
                 <div class="ui-block-c">
                   <%= entry.description %>
                   <br><strong>at:</strong><%= '&nbsp;'.html_safe %><%= l entry.created_at, :format => :default %>
-                  <br><strong>Account For:</strong><%= '&nbsp;'.html_safe %><%= entry.account.accountable.class.model_name.human %>
+                  <br><strong>Account
+                  For:</strong><%= '&nbsp;'.html_safe %><%= entry.account.accountable.class.model_name.human %>
                   <br><strong>Id:</strong><%= '&nbsp;'.html_safe %><%= entry.id %>
 
                 </div>
@@ -183,15 +194,12 @@
         <% end %>
       </ul>
 
-     <br>
-    <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
+      <br>
+      <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
 
 
     </div>
   </div>
-
-
-
 
 
 </div>
@@ -200,8 +208,8 @@
 <!--Provider Entries Popup-->
 <div data-role="popup" id="provider_entries" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
 
-<div data-role="header" data-theme="a" class="ui-corner-top">
-    <h1 id="entries_header" ><%= t('general.general.provider_entries') %></h1>
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1 id="entries_header"><%= t('general.general.provider_entries') %></h1>
     <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
 
   </div>
@@ -232,7 +240,8 @@
                 <div class="ui-block-c">
                   <%= entry.description %>
                   <br><strong>at:</strong><%= '&nbsp;'.html_safe %><%= l entry.created_at, :format => :default %>
-                  <br><strong>Account For:</strong><%= '&nbsp;'.html_safe %><%= entry.account.accountable.class.model_name.human %>
+                  <br><strong>Account
+                  For:</strong><%= '&nbsp;'.html_safe %><%= entry.account.accountable.class.model_name.human %>
                   <br><strong>Id:</strong><%= '&nbsp;'.html_safe %><%= entry.id %>
 
                 </div>
@@ -247,9 +256,6 @@
 
     </div>
   </div>
-
-
-
 
 
 </div>

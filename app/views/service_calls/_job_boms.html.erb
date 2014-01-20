@@ -8,9 +8,9 @@
         <% else %>
 
             <!--My Job Dispatched and and not transferred-->
-            <% if @service_call.class == MyServiceCall && @service_call.work_dispatched? && !@service_call.transferred?   %>
+            <% if @service_call.class == MyServiceCall && @service_call.work_dispatched? && !@service_call.transferred? %>
                 <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_start_dispached'), :rel => 'tooltip', "data-placement" => "left") %>
-             <% end %>
+            <% end %>
 
             <!--My Job and not transferred-->
             <% if @service_call.class == MyServiceCall && @service_call.work_pending? && !@service_call.transferred? %>
@@ -37,7 +37,7 @@
             <% end %>
 
             <!--Job transferred from local/subco-->
-            <% if @service_call.class == TransferredServiceCall && @service_call.work_pending? && !@service_call.accepted? && !@service_call.work_done?  %>
+            <% if @service_call.class == TransferredServiceCall && @service_call.work_pending? && !@service_call.accepted? && !@service_call.work_done? %>
                 <%= image_tag("question24.png", :title => I18n.t('general.messages.no_bom_transferred_from_provider'), :rel => 'tooltip', "data-placement" => "left") %>
             <% end %>
 
@@ -55,7 +55,7 @@
         <% end %>
         </li>
 
-   </ul>
+        </ul>
   </div>
 
 
@@ -81,39 +81,43 @@
     <tbody id="boms">
 
     <% @service_call.boms.each do |bom| %>
-          <%= render 'boms/bom', bom: bom %>
+        <%= render 'boms/bom', bom: bom %>
     <% end %>
 
     </tbody>
   </table>
-    <!--<#% if  @service_call.total_cost > 0 %>-->
+  <!--<#% if  @service_call.total_cost > 0 %>-->
 
   <table class="table table-striped" id="boms-table-summary">
     <tbody>
-        <tr class="bom_table_summary">
-          <td><strong><%= @service_call.class.human_attribute_name(:tax) %></strong>
-            <% if permitted_attribute? @service_call, :tax %>
-                &nbsp;<i class="icon-pencil"></i>
-            <% end %></td>
-          <td class="bom_label">
-           <h3>
-           <%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>  %
-          </h3>
-          </td>
-        </tr>
+    <tr class="bom_table_summary">
+      <td><strong><%= @service_call.class.human_attribute_name(:tax) %></strong>
+        <% if permitted_attribute? @service_call, :tax %>
+            &nbsp;<i class="icon-pencil"></i>
+        <% end %></td>
+      <td class="bom_label">
+        <h3>
+          <%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>  %
+        </h3>
+      </td>
+    </tr>
 
-        <tr class="bom_table_summary">
-          <td><strong><%= t('general.general.total_cost').html_safe %></strong></td>
-          <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_cost %></h3></td>
-        </tr>
+    <tr class="bom_table_summary">
+      <td><strong><%= t('general.general.total_cost').html_safe %></strong></td>
+      <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_cost %></h3></td>
+    </tr>
 
-        <tr class="bom_table_summary">
-         <td><strong><%= t('general.general.total_price').html_safe %></strong></td>
-          <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_price %></h3></td>
-        </tr>
+    <tr class="bom_table_summary">
+      <td><strong><%= t('general.general.total_price').html_safe %></strong></td>
+      <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_price %></h3></td>
+    </tr>
+    <tr class="bom_table_summary">
+      <td><strong><%= t('general.general.total').html_safe %></strong></td>
+      <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total %></h3></td>
+    </tr>
     </tbody>
   </table>
-    <!--<#% end %>-->
+  <!--<#% end %>-->
 
 
 </div>
