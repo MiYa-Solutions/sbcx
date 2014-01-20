@@ -291,6 +291,10 @@ class Organization < ActiveRecord::Base
     Ticket.affiliated_jobs(self, org)
   end
 
+  def open_affiliate_jobs_for(org)
+    Ticket.open_affiliated_jobs(self, org)
+  end
+
   def member?
     self.subcontrax_member?
   end

@@ -88,6 +88,7 @@ class Ticket < ActiveRecord::Base
 
   scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov.id} AND subcontractor_id = #{subcon.id} and created_at > '#{after}'") }
   scope :affiliated_jobs, ->(org, affiliate) { where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id)) }
+  scope :open_affiliated_jobs, ->(org, affiliate) { (where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id))).where('tickets.status NOT IN (?)', [ServiceCall::STATUS_CANCELED, ServiceCall::STATUS_CLOSED]) }
   scope :customer_jobs, ->(org, customer) { where(organization_id: org.id).where(customer_id: customer.id) }
 
   stampable
@@ -200,12 +201,12 @@ class Ticket < ActiveRecord::Base
   end
 
   def started_on_text
-    @started_on_text || started_on.try(:strftime, "%B %d, %Y %H:%M")
+    @started_on_text || started_on.try(:strftime, "%a %B %d, %Y %H:%M")
 
   end
 
   def scheduled_for_text
-    @scheduled_for_text || scheduled_for.try(:strftime, "%B %d, %Y %H:%M")
+    @scheduled_for_text || scheduled_for.try(:strftime, "%a %B %d, %Y %H:%M")
 
   end
 

@@ -26,7 +26,7 @@
             <% end %>
           </span>
         <%= image_tag("question16.png", :title => I18n.t('general.messages.edit_job_tag'), :rel => 'tooltip') %>
-        </li>
+      </li>
       <li></li>
 
     </ul>
@@ -51,8 +51,9 @@
 
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:started_on_text) %></label></li>
-      <li><i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_started_on' %>
-        </li>
+      <li>
+        <i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_started_on' %>
+      </li>
       <li></li>
     </ul>
 
@@ -62,7 +63,7 @@
       <li><label><%= @service_call.class.human_attribute_name(:completed_on_text) %></label></li>
       <li class="service_call_completed_on">
         <i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :completed_on_text), @service_call, :completed_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: '' %>
-       </li>
+      </li>
       <li></li>
     </ul>
 
@@ -70,7 +71,8 @@
 
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:scheduled_for_text) %></label></li>
-      <li><i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
+      <li>
+        <i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
       </li>
       <li></li>
     </ul>
@@ -100,7 +102,7 @@
           <li>
             <i class="icon-pencil"></i>&nbsp;<!--<#%= link_to '', @service_call.technician do %>-->
             <%= best_in_place_if (permitted_attribute? @service_call, :technician_id), @service_call, :technician_id, type: :select, collection: technicians_collection %>
-            </li>
+          </li>
           </li>
           <li></li>
         </ul>
@@ -119,14 +121,14 @@
         <br>
     <% end %>
     <!--<ul class="unstyled list_service_calls">-->
-      <!--<li><label><$%= @service_call.class.human_attribute_name(:tax) %> (%) </label></li>-->
-      <!--<li>-->
-        <!--<#% if permitted_attribute? @service_call, :tax %>-->
-            <!--&nbsp;<i class="icon-pencil"></i>-->
-        <!--<#% end %>-->
-        <!--<#%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>-->
-       <!--</li>-->
-      <!--<li></li>-->
+    <!--<li><label><$%= @service_call.class.human_attribute_name(:tax) %> (%) </label></li>-->
+    <!--<li>-->
+    <!--<#% if permitted_attribute? @service_call, :tax %>-->
+    <!--&nbsp;<i class="icon-pencil"></i>-->
+    <!--<#% end %>-->
+    <!--<#%= best_in_place_if (permitted_attribute? @service_call, :tax), @service_call, :tax %>-->
+    <!--</li>-->
+    <!--<li></li>-->
     <!--</ul>-->
 
     <br>
@@ -141,19 +143,19 @@
     <!--<br>-->
     <!--<#% end %>-->
 
-        <!--<ul class="unstyled list_service_calls">-->
-          <!--<li><label class=""><strong><#%= @service_call.class.human_attribute_name(:notes) %></strong>-->
-             <!--<a href="#" rel="tooltip" title="<#%= I18n.t('general.messages.add_note').html_safe %>" ><img src="/assets/question16.png" /></a></label>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<div id="job_notes">-->
-              <!--<div class="area designed_notes">-->
-                <!--<#%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, type: :textarea, display_with: ->(v) { textilize(v).html_safe }, sanitize: false %>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</li>-->
-          <!--<li></li>-->
-        <!--</ul>-->
+    <!--<ul class="unstyled list_service_calls">-->
+    <!--<li><label class=""><strong><#%= @service_call.class.human_attribute_name(:notes) %></strong>-->
+    <!--<a href="#" rel="tooltip" title="<#%= I18n.t('general.messages.add_note').html_safe %>" ><img src="/assets/question16.png" /></a></label>-->
+    <!--</li>-->
+    <!--<li>-->
+    <!--<div id="job_notes">-->
+    <!--<div class="area designed_notes">-->
+    <!--<#%= best_in_place_if (permitted_attribute? @service_call, :subcontractor_id), @service_call, :notes, type: :textarea, display_with: ->(v) { textilize(v).html_safe }, sanitize: false %>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--<li></li>-->
+    <!--</ul>-->
 
 
   </div>
@@ -187,7 +189,6 @@
 
   </div>
 </div>
-
 
 
 <div class="row-fluid note_area_job">
