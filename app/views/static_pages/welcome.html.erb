@@ -20,15 +20,24 @@
 <div class="row-fluid row_homepage">
 
   <div class="span6">
-    <div class="well well_help">
-
-    </div>
+    <%= render :partial => 'help_alerts' %>
   </div>
 
   <div class="span6">
-    <div class="well well_help">
+    <%= render :partial => 'help_billing' %>
+  </div>
 
-    </div>
+</div>
+
+
+<div class="row-fluid row_homepage">
+
+  <div class="span6">
+    <%= render :partial => 'help_customers' %>
+  </div>
+
+  <div class="span6">
+    <%= render :partial => 'help_parts' %>
   </div>
 
 </div>

@@ -1,0 +1,107 @@
+<div class="well well_help_short">
+
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= t('general.general.billing') %></h1></li>
+      <li></li>
+    </ul>
+  </div>
+
+  <p>
+    The SubConTraX system allows you to monitor your balance with your affiliates and customers.
+    <br>   <br>
+
+
+  <div class="row-fluid">
+    <div class="span10">
+      The following section will guide you on how to:
+      <ul class="bullet_points">
+        <li>Get balance entries</li>
+        <li>Generate balance sheets</li>
+        <li>Add adjustment entries</li>
+      </ul>
+      <%= link_to(I18n.t('general.general.learn_more'), "#helpbilling", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+    </div>
+
+    <div class="span2">
+      <%= image_tag("index/sell.png", alt: "MiYa") %>
+    </div>
+  </div>
+
+
+
+  </p>
+
+
+  <div id="helpbilling" class="collapse">
+
+    <div class="panel-group help_collapse" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpbillingC1">
+              Billing Page
+            </a>
+          </h4>
+        </div>
+        <div id="helpbillingC1" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              Use the <%= link_to "Accounting Entries", accounting_entries_path %> page to get accounting entries and current balance with your affiliates and customers.
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpbillingC2">
+              Generate Balance Sheets
+            </a>
+          </h4>
+        </div>
+        <div id="helpbillingC2" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              To generate a balance sheet including accounting entries, go to the  <%= link_to "Accounting Entries", accounting_entries_path %> page,
+              select an account from the drop down list, and click on the <strong>Get Entries</strong> button
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/billing_17.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+               <br><br>
+              The Amount field shows the entry amount, and the Balance field shows your current balance as a result of the current entry.
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpbillingC3">
+              Add Adjustment Entries
+            </a>
+          </h4>
+        </div>
+        <div id="helpbillingC3" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              To add an entry to either a customer or affiliate, select an account from the drop down list, click on the
+              <strong>Add Entry</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/billing_add_17_1.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              button and fill out the form, that is now open, on the right side of the screen.
+             </p>
+          </div>
+        </div>
+      </div>
+
+
+
+
+  <!--end of panel-group-->
+    </div>
+<!--end of collapse-->
+  </div>
+<!--end of well-->
+</div>

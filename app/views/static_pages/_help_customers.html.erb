@@ -1,0 +1,106 @@
+<div class="well well_help_short">
+
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= t('general.general.manage_customers') %></h1></li>
+      <li></li>
+    </ul>
+  </div>
+
+  <p>
+    SubConTraX allows you to work with your own customers, as well as with your affiliates customers in joint projects.<br> <br>
+
+
+  <div class="row-fluid">
+    <div class="span10">
+      Click below to learn more about how to:
+      <ul class="bullet_points">
+        <li>Add customers to your account</li>
+        <li>Manage your balance with your customers, and more...</li>
+      </ul>
+      <%= link_to(I18n.t('general.general.learn_more'), "#helpcustomers", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+    </div>
+
+    <div class="span2">
+      <%= image_tag("index/customers.png", alt: "MiYa") %>
+    </div>
+  </div>
+
+  </p>
+
+
+  <div id="helpcustomers" class="collapse">
+
+    <div class="panel-group help_collapse" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpcustomersC1">
+              Customers Homepage
+            </a>
+          </h4>
+        </div>
+        <div id="helpcustomersC1" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              The <%= link_to "Customers Homepage", customers_path %> includes a table of all your customers.
+                <br><br>
+              To add a new customer, click on the Add Customer button, or click on the <%= link_to "New Customer", new_customer_path %>
+              link on the left side bar.<br> Next, you will need to fill out the contact info.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpcustomersC2">
+              Customer Page
+            </a>
+          </h4>
+        </div>
+        <div id="helpcustomersC2" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              Clicking on any line in the <%= link_to "Customers Homepage", customers_path %> table will take you the
+              <strong>Customer Page</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/customer_page_18.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              This page includes all the information you need in order to work with your customer; Contact info, Work Agreements, open jobs and Balance Information.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpcustomersC3">
+              Your Affiliates Customers
+            </a>
+          </h4>
+        </div>
+        <div id="helpcustomersC3" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              When receiving a job from a local affiliate, you will need to manually enter the
+              <strong>Customer Name</strong> and the <strong>Location Info</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/job_new_20.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              when opening the new job.
+              <br><br>
+              <strong>Note</strong>: that this customer will not show up in your Customers Homepage.
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+
+
+  <!--end of panel-group-->
+    </div>
+<!--end of collapse-->
+  </div>
+<!--end of well-->
+</div>

@@ -1,0 +1,114 @@
+<div class="well well_help_short">
+
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= t('general.general.alerts') %></h1></li>
+      <li></li>
+    </ul>
+  </div>
+
+  <p>
+    The SubConTraX system will send you an email alert and add a new notification to your account every time your action is requested,
+    or a status has been changed.<br> <br>
+  <div class="row-fluid">
+    <div class="span10">
+      Click below to learn more about how to:
+      <ul class="bullet_points">
+        <li>Alert Types</li>
+        <li>Email Alerts</li>
+        <li>System Notifications</li>
+      </ul>
+      <%= link_to(I18n.t('general.general.learn_more'), "#helpalerts", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+    </div>
+
+    <div class="span2">
+      <%= image_tag("index/Alerts.png", alt: "MiYa") %>
+    </div>
+  </div>
+
+
+  </p>
+
+
+  <div id="helpalerts" class="collapse">
+
+    <div class="panel-group help_collapse" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpalertsC1">
+              Alert Types
+            </a>
+          </h4>
+        </div>
+        <div id="helpalertsC1" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              There are four types of alerts:
+
+            <ul class="bullet_points">
+              <li><strong>Jobs</strong>: New job has been submitted to you, a status of a job that has submitted by you has changed</li>
+              <li><strong>Agreements</strong>: New agreement has been submitted to you by a SubConTraX member, or its terms has been revised and pending your approval</li>
+              <li><strong>Invites</strong>: New invite has been submitted to you or has been rejected a SubConTraX member</li>
+              <li><strong>Balance Entries</strong>: New adjustment entry has been submitted to your account by a SubConTraX member, or has been revised and pending your approval</li>
+            </ul>
+
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpalertsC2">
+              Email Alerts
+            </a>
+          </h4>
+        </div>
+        <div id="helpalertsC2" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              You will receive an email including all relevant information for every type of alert.
+              For emails that are pending your action, simply follow the instructions in the bottom of the email message.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpalertsC3">
+              Notifications
+            </a>
+          </h4>
+        </div>
+        <div id="helpalertsC3" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              The <strong>Notification Counter</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/notification_counter_16.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              indicates how many notifications have not been read by you.
+              <br> Click on the <strong>Incoming</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/notification_counter_16.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              link to go to the notifications page that includes a table of all the read and unread notifications.
+              <br>
+              Every notification in that table will include a link to the relevant job, agreement, invite or balance entry.
+
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+
+
+  <!--end of panel-group-->
+    </div>
+<!--end of collapse-->
+  </div>
+<!--end of well-->
+</div>

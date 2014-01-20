@@ -11,13 +11,26 @@
     Manage jobs and opportunities that you are currently working on, where the customer is yours, or the ones that have been submitted to you by contractors in your network.
     Using SubConTraX you can also monitor jobs and opportunities that you have outsourced to other subcontractors in your network.
     <br><br>
-    Click below to learn more about how to:
-  <ul class="bullet_points">
-    <li>Open new jobs and update their progress and billing statuses</li>
-    <li>Submit jobs to subcontractors in your network</li>
-    <li>Receive jobs from contractors in your network, and more...</li>
-  </ul>
-  <%= link_to(I18n.t('general.general.learn_more'), "#helpJobs", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+
+
+  <div class="row-fluid">
+    <div class="span10">
+      Click below to learn more about how to:
+      <ul class="bullet_points">
+        <li>Open new jobs and update their progress and billing statuses</li>
+        <li>Submit jobs to subcontractors in your network</li>
+        <li>Receive jobs from contractors in your network, and more...</li>
+      </ul>
+
+      <%= link_to(I18n.t('general.general.learn_more'), "#helpJobs", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+    </div>
+
+    <div class="span2">
+      <%= image_tag("index/Jobs.png", alt: "MiYa") %>
+    </div>
+  </div>
+
+
 
   </p>
 
@@ -27,56 +40,233 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-              Affiliates Homepage
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC1">
+              Jobs Homepage - Jobs in Progress
             </a>
           </h4>
         </div>
-        <div id="collapseOne" class="panel-collapse collapse">
+        <div id="helpjobsC1" class="panel-collapse collapse">
           <div class="panel-body help_panel_collapse">
             <p>
-              The <%= link_to "Affiliates Homepage", affiliates_path %> includes a table of all the contractors and subcontractors in your network (local and SubConTraX Members).
+              The <%= link_to "Jobs Homepage", service_calls_path %> includes two main tables:
+                <ul class="bullet_points">
+                  <li>Jobs To Work On - All jobs that you are working on. The Source column on the right side indicates whether it's your job and the customer is yours, or the whether the job has been submitted to you by contractors in your network</li>
+                  <li>Jobs That I Transferred - All jobs that you have submitted to subcontractors in your network, including the ones you are the broker (you have submitted a job that has been submitted to you before)</li>
+                </ul>
             </p>
           </div>
         </div>
       </div>
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-              Affiliate Page
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC2">
+              Jobs Homepage - All Jobs
             </a>
           </h4>
         </div>
-        <div id="collapseTwo" class="panel-collapse collapse">
+        <div id="helpjobsC2" class="panel-collapse collapse">
           <div class="panel-body help_panel_collapse">
             <p>
-              Clicking on any line in the Affiliates Page table will take you the <strong>Affiliate Page</strong>.
-              <%= image_tag("question16.png", :title =>  "<img src='http://www.subcontrax.com/assets/3Screens_gray2.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
-              This page includes all the information you need in order to work with your affiliate; Contact info, Work Agreements, Joint Projects and Balance Information.
-            </p>
+              The <strong>All Jobs</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/all_jobs_10.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              tab includes a table of all jobs that are in progress, completed or cancelled. <br>
+              You can use the filter to find jobs per customer, contractor, subcontractor, or their status.
+             </p>
           </div>
         </div>
       </div>
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-              New Affiliate - Local
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC3">
+              New Job/Opportunity
             </a>
           </h4>
         </div>
-        <div id="collapseThree" class="panel-collapse collapse">
+        <div id="helpjobsC3" class="panel-collapse collapse">
           <div class="panel-body help_panel_collapse">
             <p>
-              To add a local affiliate (not a SubConTraX member) click on the <%= link_to "New Affiliate", new_affiliate_path %>  button in the Affiliates Page.
-              Once you fill out the form and submit it, you will get to the Affiliate Homepage.
+              To open a new job, simply click on the New Job link on the left side bar, or go to the <%= link_to "Jobs Homepage", service_calls_path %>
+              and click on the New Job button. Next, you will need to fill out the new job form.
             </p>
           </div>
         </div>
       </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC4">
+              Job Page - Statuses
+            </a>
+          </h4>
+        </div>
+        <div id="helpjobsC4" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              The <strong>Statuses</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/job_statuses_11.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              section enables you to monitor the progress of the job and its billing statuses:
+
+                <ul class="bullet_points">
+                  <li><strong>Job's</strong>: indicates the overall statues of the job (e.g. New, Transferred to another subcontractor, Open, etc')</li>
+                  <li><strong>Work Status</strong>: As soon as the job has been opened, this status indicates its progress (Pending approval, In Progress, Completed, etc')</li>
+                  <li><strong>Customer Payment</strong>: As soon as the job has started, this status indicates the payment status (e.g. Pending, Invoiced or Paid)</li>
+                  <li><strong>Subcontractor Status</strong>: As soon as you submit the job to a subcontractor, you will get to see the Subcontractor Status (see Job Page - Actions section for more details on how to submit a job).  Click on the status name to get a summary of all the information you had setup before submitting the job</li>
+                  <li><strong>Contractor Status</strong>: As soon as you accept a job, that has been submitted to you by one of your contractors, you will get to see the Contractor Status</li>
+                </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC5">
+              Job Page - Actions
+            </a>
+          </h4>
+        </div>
+        <div id="helpjobsC5" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              The <strong>Actions</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/job_actions_12.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              are dynamic elements that appear on the screen based on the current status of the job, allowing you to manage your jobs and set their next statuses.<br>
+              There are three types of actions:
+
+                <ul class="bullet_points">
+                  <li><strong>General Actions</strong>: Cancel the job, accept or reject jobs that have been submitted to you, or submit the job using the Transfer action</li>
+                  <li><strong>Work Actions</strong>: Start, Dispatch and Complete the job</li>
+                  <li><strong>Billing Actions</strong>: Once the job is completed its billing actions will be enabled, allowing you to set customer billing actions, as well as managing the billing cycle with your affiliates</li>
+                 </ul>
+            </p>
+            <p>
+              <strong>Note</strong>: Roll your mouse over the action buttons to see a tooltip that will guide you what each button does.
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC6">
+              Job Page - Billing
+            </a>
+          </h4>
+        </div>
+        <div id="helpjobsC6" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              The <strong>Job Billing</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/job_billing_13.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              tab allows you to see a summary of all billing items.
+              <br><br>
+              Use the Customer Billing section to add parts and labor items that will be used to generate the customer invoice (to learn more, go to the Billing section).
+          </div>
+        </div>
+      </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC7">
+              Submit Job - Local Subcontractor
+            </a>
+          </h4>
+        </div>
+        <div id="helpjobsC7" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              You can submit a job to a local subcontractor by clicking the Transfer button in the Actions section, and then fill out the form that opens once you click the
+              <strong>Transfer</strong> button
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/job_transfer_14.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              <br>
+              If you choose a "Flat Fee" agreement, make sure to enter the Subcontractor Fee before submitting the form.
+              This is necessary to calculate the balance between you and your subcontractor.<br>
+              In case you need to update the fee, after submitting the job, you will be able to do so using the <%= link_to "Accounting Entries", accounting_entries_path %> page.
+              <br><br>
+              <strong>Note</strong>: In case the job has been previously submitted to you by a SubConTraX member, you will be able to transfer it yourself only if the "Re Transfer" option has been checked by the SubConTraX member.
+
+          </div>
+        </div>
+      </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC8">
+              Submit Job - SubConTraX Member
+            </a>
+          </h4>
+        </div>
+        <div id="helpjobsC8" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              Before submitting a job to a SubConTraX member, your subcontractor has to be a part of your network.
+              Meaning; your subcontractor had accepted an invite from you, or you have accepted an invite that had been submitted to you.
+              <br><br>
+              To submit the job, simply follow the steps of in the previous section (Submit Job - Local Subcontractor).
+              Once the job has been accepted by your subcontractor, you will be able to monitor its progress by using the Statuses section.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC9">
+              Receive New Job - Local Contractor
+            </a>
+          </h4>
+        </div>
+        <div id="helpjobsC9" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              To receive new job from a local contractor, you will need to open a new job and select the contractor from the dropdown.
+              <br>
+              Since the customer is not yours in this case, you will need to enter the customer name and fill out the location info on the right.
+              Once the job is opened, you will need to manually manage the job in the SubConTraX system.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpjobsC10">
+              Receive New Job - SubConTraX Member
+            </a>
+          </h4>
+        </div>
+        <div id="helpjobsC10" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              Once a job is submitted to you by a SubConTraX Member, you will receive an email with all the relevant info.
+              To access the job and accept or reject it, simply click on the "More Details" button in your email.
+              <br><br>
+              You will also get new <strong>Notification</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/job_notification_15.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              that will redirect you to the Job Page, allowing you to accept or reject it using the <strong>Actions</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/job_accept_12_1.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              buttons.
+          </div>
+        </div>
+      </div>
+
+
+      <!--end of panel-group-->
     </div>
-
+    <!--end of collapse-->
   </div>
-
+  <!--end of well-->
 </div>

@@ -5,15 +5,15 @@
       </span>
   </td>
   <td id="notification_<%= notification.id %>_subject"> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel: 'tooltip' %> </td>
-  <td id="notification_<%= notification.id %>_message"><%= notification.html_message %> </td>
+  <td  class="notification_content" id="notification_<%= notification.id %>_message"><%= notification.html_message %> </td>
   <% else %>
       <td>
         <span>
           <%= image_tag("index/new_alert.png", alt: "MiYa") %>
         </span>
       </td>
-      <td id="notification_<%= notification.id %>_subject"> <strong> <%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %> </strong>    </td>
-      <td id="notification_<%= notification.id %>_message"><strong>  <%= notification.html_message %> </strong>  </td>
+      <td id="notification_<%= notification.id %>_subject"><%= link_to notification.subject, notification_path(notification),  title: notification.content, rel:   'tooltip' %></td>
+      <td class="notification_content" id="notification_<%= notification.id %>_message"><%= notification.html_message %></td>
    <% end %>
   <td id="notification_<%= notification.id %>_actions">
     <%= link_to 'Dismiss', notification_path(notification), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>

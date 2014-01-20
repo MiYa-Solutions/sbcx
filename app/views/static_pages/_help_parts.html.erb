@@ -1,0 +1,84 @@
+<div class="well well_help_short">
+
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= t('general.general.manage_parts') %></h1></li>
+      <li></li>
+    </ul>
+  </div>
+
+  <p>
+    SubConTraX allows you to manage parts that you usually work with, and easily add them to your jobs.
+    <br>   <br>
+  <div class="row-fluid">
+    <div class="span10">
+      The following section will guide you on how to:
+      <ul class="bullet_points">
+        <li>Add and manage parts</li>
+        <li>Adding parts to jobs in progress</li>
+      </ul>
+      <%= link_to(I18n.t('general.general.learn_more'), "#helpparts", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+    </div>
+
+    <div class="span2">
+      <%= image_tag("index/Parts.png", alt: "MiYa") %>
+    </div>
+  </div>
+
+
+  </p>
+
+
+  <div id="helpparts" class="collapse">
+
+    <div class="panel-group help_collapse" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helppartsC1">
+              Parts Homepage
+            </a>
+          </h4>
+        </div>
+        <div id="helppartsC1" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              The <%= link_to "Parts Homepage", materials_path %> includes a table of all the parts you have previously added to your account.<br>
+              To add a new part, simply fill out the form on the right side
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helppartsC2">
+              Add Parts To Jobs
+            </a>
+          </h4>
+        </div>
+        <div id="helppartsC2" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              The main benefit of adding parts to the <%= link_to "Parts Homepage", materials_path %>,
+              is that, while working on a job you can easily add registered parts, without having to enter their price and cost.
+              <br><br>
+              To add a registered part to your job, type the part's name in the Add Item form under the
+              The <strong>Customer Billing</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/customer_billing_19.png'/>", :rel => 'tooltip', "data-placement" => "left") %>
+              section.
+              <br> You will notice that its cost and price are added automatically. Next, enter the quantity and who the buyer is and then click on the Add button.
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+  <!--end of panel-group-->
+    </div>
+<!--end of collapse-->
+  </div>
+<!--end of well-->
+</div>

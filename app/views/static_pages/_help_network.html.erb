@@ -9,16 +9,23 @@
 
   <p>
     Your affiliates are contractors and subcontractors that you work with on joint projects.
-    SubConTraX allows you to work with your local affiliates, as well as with other SubConTraX members.
+    <br>SubConTraX allows you to work with your local affiliates, as well as with other SubConTraX members.
     <br><br>
-    Click below to learn more about how to:
-  <ul class="bullet_points">
-    <li>Add your local affiliates to your network</li>
-    <li>Search and invite SubConTraX members to join your network</li>
-    <li>Propose, negotiate, sign and manage work agreements with SubConTraX members, and more...</li>
-  </ul>
-  <%= link_to(I18n.t('general.general.learn_more'), "#helpNetwork", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+    <div class="row-fluid">
+      <div class="span10">
+        Click below to learn more about how to:
+        <ul class="bullet_points">
+          <li>Add your local affiliates to your network</li>
+          <li>Search and invite SubConTraX members to join your network</li>
+          <li>Propose, negotiate, sign and manage work agreements with SubConTraX members, and more...</li>
+        </ul>
+        <%= link_to(I18n.t('general.general.learn_more'), "#helpNetwork", class: "btn btn-mini btn-primary", data: { toggle: 'collapse' }) %>
+      </div>
 
+      <div class="span2">
+        <%= image_tag("index/Invite.png", alt: "MiYa") %>
+      </div>
+   </div>
   </p>
 
 
@@ -28,12 +35,12 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpNetworkC1">
               Affiliates Homepage
             </a>
           </h4>
         </div>
-        <div id="collapseOne" class="panel-collapse collapse">
+        <div id="helpNetworkC1" class="panel-collapse collapse">
           <div class="panel-body help_panel_collapse">
             <p>
               The <%= link_to "Affiliates Homepage", affiliates_path %> includes a table of all the contractors and subcontractors in your network (local and SubConTraX Members).
@@ -41,33 +48,35 @@
           </div>
         </div>
       </div>
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpNetworkC2">
               Affiliate Page
             </a>
           </h4>
         </div>
-        <div id="collapseTwo" class="panel-collapse collapse">
+        <div id="helpNetworkC2" class="panel-collapse collapse">
           <div class="panel-body help_panel_collapse">
             <p>
-              Clicking on any line in the Affiliates Page table will take you the <strong>Affiliate Page</strong>.
-              <%= image_tag("question16.png", :title =>  "<img src='http://www.subcontrax.com/assets/3Screens_gray2.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              Clicking on any line in the <%= link_to "Affiliates Homepage", affiliates_path %> table will take you the <strong>Affiliate Page</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/affiliate_page_1.png'/>", :rel => 'tooltip', "data-placement" => "right") %><br>
               This page includes all the information you need in order to work with your affiliate; Contact info, Work Agreements, Joint Projects and Balance Information.
             </p>
           </div>
         </div>
       </div>
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpNetworkC3">
               New Affiliate - Local
             </a>
           </h4>
         </div>
-        <div id="collapseThree" class="panel-collapse collapse">
+        <div id="helpNetworkC3" class="panel-collapse collapse">
           <div class="panel-body help_panel_collapse">
             <p>
               To add a local affiliate (not a SubConTraX member) click on the <%= link_to "New Affiliate", new_affiliate_path %>  button in the Affiliates Page.
@@ -76,8 +85,142 @@
           </div>
         </div>
       </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpNetworkC4">
+              New Affiliate - SubConTraX Member
+            </a>
+          </h4>
+        </div>
+        <div id="helpNetworkC4" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              To add a SubConTraX member to your network,  use the <strong>Search</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/affiliate_search_2.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              feature in the  <%= link_to "Affiliates Homepage", affiliates_path %> to find your affiliate. and then invite him to work together. <br>
+              To send an invitation, you can either click on the <strong>Send Invite</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/send_invite_3.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              button in your search result, or in the <strong>Affiliate Page</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/affiliate_page_1.png'/>", :rel => 'tooltip', "data-placement" => "right") %><br>
+              Once  your invite is accepted by your affiliate, you can start working together.
+              <br><br>
+              You will get an email and a new notification (see Alerts section) once an Invite has been submitted to you. You will be able to accepted or rejected the invite by clicking on the link in your email to get to
+              <strong>invite Notification</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/invite_notification_4.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              page, or by visiting your <strong>Affiliate Page</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/affiliate_page_1_1.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpNetworkC5">
+              Work Agreements
+            </a>
+          </h4>
+        </div>
+        <div id="helpNetworkC5" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              By default , Every time you add a new affiliate to your network, a Flat Fee agreement is created,
+              allowing you to specify the rate you have agreed upon in every joint project (Once you open a new job where your affiliate is your subcontractor, or when your affiliate is the contractor submitting the job to you) .
+              <br><br>
+              If you wish to add additional work agreements and specify posting rules for each agreement,
+              click on <strong>Add Agreement</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/add_agreement_5.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              in your Affiliate Page, and follow the steps described in the next section; Add New Agreement.
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpNetworkC6">
+              Add New Agreement - Local Affiliate
+            </a>
+          </h4>
+        </div>
+        <div id="helpNetworkC6" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              After you click the <strong>Add Agreement</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/add_agreement_5.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              button you will need to fill out the form and click on the Create button.<br>
+              Next, you will be redirected to the <strong>Agreement Page</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/agreement_page_6.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              ,where you can add <strong>Agreement Rules</strong>
+              <%= image_tag("question16.png", :title =>  "<img src='/assets/help/agreement_rules_7.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              and activate the agreement.
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpNetworkC7">
+              Add New Agreement - SubConTraX Member
+            </a>
+          </h4>
+        </div>
+        <div id="helpNetworkC7" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              After adding a new agreement to a SubConTraX member in your network, your agreement will be sent to your affiliate once you submit it for approval, and your affiliate will be able to accept and activate it (or suggest changes for your approval).
+              <br>You will get an email and a new notification for every step in the approval process with relevant call to actions.
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#helpNetworkC8">
+              Send a Referral
+            </a>
+          </h4>
+        </div>
+        <div id="helpNetworkC8" class="panel-collapse collapse">
+          <div class="panel-body help_panel_collapse">
+            <p>
+              It is in your best interest that your local affiliates will become SubConTraX users.
+              <br>When working with SubConTraX members on joint projects:
+                <ul class="bullet_points">
+                  <li>When your affiliate is the contractor: the job will be submitted to your account automatically, saving you the time needed to manually open a new job and enter all the job details</li>
+                  <li>When you submit the job to your subcontractor: You will receive alerts every time the status of the job changes (e.g. your subcontractor accepted/rejected the job, added parts, completed the job, etc') and you will also be able to monitor the progress of the job and its billing status</li>
+                </ul>
+            </p>
+            <p>
+              To send a referral, click on the Send Referral button located in the <strong>Affiliate Page</strong>
+            <%= image_tag("question16.png", :title =>  "<img src='/assets/help/affiliate_page_ref_8.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              , or in the <strong>Affiliates Homepage</strong>
+            <%= image_tag("question16.png", :title =>  "<img src='/assets/help/affiliates_homepage_ref_9.png'/>", :rel => 'tooltip', "data-placement" => "right") %>
+              table.
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+  <!--end of panel-group-->
     </div>
-
+<!--end of collapse-->
   </div>
-
+<!--end of well-->
 </div>
