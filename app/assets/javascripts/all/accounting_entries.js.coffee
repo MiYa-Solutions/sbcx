@@ -10,7 +10,8 @@ jQuery ->
         sExtends: "collection"
         sButtonText: "Save <span class=\"caret\" />"
         aButtons: ["csv", "xls", "pdf"]
-      ]
+      ],
+      sSwfPath: "copy_csv_xls_pdf.swf"
     bProcessing: true
     bStateSave: true
     bServerSide: true
@@ -35,8 +36,8 @@ jQuery ->
   $.extend $.fn.dataTableExt.oStdClasses,
     sWrapper: "dataTables_wrapper form-inline"
 
-#      $(nRow).click ->
-#        alert ('clicked row' + $(nRow).attr('id'))
+  #      $(nRow).click ->
+  #        alert ('clicked row' + $(nRow).attr('id'))
   $('#entries_table').dataTable().columnFilter()
   $('#get-entries-btn').live 'click', (e) ->
     oTable = $('#entries_table').dataTable()
@@ -48,13 +49,12 @@ jQuery ->
     $('#accounting_entry_account_id').val(new_acc)
     $('#account_id').val(new_acc)
     $('#accounting_entry_account_id').val(new_acc)
-    $('#get-entries-btn').data('account-id', new_acc )
+    $('#get-entries-btn').data('account-id', new_acc)
     $('#balance').text($('#account').find(":selected").data('balance'))
     if $('#get-entries-btn').data('account-id') != ''
       $('#add_new_entry').show()
     else
       $('#add_new_entry').hide()
-
 
 
   $('#entries_table').dataTable.fnFilterOnReturn

@@ -10,7 +10,7 @@ jQuery ->
         sExtends: "collection"
         sButtonText: "Save <span class=\"caret\" />"
         aButtons: ["csv", "xls", "pdf"]
-      ]
+      ],
       sSwfPath: "copy_csv_xls_pdf.swf"
     oColumnFilterWidgets:
       aiExclude: [ 0, 1, 6, 7, 8, 9 ]
