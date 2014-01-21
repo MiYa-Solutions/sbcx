@@ -47,14 +47,17 @@ group :production do
   gem 'rails_12factor'
 end
 
+group :development, :staging do
+  gem 'letter_opener'
+end
 
 group :development do
   gem 'ruby-graphviz', :require => 'graphviz'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
-  gem 'letter_opener'
 end
+
 group :development, :test do
   gem 'rspec-rails', '2.13.0'
   gem 'annotate', '2.5.0'
