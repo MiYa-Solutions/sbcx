@@ -11,7 +11,7 @@ jQuery ->
         sButtonText: "Save <span class=\"caret\" />"
         aButtons: ["csv", "xls", "pdf"]
       ],
-      sSwfPath: "assets/media/swf/copy_csv_xls_pdf.swf"
+      sSwfPath: "assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     oColumnFilterWidgets:
       aiExclude: [ 0, 1, 6, 7, 8, 9 ]
 
