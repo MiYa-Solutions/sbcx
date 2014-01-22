@@ -10,6 +10,7 @@
 #  updated_at       :datetime         not null
 #  balance_cents    :integer          default(0), not null
 #  balance_currency :string(255)      default("USD"), not null
+#  synch_status     :integer
 #
 
 class Account < ActiveRecord::Base
