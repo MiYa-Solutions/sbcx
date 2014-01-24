@@ -57,6 +57,7 @@ class ServiceCall < Ticket
 
 
   validate :financial_data_change
+  attr_accessor :payment_amount
 
   def my_role
     if self.organization_id == self.subcontractor_id # am I the subcontractor?

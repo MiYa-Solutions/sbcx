@@ -106,11 +106,12 @@ class ServiceCallEvent < Event
     nil # should be implemented in the subclass in case the provider needs to be notified
   end
 
+  # todo move to posting rule (event should not know the account etc.)
   def set_customer_account_as_paid
     account = Account.for_customer(service_call.customer).lock(true).first
     ticket  = MyServiceCall.find(service_call.ref_id)
 
-    props = { amount:      -(service_call.total_price + (service_call.total_price * (service_call.tax / 100.0))),
+    props = { amount:      -amount,
               ticket:      ticket,
               event:       self,
               agreement:   service_call.customer.agreements.first,

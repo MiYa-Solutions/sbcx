@@ -47,7 +47,7 @@ class MyServiceCallObserver < ServiceCallObserver
   def after_paid_payment(service_call, transition)
     Rails.logger.debug { "invoked AFTER paid \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
-    service_call.events << ServiceCallPaidEvent.new
+    service_call.events << ServiceCallPaidEvent.new(amount: Money.new(service_call.payment_amount.to_f * 100, service_call.total.currency))
   end
 
   def after_collect_payment(service_call, transition)

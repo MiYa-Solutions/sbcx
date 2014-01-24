@@ -106,16 +106,19 @@ class MyServiceCall < ServiceCall
     end
   end
 
-  BILLING_STATUS_PENDING                = 4100
-  BILLING_STATUS_INVOICED               = 4101
-  BILLING_STATUS_COLLECTED_BY_EMPLOYEE  = 4102
-  BILLING_STATUS_OVERDUE                = 4103
-  BILLING_STATUS_PAID                   = 4104
-  BILLING_STATUS_INVOICED_BY_SUBCON     = 4105
-  BILLING_STATUS_COLLECTED_BY_SUBCON    = 4106
-  BILLING_STATUS_SUBCON_CLAIM_DEPOSITED = 4107
-  BILLING_STATUS_CLEARED                = 4108
-  BILLING_STATUS_REJECTED               = 4109
+  BILLING_STATUS_PENDING                 = 4100
+  BILLING_STATUS_INVOICED                = 4101
+  BILLING_STATUS_COLLECTED_BY_EMPLOYEE   = 4102
+  BILLING_STATUS_OVERDUE                 = 4103
+  BILLING_STATUS_PAID                    = 4104
+  BILLING_STATUS_INVOICED_BY_SUBCON      = 4105
+  BILLING_STATUS_COLLECTED_BY_SUBCON     = 4106
+  BILLING_STATUS_SUBCON_CLAIM_DEPOSITED  = 4107
+  BILLING_STATUS_CLEARED                 = 4108
+  BILLING_STATUS_REJECTED                = 4109
+  BILLING_STATUS_PARTIALLY_PAID          = 4110
+  BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE = 4111
+  BILLING_STATUS_P_COLLECTED_BY_SUBCON   = 4112
 
 
   # if collection is not allowed for this service call, then the initial status is set to na - not applicable
@@ -134,6 +137,9 @@ class MyServiceCall < ServiceCall
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :cleared, value: BILLING_STATUS_CLEARED
     state :rejected, value: BILLING_STATUS_REJECTED
+    state :partially_paid, value: BILLING_STATUS_PARTIALLY_PAID
+    state :partial_payment_collected_by_employee, value: BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE
+    state :partial_payment_collected_by_subcon, value: BILLING_STATUS_P_COLLECTED_BY_SUBCON
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -173,8 +179,10 @@ class MyServiceCall < ServiceCall
     end
 
     event :paid do
-      transition [:invoiced, :invoiced_by_subcon, :overdue] => :paid, if: ->(sc) { !sc.canceled? && !sc.organization.multi_user? }
-      transition :rejected => :paid, if: ->(sc) { !sc.canceled? }
+      transition [:invoiced, :invoiced_by_subcon, :overdue] => :partially_paid, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && !sc.organization.multi_user? }
+      transition [:invoiced, :invoiced_by_subcon, :overdue] => :paid, if: ->(sc) { sc.fully_paid? && !sc.canceled? && !sc.organization.multi_user? }
+      transition :rejected => :partially_paid, if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
+      transition :rejected => :paid, if: ->(sc) { sc.fully_paid? && !sc.canceled? }
     end
 
     event :subcon_collected do
@@ -188,6 +196,15 @@ class MyServiceCall < ServiceCall
     event :confirm_deposit do
       transition :subcon_claim_deposited => :paid, if: ->(sc) { !sc.canceled? }
     end
+  end
+
+  def fully_paid?
+    current_payment = payment_amount || 0
+    total - (paid_amount - Money.new(current_payment, total.currency)) <= 0
+  end
+
+  def paid_amount
+    Money.new(entries.where(type: %w(ChequePayment CreditPayment AmexPayment CashPayment)).sum(:amount_cents), total.currency)
   end
 
   def can_uncancel?

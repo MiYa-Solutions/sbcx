@@ -385,7 +385,7 @@ DEPENDENCIES
   meta_request
   meta_search (>= 1.1.0.pre)
   mocha
-  money-rails
+  money-rails (= 0.8.1)
   newrelic_rpm
   nifty-generators
   paper_trail (~> 3.0.0)

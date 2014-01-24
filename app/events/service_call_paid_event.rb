@@ -1,4 +1,11 @@
+require 'hstore_setup_methods'
 class ServiceCallPaidEvent < ServiceCallEvent
+  extend HstoreSetupMethods
+
+  setup_hstore_attr 'amount_cents'
+  setup_hstore_attr 'amount_currency'
+
+  monetize :amount_cents
 
   def init
     self.name         = I18n.t('service_call_paid_event.name')
@@ -25,6 +32,15 @@ class ServiceCallPaidEvent < ServiceCallEvent
     super
   end
 
+  private
+
+  #def amount_currency
+  #  properties['amount_currency'] || 'USD'
+  #end
+
+  def amount_cents
+    properties['amount_cents'] || 0.0
+  end
 
 
 end
