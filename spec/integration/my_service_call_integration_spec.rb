@@ -584,6 +584,9 @@ describe 'My Service Call Integration Spec' do
                                                          ServiceCallInvoiceEvent,
                                                          ServiceCallPaidEvent]
                     end
+                    it 'payment amount is the submitted one' do
+                      expect(job.events.where(type: 'ServiceCallPaidEvent').first.amount).to eq Money.new_with_amount(10)
+                    end
 
                     describe 'billing' do
                       describe 'customer billing' do
@@ -593,9 +596,37 @@ describe 'My Service Call Integration Spec' do
                       end
                     end
 
-                    it 'payment amount is the submitted one' do
-                      expect(job.events.where(type: 'ServiceCallPaidEvent').first.amount).to eq Money.new_with_amount(10)
+                    context 'another partial payment' do
+                      before do
+                        job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '10')
+                      end
+
+                      it 'payment status should be partially paid' do
+                        expect(job.billing_status_name).to eq :partially_paid
+                      end
+
+                      describe 'billing' do
+                        describe 'customer billing' do
+                          it 'balance should be 10' do
+                            expect(job.customer.account.reload.balance).to eq Money.new(10000 - 2000, 'USD')
+                          end
+                        end
+                      end
+
+                      context 'when paying the remainder' do
+                        before do
+                          job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '80')
+                        end
+
+                        it 'payment status should be partially cleared' do
+                          expect(job.billing_status_name).to eq :cleared
+                        end
+
+                      end
+
+
                     end
+
                   end
 
                 end
