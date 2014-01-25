@@ -101,6 +101,10 @@ class ServiceCall < Ticket
     state :rejected, value: WORK_STATUS_REJECTED
     state :done, value: WORK_STATUS_DONE
 
+    after_transition any => :done do |sc, transition|
+      sc.check_and_set_as_fully_paid
+    end
+
     after_failure do |service_call, transition|
       Rails.logger.debug { "#{service_call.class.name} work status state machine failure. errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect + "\n The Service Call:" + service_call.inspect }
     end

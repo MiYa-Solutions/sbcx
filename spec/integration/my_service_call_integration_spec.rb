@@ -62,6 +62,10 @@ describe 'My Service Call Integration Spec' do
             job.work_status_events.should =~ [:dispatch]
           end
 
+          it 'available billing events should be collect' do
+            job.billing_status_events.should =~ [:collect]
+          end
+
           context 'when dispatching' do
 
             before do
@@ -88,8 +92,8 @@ describe 'My Service Call Integration Spec' do
               job.work_status_events.should =~ [:start]
             end
 
-            it ' there should be no available payment events' do
-              job.billing_status_events.should =~ []
+            it 'collect is the only available payment events' do
+              job.billing_status_events.should =~ [:collect]
             end
 
             it 'dispatch event is associated with the job' do
@@ -104,7 +108,7 @@ describe 'My Service Call Integration Spec' do
 
               before do
                 job.start_work!
-                add_bom_to_job job
+                add_bom_to_job job, price: 100, cost: 100, quantity: 1
                 job.complete_work!
                 job.invoice_payment!
               end
@@ -119,6 +123,7 @@ describe 'My Service Call Integration Spec' do
                   before do
                     job.update_attributes(billing_status_event: 'collect',
                                           payment_type:         'cash',
+                                          payment_amount:       '100',
                                           collector:            technician)
                   end
 
@@ -160,6 +165,15 @@ describe 'My Service Call Integration Spec' do
 
                   it 'the technician is not allowed to invoke the deposit event' do
                     expect(event_permitted_for_job?('billing_status', 'deposited', technician, job)).to be_false
+                  end
+
+                  describe 'billing' do
+
+                    describe 'customer billing' do
+                      it 'customer balance should be zero' do
+                        expect(job.customer.account.balance).to eq 0
+                      end
+                    end
                   end
 
 
@@ -263,6 +277,7 @@ describe 'My Service Call Integration Spec' do
                 before do
                   job.update_attributes(billing_status_event: 'collect',
                                         payment_type:         'credit_card',
+                                        payment_amount:       '100',
                                         collector:            technician)
                 end
 
@@ -299,16 +314,11 @@ describe 'My Service Call Integration Spec' do
                 end
 
                 it 'the org admin is allowed to invoke the deposit event' do
-                  params = ActionController::Parameters.new({ service_call: {
-                      billing_status_event: 'deposited'
-                  } })
-                  p      = PermittedParams.new(params, org_admin, job)
-                  expect(p.service_call).to include('billing_status_event')
+                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
                 end
 
                 it 'the technician is not allowed to invoke the deposit event' do
                   expect(event_permitted_for_job?('billing_status', 'deposited', technician, job)).to be_false
-                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
                 end
 
 
@@ -406,12 +416,35 @@ describe 'My Service Call Integration Spec' do
             job.work_status_events.should =~ [:complete]
           end
 
-          it 'there should be no available payment events' do
-            expect(job.billing_status_events).to be_empty
+          it 'paid is the only available payment events' do
+            expect(job.billing_status_events).to eq [:paid]
           end
 
           it 'start event is associated with the job' do
             job.events.map(&:class).should =~ [ServiceCallStartEvent]
+          end
+
+          context 'partial payment' do
+            before do
+              job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '10')
+            end
+
+            it 'payment status should be partially paid' do
+              expect(job.billing_status_name).to eq :partially_paid
+            end
+
+            it 'available payment events are paid' do
+              expect(job.billing_status_events).to eq [:paid]
+            end
+
+            it 'payment event is associated with the job' do
+              job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                 ServiceCallPaidEvent]
+            end
+            it 'payment amount is the submitted one' do
+              expect(job.events.where(type: 'ServiceCallPaidEvent').first.amount).to eq Money.new_with_amount(10)
+            end
+
           end
 
           context 'when changing the scheduled time' do
@@ -434,59 +467,61 @@ describe 'My Service Call Integration Spec' do
 
           context 'when I complete the job' do
 
-            before do
-              add_bom_to_job job, price: 100, cost: 10, quantity: 1
-              job.update_attributes(work_status_event: 'complete')
+            context 'when a preliminary payment was made before the completion' do
+              context 'when the preliminary payment was for the full amount' do
+                before do
+                  job.update_attributes(billing_status_event: 'paid', payment_amount: '100', payment_type: 'cash')
+                  add_bom_to_job job, price: 100, cost: 10, quantity: 1
+                  job.update_attributes(work_status_event: 'complete')
+                end
+
+                it 'work status should be done' do
+                  expect(job).to be_work_done
+                end
+
+                it 'payment status should be cleared' do
+                  expect(job.billing_status_name).to eq :cleared
+                end
+
+              end
+              context 'when the preliminary payment was for a partial amount' do
+                before do
+                  job.update_attributes(billing_status_event: 'paid', payment_amount: '10', payment_type: 'cash')
+                  add_bom_to_job job, price: 100, cost: 10, quantity: 1
+                  job.update_attributes(work_status_event: 'complete')
+                end
+
+                it 'work status should be done' do
+                  expect(job).to be_work_done
+                end
+
+                it 'payment status should be partially_paid' do
+                  expect(job.billing_status_name).to eq :partially_paid
+                end
+
+              end
             end
 
-            it 'status should be open' do
-              expect(job).to be_open
-            end
-
-            it 'completion time is set' do
-              expect(job.completed_on).to be_kind_of(Time)
-            end
-
-            it 'work status should be done' do
-              expect(job).to be_work_done
-            end
-
-            it 'payment status should be pending' do
-              expect(job).to be_payment_pending
-            end
-
-            it 'available status events should be cancel' do
-              job.status_events.should =~ [:cancel]
-            end
-
-            it 'there should be no available work events' do
-              job.work_status_events.should =~ []
-            end
-
-            it 'available payment events are invoice' do
-              job.billing_status_events.should =~ [:invoice]
-            end
-
-            it 'complete event is associated with the job' do
-              job.events.map(&:class).should =~ [ServiceCallStartEvent, ServiceCallCompleteEvent]
-            end
-
-            context 'when I invoice' do
-
+            context 'when there was no preliminary payment' do
               before do
-                job.update_attributes(billing_status_event: 'invoice')
+                add_bom_to_job job, price: 100, cost: 10, quantity: 1
+                job.update_attributes(work_status_event: 'complete')
               end
 
               it 'status should be open' do
                 expect(job).to be_open
               end
 
+              it 'completion time is set' do
+                expect(job.completed_on).to be_kind_of(Time)
+              end
+
               it 'work status should be done' do
                 expect(job).to be_work_done
               end
 
-              it 'payment status should be invoiced' do
-                expect(job).to be_payment_invoiced
+              it 'payment status should be pending' do
+                expect(job).to be_payment_pending
               end
 
               it 'available status events should be cancel' do
@@ -497,226 +532,261 @@ describe 'My Service Call Integration Spec' do
                 job.work_status_events.should =~ []
               end
 
-
-              it 'available payment events are paid and overdue' do
-                job.billing_status_events.should =~ [:paid, :overdue]
+              it 'available payment events are invoice' do
+                job.billing_status_events.should =~ [:invoice]
               end
 
-              it 'invoice event is associated with the job' do
-                job.events.map(&:class).should =~ [ServiceCallStartEvent, ServiceCallCompleteEvent, ServiceCallInvoiceEvent]
+              it 'complete event is associated with the job' do
+                job.events.map(&:class).should =~ [ServiceCallStartEvent, ServiceCallCompleteEvent]
               end
 
-              context 'when I collect the customer payment' do
+              context 'when I invoice' do
 
-                context 'when collecting cash' do
+                before do
+                  job.update_attributes(billing_status_event: 'invoice')
+                end
 
-                  context 'when collecting the full payment' do
-                    before do
-                      job.update_attributes(billing_status_event: 'paid', payment_type: 'cash')
-                    end
+                it 'status should be open' do
+                  expect(job).to be_open
+                end
 
-                    it 'status should be open' do
-                      expect(job).to be_open
-                    end
+                it 'work status should be done' do
+                  expect(job).to be_work_done
+                end
 
-                    it 'work status should be done' do
-                      expect(job).to be_work_done
-                    end
+                it 'payment status should be invoiced' do
+                  expect(job).to be_payment_invoiced
+                end
 
-                    it 'payment status should be cleared' do
-                      expect(job).to be_payment_cleared
-                    end
+                it 'available status events should be cancel' do
+                  job.status_events.should =~ [:cancel]
+                end
 
-                    it 'available status events should be cancel and close' do
-                      job.status_events.should =~ [:cancel, :close]
-                    end
-
-                    it 'there should be no available work events' do
-                      job.work_status_events.should =~ []
-                    end
+                it 'there should be no available work events' do
+                  job.work_status_events.should =~ []
+                end
 
 
-                    it 'available payment events are paid and overdue' do
-                      job.billing_status_events.should =~ []
-                    end
+                it 'available payment events are paid and overdue' do
+                  job.billing_status_events.should =~ [:paid, :overdue]
+                end
 
-                    it 'invoice event is associated with the job' do
-                      job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                         ServiceCallCompleteEvent,
-                                                         ServiceCallInvoiceEvent,
-                                                         ServiceCallPaidEvent]
-                    end
-                  end
+                it 'invoice event is associated with the job' do
+                  job.events.map(&:class).should =~ [ServiceCallStartEvent, ServiceCallCompleteEvent, ServiceCallInvoiceEvent]
+                end
 
-                  context 'when collecting partial payment' do
-                    before do
-                      job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '10')
-                    end
+                context 'when I collect the customer payment' do
 
-                    it 'status should be open' do
-                      expect(job).to be_open
-                    end
+                  context 'when collecting cash' do
 
-                    it 'work status should be done' do
-                      expect(job).to be_work_done
-                    end
+                    context 'when collecting the full payment' do
+                      before do
+                        job.update_attributes(billing_status_event: 'paid', payment_type: 'cash')
+                      end
 
-                    it 'payment status should be partially paid' do
-                      expect(job.billing_status_name).to eq :partially_paid
-                    end
+                      it 'status should be open' do
+                        expect(job).to be_open
+                      end
 
-                    it 'available status events should be cancel and close' do
-                      job.status_events.should =~ [:cancel, :close]
-                    end
+                      it 'work status should be done' do
+                        expect(job).to be_work_done
+                      end
 
-                    it 'there should be no available work events' do
-                      job.work_status_events.should =~ []
-                    end
+                      it 'payment status should be cleared' do
+                        expect(job).to be_payment_cleared
+                      end
+
+                      it 'available status events should be cancel and close' do
+                        job.status_events.should =~ [:cancel, :close]
+                      end
+
+                      it 'there should be no available work events' do
+                        job.work_status_events.should =~ []
+                      end
 
 
-                    it 'available payment events are paid and overdue' do
-                      job.billing_status_events.should =~ []
-                    end
+                      it 'available payment events are paid and overdue' do
+                        job.billing_status_events.should =~ []
+                      end
 
-                    it 'payment event is associated with the job' do
-                      job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                         ServiceCallCompleteEvent,
-                                                         ServiceCallInvoiceEvent,
-                                                         ServiceCallPaidEvent]
-                    end
-                    it 'payment amount is the submitted one' do
-                      expect(job.events.where(type: 'ServiceCallPaidEvent').first.amount).to eq Money.new_with_amount(10)
-                    end
-
-                    describe 'billing' do
-                      describe 'customer billing' do
-                        it 'balance should be 10' do
-                          expect(job.customer.account.reload.balance).to eq Money.new(10000 - 1000, 'USD')
-                        end
+                      it 'invoice event is associated with the job' do
+                        job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                           ServiceCallCompleteEvent,
+                                                           ServiceCallInvoiceEvent,
+                                                           ServiceCallPaidEvent]
                       end
                     end
 
-                    context 'another partial payment' do
+                    context 'when collecting partial payment' do
                       before do
                         job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '10')
+                      end
+
+                      it 'status should be open' do
+                        expect(job).to be_open
+                      end
+
+                      it 'work status should be done' do
+                        expect(job).to be_work_done
                       end
 
                       it 'payment status should be partially paid' do
                         expect(job.billing_status_name).to eq :partially_paid
                       end
 
+                      it 'available status events should be cancel and close' do
+                        job.status_events.should =~ [:cancel, :close]
+                      end
+
+                      it 'there should be no available work events' do
+                        job.work_status_events.should =~ []
+                      end
+
+
+                      it 'available payment events are paid and overdue' do
+                        job.billing_status_events.should =~ []
+                      end
+
+                      it 'payment event is associated with the job' do
+                        job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                           ServiceCallCompleteEvent,
+                                                           ServiceCallInvoiceEvent,
+                                                           ServiceCallPaidEvent]
+                      end
+                      it 'payment amount is the submitted one' do
+                        expect(job.events.where(type: 'ServiceCallPaidEvent').first.amount).to eq Money.new_with_amount(10)
+                      end
+
                       describe 'billing' do
                         describe 'customer billing' do
                           it 'balance should be 10' do
-                            expect(job.customer.account.reload.balance).to eq Money.new(10000 - 2000, 'USD')
+                            expect(job.customer.account.reload.balance).to eq Money.new(10000 - 1000, 'USD')
                           end
                         end
                       end
 
-                      context 'when paying the remainder' do
+                      context 'another partial payment' do
                         before do
-                          job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '80')
+                          job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '10')
                         end
 
-                        it 'payment status should be partially cleared' do
-                          expect(job.billing_status_name).to eq :cleared
+                        it 'payment status should be partially paid' do
+                          expect(job.billing_status_name).to eq :partially_paid
                         end
+
+                        describe 'billing' do
+                          describe 'customer billing' do
+                            it 'balance should be 10' do
+                              expect(job.customer.account.reload.balance).to eq Money.new(10000 - 2000, 'USD')
+                            end
+                          end
+                        end
+
+                        context 'when paying the remainder' do
+                          before do
+                            job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '80')
+                          end
+
+                          it 'payment status should be partially cleared' do
+                            expect(job.billing_status_name).to eq :cleared
+                          end
+
+                        end
+
 
                       end
 
-
                     end
 
                   end
 
-                end
+                  context 'when collecting none cash payment' do
 
-                context 'when collecting none cash payment' do
-
-                  before do
-                    job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque')
-                  end
-
-                  it 'status should be open' do
-                    expect(job).to be_open
-                  end
-
-                  it 'work status should be done' do
-                    expect(job).to be_work_done
-                  end
-
-                  it 'payment status should be paid' do
-                    expect(job).to be_payment_paid
-                  end
-
-                  it 'available status events should be cancel' do
-                    job.status_events.should =~ [:cancel]
-                  end
-
-                  it 'there should be no available work events' do
-                    job.work_status_events.should =~ []
-                  end
-
-
-                  it 'available payment events are reject and clear' do
-                    job.billing_status_events.should =~ [:reject, :clear]
-                  end
-
-                  it 'paid event is associated with the job' do
-                    job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                       ServiceCallCompleteEvent,
-                                                       ServiceCallInvoiceEvent,
-                                                       ServiceCallPaidEvent]
-                  end
-
-                  context 'when payment is rejected' do
                     before do
-                      job.update_attributes(billing_status_event: 'reject')
+                      job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque')
                     end
 
-                    it 'payment status is set to rejected' do
-                      expect(job).to be_payment_rejected
+                    it 'status should be open' do
+                      expect(job).to be_open
                     end
 
-                    it 'should have the payment rejected event associated' do
+                    it 'work status should be done' do
+                      expect(job).to be_work_done
+                    end
+
+                    it 'payment status should be paid' do
+                      expect(job).to be_payment_paid
+                    end
+
+                    it 'available status events should be cancel' do
+                      job.status_events.should =~ [:cancel]
+                    end
+
+                    it 'there should be no available work events' do
+                      job.work_status_events.should =~ []
+                    end
+
+
+                    it 'available payment events are reject and clear' do
+                      job.billing_status_events.should =~ [:reject, :clear]
+                    end
+
+                    it 'paid event is associated with the job' do
                       job.events.map(&:class).should =~ [ServiceCallStartEvent,
                                                          ServiceCallCompleteEvent,
                                                          ServiceCallInvoiceEvent,
-                                                         ServiceCallPaidEvent,
-                                                         ScPaymentRejectedEvent]
+                                                         ServiceCallPaidEvent]
                     end
 
-                    it 'should have paid as a payment event' do
-                      job.billing_status_events.should =~ [:paid]
-                    end
-                  end
+                    context 'when payment is rejected' do
+                      before do
+                        job.update_attributes(billing_status_event: 'reject')
+                      end
 
-                  context 'when payment is cleared' do
-                    before do
-                      job.update_attributes(billing_status_event: 'clear')
+                      it 'payment status is set to rejected' do
+                        expect(job).to be_payment_rejected
+                      end
+
+                      it 'should have the payment rejected event associated' do
+                        job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                           ServiceCallCompleteEvent,
+                                                           ServiceCallInvoiceEvent,
+                                                           ServiceCallPaidEvent,
+                                                           ScPaymentRejectedEvent]
+                      end
+
+                      it 'should have paid as a payment event' do
+                        job.billing_status_events.should =~ [:paid]
+                      end
                     end
 
-                    it 'payment status is set to rejected' do
-                      expect(job).to be_payment_cleared
+                    context 'when payment is cleared' do
+                      before do
+                        job.update_attributes(billing_status_event: 'clear')
+                      end
+
+                      it 'payment status is set to rejected' do
+                        expect(job).to be_payment_cleared
+                      end
+
+                      it 'should have the payment rejected event associated' do
+                        job.events.map(&:class).should =~ [ServiceCallStartEvent,
+                                                           ServiceCallCompleteEvent,
+                                                           ServiceCallInvoiceEvent,
+                                                           ServiceCallPaidEvent,
+                                                           ScClearCustomerPaymentEvent]
+                      end
+
+                      it 'should have no payment events' do
+                        job.billing_status_events.should =~ []
+                      end
                     end
 
-                    it 'should have the payment rejected event associated' do
-                      job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                                         ServiceCallCompleteEvent,
-                                                         ServiceCallInvoiceEvent,
-                                                         ServiceCallPaidEvent,
-                                                         ScClearCustomerPaymentEvent]
-                    end
-
-                    it 'should have no payment events' do
-                      job.billing_status_events.should =~ []
-                    end
                   end
 
                 end
 
               end
-
             end
 
           end

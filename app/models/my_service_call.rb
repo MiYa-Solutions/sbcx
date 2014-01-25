@@ -138,8 +138,12 @@ class MyServiceCall < ServiceCall
     state :cleared, value: BILLING_STATUS_CLEARED
     state :rejected, value: BILLING_STATUS_REJECTED
     state :partially_paid, value: BILLING_STATUS_PARTIALLY_PAID
-    state :partial_payment_collected_by_employee, value: BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE
-    state :partial_payment_collected_by_subcon, value: BILLING_STATUS_P_COLLECTED_BY_SUBCON
+    state :partial_payment_collected_by_employee, value: BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE do
+      validate { |sc| sc.validate_collector }
+    end
+    state :partial_payment_collected_by_subcon, value: BILLING_STATUS_P_COLLECTED_BY_SUBCON do
+      validate { |sc| sc.validate_collector }
+    end
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -167,15 +171,18 @@ class MyServiceCall < ServiceCall
     end
 
     event :overdue do
-      transition [:invoiced, :invoiced_by_subcon, :partially_paid] => :overdue, if: ->(sc) { !sc.canceled? }
+      transition [:invoiced, :invoiced_by_subcon] => :overdue, if: ->(sc) { !sc.canceled? }
+      transition [:partially_paid] => :overdue, if: ->(sc) { !sc.canceled? && sc.work_done? }
     end
 
     event :collect do
-      transition [:invoiced, :overdue, :invoiced_by_subcon] => :collected_by_employee, if: ->(sc) { !sc.canceled? && sc.organization.multi_user? }
+      transition [:pending, :invoiced, :overdue, :invoiced_by_subcon] => :collected_by_employee, if: ->(sc) { sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
+      transition [:pending, :invoiced, :overdue, :invoiced_by_subcon] => :partial_payment_collected_by_employee, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
     end
 
     event :deposited do
       transition :collected_by_employee => :paid, if: ->(sc) { !sc.canceled? }
+      transition :partial_payment_collected_by_employee => :partially_paid, if: ->(sc) { !sc.canceled? }
     end
 
     event :paid do
@@ -201,6 +208,10 @@ class MyServiceCall < ServiceCall
   def fully_paid?
     current_payment = payment_amount || 0
     work_done? ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+  end
+
+  def check_and_set_as_fully_paid
+    paid_payment if fully_paid?
   end
 
   def paid_amount
