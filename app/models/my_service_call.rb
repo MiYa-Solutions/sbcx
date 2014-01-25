@@ -156,10 +156,10 @@ class MyServiceCall < ServiceCall
     end
 
     event :clear do
-      transition :paid => :cleared, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
+      transition [:partially_paid, :paid] => :cleared, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
     end
     event :reject do
-      transition :paid => :rejected, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
+      transition [:partially_paid, :paid] => :rejected, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
     end
 
     event :invoice do
@@ -215,7 +215,11 @@ class MyServiceCall < ServiceCall
   end
 
   def paid_amount
-    Money.new(entries.where(type: %w(ChequePayment CreditPayment AmexPayment CashPayment)).sum(:amount_cents), total.currency)
+    Money.new(payments.sum(:amount_cents), total.currency)
+  end
+
+  def payments
+    entries.where(type: AccountingEntry.payment_entry_classes)
   end
 
   def can_uncancel?

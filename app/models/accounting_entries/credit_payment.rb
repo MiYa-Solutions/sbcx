@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class CreditPayment < AccountingEntry
+class CreditPayment < CustomerPayment
   def amount_direction
     1
   end

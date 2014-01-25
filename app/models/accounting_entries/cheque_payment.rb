@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class ChequePayment < AccountingEntry
+class ChequePayment < CustomerPayment
   def amount_direction
     1
   end

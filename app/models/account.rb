@@ -123,6 +123,10 @@ class Account < ActiveRecord::Base
     adj_entries_by_type(:submitted, :pending)
   end
 
+  def payments
+    AccountingEntry.where(account_id: self.id).where(type: AccountingEntry.payment_entry_classes)
+  end
+
   private
 
   def adj_entries_by_type(*type_symbols)

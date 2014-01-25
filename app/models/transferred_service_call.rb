@@ -285,6 +285,10 @@ class TransferredServiceCall < ServiceCall
     self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer && self.status_changed? && self.status == ServiceCall::STATUS_TRANSFERRED
   end
 
+  def check_and_set_as_fully_paid
+
+  end
+
   private
   def provider_is_not_a_member
     if provider

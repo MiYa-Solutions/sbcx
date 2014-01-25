@@ -52,7 +52,7 @@ class AdjustmentEvent < Event
     Event.where(eventable_id:   account.id,
                 eventable_type: 'Account',
                 type:           %w(AccountAdjustedEvent AccountAdjustmentEvent)
-    ).where("properties @> ('entry_id' => ?)", entry_id).first.matching_entry_id
+    ).where("properties @> hstore('entry_id', ?)", entry_id).first.matching_entry_id
   end
 
 end

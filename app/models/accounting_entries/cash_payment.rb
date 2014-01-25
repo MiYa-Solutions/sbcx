@@ -18,7 +18,9 @@
 #  agreement_id     :integer
 #
 
-class CashPayment < AccountingEntry
+class CashPayment < CustomerPayment
+  state_machine :status, initial: :cleared
+
   def amount_direction
     1
   end

@@ -19,6 +19,10 @@
 #
 
 class AccountingEntry < ActiveRecord::Base
+  def self.payment_entry_classes
+    %w(ChequePayment CreditPayment AmexPayment CashPayment)
+  end
+
   monetize :amount_cents
   monetize :balance_cents
 

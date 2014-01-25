@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class AmexPayment < AccountingEntry
+class AmexPayment < CustomerPayment
   def amount_direction
     1
   end
