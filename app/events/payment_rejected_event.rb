@@ -1,4 +1,4 @@
-class PaymentRejectedEvent < Event
+class PaymentRejectedEvent < PaymentEvent
 
   def init
     self.name         = I18n.t('payment_rejected_event.name')
@@ -7,6 +7,7 @@ class PaymentRejectedEvent < Event
   end
 
   def process_event
+    ticket.reject_payment!
   end
 
 end

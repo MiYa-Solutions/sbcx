@@ -1,4 +1,4 @@
-class PaymentClearedEvent < Event
+class PaymentClearedEvent < PaymentEvent
 
   def init
     self.name         = I18n.t('payment_cleared_event.name')
@@ -7,6 +7,7 @@ class PaymentClearedEvent < Event
   end
 
   def process_event
+    ticket.clear_payment! if ticket.fully_paid?
   end
 
 end
