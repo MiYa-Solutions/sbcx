@@ -8,4 +8,8 @@ shared_context 'clear payment' do
   it 'entry status should be cleared' do
     expect(payment_to_clear.status_name).to eq :cleared
   end
+
+  it 'entry should have a PaymentClearedEvent associated' do
+    expect(payment_to_clear.status_name).to eq :cleared
+  end
 end

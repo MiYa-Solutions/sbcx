@@ -1,5 +1,7 @@
 class CustomerPayment < AccountingEntry
 
+  has_many :events, as: :eventable
+
   STATUS_REJECTED = 9001
 
   state_machine :status, initial: :pending do
@@ -14,5 +16,4 @@ class CustomerPayment < AccountingEntry
 
   end
 
-  # To change this template use File | Settings | File Templates.
 end
