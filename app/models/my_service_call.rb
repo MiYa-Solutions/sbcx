@@ -167,7 +167,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :overdue do
-      transition [:invoiced, :invoiced_by_subcon] => :overdue, if: ->(sc) { !sc.canceled? }
+      transition [:invoiced, :invoiced_by_subcon, :partially_paid] => :overdue, if: ->(sc) { !sc.canceled? }
     end
 
     event :collect do
@@ -179,7 +179,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :paid do
-      transition [:invoiced, :invoiced_by_subcon, :overdue, :partially_paid] => :partially_paid, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && !sc.organization.multi_user? }
+      transition [:invoiced, :invoiced_by_subcon, :overdue, :partially_paid, :pending] => :partially_paid, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && !sc.organization.multi_user? }
       transition [:invoiced, :invoiced_by_subcon, :overdue, :partially_paid] => :paid, if: ->(sc) { sc.fully_paid? && !sc.canceled? && !sc.organization.multi_user? }
       transition :rejected => :partially_paid, if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
       transition :rejected => :paid, if: ->(sc) { sc.fully_paid? && !sc.canceled? }
@@ -200,7 +200,7 @@ class MyServiceCall < ServiceCall
 
   def fully_paid?
     current_payment = payment_amount || 0
-    total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0
+    work_done? ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
   end
 
   def paid_amount

@@ -36,8 +36,8 @@ describe 'My Service Call Integration Spec' do
         job.work_status_events.should =~ [:start]
       end
 
-      it ' there should be no available payment events' do
-        expect(job.billing_status_events).to be_empty
+      it 'paid should be the only available billing status' do
+        expect(job.billing_status_events).to eq [:paid]
       end
 
       it 'subcontractor status should be na' do
