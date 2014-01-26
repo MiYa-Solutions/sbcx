@@ -249,7 +249,7 @@ describe 'My Service Call Integration Spec' do
                   end
 
                   it 'available payment events are deposit' do
-                    job.billing_status_events.should =~ [:deposited]
+                    job.billing_status_events.should =~ [:deposited, :collect]
                   end
 
                   it 'collect event is associated with the job' do
@@ -349,10 +349,10 @@ describe 'My Service Call Integration Spec' do
                     expect(job.work_status_events).to eq []
                   end
 
-                  it 'available payment events are reject and clear' do
+                  it 'available payment events are reject and clear but they are not permitted for the user' do
                     expect(job.billing_status_events).to eq [:clear, :reject]
-                    expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_true
-                    expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_true
+                    expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
+                    expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
                   end
 
                   it 'deposit event is associated with the job' do
@@ -828,6 +828,35 @@ describe 'My Service Call Integration Spec' do
                                                                         ServiceCallPaidEvent]
                             end
 
+                            context 'when paying additional payment (not the complete amount yet)' do
+                              before do
+                                job.update_attributes(billing_status_event: 'paid',
+                                                      payment_type:         'cash',
+                                                      payment_amount:       '70')
+
+                              end
+
+                              it 'payment status should be partially paid' do
+                                expect(job.billing_status_name).to eq :partially_paid
+                              end
+                              context 'when paying additional payment for the remainder of the amount' do
+                                before do
+                                  job.update_attributes(billing_status_event: 'paid',
+                                                        payment_type:         'cash',
+                                                        payment_amount:       '10')
+
+                                end
+
+                                it 'payment status should be cleared' do
+                                  expect(job.billing_status_name).to eq :cleared
+                                end
+
+
+                              end
+
+
+                            end
+
 
                           end
 
@@ -914,8 +943,8 @@ describe 'My Service Call Integration Spec' do
                           let(:entry) { job.customer.account.payments.order('ID ASC').last }
                         end
 
-                        it 'payment status is set to rejected' do
-                          expect(job).to be_payment_cleared
+                        it 'payment status is set to cleared' do
+                          expect(job.reload.billing_status_name).to eq :cleared
                         end
 
                         it 'should have the payment rejected event associated' do
@@ -927,7 +956,7 @@ describe 'My Service Call Integration Spec' do
                         end
 
                         it 'should have no payment events' do
-                          job.billing_status_events.should =~ []
+                          job.reload.billing_status_events.should =~ []
                         end
                       end
                     end
@@ -1013,8 +1042,8 @@ describe 'My Service Call Integration Spec' do
       expect(event_permitted_for_job?('work_status', 'start', subcon_admin, subcon_job)).to be_false
     end
 
-    it 'there should be no available payment events for the job' do
-      expect(job.billing_status_events).to be_empty
+    it 'the provider should be allowed to collect a payment' do
+      expect(job.billing_status_events).to eq [:collect]
     end
 
     it 'there should be no available payment events for the subcon job' do
@@ -1054,6 +1083,7 @@ describe 'My Service Call Integration Spec' do
 
       before do
         subcon_job.update_attributes(status_event: 'accept')
+        job.reload
       end
 
       it 'the job status should be transferred' do
@@ -1098,8 +1128,8 @@ describe 'My Service Call Integration Spec' do
         expect(event_permitted_for_job?('work_status', 'start', subcon_admin, subcon_job)).to be_true
       end
 
-      it 'there should be no available payment events for the job' do
-        expect(job.billing_status_events).to be_empty
+      it 'both the provider and the subcontractor should be allowed to collect a payment' do
+        job.billing_status_events.should =~ [:collect, :subcon_collected]
       end
 
       it 'there should be no available payment events for the subcon job' do
@@ -1171,8 +1201,8 @@ describe 'My Service Call Integration Spec' do
           expect(event_permitted_for_job?('work_status', 'complete', subcon_admin, subcon_job)).to be_true
         end
 
-        it 'there should be no available payment events for the job' do
-          expect(job.billing_status_events).to be_empty
+        it 'the provider should be allowed to collect a payment' do
+          job.billing_status_events.should =~ [:collect, :subcon_collected]
         end
 
         it 'there should be no available payment events for the subcon job' do
@@ -1243,7 +1273,7 @@ describe 'My Service Call Integration Spec' do
           end
 
           it 'job available payment events are invoice and invoiced by subcon, but invoice by subcon is not permitted for a user' do
-            expect(job.reload.billing_status_events).to eq [:invoice, :subcon_invoiced]
+            expect(job.reload.billing_status_events).to eq [:invoice, :subcon_invoiced, :collect, :subcon_collected]
             expect(event_permitted_for_job?('billing_status', 'invoice', org_admin, job)).to be_true
             expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_false
           end
@@ -1432,8 +1462,10 @@ describe 'My Service Call Integration Spec' do
       expect(event_permitted_for_job?('work_status', 'reject', org_admin, job)).to be_true
     end
 
-    it 'there should be no available payment events for the job' do
-      expect(job.billing_status_events).to be_empty
+    it 'the available payment events for the job are collect and subcon collected' do
+      expect(job.billing_status_events).to eq [:collect, :subcon_collected]
+      expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
+      expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
     end
 
     it 'subcon status should be pending' do
@@ -1477,8 +1509,10 @@ describe 'My Service Call Integration Spec' do
         expect(event_permitted_for_job?('work_status', 'start', org_admin, job)).to be_true
       end
 
-      it 'there should be no available payment events for the job' do
-        expect(job.billing_status_events).to be_empty
+      it 'the available payment events for the job are collect and subcon collected' do
+        expect(job.billing_status_events).to eq [:collect, :subcon_collected]
+        expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
+        expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
       end
 
       it 'subcon status should be pending' do
@@ -1522,8 +1556,8 @@ describe 'My Service Call Integration Spec' do
           expect(event_permitted_for_job?('work_status', 'complete', org_admin, job)).to be_true
         end
 
-        it 'there should be no available payment events for the job' do
-          expect(job.billing_status_events).to be_empty
+        it 'the provider and subcontractor should be allowed to collect a payment' do
+          expect(job.billing_status_events).to eq [:collect, :subcon_collected]
         end
 
         it 'subcon status should be pending' do
@@ -1543,7 +1577,7 @@ describe 'My Service Call Integration Spec' do
         context 'when the job is completed' do
 
           before do
-            add_bom_to_job job
+            add_bom_to_job job, price: 100, cost: 10, quantity: 1
             job.update_attributes(work_status_event: 'complete')
           end
 
@@ -1567,10 +1601,11 @@ describe 'My Service Call Integration Spec' do
             expect(job.work_status_events).to be_empty
           end
 
-          it 'job available payment events are invoice and invoiced by subcon' do
-            expect(job.reload.billing_status_events).to eq [:invoice, :subcon_invoiced]
+          it 'job available payment events are: invoice, invoiced by subcon, collect and subcon_collected' do
+            expect(job.reload.billing_status_events).to eq [:invoice, :subcon_invoiced, :collect, :subcon_collected]
             expect(event_permitted_for_job?('billing_status', 'invoice', org_admin, job)).to be_true
             expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_true
+            expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
           end
 
           it 'subcon status should be pending' do
@@ -1635,7 +1670,10 @@ describe 'My Service Call Integration Spec' do
 
               describe 'for a multi user organization' do
                 before do
-                  job.update_attributes(billing_status_event: 'collect', payment_type: 'cash', collector: job.organization)
+                  job.update_attributes(billing_status_event: 'collect',
+                                        payment_type:         'cash',
+                                        collector:            job.organization,
+                                        payment_amount:       '100')
                 end
 
                 it 'the available status events for job are: cancel' do
@@ -1678,7 +1716,7 @@ describe 'My Service Call Integration Spec' do
                 before do
                   job.organization.users.map { |user| user.destroy unless user == org_admin }
                   job.organization.reload
-                  job.update_attributes(billing_status_event: 'paid', payment_type: 'cash')
+                  job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '100')
                 end
 
                 it 'the job status should be transferred' do
@@ -1702,8 +1740,8 @@ describe 'My Service Call Integration Spec' do
                   expect(job.work_status_events).to be_empty
                 end
 
-                it 'job available payment events are deposited' do
-                  expect(job.billing_status_events).to be_empty
+                it 'there are no available job payment events' do
+                  expect(job.billing_status_events).to eq []
                 end
 
                 it 'subcon status should be pending' do
@@ -1837,7 +1875,10 @@ describe 'My Service Call Integration Spec' do
 
               describe 'for a multi user organization' do
                 before do
-                  job.update_attributes(billing_status_event: 'collect', payment_type: 'credit_card', collector: job.organization)
+                  job.update_attributes(billing_status_event: 'collect',
+                                        payment_type:         'credit_card',
+                                        collector:            job.organization,
+                                        payment_amount:       '100')
                 end
 
                 it 'the available status events for job are: cancel' do
@@ -1904,8 +1945,8 @@ describe 'My Service Call Integration Spec' do
 
                   it 'job available payment events are deposited' do
                     expect(job.billing_status_events).to eq [:clear, :reject]
-                    expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_true
-                    expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_true
+                    expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
+                    expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
                   end
 
                   it 'subcon status should be pending' do
@@ -1925,7 +1966,7 @@ describe 'My Service Call Integration Spec' do
                 before do
                   job.organization.users.map { |user| user.destroy unless user == org_admin }
                   job.organization.reload
-                  job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque')
+                  job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque', payment_amount: '100')
                 end
 
                 it 'the job status should be transferred' do

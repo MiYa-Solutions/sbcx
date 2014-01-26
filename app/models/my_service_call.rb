@@ -149,6 +149,10 @@ class MyServiceCall < ServiceCall
       Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
+    before_transition any => [:paid, :partially_paid, :partial_payment_collected_by_employee, :partial_payment_collected_by_subcon] do |sc, transition|
+      sc.check_payment_amount
+    end
+
     # for cash payment, paid means cleared
     after_transition any => :paid do |sc, transition|
       sc.billing_status = BILLING_STATUS_CLEARED if sc.payment_type == 'cash'
@@ -176,8 +180,22 @@ class MyServiceCall < ServiceCall
     end
 
     event :collect do
-      transition [:pending, :invoiced, :overdue, :invoiced_by_subcon] => :collected_by_employee, if: ->(sc) { sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
-      transition [:pending, :invoiced, :overdue, :invoiced_by_subcon] => :partial_payment_collected_by_employee, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
+      transition [:pending,
+                  :invoiced,
+                  :overdue,
+                  :invoiced_by_subcon
+                 ]   => :collected_by_employee,
+
+                 if: ->(sc) { sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
+
+      transition [:pending,
+                  :invoiced,
+                  :overdue,
+                  :invoiced_by_subcon,
+                  :partial_payment_collected_by_employee
+                 ]   => :partial_payment_collected_by_employee,
+
+                 if: ->(sc) { !sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
     end
 
     event :deposited do
@@ -194,6 +212,9 @@ class MyServiceCall < ServiceCall
 
     event :subcon_collected do
       transition :invoiced_by_subcon => :collected_by_subcon, if: ->(sc) { !sc.canceled? }
+
+      transition :pending => :collected_by_subcon,
+                 if:      ->(sc) { !sc.canceled? && !sc.status?(:new) && !sc.status?(:open) && !sc.work_status?(:pending) }
     end
 
     event :subcon_deposited do

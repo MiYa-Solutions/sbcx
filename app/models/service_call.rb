@@ -55,9 +55,8 @@
 
 class ServiceCall < Ticket
 
-
-  validate :financial_data_change
   attr_accessor :payment_amount
+  validate :financial_data_change
 
   def my_role
     if self.organization_id == self.subcontractor_id # am I the subcontractor?
@@ -262,11 +261,14 @@ class ServiceCall < Ticket
     invoice.date ? true : false
   end
 
+  def check_payment_amount
+    errors.add :payment_amount, "Payment must be a number greater than zero" if self.payment_amount.nil? || self.payment_amount.try(:empty?) || self.payment_amount.to_f == 0.0
+  end
+
   private
   def financial_data_change
     errors.add :tax, "Can't change tax when job is completed or transferred" if !self.system_update && self.changed_attributes.has_key?('tax') && !can_change_financial_data?
   end
-
 
 end
 

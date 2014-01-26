@@ -1044,7 +1044,8 @@ CREATE TABLE tickets (
   tax                   DOUBLE PRECISION DEFAULT 0.0,
   subcon_fee_cents      INTEGER DEFAULT 0                                         NOT NULL,
   subcon_fee_currency   CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  properties            hstore
+  properties            hstore,
+  external_ref          CHARACTER VARYING(255)
 );
 
 
@@ -1948,3 +1949,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131231165209');
 INSERT INTO schema_migrations (version) VALUES ('20140119185047');
 
 INSERT INTO schema_migrations (version) VALUES ('20140125215407');
+
+INSERT INTO schema_migrations (version) VALUES ('20140126025608');
