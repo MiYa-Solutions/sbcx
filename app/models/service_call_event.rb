@@ -107,7 +107,7 @@ class ServiceCallEvent < Event
   end
 
   # todo move to posting rule (event should not know the account etc.)
-  def set_customer_account_as_paid
+  def set_customer_account_as_paid(options = {})
     account = Account.for_customer(service_call.customer).lock(true).first
     ticket  = MyServiceCall.find(service_call.ref_id)
 
@@ -117,6 +117,7 @@ class ServiceCallEvent < Event
               agreement:   service_call.customer.agreements.first,
               description: I18n.t("payment.#{service_call.payment_type}.description", ticket: ticket.id).html_safe }
 
+    props[:collector] = options[:collector] ? options[:collector] : ticket.organization
 
     case service_call.payment_type
       when 'cash'

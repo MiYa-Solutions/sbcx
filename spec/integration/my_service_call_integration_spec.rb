@@ -1668,10 +1668,12 @@ describe 'My Service Call Integration Spec' do
 
               describe 'for a multi user organization' do
                 before do
-                  job.update_attributes(billing_status_event: 'collect',
-                                        payment_type:         'cash',
-                                        collector:            job.organization,
-                                        payment_amount:       '100')
+                  with_user(org_admin) do
+                    job.update_attributes(billing_status_event: 'collect',
+                                          payment_type:         'cash',
+                                          collector:            org_admin,
+                                          payment_amount:       '100')
+                  end
                 end
 
                 it 'the available status events for job are: cancel' do
@@ -1706,6 +1708,22 @@ describe 'My Service Call Integration Spec' do
                 it 'job available subcon events are settle' do
                   expect(job.subcontractor_status_events).to eq [:settle]
                   expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                end
+
+                describe 'billing' do
+
+                  describe 'customer billing' do
+                    before { job.customer.account.reload }
+                    let(:customer_entry) { job.payments.order('ID ASC').last }
+
+                    it 'entry should have the organization as the collector' do
+                      expect(customer_entry.collector).to eq org_admin
+                    end
+
+                    it 'customer balance should be zero' do
+                      expect(job.customer.account.balance).to eq Money.new(0, 'USD')
+                    end
+                  end
                 end
 
               end
@@ -1750,6 +1768,23 @@ describe 'My Service Call Integration Spec' do
                   expect(job.subcontractor_status_events).to eq [:settle]
                   expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                 end
+
+                describe 'billing' do
+
+                  describe 'customer billing' do
+                    before { job.customer.account.reload }
+                    let(:customer_entry) { job.payments.order('ID ASC').last }
+
+                    it 'entry should have the organization as the collector' do
+                      expect(customer_entry.collector).to eq job.organization
+                    end
+
+                    it 'customer balance should be zero' do
+                      expect(job.customer.account.balance).to eq Money.new(0, 'USD')
+                    end
+                  end
+                end
+
 
                 context 'when cash settled with the subcon' do
                   before do
@@ -1873,10 +1908,13 @@ describe 'My Service Call Integration Spec' do
 
               describe 'for a multi user organization' do
                 before do
-                  job.update_attributes(billing_status_event: 'collect',
-                                        payment_type:         'credit_card',
-                                        collector:            job.organization,
-                                        payment_amount:       '100')
+                  with_user(org_admin) do
+                    job.update_attributes(billing_status_event: 'collect',
+                                          payment_type:         'credit_card',
+                                          collector:            org_admin,
+                                          payment_amount:       '100')
+
+                  end
                 end
 
                 it 'the available status events for job are: cancel' do
@@ -1913,6 +1951,27 @@ describe 'My Service Call Integration Spec' do
                   expect(job.subcontractor_status_events).to eq [:settle]
                   expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                 end
+
+                describe 'billing' do
+
+                  describe 'customer billing' do
+                    before { job.customer.account.reload }
+                    let(:customer_entry) { job.payments.order('ID ASC').last }
+
+                    it 'entry should have the organization as the collector' do
+                      expect(customer_entry.collector).to eq org_admin
+                    end
+
+                    it 'entry status should be pending' do
+                      expect(customer_entry.status_name).to eq :pending
+                    end
+
+                    it 'customer balance should be zero' do
+                      expect(job.customer.account.balance).to eq Money.new(0, 'USD')
+                    end
+                  end
+                end
+
 
                 context 'when deposited' do
 
@@ -2000,6 +2059,27 @@ describe 'My Service Call Integration Spec' do
                 it 'job available subcon events are settle' do
                   expect(job.subcontractor_status_events).to eq [:settle]
                   expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                end
+
+                describe 'billing' do
+
+                  describe 'customer billing' do
+                    before { job.customer.account.reload }
+                    let(:customer_entry) { job.payments.order('ID ASC').last }
+
+                    it 'entry should have the organization as the collector' do
+                      expect(customer_entry.collector).to eq org
+                    end
+
+                    it 'entry status should be pending' do
+                      expect(customer_entry.status_name).to eq :pending
+                    end
+
+
+                    it 'customer balance should be zero' do
+                      expect(job.customer.account.balance).to eq Money.new(0, 'USD')
+                    end
+                  end
                 end
 
                 context 'when cash settled with the subcon' do
@@ -2132,6 +2212,28 @@ describe 'My Service Call Integration Spec' do
                 it 'job payment status should be collected_by_subcon' do
                   expect(job.billing_status_name).to eq :collected_by_subcon
                 end
+
+                describe 'billing' do
+
+                  describe 'customer billing' do
+                    before { job.customer.account.reload }
+                    let(:customer_entry) { job.payments.order('ID ASC').last }
+
+                    it 'entry should have the organization as the collector' do
+                      expect(customer_entry.collector).to eq job.subcontractor
+                    end
+
+                    it 'entry status should be pending' do
+                      expect(customer_entry.status_name).to eq :cleared
+                    end
+
+
+                    it 'customer balance should be zero' do
+                      expect(job.customer.account.balance).to eq Money.new(0, 'USD')
+                    end
+                  end
+                end
+
               end
               context 'when collecting partial amount' do
                 before do
@@ -2145,7 +2247,30 @@ describe 'My Service Call Integration Spec' do
                   expect(job.billing_status_name).to eq :partial_payment_collected_by_subcon
                 end
 
-                context 'when the depositing the amount '
+                it 'available payment events should be subcon deposited and subcon collected' do
+                  expect(job.billing_status_events).to eq [:subcon_collected, :subcon_deposited]
+                end
+
+                context 'when the depositing the amount to the provider' do
+                  before do
+                    job.update_attributes(billing_status_event: 'subcon_deposited')
+                  end
+
+                  it 'payment status should be subcon claim deposited' do
+                    expect(job.billing_status_name).to eq :subcon_claim_deposited
+                  end
+
+                  context 'when confirming the deposit' do
+                    before do
+                      job.update_attributes(billing_status_event: 'confirm_deposit')
+                    end
+
+                    it 'payment status should be partially paid' do
+                      expect(job.billing_status_name).to eq :partially_paid
+                    end
+                  end
+                end
+
               end
 
 

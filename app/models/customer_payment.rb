@@ -1,4 +1,6 @@
+require 'collectible'
 class CustomerPayment < AccountingEntry
+  include Collectible
 
   has_many :events, as: :eventable
 

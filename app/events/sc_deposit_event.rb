@@ -1,4 +1,6 @@
+require 'hstore_amount'
 class ScDepositEvent < ServiceCallEvent
+  include HstoreAmount
 
   def init
     self.name         = I18n.t('service_call_deposit_event.name')

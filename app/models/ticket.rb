@@ -279,6 +279,10 @@ class Ticket < ActiveRecord::Base
 
   end
 
+  def payment_money
+    Money.new(self.payment_amount.to_f * 100)
+  end
+
   # this validator runs only for a specific state of a service call
   def validate_subcon
     self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.attributes.subcontractor.blank') unless subcontractor

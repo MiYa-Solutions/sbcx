@@ -1,4 +1,6 @@
+require 'hstore_amount'
 class ScSubconDepositedEvent < ServiceCallEvent
+  include HstoreAmount
 
   def init
 

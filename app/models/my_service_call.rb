@@ -225,11 +225,12 @@ class MyServiceCall < ServiceCall
     end
 
     event :subcon_deposited do
-      transition :collected_by_subcon => :subcon_claim_deposited, if: ->(sc) { !sc.canceled? }
+      transition [:partial_payment_collected_by_subcon, :collected_by_subcon] => :subcon_claim_deposited, if: ->(sc) { !sc.canceled? }
     end
 
     event :confirm_deposit do
-      transition :subcon_claim_deposited => :paid, if: ->(sc) { !sc.canceled? }
+      transition :subcon_claim_deposited => :paid, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
+      transition :subcon_claim_deposited => :partially_paid, if: ->(sc) { !sc.canceled? && !sc.fully_paid? }
     end
   end
 
