@@ -72,7 +72,7 @@ Sbcx::Application.configure do
   ActionMailer::Base.smtp_settings         = {
       :user_name            => ENV["SENDGRID_MAILER_USER"],
       :password             => ENV["SENDGRID_MAILER_PWD"],
-      :domain               => "subcontrax.com",
+      :domain               => "staging.subcontrax.com",
       :address              => "smtp.sendgrid.net",
       :port                 => 587,
       :authentication       => :plain,
