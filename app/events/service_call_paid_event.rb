@@ -1,18 +1,12 @@
-require 'hstore_setup_methods'
+require 'hstore_amount'
 class ServiceCallPaidEvent < ServiceCallEvent
-  extend HstoreSetupMethods
-
-  setup_hstore_attr 'amount_cents'
-  setup_hstore_attr 'amount_currency'
-
-  monetize :amount_cents
+  include HstoreAmount
 
   def init
     self.name         = I18n.t('service_call_paid_event.name')
     self.description  = I18n.t('service_call_paid_event.description')
     self.reference_id = 100009
   end
-
 
   def update_subcontractor
     subcon_service_call.events << ScProviderCollectedEvent.new(triggering_event: self) if subcon_service_call.allow_collection?

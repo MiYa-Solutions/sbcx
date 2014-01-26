@@ -1021,7 +1021,7 @@ describe 'My Service Call Integration Spec' do
       subcon_job.status_events.should =~ [:accept, :reject, :cancel]
     end
 
-    it 'cancel should not be permitted job the subcon job' do
+    it 'a subcon user should not be permitted to cancel job before accept/reject' do
       expect(event_permitted_for_job?('status', 'cancel', subcon_admin, subcon_job)).to be_false
     end
 
@@ -1462,10 +1462,9 @@ describe 'My Service Call Integration Spec' do
       expect(event_permitted_for_job?('work_status', 'reject', org_admin, job)).to be_true
     end
 
-    it 'the available payment events for the job are collect and subcon collected' do
-      expect(job.billing_status_events).to eq [:collect, :subcon_collected]
+    it 'the available payment events for the job are: collect' do
+      expect(job.billing_status_events).to eq [:collect]
       expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
-      expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
     end
 
     it 'subcon status should be pending' do
@@ -1658,7 +1657,6 @@ describe 'My Service Call Integration Spec' do
             it 'should have no job available subcon events' do
               expect(job.subcontractor_status_events).to eq [:settle]
             end
-
 
             context 'when canceled' do
               include_context 'when the provider cancels the job'
@@ -2121,8 +2119,36 @@ describe 'My Service Call Integration Spec' do
 
             end
 
-            context 'when subcon collects' do
-              pending
+            context 'when subcon collects cash' do
+
+              context 'when collecting the full amount' do
+                before do
+                  job.update_attributes(billing_status_event: 'subcon_collected',
+                                        payment_type:         'cash',
+                                        payment_amount:       '100',
+                                        collector:            job.subcontractor)
+                end
+
+                it 'job payment status should be collected_by_subcon' do
+                  expect(job.billing_status_name).to eq :collected_by_subcon
+                end
+              end
+              context 'when collecting partial amount' do
+                before do
+                  job.update_attributes(billing_status_event: 'subcon_collected',
+                                        payment_type:         'cash',
+                                        payment_amount:       '10',
+                                        collector:            job.subcontractor)
+                end
+
+                it 'job payment status should be partial_payment_collected_by_subcon' do
+                  expect(job.billing_status_name).to eq :partial_payment_collected_by_subcon
+                end
+
+                context 'when the depositing the amount '
+              end
+
+
             end
 
             context 'when payment is overdue' do

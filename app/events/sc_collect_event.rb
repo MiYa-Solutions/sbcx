@@ -1,4 +1,6 @@
+require 'hstore_amount'
 class ScCollectEvent < ServiceCallEvent
+  include HstoreAmount
 
   def init
     self.name         = I18n.t('service_call_collect_event.name')
@@ -15,7 +17,7 @@ class ScCollectEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ScCollectedEvent.new(triggering_event: self)
+    prov_service_call.events << ScCollectedEvent.new(triggering_event: self, amount: self.amount)
   end
 
   def process_event

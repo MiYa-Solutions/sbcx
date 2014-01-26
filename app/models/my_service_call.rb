@@ -211,10 +211,17 @@ class MyServiceCall < ServiceCall
     end
 
     event :subcon_collected do
-      transition :invoiced_by_subcon => :collected_by_subcon, if: ->(sc) { !sc.canceled? }
+      transition [:partial_payment_collected_by_subcon, :invoiced_by_subcon] => :collected_by_subcon,
+                 if:                                                         ->(sc) { !sc.canceled? && sc.fully_paid? }
 
       transition :pending => :collected_by_subcon,
-                 if:      ->(sc) { !sc.canceled? && !sc.status?(:new) && !sc.status?(:open) && !sc.work_status?(:pending) }
+                 if:      ->(sc) { !sc.canceled? && !sc.status?(:new) && !sc.status?(:open) && !sc.work_status?(:pending) && sc.fully_paid? }
+
+      transition [:partial_payment_collected_by_subcon, :invoiced_by_subcon] => :partial_payment_collected_by_subcon,
+                 if:                                                         ->(sc) { !sc.canceled? && !sc.fully_paid? }
+
+      transition :pending => :partial_payment_collected_by_subcon,
+                 if:      ->(sc) { !sc.canceled? && !sc.status?(:new) && !sc.status?(:open) && !sc.work_status?(:pending) && !sc.fully_paid? }
     end
 
     event :subcon_deposited do

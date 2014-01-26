@@ -83,7 +83,7 @@ class ServiceCallObserver < ActiveRecord::Observer
 
   def after_subcon_collected_payment(service_call, transition)
     Rails.logger.debug { "invoked observer AFTER subcon_collected_payment \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ScCollectedEvent.new unless transition.args.first == :state_only
+    service_call.events << ScCollectedEvent.new(amount: service_call.payment_amount) unless transition.args.first == :state_only
 
   end
 
