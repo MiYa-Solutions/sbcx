@@ -25,7 +25,7 @@ en:
       title: 'New Subcontractor Agreement'
       subject: 'New Subcontractor Agreement'
       content: 'New Subcontractor Agreement was submitted to you by:'
-      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from '
 
     agr_change_submitted_notification:
       title: 'Subcontractor Agreement Negotiation: Change Submitted'
@@ -170,7 +170,7 @@ en:
     sbcx_reference_notification:
       subject: "%{org} invites you to join SubconTraX"
       title: "Join SubconTraX for FREE"
-      content: "is already using SubconTraX and and would like to invite you to try it"
+      content: "is already using SubconTraX and and would like to invite you to try it."
       bottom_content: 'Please click on the link below for more details'
     invite_declined:
       subject: "The invitation to join your network has been declined"
