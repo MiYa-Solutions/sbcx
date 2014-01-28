@@ -19,7 +19,7 @@ en:
       my_adj_entry:
         status:
           states:
-            rejected: LiLi
+            rejected: Rejected
       recieved_adj_entry:
         status:
           states:

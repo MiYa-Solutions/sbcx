@@ -3,11 +3,11 @@
     <div data-role="collapsible" data-theme="d">
 
       <h3><%= @service_call.class.human_attribute_name(:subcontractor_status).titleize %>
-        <% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>
-            <span class="blue_badge_collape" id="affiliate_status_fee">
-                    <badge><%= humanized_money_with_symbol @service_call.subcon_transfer_props.first.subcon_fee %></badge>
-            </span>
-        <% end %>
+        <!--<#% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>-->
+            <!--<span class="blue_badge_collape" id="affiliate_status_fee">-->
+                    <!--<badge><#%= humanized_money_with_symbol @service_call.subcon_transfer_props.first.subcon_fee %></badge>-->
+            <!--</span>-->
+        <!--<#% end %>-->
      <span class="greay_badge_collape">
                  <badge> <%= @service_call.human_subcontractor_status_name %></badge>
      </span>

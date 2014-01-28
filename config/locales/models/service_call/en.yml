@@ -102,7 +102,7 @@ en:
         billing_status:
           events:
             clear: 'Clear'
-            subcon_invoiced: LILI
+            subcon_invoiced: "Subcontractor"
           states:
             paid: "Paid"
             overdue: "Overdue"
