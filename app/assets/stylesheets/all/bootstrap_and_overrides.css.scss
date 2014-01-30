@@ -563,7 +563,7 @@ footer {
 
   float: right;
   width: 30%;
-  margin-top: -10px;
+  margin-top: -5px;
 }
 
 #boms-table {
@@ -578,6 +578,10 @@ footer {
 
 #bom_quantity {
   width: 30%;
+}
+
+#bom_desc {
+  width: 60%;
 }
 
 #bom_cost {
@@ -2123,9 +2127,9 @@ a:hover {
   }
 
   .add_button {
-    margin-left: 1px;
+    margin-left: 55px;
     position: relative;
-    width: 10%;
+    width: 100%;
 
     .add_part_service_call input, .add_part_service_call textarea, .add_part_service_call text_field {
       margin-left: -5px;
@@ -2139,15 +2143,22 @@ a:hover {
   }
 
   .alert .close {
-    line-height: 18px;
+    //line-height: 18px;
+    //position: relative;
+    //right: -1px;
+    //top: -46px;
+    line-height: 3px;
     position: relative;
-    //right: -27px;
-    right: -1px;
-    top: -46px;
+    right: -26px;
+    top: 7px;
+  }
+
+  #bom_close {
+    line-height: 3px;
   }
 
   select {
-    width: 60%;
+    width: 70%;
     margin-left: -4px;
   }
 
@@ -2441,9 +2452,13 @@ div.DTTT_collection {
   border-color: black;
   border-width: 1px;
   color: #3A87AD;
-  padding-top: 18px;
+  //padding-top: 18px;
   margin-top: -15px;
-  height: 58px;
+  height: 67px;
+
+  .parts_2nd {
+    margin-top: 3px;
+  }
 }
 
 .add_entry_frame {

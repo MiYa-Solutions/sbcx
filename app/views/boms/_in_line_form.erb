@@ -2,64 +2,81 @@
     <br>
     <%= f.error_notification %>
 
-    <div class="row-fluid add_part_service_call">
-      <div class="alert add_part_frame">
 
-        <ul>
-          <li></li>
-          <li class="part_field">
+    <div class="alert add_part_frame">
+      <div class="row-fluid add_part_service_call">
+        <a href="#" data-toggle="collapse" data-target="#bom" class="close" id="bom_close">×</a>
+      </div>
+
+
+      <div class="row-fluid add_part_service_call">
+
+          <div class="span3">
             <div class="input-prepend input-append">
-              <span class="add-on"><%= I18n.t('general.general.part') %></span>
-              <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" } %>
-              <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
-              <%= f.hidden_field :material_id %>
-              <%= f.hidden_field :ticket_id, value: @service_call.id %>
+                  <span class="add-on"><%= I18n.t('general.general.part') %></span>
+                  <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" } %>
+                  <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
+                  <%= f.hidden_field :material_id %>
+                  <%= f.hidden_field :ticket_id, value: @service_call.id %>
             </div>
-          </li>
-          <li class="quantity_field">
-            <div class="input-prepend input-append">
-              <span class="add-on"><%= I18n.t('general.general.qty') %></span>
-              <%= f.text_field :quantity %>
+          </div>
+
+            <div class="span3">
+              <div class="input-prepend input-append">
+                <span class="add-on"><%= I18n.t('general.general.qty') %></span>
+                <%= f.text_field :quantity %>
+              </div>
             </div>
 
-          </li>
-          <li class="price_field">
+          <div class="span6">
             <div class="input-prepend input-append">
-              <span class="add-on"><%= I18n.t('general.general.price') %></span>
-              <%= f.text_field :price %>
+                  <span class="add-on"><%= I18n.t('general.general.description') %></span>
+              <input type="text" name="bom[quantity]" id="bom_desc">
             </div>
+          </div>
 
-          </li>
-          <li class="cost_field">
-            <div class="input-prepend input-append">
-              <span class="add-on"><%= I18n.t('general.general.cost') %></span>
-              <%= f.text_field :cost %>
-            </div>
-          </li>
-          <li class="buyer_field">
-            <div class="input-prepend input-append">
-              <span class="add-on"><%= Bom.human_attribute_name(:buyer) %></span>
-              <%= f.select :buyer_id, options_for_select(buyer_options(ticket)), include_blank: true %>
-              <%= f.hidden_field :buyer_type %>
-            </div>
-          </li>
-          <li class="add_button">
-            <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary", id: 'add_part' %>
 
-          </li>
-          <li>
-            <div id="ajax-msg"></div>
-          </li>
-          <li>
-            <%= image_tag 'ajax-loader.gif', id: "spinner" %>
-            <!--<#%= link_to "Cancel", service_calls_path, class: "btn btn-medium" %>-->
 
-          </li>
-          <li>
-            <a href="#" data-toggle="collapse" data-target="#bom" class="close">×</a>
+        </div>
+
+      <div class="row-fluid add_part_service_call parts_2nd">
+
+         <div class="span3">
+               <div class="input-prepend input-append">
+                 <span class="add-on"><%= I18n.t('general.general.price') %></span>
+                 <%= f.text_field :price %>
+               </div>
+         </div>
+
+        <div class="span3">
+          <div class="input-prepend input-append">
+            <span class="add-on"><%= I18n.t('general.general.cost') %></span>
+            <%= f.text_field :cost %>
+          </div>
+        </div>
+
+        <div class="span4">
+          <div class="input-prepend input-append">
+            <span class="add-on"><%= Bom.human_attribute_name(:buyer) %></span>
+            <%= f.select :buyer_id, options_for_select(buyer_options(ticket)), include_blank: true %>
+            <%= f.hidden_field :buyer_type %>
+          </div>
+        </div>
+
+        <div class="span2">
+           <div class="add_button">
+             <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary", id: 'add_part' %>
+           </div>
+
+        </div>
+
+        <div id="ajax-msg"></div>
+        <%= image_tag 'ajax-loader.gif', id: "spinner" %>
+
+
+
             <!--<i class="icon-remove-sign"></i> </a>-->
-          </li>
-        </ul>
+
 
         <!--<a href="#" data-dismiss="alert" class="close">×</a>-->
       </div>
