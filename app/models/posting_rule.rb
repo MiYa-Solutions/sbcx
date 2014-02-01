@@ -157,7 +157,7 @@ class PostingRule < ActiveRecord::Base
   def cash_fee
     case cash_rate_type
       when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount)* (cash_rate.delete(',').to_f / 100.0)
+        @event.amount* (cash_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(cash_rate.delete(',').to_f)
       else
@@ -168,7 +168,7 @@ class PostingRule < ActiveRecord::Base
   def credit_fee
     case credit_rate_type
       when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (credit_rate.delete(',').to_f / 100.0)
+        @event.amount * (credit_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(credit_rate.delete(',').to_f)
       else
@@ -179,7 +179,7 @@ class PostingRule < ActiveRecord::Base
   def amex_fee
     case amex_rate_type
       when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (amex_rate.delete(',').to_f / 100.0)
+        @event.amount * (amex_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(amex_rate.delete(',').to_f)
       else
@@ -190,7 +190,7 @@ class PostingRule < ActiveRecord::Base
   def cheque_fee
     case cheque_rate_type
       when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (cheque_rate.delete(',').to_f / 100.0)
+        @event.amount * (cheque_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(cheque_rate.delete(',').to_f)
       else
