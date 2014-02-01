@@ -111,9 +111,10 @@ describe 'My Job When I Transfer to a Local Affiliate' do
       end
 
       it 'start event is associated with the job' do
-        job.events.map(&:class).should =~ [ServiceCallStartedEvent]
+        job.events.map(&:class).should =~ [ServiceCallStartedEvent, ServiceCallTransferEvent]
       end
 
+      it 'the job should have'
 
       it 'the job status should be transferred' do
         expect(job).to be_transferred
