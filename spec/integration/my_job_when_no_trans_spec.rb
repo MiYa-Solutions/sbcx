@@ -1,205 +1,5 @@
 require 'spec_helper'
 
-shared_examples 'full payment successfully submitted' do
-end
-
-shared_context 'when collecting customer payment' do
-
-  # this shared context expect the following let statements from the calling context
-  # collector e.g. let(:collector) {org_admin}
-  # collection_job e.g. let(:collector) {org_admin}
-  # billing_status, e.g. let(:billing_status_events) { [:paid, :collect]}
-  # partial_billing_status
-  # billing_status_events
-  # billing_status_events_after_partial
-  # customer_balance_before_payment
-  # full_amount
-  # job_events - the events expected to be associated with the job
-  #              e.g. [ServiceCallDispatchEvent,ServiceCallStartEvent, ScCollectedByEmployeeEvent]
-  #
-
-
-  it 'collect is one of the billing events' do
-    expect(collection_job.billing_status_events).to include(:collect)
-  end
-
-
-  context 'when collecting cash' do
-
-    context 'when collecting the full amount' do
-      let(:payment_amount) { full_amount }
-      before do
-        collection_job.update_attributes(billing_status_event: 'collect',
-                                         payment_type:         'cash',
-                                         payment_amount:       payment_amount.to_s,
-                                         collector:            collector)
-      end
-
-
-      it 'payment status should be correct' do
-        expect(collection_job.billing_status_name).to eq billing_status
-      end
-
-      it 'available payment events are the expected ones' do
-        collection_job.billing_status_events.should =~ billing_status_events
-      end
-
-      it 'collect event is associated with the job' do
-        collection_job.events.map(&:class).should =~ job_events
-      end
-
-      describe 'billing' do
-
-        describe 'customer billing' do
-          it 'customer balance should be correct' do
-            expect(job.customer.account.reload.balance).to eq customer_balance_before_payment - payment_amount
-          end
-        end
-      end
-
-
-    end
-
-    context 'when collecting partial amount' do
-      let(:payment_amount) { full_amount*0.2 }
-      before do
-        collection_job.update_attributes(billing_status_event: 'collect',
-                                         payment_type:         'cash',
-                                         payment_amount:       payment_amount.to_s,
-                                         collector:            collector)
-
-      end
-
-      it 'payment status should be correct' do
-        expect(collection_job.billing_status_name).to eq partial_billing_status
-      end
-
-      it 'available payment events are the expected ones' do
-        collection_job.billing_status_events.should =~ billing_status_events_after_partial
-      end
-
-      it 'collect event is associated with the job' do
-        collection_job.events.map(&:class).should =~ job_events
-      end
-
-      describe 'billing' do
-
-        describe 'customer billing' do
-          it 'customer balance should be correct' do
-            expect(job.customer.account.reload.balance).to eq customer_balance_before_payment - payment_amount
-          end
-        end
-      end
-
-
-    end
-  end
-
-  #context 'when collecting none cash payment' do
-  #
-  #  before do
-  #    job.update_attributes(billing_status_event: 'collect',
-  #                          payment_type:         'credit_card',
-  #                          payment_amount:       '100',
-  #                          collector:            technician)
-  #  end
-  #
-  #  it 'status should be open' do
-  #    expect(job).to be_open
-  #  end
-  #
-  #  it 'work status should be done' do
-  #    expect(job).to be_work_done
-  #  end
-  #
-  #  it 'payment status should be collected by employee' do
-  #    expect(job).to be_payment_collected_by_employee
-  #  end
-  #
-  #  it 'available status events should be cancel' do
-  #    job.status_events.should =~ [:cancel]
-  #  end
-  #
-  #  it 'there should be no available work events' do
-  #    job.work_status_events.should =~ []
-  #  end
-  #
-  #  it 'available payment events are deposit' do
-  #    job.billing_status_events.should =~ [:deposited]
-  #  end
-  #
-  #  it 'collect event is associated with the job' do
-  #    job.events.map(&:class).should =~ [ServiceCallDispatchEvent,
-  #                                       ServiceCallStartEvent,
-  #                                       ServiceCallCompleteEvent,
-  #                                       ServiceCallInvoiceEvent,
-  #                                       ScCollectedByEmployeeEvent]
-  #  end
-  #
-  #  it 'the org admin is allowed to invoke the deposit event' do
-  #    expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
-  #  end
-  #
-  #  it 'the technician is not allowed to invoke the deposit event' do
-  #    expect(event_permitted_for_job?('billing_status', 'deposited', technician, job)).to be_false
-  #  end
-  #
-  #
-  #  context 'when the employee deposits the payment' do
-  #
-  #    before do
-  #      job.update_attributes(billing_status_event: 'deposited')
-  #    end
-  #
-  #    it 'status should be open' do
-  #      expect(job).to be_open
-  #    end
-  #
-  #    it 'work status should be done' do
-  #      expect(job).to be_work_done
-  #    end
-  #
-  #    it 'payment status should be paid' do
-  #      expect(job.billing_status_name).to eq :paid
-  #    end
-  #
-  #    it 'available status events should be cancel' do
-  #      expect(job.status_events).to eq [:cancel]
-  #      expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
-  #    end
-  #
-  #    it 'there should be no available work events' do
-  #      expect(job.work_status_events).to eq []
-  #    end
-  #
-  #    it 'available payment events are reject and clear but they are not permitted for the user' do
-  #      expect(job.billing_status_events).to eq [:clear, :reject]
-  #      expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
-  #      expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
-  #    end
-  #
-  #    it 'deposit event is associated with the job' do
-  #      job.events.map(&:class).should =~ [ServiceCallDispatchEvent,
-  #                                         ServiceCallStartEvent,
-  #                                         ServiceCallCompleteEvent,
-  #                                         ServiceCallInvoiceEvent,
-  #                                         ScCollectedByEmployeeEvent,
-  #                                         ScEmployeeDepositedEvent]
-  #
-  #    end
-  #
-  #  end
-  #
-  #end
-  #
-  #context 'when prov cancels' do
-  #  include_context 'when the provider cancels the job'
-  #  it_should_behave_like 'provider job is canceled'
-  #  it_should_behave_like 'provider job canceled after completion'
-  #end
-
-end
-
 describe 'My Service Call When I Do The Work' do
 
   include_context 'basic job testing'
@@ -266,17 +66,28 @@ describe 'My Service Call When I Do The Work' do
         end
 
         describe 'collecting payment' do
-          include_context 'when collecting customer payment' do
-            # let(:collector)
-            let(:collection_job) { job }
-            let(:collector) { job.organization }
-            let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
-            let(:partial_billing_status) { :partial_payment_collected_by_employee }
-            let(:billing_status_events) { [:collect, :deposited] }
-            let(:billing_status_events_after_partial) { [:collect, :deposited] }
-            let(:customer_balance_before_payment) { 0 }
-            let(:full_amount) { 100 }
-            let(:job_events) { [ScCollectedByEmployeeEvent] }
+          describe 'collecting full payment' do
+            include_examples 'successful customer payment collection' do
+              let(:collection_job) { job }
+              let(:collector) { job.organization.users.last }
+              let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+              let(:billing_status_events) { [:collect, :deposited] }
+              let(:customer_balance_before_payment) { 0 }
+              let(:payment_amount) { 100 }
+              let(:job_events) { [ScCollectedByEmployeeEvent] }
+            end
+          end
+
+          describe 'collecting partial payment' do
+            include_examples 'successful customer payment collection' do
+              let(:collection_job) { job }
+              let(:collector) { job.organization.users.last }
+              let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+              let(:billing_status_events) { [:collect, :deposited] }
+              let(:customer_balance_before_payment) { 0 }
+              let(:payment_amount) { 10 }
+              let(:job_events) { [ScCollectedByEmployeeEvent] }
+            end
           end
         end
 
