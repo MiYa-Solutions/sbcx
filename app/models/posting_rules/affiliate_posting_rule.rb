@@ -92,7 +92,7 @@ class AffiliatePostingRule < PostingRule
 
     collection_props = {
         status:      AccountingEntry::STATUS_CLEARED,
-        amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
+        amount:      amount,
         ticket:      @ticket,
         event:       @event,
         agreement:   agreement,
@@ -252,7 +252,7 @@ class AffiliatePostingRule < PostingRule
   def org_collection_entries
     entries          = []
     collection_props = { status:      AccountingEntry::STATUS_CLEARED,
-                         amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
+                         amount:      @event.amount,
                          ticket:      @ticket,
                          event:       @event,
                          agreement:   agreement,

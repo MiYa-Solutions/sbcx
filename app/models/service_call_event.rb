@@ -117,7 +117,12 @@ class ServiceCallEvent < Event
               agreement:   service_call.customer.agreements.first,
               description: I18n.t("payment.#{service_call.payment_type}.description", ticket: ticket.id).html_safe }
 
-    props[:collector] = options[:collector] ? options[:collector] : ticket.organization
+    if options[:collector]
+      props[:collector] = options[:collector]
+    else
+      props[:collector] = ticket.collector ? ticket.collector : ticket.organization
+    end
+
 
     case service_call.payment_type
       when 'cash'

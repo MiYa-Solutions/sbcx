@@ -6,11 +6,6 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ScDepositEvent.new(amount: service_call.payment_money, payment_type: service_call.payment_type)
   end
 
-  def after_subcon_deposited_payment(service_call, transition)
-    Rails.logger.debug { "invoked observer BEFORE deposit_to_prov \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.events << ScSubconDepositedEvent.new(amount: service_call.payment_money, payment_type: service_call.payment_type)
-  end
-
   def after_clear_provider(service_call, transition)
     Rails.logger.debug { "invoked observer AFTER clear_provider \n #{service_call.inspect} \n #{transition.inspect}" }
     service_call.events << ScProviderClearEvent.new

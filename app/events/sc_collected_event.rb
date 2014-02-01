@@ -29,6 +29,7 @@ class ScCollectedEvent < ServiceCallEvent
   def process_event
     service_call.collector    ||= service_call.subcontractor
     service_call.payment_type ||= triggering_event.eventable.payment_type
+    set_customer_account_as_paid if triggering_event.nil?
     AffiliateBillingService.new(self).execute
 
     # pass a :state_only argument to the observer indicating that only a state transition should be performed
