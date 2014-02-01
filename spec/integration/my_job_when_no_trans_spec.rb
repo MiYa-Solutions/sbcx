@@ -67,11 +67,13 @@ describe 'My Service Call When I Do The Work' do
 
         describe 'collecting payment' do
           describe 'collecting full payment' do
-            include_examples 'successful customer payment collection' do
+            include_examples 'successful customer payment collection', 'collect' do
               let(:collection_job) { job }
               let(:collector) { job.organization.users.last }
-              let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+              let(:billing_status) { :partial_payment_collected_by_employee }        # since the job is not done it is set to partial
               let(:billing_status_events) { [:collect, :deposited] }
+              let(:billing_status_4_cash) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+              let(:billing_status_events_4_cash) { [:collect, :deposited] }
               let(:customer_balance_before_payment) { 0 }
               let(:payment_amount) { 100 }
               let(:job_events) { [ScCollectedByEmployeeEvent] }
@@ -79,11 +81,13 @@ describe 'My Service Call When I Do The Work' do
           end
 
           describe 'collecting partial payment' do
-            include_examples 'successful customer payment collection' do
+            include_examples 'successful customer payment collection', 'collect' do
               let(:collection_job) { job }
               let(:collector) { job.organization.users.last }
-              let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+              let(:billing_status) { :partial_payment_collected_by_employee }        # since the job is not done it is set to partial
               let(:billing_status_events) { [:collect, :deposited] }
+              let(:billing_status_4_cash) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+              let(:billing_status_events_4_cash) { [:collect, :deposited] }
               let(:customer_balance_before_payment) { 0 }
               let(:payment_amount) { 10 }
               let(:job_events) { [ScCollectedByEmployeeEvent] }

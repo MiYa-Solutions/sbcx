@@ -1,10 +1,10 @@
-shared_examples 'payment successfully collected' do
+shared_examples 'payment successfully collected' do |the_status, avail_events|
   it 'payment status should be correct' do
-    expect(collection_job.billing_status_name).to eq billing_status
+    expect(collection_job.billing_status_name).to eq send(the_status)
   end
 
   it 'available payment events are the expected ones' do
-    collection_job.billing_status_events.should =~ billing_status_events
+    collection_job.billing_status_events.should =~ send(avail_events)
   end
 
   it 'collect event is associated with the job' do
@@ -12,7 +12,7 @@ shared_examples 'payment successfully collected' do
   end
 end
 
-shared_examples 'customer billing is successful' do |entry_status, entry_type|
+shared_examples 'customer billing is successful' do |entry_status, entry_status_events|
 
   let(:customer_entry) { collection_job.payments.order('ID ASC').last }
   it 'customer balance should be correct' do
@@ -23,12 +23,12 @@ shared_examples 'customer billing is successful' do |entry_status, entry_type|
     expect(customer_entry.collector).to eq collector
   end
 
-  it 'entry should be of the right type ' do
-    expect(customer_entry).to be_instance_of entry_type
+  it 'entry status should be correct' do
+    expect(customer_entry.status_name).to eq entry_status
   end
 
-  it 'entry status should should be correct' do
-    expect(customer_entry.status_name).to eq entry_status
+  it 'entry status events should be correct' do
+    expect(customer_entry.status_events).to eq entry_status_events
   end
 
   it 'entry amount should be the payment amount' do
@@ -38,7 +38,7 @@ shared_examples 'customer billing is successful' do |entry_status, entry_type|
 
 end
 
-shared_examples 'successful customer payment collection' do
+shared_examples 'successful customer payment collection' do |collection_event|
 
   # this shared context expect the following let statements from the calling context
   # collector e.g. let(:collector) {org_admin}
@@ -52,63 +52,59 @@ shared_examples 'successful customer payment collection' do
   #              e.g. [ServiceCallDispatchEvent,ServiceCallStartEvent, ScCollectedByEmployeeEvent]
   #
 
-  it 'collect is one of the billing events' do
-    expect(collection_job.billing_status_events).to include(:collect)
-  end
-
   context 'when collecting cash' do
 
     before do
-      collection_job.update_attributes(billing_status_event: 'collect',
+      collection_job.update_attributes(billing_status_event: collection_event,
                                        payment_type:         'cash',
                                        payment_amount:       payment_amount.to_s,
                                        collector:            collector)
     end
 
-    it_behaves_like 'payment successfully collected'
+    it_behaves_like 'payment successfully collected', 'billing_status_4_cash', 'billing_status_events_4_cash'
 
-    it_behaves_like 'customer billing is successful', :cleared
+    it_behaves_like 'customer billing is successful', :cleared, []
   end
 
   context 'when collecting credit card' do
     before do
-      job.update_attributes(billing_status_event: 'collect',
+      job.update_attributes(billing_status_event: collection_event,
                             payment_type:         'credit_card',
                             payment_amount:       payment_amount.to_s,
                             collector:            collector)
     end
 
-    it_behaves_like 'payment successfully collected'
+    it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'
 
-    it_behaves_like 'customer billing is successful', :pending
+    it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
 
   end
 
   context 'when collecting amex' do
     before do
-      job.update_attributes(billing_status_event: 'collect',
+      job.update_attributes(billing_status_event: collection_event,
                             payment_type:         'amex_credit_card',
                             payment_amount:       payment_amount.to_s,
                             collector:            collector)
     end
 
-    it_behaves_like 'payment successfully collected'
+    it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'
 
-    it_behaves_like 'customer billing is successful', :pending
+    it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
 
   end
 
   context 'when collecting cheque' do
     before do
-      job.update_attributes(billing_status_event: 'collect',
+      job.update_attributes(billing_status_event: collection_event,
                             payment_type:         'cheque',
                             payment_amount:       payment_amount.to_s,
                             collector:            collector)
     end
 
-    it_behaves_like 'payment successfully collected'
+    it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'
 
-    it_behaves_like 'customer billing is successful', :pending
+    it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
 
   end
 
