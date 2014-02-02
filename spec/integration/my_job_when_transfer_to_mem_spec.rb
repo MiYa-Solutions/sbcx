@@ -134,7 +134,6 @@ describe 'My Job When Transferred To a Member' do
 
   end
 
-
   context 'when prov cancels' do
     include_context 'when the provider cancels the job'
     it_should_behave_like 'provider job is canceled'
@@ -219,6 +218,100 @@ describe 'My Job When Transferred To a Member' do
 
     it 'subcon_job should have no available provider events' do
       expect(subcon_job.provider_status_events).to eq []
+    end
+
+    context 'when prov collects' do
+
+      describe 'collecting partial payment' do
+        let(:collection_job) { job }
+        let(:collector) { job.organization.users.last }
+        let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+        let(:billing_status_events) { [:collect, :deposited] }
+        let(:billing_status_4_cash) { :partial_payment_collected_by_employee }
+        let(:billing_status_events_4_cash) { [:deposited, :collect] }
+
+        let(:customer_balance_before_payment) { 0 }
+        let(:payment_amount) { 10 }
+        let(:job_events) { [ServiceCallTransferEvent,
+                            ScCollectedByEmployeeEvent] }
+
+        include_examples 'successful customer payment collection', 'collect'
+
+        it 'subcon job billing events are provider_collected but it is not permitted for a user' do
+          expect(subcon_job.reload.billing_status_events).to eq [:provider_collected]
+          expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
+        end
+
+        context 'after partial collection' do
+          before do
+            job.update_attributes(billing_status_event: 'collect',
+                                  payment_type:         'cash',
+                                  payment_amount:       payment_amount.to_s,
+                                  collector:            collector)
+          end
+
+          it 'subcon status should be pending' do
+            expect(job.subcontractor_status_name).to eq :pending
+          end
+
+          it 'subcon job billing status is partially collected' do
+            expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+          end
+
+
+        end
+
+      end
+
+    end
+    context 'when subcon collects' do
+
+      context 'with a single user organization' do
+
+        describe 'collecting partial payment' do
+          let(:collection_job) { subcon_job }
+          let(:collector) { subcon }
+          let(:billing_status) { :partially_collected } # since the job is not done it is set to partial
+          let(:billing_status_events) { [:collect, :deposit_to_prov, :provider_collected] }
+          let(:billing_status_4_cash) { :partially_collected }
+          let(:billing_status_events_4_cash) { [:deposit_to_prov, :provider_collected, :collect] }
+
+          let(:customer_balance_before_payment) { 0 }
+          let(:payment_amount) { 10 }
+          let(:job_events) { [ServiceCallReceivedEvent,
+                              ServiceCallAcceptEvent,
+                              ScCollectEvent] }
+
+          include_examples 'successful customer payment collection', 'collect'
+
+          it 'subcon job billing events are collect and provider_collected which it is not permitted for a user' do
+            expect(subcon_job.reload.billing_status_events).to eq [:provider_collected, :collect]
+            expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
+            expect(event_permitted_for_job?('billing_status', 'collect', subcon_admin, subcon_job)).to be_true
+          end
+
+          context 'after partial collection' do
+            before do
+              subcon_job.update_attributes(billing_status_event: 'collect',
+                                           payment_type:         'cash',
+                                           payment_amount:       payment_amount.to_s,
+                                           collector:            collector)
+            end
+
+            it 'subcon status should be pending' do
+              expect(subcon_job.provider_status_name).to eq :pending
+            end
+
+            it 'provider job billing status is partially collected by subcon' do
+              expect(job.reload.billing_status_name).to eq :partial_payment_collected_by_subcon
+            end
+
+
+          end
+
+        end
+      end
+
     end
 
 

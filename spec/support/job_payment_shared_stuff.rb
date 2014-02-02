@@ -68,10 +68,10 @@ shared_examples 'successful customer payment collection' do |collection_event|
 
   context 'when collecting credit card' do
     before do
-      job.update_attributes(billing_status_event: collection_event,
-                            payment_type:         'credit_card',
-                            payment_amount:       payment_amount.to_s,
-                            collector:            collector)
+      collection_job.update_attributes(billing_status_event: collection_event,
+                                       payment_type:         'credit_card',
+                                       payment_amount:       payment_amount.to_s,
+                                       collector:            collector)
     end
 
     it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'
@@ -82,10 +82,10 @@ shared_examples 'successful customer payment collection' do |collection_event|
 
   context 'when collecting amex' do
     before do
-      job.update_attributes(billing_status_event: collection_event,
-                            payment_type:         'amex_credit_card',
-                            payment_amount:       payment_amount.to_s,
-                            collector:            collector)
+      collection_job.update_attributes(billing_status_event: collection_event,
+                                       payment_type:         'amex_credit_card',
+                                       payment_amount:       payment_amount.to_s,
+                                       collector:            collector)
     end
 
     it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'
@@ -96,10 +96,10 @@ shared_examples 'successful customer payment collection' do |collection_event|
 
   context 'when collecting cheque' do
     before do
-      job.update_attributes(billing_status_event: collection_event,
-                            payment_type:         'cheque',
-                            payment_amount:       payment_amount.to_s,
-                            collector:            collector)
+      collection_job.update_attributes(billing_status_event: collection_event,
+                                       payment_type:         'cheque',
+                                       payment_amount:       payment_amount.to_s,
+                                       collector:            collector)
     end
 
     it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'

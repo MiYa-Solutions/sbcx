@@ -29,7 +29,9 @@ class TransferredServiceCallObserver < ServiceCallObserver
 
   def after_collect_payment(service_call, transition)
     Rails.logger.debug { "invoked observer AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ScCollectEvent.new(amount: service_call.payment_money, payment_type: service_call.payment_type)
+    service_call.events << ScCollectEvent.new(amount:       service_call.payment_money,
+                                              payment_type: service_call.payment_type,
+                                              collector:    service_call.collector)
   end
 
   def before_start_work(service_call, transition)

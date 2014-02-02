@@ -161,18 +161,20 @@ class TransferredServiceCall < ServiceCall
     end
   end
 
-  BILLING_STATUS_NA                     = 4200
-  BILLING_STATUS_PENDING                = 4201
-  BILLING_STATUS_INVOICED               = 4202
-  BILLING_STATUS_COLLECTED_BY_EMPLOYEE  = 4203
-  BILLING_STATUS_COLLECTED              = 4204
-  BILLING_STATUS_DEPOSITED_TO_PROV      = 4205
-  BILLING_STATUS_DEPOSITED              = 4206
-  BILLING_STATUS_INVOICED_BY_SUBCON     = 4207
-  BILLING_STATUS_COLLECTED_BY_SUBCON    = 4208
-  BILLING_STATUS_SUBCON_CLAIM_DEPOSITED = 4209
-  BILLING_STATUS_INVOICED_BY_PROV       = 4210
-  BILLING_STATUS_PARTIALLY_COLLECTED    = 4211
+  BILLING_STATUS_NA                      = 4200
+  BILLING_STATUS_PENDING                 = 4201
+  BILLING_STATUS_INVOICED                = 4202
+  BILLING_STATUS_COLLECTED_BY_EMPLOYEE   = 4203
+  BILLING_STATUS_COLLECTED               = 4204
+  BILLING_STATUS_DEPOSITED_TO_PROV       = 4205
+  BILLING_STATUS_DEPOSITED               = 4206
+  BILLING_STATUS_INVOICED_BY_SUBCON      = 4207
+  BILLING_STATUS_COLLECTED_BY_SUBCON     = 4208
+  BILLING_STATUS_SUBCON_CLAIM_DEPOSITED  = 4209
+  BILLING_STATUS_INVOICED_BY_PROV        = 4210
+  BILLING_STATUS_PARTIALLY_COLLECTED     = 4211
+  BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE = 4212
+  BILLING_STATUS_P_COLLECTED_BY_SUBCON   = 4213
   # if collection is not allowed for this service call, then the initial status is set to na - not applicable
   state_machine :billing_status, initial: lambda { |sc| sc.allow_collection? ? :pending : :na }, namespace: 'payment' do
     state :na, value: BILLING_STATUS_NA
@@ -201,6 +203,8 @@ class TransferredServiceCall < ServiceCall
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV
     state :partially_collected, value: BILLING_STATUS_PARTIALLY_COLLECTED
+    state :partially_collected_by_employee, value: BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE
+    state :partially_collected_by_subcon, value: BILLING_STATUS_P_COLLECTED_BY_SUBCON
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "Transferred Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -226,8 +230,17 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :collect do
-      transition [:invoiced, :invoiced_by_subcon] => :collected_by_employee, if: lambda { |sc| sc.organization.multi_user? }
-      transition [:invoiced, :invoiced_by_subcon] => :collected, if: lambda { |sc| !sc.organization.multi_user? }
+      transition [:invoiced, :invoiced_by_subcon, :invoiced_by_prov, :pending, :partially_collected_by_employee] => :collected_by_employee,
+                 if:                                                                                             ->(sc) { sc.organization.multi_user? && sc.fully_paid? }
+
+      transition [:invoiced, :invoiced_by_subcon, :pending, :invoiced_by_prov, :partially_collected_by_employee] => :partially_collected_by_employee,
+                 if:                                                                                             ->(sc) { sc.organization.multi_user? && !sc.fully_paid? }
+
+      transition [:invoiced, :invoiced_by_subcon, :pending, :partially_collected] => :collected,
+                 if:                                                              ->(sc) { !sc.organization.multi_user? && sc.fully_paid? }
+
+      transition [:invoiced, :invoiced_by_subcon, :pending, :partially_collected] => :partially_collected,
+                 if:                                                              ->(sc) { !sc.organization.multi_user? && !sc.fully_paid? }
     end
 
     event :employee_deposit do
@@ -247,7 +260,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :deposit_to_prov do
-      transition :collected => :deposited_to_prov
+      transition [:collected, :partially_collected] => :deposited_to_prov
     end
 
     event :prov_confirmed_deposit do
@@ -269,12 +282,25 @@ class TransferredServiceCall < ServiceCall
     end
   end
 
+  def payments
+    if provider.member?
+      provider_ticket.payments
+    else
+      payment_entries
+    end
+
+  end
+
   def provider_ticket
     ServiceCall.where(organization_id: provider_id).where(ref_id: ref_id).first
   end
 
   def customer_total_payment
-    Money.new(-entries.where(type: CollectionEntry.subclasses).sum(:amount_cents))
+    Money.new(-payment_entries.sum(:amount_cents))
+  end
+
+  def payment_entries
+    entries.where(type: CollectionEntry.subclasses)
   end
 
   def provider_settlement_allowed?
