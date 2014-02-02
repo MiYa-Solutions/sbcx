@@ -306,6 +306,14 @@ describe 'My Job When Transferred To a Member' do
               expect(job.reload.billing_status_name).to eq :partial_payment_collected_by_subcon
             end
 
+            it 'provider and subcon accounts are reconciled' do
+              # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+              amount_cents = payment_amount*100 + payment_amount
+
+              expect(subcon.becomes(Affiliate).account_for(org).balance + org.becomes(Affiliate).account_for(subcon).balance).to eq Money.new(0)
+              expect(subcon.becomes(Affiliate).account_for(org).balance).to eq Money.new(amount_cents)
+              expect(org.becomes(Affiliate).account_for(subcon).balance).to eq Money.new(-amount_cents)
+            end
 
           end
 
