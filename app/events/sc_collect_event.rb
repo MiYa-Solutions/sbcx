@@ -1,6 +1,12 @@
 require 'hstore_amount'
+require 'collectible'
 class ScCollectEvent < ServiceCallEvent
   include HstoreAmount
+
+  setup_hstore_attr 'collector_id'
+  setup_hstore_attr 'collector_type'
+  include Collectible
+
 
   def init
     self.name         = I18n.t('service_call_collect_event.name')
@@ -17,7 +23,11 @@ class ScCollectEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ScCollectedEvent.new(triggering_event: self, amount: self.amount)
+    prov_service_call.events << ScCollectedEvent.new(triggering_event: self, amount: self.amount, collector: service_call.organization)
+  end
+
+  def update_subcontractor
+    subcon_service_call.events << ScProviderCollectedEvent.new(triggering_event: self, amount: self.amount, collector: service_call.organization)
   end
 
   def process_event

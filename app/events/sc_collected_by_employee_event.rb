@@ -13,8 +13,21 @@ class ScCollectedByEmployeeEvent < ServiceCallEvent
     self.reference_id = 100045
   end
 
+  def notification_recipients
+    nil
+  end
+
+  def update_subcontractor
+    subcon_service_call.events << ScProviderCollectedEvent.new(triggering_event: self, amount: self.amount, collector: service_call.organization)
+  end
+
+  def update_provider
+    prov_service_call.events << ScCollectedEvent.new(triggering_event: self, amount: self.amount, collector: service_call.organization)
+  end
+
   def process_event
     set_customer_account_as_paid collector: collector
+    super
     #todo invoke employee billing service
   end
 

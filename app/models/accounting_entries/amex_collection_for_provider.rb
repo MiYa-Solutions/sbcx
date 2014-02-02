@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class AmexCollectionForProvider < AccountingEntry
+class AmexCollectionForProvider < CollectionEntry
   def amount_direction
     -1
   end

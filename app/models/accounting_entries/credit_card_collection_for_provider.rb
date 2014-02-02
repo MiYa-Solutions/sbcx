@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class CreditCardCollectionForProvider < AccountingEntry
+class CreditCardCollectionForProvider < CollectionEntry
   def amount_direction
     -1
   end

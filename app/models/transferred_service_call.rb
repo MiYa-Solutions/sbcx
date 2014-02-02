@@ -172,6 +172,7 @@ class TransferredServiceCall < ServiceCall
   BILLING_STATUS_COLLECTED_BY_SUBCON    = 4208
   BILLING_STATUS_SUBCON_CLAIM_DEPOSITED = 4209
   BILLING_STATUS_INVOICED_BY_PROV       = 4210
+  BILLING_STATUS_PARTIALLY_COLLECTED    = 4211
   # if collection is not allowed for this service call, then the initial status is set to na - not applicable
   state_machine :billing_status, initial: lambda { |sc| sc.allow_collection? ? :pending : :na }, namespace: 'payment' do
     state :na, value: BILLING_STATUS_NA
@@ -199,6 +200,7 @@ class TransferredServiceCall < ServiceCall
     end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV
+    state :partially_collected, value: BILLING_STATUS_PARTIALLY_COLLECTED
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "Transferred Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -217,7 +219,10 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :provider_collected do
-      transition [:invoiced_by_subcon, :invoiced_by_prov, :invoiced] => :deposited
+      transition [:invoiced_by_subcon, :invoiced_by_prov, :invoiced, :partially_collected, :pending] => :deposited,
+                 if:                                                                                 ->(sc) { sc.fully_paid? }
+      transition [:invoiced_by_subcon, :invoiced_by_prov, :invoiced, :partially_collected, :pending] => :partially_collected,
+                 if:                                                                                 ->(sc) { !sc.fully_paid? }
     end
 
     event :collect do
@@ -255,6 +260,22 @@ class TransferredServiceCall < ServiceCall
   #def ref_id
   #  read_attribute(:ref_id) || id
   #end
+
+  def fully_paid?
+    if provider.member?
+      provider_ticket.fully_paid?
+    else
+      total - customer_total_payment <= 0 ? true : false
+    end
+  end
+
+  def provider_ticket
+    ServiceCall.where(organization_id: provider_id).where(ref_id: ref_id).first
+  end
+
+  def customer_total_payment
+    Money.new(-entries.where(type: CollectionEntry.subclasses).sum(:amount_cents))
+  end
 
   def provider_settlement_allowed?
     (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)

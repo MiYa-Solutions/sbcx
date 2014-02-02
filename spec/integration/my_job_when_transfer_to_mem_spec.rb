@@ -68,8 +68,9 @@ describe 'My Job When Transferred To a Member' do
     expect(job.billing_status_events).to eq [:collect]
   end
 
-  it 'there should be no available payment events for the subcon job' do
-    expect(subcon_job.billing_status_events).to be_empty
+  it 'billing events can be provider_collected but it is not permitted for a user' do
+    expect(subcon_job.billing_status_events).to eq [:provider_collected]
+    expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job))
   end
 
   it 'job subcon status should be pending' do
@@ -86,6 +87,51 @@ describe 'My Job When Transferred To a Member' do
 
   it 'subcon_job should have no available provider events' do
     expect(subcon_job.provider_status_events).to eq []
+  end
+
+  context 'when prov collects' do
+
+    describe 'collecting partial payment' do
+      let(:collection_job) { job }
+      let(:collector) { job.organization.users.last }
+      let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+      let(:billing_status_events) { [:collect, :deposited] }
+      let(:billing_status_4_cash) { :partial_payment_collected_by_employee }
+      let(:billing_status_events_4_cash) { [:deposited, :collect] }
+
+      let(:customer_balance_before_payment) { 0 }
+      let(:payment_amount) { 10 }
+      let(:job_events) { [ServiceCallTransferEvent,
+                          ScCollectedByEmployeeEvent] }
+
+      include_examples 'successful customer payment collection', 'collect'
+
+      it 'subcon job billing events are provider_collected but it is not permitted for a user' do
+        expect(subcon_job.reload.billing_status_events).to eq [:provider_collected]
+        expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
+      end
+
+      context 'after partial collection' do
+        before do
+          job.update_attributes(billing_status_event: 'collect',
+                                payment_type:         'cash',
+                                payment_amount:       payment_amount.to_s,
+                                collector:            collector)
+        end
+
+        it 'subcon status should be pending' do
+          expect(job.subcontractor_status_name).to eq :pending
+        end
+
+        it 'subcon job billing status is partially collected' do
+          expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+        end
+
+
+      end
+
+    end
+
   end
 
 
@@ -154,8 +200,9 @@ describe 'My Job When Transferred To a Member' do
       job.billing_status_events.should =~ [:collect, :subcon_collected]
     end
 
-    it 'there should be no available payment events for the subcon job' do
-      expect(subcon_job.billing_status_events).to be_empty
+    it 'billing events can be provider_collected but it is not permitted for a user' do
+      expect(subcon_job.billing_status_events).to eq [:provider_collected]
+      expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job))
     end
 
     it 'job subcon status should be pending' do
@@ -227,8 +274,9 @@ describe 'My Job When Transferred To a Member' do
         job.billing_status_events.should =~ [:collect, :subcon_collected]
       end
 
-      it 'there should be no available payment events for the subcon job' do
-        expect(subcon_job.billing_status_events).to be_empty
+      it 'billing events can be provider_collected but it is not permitted for a user' do
+        expect(subcon_job.billing_status_events).to eq [:provider_collected]
+        expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job))
       end
 
       it 'job subcon status should be pending' do
@@ -300,10 +348,11 @@ describe 'My Job When Transferred To a Member' do
           expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_false
         end
 
-        it 'subcon job should have invoice and provider invoiced as the available payment events, but provider invoiced is not permitted' do
-          expect(subcon_job.billing_status_events).to eq [:invoice, :provider_invoiced]
+        it 'subcon job should have invoice, provider invoiced and provider collected as the available payment events, but provider invoiced/collected is not permitted' do
+          expect(subcon_job.billing_status_events).to eq [:invoice, :provider_invoiced, :provider_collected]
           expect(event_permitted_for_job?('billing_status', 'invoice', subcon_admin, subcon_job)).to be_true
           expect(event_permitted_for_job?('billing_status', 'provider_invoiced', subcon_admin, subcon_job)).to be_false
+          expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
         end
 
         it 'job subcon status should be pending' do
