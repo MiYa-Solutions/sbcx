@@ -119,6 +119,7 @@ class MyServiceCall < ServiceCall
   BILLING_STATUS_PARTIALLY_PAID          = 4110
   BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE = 4111
   BILLING_STATUS_P_COLLECTED_BY_SUBCON   = 4112
+  BILLING_STATUS_OVERPAID                = 4113
 
 
   # if collection is not allowed for this service call, then the initial status is set to na - not applicable
@@ -126,24 +127,26 @@ class MyServiceCall < ServiceCall
     state :pending, value: BILLING_STATUS_PENDING
     state :invoiced, value: BILLING_STATUS_INVOICED
     state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE do
-      validate { |sc| sc.validate_collector }
+      #validate { |sc| sc.validate_collector }
     end
     state :overdue, value: BILLING_STATUS_OVERDUE
     state :paid, value: BILLING_STATUS_PAID
     state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
     state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
-      validate { |sc| sc.validate_collector }
+      #validate { |sc| sc.validate_collector }
     end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :cleared, value: BILLING_STATUS_CLEARED
     state :rejected, value: BILLING_STATUS_REJECTED
     state :partially_paid, value: BILLING_STATUS_PARTIALLY_PAID
     state :partial_payment_collected_by_employee, value: BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE do
-      validate { |sc| sc.validate_collector }
+      #validate { |sc| sc.validate_collector }
     end
     state :partial_payment_collected_by_subcon, value: BILLING_STATUS_P_COLLECTED_BY_SUBCON do
-      validate { |sc| sc.validate_collector }
+      #validate { |sc| sc.validate_collector }
     end
+
+    state :overpaid, value: BILLING_STATUS_OVERPAID
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -153,10 +156,17 @@ class MyServiceCall < ServiceCall
       sc.check_payment_amount
     end
 
+    after_transition any => :cleared do |sc, transition|
+      sc.mark_as_overpaid_payment! if sc.overpaid?
+    end
+
     # for cash payment, paid means cleared
     after_transition any => :paid do |sc, transition|
-      sc.billing_status = BILLING_STATUS_CLEARED if sc.payment_type == 'cash'
-      sc.save
+      if sc.payment_type == 'cash'
+        sc.billing_status = BILLING_STATUS_CLEARED
+        sc.mark_as_overpaid_payment! if sc.overpaid?
+        sc.save
+      end
     end
 
     event :clear do
@@ -232,11 +242,33 @@ class MyServiceCall < ServiceCall
       transition :subcon_claim_deposited => :paid, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
       transition :subcon_claim_deposited => :partially_paid, if: ->(sc) { !sc.canceled? && !sc.fully_paid? }
     end
+
+    event :mark_as_fully_paid do
+      transition [:partially_paid] => :paid, if: ->(sc) { sc.fully_paid? }
+      transition [:partial_payment_collected_by_employee] => :collected_by_employee, if: ->(sc) { sc.fully_paid? }
+      transition [:partial_payment_collected_by_subcon] => :collected_by_subcon, if: ->(sc) { sc.fully_paid? }
+    end
+
+    event :mark_as_overpaid do
+      transition [:cleared] => :overpaid, if: ->(sc) { sc.overpaid? }
+    end
+
   end
 
-  def fully_paid?
+  def fully_paid?(options = {})
     current_payment = payment_amount || 0
-    work_done? ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+
+    if options[:work_in_progress].nil?
+      work_done? ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+    else
+      total > 0 ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <=0 : false
+    end
+
+  end
+
+  def overpaid?
+    current_payment = payment_amount || 0
+    total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) < 0
   end
 
   def check_and_set_as_fully_paid

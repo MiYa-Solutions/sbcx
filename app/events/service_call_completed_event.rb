@@ -12,6 +12,7 @@ class ServiceCallCompletedEvent < ScCompletionEvent
     super
     invoke_affiliate_billing
     CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
+    update_payment_status
   end
 
   def update_provider

@@ -24,6 +24,7 @@ shared_examples 'collection before completion' do
       end
 
       context 'after partial collection' do
+
         describe 'cash collection' do
           before do
             job.update_attributes(billing_status_event: 'collect',
@@ -51,6 +52,7 @@ shared_examples 'collection before completion' do
             expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
           end
         end
+
         describe 'credit card collection', focus: true do
           before do
             job.update_attributes(billing_status_event: 'collect',
@@ -363,7 +365,7 @@ describe 'My Job When Transferred To a Member' do
     expect(job.billing_status_events).to eq [:collect]
   end
 
-  it 'billing events can be provider_collected but it is not permitted for a user' do
+  it 'billing events for subcon job can be provider_collected but it is not permitted for a user' do
     expect(subcon_job.billing_status_events).to eq [:provider_collected]
     expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job))
   end
@@ -495,8 +497,9 @@ describe 'My Job When Transferred To a Member' do
     end
 
     it 'billing events can be provider_collected but it is not permitted for a user' do
-      expect(subcon_job.billing_status_events).to eq [:provider_collected]
-      expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job))
+      expect(subcon_job.billing_status_events).to eq [:provider_collected, :collect]
+      expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
+      expect(event_permitted_for_job?('billing_status', 'collect', subcon_admin, subcon_job)).to be_true
     end
 
     it 'job subcon status should be pending' do
@@ -643,8 +646,9 @@ describe 'My Job When Transferred To a Member' do
       end
 
       it 'billing events can be provider_collected but it is not permitted for a user' do
-        expect(subcon_job.billing_status_events).to eq [:provider_collected]
-        expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job))
+        expect(subcon_job.billing_status_events).to eq [:provider_collected, :collect]
+        expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
+        expect(event_permitted_for_job?('billing_status', 'collect', subcon_admin, subcon_job)).to be_true
       end
 
       it 'job subcon status should be pending' do
@@ -676,6 +680,437 @@ describe 'My Job When Transferred To a Member' do
         end
       end
 
+      context 'when collecting payments before and then completing the job' do
+
+        context 'when collecting partial payment and then completing' do
+
+          context 'when provider collected' do
+
+            context 'when collecting cash' do
+
+              before do
+                job.update_attributes(billing_status_event: 'collect',
+                                      payment_type:         'cash',
+                                      payment_amount:       '10',
+                                      collector:            org_admin)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the total - the paid amount' do
+                expect(job.customer.account.balance).to eq Money.new((100*100 + 100*100*0.1)*100 - 1000) #(price*qty + tax amount)*cents - paid amount
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :partial_payment_collected_by_employee
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+              end
+
+            end
+
+            context 'when collecting cheque' do
+
+              before do
+                job.update_attributes(billing_status_event: 'collect',
+                                      payment_type:         'cheque',
+                                      payment_amount:       '10',
+                                      collector:            org_admin)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the total - the paid amount' do
+                expect(job.customer.account.balance).to eq Money.new((100*100 + 100*100*0.1)*100 - 1000) #(price*qty + tax amount)*cents - paid amount
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :partial_payment_collected_by_employee
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+              end
+
+            end
+          end
+
+          context 'when subcon collected' do
+
+            context 'when collecting cash' do
+
+              before do
+                subcon_job.update_attributes(billing_status_event: 'collect',
+                                             payment_type:         'cash',
+                                             payment_amount:       '10',
+                                             collector:            org_admin)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the total - the paid amount' do
+                expect(job.customer.account.balance).to eq Money.new((100*100 + 100*100*0.1)*100 - 1000) #(price*qty + tax amount)*cents - paid amount
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :partial_payment_collected_by_subcon
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+              end
+
+            end
+
+            context 'when collecting cheque' do
+
+              before do
+                subcon_job.update_attributes(billing_status_event: 'collect',
+                                             payment_type:         'cheque',
+                                             payment_amount:       '10',
+                                             collector:            org_admin)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the total - the paid amount' do
+                expect(job.customer.account.balance).to eq Money.new((100*100 + 100*100*0.1)*100 - 1000) #(price*qty + tax amount)*cents - paid amount
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :partial_payment_collected_by_subcon
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+              end
+
+            end
+          end
+
+        end
+
+        context 'when collecting full payment and then completing' do
+
+          context 'when provider collected' do
+
+            context 'when collecting cash' do
+
+              before do
+                job.update_attributes(billing_status_event: 'collect',
+                                      payment_type:         'cash',
+                                      payment_amount:       (100*100 + 100*100*0.1).to_s, #(price*qty + tax amount)*cents - paid amount
+                                      collector:            org_admin)
+
+                add_bom_to_job subcon_job, price: 100, quantity: 100, cost: 10
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the total - the paid amount' do
+                expect(job.customer.account.balance).to eq Money.new(0)
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :collected_by_employee
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :deposited
+              end
+
+            end
+
+            context 'when collecting cheque' do
+
+              before do
+                job.update_attributes(billing_status_event: 'collect',
+                                      payment_type:         'cheque',
+                                      payment_amount:       (100*100 + 100*100*0.1).to_s, #(price*qty + tax amount)*cents - paid amount
+                                      collector:            org_admin)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the total - the paid amount' do
+                expect(job.customer.account.balance).to eq Money.new(0)
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :collected_by_employee
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :deposited
+              end
+
+            end
+          end
+
+          context 'when subcon collected' do
+
+            context 'when collecting cash' do
+
+              before do
+                subcon_job.update_attributes(billing_status_event: 'collect',
+                                             payment_type:         'cash',
+                                             payment_amount:       (100*100 + 100*100*0.1).to_s, #(price*qty + tax amount)*cents
+                                             collector:            subcon)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the total - the paid amount' do
+                expect(job.customer.account.balance).to eq Money.new(0)
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :collected_by_subcon
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :collected
+              end
+
+            end
+
+            context 'when collecting cheque' do
+
+              before do
+                subcon_job.update_attributes(billing_status_event: 'collect',
+                                             payment_type:         'cheque',
+                                             payment_amount:       (100*100 + 100*100*0.1).to_s, #(price*qty + tax amount)*cents - paid amount
+                                             collector:            subcon)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the total - the paid amount' do
+                expect(job.customer.account.balance).to eq Money.new(0)
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :collected_by_subcon
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :collected
+              end
+
+            end
+          end
+        end
+
+        context 'when collecting more than the price at the completion' do
+
+          context 'when provider collected' do
+
+            context 'when collecting cash' do
+
+              before do
+                job.update_attributes(billing_status_event: 'collect',
+                                      payment_type:         'cash',
+                                      payment_amount:       (100*100 + 100*100*0.1 + 100).to_s, #(price*qty + tax amount)*cents + extra amount
+                                      collector:            org_admin)
+
+                add_bom_to_job subcon_job, price: 100, quantity: 100, cost: 10
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the residue' do
+                expect(job.customer.account.balance).to eq Money.new(-100*100)
+              end
+
+              it 'job billing status should be collected by employee' do
+                expect(job.billing_status_name).to eq :collected_by_employee
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :deposited
+              end
+
+              context 'when the employee deposits the payment' do
+                before do
+                  job.update_attributes(billing_status_event: 'deposited')
+                end
+
+                it 'job billing status should be overpaid' do
+                  expect(job.billing_status_name).to eq :overpaid
+                end
+
+
+              end
+
+            end
+
+            context 'when collecting cheque' do
+
+              before do
+                job.update_attributes(billing_status_event: 'collect',
+                                      payment_type:         'cheque',
+                                      payment_amount:       (100*100 + 100*100*0.1 +100).to_s, #(price*qty + tax amount)*cents - paid amount
+                                      collector:            org_admin)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the residue' do
+                expect(job.customer.account.balance).to eq Money.new(-100*100)
+              end
+
+              it 'job billing status should be collected by employee' do
+                expect(job.billing_status_name).to eq :collected_by_employee
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :deposited
+              end
+
+            end
+          end
+
+          context 'when subcon collected' do
+
+            context 'when collecting cash' do
+
+              before do
+                subcon_job.update_attributes(billing_status_event: 'collect',
+                                             payment_type:         'cash',
+                                             payment_amount:       (100*100 + 100*100*0.1 +100).to_s, #(price*qty + tax amount)*cents
+                                             collector:            subcon)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the residue' do
+                expect(job.customer.account.balance).to eq Money.new(-100*100)
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :collected_by_subcon
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :collected
+              end
+
+            end
+
+            context 'when collecting cheque' do
+
+              before do
+                subcon_job.update_attributes(billing_status_event: 'collect',
+                                             payment_type:         'cheque',
+                                             payment_amount:       (100*100 + 100*100*0.1 + 100).to_s, #(price*qty + tax amount)*cents - paid amount
+                                             collector:            subcon)
+                add_bom_to_job subcon_job
+                subcon_job.update_attributes(tax: '10')
+                subcon_job.update_attributes(work_status_event: 'complete')
+                job.reload
+              end
+
+              it 'job and subcon work status should be completed' do
+                expect(job.work_status_name).to eq :done
+                expect(subcon_job.work_status_name).to eq :done
+              end
+
+              it 'customer balance should be the residue' do
+                expect(job.customer.account.balance).to eq Money.new(-100*100)
+              end
+
+              it 'job billing status should be partially paid' do
+                expect(job.billing_status_name).to eq :collected_by_subcon
+              end
+
+              it 'subcon job billing status should be partially paid' do
+                expect(subcon_job.reload.billing_status_name).to eq :collected
+              end
+
+            end
+          end
+
+
+        end
+
+      end
 
       context 'when subcon completes the job' do
         before do
@@ -729,9 +1164,10 @@ describe 'My Job When Transferred To a Member' do
           expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_false
         end
 
-        it 'subcon job should have invoice, provider invoiced and provider collected as the available payment events, but provider invoiced/collected is not permitted' do
-          expect(subcon_job.billing_status_events).to eq [:invoice, :provider_invoiced, :provider_collected]
+        it 'subcon job should have invoice, collect,  provider invoiced and provider collected as the available payment events, but provider invoiced/collected is not permitted' do
+          expect(subcon_job.billing_status_events).to eq [:invoice, :provider_invoiced, :provider_collected, :collect]
           expect(event_permitted_for_job?('billing_status', 'invoice', subcon_admin, subcon_job)).to be_true
+          expect(event_permitted_for_job?('billing_status', 'collect', subcon_admin, subcon_job)).to be_true
           expect(event_permitted_for_job?('billing_status', 'provider_invoiced', subcon_admin, subcon_job)).to be_false
           expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
         end
@@ -754,6 +1190,11 @@ describe 'My Job When Transferred To a Member' do
 
         it 'subcon_job should have no available provider events' do
           expect(subcon_job.provider_status_events).to eq []
+        end
+
+        context 'when collecting customer payment' do
+
+
         end
 
 

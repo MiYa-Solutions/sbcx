@@ -33,7 +33,7 @@ class ScCollectedByEmployeeEvent < ServiceCallEvent
 
   def process_event
     set_customer_account_as_paid collector: the_collector
-    AffiliateBillingService.new(self).execute
+    AffiliateBillingService.new(self).execute unless service_call.counterparty.nil?
     super
     #todo invoke employee billing service
   end

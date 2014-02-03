@@ -181,13 +181,13 @@ class TransferredServiceCall < ServiceCall
     state :pending, value: BILLING_STATUS_PENDING
     state :invoiced, value: BILLING_STATUS_INVOICED
     state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE do
-      validate { |sc| sc.validate_collector }
+      #validate { |sc| sc.validate_collector }
     end
     state :collected, value: BILLING_STATUS_COLLECTED do
-      validate do |sc|
-        sc.validate_collector
-        sc.validate_payment
-      end
+      #validate do |sc|
+      #  sc.validate_collector
+      #  sc.validate_payment
+      #end
     end
     state :deposited_to_prov, value: BILLING_STATUS_DEPOSITED_TO_PROV
     state :deposited, value: BILLING_STATUS_DEPOSITED do
@@ -195,10 +195,10 @@ class TransferredServiceCall < ServiceCall
     end
     state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
     state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
-      validate do |sc|
-        sc.validate_collector
-        sc.validate_payment
-      end
+      #validate do |sc|
+      #  sc.validate_collector
+      #  sc.validate_payment
+      #end
     end
     state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
     state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV
@@ -233,16 +233,16 @@ class TransferredServiceCall < ServiceCall
 
     event :collect do
       transition [:invoiced, :invoiced_by_subcon, :invoiced_by_prov, :pending, :partially_collected_by_employee] => :collected_by_employee,
-                 if:                                                                                             ->(sc) { sc.organization.multi_user? && sc.fully_paid? }
+                 if:                                                                                             ->(sc) { sc.organization.multi_user? && sc.fully_paid? && sc.collection_allowed? }
 
       transition [:invoiced, :invoiced_by_subcon, :pending, :invoiced_by_prov, :partially_collected_by_employee] => :partially_collected_by_employee,
-                 if:                                                                                             ->(sc) { sc.organization.multi_user? && !sc.fully_paid? }
+                 if:                                                                                             ->(sc) { sc.organization.multi_user? && !sc.fully_paid? && sc.collection_allowed? }
 
       transition [:invoiced, :invoiced_by_subcon, :pending, :partially_collected] => :collected,
-                 if:                                                              ->(sc) { !sc.organization.multi_user? && sc.fully_paid? }
+                 if:                                                              ->(sc) { !sc.organization.multi_user? && sc.fully_paid? && sc.collection_allowed? }
 
       transition [:invoiced, :invoiced_by_subcon, :pending, :partially_collected] => :partially_collected,
-                 if:                                                              ->(sc) { !sc.organization.multi_user? && !sc.fully_paid? }
+                 if:                                                              ->(sc) { !sc.organization.multi_user? && !sc.fully_paid? && sc.collection_allowed? }
     end
 
     event :employee_deposit do
@@ -269,6 +269,13 @@ class TransferredServiceCall < ServiceCall
       transition :deposited_to_prov => :deposited
     end
 
+    event :mark_as_fully_paid do
+      transition [:partially_collected] => :collected, if: ->(sc) { sc.fully_paid? && sc.payment_entries.count > 0 }
+      transition [:partially_collected] => :deposited, if: ->(sc) { sc.fully_paid? && sc.payment_entries.count == 0 }
+      transition [:partially_collected_by_employee] => :collected_by_employee, if: ->(sc) { sc.fully_paid? }
+      transition [:partially_collected_by_subcon] => :collected_by_subcon, if: ->(sc) { sc.fully_paid? }
+    end
+
   end
 
   # local transferred jobs don't have a ref_id set, therefore if not set then defaults to the id
@@ -278,10 +285,14 @@ class TransferredServiceCall < ServiceCall
 
   def fully_paid?
     if provider.member?
-      provider_ticket.fully_paid?
+      provider_ticket.fully_paid? work_in_progress: true
     else
       total - customer_total_payment <= 0 ? true : false
     end
+  end
+
+  def collection_allowed?
+    accepted? transferred?
   end
 
   def payments
@@ -302,7 +313,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def payment_entries
-    entries.where(type: CollectionEntry.subclasses)
+    entries.where(type: CollectionEntry.subclasses.map(&:name))
   end
 
   def provider_settlement_allowed?
