@@ -72,6 +72,8 @@ en:
       aff_invited_me_p2: "Please Accept or Reject the invitation"
       I_invited_Aff: "Invites Sent To: "
       click_more: "Click for more details"
+      balance_out: "Money I owe"
+      balance_in: "Money owed to me"
     message:
       contact_us: "Please fill out the form below and we will contact you shortly."
       forgot_pass: "Forgot your password?"

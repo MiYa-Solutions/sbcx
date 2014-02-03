@@ -4060,7 +4060,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .positive {
     color: #44AD3F;
     font-size: 14px;
-    padding-right: 14px;
+    padding-right: 1px;
     text-transform: uppercase;
     font-weight: bold;
   }
@@ -4068,9 +4068,20 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .negative {
     color: #DA4E49;
     font-size: 14px;
-    padding-right: 14px;
+    padding-right: 1px;
     text-transform: uppercase;
     font-weight: bold;
+  }
+
+  .balanced {
+    font-size: 14px;
+    padding-right: 14px;
+    text-transform: uppercase;
+    font-weight: normal;
+  }
+
+  .help_icon {
+    width: 30px;
   }
 
 }
@@ -4362,6 +4373,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .icon-pencil {
     float: right;
   }
+}
+
+.affiliate_statuses {
+    padding-right: 1px;
 }
 
 
