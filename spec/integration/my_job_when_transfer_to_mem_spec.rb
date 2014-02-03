@@ -663,6 +663,19 @@ describe 'My Job When Transferred To a Member' do
         expect(subcon_job.provider_status_events).to eq []
       end
 
+      context 'when collecting customer payment' do
+        include_examples 'collection before completion' do
+          let(:prov_job_events) { [ServiceCallTransferEvent,
+                                   ServiceCallAcceptedEvent,
+                                   ServiceCallStartedEvent,
+                                   ScCollectedByEmployeeEvent] }
+          let(:subcon_job_events) { [ServiceCallReceivedEvent,
+                                     ServiceCallAcceptEvent,
+                                     ServiceCallStartEvent,
+                                     ScCollectEvent] }
+        end
+      end
+
 
       context 'when subcon completes the job' do
         before do
