@@ -80,6 +80,8 @@ class AffiliatePostingRule < PostingRule
         true
       when ScProviderCollectedEvent.name
         true
+      when ScCollectedByEmployeeEvent.name
+        true
       else
         false
     end
@@ -109,22 +111,22 @@ class AffiliatePostingRule < PostingRule
 
     case @ticket.payment_type
       when 'cash'
-        entries << CashCollectionForProvider.new(collection_props)
+        entries << CashCollectionForProvider.new(collection_props) if collected_by_me?
         fee_props[:amount] = cash_fee
         entries << CashPaymentFee.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0
 
       when 'credit_card'
         fee_props[:amount] = credit_fee
-        entries << CreditCardCollectionForProvider.new(collection_props)
+        entries << CreditCardCollectionForProvider.new(collection_props) if collected_by_me?
         entries << CreditPaymentFee.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0
 
       when 'amex_credit_card'
         fee_props[:amount] = amex_fee
-        entries << AmexCollectionForProvider.new(collection_props)
+        entries << AmexCollectionForProvider.new(collection_props) if collected_by_me?
         entries << AmexPaymentFee.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0
 
       when 'cheque'
-        fee_props[:amount] = cheque_fee
+        fee_props[:amount] = cheque_fee if collected_by_me?
         entries << ChequeCollectionForProvider.new(collection_props)
         entries << ChequePaymentFee.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0
 
@@ -135,6 +137,11 @@ class AffiliatePostingRule < PostingRule
     end
 
     entries
+  end
+
+  def collected_by_me?
+    @event.collector.instance_of?(User) && @event.collector.organization == @account.organization ||
+        @event.collector.becomes(Organization) == @account.organization
   end
 
   def cparty_settlement_entries
@@ -269,21 +276,21 @@ class AffiliatePostingRule < PostingRule
 
     case @ticket.payment_type
       when 'cash'
-        entries << CashCollectionFromSubcon.new(collection_props)
+        entries << CashCollectionFromSubcon.new(collection_props) unless collected_by_me?
 
         fee_props[:amount] = cash_fee
         entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0
       when 'credit_card'
         fee_props[:amount] = credit_fee
-        entries << CreditCardCollectionFromSubcon.new(collection_props)
+        entries << CreditCardCollectionFromSubcon.new(collection_props) unless collected_by_me?
         entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0
       when 'amex_credit_card'
         fee_props[:amount] = amex_fee
-        entries << AmexCollectionFromSubcon.new(collection_props)
+        entries << AmexCollectionFromSubcon.new(collection_props) unless collected_by_me?
         entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0
       when 'cheque'
         fee_props[:amount] = cheque_fee
-        entries << ChequeCollectionFromSubcon.new(collection_props)
+        entries << ChequeCollectionFromSubcon.new(collection_props) unless collected_by_me?
         entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0
 
       else
@@ -350,21 +357,21 @@ class AffiliatePostingRule < PostingRule
         description: I18n.t("payment_fee.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
-        fee_props[:amount] = cash_fee * (rate / 100.0)
+        fee_props[:amount] = cash_fee
         entries << CashPaymentFee.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0.0
 
       when 'credit_card'
-        fee_props[:amount] = credit_fee * (rate / 100.0)
+        fee_props[:amount] = credit_fee
         entries << CreditPaymentFee.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0.0
 
       when 'amex_credit_card'
-        fee_props[:amount] = amex_fee * (rate / 100.0)
+        fee_props[:amount] = amex_fee
         entries << AmexPaymentFee.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0.0
 
       when 'cheque'
-        fee_props[:amount] = cheque_fee * (rate / 100.0)
+        fee_props[:amount] = cheque_fee
         entries << ChequePaymentFee.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0.0
       else
         raise "#{self.class.name}: Unexpected payment type (#{@ticket.payment_type}) when processing the event"
@@ -384,18 +391,18 @@ class AffiliatePostingRule < PostingRule
     }
 
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
-        fee_props[:amount] = cash_fee * (rate / 100.0)
+        fee_props[:amount] = cash_fee
         entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0.0
       when 'credit_card'
-        fee_props[:amount] = credit_fee * (rate / 100.0)
+        fee_props[:amount] = credit_fee
         entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0.0
       when 'amex_credit_card'
-        fee_props[:amount] = amex_fee * (rate / 100.0)
+        fee_props[:amount] = amex_fee
         entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0.0
       when 'cheque'
-        fee_props[:amount] = cheque_fee * (rate / 100.0)
+        fee_props[:amount] = cheque_fee
         entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0.0
       else
     end

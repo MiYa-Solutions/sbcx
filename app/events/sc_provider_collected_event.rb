@@ -27,7 +27,11 @@ class ScProviderCollectedEvent < ServiceCallEvent
 
   def process_event
     service_call.collector = service_call.provider
-    service_call.payment_type = self.triggering_event.service_call.payment_type if self.triggering_event.present?
+
+    if self.triggering_event.present?
+      service_call.payment_type = self.triggering_event.payment_type
+    end
+
     AffiliateBillingService.new(self).execute
     service_call.provider_collected_payment
     super

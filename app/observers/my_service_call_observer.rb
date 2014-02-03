@@ -14,7 +14,7 @@ class MyServiceCallObserver < ServiceCallObserver
     Rails.logger.debug { "invoked AFTER start_work \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
     if service_call.transferred?
-      service_call.events << ServiceCallStartedEvent.new
+      service_call.events << ServiceCallStartedEvent.new unless transition.args.first == :state_only
     else
       service_call.activate unless  service_call.open?
       service_call.events << ServiceCallStartEvent.new

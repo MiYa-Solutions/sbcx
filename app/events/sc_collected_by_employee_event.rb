@@ -18,17 +18,34 @@ class ScCollectedByEmployeeEvent < ServiceCallEvent
   end
 
   def update_subcontractor
-    subcon_service_call.events << ScProviderCollectedEvent.new(triggering_event: self, amount: self.amount, collector: service_call.organization)
+    subcon_service_call.events << ScProviderCollectedEvent.new(triggering_event: self,
+                                                               amount:           self.amount,
+                                                               collector:        service_call.organization,
+                                                               payment_type:     self.payment_type)
   end
 
   def update_provider
-    prov_service_call.events << ScCollectedEvent.new(triggering_event: self, amount: self.amount, collector: service_call.organization)
+    prov_service_call.events << ScCollectedEvent.new(triggering_event: self,
+                                                     amount:           self.amount,
+                                                     collector:        service_call.organization,
+                                                     payment_type:     self.payment_type)
   end
 
   def process_event
-    set_customer_account_as_paid collector: collector
+    set_customer_account_as_paid collector: the_collector
+    AffiliateBillingService.new(self).execute
     super
     #todo invoke employee billing service
+  end
+
+  private
+
+  def the_collector
+    if service_call.instance_of?(TransferredServiceCall) && service_call.provider.member?
+      collector.organization
+    else
+      collector
+    end
   end
 
 end

@@ -8,7 +8,7 @@ shared_examples 'payment successfully collected' do |the_status, avail_events|
   end
 
   it 'collect event is associated with the job' do
-    collection_job.events.map(&:class).should =~ job_events
+    collection_job.events.map { |e| e.class.name }.should =~ job_events.map(&:name)
   end
 end
 

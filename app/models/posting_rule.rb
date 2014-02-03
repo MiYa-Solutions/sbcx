@@ -144,13 +144,12 @@ class PostingRule < ActiveRecord::Base
         settlement_entries
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
         cancellation_entries
-      when ScCollectEvent.name, ScCollectedEvent.name
+      when ScCollectEvent.name, ScCollectedEvent.name, ScCollectedByEmployeeEvent.name
         collection_entries
       when ServiceCallPaidEvent.name, ScProviderCollectedEvent.name
         payment_entries
-
       else
-        raise "Unexpected Event (#{event.class.name}) to be processed by ProfitSplit posting rule"
+        raise "Unexpected Event (#{event.class.name}) to be processed by the posting rule (#{self.class.name})"
     end
   end
 

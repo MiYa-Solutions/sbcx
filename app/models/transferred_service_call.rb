@@ -227,6 +227,8 @@ class TransferredServiceCall < ServiceCall
                  if:                                                                                 ->(sc) { sc.fully_paid? }
       transition [:invoiced_by_subcon, :invoiced_by_prov, :invoiced, :partially_collected, :pending] => :partially_collected,
                  if:                                                                                 ->(sc) { !sc.fully_paid? }
+      transition [:invoiced_by_subcon, :invoiced_by_prov, :invoiced, :pending, :partially_collected_by_employee] => :partially_collected_by_employee,
+                 if:                                                                                             ->(sc) { !sc.fully_paid? && sc.organization.multi_user? }
     end
 
     event :collect do
@@ -260,7 +262,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :deposit_to_prov do
-      transition [:collected, :partially_collected] => :deposited_to_prov
+      transition [:collected, :partially_collected, :partially_collected_by_employee] => :deposited_to_prov
     end
 
     event :prov_confirmed_deposit do

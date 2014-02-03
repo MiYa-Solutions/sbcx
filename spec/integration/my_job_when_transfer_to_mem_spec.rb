@@ -1,5 +1,300 @@
 require 'spec_helper'
 
+shared_examples 'collection before completion' do
+  context 'when prov collects' do
+
+    describe 'collecting partial payment' do
+      let(:collection_job) { job }
+      let(:collector) { job.organization.users.last }
+      let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+      let(:billing_status_events) { [:collect, :deposited] }
+      let(:billing_status_4_cash) { :partial_payment_collected_by_employee }
+      let(:billing_status_events_4_cash) { [:deposited, :collect] }
+
+      let(:customer_balance_before_payment) { 0 }
+      let(:payment_amount) { 10 }
+      let(:job_events) { prov_job_events }
+
+      include_examples 'successful customer payment collection', 'collect'
+
+      it 'subcon job billing events are provider_collected but it is not permitted for a user' do
+        expect(subcon_job.reload.billing_status_events).to eq [:provider_collected, :collect]
+        expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
+        expect(event_permitted_for_job?('billing_status', 'collect', subcon_admin, subcon_job)).to be_true
+      end
+
+      context 'after partial collection' do
+        describe 'cash collection' do
+          before do
+            job.update_attributes(billing_status_event: 'collect',
+                                  payment_type:         'cash',
+                                  payment_amount:       payment_amount.to_s,
+                                  collector:            collector)
+          end
+
+          it 'subcon status should be pending' do
+            expect(job.subcontractor_status_name).to eq :pending
+          end
+
+          it 'subcon job billing status is partially collected' do
+            expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+          end
+
+          it 'subcon job has the provider collected event associated' do
+            expect(subcon_job.events.map(&:class)).to include(ScProviderCollectedEvent)
+          end
+
+          it 'provider and subcon accounts are reconciled' do
+            # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+            amount_cents = payment_amount
+            expect(subcon.account_for(org).balance).to eq Money.new(-amount_cents)
+            expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
+          end
+        end
+        describe 'credit card collection', focus: true do
+          before do
+            job.update_attributes(billing_status_event: 'collect',
+                                  payment_type:         'credit_card',
+                                  payment_amount:       payment_amount.to_s,
+                                  collector:            collector)
+          end
+
+          it 'subcon status should be pending' do
+            expect(job.subcontractor_status_name).to eq :pending
+          end
+
+          it 'subcon job billing status is partially collected' do
+            expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+          end
+
+          it 'subcon job has the provider collected event associated' do
+            expect(subcon_job.events.map(&:class)).to include(ScProviderCollectedEvent)
+          end
+
+          it 'provider and subcon accounts are reconciled', focus: true do
+            # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+            amount_cents = payment_amount
+            expect(subcon.account_for(org).balance).to eq Money.new(-amount_cents)
+            expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
+          end
+        end
+
+        describe 'amex card collection' do
+          before do
+            job.update_attributes(billing_status_event: 'collect',
+                                  payment_type:         'amex_credit_card',
+                                  payment_amount:       payment_amount.to_s,
+                                  collector:            collector)
+          end
+
+          it 'subcon status should be pending' do
+            expect(job.subcontractor_status_name).to eq :pending
+          end
+
+          it 'subcon job billing status is partially collected' do
+            expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+          end
+
+          it 'subcon job has the provider collected event associated' do
+            expect(subcon_job.events.map(&:class)).to include(ScProviderCollectedEvent)
+          end
+
+          it 'provider and subcon accounts are reconciled' do
+            # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+            amount_cents = payment_amount
+            expect(subcon.account_for(org).balance).to eq Money.new(-amount_cents)
+            expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
+          end
+        end
+
+        describe 'cheque collection' do
+          before do
+            job.update_attributes(billing_status_event: 'collect',
+                                  payment_type:         'cheque',
+                                  payment_amount:       payment_amount.to_s,
+                                  collector:            collector)
+          end
+
+          it 'subcon status should be pending' do
+            expect(job.subcontractor_status_name).to eq :pending
+          end
+
+          it 'subcon job billing status is partially collected' do
+            expect(subcon_job.reload.billing_status_name).to eq :partially_collected
+          end
+
+          it 'subcon job has the provider collected event associated' do
+            expect(subcon_job.events.map(&:class)).to include(ScProviderCollectedEvent)
+          end
+
+          it 'provider and subcon accounts are reconciled' do
+            # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+            amount_cents = payment_amount
+            expect(subcon.account_for(org).balance).to eq Money.new(-amount_cents)
+            expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
+          end
+        end
+
+      end
+
+    end
+
+  end
+
+  context 'when subcon collects' do
+
+    context 'with a single user organization' do
+
+      describe 'collecting partial payment' do
+        let(:collection_job) { subcon_job }
+        let(:collector) { subcon }
+        let(:billing_status) { :partially_collected } # since the job is not done it is set to partial
+        let(:billing_status_events) { [:collect, :deposit_to_prov, :provider_collected] }
+        let(:billing_status_4_cash) { :partially_collected }
+        let(:billing_status_events_4_cash) { [:deposit_to_prov, :provider_collected, :collect] }
+
+        let(:customer_balance_before_payment) { 0 }
+        let(:payment_amount) { 10 }
+        let(:job_events) { subcon_job_events }
+
+        include_examples 'successful customer payment collection', 'collect'
+
+        it 'subcon job billing events are collect and provider_collected which it is not permitted for a user' do
+          expect(subcon_job.reload.billing_status_events).to eq [:provider_collected, :collect]
+          expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
+          expect(event_permitted_for_job?('billing_status', 'collect', subcon_admin, subcon_job)).to be_true
+        end
+
+        context 'after partial collection' do
+
+          describe 'cash collection' do
+            before do
+              subcon_job.update_attributes(billing_status_event: 'collect',
+                                           payment_type:         'cash',
+                                           payment_amount:       payment_amount.to_s,
+                                           collector:            collector)
+            end
+
+            it 'subcon status should be pending' do
+              expect(subcon_job.provider_status_name).to eq :pending
+            end
+
+            it 'provider job billing status is partially collected by subcon' do
+              expect(job.reload.billing_status_name).to eq :partial_payment_collected_by_subcon
+            end
+
+            it 'subcon job has the provider collected event associated' do
+              expect(job.events.map(&:class)).to include(ScCollectedEvent)
+            end
+
+
+            it 'provider and subcon accounts are reconciled' do
+              # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+              amount_cents = payment_amount*100 + payment_amount
+
+              expect(subcon.account_for(org).balance).to eq Money.new(-amount_cents)
+              expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
+            end
+          end
+          describe 'credit card collection' do
+            before do
+              subcon_job.update_attributes(billing_status_event: 'collect',
+                                           payment_type:         'credit_card',
+                                           payment_amount:       payment_amount.to_s,
+                                           collector:            collector)
+            end
+
+            it 'subcon status should be pending' do
+              expect(subcon_job.provider_status_name).to eq :pending
+            end
+
+            it 'provider job billing status is partially collected by subcon' do
+              expect(job.reload.billing_status_name).to eq :partial_payment_collected_by_subcon
+            end
+
+            it 'subcon job has the provider collected event associated' do
+              expect(job.events.map(&:class)).to include(ScCollectedEvent)
+            end
+
+
+            it 'provider and subcon accounts are reconciled' do
+              # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+              amount_cents = payment_amount*100 + payment_amount
+
+              expect(subcon.account_for(org).balance).to eq Money.new(-amount_cents)
+              expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
+            end
+          end
+
+          describe 'amex credit card collection' do
+            before do
+              subcon_job.update_attributes(billing_status_event: 'collect',
+                                           payment_type:         'amex_credit_card',
+                                           payment_amount:       payment_amount.to_s,
+                                           collector:            collector)
+            end
+
+            it 'subcon status should be pending' do
+              expect(subcon_job.provider_status_name).to eq :pending
+            end
+
+            it 'provider job billing status is partially collected by subcon' do
+              expect(job.reload.billing_status_name).to eq :partial_payment_collected_by_subcon
+            end
+
+            it 'subcon job has the provider collected event associated' do
+              expect(job.events.map(&:class)).to include(ScCollectedEvent)
+            end
+
+
+            it 'provider and subcon accounts are reconciled' do
+              # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+              amount_cents = payment_amount*100 + payment_amount
+
+              expect(subcon.account_for(org).balance).to eq Money.new(-amount_cents)
+              expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
+            end
+          end
+
+          describe 'cheque collection' do
+            before do
+              subcon_job.update_attributes(billing_status_event: 'collect',
+                                           payment_type:         'cheque',
+                                           payment_amount:       payment_amount.to_s,
+                                           collector:            collector)
+            end
+
+            it 'subcon status should be pending' do
+              expect(subcon_job.provider_status_name).to eq :pending
+            end
+
+            it 'provider job billing status is partially collected by subcon' do
+              expect(job.reload.billing_status_name).to eq :partial_payment_collected_by_subcon
+            end
+
+            it 'subcon job has the provider collected event associated' do
+              expect(job.events.map(&:class)).to include(ScCollectedEvent)
+            end
+
+
+            it 'provider and subcon accounts are reconciled' do
+              # this assumes that the payment fee is 1% therefore the payment_amount denotes the payment fee
+              amount_cents = payment_amount*100 + payment_amount
+
+              expect(subcon.account_for(org).balance).to eq Money.new(-amount_cents)
+              expect(org.account_for(subcon).balance).to eq Money.new(amount_cents)
+            end
+          end
+
+        end
+
+      end
+    end
+
+  end
+
+end
+
 describe 'My Job When Transferred To a Member' do
 
   include_context 'transferred job'
@@ -220,60 +515,32 @@ describe 'My Job When Transferred To a Member' do
       expect(subcon_job.provider_status_events).to eq []
     end
 
-    context 'when prov collects' do
-
-      describe 'collecting partial payment' do
-        let(:collection_job) { job }
-        let(:collector) { job.organization.users.last }
-        let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
-        let(:billing_status_events) { [:collect, :deposited] }
-        let(:billing_status_4_cash) { :partial_payment_collected_by_employee }
-        let(:billing_status_events_4_cash) { [:deposited, :collect] }
-
-        let(:customer_balance_before_payment) { 0 }
-        let(:payment_amount) { 10 }
-        let(:job_events) { [ServiceCallTransferEvent,
-                            ScCollectedByEmployeeEvent] }
-
-        include_examples 'successful customer payment collection', 'collect'
-
-        it 'subcon job billing events are provider_collected but it is not permitted for a user' do
-          expect(subcon_job.reload.billing_status_events).to eq [:provider_collected]
-          expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
-        end
-
-        context 'after partial collection' do
-          before do
-            job.update_attributes(billing_status_event: 'collect',
-                                  payment_type:         'cash',
-                                  payment_amount:       payment_amount.to_s,
-                                  collector:            collector)
-          end
-
-          it 'subcon status should be pending' do
-            expect(job.subcontractor_status_name).to eq :pending
-          end
-
-          it 'subcon job billing status is partially collected' do
-            expect(subcon_job.reload.billing_status_name).to eq :partially_collected
-          end
-
-
-        end
-
+    context 'when collecting customer payment' do
+      include_examples 'collection before completion' do
+        let(:prov_job_events) { [ServiceCallTransferEvent,
+                                 ServiceCallAcceptedEvent,
+                                 ScCollectedByEmployeeEvent] }
+        let(:subcon_job_events) { [ServiceCallReceivedEvent,
+                                   ServiceCallAcceptEvent,
+                                   ScCollectEvent] }
       end
-
     end
+
     context 'when subcon collects' do
 
-      context 'with a single user organization' do
+      context 'with a multi user organization' do
+        before do
+          subcon_job.save
+          subcon.users << FactoryGirl.build(:my_technician)
+          subcon.users << FactoryGirl.build(:my_technician)
+        end
 
         describe 'collecting partial payment' do
           let(:collection_job) { subcon_job }
-          let(:collector) { subcon }
-          let(:billing_status) { :partially_collected } # since the job is not done it is set to partial
+          let(:collector) { subcon_admin }
+          let(:billing_status) { :partially_collected_by_employee } # since the job is not done it is set to partial
           let(:billing_status_events) { [:collect, :deposit_to_prov, :provider_collected] }
-          let(:billing_status_4_cash) { :partially_collected }
+          let(:billing_status_4_cash) { :partially_collected_by_employee }
           let(:billing_status_events_4_cash) { [:deposit_to_prov, :provider_collected, :collect] }
 
           let(:customer_balance_before_payment) { 0 }
