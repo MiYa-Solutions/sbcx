@@ -7,7 +7,19 @@ class PaymentRejectedEvent < PaymentEvent
   end
 
   def process_event
+    update_account_balance
     ticket.reject_payment!
+  end
+
+  private
+
+  def update_account_balance
+    rev_entry = RejectedPayment.new(event:       self,
+                                    ticket:      payment.ticket,
+                                    agreement:   payment.agreement,
+                                    amount:      -payment.amount,
+                                    description: I18n.t('payment_rejected_event.entry.description'))
+    payment.account.entries << rev_entry
   end
 
 end

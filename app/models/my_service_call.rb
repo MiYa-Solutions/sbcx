@@ -152,9 +152,9 @@ class MyServiceCall < ServiceCall
       Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
 
-    before_transition any => [:paid, :partially_paid, :partial_payment_collected_by_employee, :partial_payment_collected_by_subcon] do |sc, transition|
-      sc.check_payment_amount
-    end
+    #before_transition any => [:paid, :partially_paid, :partial_payment_collected_by_employee, :partial_payment_collected_by_subcon] do |sc, transition|
+    #  sc.check_payment_amount
+    #end
 
     after_transition any => :cleared do |sc, transition|
       sc.mark_as_overpaid_payment! if sc.overpaid?
@@ -170,10 +170,10 @@ class MyServiceCall < ServiceCall
     end
 
     event :clear do
-      transition [:partially_paid, :paid] => :cleared, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
+      transition [:partially_paid, :paid, :rejected] => :cleared, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
     end
     event :reject do
-      transition [:partially_paid, :paid] => :rejected, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
+      transition [:partially_paid, :paid, :rejected] => :rejected, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
     end
 
     event :invoice do
@@ -191,6 +191,7 @@ class MyServiceCall < ServiceCall
 
     event :collect do
       transition [:pending,
+                  :rejected,
                   :invoiced,
                   :overdue,
                   :invoiced_by_subcon
@@ -199,6 +200,7 @@ class MyServiceCall < ServiceCall
                  if: ->(sc) { sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
 
       transition [:pending,
+                  :rejected,
                   :invoiced,
                   :overdue,
                   :invoiced_by_subcon,
@@ -210,7 +212,8 @@ class MyServiceCall < ServiceCall
 
     event :deposited do
       transition :collected_by_employee => :paid, if: ->(sc) { !sc.canceled? }
-      transition :partial_payment_collected_by_employee => :partially_paid, if: ->(sc) { !sc.canceled? }
+      transition :partial_payment_collected_by_employee => :partially_paid, if: ->(sc) { !sc.canceled? && !sc.fully_paid? }
+      transition :partial_payment_collected_by_employee => :paid, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
     end
 
     event :paid do
@@ -250,7 +253,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :mark_as_overpaid do
-      transition [:cleared] => :overpaid, if: ->(sc) { sc.overpaid? }
+      transition :cleared => :overpaid, if: ->(sc) { sc.overpaid? }
     end
 
   end
@@ -276,7 +279,7 @@ class MyServiceCall < ServiceCall
   end
 
   def paid_amount
-    Money.new(payments.sum(:amount_cents), total.currency)
+    Money.new(payments.with_statuses(:pending, :deposited, :cleared).sum(:amount_cents), total.currency)
   end
 
   def payments

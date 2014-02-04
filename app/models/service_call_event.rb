@@ -132,6 +132,7 @@ class ServiceCallEvent < Event
       when 'credit_card'
         entry = CreditPayment.new(props)
         account.entries << entry
+        Rails.logger.debug { "Created Credit Card Payment entry\nvalid? = #{entry.valid?}\nentry#{entry.inspect}" }
       when 'amex_credit_card'
         entry = AmexPayment.new(props)
         account.entries << entry

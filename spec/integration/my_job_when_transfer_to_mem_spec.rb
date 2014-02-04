@@ -1007,7 +1007,7 @@ describe 'My Job When Transferred To a Member' do
 
             end
 
-            context 'when collecting cheque' do
+            context 'when collecting a cheque' do
 
               before do
                 job.update_attributes(billing_status_event: 'collect',
@@ -1036,6 +1036,118 @@ describe 'My Job When Transferred To a Member' do
               it 'subcon job billing status should be partially paid' do
                 expect(subcon_job.reload.billing_status_name).to eq :deposited
               end
+
+              context 'when the employee deposits the payment' do
+                before do
+                  job.update_attributes(billing_status_event: 'deposited')
+                end
+
+                it 'job billing status should be paid' do
+                  expect(job.billing_status_name).to eq :paid
+                end
+
+                context 'when depositing the cheque at the bank' do
+                  before do
+                    job.payments.last.deposit!
+                  end
+
+                  it 'billing status should be paid' do
+                    expect(job.reload.billing_status_name).to eq :paid
+                  end
+
+                  it 'entry status should be deposited' do
+                    entry = job.customer.account.entries.order('ID ASC').first
+                    expect(entry.status_name).to eq :deposited
+                  end
+
+                  context 'when the cheque bounced' do
+                    before do
+                      job.payments.last.reject!
+                    end
+
+                    it 'the billing status should be rejected' do
+                      expect(job.reload.billing_status_name).to eq :rejected
+                    end
+
+                    it 'the customer account should have a rejected payment entry' do
+                      expect(job.customer.account.entries.order('ID ASC').last).to be_instance_of(RejectedPayment)
+                    end
+
+                    it 'expect customer balance to revert to the original job amount' do
+                      expect(job.customer.account.reload.balance).to eq job.total
+                    end
+
+                    context 'when collecting another payment' do
+                      before do
+                        job.reload.update_attributes(billing_status_event: 'collect',
+                                                     payment_amount:       '11000',
+                                                     payment_type:         'credit_card',
+                                                     collector:            org_admin)
+                      end
+
+
+                      context 'when the employee deposits the payment' do
+                        before do
+                          entry              = job.reload.payments.order('ID ASC').last
+                          job.payment_amount = nil # to cleanup a virtual attribute to simulate a user interaction
+                          entry.deposit!
+                        end
+
+                        it 'job billing status should be paid' do
+                          expect(job.reload.billing_status_name).to eq :paid
+                        end
+
+                        context 'when the payment clears' do
+                          before do
+                            job.payments.last.clear!
+                          end
+
+                          it 'expect customer balance to be zero' do
+                            expect(job.reload.customer.account.balance).to eq Money.new(0)
+                          end
+
+                          it 'expect billing status to be cleared' do
+                            expect(job.reload.billing_status_name).to eq :cleared
+                          end
+
+
+                        end
+
+                      end
+
+
+                    end
+
+                  end
+
+                  context 'when the cheque clears' do
+                    before do
+                      job.reload.payment_amount = nil
+                      job.payments.last.clear!
+                    end
+
+                    it 'payment should have a cleared status' do
+                      expect(job.payments.last.status_name).to eq :cleared
+                    end
+
+                    it 'job billing status should be cleared' do
+                      expect(job.reload.billing_status_name).to eq :overpaid
+                    end
+
+                    it 'subcon job billing status should be settled' do
+                      expect(subcon_job.reload.billing_status_name).to eq :deposited
+                    end
+
+                    context 'reimbursement' do
+                      pending 'for now the user can user adjustment entry'
+                    end
+
+                  end
+                end
+
+
+              end
+
 
             end
           end

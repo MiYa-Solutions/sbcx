@@ -21,7 +21,7 @@ Spork.prefork do
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
   # This file is copied to spec/ when you run 'rails generate rspec:install'
-  require 'factory_girl_rails'
+  #require 'factory_girl_rails'
   Capybara.javascript_driver = :poltergeist
 
   Capybara.register_driver :poltergeist do |app|
@@ -35,9 +35,17 @@ Spork.prefork do
   include Authorization::TestHelper
   include MoneyRails::TestHelpers
 
-  Spork.trap_method(Rails::Application, :eager_load!)
+  # this is to eager load models properly
   Spork.trap_method(Rails::Application, :reload_routes!)
   Spork.trap_method(Rails::Application::RoutesReloader, :reload!)
+
+  #Spork.trap_method(Rails::ActiveRecord, :load_models)
+
+  Spork.trap_method(Rails::Application, :eager_load!)
+
+  require File.expand_path("../../config/environment", __FILE__)
+
+  Rails.application.railties.all { |r| r.eager_load! }
   #
   #
   #Spork.trap_class_method(FactoryGirl, :find_definitions)
@@ -107,30 +115,30 @@ Spork.each_run do
   #  load model unless model == "/Users/mark/RubymineProjects/sbcx/app/models/permitted_params.rb"
   #end
 
-  #require 'factory_girl_rails'
+  require 'factory_girl_rails'
   #FactoryGirl.factories.clear
   # reload all the models
-  Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
-    load model unless model.include? 'permitted_params'
-  end
-  Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |model|
-    load model
-  end
-  Dir["#{Rails.root}/app/events/**/*.rb"].each do |model|
-    load model
-  end
-  Dir["#{Rails.root}/app/observers/**/*.rb"].each do |model|
-    load model
-  end
-  Dir["#{Rails.root}/app/services/**/*.rb"].each do |model|
-    load model
-  end
-  Dir["#{Rails.root}/app/notifications/**/*.rb"].each do |model|
-    load model
-  end
-  Dir["#{Rails.root}/spec/support/**/*.rb"].each do |model|
-    load model
-  end
+  #Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
+  #  load model unless model.include? 'permitted_params'
+  #end
+  #Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |model|
+  #  load model
+  #end
+  #Dir["#{Rails.root}/app/events/**/*.rb"].each do |model|
+  #  load model
+  #end
+  #Dir["#{Rails.root}/app/observers/**/*.rb"].each do |model|
+  #  load model
+  #end
+  #Dir["#{Rails.root}/app/services/**/*.rb"].each do |model|
+  #  load model
+  #end
+  #Dir["#{Rails.root}/app/notifications/**/*.rb"].each do |model|
+  #  load model
+  #end
+  #Dir["#{Rails.root}/spec/support/**/*.rb"].each do |model|
+  #  load model
+  #end
 end
 
 # --- Instructions ---

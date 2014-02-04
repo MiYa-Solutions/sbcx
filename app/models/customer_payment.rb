@@ -15,11 +15,11 @@ class CustomerPayment < AccountingEntry
     end
 
     event :clear do
-      transition [:rejected, :pending, :deposited] => :cleared
+      transition [:pending, :deposited] => :cleared
     end
 
     event :deposit do
-      transition [:rejected, :pending] => :deposited
+      transition :pending => :deposited
     end
 
   end

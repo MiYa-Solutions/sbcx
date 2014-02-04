@@ -1,4 +1,4 @@
-class PaymentDepositedEvent < Event
+class PaymentDepositedEvent < PaymentEvent
 
   def init
     self.name         = I18n.t('payment_deposited_event.name')
@@ -7,6 +7,7 @@ class PaymentDepositedEvent < Event
   end
 
   def process_event
+    ticket.deposited_payment! if ticket.can_deposited_payment?
   end
 
 end
