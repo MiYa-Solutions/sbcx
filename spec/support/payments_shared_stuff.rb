@@ -25,7 +25,7 @@ shared_context 'reject payment' do
     expect(payment_to_reject.status_name).to eq :rejected
   end
 
-  it 'deposit and clear are the available status events' do
-    expect(payment_to_reject.status_events).to eq [:deposit, :clear]
+  it 'there are no available status events - as the check bounced' do
+    expect(payment_to_reject.status_events).to eq []
   end
 end

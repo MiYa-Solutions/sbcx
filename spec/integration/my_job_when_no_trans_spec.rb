@@ -210,7 +210,8 @@ describe 'My Service Call When I Do The Work' do
                 context 'when the employee deposits the payment' do
 
                   before do
-                    job.update_attributes(billing_status_event: 'deposited')
+                    job.payment_amount = nil # this is to replicate a separate user request (as it impacts job.overpaid?)
+                    job.deposited_payment!
                   end
 
                   it 'status should be open' do
@@ -486,9 +487,7 @@ describe 'My Service Call When I Do The Work' do
           end
 
           it 'should have the properties update event associated' do
-            # for some reason when running the spec it creates the same event twice, but it doesn't happen
-            # in manual testing, so leaving it as is
-            job.events.map(&:class).should =~ [ServiceCallStartEvent, ScPropertiesUpdateEvent, ScPropertiesUpdateEvent]
+            job.events.map { |e| e.class.name }.should =~ ['ServiceCallStartEvent', 'ScPropertiesUpdateEvent']
           end
 
           it 'should create an appointment for the scheduled time' do
@@ -502,6 +501,7 @@ describe 'My Service Call When I Do The Work' do
             context 'when the preliminary payment was for the full amount' do
               before do
                 job.update_attributes(billing_status_event: 'paid', payment_amount: '100', payment_type: 'cash')
+                job.payment_amount = nil # to simulate a separate request (payment amount is a virtual attribute )
                 add_bom_to_job job, price: 100, cost: 10, quantity: 1
                 job.update_attributes(work_status_event: 'complete')
               end
@@ -518,6 +518,7 @@ describe 'My Service Call When I Do The Work' do
             context 'when the preliminary payment was for a partial amount' do
               before do
                 job.update_attributes(billing_status_event: 'paid', payment_amount: '10', payment_type: 'cash')
+                job.payment_amount = nil # to simulate a separate request (payment amount is a virtual attribute )
                 add_bom_to_job job, price: 100, cost: 10, quantity: 1
                 job.update_attributes(work_status_event: 'complete')
               end
@@ -613,6 +614,7 @@ describe 'My Service Call When I Do The Work' do
                   context 'when collecting the full payment' do
                     before do
                       job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '100')
+                      job.payment_amount = nil # to simulate a separate request (payment amount is a virtual attribute )
                     end
 
                     it 'status should be open' do
@@ -636,7 +638,7 @@ describe 'My Service Call When I Do The Work' do
                     end
 
 
-                    it 'available payment events are paid and overdue' do
+                    it 'there are no available payment events' do
                       job.billing_status_events.should =~ []
                     end
 
@@ -736,6 +738,7 @@ describe 'My Service Call When I Do The Work' do
                   context 'when collecting partial amount' do
                     before do
                       job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque', payment_amount: '10')
+                      job.payment_amount = nil # to simulate a separate request (payment amount is a virtual attribute )
                     end
 
                     it 'status should be open' do
@@ -777,7 +780,8 @@ describe 'My Service Call When I Do The Work' do
 
                     context 'when payment is rejected' do
                       before do
-                        job.update_attributes(billing_status_event: 'reject')
+                        job.payments.last.reject!
+                        job.reload
                       end
 
                       it 'payment status is set to rejected' do
@@ -792,8 +796,11 @@ describe 'My Service Call When I Do The Work' do
                                                            ScPaymentRejectedEvent]
                       end
 
-                      it 'should have paid as a payment event' do
-                        job.billing_status_events.should =~ [:paid]
+                      it 'should have paid, clear and reject as possible payment events, but reject and clear are not permitted to a user' do
+                        job.billing_status_events.should =~ [:clear, :paid, :reject]
+                        expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
+                        expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
+                        expect(event_permitted_for_job?('billing_status', 'paid', org_admin, job)).to be_true
                       end
 
                       context 'when adding another payment for the full amount' do
@@ -801,6 +808,7 @@ describe 'My Service Call When I Do The Work' do
                           job.update_attributes(billing_status_event: 'paid',
                                                 payment_type:         'credit_card',
                                                 payment_amount:       '100')
+                          job.payment_amount = nil # to simulate a separate request (payment amount is a virtual attribute )
                         end
 
                         it 'payment status should be paid' do
@@ -874,7 +882,7 @@ describe 'My Service Call When I Do The Work' do
                               before do
                                 job.update_attributes(billing_status_event: 'paid',
                                                       payment_type:         'cash',
-                                                      payment_amount:       '10')
+                                                      payment_amount:       '20')
 
                               end
 
@@ -913,6 +921,7 @@ describe 'My Service Call When I Do The Work' do
                   context 'when collecting the full amount' do
                     before do
                       job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque', payment_amount: '100')
+                      job.payment_amount = nil # to simulate seperate request as payment is a virtual attr
                     end
 
                     it 'status should be open' do
@@ -964,8 +973,10 @@ describe 'My Service Call When I Do The Work' do
                                                                   ScPaymentRejectedEvent]
                       end
 
-                      it 'should have paid as a payment event' do
-                        job.reload.billing_status_events.should =~ [:paid]
+                      it 'should have clear and reject as possible payment events, but they are not permitted to a user' do
+                        job.billing_status_events.should =~ [:clear, :reject]
+                        expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
+                        expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
                       end
                     end
 
