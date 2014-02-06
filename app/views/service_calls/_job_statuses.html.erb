@@ -89,8 +89,9 @@
         </table>
       </li>
       <li>
-        <div class="collapse" id="subco_statuses">
-          <table class="table table-striped table-condensed table-sbcx">
+        <div class="collapse subco_statuses_collapse_frame" id="subco_statuses">
+          <div class="subco_statuses_collapse">
+            <table class="table table-striped table-condensed table-sbcx">
             <tbody>
 
             <tr>
@@ -127,6 +128,7 @@
 
             </tbody>
           </table>
+          </div>
         </div>
       </li>
   <% end %>
@@ -166,37 +168,39 @@
         </table>
       </li>
       <li>
-        <div class="collapse" id="prov_statuses">
-          <table class="table table-striped table-condensed table-sbcx affiiate_statuses">
-            <tbody>
+        <div class="collapse subco_statuses_collapse_frame" id="prov_statuses">
+          <div class="subco_statuses_collapse">
+             <table class="table table-striped table-condensed table-sbcx affiiate_statuses">
+                <tbody>
 
-            <tr>
-              <td><strong><%= @service_call.class.human_attribute_name(:provider) %></strong></td>
-              <td>
-                  <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
-                  <h3><%= link_to @service_call.provider.try(:name), affiliate_path(@service_call.provider.id) %></h3>
-                  </span>
-              </td>
-            </tr>
-            <%= render 'service_calls/transfer_props/prov_agreement_props' %>
-            <tr>
-              <td><strong><%= @service_call.class.human_attribute_name(:provider_agreement) %></strong></td>
-              <td>
-                  <span class="status_grey">
-                 <h3><%= link_to truncate("#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}", length: 15), agreement_path(@service_call.provider_agreement), title: "#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}" %>
-                 </h3></span>
-              </td>
-            </tr>
-            <tr>
-              <td><strong><%= @service_call.class.human_attribute_name(:provider_status) %></strong></td>
-              <td>
-                  <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
-                      <h3><%= @service_call.human_provider_status_name %></h3>
-                  </span>
-              </td>
-            </tr>
-            </tbody>
+                <tr>
+                  <td><strong><%= @service_call.class.human_attribute_name(:provider) %></strong></td>
+                  <td>
+                      <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_name">
+                      <h3><%= link_to @service_call.provider.try(:name), affiliate_path(@service_call.provider.id) %></h3>
+                      </span>
+                  </td>
+                </tr>
+                <%= render 'service_calls/transfer_props/prov_agreement_props' %>
+                <tr>
+                  <td><strong><%= @service_call.class.human_attribute_name(:provider_agreement) %></strong></td>
+                  <td>
+                      <span class="status_grey">
+                     <h3><%= link_to truncate("#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}", length: 15), agreement_path(@service_call.provider_agreement), title: "#{@service_call.provider_agreement.try(:name)}:#{@service_call.provider_agreement.try(:id)}" %>
+                     </h3></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong><%= @service_call.class.human_attribute_name(:provider_status) %></strong></td>
+                  <td>
+                      <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="service_call_provider_status">
+                          <h3><%= @service_call.human_provider_status_name %></h3>
+                      </span>
+                  </td>
+                </tr>
+                </tbody>
           </table>
+        </div>
         </div>
       </li>
   <% end %>
