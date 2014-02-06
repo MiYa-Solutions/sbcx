@@ -5,6 +5,7 @@ en:
     flash:
       created_successfully: "the user was created successfully"
       updated_successfully: "User updated successfully"
+      update_error: "Update failed. Please review the problem below"
   general:
     general:
       source: "Source"
