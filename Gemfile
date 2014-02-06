@@ -30,7 +30,7 @@ gem 'strong_parameters', '0.2.0'
 gem 'paper_trail', '~> 3.0.0'
 
 gem 'best_in_place', git: 'git://github.com/MiYa-Solutions/best_in_place.git'
-#gem 'unicorn', '~> 4.8.0'
+#gem 'unicorn', '~> 4.8.0', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
 gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 

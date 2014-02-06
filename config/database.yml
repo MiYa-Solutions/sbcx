@@ -17,7 +17,7 @@ development:
   database: subcontrax-dev
   host: localhost
   username: postgres
-  password: Maxim2012
+  password: CHNAGE ME
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
