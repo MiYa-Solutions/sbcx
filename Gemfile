@@ -20,7 +20,7 @@ gem 'american_date', '1.0.0'
 gem 'pg', '0.17.1'
 gem 'activerecord-postgres-hstore', '0.7.5'
 
-gem 'devise', '2.0.0'
+gem 'devise', '2.0.5'
 gem 'simple_form', '2.0.2'
 gem 'declarative_authorization', '0.5.5'
 
