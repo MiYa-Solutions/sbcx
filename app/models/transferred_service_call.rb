@@ -252,7 +252,11 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :subcon_collected do
-      transition :invoiced_by_subcon => :collected_by_subcon
+      transition [:pending, :partially_collected, :partially_collected_by_employee, :invoiced_by_subcon, :partially_collected_by_subcon] => :collected_by_subcon,
+                 if:                                                                                                                     ->(sc) { sc.fully_paid? && sc.transferred? }
+
+      transition [:pending, :invoiced_by_subcon, :partially_collected_by_subcon, :partially_collected_by_employee] => :partially_collected_by_subcon,
+                 if:                                                                                               ->(sc) { !sc.fully_paid? && sc.transferred? }
     end
 
     event :subcon_deposited do
@@ -281,7 +285,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def collection_allowed?
-    accepted? transferred?
+    accepted? || transferred?
   end
 
   def payments
