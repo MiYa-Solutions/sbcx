@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require File.expand_path("../../config/environment", __FILE__)
 require 'rubygems'
 require 'spork'
@@ -27,6 +30,12 @@ Spork.prefork do
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app, :debug => false) #, :js_errors => false)
   end
+
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
+
 
   Capybara.ignore_hidden_elements = false
 
@@ -114,6 +123,11 @@ Spork.each_run do
   #Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
   #  load model unless model == "/Users/mark/RubymineProjects/sbcx/app/models/permitted_params.rb"
   #end
+
+  if ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
 
   require 'factory_girl_rails'
   #FactoryGirl.factories.clear

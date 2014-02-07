@@ -91,4 +91,5 @@ group :test do
   gem 'shoulda'
   gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.4.4'
+  gem 'simplecov'
 end

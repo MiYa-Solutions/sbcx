@@ -882,10 +882,16 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     expect(job.billing_status_name).to eq :collected_by_subcon
                   end
 
+                  it 'deposited is an available billing event but it is not permitted for a user' do
+                    expect(job.billing_status_events).to eq [:subcon_deposited]
+                    expect(event_permitted_for_job?('billing_status', 'subcon_deposited', org_admin, job)).to be_false
+                  end
+
                   context 'when marking payment as deposited by the subcon' do
                     before do
                       job.update_attributes(billing_status_event: 'subcon_deposited')
                     end
+
 
                     it 'billing status should be subcon_claim_deposited' do
                       expect(job.billing_status_name).to eq :subcon_claim_deposited
