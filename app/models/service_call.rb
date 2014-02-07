@@ -55,6 +55,17 @@
 
 class ServiceCall < Ticket
 
+  def fully_paid?(options = {})
+    current_payment = payment_amount || 0
+
+    if options[:work_in_progress].nil?
+      work_done? ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+    else
+      total > 0 ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <=0 : false
+    end
+
+  end
+
   attr_accessor :payment_amount
   validate :financial_data_change
 

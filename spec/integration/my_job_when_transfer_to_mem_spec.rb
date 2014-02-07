@@ -538,7 +538,7 @@ describe 'My Job When Transferred To a Member' do
           subcon.users << FactoryGirl.build(:my_technician)
         end
 
-        describe 'collecting partial payment' do
+        context 'when partial payment' do
           let(:collection_job) { subcon_job }
           let(:collector) { subcon_admin }
           let(:billing_status) { :partially_collected_by_employee } # since the job is not done it is set to partial

@@ -59,6 +59,7 @@ shared_examples 'successful customer payment collection' do |collection_event|
                                        payment_type:         'cash',
                                        payment_amount:       payment_amount.to_s,
                                        collector:            collector)
+      collection_job.payment_amount = nil # to simulate a new user request by clearing virtual attr
     end
 
     it_behaves_like 'payment successfully collected', 'billing_status_4_cash', 'billing_status_events_4_cash'

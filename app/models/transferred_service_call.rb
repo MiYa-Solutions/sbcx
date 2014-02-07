@@ -232,12 +232,14 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :collect do
+      # multi user org
       transition [:invoiced, :invoiced_by_subcon, :invoiced_by_prov, :pending, :partially_collected_by_employee] => :collected_by_employee,
                  if:                                                                                             ->(sc) { sc.organization.multi_user? && sc.fully_paid? && sc.collection_allowed? }
 
       transition [:invoiced, :invoiced_by_subcon, :pending, :invoiced_by_prov, :partially_collected_by_employee] => :partially_collected_by_employee,
                  if:                                                                                             ->(sc) { sc.organization.multi_user? && !sc.fully_paid? && sc.collection_allowed? }
 
+      # for a single user org
       transition [:invoiced, :invoiced_by_subcon, :pending, :partially_collected] => :collected,
                  if:                                                              ->(sc) { !sc.organization.multi_user? && sc.fully_paid? && sc.collection_allowed? }
 
@@ -278,19 +280,6 @@ class TransferredServiceCall < ServiceCall
 
   end
 
-  # local transferred jobs don't have a ref_id set, therefore if not set then defaults to the id
-  #def ref_id
-  #  read_attribute(:ref_id) || id
-  #end
-
-  def fully_paid?
-    if provider.member?
-      provider_ticket.fully_paid? work_in_progress: true
-    else
-      total - customer_total_payment <= 0 ? true : false
-    end
-  end
-
   def collection_allowed?
     accepted? transferred?
   end
@@ -308,8 +297,8 @@ class TransferredServiceCall < ServiceCall
     ServiceCall.where(organization_id: provider_id).where(ref_id: ref_id).first
   end
 
-  def customer_total_payment
-    Money.new(-payment_entries.sum(:amount_cents))
+  def paid_amount
+    Money.new(-(payment_entries.sum(:amount_cents) + payment_amount.to_f*100))
   end
 
   def payment_entries

@@ -364,6 +364,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                                             payment_type:         'cash',
                                             payment_amount:       payment_amount.to_s,
                                             collector:            collector)
+                      job.payment_amount = nil # simulating a new user require request by removing a virtuall attr
                     end
 
                     it 'job available subcon events are settle' do
@@ -403,7 +404,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                       end
 
                       it 'job available payment events are deposited' do
-                        expect(job.billing_status_events).to be_empty
+                        expect(job.billing_status_events).to eq []
                       end
 
                       it 'subcon status should be cleared' do
