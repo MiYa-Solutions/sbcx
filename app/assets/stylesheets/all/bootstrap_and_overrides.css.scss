@@ -563,7 +563,7 @@ footer {
 
   float: right;
   width: 30%;
-  margin-top: -10px;
+  margin-top: -5px;
 }
 
 #boms-table {
@@ -578,6 +578,10 @@ footer {
 
 #bom_quantity {
   width: 30%;
+}
+
+#bom_desc {
+  width: 60%;
 }
 
 #bom_cost {
@@ -2123,9 +2127,9 @@ a:hover {
   }
 
   .add_button {
-    margin-left: 1px;
+    margin-left: 55px;
     position: relative;
-    width: 10%;
+    width: 100%;
 
     .add_part_service_call input, .add_part_service_call textarea, .add_part_service_call text_field {
       margin-left: -5px;
@@ -2139,15 +2143,22 @@ a:hover {
   }
 
   .alert .close {
-    line-height: 18px;
+    //line-height: 18px;
+    //position: relative;
+    //right: -1px;
+    //top: -46px;
+    line-height: 3px;
     position: relative;
-    //right: -27px;
-    right: -1px;
-    top: -46px;
+    right: -26px;
+    top: 7px;
+  }
+
+  #bom_close {
+    line-height: 3px;
   }
 
   select {
-    width: 60%;
+    width: 70%;
     margin-left: -4px;
   }
 
@@ -2441,9 +2452,13 @@ div.DTTT_collection {
   border-color: black;
   border-width: 1px;
   color: #3A87AD;
-  padding-top: 18px;
+  //padding-top: 18px;
   margin-top: -15px;
-  height: 58px;
+  height: 67px;
+
+  .parts_2nd {
+    margin-top: 3px;
+  }
 }
 
 .add_entry_frame {
@@ -2744,7 +2759,7 @@ hr {
 
 #job_show_tab {
   margin-left: 12px;
-  width: 67%;
+  width: 66.6%;
 }
 
 #job_statuses_tab {
@@ -3288,6 +3303,27 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     text-transform: capitalize;
     margin-left: 10px;
+  }
+
+  h2 {
+    color: #FFFFFF;
+    font-family: Century Gothic;
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.01em;
+    line-height: 20px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    text-transform: capitalize;
+    margin-left: 10px;
+  }
+
+  .close {
+    color: #FFFFFF;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 18px;
+    text-shadow: none;
   }
 }
 
@@ -4024,7 +4060,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .positive {
     color: #44AD3F;
     font-size: 14px;
-    padding-right: 14px;
+    padding-right: 1px;
     text-transform: uppercase;
     font-weight: bold;
   }
@@ -4032,9 +4068,20 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .negative {
     color: #DA4E49;
     font-size: 14px;
-    padding-right: 14px;
+    padding-right: 1px;
     text-transform: uppercase;
     font-weight: bold;
+  }
+
+  .balanced {
+    font-size: 14px;
+    padding-right: 14px;
+    text-transform: uppercase;
+    font-weight: normal;
+  }
+
+  .help_icon {
+    width: 30px;
   }
 
 }
@@ -4326,6 +4373,20 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .icon-pencil {
     float: right;
   }
+}
+
+.affiliate_statuses {
+    padding-right: 1px;
+}
+
+.subco_statuses_collapse {
+  margin-left: 2.5%;
+  margin-top: 8px;
+  width: 95%;
+}
+
+.subco_statuses_collapse_frame {
+  background-color: #EEEEEE;
 }
 
 

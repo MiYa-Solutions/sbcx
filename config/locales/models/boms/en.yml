@@ -4,7 +4,7 @@ en:
       bom: "Part"
     attributes:
       bom:
-        material_name: "Part Name"
+        material_name: "Item"
 
     errors:
       models:

@@ -1,9 +1,26 @@
 <tr>
   <td><strong><%= I18n.t('general.general.provider_balance') %></strong></td>
   <% if @service_call.provider_balance < 0 %>
-      <td class="negative"><%= humanized_money_with_symbol @service_call.provider_balance %></td>
+      <td class="negative">
+        <%= humanized_money_with_symbol @service_call.provider_balance %>
+      </td>
+      <td class="help_icon">
+        <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
+      </td>
   <% else %>
-      <td class="positive"><%= humanized_money_with_symbol @service_call.provider_balance %></td>
+      <% if @service_call.provider_balance > 0 %>
+          <td class="positive">
+            <%= humanized_money_with_symbol @service_call.provider_balance %>
+          </td>
+          <td class="help_icon">
+            <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
+          </td>
+      <% else %>
+          <td class="balanced">
+            <%= humanized_money_with_symbol @service_call.provider_balance %>
+          </td>
+          <td></td>
+      <% end %>
   <% end %>
   <td class="show_more_button">
                             <span class="link_blue" id="show_provider_entries">
@@ -11,5 +28,4 @@
                               <i class="icon-chevron-down"></i>
                             </span>
   </td>
-  <td></td>
 </tr>
