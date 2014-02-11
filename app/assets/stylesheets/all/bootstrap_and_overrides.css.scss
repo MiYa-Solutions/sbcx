@@ -573,19 +573,19 @@ footer {
 }
 
 #bom_price {
-  width: 30%;
+  width: 70%;
 }
 
 #bom_quantity {
-  width: 30%;
+  width: 20%;
 }
 
 #bom_desc {
-  width: 60%;
+  width: 90%;
 }
 
 #bom_cost {
-  width: 30%;
+  width: 70%;
 }
 
 select {
@@ -2058,6 +2058,10 @@ a:hover {
 
 }
 
+#bom_material_name {
+  width: 50%;
+}
+
 .add_part_service_call {
   input, textarea, text_field {
     width: 60%;
@@ -2082,6 +2086,30 @@ a:hover {
     float: right;
     width: 10%;
 
+  }
+
+  .error {
+    display: inline;
+  }
+
+  .bom_label_frame {
+    padding: 4px 1px;
+    text-shadow: 0 1px 0 #FFFFFF;
+    vertical-align: middle;
+    width: auto;
+  }
+
+  .part_frame {
+    margin-right: 6px;
+  }
+
+  .qty_frame {
+    //margin-right: 6px;
+  }
+
+
+  .control-group:before, .control-group:after {
+    display: inline;
   }
 
   .alert {
@@ -2127,7 +2155,7 @@ a:hover {
   }
 
   .add_button {
-    margin-left: 55px;
+    margin-left: 23px;
     position: relative;
     width: 100%;
 
@@ -2454,7 +2482,7 @@ div.DTTT_collection {
   color: #3A87AD;
   //padding-top: 18px;
   margin-top: -15px;
-  height: 67px;
+  height: 105px;
 
   .parts_2nd {
     margin-top: 3px;
