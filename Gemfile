@@ -20,7 +20,7 @@ gem 'american_date', '1.0.0'
 gem 'pg', '0.17.1'
 gem 'activerecord-postgres-hstore', '0.7.5'
 
-gem 'devise', '2.0.0'
+gem 'devise', '2.0.5'
 gem 'simple_form', '2.0.2'
 gem 'declarative_authorization', '0.5.5'
 
@@ -30,7 +30,7 @@ gem 'strong_parameters', '0.2.0'
 gem 'paper_trail', '~> 3.0.0'
 
 gem 'best_in_place', git: 'git://github.com/MiYa-Solutions/best_in_place.git'
-#gem 'unicorn', '~> 4.8.0', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
+gem 'unicorn', '~> 4.8.0', require: RUBY_PLATFORM.include?('darwin')
 gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 

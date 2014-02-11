@@ -52,7 +52,7 @@ Sbcx::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.delivery_method     = :smtp
+  config.action_mailer.delivery_method     = ENV["EMAIL_METHOD"].to_sym
   config.action_mailer.default_url_options = { :host => 'staging.subcontrax.com' }
 
   # Enable threaded mode
@@ -72,7 +72,7 @@ Sbcx::Application.configure do
   ActionMailer::Base.smtp_settings         = {
       :user_name            => ENV["SENDGRID_MAILER_USER"],
       :password             => ENV["SENDGRID_MAILER_PWD"],
-      :domain               => "subcontrax.com",
+      :domain               => "staging.subcontrax.com",
       :address              => "smtp.sendgrid.net",
       :port                 => 587,
       :authentication       => :plain,
