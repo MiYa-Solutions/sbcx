@@ -4418,5 +4418,40 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 
+.agr_diff_table {
+
+  background-color: #999999;
+  border-collapse: separate !important;
+  border-spacing: 0.7px;
+  margin-left: 2.5%;
+  margin-top: 15px;
+  width: 95%;
+
+  td {
+    vertical-align: top;
+  }
+
+  thead th {
+    text-align: center;
+  }
+}
+
+.agr_diff_posting {
+  margin-left: 2.5%;
+  margin-top: 8px;
+  width: 95%;
+
+  h4 {
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+
+.agr_diff_changes {
+  margin-top: 10px;
+}
+
+
 
 
