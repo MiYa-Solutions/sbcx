@@ -72,6 +72,11 @@ class AccountingEntry < ActiveRecord::Base
 
   end
 
+  def allowed_status_events
+    self.status_events
+  end
+
+
 
   protected
   def set_amount_direction
