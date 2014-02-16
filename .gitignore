@@ -35,3 +35,6 @@ bundler_stubs/
 #ignore zeus file
 custom_plan.rb
 zeus.json
+
+# ignore coverage reports
+/coverage

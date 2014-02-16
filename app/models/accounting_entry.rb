@@ -82,13 +82,4 @@ class AccountingEntry < ActiveRecord::Base
     raise "The amount direction is not defined - you need to define amount_direction method for #{self.class}"
   end
 
-  private
-  #def event_requirement
-  #  @errors.add :event_id, "can't be blank" unless event_id.present? || self.kind_of?(AdjustmentEntry)
-  #end
-
 end
-
-#Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |file|
-#  require_dependency file
-#end
