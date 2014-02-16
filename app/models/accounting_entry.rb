@@ -34,6 +34,7 @@ class AccountingEntry < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :event
   belongs_to :agreement
+  belongs_to :matching_entry, class_name: 'AccountingEntry'
 
   before_create :set_amount_direction
 

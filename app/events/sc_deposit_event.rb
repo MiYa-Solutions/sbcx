@@ -2,6 +2,8 @@ require 'hstore_amount'
 class ScDepositEvent < ServiceCallEvent
   include HstoreAmount
 
+  setup_hstore_attr 'entry_id'
+
   def init
     self.name         = I18n.t('service_call_deposit_event.name')
     self.description  = I18n.t('service_call_deposit_event.description', provider: service_call.provider.name)
@@ -29,29 +31,37 @@ class ScDepositEvent < ServiceCallEvent
 
   def update_provider_account
     account = Account.for_affiliate(service_call.organization, service_call.provider).lock(true).first
-    props   = { amount:      service_call.total_price + service_call.tax_amount,
+    props   = { amount:      amount,
                 ticket:      service_call,
                 event:       self,
                 agreement:   service_call.provider_agreement,
                 description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
 
-    case service_call.payment_type
-      when 'cash'
-        entry = CashDepositToProvider.new(props)
-      when 'credit_card'
-        entry = CreditCardDepositToProvider.new(props)
-      when 'amex_credit_card'
-        entry = AmexDepositToProvider.new(props)
-      when 'cheque'
-        entry = ChequeDepositToProvider.new(props)
+    case entry.class.name
+      when CashCollectionForProvider.name
+        deposit_entry = CashDepositToProvider.new(props)
+      when CreditCardCollectionForProvider.name
+        deposit_entry = CreditCardDepositToProvider.new(props)
+      when AmexCollectionForProvider.name
+        deposit_entry = AmexDepositToProvider.new(props)
+      when ChequeCollectionForProvider.name
+        deposit_entry = ChequeDepositToProvider.new(props)
       else
         raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
     end
 
-    account.entries << entry
-    entry.deposit
+    AccountingEntry.transaction do
+      account.entries << deposit_entry
+      entry.matching_entry         = deposit_entry
+      deposit_entry.matching_entry = entry
+      entry.save!
+      deposit_entry.save!
+    end
 
+  end
 
+  def entry
+    @entry = AccountingEntry.find entry_id
   end
 
 

@@ -13,6 +13,8 @@ require 'capybara/poltergeist'
 require 'declarative_authorization/maintenance'
 require 'money-rails/test_helpers'
 require 'active_attr/rspec'
+require 'factory_girl_rails'
+
 
 
 #uncomment the following line to use spork with the debugger
@@ -129,18 +131,20 @@ Spork.each_run do
     SimpleCov.start 'rails'
   end
 
-  require 'factory_girl_rails'
   #FactoryGirl.factories.clear
   # reload all the models
-  #Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
-  #  load model unless model.include? 'permitted_params'
-  #end
-  #Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |model|
-  #  load model
-  #end
-  #Dir["#{Rails.root}/app/events/**/*.rb"].each do |model|
-  #  load model
-  #end
+  Dir["#{Rails.root}/app/models/concerns/*.rb"].each do |model|
+    require model
+  end
+  Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
+    load model unless model.include? 'permitted_params'
+  end
+  Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |model|
+    load model
+  end
+  Dir["#{Rails.root}/app/events/**/*.rb"].each do |model|
+    load model
+  end
   #Dir["#{Rails.root}/app/observers/**/*.rb"].each do |model|
   #  load model
   #end

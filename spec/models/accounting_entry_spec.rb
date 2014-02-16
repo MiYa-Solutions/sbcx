@@ -52,10 +52,11 @@ describe AccountingEntry do
 
   end
 
-  describe "associations" do
+  describe 'associations' do
     it { should belong_to(:account) }
     it { should belong_to(:ticket) }
     it { should belong_to(:agreement) }
+    it { should belong_to(:matching_entry) }
   end
 
 end
