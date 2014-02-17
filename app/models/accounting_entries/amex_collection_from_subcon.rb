@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class AmexCollectionFromSubcon < CollectionEntry
+class AmexCollectionFromSubcon < CollectedEntry
 
   def amount_direction
     1

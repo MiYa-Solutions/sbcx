@@ -7,7 +7,9 @@ class EntryConfirmEvent < EntryEvent
   end
 
   def process_event
-    entry.ticket.events << EntryConfirmedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
+    unless entry.matching_entry.nil?
+      entry.ticket.events << EntryConfirmedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
+    end
   end
 
 end

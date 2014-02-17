@@ -259,7 +259,7 @@ class AffiliatePostingRule < PostingRule
 
   def org_collection_entries
     entries          = []
-    collection_props = { status:      AccountingEntry::STATUS_CLEARED,
+    collection_props = {
                          amount:      @event.amount,
                          collector:   @event.collector,
                          ticket:      @ticket,

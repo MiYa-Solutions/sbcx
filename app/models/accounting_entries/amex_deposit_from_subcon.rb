@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class AmexDepositFromSubcon < AccountingEntry
+class AmexDepositFromSubcon < DepositFromEntry
   def amount_direction
     -1
   end

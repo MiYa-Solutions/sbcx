@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class CreditCardDepositFromSubcon < AccountingEntry
+class CreditCardDepositFromSubcon < DepositFromEntry
   def amount_direction
     -1
   end

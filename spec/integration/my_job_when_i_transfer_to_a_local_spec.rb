@@ -888,23 +888,39 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                   end
 
                   context 'when marking payment as deposited by the subcon' do
+                    let(:collected_entry) { job.collected_entries.last }
+
                     before do
-                      job.update_attributes(billing_status_event: 'subcon_deposited')
+                      collected_entry.deposited!
                     end
 
+                    it 'should change entry status to cleared' do
+                      expect(collected_entry.status_name).to eq :deposited
+                    end
+
+                    it 'should create a CashDepositFromSubcon entry' do
+                      expect(job.reload.accounting_entries.last).to be_instance_of(CashDepositFromSubcon)
+                    end
 
                     it 'billing status should be subcon_claim_deposited' do
-                      expect(job.billing_status_name).to eq :subcon_claim_deposited
+                      expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
                     end
 
-                    it 'payment status should be subcon claim deposited' do
-                      expect(job.billing_status_name).to eq :subcon_claim_deposited
-                    end
 
-                    context 'when confirming the deposit' do
+                    context 'when deposit confirmed' do
+                      let(:deposit_entry) {job.accounting_entries.last}
                       before do
-                        job.update_attributes(billing_status_event: 'confirm_deposit')
+                        deposit_entry.confirm!
                       end
+
+                      it 'deposit entry status should be confirmed' do
+                        expect(deposit_entry.status_name).to eq :confirmed
+                      end
+
+                      it 'payment status should be subcon claim deposited' do
+                        expect(job.reload.billing_status_name).to eq :cleared
+                      end
+
 
                       it 'a cheque payment reimbursement exists with the amount derived from the payment' do
                         entry = ReimbursementForCashPayment.find_by_ticket_id(job.id)

@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class ChequeDepositFromSubcon < AccountingEntry
+class ChequeDepositFromSubcon < DepositFromEntry
   def amount_direction
     -1
   end

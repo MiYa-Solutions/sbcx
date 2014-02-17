@@ -276,6 +276,14 @@ class ServiceCall < Ticket
     errors.add :payment_amount, "Payment must be a number greater than zero" if self.payment_amount.nil? || self.payment_amount.try(:empty?) || self.payment_amount.to_f == 0.0
   end
 
+  def collection_entries
+    CollectionEntry.where(ticket_id: self.id)
+  end
+
+  def collected_entries
+    CollectedEntry.where(ticket_id: self.id)
+  end
+
   private
   def financial_data_change
     errors.add :tax, "Can't change tax when job is completed or transferred" if !self.system_update && self.changed_attributes.has_key?('tax') && !can_change_financial_data?

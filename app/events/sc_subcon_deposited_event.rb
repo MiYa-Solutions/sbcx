@@ -2,6 +2,8 @@ require 'hstore_amount'
 class ScSubconDepositedEvent < ServiceCallEvent
   include HstoreAmount
 
+  setup_hstore_attr 'entry_id'
+
   def init
 
     self.name         = I18n.t('service_call_subcon_deposited_event.name')
@@ -54,7 +56,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
     end
 
     account.entries << entry
-    entry.deposit
+    #entry.deposit
 
 
   end
