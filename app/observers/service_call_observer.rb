@@ -59,12 +59,6 @@ class ServiceCallObserver < ActiveRecord::Observer
     service_call.events << ServiceCallInvoicedEvent.new unless transition.args.first == :state_only
   end
 
-  def after_subcon_deposited_payment(service_call, transition)
-    Rails.logger.debug { "invoked observer BEFORE deposit_to_prov \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.events << ScSubconDepositedEvent.new(amount: service_call.payment_money, payment_type: service_call.payment_type)
-  end
-
-
   def before_confirm_deposit_payment(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE confirm_deposit \n #{service_call.inspect} \n #{transition.inspect}" }
     service_call.events << ScConfirmDepositEvent.new

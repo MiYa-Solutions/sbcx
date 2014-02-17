@@ -3,7 +3,7 @@ require 'spec_helper'
 describe EntryCanceledEvent do
 
   include_context 'entry event mocks' do
-    let(:event) { EntryCanceledEvent.new(eventable: ticket, entry_id: entry.id, triggering_event: mock_model(EntryConfirmEvent)) }
+    let(:event) { EntryCanceledEvent.new(eventable: ticket, entry_id: entry.id, triggering_event: mock_model(DepositEntryConfirmEvent)) }
   end
 
   context 'when created' do

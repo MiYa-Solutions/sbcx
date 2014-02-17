@@ -172,6 +172,7 @@ class MyServiceCall < ServiceCall
     event :clear do
       transition [:partially_paid, :paid, :rejected] => :cleared, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
     end
+
     event :reject do
       transition [:partially_paid, :paid, :rejected] => :rejected, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
     end

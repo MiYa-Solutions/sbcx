@@ -1,10 +1,10 @@
 class DepositEntryObserver < ActiveRecord::Observer
-  def before_confirm(entry, transition)
-    entry.ticket.events << EntryConfirmEvent.new(entry_id: entry.id)
+  def after_confirm(entry, transition)
+    entry.ticket.events << DepositEntryConfirmEvent.new(entry_id: entry.id)
   end
 
   def before_dispute(entry, transition)
-    entry.ticket.events << EntryDisputeEvent.new(entry_id: entry.id)
+    entry.ticket.events << DepositEntryDisputeEvent.new(entry_id: entry.id)
   end
 
   def before_cancel(entry, transition)

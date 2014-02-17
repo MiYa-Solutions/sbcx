@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe EntryConfirmedEvent do
+describe DepositEntryConfirmedEvent do
 
   include_context 'entry event mocks' do
-    let(:event) { EntryConfirmedEvent.new(eventable: ticket, entry_id: entry.id, triggering_event: mock_model(EntryConfirmEvent)) }
+    let(:event) { DepositEntryConfirmedEvent.new(eventable: ticket, entry_id: entry.id, triggering_event: mock_model(DepositEntryConfirmEvent)) }
   end
 
   context 'when created' do

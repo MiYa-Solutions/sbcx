@@ -15,7 +15,7 @@ describe DepositFromEntry do
 
   describe '#dispute' do
     before do
-      EntryDisputeEvent.stub(new: event)
+      DepositEntryDisputeEvent.stub(new: event)
       entry.dispute(false) unless example.metadata[:skip_dispute]
     end
 
@@ -28,7 +28,7 @@ describe DepositFromEntry do
     end
 
     it 'should create an EntryDisputeEvent', skip_dispute: true do
-      EntryDisputeEvent.should_receive(:new)
+      DepositEntryDisputeEvent.should_receive(:new)
       entry.dispute(false)
     end
 
@@ -46,7 +46,7 @@ describe DepositFromEntry do
 
   describe '#confirm' do
     before do
-      EntryConfirmEvent.stub(new: event)
+      DepositEntryConfirmEvent.stub(new: event)
       entry.confirm(false) unless example.metadata[:skip_confirm]
     end
 

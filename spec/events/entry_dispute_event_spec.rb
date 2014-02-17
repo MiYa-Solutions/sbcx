@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe EntryDisputeEvent do
+describe DepositEntryDisputeEvent do
 
   include_context 'entry event mocks' do
-    let(:event) { EntryDisputeEvent.new(eventable: ticket, entry_id: orig_entry.id) }
+    let(:event) { DepositEntryDisputeEvent.new(eventable: ticket, entry_id: orig_entry.id) }
   end
 
   context 'when created' do
@@ -15,12 +15,12 @@ describe EntryDisputeEvent do
       Account.stub(:for_affiliate => [acc])
       AccountingEntry.stub(:find).with('1').and_return(orig_entry)
       AccountingEntry.stub(:find).with('2').and_return(entry)
-      EntryDisputedEvent.stub(:new).with(kind_of(Hash)).and_return(double('AccAdjAcceptedEvent'))
+      DepositEntryDisputedEvent.stub(:new).with(kind_of(Hash)).and_return(double('AccAdjAcceptedEvent'))
       Event.stub_chain(:where, :where).and_return([adj_event])
     end
 
     it 'should create EntryDisputedEvent when processing the event' do
-      EntryDisputedEvent.should_receive(:new)
+      DepositEntryDisputedEvent.should_receive(:new)
       event.save!
     end
 

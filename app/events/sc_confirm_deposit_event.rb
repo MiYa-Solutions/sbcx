@@ -23,11 +23,6 @@ class ScConfirmDepositEvent < ServiceCallEvent
     subcon_service_call.events << ScDepositConfirmedEvent.new(triggering_event: self)
   end
 
-  def process_event
-    service_call.mark_confirmed_payment if service_call.can_mark_confirmed_payment?
-    super
-  end
-
   private
 
   def entry

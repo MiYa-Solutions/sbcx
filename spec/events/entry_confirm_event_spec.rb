@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe EntryConfirmEvent do
+describe DepositEntryConfirmEvent do
 
   include_context 'entry event mocks' do
-    let(:event) { EntryConfirmEvent.new(eventable: ticket, entry_id: orig_entry.id) }
+    let(:event) { DepositEntryConfirmEvent.new(eventable: ticket, entry_id: orig_entry.id) }
   end
 
   context 'when created' do
@@ -15,12 +15,12 @@ describe EntryConfirmEvent do
       Account.stub(:for_affiliate => [acc])
       AccountingEntry.stub(:find).with('1').and_return(orig_entry)
       AccountingEntry.stub(:find).with('2').and_return(entry)
-      EntryConfirmedEvent.stub(:new).with(kind_of(Hash)).and_return(double('EntryConfirmedEvent'))
+      DepositEntryConfirmedEvent.stub(:new).with(kind_of(Hash)).and_return(double('EntryConfirmedEvent'))
       Event.stub_chain(:where, :where).and_return([adj_event])
     end
 
     it 'should create EntryConfirmedEvent when processing the event' do
-      EntryConfirmedEvent.should_receive(:new)
+      DepositEntryConfirmedEvent.should_receive(:new)
       event.save!
     end
 

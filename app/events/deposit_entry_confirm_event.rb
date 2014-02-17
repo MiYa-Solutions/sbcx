@@ -1,4 +1,4 @@
-class EntryConfirmEvent < EntryEvent
+class DepositEntryConfirmEvent < EntryEvent
 
   def init
     self.name         = I18n.t('entry_confirm_event.name')
@@ -8,8 +8,9 @@ class EntryConfirmEvent < EntryEvent
 
   def process_event
     unless entry.matching_entry.nil?
-      entry.ticket.events << EntryConfirmedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
+      entry.ticket.events << DepositEntryConfirmedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
     end
+    entry.ticket.subcon_deposit_confirmed
   end
 
 end

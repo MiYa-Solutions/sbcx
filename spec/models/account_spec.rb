@@ -16,8 +16,15 @@
 require 'spec_helper'
 
 describe Account do
-  let(:account) { Account.new }
+  let(:org) {mock_model(Organization)}
+  let(:accountable) {mock_model(Organization, id: 1, member?: true)}
+  let(:account) { Account.new(organization: org, accountable: accountable) }
   subject { account }
+
+  it 'should be valid' do
+    expect(account).to be_valid
+  end
+
 
   it "should have the expected attributes and methods" do
     should respond_to(:organization_id)

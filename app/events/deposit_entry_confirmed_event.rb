@@ -1,4 +1,4 @@
-class EntryConfirmedEvent < EntryEvent
+class DepositEntryConfirmedEvent < EntryEvent
 
   def init
     self.name         = I18n.t('entry_confirmed_event.name')
@@ -8,6 +8,7 @@ class EntryConfirmedEvent < EntryEvent
 
   def process_event
     entry.matching_entry.confirmed!
+    entry.ticket.deposit_confirmed
   end
 
 end

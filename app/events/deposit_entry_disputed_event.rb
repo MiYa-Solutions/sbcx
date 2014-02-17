@@ -1,4 +1,4 @@
-class EntryDisputedEvent < EntryEvent
+class DepositEntryDisputedEvent < EntryEvent
 
   def init
     self.name         = I18n.t('entry_disputed_event.name')

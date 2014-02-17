@@ -284,9 +284,27 @@ class ServiceCall < Ticket
     CollectedEntry.where(ticket_id: self.id)
   end
 
+
+  def subcon_deposit_confirmed
+    confirm_deposit_payment! if fully_deposited?
+  end
+
   private
+
+  def fully_deposited?
+    all_collection_entries_deposited? && all_deposit_entries_confirmed?
+  end
+
   def financial_data_change
     errors.add :tax, "Can't change tax when job is completed or transferred" if !self.system_update && self.changed_attributes.has_key?('tax') && !can_change_financial_data?
+  end
+
+  def all_deposit_entries_confirmed?
+    entries.where(type: DepositEntry.subclasses).map(&:status).select {|status| status != ConfirmableEntry::STATUS_CONFIRMED}.empty?
+  end
+
+  def all_collection_entries_deposited?
+    entries.where(type: CollectionEntry.subclasses).map(&:status).select {|status| status != CollectionEntry::STATUS_DEPOSITED}.empty?
   end
 
 end

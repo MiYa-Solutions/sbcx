@@ -54,15 +54,15 @@ class Account < ActiveRecord::Base
     state :adjustment_submitted, value: SYNCH_STATUS_ADJ_SUBMITTED
 
     event :synch do
-      transition any => :in_synch
+      transition any - [:synch_na] => :in_synch
     end
 
     event :un_synch do
-      transition any => :out_of_synch
+      transition any - [:synch_na] => :out_of_synch
     end
 
     event :adj_submitted do
-      transition any => :adjustment_submitted
+      transition any - [:synch_na] => :adjustment_submitted
     end
 
   end
