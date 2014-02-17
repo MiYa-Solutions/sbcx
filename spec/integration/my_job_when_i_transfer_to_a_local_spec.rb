@@ -1120,6 +1120,106 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                       expect(entry.amount).to eq Money.new(10)
                     end
 
+                    it 'affiliate balance should be updated with the deposit' do
+                      expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 1000 + 1000*0.01)
+                    end
+
+
+                    context 'when marking payment as deposited by the subcon' do
+                      let(:collected_entry) { job.collected_entries.last }
+                      let(:deposit_entry) { job.accounting_entries.last }
+
+                      before do
+                        collected_entry.deposited!
+                      end
+
+                      it 'should change entry status to cleared' do
+                        expect(collected_entry.status_name).to eq :deposited
+                      end
+
+                      it 'should create a CashDepositFromSubcon entry' do
+                        expect(job.reload.accounting_entries.last).to be_instance_of(ChequeDepositFromSubcon)
+                      end
+
+                      it 'billing status should be subcon_claim_deposited' do
+                        expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
+                      end
+
+                      it 'billing status should have the deposit event only once' do
+                        expect(job.reload.events.map { |e| e.class.name }).to eq ['ScSubconDepositedEvent',
+                                                                                  'ScCollectedEvent',
+                                                                                  'ServiceCallInvoicedEvent',
+                                                                                  'ServiceCallCompleteEvent',
+                                                                                  'ServiceCallStartedEvent',
+                                                                                  'ServiceCallTransferEvent']
+
+
+                      end
+
+                      it 'affiliate balance should be updated with the deposit' do
+                        expect(deposit_entry.account.balance).to eq Money.new(-11000 + 1000*0.01)
+                      end
+
+
+                      context 'when deposit confirmed' do
+
+                        before do
+                          deposit_entry.confirm!
+                        end
+
+                        it 'deposit entry status should be confirmed' do
+                          expect(deposit_entry.status_name).to eq :confirmed
+                        end
+
+                        it 'payment status should be cleared' do
+                          expect(job.reload.billing_status_name).to eq :partially_paid
+                        end
+
+                        it 'a cash payment reimbursement exists with the amount derived from the payment' do
+                          entry = ReimbursementForChequePayment.find_by_ticket_id(job.id)
+                          expect(entry).to_not be_nil
+                          expect(entry.amount).to eq Money.new(10)
+                        end
+                      end
+
+                      context 'when the deposit is disputed' do
+                        before do
+                          deposit_entry.dispute!
+                        end
+
+                        it 'deposit entry status should be confirmed' do
+                          expect(deposit_entry.status_name).to eq :disputed
+                        end
+
+                        it 'the last event should be EntryDisputedEvent' do
+                          expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
+                        end
+
+                        it 'payment status should be subcon_claim_deposited' do
+                          expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
+                        end
+
+                        it 'available entry status events are canceled and confirmed' do
+                          expect(deposit_entry.status_events).to eq [:confirm]
+                        end
+
+                        context 'when confirming' do
+                          before do
+                            deposit_entry.confirm!
+                          end
+
+                          it 'deposit entry status should be confirmed' do
+                            expect(deposit_entry.status_name).to eq :confirmed
+                          end
+
+                          it 'payment status should be cleared' do
+                            expect(job.reload.billing_status_name).to eq :partially_paid
+                          end
+
+                        end
+                      end
+
+                    end
                   end
 
                   context 'when using cash' do
@@ -1151,20 +1251,104 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                             expect(job.billing_status_name).to eq :subcon_claim_deposited
                           end
 
-                          context 'when confirming the deposit' do
+                          it 'affiliate balance should be updated with the deposit' do
+                            expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 1000 + 1000*0.01)
+                          end
+
+                          context 'when marking payment as deposited by the subcon' do
+                            let(:collected_entry) { job.collected_entries.last }
+                            let(:deposit_entry) { job.accounting_entries.last }
+
                             before do
-                              job.update_attributes(billing_status_event: 'confirm_deposit')
+                              collected_entry.deposited!
                             end
 
-                            it 'payment status should be partially paid' do
-                              expect(job.billing_status_name).to eq :partially_paid
+                            it 'should change entry status to cleared' do
+                              expect(collected_entry.status_name).to eq :deposited
                             end
 
-                            it 'a cash payment reimbursement exists with the amount derived from the payment' do
-                              entry = ReimbursementForCashPayment.find_by_ticket_id(job.id)
-                              expect(entry).to_not be_nil
-                              expect(entry.amount).to eq Money.new(10)
+                            it 'should create a CashDepositFromSubcon entry' do
+                              expect(job.reload.accounting_entries.last).to be_instance_of(CashDepositFromSubcon)
                             end
+
+                            it 'billing status should be subcon_claim_deposited' do
+                              expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
+                            end
+
+                            it 'billing status should have the deposit event only once' do
+                              expect(job.reload.events.map { |e| e.class.name }).to eq ['ScSubconDepositedEvent',
+                                                                                        'ScCollectedEvent',
+                                                                                        'ServiceCallInvoicedEvent',
+                                                                                        'ServiceCallCompleteEvent',
+                                                                                        'ServiceCallStartedEvent',
+                                                                                        'ServiceCallTransferEvent']
+
+
+                            end
+
+                            it 'affiliate balance should be updated with the deposit' do
+                              expect(deposit_entry.account.balance).to eq Money.new(-11000 + 1000*0.01)
+                            end
+
+
+                            context 'when deposit confirmed' do
+
+                              before do
+                                deposit_entry.confirm!
+                              end
+
+                              it 'deposit entry status should be confirmed' do
+                                expect(deposit_entry.status_name).to eq :confirmed
+                              end
+
+                              it 'payment status should be cleared' do
+                                expect(job.reload.billing_status_name).to eq :partially_paid
+                              end
+
+                              it 'a cash payment reimbursement exists with the amount derived from the payment' do
+                                entry = ReimbursementForCashPayment.find_by_ticket_id(job.id)
+                                expect(entry).to_not be_nil
+                                expect(entry.amount).to eq Money.new(10)
+                              end
+                            end
+
+                            context 'when the deposit is disputed' do
+                              before do
+                                deposit_entry.dispute!
+                              end
+
+                              it 'deposit entry status should be confirmed' do
+                                expect(deposit_entry.status_name).to eq :disputed
+                              end
+
+                              it 'the last event should be EntryDisputedEvent' do
+                                expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
+                              end
+
+                              it 'payment status should be subcon_claim_deposited' do
+                                expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
+                              end
+
+                              it 'available entry status events are canceled and confirmed' do
+                                expect(deposit_entry.status_events).to eq [:confirm]
+                              end
+
+                              context 'when confirming' do
+                                before do
+                                  deposit_entry.confirm!
+                                end
+
+                                it 'deposit entry status should be confirmed' do
+                                  expect(deposit_entry.status_name).to eq :confirmed
+                                end
+
+                                it 'payment status should be cleared' do
+                                  expect(job.reload.billing_status_name).to eq :partially_paid
+                                end
+
+                              end
+                            end
+
                           end
                         end
                       end

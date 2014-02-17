@@ -35,7 +35,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
   def update_subcon_account
     account = Account.for_affiliate(service_call.organization, service_call.subcontractor).lock(true).first
 
-    props = { amount:      service_call.total_price + service_call.tax_amount,
+    props = { amount:      amount,
               ticket:      service_call,
               event:       self,
               agreement:   service_call.subcon_agreement,
