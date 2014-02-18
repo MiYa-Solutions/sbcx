@@ -149,9 +149,9 @@ class ServiceCallEvent < Event
       aff_billing = AffiliateBillingService.new(self)
       aff_billing.execute
 
-      aff_billing.accounting_entries.each do |entry|
-        entry.clear
-      end
+      #aff_billing.accounting_entries.each do |entry|
+      #  entry.clear
+      #end
     end
   end
 end

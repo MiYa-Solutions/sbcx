@@ -93,7 +93,6 @@ class AffiliatePostingRule < PostingRule
     entries = []
 
     collection_props = {
-        status:      AccountingEntry::STATUS_CLEARED,
         amount:      @event.amount,
         collector:   @event.collector,
         ticket:      @ticket,
@@ -258,47 +257,11 @@ class AffiliatePostingRule < PostingRule
   end
 
   def org_collection_entries
-    entries          = []
-    collection_props = {
-                         amount:      @event.amount,
-                         collector:   @event.collector,
-                         ticket:      @ticket,
-                         event:       @event,
-                         agreement:   agreement,
-                         description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
-
-    fee_props = { status:      AccountingEntry::STATUS_CLEARED,
-                  ticket:      @ticket,
-                  event:       @event,
-                  agreement:   agreement,
-                  description: I18n.t("payment_reimbursement.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
-
-
-    case @ticket.payment_type
-      when 'cash'
-        entries << CashCollectionFromSubcon.new(collection_props) unless collected_by_me?
-
-        fee_props[:amount] = cash_fee
-        entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0
-      when 'credit_card'
-        fee_props[:amount] = credit_fee
-        entries << CreditCardCollectionFromSubcon.new(collection_props) unless collected_by_me?
-        entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0
-      when 'amex_credit_card'
-        fee_props[:amount] = amex_fee
-        entries << AmexCollectionFromSubcon.new(collection_props) unless collected_by_me?
-        entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0
-      when 'cheque'
-        fee_props[:amount] = cheque_fee
-        entries << ChequeCollectionFromSubcon.new(collection_props) unless collected_by_me?
-        entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0
-
-      else
-
-    end
-
-
-    entries
+    OrgCollectionEntryFactory.new(event:        @event,
+                                  ticket:       @ticket,
+                                  agreement:    agreement,
+                                  posting_rule: self,
+                                  account:      @account).generate
   end
 
   def org_settlement_entries

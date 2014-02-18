@@ -23,7 +23,10 @@ class ScCollectEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ScCollectedEvent.new(triggering_event: self, amount: self.amount, collector: service_call.organization)
+    prov_service_call.events << ScCollectedEvent.new(triggering_event: self,
+                                                     amount:           self.amount,
+                                                     collector:        service_call.organization,
+                                                     payment_type:     self.payment_type)
   end
 
   def update_subcontractor

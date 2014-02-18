@@ -63,6 +63,7 @@ class Event < ActiveRecord::Base
   # todo - seems like the user is not needed instead a creator can be used
   belongs_to :user
   belongs_to :triggering_event, class_name: "Event"
+  has_many :accounting_entries
   stampable
 
   before_validation :set_default_creator, :init

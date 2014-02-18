@@ -31,6 +31,7 @@ module Sbcx
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths                     += %W(#{config.root}/app/models/accounting_entries)
+    config.autoload_paths                     += %W(#{config.root}/app/models/accounting_entries/factories)
     config.autoload_paths                     += %W(#{config.root}/app/models/concerns)
     config.autoload_paths                     += %W(#{config.root}/app/models/payments)
     config.autoload_paths                     += %W(#{config.root}/app/models/posting_rules)

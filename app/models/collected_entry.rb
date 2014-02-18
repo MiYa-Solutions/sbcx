@@ -18,6 +18,11 @@ class CollectedEntry < AccountingEntry
   end
 
   def allowed_status_events
-    self.status_events & [:deposited]
+    if account.accountable.member?
+      []
+    else
+      self.status_events & [:deposited]
+    end
+
   end
 end

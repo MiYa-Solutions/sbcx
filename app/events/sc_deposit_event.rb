@@ -19,7 +19,7 @@ class ScDepositEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ScSubconDepositedEvent.new(triggering_event: self)
+    prov_service_call.events << ScSubconDepositedEvent.new(triggering_event: self,entry_id: entry.matching_entry.id)
   end
 
   def process_event
@@ -50,18 +50,12 @@ class ScDepositEvent < ServiceCallEvent
         raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
     end
 
-    AccountingEntry.transaction do
-      account.entries << deposit_entry
-      entry.matching_entry         = deposit_entry
-      deposit_entry.matching_entry = entry
-      entry.save!
-      deposit_entry.save!
-    end
+    account.entries << deposit_entry
 
   end
 
   def entry
-    @entry = AccountingEntry.find entry_id
+    @entry ||= AccountingEntry.find entry_id
   end
 
 
