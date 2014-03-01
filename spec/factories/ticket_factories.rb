@@ -80,6 +80,8 @@ FactoryGirl.define do
       job.organization.users << FactoryGirl.build(:user, organization: job.organization) if job.organization.users.size == 0
     end
 
+    factory :local_subcon_job, class: SubconServiceCall
+
   end
 
 end

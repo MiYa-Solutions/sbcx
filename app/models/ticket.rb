@@ -436,13 +436,13 @@ class Ticket < ActiveRecord::Base
 
   def check_subcon_agreement
     unless self.subcon_agreement.nil?
-      errors.add :subcon_agreement, "Invalid Subcontracting Agreement: the agreement must specify the subcontractor as the counterparty" if subcon_agreement.counterparty != self.subcontractor.becomes(Organization)
+      errors.add :subcon_agreement, "Invalid Subcontracting Agreement: the agreement must specify the subcontractor as the counterparty" if subcon_agreement.counterparty.becomes(Organization) != self.subcontractor.becomes(Organization)
     end
   end
 
   def check_provider_agreement
     unless self.provider_agreement.nil?
-      errors.add :provider_agreement, "Invalid Subcontracting Agreement: the agreement must specify the provider as the organization" if provider_agreement.organization != self.provider.try(:becomes, Organization)
+      errors.add :provider_agreement, "Invalid Subcontracting Agreement: the agreement must specify the provider as the organization" if provider_agreement.organization.becomes(Organization) != self.provider.try(:becomes, Organization)
     end
   end
 
