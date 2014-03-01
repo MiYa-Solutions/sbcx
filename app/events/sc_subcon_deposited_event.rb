@@ -32,6 +32,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
 
   private
 
+  # todo refactor to an entry factory
   def update_subcon_account
     account = Account.for_affiliate(service_call.organization, service_call.subcontractor).lock(true).first
 
@@ -59,7 +60,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
       account.entries << deposit_entry
       if triggering_event
         deposit_entry.matching_entry.matching_entry = deposit_entry
-        deposit_entry.matching_entry.matching_entry.save!
+        deposit_entry.matching_entry.save!
       end
 
     end

@@ -7,7 +7,7 @@ class DepositEntryConfirmedEvent < EntryEvent
   end
 
   def process_event
-    entry.matching_entry.confirmed!
+    entry.confirmed!
     entry.ticket.deposit_confirmed
   end
 

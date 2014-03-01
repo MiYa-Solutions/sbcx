@@ -18,7 +18,7 @@
 #  agreement_id     :integer
 #
 
-class CreditCardDepositToProvider < AccountingEntry
+class CreditCardDepositToProvider < DepositToEntry
   def amount_direction
     1
   end

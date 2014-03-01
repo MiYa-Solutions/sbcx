@@ -4,6 +4,6 @@ class EntryEvent < Event
   setup_hstore_attr 'entry_id'
 
   def entry
-    AccountingEntry.find entry_id
+    @entry ||= AccountingEntry.find entry_id
   end
 end

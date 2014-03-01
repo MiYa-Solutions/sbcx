@@ -29,6 +29,7 @@ class ScDepositEvent < ServiceCallEvent
 
   private
 
+  # todo refactor to an entry factory
   def update_provider_account
     account = Account.for_affiliate(service_call.organization, service_call.provider).lock(true).first
     props   = { amount:      amount,
