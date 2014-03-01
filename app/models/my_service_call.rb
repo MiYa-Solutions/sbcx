@@ -265,7 +265,7 @@ class MyServiceCall < ServiceCall
   end
 
   def check_and_set_as_fully_paid
-    paid_payment if fully_paid?
+    mark_as_fully_paid_payment if fully_paid?
   end
 
   def paid_amount

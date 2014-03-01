@@ -19,12 +19,16 @@ describe MyServiceCall do
       before do
         job.start_work
         add_bom_to_job job, price: 100, quantity: 1, cost: 10
-
-        job.update_attributes(work_status_event: 'paid', payment_type: 'cash', payment_amount: '100')
+        collect_a_payment job, type: 'cash', amount: '100', collector: job.organization, event: 'paid'
       end
 
-      it 'should return true' do
-        expect(job.fully_paid?).to be_true
+      it 'should return false as the job is not doe yet' do
+        expect(job.reload.fully_paid?).to be_false
+      end
+
+      it 'should return true after the job work is completed' do
+        job.complete_work!
+        expect(job.reload.fully_paid?).to be_true
       end
     end
 
