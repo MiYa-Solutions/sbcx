@@ -18,9 +18,9 @@ describe MyServiceCall do
     context 'when paid the full amount' do
       before do
         job.start_work
-        add_bom_to_job job
+        add_bom_to_job job, price: 100, quantity: 1, cost: 10
 
-        job.update_attributes(work_status_event: 'paid', payment_type: 'cash', payment_amount: '10000')
+        job.update_attributes(work_status_event: 'paid', payment_type: 'cash', payment_amount: '100')
       end
 
       it 'should return true' do
@@ -42,5 +42,14 @@ describe MyServiceCall do
 
 
     end
+  end
+
+  describe '#transfer' do
+    include_context 'transferred job'
+
+    it 'should create a SubconServiceCall' do
+      expect { transfer_the_job }.to change { SubconServiceCall.count }.by(1)
+    end
+
   end
 end

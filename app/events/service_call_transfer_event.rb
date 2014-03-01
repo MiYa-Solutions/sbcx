@@ -29,7 +29,7 @@ class ServiceCallTransferEvent < ServiceCallEvent
     # create a service call copy for the subcontractor only if it is a member
     if service_call.subcontractor.subcontrax_member?
 
-      new_service_call = TransferredServiceCall.new
+      new_service_call = SubconServiceCall.new
 
       new_service_call.organization = service_call.subcontractor.becomes(Organization)
       new_service_call.provider     = service_call.organization.becomes(Provider)
