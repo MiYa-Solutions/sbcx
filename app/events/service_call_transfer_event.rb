@@ -31,6 +31,8 @@ class ServiceCallTransferEvent < ServiceCallEvent
 
       new_service_call = SubconServiceCall.new
 
+      new_service_call.prov_collection_status = CollectionStateMachine::STATUS_PENDING
+
       new_service_call.organization = service_call.subcontractor.becomes(Organization)
       new_service_call.provider     = service_call.organization.becomes(Provider)
       new_service_call.customer     = service_call.customer

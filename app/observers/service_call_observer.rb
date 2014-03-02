@@ -22,6 +22,7 @@ class ServiceCallObserver < ActiveRecord::Observer
   def before_transfer(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE transfer \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.subcontractor_status = ServiceCall::SUBCON_STATUS_PENDING
+    service_call.subcon_collection_status = CollectionStateMachine::STATUS_PENDING if service_call.allow_collection?
   end
 
 

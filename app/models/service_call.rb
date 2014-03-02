@@ -233,7 +233,7 @@ class ServiceCall < Ticket
         sc = MyServiceCall.new(params)
       else
         params[:subcontractor_id] = nil
-        sc                        = TransferredServiceCall.new(params)
+        sc                        = SubconServiceCall.new(params)
       end
 
     end

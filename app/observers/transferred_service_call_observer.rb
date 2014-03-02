@@ -1,4 +1,5 @@
 class TransferredServiceCallObserver < ServiceCallObserver
+  observe [SubconServiceCall, BrokerServiceCall]
 
 
   def after_deposit_to_prov_payment(service_call, transition)

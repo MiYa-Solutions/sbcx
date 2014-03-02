@@ -1,3 +1,7 @@
 class BrokerServiceCall < TransferredServiceCall
-  # To change this template use File | Settings | File Templates.
+  extend CollectionStateMachine
+
+  collection_status :prov_collection_status, 'prov_collection'
+  collection_status :subcon_collection_status, 'subcon_collection'
+
 end

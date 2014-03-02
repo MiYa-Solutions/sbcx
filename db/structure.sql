@@ -921,7 +921,9 @@ CREATE TABLE tickets (
     subcon_fee_cents integer DEFAULT 0 NOT NULL,
     subcon_fee_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
     properties hstore,
-    external_ref character varying(255)
+    external_ref character varying(255),
+    subcon_collection_status integer,
+    prov_collection_status integer
 );
 
 
@@ -1799,3 +1801,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140126025608');
 INSERT INTO schema_migrations (version) VALUES ('20140126212619');
 
 INSERT INTO schema_migrations (version) VALUES ('20140216195150');
+
+INSERT INTO schema_migrations (version) VALUES ('20140301234659');
