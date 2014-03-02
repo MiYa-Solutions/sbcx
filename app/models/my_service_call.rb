@@ -54,13 +54,16 @@
 #
 
 class MyServiceCall < ServiceCall
+  include CustomerJobBilling
+  include CollectionStateMachine
+
+  collection_status :subcon_collection_status, 'subcon_collection'
 
   before_validation do
     self.provider = self.organization.becomes(Provider) if self.organization
   end
 
   after_create :set_ref_id
-
 
   state_machine :status, :initial => :new do
 
@@ -106,183 +109,8 @@ class MyServiceCall < ServiceCall
     end
   end
 
-  BILLING_STATUS_PENDING                 = 4100
-  BILLING_STATUS_INVOICED                = 4101
-  BILLING_STATUS_COLLECTED_BY_EMPLOYEE   = 4102
-  BILLING_STATUS_OVERDUE                 = 4103
-  BILLING_STATUS_PAID                    = 4104
-  BILLING_STATUS_INVOICED_BY_SUBCON      = 4105
-  BILLING_STATUS_COLLECTED_BY_SUBCON     = 4106
-  BILLING_STATUS_SUBCON_CLAIM_DEPOSITED  = 4107
-  BILLING_STATUS_CLEARED                 = 4108
-  BILLING_STATUS_REJECTED                = 4109
-  BILLING_STATUS_PARTIALLY_PAID          = 4110
-  BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE = 4111
-  BILLING_STATUS_P_COLLECTED_BY_SUBCON   = 4112
-  BILLING_STATUS_OVERPAID                = 4113
-
-
-  # if collection is not allowed for this service call, then the initial status is set to na - not applicable
-  state_machine :billing_status, initial: :pending, namespace: 'payment' do
-    state :pending, value: BILLING_STATUS_PENDING
-    state :invoiced, value: BILLING_STATUS_INVOICED
-    state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE do
-      #validate { |sc| sc.validate_collector }
-    end
-    state :overdue, value: BILLING_STATUS_OVERDUE
-    state :paid, value: BILLING_STATUS_PAID
-    state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
-    state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
-      #validate { |sc| sc.validate_collector }
-    end
-    state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
-    state :cleared, value: BILLING_STATUS_CLEARED
-    state :rejected, value: BILLING_STATUS_REJECTED
-    state :partially_paid, value: BILLING_STATUS_PARTIALLY_PAID
-    state :partial_payment_collected_by_employee, value: BILLING_STATUS_P_COLLECTED_BY_EMPLOYEE do
-      #validate { |sc| sc.validate_collector }
-    end
-    state :partial_payment_collected_by_subcon, value: BILLING_STATUS_P_COLLECTED_BY_SUBCON do
-      #validate { |sc| sc.validate_collector }
-    end
-
-    state :overpaid, value: BILLING_STATUS_OVERPAID
-
-    after_failure do |service_call, transition|
-      Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
-    end
-
-    #before_transition any => [:paid, :partially_paid, :partial_payment_collected_by_employee, :partial_payment_collected_by_subcon] do |sc, transition|
-    #  sc.check_payment_amount
-    #end
-
-    after_transition any => :cleared do |sc, transition|
-      sc.mark_as_overpaid_payment! if sc.overpaid?
-    end
-
-    # for cash payment, paid means cleared
-    after_transition any => :paid do |sc, transition|
-      if sc.payment_type == 'cash'
-        sc.billing_status = BILLING_STATUS_CLEARED
-        sc.mark_as_overpaid_payment! if sc.overpaid?
-        sc.save
-      end
-    end
-
-    event :clear do
-      transition [:partially_paid, :paid, :rejected] => :cleared, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
-    end
-
-    event :reject do
-      transition [:partially_paid, :paid, :rejected] => :rejected, if: ->(sc) { !sc.canceled? && sc.payment_type != 'cash' }
-    end
-
-    event :invoice do
-      transition :pending => :invoiced, if: ->(sc) { sc.work_done? }
-    end
-
-    event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: ->(sc) { !sc.canceled? && sc.transferred? && sc.work_done? && sc.allow_collection? }
-    end
-
-    event :overdue do
-      transition [:invoiced, :invoiced_by_subcon] => :overdue, if: ->(sc) { !sc.canceled? }
-      transition [:partially_paid] => :overdue, if: ->(sc) { !sc.canceled? && sc.work_done? }
-    end
-
-    event :collect do
-      transition [:pending,
-                  :rejected,
-                  :invoiced,
-                  :overdue,
-                  :invoiced_by_subcon
-                 ]   => :collected_by_employee,
-
-                 if: ->(sc) { sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
-
-      transition [:pending,
-                  :rejected,
-                  :invoiced,
-                  :overdue,
-                  :invoiced_by_subcon,
-                  :partial_payment_collected_by_employee
-                 ]   => :partial_payment_collected_by_employee,
-
-                 if: ->(sc) { !sc.fully_paid? && !sc.canceled? && sc.organization.multi_user? }
-    end
-
-    event :deposited do
-      transition :collected_by_employee => :paid, if: ->(sc) { !sc.canceled? }
-      transition :partial_payment_collected_by_employee => :partially_paid, if: ->(sc) { !sc.canceled? && !sc.fully_paid? }
-      transition :partial_payment_collected_by_employee => :paid, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
-    end
-
-    event :paid do
-      transition [:invoiced, :invoiced_by_subcon, :overdue, :partially_paid, :pending] => :partially_paid, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && !sc.organization.multi_user? }
-      transition [:invoiced, :invoiced_by_subcon, :overdue, :partially_paid] => :paid, if: ->(sc) { sc.fully_paid? && !sc.canceled? && !sc.organization.multi_user? }
-      transition :rejected => :partially_paid, if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
-      transition :rejected => :paid, if: ->(sc) { sc.fully_paid? && !sc.canceled? }
-    end
-
-    event :subcon_collected do
-      transition [:partial_payment_collected_by_subcon, :invoiced_by_subcon] => :collected_by_subcon,
-                 if:                                                         ->(sc) { !sc.canceled? && sc.fully_paid? }
-
-      transition :pending => :collected_by_subcon,
-                 if:      ->(sc) { !sc.canceled? && !sc.status?(:new) && !sc.status?(:open) && !sc.work_status?(:pending) && sc.fully_paid? }
-
-      transition [:partial_payment_collected_by_subcon, :invoiced_by_subcon] => :partial_payment_collected_by_subcon,
-                 if:                                                         ->(sc) { !sc.canceled? && !sc.fully_paid? }
-
-      transition :pending => :partial_payment_collected_by_subcon,
-                 if:      ->(sc) { !sc.canceled? && !sc.status?(:new) && !sc.status?(:open) && !sc.work_status?(:pending) && !sc.fully_paid? }
-    end
-
-    event :subcon_deposited do
-      transition [:partial_payment_collected_by_subcon, :collected_by_subcon] => :subcon_claim_deposited, if: ->(sc) { !sc.canceled? }
-    end
-
-    event :confirm_deposit do
-      transition :subcon_claim_deposited => :paid, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
-      transition :subcon_claim_deposited => :partially_paid, if: ->(sc) { !sc.canceled? && !sc.fully_paid? }
-    end
-
-    event :mark_as_fully_paid do
-      transition [:partially_paid] => :paid, if: ->(sc) { sc.fully_paid? }
-      transition [:partial_payment_collected_by_employee] => :collected_by_employee, if: ->(sc) { sc.fully_paid? }
-      transition [:partial_payment_collected_by_subcon] => :collected_by_subcon, if: ->(sc) { sc.fully_paid? }
-    end
-
-    event :mark_as_overpaid do
-      transition :cleared => :overpaid, if: ->(sc) { sc.overpaid? }
-    end
-
-  end
-
-  def overpaid?
-    current_payment = payment_amount || 0
-    total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) < 0
-  end
-
-  def check_and_set_as_fully_paid
-    mark_as_fully_paid_payment if fully_paid?
-  end
-
-  def paid_amount
-    Money.new(payments.with_statuses(:pending, :deposited, :cleared).sum(:amount_cents), total.currency)
-  end
-
-  def payments
-    entries.where(type: AccountingEntry.payment_entry_classes)
-  end
-
   def can_uncancel?
-    #!self.work_done? &&
-    #    ((self.transferred? && !self.subcontractor.subcontrax_member?) || !self.transferred?)
-
     !self.work_done?
-
-
   end
 
   def set_ref_id

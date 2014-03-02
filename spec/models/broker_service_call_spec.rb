@@ -24,6 +24,10 @@ describe BrokerServiceCall do
     expect(service_call.prov_collection_status_name).to eq :pending
   end
 
+  it 'subcon collection status should be pending' do
+    expect(service_call.subcon_collection_status_name).to eq :pending
+  end
+
   it 'should have provider collection state machine' do
     job = BrokerServiceCall.new
 

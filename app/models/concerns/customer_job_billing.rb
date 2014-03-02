@@ -1,0 +1,94 @@
+module CustomerJobBilling
+  extend ActiveSupport::Concern
+
+  STATUS_PENDING             = 4100
+  STATUS_COLLECTED           = 4102
+  STATUS_OVERDUE             = 4103
+  STATUS_PAID                = 4104
+  STATUS_CLEARED             = 4108
+  STATUS_REJECTED            = 4109
+  STATUS_PARTIALLY_COLLECTED = 4110
+  STATUS_OVERPAID            = 4113
+  STATUS_IN_PROCESS          = 4114
+
+  included do
+
+    state_machine :billing_status, initial: :pending, namespace: 'payment' do
+      state :pending, value: STATUS_PENDING
+      state :overdue, value: STATUS_OVERDUE
+      state :paid, value: STATUS_PAID
+      state :rejected, value: STATUS_REJECTED
+      state :partially_collected, value: STATUS_PARTIALLY_COLLECTED
+      state :collected, value: STATUS_COLLECTED
+      state :in_process, value: STATUS_IN_PROCESS
+      state :over_paid, value: STATUS_OVERPAID
+
+      after_failure do |service_call, transition|
+        Rails.logger.debug { "My Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
+      end
+
+      event :clear do
+        transition :in_process => :paid
+      end
+
+      event :reject do
+        transition :in_process => :rejected
+      end
+
+      event :late do
+        transition [:pending, :partially_collected, :rejected] => :overdue, if: ->(sc) { !sc.canceled? }
+      end
+
+      event :collect do
+        transition [:pending,
+                    :rejected,
+                    :overdue,
+                    :partially_collected
+                   ]   => :collected,
+
+                   if: ->(sc) { sc.fully_paid? && !sc.canceled? }
+
+        transition [:pending,
+                    :rejected,
+                    :partially_collected
+                   ]   => :partially_collected,
+
+                   if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
+
+        transition :overdue => :overdue, if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
+      end
+
+      event :deposited do
+        transition :in_process => :paid, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
+      end
+
+      event :mark_as_fully_paid do
+        transition :partially_collected => :paid, if: ->(sc) { sc.fully_paid? }
+      end
+
+      event :mark_as_overpaid do
+        transition :partially_collected => :overpaid, if: ->(sc) { sc.overpaid? }
+      end
+
+    end
+
+  end
+
+  def overpaid?
+    current_payment = payment_amount || 0
+    total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) < 0
+  end
+
+  def check_and_set_as_fully_paid
+    mark_as_fully_paid_payment if fully_paid?
+  end
+
+  def paid_amount
+    Money.new(payments.with_statuses(:pending, :deposited, :cleared).sum(:amount_cents), total.currency)
+  end
+
+  def payments
+    entries.where(type: AccountingEntry.payment_entry_classes)
+  end
+
+end

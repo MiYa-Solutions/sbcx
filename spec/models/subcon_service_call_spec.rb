@@ -11,6 +11,10 @@ describe SubconServiceCall do
     expect(service_call).to respond_to(:prov_collection_status)
   end
 
+  it 'prov collection status should be pending' do
+    expect(service_call.prov_collection_status_name).to eq :pending
+  end
+
   it 'should have a transfer method' do
     expect(service_call).to respond_to(:transfer)
   end

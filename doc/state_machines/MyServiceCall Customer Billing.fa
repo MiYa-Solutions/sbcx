@@ -1678,6 +1678,242 @@
         </void> 
        </object> 
       </void> 
+      <void method="add"> 
+       <object id="GElementFAState7" class="edu.usfca.vas.graphics.fa.GElementFAState"> 
+        <void property="label"> 
+         <string>Overpaid</string> 
+        </void> 
+        <void property="position"> 
+         <void property="x"> 
+          <double>910.2222222222224</double> 
+         </void> 
+         <void property="y"> 
+          <double>256.0</double> 
+         </void> 
+        </void> 
+        <void id="FAState7" property="state"> 
+         <void property="name"> 
+          <string>Overpaid</string> 
+         </void> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>891.1469160644909</double> 
+             </void> 
+             <void property="y"> 
+              <double>262.0110477446791</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>-162.10730251816994</double> 
+             </void> 
+             <void property="y"> 
+              <double>51.08356988560888</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-8.0</double> 
+            </void> 
+            <void property="y"> 
+             <double>-11.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>910.2222222222224</double> 
+            </void> 
+            <void property="y"> 
+             <double>256.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>40.0</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>745.6835033660631</double> 
+             </void> 
+             <void property="y"> 
+              <double>303.05337066912386</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Clear (overpaid)</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>627.3333333333333</double> 
+            </void> 
+            <void property="y"> 
+             <double>426.6666666666667</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Clear (overpaid)</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState6"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState7"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
+      <void method="add"> 
+       <object class="edu.usfca.xj.appkit.gview.object.GLink"> 
+        <void property="labelVisible"> 
+         <boolean>true</boolean> 
+        </void> 
+        <void property="link"> 
+         <object class="edu.usfca.xj.appkit.gview.shape.SLinkArc"> 
+          <void property="arrow"> 
+           <void property="anchor"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>918.7108997468368</double> 
+             </void> 
+             <void property="y"> 
+              <double>408.55748794748934</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="direction"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>40.0</double> 
+             </void> 
+             <void property="y"> 
+              <double>-85.33333333333331</double> 
+             </void> 
+            </object> 
+           </void> 
+          </void> 
+          <void property="direction"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>-2.222222222222399</double> 
+            </void> 
+            <void property="y"> 
+             <double>-7.666666666666686</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="end"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>910.2222222222224</double> 
+            </void> 
+            <void property="y"> 
+             <double>426.6666666666667</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="endDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="endTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+          <void property="flateness"> 
+           <double>40.0</double> 
+          </void> 
+          <void property="label"> 
+           <void property="position"> 
+            <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+             <void property="x"> 
+              <double>958.7108997468367</double> 
+             </void> 
+             <void property="y"> 
+              <double>341.3333333333333</double> 
+             </void> 
+            </object> 
+           </void> 
+           <void property="title"> 
+            <string>Reimbursed</string> 
+           </void> 
+          </void> 
+          <void property="start"> 
+           <object class="edu.usfca.xj.appkit.gview.base.Vector2D"> 
+            <void property="x"> 
+             <double>910.2222222222224</double> 
+            </void> 
+            <void property="y"> 
+             <double>256.0</double> 
+            </void> 
+           </object> 
+          </void> 
+          <void property="startDirection"> 
+           <object idref="Vector2D0"/> 
+          </void> 
+          <void property="startTangentOffset"> 
+           <double>20.0</double> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="pattern"> 
+         <string>Reimbursed</string> 
+        </void> 
+        <void property="source"> 
+         <object idref="GElementFAState7"/> 
+        </void> 
+        <void property="sourceAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+        <void property="target"> 
+         <object idref="GElementFAState1"/> 
+        </void> 
+        <void property="targetAnchorKey"> 
+         <string>CENTER</string> 
+        </void> 
+       </object> 
+      </void> 
      </void> 
      <void property="machine"> 
       <void property="alphabet"> 
@@ -1713,6 +1949,9 @@
         </void> 
         <void method="add"> 
          <object idref="FAState6"/> 
+        </void> 
+        <void method="add"> 
+         <object idref="FAState7"/> 
         </void> 
        </void> 
       </void> 
@@ -3249,6 +3488,292 @@
           </void> 
           <void property="symbol"> 
            <string>y</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string> </string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>d</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>C</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>a</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>o</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>l</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>(</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>)</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>v</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>r</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>In Process</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>p</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>d</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>u</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>e</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>s</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>b</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>r</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>R</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>m</string> 
+          </void> 
+         </object> 
+        </void> 
+        <void method="add"> 
+         <object class="edu.usfca.vas.machine.fa.FATransition"> 
+          <void property="s1"> 
+           <string>Overpaid</string> 
+          </void> 
+          <void property="s2"> 
+           <string>Paid</string> 
+          </void> 
+          <void property="symbol"> 
+           <string>i</string> 
           </void> 
          </object> 
         </void> 

@@ -2,9 +2,17 @@ require 'spec_helper'
 
 describe MyServiceCall do
 
-  include_context 'basic job testing'
+  subject { MyServiceCall.new }
 
-  subject { job }
+  it 'should have a subcon collection state machine with na as the status' do
+    expect(subject.subcon_collection_status_name).to eq :na
+  end
+
+  it 'should have a customer collection state machine with pending as the status' do
+    expect(subject.billing_status_name).to eq :pending
+  end
+
+  include_context 'basic job testing'
 
   describe '#fully_paid?' do
     it 'should respond to a fully_paid? method' do

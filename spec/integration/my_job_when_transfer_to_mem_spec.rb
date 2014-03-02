@@ -305,7 +305,7 @@ describe 'My Job When Transferred To a Member' do
   end
 
   it 'a job for the subcon should be created' do
-    expect(subcon_job).to be_instance_of(TransferredServiceCall)
+    expect(subcon_job).to be_instance_of(SubconServiceCall)
   end
 
   it 'the job status should be transferred' do
@@ -623,18 +623,18 @@ describe 'My Job When Transferred To a Member' do
               end
 
               it 'affiliate balance should be updated with the deposit' do
-                expect(deposit_entry.account.balance).to eq Money.new(1000*0.01)
+                expect(deposit_entry.account.reload.balance).to eq Money.new(1000*0.01)
               end
 
 
               context 'when deposit confirmed' do
 
                 before do
-                  deposit_entry.confirm!
+                  deposited_entry.confirm!
                 end
 
                 it 'deposit entry status should be confirmed' do
-                  expect(deposit_entry.status_name).to eq :confirmed
+                  expect(deposit_entry.reload.status_name).to eq :confirmed
                 end
 
                 it 'payment status should be cleared' do
@@ -650,11 +650,11 @@ describe 'My Job When Transferred To a Member' do
 
               context 'when the deposit is disputed' do
                 before do
-                  deposit_entry.dispute!
+                  deposited_entry.dispute!
                 end
 
                 it 'deposit entry status should be confirmed' do
-                  expect(deposit_entry.status_name).to eq :disputed
+                  expect(deposit_entry.reload.status_name).to eq :disputed
                 end
 
                 it 'the last event should be DepositEntryDisputeEvent' do

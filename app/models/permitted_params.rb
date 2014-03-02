@@ -474,16 +474,16 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   def sc_status_event_permitted?
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = true
-    res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.instance_of?(TransferredServiceCall)
+    res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.kind_of?(TransferredServiceCall)
     res
   end
 
   def sc_work_status_attr
-    case obj.class.name
-      when MyServiceCall.name
+    case obj
+      when MyServiceCall
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
         obj.transferred? && obj.subcontractor.subcontrax_member? ? [] : [:work_status_event]
-      when TransferredServiceCall.name
+      when TransferredServiceCall
         obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?) ? [:work_status_event] : []
       else
         []
