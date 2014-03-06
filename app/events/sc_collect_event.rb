@@ -34,9 +34,9 @@ class ScCollectEvent < ServiceCallEvent
   end
 
   def process_event
-    set_customer_account_as_paid collector: collector if service_call.provider.subcontrax_member?
+    CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
     AffiliateBillingService.new(self).execute
-    service_call.collect_prov_collection if service_call.can_collect_prov_collection?
+    service_call.collected_prov_collection if service_call.can_collected_prov_collection?
     super
   end
 

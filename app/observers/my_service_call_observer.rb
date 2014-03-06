@@ -55,10 +55,12 @@ class MyServiceCallObserver < ServiceCallObserver
 
   def after_collect_payment(service_call, transition)
     Rails.logger.debug { "invoked AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.collector_type = 'User'
-    service_call.events << ScCollectedByEmployeeEvent.new(amount:       service_call.payment_money,
-                                                          payment_type: service_call.payment_type,
-                                                          collector:    service_call.collector)
+    unless transition.args.first == :state_only
+      service_call.collector_type = 'User'
+      service_call.events << ScCollectedEvent.new(amount:       service_call.payment_money,
+                                                  payment_type: service_call.payment_type,
+                                                  collector:    service_call.collector)
+    end
 
   end
 

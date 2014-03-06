@@ -540,7 +540,7 @@ describe 'My Job When Transferred To a Member' do
 
         context 'when partial payment' do
           let(:collection_job) { subcon_job }
-          let(:collector) { subcon_admin }
+          let(:collector) { subcon }
           let(:billing_status) { :na }        # since the job is not done it is set to partial
           let(:billing_status_4_cash) { :na } # since the job is not done it is set to partial
           let(:subcon_collection_status) { nil }
@@ -554,10 +554,12 @@ describe 'My Job When Transferred To a Member' do
                               ServiceCallAcceptEvent,
                               ScCollectEvent] }
 
-          include_examples 'successful customer payment collection', 'collect'
+          describe 'temp' do
+            include_examples 'successful customer payment collection', 'collect'
+          end
 
-          it 'subcon job billing events are collect and provider_collected which it is not permitted for a user' do
-            expect(subcon_job.reload.billing_status_events).to eq [:provider_collected, :collect]
+          it 'subcon job billing events are only collect' do
+            expect(subcon_job.reload.billing_status_events).to eq [:collect]
             expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
             expect(event_permitted_for_job?('billing_status', 'collect', subcon_admin, subcon_job)).to be_true
           end
@@ -575,7 +577,7 @@ describe 'My Job When Transferred To a Member' do
             end
 
             it 'provider job billing status is partially collected by subcon' do
-              expect(job.reload.billing_status_name).to eq :partial_payment_collected_by_subcon
+              expect(job.reload.billing_status_name).to eq :partially_collected
             end
 
             it 'provider and subcon accounts are reconciled' do
@@ -615,17 +617,21 @@ describe 'My Job When Transferred To a Member' do
                 expect(job.reload.accounting_entries.last).to be_instance_of(CashDepositFromSubcon)
               end
 
-              it 'billing status should be partial_payment_collected_by_subcon' do
-                expect(job.reload.billing_status_name).to eq :partial_payment_collected_by_subcon
+              it 'billing status should be partially_collected' do
+                expect(job.reload.billing_status_name).to eq :partially_collected
               end
 
               # todo implement employee collection and deposit workflow (currently it is not avilable for transferred service call)
               it 'subcon billing status should be partially_collected' do
-                expect(subcon_job.reload.billing_status_name).to eq :partially_collected_by_employee
+                expect(subcon_job.reload.prov_collection_status_name).to eq :partially_collected
               end
 
-              it 'affiliate balance should be updated with the deposit' do
-                expect(deposit_entry.account.reload.balance).to eq Money.new(1000*0.01)
+              it 'subcon balance should be updated with the deposit' do
+                expect(deposit_entry.account.reload.balance).to eq Money.new( - 1000*0.01)
+              end
+
+              it 'prov balance should be updated with the deposit' do
+                expect(deposited_entry.account.reload.balance).to eq Money.new(1000*0.01)
               end
 
 

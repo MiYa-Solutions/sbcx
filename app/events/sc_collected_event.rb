@@ -29,9 +29,10 @@ class ScCollectedEvent < ServiceCallEvent
   def process_event
     service_call.collector    ||= service_call.subcontractor
     service_call.payment_type ||= triggering_event.eventable.payment_type
-    set_customer_account_as_paid collector: collector if triggering_event.nil?
+    CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
+    service_call.collect_payment!(:state_only)
     AffiliateBillingService.new(self).execute
-    service_call.collect_subcon_collection if service_call.can_collect_subcon_collection?
+    service_call.collected_subcon_collection if service_call.can_collected_subcon_collection?
     super
   end
 

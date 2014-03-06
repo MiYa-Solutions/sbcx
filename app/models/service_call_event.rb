@@ -108,39 +108,6 @@ class ServiceCallEvent < Event
 
   # todo move to posting rule (event should not know the account etc.)
   def set_customer_account_as_paid(options = {})
-    account = Account.for_customer(service_call.customer).lock(true).first
-    ticket  = MyServiceCall.find(service_call.ref_id)
-
-    props = { amount:      -amount,
-              ticket:      ticket,
-              event:       self,
-              agreement:   service_call.customer.agreements.first,
-              description: I18n.t("payment.#{service_call.payment_type}.description", ticket: ticket.id).html_safe }
-
-    if options[:collector]
-      props[:collector] = options[:collector]
-    else
-      props[:collector] = ticket.collector ? ticket.collector : ticket.organization
-    end
-
-
-    case service_call.payment_type
-      when 'cash'
-        entry = CashPayment.new(props)
-        account.entries << entry
-        entry.clear
-      when 'credit_card'
-        entry = CreditPayment.new(props)
-        account.entries << entry
-        Rails.logger.debug { "Created Credit Card Payment entry\nvalid? = #{entry.valid?}\nentry#{entry.inspect}" }
-      when 'amex_credit_card'
-        entry = AmexPayment.new(props)
-        account.entries << entry
-      when 'cheque'
-        account.entries << ChequePayment.new(props)
-      else
-        raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
-    end
   end
 
   protected

@@ -21,12 +21,12 @@ module CollectionStateMachine
         state :disputed, value: CollectionStateMachine::STATUS_DISPUTED
         state :deposited, value: CollectionStateMachine::STATUS_DEPOSITED
 
-        event :collect do
+        event :collected do
           transition [:pending, :is_deposited, :partially_collected] => :collected, if: ->(sc) { sc.fully_paid? }
           transition [:pending, :is_deposited] => :partially_collected, if: ->(sc) { !sc.fully_paid? }
         end
 
-        event :deposit do
+        event :deposited do
           transition [:is_deposited, :disputed] => :deposited, if: ->(sc) { sc.fully_deposited_to_prov? }
         end
 

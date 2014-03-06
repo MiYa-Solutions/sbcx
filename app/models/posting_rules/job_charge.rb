@@ -42,6 +42,8 @@ class JobCharge < CustomerPostingRule
     case event.class.name
       when ServiceCallCompletedEvent.name, ServiceCallCompleteEvent.name
         customer_entries
+      when ScCollectEvent.name, ScCollectedEvent.name
+        collection_entries
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
         cancellation_entries
       else
@@ -55,6 +57,7 @@ class JobCharge < CustomerPostingRule
     [
         ServiceCallCharge.new(event:       @event,
                               ticket:      @ticket,
+                              status:      AccountingEntry::STATUS_CLEARED,
                               amount:      charge_amount,
                               agreement:   agreement,
                               description: "Entry to provider owned account")
@@ -65,6 +68,7 @@ class JobCharge < CustomerPostingRule
     [
 
         CanceledJobAdjustment.new(event:       @event,
+                                  status:      AccountingEntry::STATUS_CLEARED,
                                   ticket:      @ticket,
                                   amount:      -charge_amount,
                                   agreement:   agreement,
@@ -80,11 +84,48 @@ class JobCharge < CustomerPostingRule
     case event.class.name
       when ServiceCallCompletedEvent.name, ServiceCallCompleteEvent.name
         true
+      when ScCollectEvent.name, ScCollectedEvent.name
+        true
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
         true
       else
         false
     end
+
+  end
+
+  private
+
+  def collection_entries
+
+    props = { amount:      -@event.amount,
+              ticket:      @ticket,
+              event:       @event,
+              agreement:   agreement,
+              description: I18n.t("payment.#{@event.payment_type}.description", ticket: @ticket.id).html_safe }
+
+    if @event.collector
+      props[:collector] = @event.collector
+    else
+      props[:collector] = @ticket.collector ? @ticket.collector : @ticket.organization
+    end
+
+
+    case @event.payment_type
+      when 'cash'
+        entry = CashPayment.new(props)
+        entry.status = AccountingEntry::STATUS_CLEARED
+      when 'credit_card'
+        entry = CreditPayment.new(props)
+      when 'amex_credit_card'
+        entry = AmexPayment.new(props)
+      when 'cheque'
+        entry = ChequePayment.new(props)
+      else
+        raise "#{self.class.name}: Unexpected payment type (#{@event.payment_type}) when processing the event"
+    end
+
+    [entry]
 
   end
 
