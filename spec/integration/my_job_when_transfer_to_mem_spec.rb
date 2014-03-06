@@ -541,7 +541,7 @@ describe 'My Job When Transferred To a Member' do
         context 'when partial payment' do
           let(:collection_job) { subcon_job }
           let(:collector) { subcon_admin }
-          let(:billing_status) { :na } # since the job is not done it is set to partial
+          let(:billing_status) { :na }        # since the job is not done it is set to partial
           let(:billing_status_4_cash) { :na } # since the job is not done it is set to partial
           let(:subcon_collection_status) { nil }
           let(:subcon_collection_status_4_cash) { nil }
@@ -554,9 +554,7 @@ describe 'My Job When Transferred To a Member' do
                               ServiceCallAcceptEvent,
                               ScCollectEvent] }
 
-          describe 'temp' do
-            include_examples 'successful customer payment collection', 'collect'
-          end
+          include_examples 'successful customer payment collection', 'collect'
 
           it 'subcon job billing events are collect and provider_collected which it is not permitted for a user' do
             expect(subcon_job.reload.billing_status_events).to eq [:provider_collected, :collect]

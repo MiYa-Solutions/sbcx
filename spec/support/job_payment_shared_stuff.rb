@@ -90,7 +90,7 @@ shared_examples 'successful customer payment collection' do
                                        collector:            collector)
     end
 
-    it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'
+    it_behaves_like 'payment successfully collected', 'billing_status', 'subcon_collection_status', 'prov_collection_status'
 
     it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
 
@@ -98,13 +98,13 @@ shared_examples 'successful customer payment collection' do
 
   context 'when collecting amex' do
     before do
-      collection_job.update_attributes(billing_status_event: collection_event,
+      collection_job.update_attributes(billing_status_event: 'collect',
                                        payment_type:         'amex_credit_card',
                                        payment_amount:       payment_amount.to_s,
                                        collector:            collector)
     end
 
-    it_behaves_like 'payment successfully collected', 'billing_status', 'subcon_collection_status', ''
+    it_behaves_like 'payment successfully collected', 'billing_status', 'subcon_collection_status', 'prov_collection_status'
 
     it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
 
@@ -118,7 +118,7 @@ shared_examples 'successful customer payment collection' do
                                        collector:            collector)
     end
 
-    it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'
+    it_behaves_like 'payment successfully collected', 'billing_status', 'subcon_collection_status', 'prov_collection_status'
 
     it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
 
