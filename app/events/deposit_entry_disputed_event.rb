@@ -7,7 +7,9 @@ class DepositEntryDisputedEvent < EntryEvent
   end
 
   def process_event
-    entry.matching_entry.disputed!
+    entry.disputed!
+    entry.ticket.deposit_disputed_prov_collection! if entry.ticket.can_deposit_disputed_prov_collection?
+
   end
 
 end

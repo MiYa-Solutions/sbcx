@@ -10,21 +10,7 @@ class DepositEntryDisputeEvent < EntryEvent
     unless entry.matching_entry.nil?
       entry.matching_entry.ticket.events << DepositEntryDisputedEvent.new(entry_id: entry.matching_entry.id, triggering_event: self)
     end
-    update_account_balance
-  end
-
-  private
-
-  def update_account_balance
-    account = entry.account
-    Account.transaction do
-      account.balance = account.balance - entry.amount
-      if entry.account.can_un_synch?
-        account.un_synch!
-      else
-        account.save!
-      end
-    end
+    entry.ticket.deposit_disputed_subcon_collection! if entry.ticket.can_deposit_disputed_subcon_collection?
   end
 
 end

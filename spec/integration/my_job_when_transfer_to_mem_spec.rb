@@ -678,24 +678,24 @@ describe 'My Job When Transferred To a Member' do
                 end
 
                 it 'payment status should be subcon_claim_deposited' do
-                  expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
+                  expect(job.reload.billing_status_name).to eq :partially_collected
                 end
 
                 it 'available entry status events are canceled and confirmed' do
-                  expect(deposit_entry.status_events).to eq [:confirm]
+                  expect(deposit_entry.status_events).to eq [:confirmed]
                 end
 
                 context 'when confirming' do
                   before do
-                    deposit_entry.confirm!
+                    deposited_entry.confirm!
                   end
 
                   it 'deposit entry status should be confirmed' do
                     expect(deposit_entry.status_name).to eq :confirmed
                   end
 
-                  it 'payment status should be cleared' do
-                    expect(job.reload.billing_status_name).to eq :partially_paid
+                  it 'payment status should be partially_collected' do
+                    expect(job.reload.billing_status_name).to eq :partially_collected
                   end
 
                 end
