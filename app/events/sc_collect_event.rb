@@ -36,33 +36,8 @@ class ScCollectEvent < ServiceCallEvent
   def process_event
     set_customer_account_as_paid collector: collector if service_call.provider.subcontrax_member?
     AffiliateBillingService.new(self).execute
+    service_call.collect_prov_collection if service_call.can_collect_prov_collection?
     super
   end
-
-  private
-
-  #def update_provider_account
-  #  account = Account.for_affiliate(service_call.organization, service_call.provider).lock(true).first
-  #  props = { amount:      service_call.total_price,
-  #            ticket:      service_call,
-  #            event:       self,
-  #            description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
-  #
-  #  case service_call.payment_type
-  #    when 'cash'
-  #      entry =  CashCollectionForProvider.new(props)
-  #    when 'credit_card'
-  #      entry =  CreditCardCollectionForProvider.new(props)
-  #    when 'cheque'
-  #      entry =  ChequeCollectionForProvider.new(props)
-  #    else
-  #      raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
-  #  end
-  #
-  #  account.entries << entry
-  #  entry.clear
-  #
-  #end
-
 
 end

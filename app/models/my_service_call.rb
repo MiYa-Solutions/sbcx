@@ -57,7 +57,7 @@ class MyServiceCall < ServiceCall
   include CustomerJobBilling
   include CollectionStateMachine
 
-  collection_status :subcon_collection_status, 'subcon_collection'
+  collection_status :subcon_collection_status, initial: :pending, namespace: 'subcon_collection'
 
   before_validation do
     self.provider = self.organization.becomes(Provider) if self.organization

@@ -1,10 +1,21 @@
-shared_examples 'payment successfully collected' do |the_status, avail_events|
+shared_examples 'payment successfully collected' do |the_billing_status, the_subcon_collection, the_prov_collection|
   it 'payment status should be correct' do
-    expect(collection_job.billing_status_name).to eq send(the_status)
+    expect(collection_job.billing_status_name).to eq send(the_billing_status)
   end
 
-  it 'available payment events are the expected ones' do
-    collection_job.billing_status_events.should =~ send(avail_events)
+  it 'subcon collection status should be correct' do
+    expect(collection_job.subcon_collection_status_name).to eq send(the_subcon_collection) unless send(the_subcon_collection).nil?
+  end
+
+  it 'provider collection status should be correct' do
+    unless send(the_prov_collection).nil?
+      if collection_job.prov_collection_status.nil?
+        expect(send(the_prov_collection)).to be_nil
+      else
+        expect(collection_job.reload.prov_collection_status_name).to eq send(the_prov_collection)
+      end
+    end
+
   end
 
   it 'collect event is associated with the job' do
@@ -38,38 +49,42 @@ shared_examples 'customer billing is successful' do |entry_status, entry_status_
 
 end
 
-shared_examples 'successful customer payment collection' do |collection_event|
+shared_examples 'successful customer payment collection' do
 
   # this shared context expect the following let statements from the calling context
-  # collector e.g. let(:collector) {org_admin}
-  # collection_job e.g. let(:collector) {org_admin}
-  # payment_amount e.g. let(:payment_amount) {100}
-  # billing_status, e.g. let(:billing_status_events) { [:paid, :collect]}
-  # billing_status_events
-  # customer_balance_before_payment
-  # payment_amount
-  # job_events - the events expected to be associated with the job
-  #              e.g. [ServiceCallDispatchEvent,ServiceCallStartEvent, ScCollectedByEmployeeEvent]
+  # let(:collection_job) { subcon_job }
+  # let(:collector) { subcon_admin }
+  # let(:billing_status) { :na } # since the job is not done it is set to partial
+  # let(:billing_status_4_cash) { :na } # since the job is not done it is set to partial
+  # let(:subcon_collection_status) { :na }
+  # let(:subcon_collection_status_4_cash) { :na }
+  # let(:prov_collection_status) { :partially_collected }
+  # let(:prov_collection_status_4_cash) { :partially_collected }
   #
+  # let(:customer_balance_before_payment) { 0 }
+  # let(:payment_amount) { 10 }
+  # let(:job_events) { [ServiceCallReceivedEvent,
+  #                     ServiceCallAcceptEvent,
+  #                     ScCollectEvent] }
 
   context 'when collecting cash' do
 
     before do
-      collection_job.update_attributes(billing_status_event: collection_event,
+      collection_job.update_attributes(billing_status_event: 'collect',
                                        payment_type:         'cash',
                                        payment_amount:       payment_amount.to_s,
                                        collector:            collector)
       collection_job.payment_amount = nil # to simulate a new user request by clearing virtual attr
     end
 
-    it_behaves_like 'payment successfully collected', 'billing_status_4_cash', 'billing_status_events_4_cash'
+    it_behaves_like 'payment successfully collected', 'billing_status_4_cash', 'subcon_collection_status_4_cash', 'prov_collection_status_4_cash'
 
     it_behaves_like 'customer billing is successful', :cleared, []
   end
 
   context 'when collecting credit card' do
     before do
-      collection_job.update_attributes(billing_status_event: collection_event,
+      collection_job.update_attributes(billing_status_event: 'collect',
                                        payment_type:         'credit_card',
                                        payment_amount:       payment_amount.to_s,
                                        collector:            collector)
@@ -89,7 +104,7 @@ shared_examples 'successful customer payment collection' do |collection_event|
                                        collector:            collector)
     end
 
-    it_behaves_like 'payment successfully collected', 'billing_status', 'billing_status_events'
+    it_behaves_like 'payment successfully collected', 'billing_status', 'subcon_collection_status', ''
 
     it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
 
@@ -97,7 +112,7 @@ shared_examples 'successful customer payment collection' do |collection_event|
 
   context 'when collecting cheque' do
     before do
-      collection_job.update_attributes(billing_status_event: collection_event,
+      collection_job.update_attributes(billing_status_event: 'collect',
                                        payment_type:         'cheque',
                                        payment_amount:       payment_amount.to_s,
                                        collector:            collector)

@@ -162,6 +162,11 @@ class TransferredServiceCall < ServiceCall
   end
 
   state_machine :billing_status, initial: :na, namespace: 'payment' do
+    state :na, value: 0
+
+    event :collect do
+      transition :na => :na
+    end
   end
 
   def collection_allowed?

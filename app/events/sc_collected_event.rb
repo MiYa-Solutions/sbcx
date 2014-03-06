@@ -31,42 +31,8 @@ class ScCollectedEvent < ServiceCallEvent
     service_call.payment_type ||= triggering_event.eventable.payment_type
     set_customer_account_as_paid collector: collector if triggering_event.nil?
     AffiliateBillingService.new(self).execute
-
-    service_call.collector      = collector
-    service_call.payment_amount = amount.to_s
-    # pass a :state_only argument to the observer indicating that only a state transition should be performed
-    service_call.subcon_collected_payment(:state_only) if service_call.can_subcon_collected_payment?
+    service_call.collect_subcon_collection if service_call.can_collect_subcon_collection?
     super
   end
-
-  private
-
-  #def update_subcon_account
-  #  account = Account.for_affiliate(service_call.organization, service_call.subcontractor).lock(true).first
-  #
-  #  props = { amount:      service_call.total_price,
-  #            ticket:      service_call,
-  #            event:       self,
-  #            description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
-  #
-  #
-  #  case service_call.payment_type
-  #    when 'cash'
-  #      entry =  CashCollectionFromSubcon.new(props)
-  #    when 'credit_card'
-  #      entry =  CreditCardCollectionFromSubcon.new(props)
-  #    when 'cheque'
-  #      entry =  ChequeCollectionFromSubcon.new(props)
-  #    else
-  #      raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
-  #  end
-  #
-  #  account.entries << entry
-  #  entry.clear
-  #
-  #
-  #
-  #end
-
 
 end

@@ -10,9 +10,9 @@ module CollectionStateMachine
   STATUS_DEPOSITED    = 6
 
   module ClassMethods
-    def collection_status(field_name, namespace = nil)
+    def collection_status(field_name, options = {})
 
-      state_machine field_name, namespace: namespace, initial: :na do
+      state_machine field_name, options do
         state :na, value: CollectionStateMachine::STATUS_NA
         state :pending, value: CollectionStateMachine::STATUS_PENDING
         state :collected, value: CollectionStateMachine::STATUS_COLLECTED
@@ -21,12 +21,12 @@ module CollectionStateMachine
         state :disputed, value: CollectionStateMachine::STATUS_DISPUTED
         state :deposited, value: CollectionStateMachine::STATUS_DEPOSITED
 
-        event :collected do
+        event :collect do
           transition [:pending, :is_deposited, :partially_collected] => :collected, if: ->(sc) { sc.fully_paid? }
           transition [:pending, :is_deposited] => :partially_collected, if: ->(sc) { !sc.fully_paid? }
         end
 
-        event :deposited do
+        event :deposit do
           transition [:is_deposited, :disputed] => :deposited, if: ->(sc) { sc.fully_deposited_to_prov? }
         end
 
