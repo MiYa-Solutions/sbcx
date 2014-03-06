@@ -645,8 +645,16 @@ describe 'My Job When Transferred To a Member' do
                   expect(deposit_entry.reload.status_name).to eq :confirmed
                 end
 
-                it 'payment status should be cleared' do
-                  expect(job.reload.billing_status_name).to eq :partially_paid
+                it 'payment status should be partially collected' do
+                  expect(job.reload.billing_status_name).to eq :partially_collected
+                end
+
+                it 'subcon payment collection status should be partially collected' do
+                  expect(job.reload.subcon_collection_status_name).to eq :partially_collected
+                end
+
+                it 'prov payment collection status should be partially collected' do
+                  expect(subcon_job.reload.prov_collection_status_name).to eq :partially_collected
                 end
 
                 it 'a cash payment reimbursement exists with the amount derived from the payment' do

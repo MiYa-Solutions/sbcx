@@ -59,7 +59,7 @@ module CustomerJobBilling
       end
 
       event :deposited do
-        transition :in_process => :paid, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
+        transition :collected => :in_process, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
       end
 
       event :mark_as_fully_paid do

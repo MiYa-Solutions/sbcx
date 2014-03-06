@@ -289,11 +289,11 @@ class ServiceCall < Ticket
     confirm_deposit_payment! if fully_deposited?
   end
 
-  private
-
   def fully_deposited?
     all_collection_entries_deposited? && all_deposit_entries_confirmed?
   end
+
+  private
 
   def financial_data_change
     errors.add :tax, "Can't change tax when job is completed or transferred" if !self.system_update && self.changed_attributes.has_key?('tax') && !can_change_financial_data?

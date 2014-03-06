@@ -27,7 +27,7 @@ module CollectionStateMachine
         end
 
         event :deposited do
-          transition [:is_deposited, :disputed] => :deposited, if: ->(sc) { sc.fully_deposited_to_prov? }
+          transition [:partially_collected, :collected, :disputed] => :is_deposited, if: ->(sc) { sc.fully_deposited? }
         end
 
         event :deposit_disputed do

@@ -8,7 +8,7 @@ class DepositEntryConfirmedEvent < EntryEvent
 
   def process_event
     entry.confirmed!
-    entry.ticket.deposit_confirmed
+    entry.ticket.prov_collection_confirmed! if entry.ticket.can_confirmed_prov_collection?
   end
 
 end
