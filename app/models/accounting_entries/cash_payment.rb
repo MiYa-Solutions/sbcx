@@ -19,7 +19,12 @@
 #
 
 class CashPayment < CustomerPayment
-  state_machine :status, initial: :cleared
+  state_machine :status, initial: :pending do
+    after_transition any => :deposited do |entry, transition|
+      entry.status = AccountingEntry::STATUS_CLEARED
+      entry.save!
+    end
+  end
 
   def amount_direction
     1

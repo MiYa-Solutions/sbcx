@@ -28,7 +28,7 @@ module CustomerJobBilling
       end
 
       event :clear do
-        transition :in_process => :paid
+        transition :in_process => :paid, if: ->(sc) { sc.fully_cleared? }
       end
 
       event :reject do
@@ -59,6 +59,7 @@ module CustomerJobBilling
       end
 
       event :deposited do
+        transition :collected => :paid, if: ->(sc) { !sc.canceled? && sc.fully_cleared? }
         transition :collected => :in_process, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
       end
 
@@ -89,6 +90,16 @@ module CustomerJobBilling
 
   def payments
     entries.where(type: AccountingEntry.payment_entry_classes)
+  end
+
+  def fully_cleared?
+    cleared_payment_cents >= total.cents
+  end
+
+  private
+
+  def cleared_payment_cents
+    payments.with_status(:cleared).sum(:amount_cents).abs
   end
 
 end

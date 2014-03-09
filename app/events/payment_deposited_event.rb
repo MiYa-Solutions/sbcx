@@ -7,6 +7,7 @@ class PaymentDepositedEvent < PaymentEvent
   end
 
   def process_event
+    payment.deposit! if payment.can_deposit?
     ticket.deposited_payment! if ticket.can_deposited_payment?
   end
 

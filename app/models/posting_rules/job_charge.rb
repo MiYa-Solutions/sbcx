@@ -114,7 +114,6 @@ class JobCharge < CustomerPostingRule
     case @event.payment_type
       when 'cash'
         entry = CashPayment.new(props)
-        entry.status = AccountingEntry::STATUS_CLEARED
       when 'credit_card'
         entry = CreditPayment.new(props)
       when 'amex_credit_card'

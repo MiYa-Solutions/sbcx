@@ -237,8 +237,8 @@ en:
     name: 'The subcontractor (%{subcon}) has cleared the payment'
     description: 'The payment for this Job has been cleared by the subcontractor (%{subcon})'
   service_call_collected_event:
-    name: "Subcontractor has Collected Payment"
-    description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has collected the payment from the customer'
+    name: "Payment Collection"
+    description: 'Name: &nbsp; (%{collector}) collected the payment from the customer'
   service_call_deposit_confirmed_event:
     name: "Contractor has Confirmed Deposit"
     description: 'Contractor Name: &nbsp; (%{provider}) has confirmed receiving payment for this Job'

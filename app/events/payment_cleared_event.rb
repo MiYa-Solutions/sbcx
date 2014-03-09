@@ -7,7 +7,7 @@ class PaymentClearedEvent < PaymentEvent
   end
 
   def process_event
-    ticket.clear_payment! if ticket.fully_paid?
+    ticket.clear_payment! if ticket.can_clear_payment?
   end
 
 end

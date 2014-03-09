@@ -48,7 +48,7 @@ shared_context 'basic job testing' do
     job.payment_type   = options[:type]
     job.payment_amount = options[:amount]
     job.collector      = options[:collector]
-    job.send("#{options[:event]}_payment!")
+    job.collect_payment!
     job.payment_type   = nil
     job.payment_amount = nil
     job.collector      = nil

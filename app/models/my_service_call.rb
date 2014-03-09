@@ -57,7 +57,7 @@ class MyServiceCall < ServiceCall
   include CustomerJobBilling
   include CollectionStateMachine
 
-  collection_status :subcon_collection_status, initial: :pending, namespace: 'subcon_collection'
+  collection_status :subcon_collection_status, initial: :na, namespace: 'subcon_collection'
 
   before_validation do
     self.provider = self.organization.becomes(Provider) if self.organization
@@ -101,7 +101,7 @@ class MyServiceCall < ServiceCall
 
     event :close do
       transition :transferred => :closed, if: ->(sc) { sc.subcon_cleared? && sc.payment_cleared? }
-      transition :open => :closed, if: ->(sc) { sc.payment_cleared? }
+      transition :open => :closed, if: ->(sc) { sc.payment_paid? }
     end
 
     event :cancel_transfer do
