@@ -464,6 +464,23 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                           end
 
                         end
+
+                        context 'when rejecting the payment' do
+                          before do
+                            job.payments.last.reject!
+                            job.reload
+                          end
+
+                          it 'billing status should be rejected' do
+                            expect(job.billing_status_name).to eq :rejected
+                          end
+
+                          it 'billing events should be :collect, :late' do
+                            expect(job.billing_status_events.sort).to eq [:collect, :late]
+                          end
+
+
+                        end
                       end
 
                     end
