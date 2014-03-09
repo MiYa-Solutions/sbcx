@@ -432,7 +432,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                     end
 
                     it 'payment status is set to partially_collected' do
-                      expect(job.status_name).to eq :partially_collected
+                      expect(job.billing_status_name).to eq :partially_collected
                     end
 
                     it 'should have collect, and late as possible payment events, both available for the user' do
