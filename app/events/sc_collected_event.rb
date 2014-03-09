@@ -1,12 +1,4 @@
-require 'hstore_amount'
-require 'collectible'
-class ScCollectedEvent < ServiceCallEvent
-  include HstoreAmount
-
-  setup_hstore_attr 'collector_id'
-  setup_hstore_attr 'collector_type'
-  include Collectible
-
+class ScCollectedEvent < CollectionEvent
 
   def init
     self.name         = I18n.t('service_call_collected_event.name')
