@@ -79,7 +79,7 @@ shared_examples 'successful customer payment collection' do
 
     it_behaves_like 'payment successfully collected', 'billing_status_4_cash', 'subcon_collection_status_4_cash', 'prov_collection_status_4_cash'
 
-    it_behaves_like 'customer billing is successful', :cleared, []
+    it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
   end
 
   context 'when collecting credit card' do

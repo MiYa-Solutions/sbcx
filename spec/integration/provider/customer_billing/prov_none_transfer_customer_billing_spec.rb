@@ -98,11 +98,11 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                 end
 
                 it 'available payment events are :collect, :late, :mark_as_overpaid' do
-                  job.billing_status_events.should =~ [:collect, :late, :mark_as_overpaid]
+                  job.billing_status_events.should =~ [:collect, :late]
                 end
 
                 it 'collect event is associated with the job' do
-                  expect(job.events.map {|e| e.class.name}.sort).to eq ['ScCollectEvent', 'ServiceCallDispatchEvent']
+                  expect(job.events.map { |e| e.class.name }.sort).to eq ['ScCollectEvent', 'ServiceCallDispatchEvent']
                 end
 
                 it 'the org admin is allowed to invoke the deposit event' do
@@ -170,8 +170,8 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                   job.status_events.should =~ [:cancel]
                 end
 
-                it 'available payment events are deposit' do
-                  job.billing_status_events.should =~ [:collect, :late, :mark_as_overpaid]
+                it 'available payment events are collect and late' do
+                  job.billing_status_events.should =~ [:collect, :late]
                 end
 
                 it 'the org admin is allowed to invoke the deposit event' do
@@ -196,8 +196,8 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                 expect(job.billing_status_name).to eq :partially_collected
               end
 
-              it 'available payment events are deposit' do
-                job.billing_status_events.should =~ [:collect, :late, :mark_as_overpaid]
+              it 'available payment events are collect and late' do
+                job.billing_status_events.should =~ [:collect, :late]
               end
 
               it 'the org admin is allowed to invoke the deposit event' do
@@ -228,7 +228,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
         end
 
         it 'collect and late are the available payment events' do
-          expect(job.billing_status_events).to eq [:collect, :late]
+          expect(job.billing_status_events.sort).to eq [:collect, :late]
         end
 
         context 'partial payment' do
@@ -240,12 +240,12 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
             expect(job.billing_status_name).to eq :partially_collected
           end
 
-          it 'available payment events are paid' do
-            expect(job.billing_status_events).to eq [:collect, :late, :mark_as_overpaid]
+          it 'available payment events are collect and late' do
+            expect(job.billing_status_events.sort).to eq [:collect, :late]
           end
 
           it 'payment event is associated with the job' do
-            expect(job.events.map{|e| e.class.name}.sort).to eq ['ScCollectEvent', 'ServiceCallStartEvent']
+            expect(job.events.map { |e| e.class.name }.sort).to eq ['ScCollectEvent', 'ServiceCallStartEvent']
           end
 
           it 'payment amount is the submitted one' do
@@ -308,196 +308,209 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
               job.billing_status_events.should =~ [:collect, :late]
             end
 
-              context 'when I collect the customer payment' do
+            context 'when I collect the customer payment' do
 
-                context 'when collecting cash' do
+              context 'when collecting cash' do
 
-                  context 'when collecting the full payment' do
-                    before do
-                      collect_a_payment job, type: 'cash', amount: '100', collector: org
-                    end
-
-                    it 'payment status should be collected' do
-                      expect(job.billing_status_name).to eq :collected
-                    end
-
-                    context 'when depositing the payment' do
-                      before do
-                        job.payments.last.deposit!
-                        job.reload
-                      end
-
-                      it 'payment status should be cleared' do
-                        expect(job.payments.last.status_name).to eq :cleared
-                      end
-
-                      it 'payment status should be paid' do
-                        expect(job.billing_status_name).to eq :paid
-                      end
-
-                      it 'there are no available payment events' do
-                        job.billing_status_events.should =~ []
-                      end
-                    end
+                context 'when collecting the full payment' do
+                  before do
+                    collect_a_payment job, type: 'cash', amount: '100', collector: org
                   end
 
-                  context 'when collecting partial payment' do
-                    before do
-                      collect_a_payment job, type: 'cash', amount: '10', collector: org
-                    end
-
-                    it 'payment status should be partially collected' do
-                      expect(job.billing_status_name).to eq :partially_collected
-                    end
-
-                    it 'available payment events are paid and overdue' do
-                      job.billing_status_events.should =~ [:late, :collect]
-                    end
-
-                    it 'payment amount is the submitted one' do
-                      expect(job.events.where(type: 'ServiceCallPaidEvent').first.amount).to eq Money.new_with_amount(10)
-                    end
-
-                    describe 'billing' do
-                      describe 'customer billing' do
-                        it 'balance should be 10' do
-                          expect(job.customer.account.reload.balance).to eq Money.new(10000 - 1000, 'USD')
-                        end
-                      end
-                    end
-
-                    context 'another partial payment' do
-                      before do
-                        collect_a_payment job, type: 'cash', amount: '10', collector: org
-                      end
-
-                      it 'payment status should be partially paid' do
-                        expect(job.billing_status_name).to eq :partially_collected
-                      end
-
-                      describe 'billing' do
-                        describe 'customer billing' do
-                          it 'balance should be 10' do
-                            expect(job.customer.account.reload.balance).to eq Money.new(10000 - 2000, 'USD')
-                          end
-                        end
-                      end
-
-                      context 'when paying the remainder' do
-                        before do
-                          collect_a_payment job, type: 'cash', amount: '80', collector: org
-                        end
-
-                        it 'payment status should be partially cleared' do
-                          expect(job.billing_status_name).to eq :paid
-                        end
-
-                      end
-
-
-                    end
-
+                  it 'payment status should be collected' do
+                    expect(job.billing_status_name).to eq :collected
                   end
 
+                  context 'when depositing the payment' do
+                    before do
+                      job.payments.last.deposit!
+                      job.reload
+                    end
+
+                    it 'payment status should be cleared' do
+                      expect(job.payments.last.status_name).to eq :cleared
+                    end
+
+                    it 'payment status should be paid' do
+                      expect(job.billing_status_name).to eq :paid
+                    end
+
+                    it 'there are no available payment events' do
+                      job.billing_status_events.should =~ []
+                    end
+                  end
                 end
 
-                context 'when collecting none cash payment' do
+                context 'when collecting partial payment' do
+                  before do
+                    collect_a_payment job, type: 'cash', amount: '10', collector: org
+                  end
 
-                  context 'when collecting partial amount' do
+                  it 'payment status should be partially collected' do
+                    expect(job.billing_status_name).to eq :partially_collected
+                  end
+
+                  it 'available payment events are paid and overdue' do
+                    job.billing_status_events.should =~ [:late, :collect]
+                  end
+
+                  it 'payment amount is the submitted one' do
+                    expect(job.events.where(type: 'ScCollectEvent').first.amount).to eq Money.new_with_amount(10)
+                  end
+
+                  describe 'billing' do
+                    describe 'customer billing' do
+                      it 'balance should be 10' do
+                        expect(job.customer.account.reload.balance).to eq Money.new(10000 - 1000, 'USD')
+                      end
+                    end
+                  end
+
+                  context 'another partial payment' do
                     before do
-                      collect_a_payment job, type: 'cheque', amount: '10', collector: org
+                      collect_a_payment job, type: 'cash', amount: '10', collector: org
                     end
 
                     it 'payment status should be partially paid' do
                       expect(job.billing_status_name).to eq :partially_collected
                     end
 
-                    it 'available payment events are reject, clear, overdue and paid' do
-                      job.billing_status_events.should =~ [:mark_as_fully_paid, :mark_as_overpaid, :late, :collect]
+                    describe 'billing' do
+                      describe 'customer billing' do
+                        it 'balance should be 10' do
+                          expect(job.customer.account.reload.balance).to eq Money.new(10000 - 2000, 'USD')
+                        end
+                      end
                     end
 
-                    it 'only collect and late  are events allowed for a user' do
-                      expect(event_permitted_for_job?('billing_status', 'mark_as_fully_paid', org_admin, job)).to be_false
-                      expect(event_permitted_for_job?('billing_status', 'mark_as_overpaid', org_admin, job)).to be_false
-                      expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
-                      expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
-
-                    end
-
-                    context 'when payment is rejected' do
+                    context 'when collecting the remainder' do
                       before do
-                        job.payments.last.reject!
-                        job.reload
+                        collect_a_payment job, type: 'cash', amount: '80', collector: org
                       end
-
-                      it 'payment status is set to rejected' do
-                        expect(job).to be_payment_rejected
-                      end
-
-                      it 'should have collect, and late as possible payment events, both available for the user' do
-                        job.billing_status_events.should =~ [:collect, :late]
-                        expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
-                        expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
-                      end
-
-                      context 'when adding another payment for the full amount' do
+                      context 'when depositing the payment' do
                         before do
-                          collect_a_payment job, type: 'credit_card', amount: '100', collector: org
+                          job.payments.each { |payment| payment.deposit! }
                         end
-
                         it 'payment status should be paid' do
-                          expect(job.billing_status_name).to eq :collected
+                          expect(job.reload.billing_status_name).to eq :paid
                         end
+                      end
+                    end
 
+
+                  end
+
+                end
+
+              end
+
+              context 'when collecting none cash payment' do
+
+                context 'when collecting partial amount' do
+                  before do
+                    collect_a_payment job, type: 'cheque', amount: '10', collector: org
+                  end
+
+                  it 'payment status should be partially paid' do
+                    expect(job.billing_status_name).to eq :partially_collected
+                  end
+
+                  it 'available payment events are collect and late' do
+                    job.billing_status_events.should =~ [:late, :collect]
+                  end
+
+                  it 'only collect and late  are events allowed for a user' do
+                    expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
+                    expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
+
+                  end
+
+                  context 'when payment is rejected' do
+                    before do
+                      job.payments.last.reject!
+                      job.reload
+                    end
+
+                    it 'payment status is set to partially_collected' do
+                      expect(job.status_name).to eq :partially_collected
+                    end
+
+                    it 'should have collect, and late as possible payment events, both available for the user' do
+                      job.billing_status_events.should =~ [:collect, :late]
+                      expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
+                      expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
+                    end
+
+                    context 'when adding another payment for the full amount' do
+                      before do
+                        collect_a_payment job, type: 'credit_card', amount: '100', collector: org
+                      end
+
+                      it 'payment status should be paid' do
+                        expect(job.billing_status_name).to eq :collected
+                      end
+
+                      describe 'when depositing the payment' do
+                        before do
+                          job.payments.last.deposit!
+                        end
                         context 'when clearing the payment' do
                           include_context 'clear payment' do
                             let(:entry) { job.customer.account.payments.order('ID ASC').last }
                           end
 
-                          it 'payment status is set to cleared' do
+                          it 'payment status is set to paid' do
                             expect(job.reload.billing_status_name).to eq :paid
                           end
 
                         end
-
                       end
 
-                      context 'when adding another payment for the partial amount' do
-                        before do
-                          collect_a_payment job, type: 'credit_card', amount: '10', collector: org
+                    end
+
+                    context 'when adding another payment for the partial amount' do
+                      before do
+                        collect_a_payment job, type: 'credit_card', amount: '10', collector: org
+                      end
+
+                      it 'payment status should be partially paid' do
+                        expect(job.billing_status_name).to eq :partially_collected
+                      end
+
+                      context 'when clearing the payment' do
+                        include_context 'clear payment' do
+                          let(:entry) { job.customer.account.payments.order('ID ASC').last }
                         end
 
-                        it 'payment status should be partially paid' do
-                          expect(job.billing_status_name).to eq :partially_collected
+                        it 'job payment status is set to partially paid' do
+                          expect(job.reload.billing_status_name).to eq :partially_collected
                         end
 
-                        context 'when clearing the payment' do
-                          include_context 'clear payment' do
-                            let(:entry) { job.customer.account.payments.order('ID ASC').last }
+                        context 'when paying additional payment (not the complete amount yet)' do
+                          before do
+                            collect_a_payment job, type: 'cash', amount: '70', collector: org
                           end
 
-                          it 'job payment status is set to partially paid' do
-                            expect(job.reload.billing_status_name).to eq :partially_collected
+                          it 'payment status should be partially paid' do
+                            expect(job.billing_status_name).to eq :partially_collected
                           end
-
-                          context 'when paying additional payment (not the complete amount yet)' do
+                          context 'when paying additional payment for the remainder of the amount' do
                             before do
-                              collect_a_payment job, type: 'cash', amount: '70', collector: org
+                              collect_a_payment job, type: 'cash', amount: '20', collector: org
                             end
 
                             it 'payment status should be partially paid' do
-                              expect(job.billing_status_name).to eq :partially_collected
+                              expect(job.billing_status_name).to eq :collected
                             end
-                            context 'when paying additional payment for the remainder of the amount' do
+
+                            describe 'when depositing all the payments' do
                               before do
-                                collect_a_payment job, type: 'cash', amount: '20', collector: org
+                                job.payments.each { |payment| payment.deposit! if payment.can_deposit? }
                               end
 
                               it 'payment status should be cleared' do
-                                expect(job.billing_status_name).to eq :paid
+                                expect(job.reload.billing_status_name).to eq :paid
                               end
-
-
                             end
 
 
@@ -508,32 +521,46 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
 
                       end
-                    end
 
-                    context 'when payment is cleared' do
-                      include_context 'clear payment' do
-                        let(:entry) { job.customer.account.payments.order('ID ASC').last }
-                      end
 
-                      it 'payment status is set to partially paid' do
-                        expect(job.billing_status_name).to eq :partially_collected
-                      end
                     end
                   end
 
-                  context 'when collecting the full amount' do
+                  context 'when payment is cleared' do
+                    include_context 'clear payment' do
+                      let(:entry) { job.customer.account.payments.order('ID ASC').last }
+                    end
+
+                    it 'payment status is set to partially paid' do
+                      expect(job.billing_status_name).to eq :partially_collected
+                    end
+                  end
+                end
+
+                context 'when collecting the full amount' do
+                  before do
+                    collect_a_payment job, type: 'cheque', amount: '100', collector: org
+                  end
+
+                  it 'payment status should be collected' do
+                    expect(job.billing_status_name).to eq :collected
+                  end
+
+                  describe 'when depositing the cheque' do
                     before do
-                      collect_a_payment job, type: 'cheque', amount: '100', collector: org
+                      job.payments.last.deposit!
+                      job.reload
                     end
 
-                    it 'payment status should be collected' do
-                      expect(job.billing_status_name).to eq :collected
+                    it 'should change customer billing status to in_process' do
+                      expect(job.billing_status_name).to eq :in_process
                     end
 
-                    it 'available payment events are deposited which is not available to a user' do
-                      expect(job.billing_status_events).to eq [:deposited]
-                      expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_false
+                    it 'available payment events are reject which is not available to a user' do
+                      expect(job.billing_status_events).to eq [:reject]
+                      expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
                     end
+
 
                     context 'when payment is rejected' do
 
@@ -546,7 +573,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                       end
 
                       it 'should have collect and late as possible payment events both available for a user' do
-                        job.billing_status_events.should =~ [:collect, :late]
+                        job.reload.billing_status_events.should =~ [:collect, :late]
                         expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
                         expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
                       end
@@ -567,10 +594,27 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                       end
                     end
                   end
-
                 end
 
               end
+
+            end
+
+            context 'when payment is overdue' do
+              before do
+                job.late_payment!
+              end
+
+              it 'billing status should be :overdue' do
+                expect(job.billing_status_name).to eq :overdue
+              end
+
+              it 'available payment events are only collect' do
+                job.billing_status_events.should =~ [:collect]
+              end
+
+
+            end
 
 
           end

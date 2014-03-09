@@ -28,6 +28,7 @@ module CustomerJobBilling
       end
 
       event :clear do
+        transition :in_process => :over_paid, if: ->(sc) { sc.overpaid? }
         transition :in_process => :paid, if: ->(sc) { sc.fully_cleared? }
       end
 
@@ -59,7 +60,8 @@ module CustomerJobBilling
       end
 
       event :deposited do
-        transition :collected => :paid, if: ->(sc) { !sc.canceled? && sc.fully_cleared? }
+        transition [:in_process, :collected] => :over_paid, if: ->(sc) { !sc.canceled? && sc.overpaid? }
+        transition [:in_process, :collected] => :paid, if: ->(sc) { !sc.canceled? && sc.fully_cleared? }
         transition :collected => :in_process, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
       end
 
@@ -77,7 +79,7 @@ module CustomerJobBilling
 
   def overpaid?
     current_payment = payment_amount || 0
-    total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) < 0
+    total.cents + (cleared_payment_cents - current_payment.to_f * 100) < 0
   end
 
   def check_and_set_as_fully_paid

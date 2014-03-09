@@ -8,7 +8,7 @@ class PaymentRejectedEvent < PaymentEvent
 
   def process_event
     update_account_balance
-    ticket.reject_payment!
+    ticket.reject_payment! if ticket.can_reject_payment?
   end
 
   private
