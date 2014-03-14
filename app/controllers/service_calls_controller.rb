@@ -18,6 +18,7 @@ class ServiceCallsController < ApplicationController
   end
 
   def show
+    store_location
     respond_to do |format|
       format.html do
         @customer = Customer.new

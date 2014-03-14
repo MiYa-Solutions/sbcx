@@ -133,7 +133,7 @@ module ServiceCallsHelper
   end
 
   def collection_events(job)
-    events_collection(job, :billing_status, [:collect, :provider_collected, :subcon_collected])
+    events_collection(job, :billing_status, [:collect])
   end
 
   def deposit_events(job)
@@ -166,13 +166,13 @@ module ServiceCallsHelper
   end
 
   def collector_tag(service_call)
-    res = ""
-    if service_call.organization.multi_user?
-      res = select_tag("service_call[collector_id]", options_from_collection_for_select(service_call.organization.users, "id", "name"), include_blank: true)
+    res = ''
+    if service_call.available_payment_collectors.size > 1
+      res = select_tag("service_call[collector_id]", options_from_collection_for_select(service_call.available_payment_collectors, "id", "name"), include_blank: true)
     else
-      res = hidden_field_tag("service_call[collector_id]", current_user.id)
+      res = hidden_field_tag("service_call[collector_id]", current_user.organization.id)
     end
-    res += hidden_field_tag("service_call[collector_type]", "User")
+    res += hidden_field_tag("service_call[collector_type]", 'Organization')
   end
 
   def payment_tag(job)
@@ -254,6 +254,7 @@ module ServiceCallsHelper
           clear:                  'clear_form',
 
           collect:                'collection_form',
+          late:                   'overdue_form',
           provider_collected:     'collection_form',
           subcon_collected:       'collection_form',
 

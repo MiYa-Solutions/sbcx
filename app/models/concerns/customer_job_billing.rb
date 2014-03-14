@@ -83,7 +83,11 @@ module CustomerJobBilling
   end
 
   def check_and_set_as_fully_paid
-    mark_as_fully_paid_payment if fully_paid?
+    if overpaid?
+      mark_as_over_paid!
+    else
+      mark_as_fully_paid_payment if fully_paid?
+    end
   end
 
   def paid_amount
@@ -96,6 +100,15 @@ module CustomerJobBilling
 
   def fully_cleared?
     cleared_payment_cents >= total.cents
+  end
+
+  alias_method :payment_cleared?, :fully_cleared?
+
+  def available_payment_collectors
+    res = [self.organization]
+    res << self.subcontractor if subcontractor && !subcontractor.member?
+    res << self.provider if provider && !provider.member?
+    res
   end
 
   private

@@ -28,6 +28,7 @@ class ScCollectEvent < CollectionEvent
     CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
     AffiliateBillingService.new(self).execute if affiliate_involved?
     service_call.collected_prov_collection if update_provider_collection?
+    service_call.collected_subcon_collection if update_subcon_collection?
     super
   end
 
@@ -39,6 +40,12 @@ class ScCollectEvent < CollectionEvent
 
   def update_provider_collection?
     service_call.kind_of?(TransferredServiceCall) && service_call.can_collected_prov_collection?
+  end
+
+  def update_subcon_collection?
+    service_call.respond_to?(:can_collected_subcon_collection?) &&
+        service_call.can_collected_subcon_collection? &&
+        (collector.becomes(Organization) == service_call.subcontractor.becomes(Organization))
   end
 
 end

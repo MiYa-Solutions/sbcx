@@ -75,14 +75,16 @@ authorization do
     has_permission_on :subcontractors, :to => [:new, :create]
     has_permission_on :providers, :to => [:new, :create]
     has_permission_on :affiliates, :to => [:new, :create]
-    has_permission_on :accounting_entries, :to => [:new, :create, :index]
-    has_permission_on :accounting_entries, :to => [:show] do
+
+    has_permission_on :accounting_entries, :to => [:new, :create] do
+      if_attribute :type => is { 'MyAdjEntry' }, :account => { organization_id: is { user.organization_id } }
+    end
+    has_permission_on :accounting_entries, :to => [:show, :index] do
       if_attribute :account => { organization_id: is { user.organization_id } }
     end
     has_permission_on :accounting_entries, :to => [:update] do
-      if_attribute :type => is_in { %w(MyAdjEntry ReceivedAdjEntry) }, :account => { organization_id: is { user.organization_id } }
+      if_attribute :account => { organization_id: is { user.organization_id } }
     end
-
 
     has_permission_on :organizations, to: [:show, :edit, :update] do
       if_attribute :id => is { user.organization.id }
@@ -132,6 +134,7 @@ authorization do
       # customer agreements
       if_attribute type: 'CustomerAgreement', :organization_id => is { user.organization.id }
     end
+
     has_permission_on :agreements, :to => [:create] do
       if_attribute :organization_id => is { user.organization.id }
       if_attribute :counterparty_id => is { user.organization.id }

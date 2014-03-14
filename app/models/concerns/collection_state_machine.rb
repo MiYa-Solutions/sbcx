@@ -36,6 +36,7 @@ module CollectionStateMachine
 
         event :confirmed do
           transition :is_deposited => :deposited
+          transition :disputed => :is_deposited, if: ->(sc) { sc.fully_deposited? }
         end
 
       end

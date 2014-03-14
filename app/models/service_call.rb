@@ -112,7 +112,9 @@ class ServiceCall < Ticket
     state :done, value: WORK_STATUS_DONE
 
     after_transition any => :done do |sc, transition|
-      sc.check_and_set_as_fully_paid
+      sc.collect_payment!(:state_only) if sc.respond_to?(:can_collect_payment?) && sc.can_collect_payment?
+      sc.collected_subcon_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
+      sc.collected_prov_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
     end
 
     after_failure do |service_call, transition|
@@ -284,6 +286,14 @@ class ServiceCall < Ticket
     CollectedEntry.where(ticket_id: self.id)
   end
 
+  def deposit_entries
+    DepositToEntry.where(ticket_id: self.id)
+  end
+
+  def deposited_entries
+    DepositFromEntry.where(ticket_id: self.id)
+  end
+
 
   def subcon_deposit_confirmed
     confirm_deposit_payment! if fully_deposited?
@@ -292,6 +302,8 @@ class ServiceCall < Ticket
   def fully_deposited?
     all_collection_entries_deposited? && all_deposit_entries_confirmed?
   end
+
+
 
   private
 

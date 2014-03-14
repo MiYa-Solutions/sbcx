@@ -1,21 +1,11 @@
 <%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
-    <% if collection_events(job).size > 1 %>
-        <%= f.input :billing_status,
-                    collection: collection_events(job),
-                    as:         :radio_buttons,
-                    label:      I18n.t('service_call.forms.billing_status.collection.label'),
-                    input_html: { name: 'service_call[billing_status_event]' } %>
-    <% else %>
-        <% event = collection_events(job).first.second %>
-        <%= hidden_field_tag 'service_call[billing_status_event]', event %>
-    <% end %>
+    <%= f.label :collector %>
+    <%= collector_tag(job) %>
 
-    <% if job.organization.multi_user? %>
-        <%= f.label :collector %>
-        <%= collector_tag(job) %>
-    <% end %>
+    <%= hidden_field_tag 'service_call[billing_status_event]', 'collect' %>
 
     <%= f.input :payment_type, collection: payment_types, label: t('general.general.payment_type') %>
+    <%= f.input :payment_amount %>
     <%= f.submit I18n.t('service_call.forms.billing_status.collection.btn_name'),
                  id:          'collect_service_call_btn',
                  class:       'btn btn-large btn-primary',
