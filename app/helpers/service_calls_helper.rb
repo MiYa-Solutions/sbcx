@@ -9,57 +9,65 @@ module ServiceCallsHelper
 
   def event_list(service_call)
     content_tag_for :div, service_call, class: 'service_call_events unstyled' do
-      status_forms(service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :status_event)
-      work_status_forms(service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)
-      billing_status_forms(service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :billing_status_event)
-      subcontractor_status_forms(service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event)
-      provider_status_forms(service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event)
+      status_forms(service_call)
+      work_status_forms(service_call)
+      billing_status_forms(service_call)
+      subcontractor_status_forms(service_call)
+      provider_status_forms(service_call)
     end
   end
 
   def status_forms(service_call)
-    JobStatusFormsRenderer.new(service_call, self).render
-  end
-
-  def work_status_forms(service_call)
-    #Rails.logger.debug { "ServiceCallsHelper: permitted to see work_status?: #{permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)}" }
-    concat(content_tag :h3, t('headers.work_actions')) unless service_call.work_status_events.empty?
-    service_call.work_status_events.collect do |event|
-      #concat(content_tag :li, send("work_#{event}_form".to_sym, service_call))
-      concat(render "service_calls/action_forms/work_status_forms/#{event}_form", job: service_call)
+    if permitted_params(service_call).permitted_attribute?(:service_call, :status_event)
+      JobStatusFormsRenderer.new(service_call, self).render
     end
   end
 
-  def billing_status_forms(service_call)
+  def work_status_forms(service_call)
+    if permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)
+      concat(content_tag :h3, t('headers.work_actions')) unless service_call.work_status_events.empty?
+      service_call.work_status_events.collect do |event|
+        #concat(content_tag :li, send("work_#{event}_form".to_sym, service_call))
+        concat(render "service_calls/action_forms/work_status_forms/#{event}_form", job: service_call)
+      end
+    end
+    ''
+  end
 
-    if service_call.allow_collection? || service_call.instance_of?(MyServiceCall)
-      JobBillingFormsRenderer.new(service_call, self).render
+  def billing_status_forms(service_call)
+    if permitted_params(service_call).permitted_attribute?(:service_call, :billing_status_event)
+      if service_call.allow_collection? || service_call.instance_of?(MyServiceCall)
+        JobBillingFormsRenderer.new(service_call, self).render
+      end
     end
 
   end
 
   def subcontractor_status_forms(service_call)
-    unless service_call.subcontractor_status_events.empty?
-      concat(content_tag :h3, t('headers.subcontractor_actions')) unless service_call.subcontractor_status_events.empty?
+    if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event)
+      unless service_call.subcontractor_status_events.empty?
+        concat(content_tag :h3, t('headers.subcontractor_actions')) unless service_call.subcontractor_status_events.empty?
 
-      service_call.subcontractor_status_events.collect do |event|
-        #concat(content_tag :li, send("subcon_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event, event.to_s)
-        concat(render "service_calls/action_forms/subcon_status_forms/#{event}_form", job: service_call)
+        service_call.subcontractor_status_events.collect do |event|
+          #concat(content_tag :li, send("subcon_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event, event.to_s)
+          concat(render "service_calls/action_forms/subcon_status_forms/#{event}_form", job: service_call)
+        end
       end
     end
   end
 
   def provider_status_forms(service_call)
-    if service_call.instance_of?(TransferredServiceCall) && service_call.provider_settlement_allowed?
-      concat(content_tag :h3, t('headers.provider_actions')) unless service_call.provider_status_events.empty?
-      service_call.provider_status_events.collect do |event|
-        #concat(content_tag :li, send("provider_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event, event.to_s)
-        if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event, event.to_s)
-          concat(render "service_calls/action_forms/prov_status_forms/#{event}_form", job: service_call)
+    if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event)
+      if service_call.instance_of?(TransferredServiceCall) && service_call.provider_settlement_allowed?
+        concat(content_tag :h3, t('headers.provider_actions')) unless service_call.provider_status_events.empty?
+        service_call.provider_status_events.collect do |event|
+          #concat(content_tag :li, send("provider_#{event}_form".to_sym, service_call)) if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event, event.to_s)
+          if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event, event.to_s)
+            concat(render "service_calls/action_forms/prov_status_forms/#{event}_form", job: service_call)
+          end
         end
       end
     end
-
   end
 
   def subcon_transfer_props
@@ -198,6 +206,7 @@ module ServiceCallsHelper
           rendered << view_map[event]
         end
       end
+      ''
 
     end
 
