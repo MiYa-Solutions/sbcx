@@ -2,7 +2,7 @@
   <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title><%= I18n.t('notification_mailer.sc_properties_updated.subject').html_safe %></title>
+    <title><%= I18n.t('notification_mailer.sc_properties_updated_notification.subject').html_safe %></title>
     <%= render 'styling' %>
   </head>
 
@@ -45,10 +45,10 @@
                           <div>
                             <!--CSS change -->
                             <h4 class="h4" style="font-family:Arial; font-size:18px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
-                              <%= I18n.t('notification_mailer.sc_properties_updated.title').html_safe %>
+                              <%= I18n.t('notification_mailer.sc_properties_updated_notification.title').html_safe %>
                             </h4>
                             <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>,<br>
-                            <%= I18n.t('notification_mailer.sc_properties_updated.content').html_safe %>
+                            <%= I18n.t('notification_mailer.sc_properties_updated_notification.content').html_safe %>
                             &nbsp;<strong><%= @service_call.subcontractor.name.html_safe %></strong>.
                             <br>
                           </div>
@@ -114,6 +114,15 @@
                                 <strong><%= @service_call.notes %></strong>
                               </td>
                             </tr>
+
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <%= t('general.general.description') %>
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @event.description %></strong>
+                              </td>
+                            </tr>
                             <!--CSS change -->
                           </table>
                         </td>
@@ -124,7 +133,7 @@
                         <td valign="top" class="bodyContent" style="font-family:Arial; font-size:14px; line-height:150%;">
                           <br>
                           <div>
-                            <%= I18n.t('notification_mailer.sc_properties_updated.bottom_content').html_safe %>.
+                            <%= I18n.t('notification_mailer.sc_properties_updated_notification.bottom_content').html_safe %>.
                           </div>
                         </td>
                       </tr>

@@ -152,7 +152,7 @@ en:
       subject: 'Payment has been collected by Subcontractor'
       content: 'Please note that payment has been collected by Subcontractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
-    sc_properties_updated:
+    sc_properties_updated_notification:
       title: 'Job details have been updated'
       subject: 'Job details have been updated'
       content: 'Please note that one or more details have been updated by Subcontractor Name: '
