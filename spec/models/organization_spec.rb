@@ -20,6 +20,9 @@
 #  status            :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  parent_org_id     :integer
+#  industry          :string(255)
+#  other_industry    :string(255)
 #
 
 require 'spec_helper'

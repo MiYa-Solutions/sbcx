@@ -387,12 +387,14 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     res = true
     res = false if params_to_check[:billing_status_event] == 'provider_invoiced' && obj.provider.subcontrax_member?
     res = false if params_to_check[:billing_status_event] == 'provider_collected' && obj.provider.subcontrax_member?
-    res = false if params_to_check[:billing_status_event] == 'subcon_collected' && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
     res = false if params_to_check[:billing_status_event] == 'subcon_invoiced' && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
     res = false if params_to_check[:billing_status_event] == 'prov_confirmed_deposit' && (obj.provider.nil? || (obj.organization_id != obj.provider_id && obj.provider.subcontrax_member?))
-    res = false if params_to_check[:billing_status_event] == 'subcon_deposited' && obj.subcontractor.member?
+    res = false if params_to_check[:billing_status_event] == 'subcon_deposited'
     res = false if params_to_check[:billing_status_event] == 'deposited' && !user.roles.map(&:name).include?('Org Admin')
-    #res = false if params[:billing_status_event] == 'deposit_to_prov' && obj.provider.member?
+    res = false if params_to_check[:billing_status_event] == 'clear'
+    res = false if params_to_check[:billing_status_event] == 'reject'
+
+
     res = false if obj.instance_of?(TransferredServiceCall) && obj.provider.member? && obj.payment_deposited_to_prov?
     res
   end
@@ -472,16 +474,16 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   def sc_status_event_permitted?
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = true
-    res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.instance_of?(TransferredServiceCall)
+    res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.kind_of?(TransferredServiceCall)
     res
   end
 
   def sc_work_status_attr
-    case obj.class.name
-      when MyServiceCall.name
+    case obj
+      when MyServiceCall
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
         obj.transferred? && obj.subcontractor.subcontrax_member? ? [] : [:work_status_event]
-      when TransferredServiceCall.name
+      when TransferredServiceCall
         obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?) ? [:work_status_event] : []
       else
         []
@@ -489,7 +491,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_billing_status_attrs
-    billing_allowed? ? [:billing_status_event, :collector_id, :collector_type, :payment_type] : []
+    billing_allowed? ? [:billing_status_event, :collector_id, :collector_type, :payment_type, :payment_amount] : []
   end
 
   def sc_collection_attrs

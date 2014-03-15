@@ -1,0 +1,4 @@
+<%= simple_form_for entry.becomes(AccountingEntry), html: { class: 'adj_entry_deposit_form' } do |f| %>
+    <%= f.hidden_field :status_event, value: 'deposited' %>
+    <%= f.submit entry.class.human_status_event_name(:deposit).titleize, id: 'adjustment_entry_deposit_btn', class: css_class %>
+<% end %>

@@ -1,0 +1,7 @@
+<tr>
+  <td><%= event.reference_id %></td>
+  <td><%= event.name %></td>
+  <td><%= textilize(event.description).try(:html_safe) %></td>
+  <td><%= l event.created_at, :format => :default %></td>
+  <td><%= event.creator.name %></td>
+</tr>

@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: invites
+#
+#  id              :integer          not null, primary key
+#  message         :string(255)
+#  organization_id :integer
+#  affiliate_id    :integer
+#  status          :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  creator_id      :integer
+#  updater_id      :integer
+#
+
 class Invite < ActiveRecord::Base
 
   stampable

@@ -1,6 +1,6 @@
 module HstoreSetupMethods
   def setup_hstore_attr(key)
-    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("properties @> (? => ?)", key, value) }
+    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("properties @> hstore(?, ?)", key, value) }
 
     define_method(key) do
       properties && properties[key]

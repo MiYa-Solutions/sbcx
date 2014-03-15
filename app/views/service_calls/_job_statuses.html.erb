@@ -85,6 +85,15 @@
                     </span>
            </td>
           </tr>
+          <tr>
+            <td><strong> <%= @service_call.class.human_attribute_name(:subcon_collection_status) %></strong></td>
+            <td>
+          <span class="<%= style("service_call.states.subcon_collection_status.#{@service_call.subcon_collection_status_name}") %>" id="service_call_subcon_collection_status">
+          <h3><%= @service_call.human_subcon_collection_status_name %></h3>
+          </span>
+            </td>
+          </tr>
+
           </tbody>
         </table>
       </li>
@@ -164,6 +173,15 @@
 
             </td>
           </tr>
+          <tr>
+            <td><strong> <%= @service_call.class.human_attribute_name(:prov_collection_status) %></strong></td>
+            <td>
+          <span class="<%= style("service_call.states.subcon_collection_status.#{@service_call.prov_collection_status_name}") %>" id="service_call_subcon_collection_status">
+          <h3><%= @service_call.human_prov_collection_status_name %></h3>
+          </span>
+            </td>
+          </tr>
+
           </tbody>
         </table>
       </li>

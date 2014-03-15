@@ -24,13 +24,13 @@
 #  settlement_date       :datetime
 #  name                  :string(255)
 #  scheduled_for         :datetime
-#  transferable          :boolean          default(FALSE)
+#  transferable          :boolean          default(TRUE)
 #  allow_collection      :boolean          default(TRUE)
 #  collector_id          :integer
 #  collector_type        :string(255)
 #  provider_status       :integer
 #  work_status           :integer
-#  re_transfer           :boolean
+#  re_transfer           :boolean          default(TRUE)
 #  payment_type          :string(255)
 #  subcon_payment        :string(255)
 #  provider_payment      :string(255)
@@ -48,11 +48,25 @@
 #  subcon_agreement_id   :integer
 #  provider_agreement_id :integer
 #  tax                   :float            default(0.0)
+#  subcon_fee_cents      :integer          default(0), not null
+#  subcon_fee_currency   :string(255)      default("USD"), not null
+#  properties            :hstore
 #
 
 class ServiceCall < Ticket
 
+  def fully_paid?(options = {})
+    current_payment = payment_amount || 0
 
+    if options[:work_in_progress].nil?
+      work_done? ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+    else
+      total > 0 ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <=0 : false
+    end
+
+  end
+
+  attr_accessor :payment_amount
   validate :financial_data_change
 
   def my_role
@@ -96,6 +110,12 @@ class ServiceCall < Ticket
     state :accepted, value: WORK_STATUS_ACCEPTED
     state :rejected, value: WORK_STATUS_REJECTED
     state :done, value: WORK_STATUS_DONE
+
+    after_transition any => :done do |sc, transition|
+      sc.collect_payment!(:state_only) if sc.respond_to?(:can_collect_payment?) && sc.can_collect_payment?
+      sc.collected_subcon_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
+      sc.collected_prov_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
+    end
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "#{service_call.class.name} work status state machine failure. errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect + "\n The Service Call:" + service_call.inspect }
@@ -215,7 +235,7 @@ class ServiceCall < Ticket
         sc = MyServiceCall.new(params)
       else
         params[:subcontractor_id] = nil
-        sc                        = TransferredServiceCall.new(params)
+        sc                        = SubconServiceCall.new(params)
       end
 
     end
@@ -254,11 +274,50 @@ class ServiceCall < Ticket
     invoice.date ? true : false
   end
 
+  def check_payment_amount
+    errors.add :payment_amount, "Payment must be a number greater than zero" if self.payment_amount.nil? || self.payment_amount.try(:empty?) || self.payment_amount.to_f == 0.0
+  end
+
+  def collection_entries
+    CollectionEntry.where(ticket_id: self.id)
+  end
+
+  def collected_entries
+    CollectedEntry.where(ticket_id: self.id)
+  end
+
+  def deposit_entries
+    DepositToEntry.where(ticket_id: self.id)
+  end
+
+  def deposited_entries
+    DepositFromEntry.where(ticket_id: self.id)
+  end
+
+
+  def subcon_deposit_confirmed
+    confirm_deposit_payment! if fully_deposited?
+  end
+
+  def fully_deposited?
+    all_collection_entries_deposited? && all_deposit_entries_confirmed?
+  end
+
+
+
   private
+
   def financial_data_change
     errors.add :tax, "Can't change tax when job is completed or transferred" if !self.system_update && self.changed_attributes.has_key?('tax') && !can_change_financial_data?
   end
 
+  def all_deposit_entries_confirmed?
+    entries.where(type: DepositEntry.subclasses).map(&:status).select {|status| status != ConfirmableEntry::STATUS_CONFIRMED}.empty?
+  end
+
+  def all_collection_entries_deposited?
+    entries.where(type: CollectionEntry.subclasses).map(&:status).select {|status| status != CollectionEntry::STATUS_DEPOSITED}.empty?
+  end
 
 end
 

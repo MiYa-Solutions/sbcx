@@ -1,8 +1,8 @@
-class ScCollectedEvent < ServiceCallEvent
+class ScCollectedEvent < CollectionEvent
 
   def init
     self.name         = I18n.t('service_call_collected_event.name')
-    self.description  = I18n.t('service_call_collected_event.description', subcontractor: service_call.subcontractor.name)
+    self.description  = I18n.t('service_call_collected_event.description', collector: collector.name)
     self.reference_id = 100024
   end
 
@@ -19,43 +19,28 @@ class ScCollectedEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.collector    ||= service_call.subcontractor
-    service_call.payment_type ||= triggering_event.eventable.payment_type
-    AffiliateBillingService.new(self).execute
-
-    # pass a :state_only argument to the observer indicating that only a state transition should be performed
-    service_call.subcon_collected_payment(:state_only) if service_call.can_subcon_collected_payment?
+    update_customer_bill
+    update_affiliate_bill
+    update_statuses
     super
   end
 
   private
 
-  #def update_subcon_account
-  #  account = Account.for_affiliate(service_call.organization, service_call.subcontractor).lock(true).first
-  #
-  #  props = { amount:      service_call.total_price,
-  #            ticket:      service_call,
-  #            event:       self,
-  #            description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
-  #
-  #
-  #  case service_call.payment_type
-  #    when 'cash'
-  #      entry =  CashCollectionFromSubcon.new(props)
-  #    when 'credit_card'
-  #      entry =  CreditCardCollectionFromSubcon.new(props)
-  #    when 'cheque'
-  #      entry =  ChequeCollectionFromSubcon.new(props)
-  #    else
-  #      raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
-  #  end
-  #
-  #  account.entries << entry
-  #  entry.clear
-  #
-  #
-  #
-  #end
+  def update_customer_bill
+    service_call.collector    ||= service_call.subcontractor
+    service_call.payment_type ||= triggering_event.eventable.payment_type
+    CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
+  end
+
+  def update_affiliate_bill
+    AffiliateBillingService.new(self).execute
+  end
+
+  def update_statuses
+    service_call.collect_payment!(:state_only)
+    service_call.collected_subcon_collection if service_call.can_collected_subcon_collection?
+  end
 
 
 end

@@ -36,13 +36,14 @@ describe 'Job Billing' do
         before do
           with_user(user) do
             job.update_attributes(payment_type:         'cheque',
+                                  payment_amount:       '10000',
                                   billing_status_event: 'paid')
 
           end
         end
 
         it 'billing status should be set to paid' do
-          expect(job).to be_payment_paid
+          expect(job.billing_status_name).to eq :paid
         end
 
         context 'when payment cleared' do
@@ -119,14 +120,16 @@ describe 'Job Billing' do
         before do
           with_user(subcon_admin) do
             subcon_job.update_attributes(payment_type:         'cheque',
+                                         payment_amount:       '10000',
+                                         collector:            subcon,
                                          billing_status_event: 'collect')
 
           end
         end
 
         it 'should have billing status of collected' do
-          expect(job.reload).to be_payment_collected_by_subcon
-          expect(subcon_job).to be_payment_collected
+          expect(job.reload.billing_status_name).to eq :collected_by_subcon
+          expect(subcon_job.billing_status_name).to eq :payment_collected
         end
 
         context 'when deposited to prov' do

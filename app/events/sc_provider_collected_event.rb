@@ -1,4 +1,11 @@
+require 'hstore_amount'
+require 'collectible'
 class ScProviderCollectedEvent < ServiceCallEvent
+  include HstoreAmount
+
+  setup_hstore_attr 'collector_id'
+  setup_hstore_attr 'collector_type'
+  include Collectible
 
   def init
     self.name         = I18n.t('service_call_provider_collected_event.name')
@@ -20,7 +27,11 @@ class ScProviderCollectedEvent < ServiceCallEvent
 
   def process_event
     service_call.collector = service_call.provider
-    service_call.payment_type = self.triggering_event.service_call.payment_type if self.triggering_event.present?
+
+    if self.triggering_event.present?
+      service_call.payment_type = self.triggering_event.payment_type
+    end
+
     AffiliateBillingService.new(self).execute
     service_call.provider_collected_payment
     super
