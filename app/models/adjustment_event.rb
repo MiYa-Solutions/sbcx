@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id                  :integer          not null, primary key
+#  name                :string(255)
+#  type                :string(255)
+#  description         :text
+#  eventable_type      :string(255)
+#  eventable_id        :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  user_id             :integer
+#  reference_id        :integer
+#  creator_id          :integer
+#  updater_id          :integer
+#  triggering_event_id :integer
+#  properties          :hstore
+#
+
 require 'hstore_setup_methods'
 class AdjustmentEvent < Event
   extend HstoreSetupMethods
@@ -32,7 +52,7 @@ class AdjustmentEvent < Event
     Event.where(eventable_id:   account.id,
                 eventable_type: 'Account',
                 type:           %w(AccountAdjustedEvent AccountAdjustmentEvent)
-    ).where("properties @> ('entry_id' => ?)", entry_id).first.matching_entry_id
+    ).where("properties @> hstore('entry_id', ?)", entry_id).first.matching_entry_id
   end
 
 end

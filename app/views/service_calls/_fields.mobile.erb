@@ -103,6 +103,10 @@
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:email) %></div>
         <div class="ui-block-b"><%= f.input :email %></div>
       </div>
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:external_ref) %></div>
+        <div class="ui-block-b"><%= f.input :external_ref %></div>
+      </div>
     </div>
   </li>
 

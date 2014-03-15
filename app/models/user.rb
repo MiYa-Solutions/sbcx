@@ -30,6 +30,10 @@
 #  work_phone             :string(255)
 #  preferences            :hstore
 #  time_zone              :string(255)
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string(255)
 #
 
 class User < ActiveRecord::Base

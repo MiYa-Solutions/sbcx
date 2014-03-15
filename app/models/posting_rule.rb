@@ -33,6 +33,42 @@
 #  friday_to      :time
 #  saturday_to    :time
 #
+
+# == Schema Information
+#
+# Table name: posting_rules
+#
+#  id             :integer          not null, primary key
+#  agreement_id   :integer
+#  type           :string(255)
+#  rate           :decimal(, )
+#  rate_type      :string(255)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  properties     :hstore
+#  time_bound     :boolean          default(FALSE)
+#  sunday         :boolean          default(FALSE)
+#  monday         :boolean          default(FALSE)
+#  tuesday        :boolean          default(FALSE)
+#  wednesday      :boolean          default(FALSE)
+#  thursday       :boolean          default(FALSE)
+#  friday         :boolean          default(FALSE)
+#  saturday       :boolean          default(FALSE)
+#  sunday_from    :time
+#  monday_from    :time
+#  tuesday_from   :time
+#  wednesday_from :time
+#  thursday_from  :time
+#  friday_from    :time
+#  saturday_from  :time
+#  sunday_to      :time
+#  monday_to      :time
+#  tuesday_to     :time
+#  wednesday_to   :time
+#  thursday_to    :time
+#  friday_to      :time
+#  saturday_to    :time
+#
 require 'hstore_setup_methods'
 class PostingRule < ActiveRecord::Base
   # creates the standard methods for an attribute that is stored in hstore column
@@ -108,20 +144,19 @@ class PostingRule < ActiveRecord::Base
         settlement_entries
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
         cancellation_entries
-      when ScCollectEvent.name, ScCollectedEvent.name
+      when ScCollectEvent.name, ScCollectedEvent.name, ScCollectedByEmployeeEvent.name
         collection_entries
       when ServiceCallPaidEvent.name, ScProviderCollectedEvent.name
         payment_entries
-
       else
-        raise "Unexpected Event (#{event.class.name}) to be processed by ProfitSplit posting rule"
+        raise "Unexpected Event (#{event.class.name}) to be processed by the posting rule (#{self.class.name})"
     end
   end
 
   def cash_fee
     case cash_rate_type
       when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount)* (cash_rate.delete(',').to_f / 100.0)
+        @event.amount* (cash_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(cash_rate.delete(',').to_f)
       else
@@ -132,7 +167,7 @@ class PostingRule < ActiveRecord::Base
   def credit_fee
     case credit_rate_type
       when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (credit_rate.delete(',').to_f / 100.0)
+        @event.amount * (credit_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(credit_rate.delete(',').to_f)
       else
@@ -143,7 +178,7 @@ class PostingRule < ActiveRecord::Base
   def amex_fee
     case amex_rate_type
       when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (amex_rate.delete(',').to_f / 100.0)
+        @event.amount * (amex_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(amex_rate.delete(',').to_f)
       else
@@ -154,7 +189,7 @@ class PostingRule < ActiveRecord::Base
   def cheque_fee
     case cheque_rate_type
       when 'percentage'
-        (@ticket.total_price + @ticket.tax_amount) * (cheque_rate.delete(',').to_f / 100.0)
+        @event.amount * (cheque_rate.delete(',').to_f / 100.0)
       when 'flat_fee'
         Money.new_with_amount(cheque_rate.delete(',').to_f)
       else

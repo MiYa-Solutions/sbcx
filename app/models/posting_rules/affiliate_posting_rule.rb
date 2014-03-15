@@ -1,3 +1,39 @@
+# == Schema Information
+#
+# Table name: posting_rules
+#
+#  id             :integer          not null, primary key
+#  agreement_id   :integer
+#  type           :string(255)
+#  rate           :decimal(, )
+#  rate_type      :string(255)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  properties     :hstore
+#  time_bound     :boolean          default(FALSE)
+#  sunday         :boolean          default(FALSE)
+#  monday         :boolean          default(FALSE)
+#  tuesday        :boolean          default(FALSE)
+#  wednesday      :boolean          default(FALSE)
+#  thursday       :boolean          default(FALSE)
+#  friday         :boolean          default(FALSE)
+#  saturday       :boolean          default(FALSE)
+#  sunday_from    :time
+#  monday_from    :time
+#  tuesday_from   :time
+#  wednesday_from :time
+#  thursday_from  :time
+#  friday_from    :time
+#  saturday_from  :time
+#  sunday_to      :time
+#  monday_to      :time
+#  tuesday_to     :time
+#  wednesday_to   :time
+#  thursday_to    :time
+#  friday_to      :time
+#  saturday_to    :time
+#
+
 class AffiliatePostingRule < PostingRule
 
   def get_transfer_props(ticket = nil)
@@ -44,6 +80,8 @@ class AffiliatePostingRule < PostingRule
         true
       when ScProviderCollectedEvent.name
         true
+      when ScCollectedByEmployeeEvent.name
+        true
       else
         false
     end
@@ -55,8 +93,8 @@ class AffiliatePostingRule < PostingRule
     entries = []
 
     collection_props = {
-        status:      AccountingEntry::STATUS_CLEARED,
-        amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
+        amount:      @event.amount,
+        collector:   @event.collector,
         ticket:      @ticket,
         event:       @event,
         agreement:   agreement,
@@ -72,22 +110,22 @@ class AffiliatePostingRule < PostingRule
 
     case @ticket.payment_type
       when 'cash'
-        entries << CashCollectionForProvider.new(collection_props)
+        entries << CashCollectionForProvider.new(collection_props) if collected_by_me?
         fee_props[:amount] = cash_fee
         entries << CashPaymentFee.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0
 
       when 'credit_card'
         fee_props[:amount] = credit_fee
-        entries << CreditCardCollectionForProvider.new(collection_props)
+        entries << CreditCardCollectionForProvider.new(collection_props) if collected_by_me?
         entries << CreditPaymentFee.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0
 
       when 'amex_credit_card'
         fee_props[:amount] = amex_fee
-        entries << AmexCollectionForProvider.new(collection_props)
+        entries << AmexCollectionForProvider.new(collection_props) if collected_by_me?
         entries << AmexPaymentFee.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0
 
       when 'cheque'
-        fee_props[:amount] = cheque_fee
+        fee_props[:amount] = cheque_fee if collected_by_me?
         entries << ChequeCollectionForProvider.new(collection_props)
         entries << ChequePaymentFee.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0
 
@@ -98,6 +136,11 @@ class AffiliatePostingRule < PostingRule
     end
 
     entries
+  end
+
+  def collected_by_me?
+    @event.collector.instance_of?(User) && @event.collector.organization == @account.organization ||
+        @event.collector.becomes(Organization) == @account.organization
   end
 
   def cparty_settlement_entries
@@ -214,46 +257,11 @@ class AffiliatePostingRule < PostingRule
   end
 
   def org_collection_entries
-    entries          = []
-    collection_props = { status:      AccountingEntry::STATUS_CLEARED,
-                         amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
-                         ticket:      @ticket,
-                         event:       @event,
-                         agreement:   agreement,
-                         description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
-
-    fee_props = { status:      AccountingEntry::STATUS_CLEARED,
-                  ticket:      @ticket,
-                  event:       @event,
-                  agreement:   agreement,
-                  description: I18n.t("payment_reimbursement.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
-
-
-    case @ticket.payment_type
-      when 'cash'
-        entries << CashCollectionFromSubcon.new(collection_props)
-
-        fee_props[:amount] = cash_fee
-        entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0
-      when 'credit_card'
-        fee_props[:amount] = credit_fee
-        entries << CreditCardCollectionFromSubcon.new(collection_props)
-        entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0
-      when 'amex_credit_card'
-        fee_props[:amount] = amex_fee
-        entries << AmexCollectionFromSubcon.new(collection_props)
-        entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0
-      when 'cheque'
-        fee_props[:amount] = cheque_fee
-        entries << ChequeCollectionFromSubcon.new(collection_props)
-        entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0
-
-      else
-
-    end
-
-
-    entries
+    OrgCollectionEntryFactory.new(event:        @event,
+                                  ticket:       @ticket,
+                                  agreement:    agreement,
+                                  posting_rule: self,
+                                  account:      @account).generate
   end
 
   def org_settlement_entries
@@ -312,21 +320,21 @@ class AffiliatePostingRule < PostingRule
         description: I18n.t("payment_fee.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
-        fee_props[:amount] = cash_fee * (rate / 100.0)
+        fee_props[:amount] = cash_fee
         entries << CashPaymentFee.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0.0
 
       when 'credit_card'
-        fee_props[:amount] = credit_fee * (rate / 100.0)
+        fee_props[:amount] = credit_fee
         entries << CreditPaymentFee.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0.0
 
       when 'amex_credit_card'
-        fee_props[:amount] = amex_fee * (rate / 100.0)
+        fee_props[:amount] = amex_fee
         entries << AmexPaymentFee.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0.0
 
       when 'cheque'
-        fee_props[:amount] = cheque_fee * (rate / 100.0)
+        fee_props[:amount] = cheque_fee
         entries << ChequePaymentFee.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0.0
       else
         raise "#{self.class.name}: Unexpected payment type (#{@ticket.payment_type}) when processing the event"
@@ -346,18 +354,18 @@ class AffiliatePostingRule < PostingRule
     }
 
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
-        fee_props[:amount] = cash_fee * (rate / 100.0)
+        fee_props[:amount] = cash_fee
         entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0.0
       when 'credit_card'
-        fee_props[:amount] = credit_fee * (rate / 100.0)
+        fee_props[:amount] = credit_fee
         entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0.0
       when 'amex_credit_card'
-        fee_props[:amount] = amex_fee * (rate / 100.0)
+        fee_props[:amount] = amex_fee
         entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0.0
       when 'cheque'
-        fee_props[:amount] = cheque_fee * (rate / 100.0)
+        fee_props[:amount] = cheque_fee
         entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0.0
       else
     end

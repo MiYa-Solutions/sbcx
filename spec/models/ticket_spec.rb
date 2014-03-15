@@ -24,13 +24,13 @@
 #  settlement_date       :datetime
 #  name                  :string(255)
 #  scheduled_for         :datetime
-#  transferable          :boolean          default(FALSE)
+#  transferable          :boolean          default(TRUE)
 #  allow_collection      :boolean          default(TRUE)
 #  collector_id          :integer
 #  collector_type        :string(255)
 #  provider_status       :integer
 #  work_status           :integer
-#  re_transfer           :boolean
+#  re_transfer           :boolean          default(TRUE)
 #  payment_type          :string(255)
 #  subcon_payment        :string(255)
 #  provider_payment      :string(255)
@@ -48,6 +48,9 @@
 #  subcon_agreement_id   :integer
 #  provider_agreement_id :integer
 #  tax                   :float            default(0.0)
+#  subcon_fee_cents      :integer          default(0), not null
+#  subcon_fee_currency   :string(255)      default("USD"), not null
+#  properties            :hstore
 #
 
 require 'spec_helper'

@@ -15,9 +15,10 @@
 #  description      :string(255)
 #  balance_cents    :integer          default(0), not null
 #  balance_currency :string(255)      default("USD"), not null
+#  agreement_id     :integer
 #
 
-class CreditCardCollectionForProvider < AccountingEntry
+class CreditCardCollectionForProvider < CollectionEntry
   def amount_direction
     -1
   end

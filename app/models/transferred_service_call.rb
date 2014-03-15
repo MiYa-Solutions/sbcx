@@ -24,13 +24,13 @@
 #  settlement_date       :datetime
 #  name                  :string(255)
 #  scheduled_for         :datetime
-#  transferable          :boolean          default(FALSE)
+#  transferable          :boolean          default(TRUE)
 #  allow_collection      :boolean          default(TRUE)
 #  collector_id          :integer
 #  collector_type        :string(255)
 #  provider_status       :integer
 #  work_status           :integer
-#  re_transfer           :boolean
+#  re_transfer           :boolean          default(TRUE)
 #  payment_type          :string(255)
 #  subcon_payment        :string(255)
 #  provider_payment      :string(255)
@@ -48,6 +48,9 @@
 #  subcon_agreement_id   :integer
 #  provider_agreement_id :integer
 #  tax                   :float            default(0.0)
+#  subcon_fee_cents      :integer          default(0), not null
+#  subcon_fee_currency   :string(255)      default("USD"), not null
+#  properties            :hstore
 #
 
 class TransferredServiceCall < ServiceCall
@@ -158,100 +161,38 @@ class TransferredServiceCall < ServiceCall
     end
   end
 
-  BILLING_STATUS_NA                     = 4200
-  BILLING_STATUS_PENDING                = 4201
-  BILLING_STATUS_INVOICED               = 4202
-  BILLING_STATUS_COLLECTED_BY_EMPLOYEE  = 4203
-  BILLING_STATUS_COLLECTED              = 4204
-  BILLING_STATUS_DEPOSITED_TO_PROV      = 4205
-  BILLING_STATUS_DEPOSITED              = 4206
-  BILLING_STATUS_INVOICED_BY_SUBCON     = 4207
-  BILLING_STATUS_COLLECTED_BY_SUBCON    = 4208
-  BILLING_STATUS_SUBCON_CLAIM_DEPOSITED = 4209
-  BILLING_STATUS_INVOICED_BY_PROV       = 4210
-  # if collection is not allowed for this service call, then the initial status is set to na - not applicable
-  state_machine :billing_status, initial: lambda { |sc| sc.allow_collection? ? :pending : :na }, namespace: 'payment' do
-    state :na, value: BILLING_STATUS_NA
-    state :pending, value: BILLING_STATUS_PENDING
-    state :invoiced, value: BILLING_STATUS_INVOICED
-    state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE do
-      validate { |sc| sc.validate_collector }
-    end
-    state :collected, value: BILLING_STATUS_COLLECTED do
-      validate do |sc|
-        sc.validate_collector
-        sc.validate_payment
-      end
-    end
-    state :deposited_to_prov, value: BILLING_STATUS_DEPOSITED_TO_PROV
-    state :deposited, value: BILLING_STATUS_DEPOSITED do
-      validate { |sc| sc.validate_collector }
-    end
-    state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
-    state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
-      validate do |sc|
-        sc.validate_collector
-        sc.validate_payment
-      end
-    end
-    state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
-    state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV
-
-    after_failure do |service_call, transition|
-      Rails.logger.debug { "Transferred Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
-    end
-
-    event :invoice do
-      transition :pending => :invoiced, if: lambda { |sc| sc.work_done? }
-    end
-
-    event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? && !sc.subcon_na? }
-    end
-
-    event :provider_invoiced do
-      transition :pending => :invoiced_by_prov, if: lambda { |sc| sc.work_done? }
-    end
-
-    event :provider_collected do
-      transition [:invoiced_by_subcon, :invoiced_by_prov, :invoiced] => :deposited
-    end
+  state_machine :billing_status, initial: :na, namespace: 'payment' do
+    state :na, value: 0
 
     event :collect do
-      transition [:invoiced, :invoiced_by_subcon] => :collected_by_employee, if: lambda { |sc| sc.organization.multi_user? }
-      transition [:invoiced, :invoiced_by_subcon] => :collected, if: lambda { |sc| !sc.organization.multi_user? }
+      transition :na => :na
     end
+  end
 
-    event :employee_deposit do
-      transition :collected_by_employee => :collected
-    end
+  def collection_allowed?
+    accepted? || transferred?
+  end
 
-    event :subcon_collected do
-      transition :invoiced_by_subcon => :collected_by_subcon
-    end
-
-    event :subcon_deposited do
-      transition :collected_by_subcon => :subcon_claim_deposited
-    end
-
-    event :confirm_deposit do
-      transition :subcon_claim_deposited => :collected
-    end
-
-    event :deposit_to_prov do
-      transition :collected => :deposited_to_prov
-    end
-
-    event :prov_confirmed_deposit do
-      transition :deposited_to_prov => :deposited
+  def payments
+    if provider.member?
+      provider_ticket.payments
+    else
+      payment_entries
     end
 
   end
 
-  # local transferred jobs don't have a ref_id set, therefore if not set then defaults to the id
-  #def ref_id
-  #  read_attribute(:ref_id) || id
-  #end
+  def provider_ticket
+    ServiceCall.where(organization_id: provider_id).where(ref_id: ref_id).first
+  end
+
+  def paid_amount
+    Money.new(-(payment_entries.sum(:amount_cents) + payment_amount.to_f*100))
+  end
+
+  def payment_entries
+    entries.where(type: CollectionEntry.subclasses.map(&:name))
+  end
 
   def provider_settlement_allowed?
     (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
@@ -280,6 +221,10 @@ class TransferredServiceCall < ServiceCall
   def validate_subcon
     super
     self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer && self.status_changed? && self.status == ServiceCall::STATUS_TRANSFERRED
+  end
+
+  def check_and_set_as_fully_paid
+
   end
 
   private

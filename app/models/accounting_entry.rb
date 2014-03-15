@@ -15,9 +15,14 @@
 #  description      :string(255)
 #  balance_cents    :integer          default(0), not null
 #  balance_currency :string(255)      default("USD"), not null
+#  agreement_id     :integer
 #
 
 class AccountingEntry < ActiveRecord::Base
+  def self.payment_entry_classes
+    %w(ChequePayment CreditPayment AmexPayment CashPayment)
+  end
+
   monetize :amount_cents
   monetize :balance_cents
 
@@ -29,6 +34,7 @@ class AccountingEntry < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :event
   belongs_to :agreement
+  belongs_to :matching_entry, class_name: 'AccountingEntry'
 
   before_create :set_amount_direction
 
@@ -67,6 +73,11 @@ class AccountingEntry < ActiveRecord::Base
 
   end
 
+  def allowed_status_events
+    self.status_events
+  end
+
+
 
   protected
   def set_amount_direction
@@ -77,13 +88,4 @@ class AccountingEntry < ActiveRecord::Base
     raise "The amount direction is not defined - you need to define amount_direction method for #{self.class}"
   end
 
-  private
-  #def event_requirement
-  #  @errors.add :event_id, "can't be blank" unless event_id.present? || self.kind_of?(AdjustmentEntry)
-  #end
-
 end
-
-#Dir["#{Rails.root}/app/models/accounting_entries/*.rb"].each do |file|
-#  require_dependency file
-#end

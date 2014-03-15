@@ -2,14 +2,9 @@ require 'spec_helper'
 
 describe AccAdjAcceptEvent do
 
-  let(:org) { mock_model(Organization, id: 1, name: 'Test Org1', providers: [], subcontractors: []) }
-  let(:org2) { mock_model(Organization, id: 2, name: 'Test Org2', providers: [], subcontractors: []) }
-  let(:acc) { mock_model(Account, id: 1, name: 'Test Acc', organization: org, accountable: org2, events: []) }
-  let(:orig_entry) { mock_model(MyAdjEntry, id: 1, save: true) }
-  let(:entry) { mock_model(ReceivedAdjEntry, id: 2, save: true) }
-  let(:adj_event) { mock_model(AccountAdjustedEvent, id: 2, save: true, matching_entry_id: orig_entry.id) }
-  let(:event) { AccAdjAcceptEvent.new(eventable: acc, entry_id: entry.id) }
-
+  include_context 'entry event mocks' do
+    let(:event) { AccAdjAcceptEvent.new(eventable: acc, entry_id: entry.id) }
+  end
 
   context 'when created' do
 

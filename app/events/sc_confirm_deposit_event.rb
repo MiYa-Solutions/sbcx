@@ -1,4 +1,9 @@
+require 'hstore_setup_methods'
 class ScConfirmDepositEvent < ServiceCallEvent
+  extend HstoreSetupMethods
+
+  setup_hstore_attr 'entry_id'
+  setup_hstore_attr 'matching_entry_id'
 
   def init
     self.name         = I18n.t('service_call_confirm_deposit_event.name')
@@ -18,30 +23,10 @@ class ScConfirmDepositEvent < ServiceCallEvent
     subcon_service_call.events << ScDepositConfirmedEvent.new(triggering_event: self)
   end
 
-  def process_event
-    update_accounting_entry
-    super
-  end
-
   private
 
-  def update_accounting_entry
-    type  = case service_call.payment_type
-              when 'cash'
-                CashDepositFromSubcon
-              when 'cheque'
-                ChequeDepositFromSubcon
-              when 'credit_card'
-                CreditCardDepositFromSubcon
-              when 'amex_credit_card'
-                AmexDepositFromSubcon
-              else
-                raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
-            end
-
-    entry = AccountingEntry.where(ticket_id: service_call.id, type: type).first
-
-    entry.clear
+  def entry
+    @entry ||= AccountingEntry.find entry_id
   end
 
 

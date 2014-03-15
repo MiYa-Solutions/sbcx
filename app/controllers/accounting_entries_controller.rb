@@ -63,7 +63,10 @@ class AccountingEntriesController < ApplicationController
   def update
     respond_to do |format|
       if @accounting_entry.update_attributes(accounting_entry_params)
-        format.html { redirect_to @accounting_entry.becomes(AccountingEntry), :flash => { :success => 'Accounting entry was successfully updated.' } }
+        format.html {
+          flash[:success] ='Accounting entry was successfully updated.'
+          redirect_back_or_to @accounting_entry.becomes(AccountingEntry)
+        }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

@@ -15,9 +15,10 @@
 #  description      :string(255)
 #  balance_cents    :integer          default(0), not null
 #  balance_currency :string(255)      default("USD"), not null
+#  agreement_id     :integer
 #
 
-class CashCollectionFromSubcon < AccountingEntry
+class CashCollectionFromSubcon < CollectedEntry
   def amount_direction
     1
   end

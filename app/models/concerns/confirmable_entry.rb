@@ -1,0 +1,5 @@
+module ConfirmableEntry
+  STATUS_SUBMITTED = 1000
+  STATUS_CONFIRMED = 1001
+  STATUS_DISPUTED  = 1002
+end

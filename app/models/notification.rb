@@ -12,6 +12,7 @@
 #  notifiable_id   :integer
 #  notifiable_type :string(255)
 #  type            :string(255)
+#  event_id        :integer
 #
 
 class Notification < ActiveRecord::Base

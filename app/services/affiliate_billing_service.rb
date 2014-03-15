@@ -27,6 +27,10 @@ class AffiliateBillingService
         account.lock!
         entries.each do |entry|
           account.entries << entry
+          if entry.matching_entry
+            entry.matching_entry.matching_entry = entry
+            entry.matching_entry.save!
+          end
           Rails.logger.debug { "Added entry to account: valid? #{entry.valid?}\n#{entry.inspect}" }
         end
 

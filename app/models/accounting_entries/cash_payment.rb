@@ -15,9 +15,17 @@
 #  description      :string(255)
 #  balance_cents    :integer          default(0), not null
 #  balance_currency :string(255)      default("USD"), not null
+#  agreement_id     :integer
 #
 
-class CashPayment < AccountingEntry
+class CashPayment < CustomerPayment
+  state_machine :status, initial: :pending do
+    after_transition any => :deposited do |entry, transition|
+      entry.status = AccountingEntry::STATUS_CLEARED
+      entry.save!
+    end
+  end
+
   def amount_direction
     1
   end

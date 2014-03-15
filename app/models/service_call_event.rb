@@ -5,7 +5,7 @@
 #  id                  :integer          not null, primary key
 #  name                :string(255)
 #  type                :string(255)
-#  description         :string(255)
+#  description         :text
 #  eventable_type      :string(255)
 #  eventable_id        :integer
 #  created_at          :datetime         not null
@@ -15,6 +15,7 @@
 #  creator_id          :integer
 #  updater_id          :integer
 #  triggering_event_id :integer
+#  properties          :hstore
 #
 
 # == Creating a New Service Call Event
@@ -105,33 +106,8 @@ class ServiceCallEvent < Event
     nil # should be implemented in the subclass in case the provider needs to be notified
   end
 
-  def set_customer_account_as_paid
-    account = Account.for_customer(service_call.customer).lock(true).first
-    ticket  = MyServiceCall.find(service_call.ref_id)
-
-    props = { amount:      -(service_call.total_price + (service_call.total_price * (service_call.tax / 100.0))),
-              ticket:      ticket,
-              event:       self,
-              agreement:   service_call.customer.agreements.first,
-              description: I18n.t("payment.#{service_call.payment_type}.description", ticket: ticket.id).html_safe }
-
-
-    case service_call.payment_type
-      when 'cash'
-        entry = CashPayment.new(props)
-        account.entries << entry
-        entry.clear
-      when 'credit_card'
-        entry = CreditPayment.new(props)
-        account.entries << entry
-      when 'amex_credit_card'
-        entry = AmexPayment.new(props)
-        account.entries << entry
-      when 'cheque'
-        account.entries << ChequePayment.new(props)
-      else
-        raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
-    end
+  # todo move to posting rule (event should not know the account etc.)
+  def set_customer_account_as_paid(options = {})
   end
 
   protected
@@ -140,9 +116,9 @@ class ServiceCallEvent < Event
       aff_billing = AffiliateBillingService.new(self)
       aff_billing.execute
 
-      aff_billing.accounting_entries.each do |entry|
-        entry.clear
-      end
+      #aff_billing.accounting_entries.each do |entry|
+      #  entry.clear
+      #end
     end
   end
 end

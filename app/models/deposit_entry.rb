@@ -1,0 +1,3 @@
+class DepositEntry < AccountingEntry
+
+end

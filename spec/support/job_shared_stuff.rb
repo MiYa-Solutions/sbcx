@@ -22,6 +22,47 @@ shared_context 'basic job testing' do
                                      buyer:    buyer)
   end
 
+  def start_the_job(job)
+    job.start_work!
+  end
+
+  def dispatch_the_job(job, technician)
+    job.technician = technician
+    job.dispatch_work!
+  end
+
+  def accept_the_job(job)
+    job.accept!
+  end
+
+  def accept_on_behalf_of_subcon(job)
+    job.accept_work!
+
+  end
+
+  def complete_the_work(job)
+    job.complete_work!
+  end
+
+  def collect_a_payment(job, options = {})
+    job.payment_type   = options[:type]
+    job.payment_amount = options[:amount]
+    job.collector      = options[:collector]
+    job.collect_payment!
+    job.payment_type   = nil
+    job.payment_amount = nil
+    job.collector      = nil
+  end
+
+  def invoice(job)
+    job.invoice_payment!
+  end
+
+  def confirm_employee_deposit(entry)
+    entry.confirm!
+  end
+
+
   def event_permitted_for_job?(state_machine_name, event_name, user, job)
     params = ActionController::Parameters.new({ service_call: {
         "#{state_machine_name}_event".to_sym => event_name
@@ -67,13 +108,17 @@ shared_context 'job transferred from a local provider' do
 
 end
 
-def transfer_the_job
-  subcon_agr.save!
-  job.save!
-  job.update_attributes(subcontractor:    subcon.becomes(Subcontractor),
-                        properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => 'true' },
-                        subcon_agreement: subcon_agr,
-                        status_event:     'transfer')
+def transfer_the_job(options = {})
+  the_agr    = options[:agreement] || subcon_agr
+  the_job    = options[:job] || job
+  the_subcon = options[:subcon] || subcon
+
+  the_agr.save!
+  the_job.save!
+  the_job.update_attributes(subcontractor:    the_subcon.becomes(Subcontractor),
+                            properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => 'true' },
+                            subcon_agreement: the_agr,
+                            status_event:     'transfer')
 end
 
 shared_context 'when canceling the job' do

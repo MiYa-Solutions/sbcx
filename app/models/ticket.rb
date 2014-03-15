@@ -24,13 +24,13 @@
 #  settlement_date       :datetime
 #  name                  :string(255)
 #  scheduled_for         :datetime
-#  transferable          :boolean          default(FALSE)
+#  transferable          :boolean          default(TRUE)
 #  allow_collection      :boolean          default(TRUE)
 #  collector_id          :integer
 #  collector_type        :string(255)
 #  provider_status       :integer
 #  work_status           :integer
-#  re_transfer           :boolean
+#  re_transfer           :boolean          default(TRUE)
 #  payment_type          :string(255)
 #  subcon_payment        :string(255)
 #  provider_payment      :string(255)
@@ -48,6 +48,9 @@
 #  subcon_agreement_id   :integer
 #  provider_agreement_id :integer
 #  tax                   :float            default(0.0)
+#  subcon_fee_cents      :integer          default(0), not null
+#  subcon_fee_currency   :string(255)      default("USD"), not null
+#  properties            :hstore
 #
 
 class Ticket < ActiveRecord::Base
@@ -276,6 +279,10 @@ class Ticket < ActiveRecord::Base
 
   end
 
+  def payment_money
+    Money.new(self.payment_amount.to_f * 100)
+  end
+
   # this validator runs only for a specific state of a service call
   def validate_subcon
     self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.attributes.subcontractor.blank') unless subcontractor
@@ -429,13 +436,13 @@ class Ticket < ActiveRecord::Base
 
   def check_subcon_agreement
     unless self.subcon_agreement.nil?
-      errors.add :subcon_agreement, "Invalid Subcontracting Agreement: the agreement must specify the subcontractor as the counterparty" if subcon_agreement.counterparty != self.subcontractor.becomes(Organization)
+      errors.add :subcon_agreement, "Invalid Subcontracting Agreement: the agreement must specify the subcontractor as the counterparty" if subcon_agreement.counterparty.becomes(Organization) != self.subcontractor.becomes(Organization)
     end
   end
 
   def check_provider_agreement
     unless self.provider_agreement.nil?
-      errors.add :provider_agreement, "Invalid Subcontracting Agreement: the agreement must specify the provider as the organization" if provider_agreement.organization != self.provider.try(:becomes, Organization)
+      errors.add :provider_agreement, "Invalid Subcontracting Agreement: the agreement must specify the provider as the organization" if provider_agreement.organization.becomes(Organization) != self.provider.try(:becomes, Organization)
     end
   end
 

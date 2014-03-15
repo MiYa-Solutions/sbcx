@@ -15,6 +15,7 @@
 #  description      :string(255)
 #  balance_cents    :integer          default(0), not null
 #  balance_currency :string(255)      default("USD"), not null
+#  agreement_id     :integer
 #
 
 require 'spec_helper'
@@ -51,10 +52,11 @@ describe AccountingEntry do
 
   end
 
-  describe "associations" do
+  describe 'associations' do
     it { should belong_to(:account) }
     it { should belong_to(:ticket) }
     it { should belong_to(:agreement) }
+    it { should belong_to(:matching_entry) }
   end
 
 end

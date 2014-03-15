@@ -1,4 +1,8 @@
+require 'hstore_setup_methods'
 class ScSubconDepositedEvent < ServiceCallEvent
+  extend HstoreSetupMethods
+
+  setup_hstore_attr 'entry_id'
 
   def init
 
@@ -22,39 +26,57 @@ class ScSubconDepositedEvent < ServiceCallEvent
 
   def process_event
     update_subcon_account
-    service_call.subcon_deposited_payment if service_call.can_subcon_deposited_payment?
+    entry.deposited!(:transition_only)
+    entry.ticket.deposited_subcon_collection!(:transition_only) if entry.ticket.can_deposited_subcon_collection?
     super
   end
 
   private
 
+  # todo refactor to an entry factory
   def update_subcon_account
     account = Account.for_affiliate(service_call.organization, service_call.subcontractor).lock(true).first
 
-    props = { amount:      service_call.total_price + service_call.tax_amount,
+    props = { amount:      entry.amount,
               ticket:      service_call,
               event:       self,
               agreement:   service_call.subcon_agreement,
               description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
 
 
-    case service_call.payment_type
-      when 'cash'
-        entry = CashDepositFromSubcon.new(props)
-      when 'credit_card'
-        entry = CreditCardDepositFromSubcon.new(props)
-      when 'amex_credit_card'
-        entry = AmexDepositFromSubcon.new(props)
-      when 'cheque'
-        entry = ChequeDepositFromSubcon.new(props)
+    case entry.class.name
+      when CashCollectionFromSubcon.name
+        deposit_entry = CashDepositFromSubcon.new(props.update(matching_entry: matching_deposit_entry(CashDepositToProvider)))
+      when CreditCardCollectionFromSubcon.name
+        deposit_entry = CreditCardDepositFromSubcon.new(props.update(matching_entry: matching_deposit_entry(CreditCardDepositToProvider)))
+      when AmexCollectionFromSubcon.name
+        deposit_entry = AmexDepositFromSubcon.new(props.update(matching_entry: matching_deposit_entry(AmexDepositToProvider)))
+      when ChequeCollectionFromSubcon.name
+        deposit_entry = ChequeDepositFromSubcon.new(props.update(matching_entry: matching_deposit_entry(ChequeDepositToProvider)))
       else
         raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
     end
 
-    account.entries << entry
-    entry.deposit
+    AccountingEntry.transaction do
+      account.entries << deposit_entry
+      if triggering_event
+        deposit_entry.matching_entry.matching_entry = deposit_entry
+        deposit_entry.matching_entry.save!
+      end
 
+    end
 
+  end
+
+  private
+  def entry
+    @entry ||= AccountingEntry.find entry_id
+  end
+
+  def matching_deposit_entry(klass)
+    if triggering_event
+      triggering_event.accounting_entries.where(type: klass).first
+    end
   end
 
 

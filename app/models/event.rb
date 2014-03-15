@@ -5,7 +5,7 @@
 #  id                  :integer          not null, primary key
 #  name                :string(255)
 #  type                :string(255)
-#  description         :string(255)
+#  description         :text
 #  eventable_type      :string(255)
 #  eventable_id        :integer
 #  created_at          :datetime         not null
@@ -15,6 +15,7 @@
 #  creator_id          :integer
 #  updater_id          :integer
 #  triggering_event_id :integer
+#  properties          :hstore
 #
 
 ##
@@ -62,6 +63,7 @@ class Event < ActiveRecord::Base
   # todo - seems like the user is not needed instead a creator can be used
   belongs_to :user
   belongs_to :triggering_event, class_name: "Event"
+  has_many :accounting_entries
   stampable
 
   before_validation :set_default_creator, :init
