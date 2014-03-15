@@ -104,13 +104,6 @@ module CustomerJobBilling
 
   alias_method :payment_cleared?, :fully_cleared?
 
-  def available_payment_collectors
-    res = [self.organization]
-    res << self.subcontractor if subcontractor && !subcontractor.member?
-    res << self.provider if provider && !provider.member?
-    res
-  end
-
   private
 
   def cleared_payment_cents
