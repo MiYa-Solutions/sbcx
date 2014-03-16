@@ -75,6 +75,10 @@ class TransferredServiceCall < ServiceCall
     state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED
 
+    before_transition any => :transferred do |sc, transition|
+      sc.type = 'BrokerServiceCall'
+    end
+
     after_failure do |service_call, transition|
       Rails.logger.debug { "Transferred Service Call status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
     end
@@ -205,6 +209,10 @@ class TransferredServiceCall < ServiceCall
 
   # to make the subcon_settlement_allowed? in ServiceCall work
   alias_method :payment_cleared?, :payment_paid?
+
+  def payment_collected?
+    payment_entries.sum(:amount_cents).abs > total.cents
+  end
 
   def can_uncancel?
     !self.work_done? && !self.provider.subcontrax_member? &&

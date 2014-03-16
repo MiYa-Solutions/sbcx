@@ -115,7 +115,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
 
   alias_method :my_service_call_attributes, :service_call_attributes
-  alias_method :transferred_service_call_attributes, :service_call_attributes
+  alias_method :broker_service_call_attributes, :service_call_attributes
+  alias_method :subcon_service_call_attributes, :service_call_attributes
 
   def customer
     if params[:customer].nil?
