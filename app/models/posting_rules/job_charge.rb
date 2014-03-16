@@ -46,6 +46,8 @@ class JobCharge < CustomerPostingRule
         collection_entries
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
         cancellation_entries
+      when ScCustomerReimbursementEvent.name
+        reimbursement_entries
       else
         raise "Unexpected Event to be processed by JobCharge posting rule"
 
@@ -88,6 +90,8 @@ class JobCharge < CustomerPostingRule
         true
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
         true
+      when ScCustomerReimbursementEvent.name
+        true
       else
         false
     end
@@ -126,6 +130,19 @@ class JobCharge < CustomerPostingRule
 
     [entry]
 
+  end
+
+  def reimbursement_entries
+    the_amount = Money.new(@ticket.payments.with_status(:cleared).sum(:amount_cents).abs - @ticket.total.cents, @ticket.total.currency)
+
+    props = { amount:      the_amount,
+              ticket:      @ticket,
+              event:       @event,
+              agreement:   agreement,
+              description: I18n.t('accounting_entry.description.customer_reimbursement', amount: the_amount) }
+
+
+    [CustomerReimbursement.new(props)]
   end
 
 end

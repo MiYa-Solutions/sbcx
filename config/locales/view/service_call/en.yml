@@ -108,8 +108,8 @@ en:
           tooltip: "Click to indicate that customer payment has been delivered to the contractor by an employee"
         prov_confirmed_deposit:
           tooltip: "Click to indicate that the contractor has confirmed receiving of the customer payment"
-        clear:
-          tooltip: "Click to indicate that payment had been cleared"
+        reimburse:
+          tooltip: "Click to indicate that the customer was reimbursed overpayment"
         reject:
           tooltip: "Click to indicate that customer payment has been rejected"
 

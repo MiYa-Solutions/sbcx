@@ -53,7 +53,7 @@ class MyServiceCallObserver < ServiceCallObserver
                                                     payment_type: service_call.payment_type)
   end
 
-  def before_overdue_payment(service_call, transition)
+  def before_late_payment(service_call, transition)
     Rails.logger.debug { "invoked BEFORE overdue \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.events << ScPaymentOverdueEvent.new
   end
@@ -61,6 +61,11 @@ class MyServiceCallObserver < ServiceCallObserver
   def after_reject_payment(service_call, transition)
     Rails.logger.debug { "invoked AFTER overdue \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.events << ScPaymentRejectedEvent.new
+  end
+
+  def after_reimburse_payment(service_call, transition)
+    Rails.logger.debug { "invoked AFTER reimburse \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    service_call.events << ScCustomerReimbursementEvent.new
   end
 
 

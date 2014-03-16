@@ -37,7 +37,7 @@ describe 'Customer Billing When Provider Transfers To Local' do
         end
 
         it 'collect should no longer be an available event' do
-           expect(job.billing_status_events).to eq [:deposited]
+          expect(job.billing_status_events).to eq [:deposited]
         end
 
 
@@ -183,13 +183,119 @@ describe 'Customer Billing When Provider Transfers To Local' do
 
                 end
 
+                context 'when the provider collects the remainder' do
+                  before do
+                    collect_a_payment job, amount: '800', type: 'cheque', collector: job.organization
+                    job.reload
+                  end
+
+                  it 'billing events should be :deposited' do
+                    expect(job.billing_status_events.sort).to eq [:deposited]
+                  end
+
+                  it 'billing status should be collected' do
+                    expect(job.billing_status_name).to eq :collected
+                  end
+
+
+                  context 'when the cheque is deposited' do
+                    before do
+                      job.payments.last.deposit!
+                      job.reload
+                    end
+
+                    it 'billing status should be in_process' do
+                      expect(job.billing_status_name).to eq :in_process
+                    end
+
+                    context 'when the cheque bounces' do
+                      before do
+                        job.payments.last.reject!
+                        job.reload
+                      end
+
+                      it 'billing status should be rejected' do
+                        expect(job.billing_status_name).to eq :rejected
+                      end
+
+                      it 'billing events should be :collect, :late' do
+                        expect(job.billing_status_events.sort).to eq [:collect, :late]
+                      end
+
+                      describe 'over payment' do
+                        before do
+                          collect_a_payment job, amount: '1000', type: 'cheque', collector: job.organization
+                          job.reload
+                        end
+
+                        it 'billing status should be collected' do
+                          expect(job.billing_status_name).to eq :collected
+                        end
+
+                        context 'when depositing the cheque' do
+                          before do
+                            job.payments.last.deposit!
+                            job.reload
+                          end
+
+                          it 'billing status should be in_process' do
+                            expect(job.billing_status_name).to eq :in_process
+                          end
+
+                          context 'when the cheque clears' do
+                            before do
+                              job.payments.map { |p| p.clear! if p.can_clear? }
+                              job.reload
+                            end
+
+                            it 'billing status should be over_paid' do
+                              expect(job.billing_status_name).to eq :over_paid
+                            end
+
+                            it 'billing events should be :reimburse' do
+                              expect(job.billing_status_events.sort).to eq [:reimburse]
+                            end
+
+                            it 'expect customer account to have an extra 200' do
+                              expect(job.customer.account.balance).to eq Money.new(-20000)
+                            end
+
+                            context 'when reimbursing' do
+                              before do
+                                job.reimburse_payment!
+                              end
+
+                              it 'billing status should be paid' do
+                                expect(job.billing_status_name).to eq :paid
+                              end
+
+                              it 'customer balance should be flat' do
+                                expect(job.customer.account.balance).to eq Money.new(0)
+                              end
+                            end
+
+
+
+
+                          end
+
+                        end
+
+
+                      end
+
+                    end
+
+                  end
+
+                end
+
               end
 
             end
 
           end
         end
-
 
 
       end
@@ -205,7 +311,6 @@ describe 'Customer Billing When Provider Transfers To Local' do
       end
 
     end
-
 
 
   end
