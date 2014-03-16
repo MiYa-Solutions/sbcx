@@ -22,8 +22,8 @@ module CollectionStateMachine
         state :deposited, value: CollectionStateMachine::STATUS_DEPOSITED
 
         event :collected do
-          transition [:pending, :is_deposited, :partially_collected] => :collected, if: ->(sc) { sc.fully_paid? }
-          transition [:pending, :is_deposited] => :partially_collected, if: ->(sc) { !sc.fully_paid? }
+          transition [:pending, :is_deposited, :partially_collected, :deposited] => :collected, if: ->(sc) { sc.fully_paid? }
+          transition [:pending, :is_deposited, :deposited] => :partially_collected, if: ->(sc) { !sc.fully_paid? }
         end
 
         event :deposited do
