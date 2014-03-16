@@ -169,7 +169,7 @@ class TransferredServiceCall < ServiceCall
     state :na, value: 0
 
     event :collect do
-      transition :na => :na
+      transition :na => :na, if: ->(sc) { sc.collection_allowed? }
     end
   end
 

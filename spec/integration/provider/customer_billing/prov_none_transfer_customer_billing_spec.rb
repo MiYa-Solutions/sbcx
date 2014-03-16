@@ -255,6 +255,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
         end
 
         context 'when I complete the job' do
+
           context 'when a preliminary payment was made before the completion' do
             context 'when the preliminary payment was for the full amount' do
               before do
@@ -267,8 +268,19 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                 expect(job).to be_work_done
               end
 
-              it 'payment status should be cleared' do
-                expect(job.billing_status_name).to eq :paid
+              it 'payment status should be collected' do
+                expect(job.billing_status_name).to eq :collected
+              end
+
+              context 'when payment is deposited' do
+                before do
+                  job.payments.sort.last.deposit!
+                end
+
+                it 'payment status should be paid' do
+                  expect(job.reload.billing_status_name).to eq :paid
+                end
+
               end
 
             end
@@ -301,7 +313,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
             end
 
             it 'payment status should be pending' do
-              expect(job).to be_payment_pending
+              expect(job.billing_status_name).to eq :pending
             end
 
             it 'available payment events are invoice and paid' do

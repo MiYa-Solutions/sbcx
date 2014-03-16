@@ -59,9 +59,9 @@ class ServiceCall < Ticket
     current_payment = payment_amount || 0
 
     if options[:work_in_progress].nil?
-      work_done? ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+      work_done? ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
     else
-      total > 0 ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <=0 : false
+      total > 0 ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
     end
 
   end
@@ -112,9 +112,11 @@ class ServiceCall < Ticket
     state :done, value: WORK_STATUS_DONE
 
     after_transition any => :done do |sc, transition|
-      sc.collect_payment!(:state_only) if sc.respond_to?(:can_collect_payment?) && sc.can_collect_payment?
-      sc.collected_subcon_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
-      sc.collected_prov_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
+      if sc.payments.size > 0
+        sc.collect_payment!(:state_only) if sc.respond_to?(:can_collect_payment?) && sc.can_collect_payment?
+        sc.collected_subcon_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
+        sc.collected_prov_collection!(:state_only) if sc.respond_to?(:can_collected_prov_collection?) && sc.can_collected_prov_collection?
+      end
     end
 
     after_failure do |service_call, transition|
@@ -304,7 +306,6 @@ class ServiceCall < Ticket
   end
 
 
-
   private
 
   def financial_data_change
@@ -312,11 +313,11 @@ class ServiceCall < Ticket
   end
 
   def all_deposit_entries_confirmed?
-    entries.where(type: DepositEntry.subclasses).map(&:status).select {|status| status != ConfirmableEntry::STATUS_CONFIRMED}.empty?
+    entries.where(type: DepositEntry.subclasses).map(&:status).select { |status| status != ConfirmableEntry::STATUS_CONFIRMED }.empty?
   end
 
   def all_collection_entries_deposited?
-    entries.where(type: CollectionEntry.subclasses).map(&:status).select {|status| status != CollectionEntry::STATUS_DEPOSITED}.empty?
+    entries.where(type: CollectionEntry.subclasses).map(&:status).select { |status| status != CollectionEntry::STATUS_DEPOSITED }.empty?
   end
 
 end
