@@ -14,10 +14,12 @@ class ScCollectEvent < CollectionEvent
   end
 
   def update_provider
-    prov_service_call.events << ScCollectedEvent.new(triggering_event: self,
-                                                     amount:           self.amount,
-                                                     collector:        service_call.organization,
-                                                     payment_type:     self.payment_type)
+    ActiveSupport::Deprecation.silence do
+      prov_service_call.events << ScCollectedEvent.new(triggering_event: self,
+                                                       amount:           self.amount,
+                                                       collector:        service_call.organization,
+                                                       payment_type:     self.payment_type)
+    end
   end
 
   def update_subcontractor
