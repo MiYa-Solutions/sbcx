@@ -337,7 +337,7 @@ class AffiliatePostingRule < PostingRule
         fee_props[:amount] = cheque_fee
         entries << ChequePaymentFee.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0.0
       else
-        raise "#{self.class.name}: Unexpected payment type (#{@ticket.payment_type}) when processing the event"
+        raise "#{self.class.name}: Unexpected payment type (#{@event.payment_type}) when processing the event"
     end
 
     entries

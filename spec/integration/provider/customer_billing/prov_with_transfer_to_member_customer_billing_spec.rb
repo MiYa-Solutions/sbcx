@@ -1,5 +1,38 @@
 require 'spec_helper'
 
+shared_context 'when late' do
+
+  before do
+    job.late_payment!
+  end
+
+  it 'billing status should be overdue' do
+    expect(job.billing_status_name).to eq :overdue
+  end
+
+end
+
+shared_context 'after collecting the full amount' do
+  before do
+    collect_full_amount subcon_job
+    job.reload
+  end
+
+  it 'billing status should be collected' do
+    expect(job.billing_status_name).to eq :collected
+  end
+
+  it 'subcon collection status should be collected' do
+    expect(job.subcon_collection_status_name).to eq :collected
+  end
+
+  it 'provider collection status should be collected' do
+    expect(subcon_job.provider_collection_status_name).to eq :collected
+  end
+
+
+end
+
 describe 'Customer Billing When Provider Transfers To Member' do
 
   include_context 'transferred job'
@@ -80,12 +113,182 @@ describe 'Customer Billing When Provider Transfers To Member' do
       context 'after the job is done' do
 
         before do
-          before do
-            complete_the_work subcon_job
-          end
+          complete_the_work subcon_job
+        end
+
+        describe 'collecting the full amount by the subcon' do
+
+          let(:collection_job) { subcon_job }
+          let(:collector) { subcon }
+          let(:billing_status) { :na }        # since the job is not done it is set to partial
+          let(:billing_status_4_cash) { :na } # since the job is not done it is set to partial
+          let(:subcon_collection_status) { nil }
+          let(:subcon_collection_status_4_cash) { nil }
+          let(:prov_collection_status) { :collected }
+          let(:prov_collection_status_4_cash) { :collected }
+
+          let(:customer_balance_before_payment) { 1000 }
+          let(:payment_amount) { 1000 }
+          let(:job_events) { [ServiceCallReceivedEvent,
+                              ServiceCallAcceptEvent,
+                              ServiceCallStartEvent,
+                              ServiceCallCompleteEvent,
+                              ScCollectEvent] }
+          let(:the_prov_job) { job.reload }
+          let(:the_billing_status) { :collected }
+          let(:the_subcon_collection_status) { :collected }
+
+          include_examples 'successful customer payment collection'
+        end
+
+
+      end
+    end
+  end
+
+  context 'when pending' do
+
+    it 'billing events should be :collect, :late' do
+      expect(job.billing_status_events.sort).to eq [:collect, :late]
+    end
+
+    include_context 'when late' do
+
+      context 'when collecting partial amount' do
+        let(:collection_job) { job }
+        let(:collector) { org }
+        let(:billing_status) { :overdue }        # since the job is not done it is set to partial
+        let(:billing_status_4_cash) { :overdue } # since the job is not done it is set to partial
+        let(:subcon_collection_status) { :pending }
+        let(:subcon_collection_status_4_cash) { :pending }
+        let(:prov_collection_status) { nil }
+        let(:prov_collection_status_4_cash) { nil }
+
+        let(:customer_balance_before_payment) { 0 }
+        let(:payment_amount) { 10 }
+        let(:job_events) { [ScCollectEvent, ScPaymentOverdueEvent, ServiceCallTransferEvent] }
+        let(:the_prov_job) { nil }
+        let(:the_billing_status) { nil }
+        let(:the_subcon_collection_status) { nil }
+
+        include_examples 'successful customer payment collection'
+
+        context 'when collecting the full amount' do
+          let(:collection_job) { job }
+          let(:collector) { org }
+          let(:billing_status) { :overdue }        # since the job is not done it is set to partial
+          let(:billing_status_4_cash) { :overdue } # since the job is not done it is set to partial
+          let(:subcon_collection_status) { :pending }
+          let(:subcon_collection_status_4_cash) { :pending }
+          let(:prov_collection_status) { nil }
+          let(:prov_collection_status_4_cash) { nil }
+
+          let(:customer_balance_before_payment) { 0 }
+          let(:payment_amount) { 10 }
+          let(:job_events) { [ScCollectEvent, ScPaymentOverdueEvent, ServiceCallTransferEvent] }
+          let(:the_prov_job) { nil }
+          let(:the_billing_status) { nil }
+          let(:the_subcon_collection_status) { nil }
+
+          include_examples 'successful customer payment collection'
+
+        end
+      end
+
+      context 'when collecting the full amount' do
+
+        before do
+          accept_the_job subcon_job
+          start_the_job subcon_job
+          add_bom_to_job subcon_job, cost: '100', price: '1000', quantity: '1'
+          complete_the_work subcon_job
+        end
+
+        let(:collection_job) { subcon_job }
+        let(:collector) { subcon }
+        let(:billing_status) { :na }        # since the job is not done it is set to partial
+        let(:billing_status_4_cash) { :na } # since the job is not done it is set to partial
+        let(:subcon_collection_status) { nil }
+        let(:subcon_collection_status_4_cash) { nil }
+        let(:prov_collection_status) { :collected }
+        let(:prov_collection_status_4_cash) { :collected }
+
+        let(:customer_balance_before_payment) { 1000 }
+        let(:payment_amount) { 1000 }
+        let(:job_events) { [ScCollectEvent, ServiceCallAcceptEvent, ServiceCallReceivedEvent, ServiceCallStartEvent, ServiceCallCompleteEvent] }
+        let(:the_prov_job) { job.reload }
+        let(:the_billing_status) { :collected }
+        let(:the_subcon_collection_status) { :collected }
+
+        include_examples 'successful customer payment collection'
+
+        include_context 'after collecting the full amount'
+
+
+      end
+
+    end
+
+    context 'when collecting partial amount' do
+
+      context 'when collecting partial amount' do
+
+      end
+
+      context 'when collecting the full amount' do
+
+      end
+
+      context 'when late' do
+
+      end
+    end
+
+    context 'when collecting the full amount' do
+
+      context 'when payment is deposited' do
+
+        context 'when rejecting the payment' do
 
         end
 
+        context 'when clearing the payment' do
+
+        end
+
+      end
+
+    end
+
+    context 'when collecting too much' do
+
+      context 'when collecting all cash' do
+
+        context 'when payment is deposited' do
+
+          context 'when rejecting the payment' do
+
+          end
+
+          context 'when clearing the payment' do
+
+          end
+        end
+
+      end
+
+      context 'when collecting none cash' do
+
+        context 'when payment is deposited' do
+
+          context 'when rejecting the payment' do
+
+          end
+
+          context 'when clearing the payment' do
+
+          end
+        end
 
       end
     end

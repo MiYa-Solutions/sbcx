@@ -274,9 +274,6 @@ describe 'Customer Billing When Provider Transfers To Local' do
                               end
                             end
 
-
-
-
                           end
 
                         end

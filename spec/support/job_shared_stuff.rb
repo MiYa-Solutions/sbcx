@@ -71,6 +71,14 @@ shared_context 'basic job testing' do
     p.service_call.include?("#{state_machine_name}_event")
   end
 
+  def collect_full_amount(job, options = {})
+      type      = options[:type] ? options[:type] : 'cash'
+      collector = options[:collector] ? options[:collector] : job.organization
+
+      amount         = job.total - job.paid_amount
+      payment_amount = amount > 0 ? amount : nil
+      collect_a_payment job, amount: payment_amount, type: type, collector: collector
+  end
 end
 
 shared_context 'transferred job' do
