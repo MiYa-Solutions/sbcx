@@ -168,7 +168,7 @@ service_call:
       cleared: "status_green"
     billing_status:
       na:  "status_grey"
-      pending: "status_grey"
+      pending:  "status_grey"
       invoiced: "status_blue"
       collected_by_employee: "status_blue"
       collected: "status_blue"
@@ -179,7 +179,17 @@ service_call:
       subcon_claim_deposited: "status_blue"
       invoiced_by_prov: "status_blue"
       overdue: "status_red"
-      paid: "status_blue"
+      paid: "status_green"
       cleared: "status_green"
       rejected: "status_red"
+      partially_collected: "status_blue"
+    subcon_collection_status:
+      deposited: "status_green"
+      pending: "status_grey"
+      collected: "status_blue"
+      p_collected: "status_blue"
+      is_deposited: "status_green"
+      disputed: "status_red"
+      partially_collected: "status_blue"
+
 

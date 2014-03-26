@@ -16,7 +16,7 @@ en:
       appointment_for: "Appointment for Job:"
       balance_affiliates: "Balance - Affiliates"
       balance_customers: "Balance - Customers"
-      job_main: "Job: Main"
+      job_main: "Job: Info"
       job_name: "Job Name"
       send: "Send"
       send_inst: "Send me Instructions"

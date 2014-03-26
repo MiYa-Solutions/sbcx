@@ -1,31 +1,35 @@
 <tr>
   <td><strong><%= I18n.t('general.general.provider_balance') %></strong></td>
-  <% if @service_call.provider_balance < 0 %>
-      <td class="negative">
+  <% if @service_call.try(:provider_balance) == 0 %>
+      <td class="balanced">
         <%= humanized_money_with_symbol @service_call.provider_balance %>
       </td>
-      <td class="help_icon">
-        <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
-      </td>
+      <td></td>
   <% else %>
-      <% if @service_call.provider_balance > 0 %>
+      <% if @service_call.try(:provider_balance) > 0 %>
           <td class="positive">
             <%= humanized_money_with_symbol @service_call.provider_balance %>
-          </td>
-          <td class="help_icon">
+
+            <span class="help_icon">
             <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
+          </span>
           </td>
       <% else %>
-          <td class="balanced">
+          <td class="negative">
             <%= humanized_money_with_symbol @service_call.provider_balance %>
+
+            <span class="help_icon">
+        <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
+      </span>
           </td>
-          <td></td>
+
       <% end %>
-  <% end %>
-  <td class="show_more_button">
+      <td class="show_more_button">
                             <span class="link_blue" id="show_provider_entries">
                                <%= link_to t('general.general.get_entries'), "#prov_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
                               <i class="icon-chevron-down"></i>
                             </span>
-  </td>
-</tr>
+      </td>
+  <% end %>
+
+

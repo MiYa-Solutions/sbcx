@@ -81,18 +81,11 @@
             <td class="show_more_button">
                     <span class="<%= style("service_call.states.subcontractor_status.#{@service_call.subcontractor_status_name}") %>" id="show_subco_statuses">
                        <%= link_to @service_call.human_subcontractor_status_name, "#subco_statuses", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
-                      <i class="icon-chevron-down"></i>
+                      <!--<i class="icon-chevron-down"></i>-->
                     </span>
            </td>
           </tr>
-          <tr>
-            <td><strong> <%= @service_call.class.human_attribute_name(:subcon_collection_status) %></strong></td>
-            <td>
-          <span class="<%= style("service_call.states.subcon_collection_status.#{@service_call.subcon_collection_status_name}") %>" id="service_call_subcon_collection_status">
-          <h3><%= @service_call.human_subcon_collection_status_name %></h3>
-          </span>
-            </td>
-          </tr>
+
 
           </tbody>
         </table>
@@ -115,7 +108,7 @@
             <%= render 'service_calls/transfer_props/subcon_agreement_props' %>
 
             <tr>
-              <td><strong><%= @service_call.class.human_attribute_name(:subcon_agreement) %></strong></td>
+              <td><strong><%= t('general.general.subcon_agreement') %></strong></td>
               <td>
                  <span class="status_grey">
                  <h3><%= link_to(truncate("#{@service_call.subcon_agreement.try(:name)}:#{@service_call.subcon_agreement.try(:id)}", length: 15),
@@ -134,6 +127,17 @@
                   </span>
               </td>
             </tr>
+            <tr>
+
+              <td><strong> <%= t('general.general.collection_status') %></strong></td>
+              <td>
+                    <span class="<%= style("service_call.states.subcon_collection_status.#{@service_call.subcon_collection_status_name}") %>" id="service_call_subcon_collection_status">
+                  <h3><%= @service_call.human_subcon_collection_status_name %></h3>
+                  </span>
+              </td>
+
+            </tr>
+
 
             </tbody>
           </table>
@@ -166,11 +170,8 @@
             <td class="show_more_button">
                   <span class="<%= style("service_call.states.provider_status.#{@service_call.provider_status_name}") %>" id="show_prov_statuses">
                        <%= link_to @service_call.human_provider_status_name, "#prov_statuses", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
-                    <i class="icon-chevron-down"></i>
+                    <!--<i class="icon-chevron-down"></i>-->
                   </span>
-              <!--<i class="icon-chevron-down"></i>-->
-
-
             </td>
           </tr>
           <tr>

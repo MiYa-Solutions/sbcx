@@ -230,3 +230,10 @@ en:
       bottom_content: 'Please click on "Unlock Account" below to unlock your account.'
 
 
+  general:
+    general:
+      collection_status: "Collection Status"
+      subcon_agreement: "Agreement"
+      show_history: "Show History"
+    messages:
+      show_entries: "Click to see all cutsomer billing entries"

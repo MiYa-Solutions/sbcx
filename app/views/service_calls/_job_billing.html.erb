@@ -21,10 +21,15 @@
               <% if @service_call.try(:my_profit) < 0 %>
                   <td class="negative"><%= humanized_money_with_symbol @service_call.my_profit %></td>
               <% else %>
-                  <td class="positive"><%= humanized_money_with_symbol @service_call.my_profit %></td>
+                  <% if @service_call.try(:my_profit) > 0 %>
+                      <td class="positive"><%= humanized_money_with_symbol @service_call.my_profit %></td>
+                  <% else %>
+                      <td class="balanced"><%= humanized_money_with_symbol @service_call.my_profit %></td>
+                  <% end %>
+
               <% end %>
               <td></td>
-              <td></td>
+
             </tr>
 
             <!-- Balance-->
