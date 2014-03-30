@@ -15,7 +15,11 @@
         </li>
       </ul>
     </div>
-      <br>
+
+
+    <div class="row-fluid">
+      <a href="#" data-toggle="collapse" data-target="#customer_billing_entries" class="close" id="bom_close">×</a>
+    </div>
     <%= render 'accounting_entries/customer_entries_table', entries: @service_call.payments %>
 
 
@@ -33,7 +37,7 @@
 
     <div class="smart_label">
       <ul>
-        <li><h1><%= I18n.t('general.general.transfer_job') %></h1></li>
+        <li><h1><%= I18n.t('general.general.customer_entries') %></h1></li>
         <li>
           <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         </li>
@@ -45,7 +49,7 @@
   <div class="modal-body">
         <div class="row-fluid">
 
-          <table class="table table-striped" id="customer_entries_in_service_call">
+           <table class="table table-striped" id="customer_entries_in_service_call">
             <thead>
             <tr>
               <th><%= AccountingEntry.human_attribute_name(:id) %> </th>

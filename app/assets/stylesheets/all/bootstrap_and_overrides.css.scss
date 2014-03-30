@@ -4218,6 +4218,21 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   form {
     margin: 0 0 4px;
   }
+
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    line-height: 16px;
+    margin-right: 10px;
+  }
+
+  li:last-child {
+    float: inherit;
+  }
 }
 
 #entry_clear_btn, #adjustment_entry_deposit_btn {

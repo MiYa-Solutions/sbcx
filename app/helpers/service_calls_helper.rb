@@ -25,7 +25,7 @@ module ServiceCallsHelper
 
   def work_status_forms(service_call)
     if permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)
-      concat(content_tag :h3, t('headers.work_actions')) unless service_call.work_status_events.empty?
+      #concat(content_tag :h3, t('headers.work_actions')) unless service_call.work_status_events.empty?
       service_call.work_status_events.collect do |event|
         #concat(content_tag :li, send("work_#{event}_form".to_sym, service_call))
         concat(render "service_calls/action_forms/work_status_forms/#{event}_form", job: service_call)
@@ -247,7 +247,7 @@ module ServiceCallsHelper
 
     def render
       unless available_events.empty?
-        (@view.concat(@view.content_tag :h3, I18n.t('headers.billing_actions')))
+        #(@view.concat(@view.content_tag :h3, I18n.t('headers.billing_actions')))
         super
       end
     end

@@ -30,7 +30,14 @@
     </li>
     <li>
       <div class="action_buttons_service_call">
-        <%= event_list(@service_call) %>
+        <div class="service_call_events">
+          <%= status_forms(@service_call) %>
+          <%= work_status_forms(@service_call) %>
+        </div>
+
+
+
+        <!--<#%= event_list(@service_call) %>-->
       </div>
 
       </li>
