@@ -184,6 +184,7 @@ service_call:
       rejected: "status_red"
       partially_collected: "status_blue"
       in_process: "status_blue"
+      over_paid: "status_red"
     subcon_collection_status:
       deposited: "status_green"
       pending: "status_grey"
