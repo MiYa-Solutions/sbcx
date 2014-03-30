@@ -282,7 +282,9 @@ module ServiceCallsHelper
           paid:                   'paid_form',
           reject:                 'reject_form',
           overdue:                'overdue_form',
-          reimburse:              'reimburse_form'
+          reimburse:              'reimburse_form',
+          mark_as_overpaid:       'overdue_form'
+
       }
     end
 
