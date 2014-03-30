@@ -285,3 +285,6 @@ en:
     description: "The following job properties were updated by: %{updating_org}"
   service_call_prop_synch_event:
     description: '%{attr_name} - New Value: ''%{new_val}'', Old Value: ''%{old_val}'''
+  sc_customer_reimbursement_event:
+    name: "Customer_Reimbursement"
+    description: "You have reimbursed the customer for overpaying."

@@ -36,3 +36,7 @@ en:
   accounting_entry:
     description:
       customer_reimbursement: 'Reimbursement submitted for the amount of: %{amount}'
+
+  payment_cleared_event:
+    name: 'Cleared Payment'
+    description: 'payment payment was cleared successfully'
