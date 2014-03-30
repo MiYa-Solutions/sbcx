@@ -33,3 +33,6 @@ en:
       description: 'Reimbursement for American Express payment clearing for %{ticket}'
     cheque:
       description: 'Reimbursement for check clearing for %{ticket}'
+  accounting_entry:
+    description:
+      customer_reimbursement: 'Reimbursement submitted for the amount of: %{amount}'

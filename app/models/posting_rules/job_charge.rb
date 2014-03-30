@@ -46,6 +46,8 @@ class JobCharge < CustomerPostingRule
         collection_entries
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
         cancellation_entries
+      when ScCustomerReimbursementEvent.name
+        reimbursement_entries
       else
         raise "Unexpected Event to be processed by JobCharge posting rule"
 
@@ -60,7 +62,7 @@ class JobCharge < CustomerPostingRule
                               status:      AccountingEntry::STATUS_CLEARED,
                               amount:      charge_amount,
                               agreement:   agreement,
-                              description: "Entry to provider owned account")
+                              description: 'Service Charge')
     ]
   end
 
@@ -72,7 +74,7 @@ class JobCharge < CustomerPostingRule
                                   ticket:      @ticket,
                                   amount:      -charge_amount,
                                   agreement:   agreement,
-                                  description: "Reimbursement for a canceled job")
+                                  description: 'Reimbursement for a canceled job')
     ]
   end
 
@@ -87,6 +89,8 @@ class JobCharge < CustomerPostingRule
       when ScCollectEvent.name, ScCollectedEvent.name
         true
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
+        true
+      when ScCustomerReimbursementEvent.name
         true
       else
         false
@@ -110,6 +114,11 @@ class JobCharge < CustomerPostingRule
       props[:collector] = @ticket.collector ? @ticket.collector : @ticket.organization
     end
 
+    # if the collector is the subcon update matching collection entry
+    if props[:collector] == @ticket.subcontractor.becomes(Organization)
+      props[:matching_entry] = @event.accounting_entries.where(type: CollectedEntry.subclasses.map(&:name)).first
+    end
+
 
     case @event.payment_type
       when 'cash'
@@ -126,6 +135,19 @@ class JobCharge < CustomerPostingRule
 
     [entry]
 
+  end
+
+  def reimbursement_entries
+    the_amount = Money.new(@ticket.payments.with_status(:cleared).sum(:amount_cents).abs - @ticket.total.cents, @ticket.total.currency)
+
+    props = { amount:      the_amount,
+              ticket:      @ticket,
+              event:       @event,
+              agreement:   agreement,
+              description: I18n.t('accounting_entry.description.customer_reimbursement', amount: the_amount) }
+
+
+    [CustomerReimbursement.new(props)]
   end
 
 end

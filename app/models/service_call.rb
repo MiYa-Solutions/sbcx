@@ -2,55 +2,58 @@
 #
 # Table name: tickets
 #
-#  id                    :integer          not null, primary key
-#  customer_id           :integer
-#  notes                 :text
-#  started_on            :datetime
-#  organization_id       :integer
-#  completed_on          :datetime
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  status                :integer
-#  subcontractor_id      :integer
-#  technician_id         :integer
-#  provider_id           :integer
-#  subcontractor_status  :integer
-#  type                  :string(255)
-#  ref_id                :integer
-#  creator_id            :integer
-#  updater_id            :integer
-#  settled_on            :datetime
-#  billing_status        :integer
-#  settlement_date       :datetime
-#  name                  :string(255)
-#  scheduled_for         :datetime
-#  transferable          :boolean          default(TRUE)
-#  allow_collection      :boolean          default(TRUE)
-#  collector_id          :integer
-#  collector_type        :string(255)
-#  provider_status       :integer
-#  work_status           :integer
-#  re_transfer           :boolean          default(TRUE)
-#  payment_type          :string(255)
-#  subcon_payment        :string(255)
-#  provider_payment      :string(255)
-#  company               :string(255)
-#  address1              :string(255)
-#  address2              :string(255)
-#  city                  :string(255)
-#  state                 :string(255)
-#  zip                   :string(255)
-#  country               :string(255)
-#  phone                 :string(255)
-#  mobile_phone          :string(255)
-#  work_phone            :string(255)
-#  email                 :string(255)
-#  subcon_agreement_id   :integer
-#  provider_agreement_id :integer
-#  tax                   :float            default(0.0)
-#  subcon_fee_cents      :integer          default(0), not null
-#  subcon_fee_currency   :string(255)      default("USD"), not null
-#  properties            :hstore
+#  id                       :integer          not null, primary key
+#  customer_id              :integer
+#  notes                    :text
+#  started_on               :datetime
+#  organization_id          :integer
+#  completed_on             :datetime
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  status                   :integer
+#  subcontractor_id         :integer
+#  technician_id            :integer
+#  provider_id              :integer
+#  subcontractor_status     :integer
+#  type                     :string(255)
+#  ref_id                   :integer
+#  creator_id               :integer
+#  updater_id               :integer
+#  settled_on               :datetime
+#  billing_status           :integer
+#  settlement_date          :datetime
+#  name                     :string(255)
+#  scheduled_for            :datetime
+#  transferable             :boolean          default(TRUE)
+#  allow_collection         :boolean          default(TRUE)
+#  collector_id             :integer
+#  collector_type           :string(255)
+#  provider_status          :integer
+#  work_status              :integer
+#  re_transfer              :boolean          default(TRUE)
+#  payment_type             :string(255)
+#  subcon_payment           :string(255)
+#  provider_payment         :string(255)
+#  company                  :string(255)
+#  address1                 :string(255)
+#  address2                 :string(255)
+#  city                     :string(255)
+#  state                    :string(255)
+#  zip                      :string(255)
+#  country                  :string(255)
+#  phone                    :string(255)
+#  mobile_phone             :string(255)
+#  work_phone               :string(255)
+#  email                    :string(255)
+#  subcon_agreement_id      :integer
+#  provider_agreement_id    :integer
+#  tax                      :float            default(0.0)
+#  subcon_fee_cents         :integer          default(0), not null
+#  subcon_fee_currency      :string(255)      default("USD"), not null
+#  properties               :hstore
+#  external_ref             :string(255)
+#  subcon_collection_status :integer
+#  prov_collection_status   :integer
 #
 
 class ServiceCall < Ticket
@@ -59,9 +62,9 @@ class ServiceCall < Ticket
     current_payment = payment_amount || 0
 
     if options[:work_in_progress].nil?
-      work_done? ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+      work_done? ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
     else
-      total > 0 ? total + (paid_amount - Money.new(current_payment.to_f * 100, total.currency)) <=0 : false
+      total > 0 ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
     end
 
   end
@@ -112,9 +115,11 @@ class ServiceCall < Ticket
     state :done, value: WORK_STATUS_DONE
 
     after_transition any => :done do |sc, transition|
-      sc.collect_payment!(:state_only) if sc.respond_to?(:can_collect_payment?) && sc.can_collect_payment?
-      sc.collected_subcon_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
-      sc.collected_prov_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
+      if sc.payments.size > 0
+        sc.collect_payment!(:state_only) if sc.respond_to?(:can_collect_payment?) && sc.can_collect_payment?
+        sc.collected_subcon_collection!(:state_only) if sc.respond_to?(:can_collected_subcon_collection?) && sc.can_collected_subcon_collection?
+        sc.collected_prov_collection!(:state_only) if sc.respond_to?(:can_collected_prov_collection?) && sc.can_collected_prov_collection?
+      end
     end
 
     after_failure do |service_call, transition|
@@ -304,7 +309,6 @@ class ServiceCall < Ticket
   end
 
 
-
   private
 
   def financial_data_change
@@ -312,11 +316,11 @@ class ServiceCall < Ticket
   end
 
   def all_deposit_entries_confirmed?
-    entries.where(type: DepositEntry.subclasses).map(&:status).select {|status| status != ConfirmableEntry::STATUS_CONFIRMED}.empty?
+    entries.where(type: DepositEntry.subclasses).map(&:status).select { |status| status != ConfirmableEntry::STATUS_CONFIRMED }.empty?
   end
 
   def all_collection_entries_deposited?
-    entries.where(type: CollectionEntry.subclasses).map(&:status).select {|status| status != CollectionEntry::STATUS_DEPOSITED}.empty?
+    entries.where(type: CollectionEntry.subclasses).map(&:status).select { |status| status != CollectionEntry::STATUS_DEPOSITED }.empty?
   end
 
 end

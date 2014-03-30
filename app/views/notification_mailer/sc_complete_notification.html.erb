@@ -112,7 +112,7 @@
                               </td>
                               <td valign="top" class="dataTableContent">
                                 <!--<strong><#%= @service_call.scheduled_for %></strong>-->
-                                <strong><%= I18n.l @service_call.completed_on_text, format: :default if @service_call.completed_on_text %></strong>
+                                <strong><%= I18n.l @service_call.completed_on, format: :default if @service_call.completed_on_text %></strong>
 
 
                               </td>

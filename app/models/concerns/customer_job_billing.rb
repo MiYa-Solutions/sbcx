@@ -65,6 +65,11 @@ module CustomerJobBilling
         transition :collected => :in_process, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
       end
 
+      event :reimburse do
+        transition :over_paid => :paid
+      end
+
+
       event :mark_as_fully_paid do
         transition :partially_collected => :paid, if: ->(sc) { sc.fully_paid? }
       end
@@ -79,7 +84,7 @@ module CustomerJobBilling
 
   def overpaid?
     current_payment = payment_amount || 0
-    total.cents + (cleared_payment_cents - current_payment.to_f * 100) < 0
+    total.cents - (cleared_payment_cents.abs + current_payment.to_f * 100) < 0
   end
 
   def check_and_set_as_fully_paid

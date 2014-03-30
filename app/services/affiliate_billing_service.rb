@@ -1,4 +1,4 @@
-class AffiliateBillingService
+class AffiliateBillingService < BillingService
   def initialize(event)
     @event              = event
     @ticket             = event.eventable
@@ -6,37 +6,8 @@ class AffiliateBillingService
   end
 
   def execute
-    @ticket.counterparty.each do |affiliate|
-      @account = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'",
-                               @ticket.organization_id,
-                               affiliate.id,
-      ).first
-
-
-      agreement = find_affiliate_agreement
-      Rails.logger.debug { "BillingService execution for agreement: #{agreement.inspect}" }
-      posting_rules = agreement.find_posting_rules(@event)
-      Rails.logger.debug { "BillingService execution for posting rules: #{posting_rules.inspect}" }
-
-      @accounting_entries[@account] = get_accounting_entries(posting_rules)
-
-    end
-
-    AccountingEntry.transaction do
-      @accounting_entries.each do |account, entries|
-        account.lock!
-        entries.each do |entry|
-          account.entries << entry
-          if entry.matching_entry
-            entry.matching_entry.matching_entry = entry
-            entry.matching_entry.save!
-          end
-          Rails.logger.debug { "Added entry to account: valid? #{entry.valid?}\n#{entry.inspect}" }
-        end
-
-      end
-    end
-
+    collect_accounting_entries
+    persist_accounting_entries
   end
 
   def find_affiliate_agreement
@@ -68,6 +39,30 @@ class AffiliateBillingService
     end
     entries
   end
+
+  private
+
+  def collect_accounting_entries
+    @ticket.counterparty.each do |affiliate|
+      @account = Account.where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'",
+                               @ticket.organization_id,
+                               affiliate.id,
+      ).first
+
+
+      agreement = find_affiliate_agreement
+      Rails.logger.debug { "BillingService execution for agreement: #{agreement.inspect}" }
+      posting_rules = agreement.find_posting_rules(@event)
+      Rails.logger.debug { "BillingService execution for posting rules: #{posting_rules.inspect}" }
+
+      @accounting_entries[@account] = get_accounting_entries(posting_rules)
+
+    end
+
+  end
+
+
+
 
 
 end

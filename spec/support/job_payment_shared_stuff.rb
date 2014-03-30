@@ -80,6 +80,8 @@ shared_examples 'successful customer payment collection' do
     it_behaves_like 'payment successfully collected', 'billing_status_4_cash', 'subcon_collection_status_4_cash', 'prov_collection_status_4_cash'
 
     it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
+
+    it_behaves_like  'correct provider billing statuses'
   end
 
   context 'when collecting credit card' do
@@ -128,6 +130,21 @@ shared_examples 'successful customer payment collection' do
     include_context 'when the provider cancels the job'
     it_should_behave_like 'provider job is canceled'
     it_should_behave_like 'provider job canceled after completion'
+  end
+
+end
+
+shared_examples 'correct provider billing statuses' do
+  let(:provider_job) { the_prov_job || raise('you need to pass a let(:the_job) when including correct provider billing statuses examples') }
+  let(:billing_status) { the_billing_status || raise('you need to pass a let(:the_job) when including correct provider billing statuses examples') }
+  let(:subcon_collection_status) { the_subcon_collection_status || raise('you need to pass a let(:the_subcon_collection_status) when including when including correct provider billing statuses examples') }
+
+  it 'should have the expected billing status' do
+    expect(provider_job.billing_status_name).to eq  billing_status unless the_prov_job.nil?
+  end
+
+  it 'should have the expected subcon collection status' do
+    expect(provider_job.subcon_collection_status_name).to eq  billing_status unless the_prov_job.nil?
   end
 
 end
