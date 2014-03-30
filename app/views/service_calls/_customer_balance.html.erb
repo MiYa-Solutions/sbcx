@@ -9,13 +9,17 @@
       <% else %>
           <td class="negative"><%= humanized_money_with_symbol @service_call.customer_balance %></td>
       <% end %>
-      <td class="show_more_button">
-                            <span class="link_blue" id="show_customer_entries">
-                               <%= link_to t('general.general.get_entries'), "#customer_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
-                              <i class="icon-chevron-down"></i>
-                            </span>
-      </td>
   <% end %>
+  <td class="show_more_button">
+    <% unless @service_call.payment_pending? %>
+
+      <span class="link_blue" id="show_customer_entries">
+           <%= link_to t('general.general.get_entries'), "#customer_billing_entries", class: "", data: {toggle: 'collapse'}, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+        <i class="icon-chevron-down"></i>
+      </span>
+
+    <% end %>
+  </td>
 
 
 </tr>
