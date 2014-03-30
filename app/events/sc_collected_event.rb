@@ -19,8 +19,8 @@ class ScCollectedEvent < CollectionEvent
   end
 
   def process_event
-    update_customer_bill
     update_affiliate_bill
+    update_customer_bill
     update_statuses
     super
   end

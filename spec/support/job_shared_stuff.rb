@@ -45,9 +45,10 @@ shared_context 'basic job testing' do
   end
 
   def collect_a_payment(job, options = {})
-    job.payment_type   = options[:type]
-    job.payment_amount = options[:amount]
-    job.collector      = options[:collector]
+    job.payment_type   = options[:type] || 'cash'
+    job.payment_amount = options[:amount] || 0
+    job.collector      = options[:collector] || job.organization
+
     job.collect_payment!
     job.payment_type   = nil
     job.payment_amount = nil
@@ -72,12 +73,12 @@ shared_context 'basic job testing' do
   end
 
   def collect_full_amount(job, options = {})
-      type      = options[:type] ? options[:type] : 'cash'
-      collector = options[:collector] ? options[:collector] : job.organization
+    type      = options[:type] ? options[:type] : 'cash'
+    collector = options[:collector] ? options[:collector] : job.organization
 
-      amount         = job.total - job.paid_amount
-      payment_amount = amount > 0 ? amount : nil
-      collect_a_payment job, amount: payment_amount, type: type, collector: collector
+    amount         = job.total - job.paid_amount
+    payment_amount = amount > 0 ? amount : nil
+    collect_a_payment job, amount: payment_amount, type: type, collector: collector
   end
 end
 

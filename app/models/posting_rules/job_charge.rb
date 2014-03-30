@@ -62,7 +62,7 @@ class JobCharge < CustomerPostingRule
                               status:      AccountingEntry::STATUS_CLEARED,
                               amount:      charge_amount,
                               agreement:   agreement,
-                              description: "Entry to provider owned account")
+                              description: 'Service Charge')
     ]
   end
 
@@ -74,7 +74,7 @@ class JobCharge < CustomerPostingRule
                                   ticket:      @ticket,
                                   amount:      -charge_amount,
                                   agreement:   agreement,
-                                  description: "Reimbursement for a canceled job")
+                                  description: 'Reimbursement for a canceled job')
     ]
   end
 
@@ -112,6 +112,11 @@ class JobCharge < CustomerPostingRule
       props[:collector] = @event.collector
     else
       props[:collector] = @ticket.collector ? @ticket.collector : @ticket.organization
+    end
+
+    # if the collector is the subcon update matching collection entry
+    if props[:collector] == @ticket.subcontractor.becomes(Organization)
+      props[:matching_entry] = @event.accounting_entries.where(type: CollectedEntry.subclasses.map(&:name)).first
     end
 
 
