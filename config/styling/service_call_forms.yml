@@ -183,6 +183,7 @@ service_call:
       cleared: "status_green"
       rejected: "status_red"
       partially_collected: "status_blue"
+      in_process: "status_blue"
     subcon_collection_status:
       deposited: "status_green"
       pending: "status_grey"
