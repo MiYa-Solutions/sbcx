@@ -2,12 +2,25 @@
   <td><strong> <%= "Customer Balance" %></strong></td>
   <% if @service_call.try(:customer_balance) == 0 %>
       <td class="balanced"><%= humanized_money_with_symbol @service_call.customer_balance %></td>
-      <td></td>
+      <!--<td></td>-->
   <% else %>
       <% if @service_call.try(:customer_balance) > 0 %>
-          <td class="positive"><%= humanized_money_with_symbol @service_call.customer_balance %></td>
+          <td class="positive">
+            <%= humanized_money_with_symbol @service_call.customer_balance %>
+
+            <span class="help_icon">
+            <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
+          </span>
+          </td>
+
       <% else %>
-          <td class="negative"><%= humanized_money_with_symbol @service_call.customer_balance %></td>
+          <td class="negative">
+            <%= humanized_money_with_symbol @service_call.customer_balance %>
+
+            <span class="help_icon">
+        <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
+      </span>
+          </td>
       <% end %>
   <% end %>
   <td class="show_more_button">
@@ -23,3 +36,4 @@
 
 
 </tr>
+

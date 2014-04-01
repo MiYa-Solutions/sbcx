@@ -50,21 +50,24 @@
   <!--end row-->
 </div>
 
+
+<!--
+
 <h2>Actions</h2>
 <div class="row-fluid well">
-  <%= status_forms(@service_call) %>
+  <#%= status_forms(@service_call) %>
 </div>
 <div class="row-fluid well">
-  <%= work_status_forms(@service_call) %>
+  <#%= work_status_forms(@service_call) %>
 </div>
 <div class="row-fluid well">
-  <%= billing_status_forms(@service_call) %>
+  <#%= billing_status_forms(@service_call) %>
 </div>
 <div class="row-fluid well">
-  <%= subcontractor_status_forms(@service_call) %>
+  <#%= subcontractor_status_forms(@service_call) %>
 </div>
 <div class="row-fluid well">
-  <%= provider_status_forms(@service_call) %>
+  <#%= provider_status_forms(@service_call) %>
 </div>
 
 <h2>Payments, Collections, Deposits</h2>
@@ -72,27 +75,28 @@
   <hr>
   <div class="well">
     <h3>Payments (customer billing)</h3>
-    <%= render 'accounting_entries/entries_table', entries: @service_call.payments %>
+    <#%= render 'accounting_entries/entries_table', entries: @service_call.payments %>
   </div>
   <hr>
 
   <div class="well">
     <h3>Collections(when I collected for a provider)</h3>
-    <%= render 'accounting_entries/entries_table', entries: @service_call.collection_entries %>
+    <#%= render 'accounting_entries/entries_table', entries: @service_call.collection_entries %>
   </div>
   <hr>
 <div class="well">
   <h3>Collected (collected by a subcon for me)</h3>
-  <%= render 'accounting_entries/entries_table', entries: @service_call.collected_entries %>
+  <#%= render 'accounting_entries/entries_table', entries: @service_call.collected_entries %>
 </div>  <hr>
 <div class="well">
   <h3>My Deposits (when I'm broker or subcon and deposited a collection to a provider)</h3>
-  <%= render 'accounting_entries/entries_table', entries: @service_call.deposit_entries %>
+  <#%= render 'accounting_entries/entries_table', entries: @service_call.deposit_entries %>
 </div>
   <hr>
 <div class="well">  <h3>Deposits To Me (by affilaite)</h3>
-  <%= render 'accounting_entries/entries_table', entries: @service_call.deposited_entries %>
+  <#%= render 'accounting_entries/entries_table', entries: @service_call.deposited_entries %>
 </div></div>
 
+-->
 
 

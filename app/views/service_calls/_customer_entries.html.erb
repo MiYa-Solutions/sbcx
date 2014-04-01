@@ -4,7 +4,7 @@
       <ul>
         <li><h1><%= I18n.t('general.general.customer_entries').html_safe %></h1>
         <li>
-          <%= link_to(t('general.general.show_history'), '#job_customer_entries',
+          <%= link_to(t('general.general.more'), '#job_customer_entries',
                       class: "btn btn-large btn-primary ",
                       data: { toggle: 'modal' },
                       title: I18n.t('general.messages.show_entries'),
@@ -18,7 +18,7 @@
 
 
     <div class="row-fluid">
-      <a href="#" data-toggle="collapse" data-target="#customer_billing_entries" class="close" id="bom_close">×</a>
+      <a href="#" data-toggle="collapse" data-target="#customer_billing_entries" class="close" id="customer_billing_entries_close">×</a>
     </div>
     <%= render 'accounting_entries/customer_entries_table', entries: @service_call.payments %>
 
@@ -31,7 +31,7 @@
 
 
 
-
+<!--More modal-->
 <div id='job_customer_entries' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
 

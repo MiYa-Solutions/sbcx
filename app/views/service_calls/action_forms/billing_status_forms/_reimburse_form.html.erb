@@ -1,3 +1,5 @@
+<div class="span6">
+
 <%= simple_form_for job.becomes(ServiceCall), html: { class: 'green-button' } do |f| %>
     <%= hidden_field_tag 'service_call[billing_status_event]', 'reimburse' %>
     <%= f.submit job.class.human_billing_status_event_name(:reimburse).titleize,
@@ -8,3 +10,4 @@
     %>
 <% end %>
 
+ </div>

@@ -3,37 +3,87 @@
     <div class="smart_label">
       <ul>
         <li><h1><%= I18n.t('general.general.subcon_entries').html_safe %></h1>
-        <li></li>
+        <li>
+          <%= link_to(t('general.general.more'), '#job_subcon_entries',
+                      class: "btn btn-large btn-primary ",
+                      data: { toggle: 'modal' },
+                      title: I18n.t('general.messages.show_subcon_entries'),
+                      rel:   'tooltip',
+                      role: "button",
+                      id: "job_subcon_entries_btn") %>
+
+        </li>
       </ul>
     </div>
 
-    <table class="table table-striped" id="subcon_entries_in_service_call">
-      <thead>
-      <tr>
-        <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
-        <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
-        <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
-        <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
-        <th><%= AccountingEntry.human_attribute_name(:type) %></th>
-        <th><%= AccountingEntry.human_attribute_name(:description) %></th>
-        <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @service_call.subcon_entries.each do |entry| %>
-          <tr>
-            <td><%= entry.id %></td>
-            <td><%= entry.account.accountable.name %></td>
-            <td><%= entry.account.accountable.class.model_name.human %></td>
-            <td><%= l entry.created_at %></td>
-            <td><%= entry.type.constantize.model_name.human %></td>
-            <td><%= entry.description %></td>
-            <td><%= humanized_money_with_symbol entry.amount %></td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
+
+    <div class="row-fluid">
+      <a href="#" data-toggle="collapse" data-target="#subco_billing_entries" class="close" id="subco_billing_entries_close">×</a>
+    </div>
+
+
+    <%= render 'accounting_entries/affilaite_entries_table', entries: @service_call.subcon_entries %>
+
+
+
   </div>
   <br>
   <br>
+</div>
+
+
+
+<!--More modal-->
+<div id='job_subcon_entries' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.subcon_entries') %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+    <div class="row-fluid">
+
+      <table class="table table-striped" id="subcon_entries_in_service_call">
+        <thead>
+        <tr>
+          <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+          <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
+          <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
+          <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
+          <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:description) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
+          <th><%= AccountingEntry.human_attribute_name(:balance) %> </th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @service_call.subcon_entries.each do |entry| %>
+            <tr>
+              <td><%= entry.id %></td>
+              <td><%= entry.account.accountable.name %></td>
+              <td><%= entry.account.accountable.class.model_name.human %></td>
+              <td><%= l entry.created_at %></td>
+              <td><%= entry.type.constantize.model_name.human %></td>
+              <td><%= entry.description %></td>
+              <td><%= humanized_money_with_symbol entry.amount %></td>
+              <td><%= humanized_money_with_symbol entry.balance %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+
+  </div>
 </div>

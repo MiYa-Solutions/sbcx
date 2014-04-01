@@ -1,3 +1,4 @@
+<div class="span6">
 <%= simple_form_for job.becomes(ServiceCall), html: { class: style('service_call.forms.status.cancel.form_classes') } do |f| %>
     <%= hidden_field_tag 'service_call[status_event]', 'cancel' %>
     <%= f.submit job.class.human_status_event_name(:cancel).titleize,
@@ -9,3 +10,4 @@
     %>
 <% end %>
 
+</div>

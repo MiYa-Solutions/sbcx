@@ -1,3 +1,5 @@
+<div class="span6">
+
 <%= simple_form_for job.becomes(ServiceCall), html: { class: 'red-button' } do |f| %>
     <%= hidden_field_tag 'service_call[billing_status_event]', 'late' %>
     <%= f.submit job.class.human_billing_status_event_name(:late).titleize,
@@ -8,3 +10,5 @@
     %>
 <% end %>
 
+
+</div>

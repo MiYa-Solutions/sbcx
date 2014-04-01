@@ -44,6 +44,8 @@
                     <%= render 'customer_balance' %>
                     <%= render 'subcon_balance' unless @service_call.subcon_na? %>
                 <% end %>
+
+
                 </tbody>
               </table>
         </div>
@@ -56,7 +58,36 @@
                 </div>
 
                   <div class="service_call_events">
+                    <div class="row-fluid">
                         <%= billing_status_forms(@service_call) %>
+
+                    </div>
+
+                    <div class="row-fluid">
+                      <div class="collapse" id="collect_job">
+
+                        <%= simple_form_for @service_call.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
+                            <%= f.label :collector %>
+                            <%= collector_tag(@service_call) %>
+
+                            <%= hidden_field_tag 'service_call[billing_status_event]', 'collect' %>
+
+                            <%= f.input :payment_type, collection: payment_types, label: t('general.general.payment_type') %>
+                            <%= f.input :payment_amount %>
+                            <%= f.submit I18n.t('general.general.submit'),
+                                         id:          'collect_service_call_btn',
+                                         class:       'btn btn-primary',
+                                         "data-theme" => "b",
+                                         title:       I18n.t('service_call.forms.billing_status.collection.tooltip'),
+                                         rel:         'tooltip'
+                            %>
+                        <% end %>
+
+                      </div>
+
+
+
+                    </div>
                   </div>
             </div>
          </div>
