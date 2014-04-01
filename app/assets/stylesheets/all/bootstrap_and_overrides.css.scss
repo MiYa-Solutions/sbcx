@@ -1708,10 +1708,14 @@ a:hover {
 
 .service_call_events {
   padding-bottom: 10px;
-  margin-left: 14%;
+  margin-left: 5%;
   padding-top: 15px;
-  width: 80%;
+  width: 90%;
 
+  .span6 {
+   float: left;
+    margin-left: 0.1%;
+  }
 
   .transfer_btn {
     margin-right: 24px;
@@ -1719,18 +1723,21 @@ a:hover {
 
   h3 {
     background-color: #999999;
-    color: white;
+    border-radius: 4px;
+    color: #FFFFFF;
+    font-family: Century Gothic;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: normal;
     letter-spacing: 0.01em;
     line-height: 18px;
     margin-bottom: 10px;
-    margin-left: 0;
+    margin-left: -5px;
+    margin-right: 0;
+    padding: 4px 5px;
     text-align: center;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    width: 90%;
-    padding-bottom: 3px;
-    padding-top: 3px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    width: 93%;
+
   }
 
   a {
@@ -1739,10 +1746,10 @@ a:hover {
 
   .btn-large {
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: normal;
     height: 30px;
-    min-width: 90%;
+    min-width: 95%;
     padding-top: 7px;
     text-transform: uppercase;
   }
@@ -1780,7 +1787,36 @@ a:hover {
     margin-top: 3px;
   }
 
+  .btn_collapse {
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    height: 19px;
+    min-width: 75%;
+    padding-top: 6px;
+    text-transform: uppercase;
+  }
 
+  #dispatch-button {
+    margin-bottom: 5px;
+    margin-left: -0.9%;
+  }
+
+  #start_service_call_btn {
+    margin-left: -0.9%;
+  }
+
+  #complete_service_call_btn {
+    margin-left: -0.9%;
+  }
+
+  #service_call_payment_type {
+    width: 84%;
+  }
+
+  #service_call_collector_id {
+    width: 84%;
+  }
 
 
   label {
@@ -1790,9 +1826,7 @@ a:hover {
 
 }
 
-.action_buttons_service_call {
-  background-color: #EEEEEE;
-}
+
 
 .success {
   background-color: #468847;
@@ -4151,43 +4185,43 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   margin-left: -0.5%;
 }
 
-#invite_accept_btn {
-  background-color: #5CB85C;
-  border-color: #4CAE4C;
-  color: #FFFFFF;
-  -moz-user-select: none;
-  background-image: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857;
-  padding: 6px 12px;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-}
-
-#invite_decline_btn {
-  background-color: #D9534F;
-  border-color: #D43F3A;
-  color: #FFFFFF;
-  -moz-user-select: none;
-  background-image: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857;
-  padding: 6px 12px;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-}
+//#invite_accept_btn {
+//  background-color: #5CB85C;
+//  border-color: #4CAE4C;
+//  color: #FFFFFF;
+//  -moz-user-select: none;
+//  background-image: none;
+//  border-radius: 4px;
+//  cursor: pointer;
+//  display: inline-block;
+//  font-size: 14px;
+//  font-weight: normal;
+//  line-height: 1.42857;
+//  padding: 6px 12px;
+//  text-align: center;
+//  vertical-align: middle;
+//  white-space: nowrap;
+//  font-family: inherit;
+//}
+//
+//#invite_decline_btn {
+//  background-color: #D9534F;
+//  border-color: #D43F3A;
+//  color: #FFFFFF;
+//  -moz-user-select: none;
+//  background-image: none;
+//  border-radius: 4px;
+//  cursor: pointer;
+//  display: inline-block;
+//  font-size: 14px;
+//  font-weight: normal;
+//  line-height: 1.42857;
+//  padding: 6px 12px;
+//  text-align: center;
+//  vertical-align: middle;
+//  white-space: nowrap;
+//  font-family: inherit;
+//}
 
 .entry_small_btn {
   font-size: 12px;
@@ -4198,6 +4232,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 .customer_entry_small_btn {
   font-size: 11px;
+  margin-bottom: -6px;
   margin-right: -5px;
   padding: 2px 6px;
 }
@@ -4234,104 +4269,6 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     float: inherit;
   }
 }
-
-#entry_clear_btn, #adjustment_entry_deposit_btn {
-  color: #FFFFFF;
-  -moz-user-select: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-weight: normal;
-  line-height: 1.42857;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-  background-color: #5BB65B;
-  background-image: -moz-linear-gradient(center top , #62C462, #51A351);
-  background-repeat: repeat-x;
-  border-color: #51A351 #51A351 #387038;
-  -moz-border-bottom-colors: none;
-  -moz-border-left-colors: none;
-  -moz-border-right-colors: none;
-  -moz-border-top-colors: none;
-  border-image: none;
-  border-style: solid;
-  border-width: 1px;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-  display: inline-block;
-  margin-bottom: 0;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-
-
-
-}
-
-#adjustment_entry_accept_btn {
-  background-color: #5CB85C;
-  border-color: #4CAE4C;
-  color: #FFFFFF;
-  -moz-user-select: none;
-  background-image: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-weight: normal;
-  line-height: 1.42857;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-  float: left;
-  -moz-border-bottom-colors: none;
-  -moz-border-left-colors: none;
-  -moz-border-right-colors: none;
-  -moz-border-top-colors: none;
-  border-image: none;
-  border-style: solid;
-  border-width: 1px;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-  display: inline-block;
-  margin-bottom: 0;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-}
-
-#adjustment_entry_reject_btn, #adjustment_entry_cancel_btn {
-  color: #FFFFFF;
-  -moz-user-select: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-weight: normal;
-  line-height: 1.42857;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-  float: left;
-  -moz-border-bottom-colors: none;
-  -moz-border-left-colors: none;
-  -moz-border-right-colors: none;
-  -moz-border-top-colors: none;
-  border-image: none;
-  border-style: solid;
-  border-width: 1px;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-  display: inline-block;
-  margin-bottom: 0;
-  text-align: center;
-  vertical-align: middle;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #DA4E49;
-  background-image: -moz-linear-gradient(center top , #EE5F5B, #BD362F);
-  background-repeat: repeat-x;
-  border-color: #BD362F #BD362F #802420;
-}
-
 
 .status_adj_entry {
   width: 22%;
@@ -4548,5 +4485,18 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 
+.affiliate_actions {
+  min-height: 100px;
+}
 
+.job_actions_r {
+  margin-top: 1px;
+
+
+}
+
+.action_buttons_service_call {
+  background-color: #EEEEEE;
+  padding-bottom: 10px;
+}
 
