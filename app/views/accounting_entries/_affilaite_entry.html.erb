@@ -2,7 +2,7 @@
   <td id="entry_<%= accounting_entry.id %>_id"><%= accounting_entry.id %></td>
   <td id="entry_<%= accounting_entry.id %>_type">
     <%= link_to(accounting_entry.class.model_name.human, '#job_customer_entries_eventsss',
-                data: { toggle: 'collapse', parent: 'job_customer_entries_eventsss' },
+                data: { toggle: 'collapse' },
                 title: I18n.t('general.messages.show_entries'),
                 rel:   'tooltip',
                 id: "job_customer_entries_events_link") %>
