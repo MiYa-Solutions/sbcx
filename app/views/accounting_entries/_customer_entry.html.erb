@@ -1,6 +1,12 @@
 <tr id="accounting_entry_<%= accounting_entry.id %>">
   <td id="entry_<%= accounting_entry.id %>_id"><%= accounting_entry.id %></td>
-  <td id="entry_<%= accounting_entry.id %>_type"><%= accounting_entry.class.model_name.human %></td>
+  <td id="entry_<%= accounting_entry.id %>_type">
+    <%= link_to(accounting_entry.class.model_name.human, '#job_customer_entries_eventsss',
+                data: { toggle: 'collapse', parent: 'job_customer_entries_eventsss' },
+                title: I18n.t('general.messages.show_entries'),
+                rel:   'tooltip',
+                id: "job_customer_entries_events_link") %>
+  </td>
   <td id="entry_<%= accounting_entry.id %>_status"><%= accounting_entry.human_status_name.humanize %></td>
   <td id="entry_<%= accounting_entry.id %>_collector"><%= accounting_entry.collector.name if defined? accounting_entry.collector %></td>
   <td id="entry_<%= accounting_entry.id %>_amount"><%= humanized_money_with_symbol accounting_entry.amount %></td>
@@ -9,4 +15,11 @@
   <td>
   </td>
 </tr>
+
+
+
+
+
+
+
 

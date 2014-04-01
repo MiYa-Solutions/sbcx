@@ -1,0 +1,4 @@
+<%= simple_form_for entry.becomes(AccountingEntry), html: { class: 'adj_entry_accept_form' } do |f| %>
+    <%= f.hidden_field :status_event, value: 'confirmed' %>
+    <%= f.submit entry.class.human_status_event_name(:confirmed).titleize, id: "adjustment_entry_confirmed_btn_#{entry.id}", class: "customer_entry_small_btn btn btn-mini btn-primary"  %>
+<% end %>
