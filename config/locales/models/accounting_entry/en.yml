@@ -39,4 +39,7 @@ en:
 
   payment_cleared_event:
     name: 'Cleared Payment'
-    description: 'payment payment was cleared successfully'
+    description: 'payment has been cleared successfully'
+  payment_deposited_event:
+    name: 'Deposited Payment'
+    description: 'payment has been deposited successfully'

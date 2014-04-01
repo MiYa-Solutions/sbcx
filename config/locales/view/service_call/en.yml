@@ -18,7 +18,7 @@ en:
           tooltip: "Click to confirm this job has been settled"
         settle:
           tooltip: "Click here to indicate that the subcontractor fee is settled"
-          label: "Select Payment Method"
+          label: "Payment Method"
       provider_status:
         mark_as_settled:
           tooltip: "click to indicate that this job has settled with the subcontractor"
@@ -52,6 +52,8 @@ en:
           tooltip: "Click to make the job active"
         un_cancel:
           tooltip: "Click in case you made a mistake and this job should not be canceled"
+        re_transfer:
+          tooltip: "Click to transfer the job to another subcontractor"
 
       work_status:
         start:
@@ -68,6 +70,7 @@ en:
           tooltip: "Click to reset the job after rejected in order to dispatch or outsource to another subcontractor"
         complete:
           tooltip: "Click to indicate the service has completed"
+
 
       billing_status:
         invoice:

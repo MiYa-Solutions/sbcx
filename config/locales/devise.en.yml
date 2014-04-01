@@ -95,6 +95,11 @@ en:
       number: " Number"
       find_job: "Find Job"
       new_employee: "New Employee"
+      deposits: "Deposits"
+      get_deposits: "Get Deposits "
+      subcon_actions: "Subcontractor Actions"
+      provider_actions: "Contractor Actions"
+
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Send invite to join your SubConTraX network member."

@@ -75,6 +75,8 @@ en:
       no_bom_transferred_accepted: "You can't add billing items before starting the job. \nClick on the START button on the left to start the job"
       actions_local_job: "Click on the START button below if you are going to work on this job by yourself. \nIf you wish to transfer the job, select a subcontractors from the dropdown below and then click TRANSFER"
       actions_local_job_dispatch: "You can either: \n1. Select a technician and click on the DISPATCH button below \n2. Select a subcontractors from the dropdown below and then click TRANSFER If you wish to outsource the job"
+      actions_subcontractor: "Manage your subcontractor activities"
+      actions_provider: "Manage your contractor activities"
       actions_local_job_dispatched: "Click on the START button below"
       edit_job_tag: "To add or edit job's type simply click on the pencil icon on the left. \nIf yo wish to edit the rest of the fields below simply click on the text itself"
       agr_add_rule: "Click on the button to add rules"
@@ -180,6 +182,7 @@ en:
       message: "Message:"
       invite_status: "Invitation Status: "
       note: "Note: "
+      cancel_transfer: "Un-Transfer"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

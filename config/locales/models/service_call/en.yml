@@ -125,7 +125,7 @@ en:
       transferred_service_call:
         status:
           events:
-            transfer: "Transfer Again"
+            transfer: "re-transfer"
             accept: "Accept"
             dispatch: "Dispatch"
             work_done: "Complete"

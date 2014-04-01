@@ -235,7 +235,11 @@ en:
       collection_status: "Collection Status"
       subcon_agreement: "Agreement"
       show_history: "Show History"
-      collect_payments: "Collect Payments"
+      collect_payments: "Customer Payments"
       download_invoice: "Download Invoice"
+      submit: "Submit"
+      more: "More"
     messages:
       show_entries: "Click to see all cutsomer billing entries"
+      show_subcon_entries: "Click to see all subcontractor billing entries"
+      show_prov_entries: "Click to see all contractor billing entries"
