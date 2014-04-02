@@ -58,8 +58,7 @@ class AffiliatePostingRule < PostingRule
       when ServiceCallCompletedEvent.name
         true
       when ServiceCallCompleteEvent.name
-        event.eventable.instance_of?(MyServiceCall) && event.eventable.transferred? ||
-            event.eventable.instance_of?(TransferredServiceCall)
+        true
       when ScSubconSettleEvent.name
         true
       when ScProviderSettleEvent.name
