@@ -182,4 +182,9 @@ shared_context 'after collecting the full amount' do
 
 end
 
+def deposit_all_entries(entries)
+  entries.each do |entry|
+    entry.deposit! if entry.can_deposit?
+  end
+end
 

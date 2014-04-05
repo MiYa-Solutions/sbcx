@@ -34,7 +34,23 @@ describe 'Billing when in collected state' do
       expect(event_permitted_for_job?('billing_status', 'deposited', user, job)).to be_false
     end
 
-    pending 'when fully deposited'
+    it 'the corresponding payment should not allow to deposit before subcon marks as collected' do
+      expect(job.reload.payments.last.allowed_status_events).to eq []
+    end
+
+
+    context 'when fully deposited to provider' do
+      before do
+        deposit_all_entries subcon_job.collection_entries
+      end
+
+      it 'the corresponding payment should not allow to deposit before subcon marks as collected' do
+        expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject ]
+      end
+
+    end
+
+
     pending 'when all cash and overpaid'
     pending 'when all cash and fully paid'
   end
