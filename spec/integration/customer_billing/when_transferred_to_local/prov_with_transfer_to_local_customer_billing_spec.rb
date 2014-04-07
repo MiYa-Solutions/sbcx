@@ -27,6 +27,11 @@ describe 'Customer Billing When Provider Transfers To Local' do
         expect(job.subcon_collection_status_name).to eq :partially_collected
       end
 
+      it 'the corresponding payment should not allow to deposit before subcon marks as collected' do
+        expect(job.reload.payments.last.allowed_status_events).to eq []
+      end
+
+
       context 'when the job is done' do
         before do
           complete_the_work job
@@ -54,6 +59,11 @@ describe 'Customer Billing When Provider Transfers To Local' do
           it 'subcon collection status should be is_deposited' do
             expect(job.subcon_collection_status_name).to eq :is_deposited
           end
+
+          it 'the corresponding payment should now allow to deposit clear and reject as the subcon marked collection as deposited' do
+            expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject ]
+          end
+
 
           context 'when confirming the deposit' do
             before do

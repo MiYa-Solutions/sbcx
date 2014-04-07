@@ -27,8 +27,8 @@ class ScCollectEvent < CollectionEvent
   end
 
   def process_event
-    CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
     AffiliateBillingService.new(self).execute if affiliate_involved?
+    CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
     service_call.collected_prov_collection if update_provider_collection?
     service_call.collected_subcon_collection if update_subcon_collection?
     super

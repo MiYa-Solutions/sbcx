@@ -34,7 +34,7 @@ describe 'Billing when in collected state' do
       expect(event_permitted_for_job?('billing_status', 'deposited', user, job)).to be_false
     end
 
-    it 'the corresponding payment should not allow to deposit before subcon marks as collected' do
+    it 'the corresponding payment should not allow to deposit before subcon marks as deposited' do
       expect(job.reload.payments.last.allowed_status_events).to eq []
     end
 
@@ -44,7 +44,7 @@ describe 'Billing when in collected state' do
         deposit_all_entries subcon_job.collection_entries
       end
 
-      it 'the corresponding payment should not allow to deposit before subcon marks as collected' do
+      it 'the corresponding payment should now allow to deposit clear and reject as the subcon marked collection as deposited' do
         expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject ]
       end
 
