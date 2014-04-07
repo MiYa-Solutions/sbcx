@@ -48,4 +48,18 @@ class CustomerPayment < AccountingEntry
 
   end
 
+  def allowed_status_events
+    matching_entry ? events_for_3rd_party_collection : status_events
+  end
+
+  private
+
+  def events_for_3rd_party_collection
+    if matching_entry.deposited?
+      status_events
+    else
+      []
+    end
+  end
+
 end

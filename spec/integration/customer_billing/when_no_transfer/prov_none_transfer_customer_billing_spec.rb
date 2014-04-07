@@ -48,6 +48,8 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
               let(:customer_balance_before_payment) { 0 }
               let(:payment_amount) { 100 }
               let(:job_events) { [ScCollectEvent] }
+
+              let(:the_prov_job) { nil }
             end
           end
 
@@ -65,6 +67,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
               let(:customer_balance_before_payment) { 0 }
               let(:payment_amount) { 10 }
               let(:job_events) { [ScCollectEvent] }
+              let(:the_prov_job) { nil }
 
             end
           end
@@ -103,10 +106,6 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
                 it 'collect event is associated with the job' do
                   expect(job.events.map { |e| e.class.name }.sort).to eq ['ScCollectEvent', 'ServiceCallDispatchEvent']
-                end
-
-                it 'the org admin is allowed to invoke the deposit event' do
-                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
                 end
 
                 it 'the technician is not allowed to invoke the deposit event' do
@@ -174,9 +173,6 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                   job.billing_status_events.should =~ [:collect, :late]
                 end
 
-                it 'the org admin is allowed to invoke the deposit event' do
-                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
-                end
 
                 it 'the technician is not allowed to invoke the deposit event' do
                   expect(event_permitted_for_job?('billing_status', 'deposited', technician, job)).to be_false
@@ -198,14 +194,6 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
               it 'available payment events are collect and late' do
                 job.billing_status_events.should =~ [:collect, :late]
-              end
-
-              it 'the org admin is allowed to invoke the deposit event' do
-                expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
-              end
-
-              it 'the technician is not allowed to invoke the deposit event' do
-                expect(event_permitted_for_job?('billing_status', 'deposited', technician, job)).to be_false
               end
 
             end

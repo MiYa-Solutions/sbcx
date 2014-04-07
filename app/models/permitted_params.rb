@@ -386,17 +386,11 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
   def billing_event_allowed?(params_to_check)
     res = true
-    res = false if params_to_check[:billing_status_event] == 'provider_invoiced' && obj.provider.subcontrax_member?
-    res = false if params_to_check[:billing_status_event] == 'provider_collected' && obj.provider.subcontrax_member?
-    res = false if params_to_check[:billing_status_event] == 'subcon_invoiced' && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
-    res = false if params_to_check[:billing_status_event] == 'prov_confirmed_deposit' && (obj.provider.nil? || (obj.organization_id != obj.provider_id && obj.provider.subcontrax_member?))
-    res = false if params_to_check[:billing_status_event] == 'subcon_deposited'
-    res = false if params_to_check[:billing_status_event] == 'deposited' && !user.roles.map(&:name).include?('Org Admin')
+
+    res = false if params_to_check[:billing_status_event] == 'deposited'
     res = false if params_to_check[:billing_status_event] == 'clear'
     res = false if params_to_check[:billing_status_event] == 'reject'
 
-
-    res = false if obj.instance_of?(TransferredServiceCall) && obj.provider.member? && obj.payment_deposited_to_prov?
     res
   end
 

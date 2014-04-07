@@ -108,7 +108,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :cancel do
-      transition [:accepted, :new, :transferred] => :canceled
+      transition [:accepted, :transferred] => :canceled
     end
 
     event :un_cancel do

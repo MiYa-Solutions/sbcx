@@ -149,3 +149,42 @@ shared_examples 'correct provider billing statuses' do
 
 end
 
+shared_context 'when late' do
+
+  before do
+    job.late_payment!
+  end
+
+  it 'billing status should be overdue' do
+    expect(job.billing_status_name).to eq :overdue
+  end
+
+end
+
+shared_context 'after collecting the full amount' do
+  before do
+    collect_full_amount subcon_job
+    job.reload
+  end
+
+  it 'billing status should be collected' do
+    expect(job.billing_status_name).to eq :collected
+  end
+
+  it 'subcon collection status should be collected' do
+    expect(job.subcon_collection_status_name).to eq :collected
+  end
+
+  it 'provider collection status should be collected' do
+    expect(subcon_job.reload.prov_collection_status_name).to eq :collected
+  end
+
+
+end
+
+def deposit_all_entries(entries)
+  entries.each do |entry|
+    entry.deposit! if entry.can_deposit?
+  end
+end
+
