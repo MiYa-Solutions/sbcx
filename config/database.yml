@@ -15,6 +15,7 @@
 development:
   adapter: postgresql
   database: subcontrax-dev
+
   host: localhost
   username: postgres
   password: CHNAGE ME
