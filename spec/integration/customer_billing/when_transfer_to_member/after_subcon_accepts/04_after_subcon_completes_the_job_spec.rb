@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Subcon Collection After Customer accepts' do
+describe 'Subcon Collection After Subcon accepts' do
 
   include_context 'transferred job'
 
@@ -11,18 +11,11 @@ describe 'Subcon Collection After Customer accepts' do
     add_bom_to_job subcon_job, cost: '100', price: '1000', quantity: '1'
   end
 
-  context 'when the job is accepted by the subcon' do
-
-    before do
-      accept_the_job subcon_job
-    end
 
     it 'should  allow a collection for the subcon and provider' do
       expect(subcon_job.billing_status_events).to eq [:collect]
       expect(job.reload.billing_status_events).to include(:collect)
     end
-
-  end
 
 
 end
