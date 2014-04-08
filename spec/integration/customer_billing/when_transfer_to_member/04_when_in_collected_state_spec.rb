@@ -117,8 +117,50 @@ describe 'Billing when in collected state' do
     end
 
 
-    pending 'when all cash and overpaid'
-    pending 'when all cash and fully paid'
+    context 'when all cash and overpaid' do
+
+      before do
+        collect_a_payment subcon_job, type: 'cash', amount: 1100
+      end
+
+      it 'subcon balance should match provider balance' do
+        expect(job.subcon_balance + subcon_job.provider_balance).to eq Money.new(0)
+      end
+
+      it 'billing status should be collected' do
+        expect(job.reload.billing_status_name).to eq :collected
+      end
+
+      context 'when fully deposited to provider' do
+        before do
+          deposit_all_entries subcon_job.collection_entries
+        end
+
+        it 'the corresponding payment should now allow to deposit clear and reject as the subcon marked collection as deposited' do
+          expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject]
+        end
+
+        it 'billing status should be in_process' do
+          expect(job.reload.billing_status_name).to eq :collected
+        end
+
+        context 'when depositing customer payments' do
+          before do
+            deposit_all_entries job.payments
+            job.reload
+          end
+
+          it 'billing status should be paid' do
+            expect(job.billing_status_name).to eq :over_paid
+          end
+
+        end
+
+
+      end
+
+    end
+
   end
 
   pending 'when collected by provider'
