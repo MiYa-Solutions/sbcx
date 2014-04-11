@@ -159,13 +159,13 @@ service_call:
       pending: "status_grey"
       claim_settled: "status_blue"
       claimed_as_settled: "status_blue"
-      settled: "status_blue"
+      settled: "status_green"
       cleared: "status_green"
     provider_status:
       pending: "status_grey"
       claim_settled: "status_blue"
       claimed_as_settled: "status_blue"
-      settled: "status_blue"
+      settled: "status_green"
       cleared: "status_green"
     billing_status:
       na:  "status_grey"
