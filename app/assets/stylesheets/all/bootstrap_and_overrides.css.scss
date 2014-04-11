@@ -4449,6 +4449,23 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   background-color: #EEEEEE;
 }
 
+.collapse_frame{
+  background-color: #EEEEEE;
+  border: thin solid #000000;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.collapse_body{
+  margin-left: 2.5%;
+  margin-top: 8px;
+  width: 95%;
+}
+
+.collapse_collect {
+  margin-top: 5px;
+}
+
 
 .agr_diff_table {
 
@@ -4499,4 +4516,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   background-color: #EEEEEE;
   padding-bottom: 10px;
 }
+
+
+
 
