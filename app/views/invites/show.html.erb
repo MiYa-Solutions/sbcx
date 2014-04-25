@@ -50,6 +50,14 @@
                <%= @invite.human_status_name.titleize %>
              </td>
            </tr>
+
+           <tr>
+             <td><strong><%= t('general.general.received')%></strong></td>
+             <td>
+               <%= l @invite.created_at, format: :short %>
+             </td>
+
+           </tr>
           </table>
 
       <%= invite_event_buttons(@invite) if permitted_to? :update, @invite %>
