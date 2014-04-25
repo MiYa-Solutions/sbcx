@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Billing when broker invovled and in partially collected state' do
+describe 'Billing when broker involved and in partially collected state' do
 
   include_context 'brokered job'
 
@@ -31,6 +31,27 @@ describe 'Billing when broker invovled and in partially collected state' do
   end
 
   describe 'collect' do
+
+    context 'when the broker collects the payment' do
+      let(:collection_job) { broker_job }
+      let(:collector) { broker }
+      let(:billing_status) { :na }        # since the job is not done it is set to partial
+      let(:billing_status_4_cash) { :na } # since the job is not done it is set to partial
+      let(:subcon_collection_status) { :partially_collected }
+      let(:subcon_collection_status_4_cash) { :partially_collected }
+      let(:prov_collection_status) { :partially_collected }
+      let(:prov_collection_status_4_cash) { :partially_collected }
+
+      let(:customer_balance_before_payment) { -100 }
+      let(:payment_amount) { 10 }
+      let(:job_events) { [ServiceCallReceivedEvent, ScCollectEvent, ScCollectedEvent, ServiceCallAcceptEvent, ServiceCallTransferEvent, ServiceCallAcceptedEvent, ServiceCallStartedEvent] }
+      let(:the_prov_job) { job }
+      let(:the_billing_status) { :partially_collected}
+      let(:the_subcon_collection_status) { :partially_collected }
+
+      include_examples 'successful customer payment collection'
+
+    end
 
     context 'when collecting partial amount' do
       let(:collection_job) { job }

@@ -140,11 +140,11 @@ shared_examples 'correct provider billing statuses' do
   let(:subcon_collection_status) { the_subcon_collection_status || raise('you need to pass a let(:the_subcon_collection_status) when including when including correct provider billing statuses examples') }
 
   it 'should have the expected billing status' do
-    expect(provider_job.billing_status_name).to eq  billing_status unless the_prov_job.nil?
+    expect(provider_job.reload.billing_status_name).to eq  billing_status unless the_prov_job.nil?
   end
 
   it 'should have the expected subcon collection status' do
-    expect(provider_job.subcon_collection_status_name).to eq  billing_status unless the_prov_job.nil?
+    expect(provider_job.reload.subcon_collection_status_name).to eq  billing_status unless the_prov_job.nil?
   end
 
 end
