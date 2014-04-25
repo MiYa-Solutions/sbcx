@@ -18,12 +18,20 @@ describe 'Billing when in process state' do
     expect(job.reload.billing_status_events.sort).to eq [:reimburse]
   end
 
+  it 'customer balance should be -100' do
+    expect(job.reload.customer.account.balance).to eq Money.new(-10000)
+  end
+
   describe 'reimbursement' do
     before do
       job.reload.reimburse_payment!
     end
     it 'billing status should be paid' do
       expect(job.billing_status_name).to eq :paid
+    end
+
+    it 'customer balance should be flat' do
+      expect(job.customer.account.balance).to eq Money.new(0)
     end
 
   end
