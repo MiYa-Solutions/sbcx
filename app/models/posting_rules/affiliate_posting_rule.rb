@@ -107,7 +107,7 @@ class AffiliatePostingRule < PostingRule
                   description: I18n.t("payment_fee.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
         entries << CashCollectionForProvider.new(collection_props) if collected_by_me?
         fee_props[:amount] = cash_fee
@@ -154,7 +154,7 @@ class AffiliatePostingRule < PostingRule
       total += entry.amount
     end
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
         payment_fee = AccountingEntry.where(type: CashPaymentFee, ticket_id: @ticket.id).first
       when 'credit_card'

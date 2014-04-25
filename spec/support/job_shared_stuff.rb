@@ -96,6 +96,31 @@ shared_context 'transferred job' do
 
 end
 
+shared_context 'brokered job' do
+  include_context 'transferred job'
+  let(:broker_prov_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
+  let(:broker_subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: broker) }
+  let(:broker) { broker_prov_agr.counterparty }
+  let(:subcon) { broker_subcon_agr.counterparty }
+  let(:broker_admin) do
+    u = FactoryGirl.build(:user, organization: broker)
+    subcon.users << u
+    u
+  end
+  let(:subcon_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
+  let(:broker_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
+  let(:broker_b4_transfer_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
+  before do
+    transfer_the_job job: job, subcon: broker, agreement: broker_prov_agr
+    accept_the_job broker_b4_transfer_job
+    transfer_the_job job: broker_b4_transfer_job, subcon: subcon, agreement: broker_subcon_agr
+  end
+
+
+
+end
+
+
 shared_context 'job transferred to local subcon' do
   include_context 'basic job testing' unless example.metadata[:skip_basic_job]
   let(:subcon) { FactoryGirl.build(:local_org) }

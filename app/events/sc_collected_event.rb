@@ -15,7 +15,7 @@ class ScCollectedEvent < CollectionEvent
   end
 
   def update_provider
-    prov_service_call.events << ScCollectedEvent.new(triggering_event: self)
+    prov_service_call.events << ScCollectedEvent.new(triggering_event: self, collector: service_call.organization)
   end
 
   def process_event
