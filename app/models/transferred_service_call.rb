@@ -177,7 +177,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def collection_allowed?
-    accepted? || transferred?
+    (accepted? || transferred?) && !payment_collected?
   end
 
   def payments
@@ -205,6 +205,10 @@ class TransferredServiceCall < ServiceCall
     end
   end
 
+  def valid_payment_entries
+    EntryCollection.new(payment_entries.reject { |e| e.status == CustomerPayment::STATUS_REJECTED })
+  end
+
   def provider_settlement_allowed?
     (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
   end
@@ -218,7 +222,7 @@ class TransferredServiceCall < ServiceCall
   alias_method :payment_cleared?, :payment_paid?
 
   def payment_collected?
-    payment_entries.sum(:amount_cents).abs > total.cents
+    valid_payment_entries.sum(:amount_cents).abs >= total.cents
   end
 
   def can_uncancel?
@@ -265,7 +269,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def mixed_payment_entries
-    collections    = entries.where(type: CollectionEntry.subclasses.map(&:name)).all
+    collections    = entries.where(type: PaymentEntry.descendants.map(&:name)).all
     collection_ids = collections.map(&:matching_entry_id).compact
 
     payments = provider_ticket.payments.reject { |payment| collection_ids.include?(payment.matching_entry_id) }

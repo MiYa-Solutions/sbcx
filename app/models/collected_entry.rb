@@ -23,7 +23,7 @@
 #
 
 require 'collectible'
-class CollectedEntry < AccountingEntry
+class CollectedEntry < PaymentEntry
   include Collectible
 
   STATUS_SUBMITTED = 4000

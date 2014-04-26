@@ -23,7 +23,7 @@
 #
 
 require 'collectible'
-class CollectionEntry < AccountingEntry
+class CollectionEntry < PaymentEntry
   include Collectible
 
   def allowed_status_events

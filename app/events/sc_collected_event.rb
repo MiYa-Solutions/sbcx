@@ -43,8 +43,9 @@ class ScCollectedEvent < CollectionEvent
   end
 
   def update_statuses
-    service_call.collect_payment!(:state_only)
+    service_call.collect_payment!(:state_only) if service_call.can_collect_payment?
     service_call.collected_subcon_collection if service_call.can_collected_subcon_collection?
+    service_call.collected_prov_collection if service_call.kind_of?(TransferredServiceCall) && service_call.can_collected_prov_collection?
   end
 
 

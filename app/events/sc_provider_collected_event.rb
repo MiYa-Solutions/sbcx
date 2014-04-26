@@ -33,7 +33,6 @@ class ScProviderCollectedEvent < ServiceCallEvent
     end
 
     AffiliateBillingService.new(self).execute
-    service_call.collected_prov_collection
     super
   end
 
