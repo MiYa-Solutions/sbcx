@@ -24,6 +24,7 @@ class ScDepositEvent < ServiceCallEvent
 
   def process_event
     update_provider_account
+    update_statuses
     super
   end
 
@@ -57,6 +58,10 @@ class ScDepositEvent < ServiceCallEvent
 
   def entry
     @entry ||= AccountingEntry.find entry_id
+  end
+
+  def update_statuses
+    service_call.deposited_prov_collection! if service_call.can_deposited_prov_collection?
   end
 
 

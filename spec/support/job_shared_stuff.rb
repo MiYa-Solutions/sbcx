@@ -85,7 +85,12 @@ end
 shared_context 'transferred job' do
   include_context 'basic job testing' unless example.metadata[:skip_basic_job]
   let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
-  let(:subcon) { subcon_agr.counterparty }
+  let(:subcon) {
+    s = subcon_agr.counterparty
+    s.name = "subcon-#{s.name}"
+    s.save!
+    s
+  }
   let(:subcon_admin) do
     u = FactoryGirl.build(:user, organization: subcon)
     subcon.users << u
@@ -100,8 +105,18 @@ shared_context 'brokered job' do
   include_context 'transferred job'
   let(:broker_prov_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
   let(:broker_subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: broker) }
-  let(:broker) { broker_prov_agr.counterparty }
-  let(:subcon) { broker_subcon_agr.counterparty }
+  let(:broker) {
+    b = broker_prov_agr.counterparty
+    b.name = "broker-#{b.name}"
+    b.save!
+    b
+  }
+  let(:subcon) {
+    s = broker_subcon_agr.counterparty
+    s.name = "subcon-#{s.name}"
+    s.save!
+    s
+  }
   let(:broker_admin) do
     u = FactoryGirl.build(:user, organization: broker)
     subcon.users << u

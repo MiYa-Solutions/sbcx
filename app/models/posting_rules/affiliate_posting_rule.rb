@@ -139,7 +139,7 @@ class AffiliatePostingRule < PostingRule
 
   def collected_by_me?
     @event.collector.instance_of?(User) && @event.collector.organization == @account.organization ||
-        @event.collector.becomes(Organization) == @account.organization
+        @event.collector.becomes(Organization) == @account.organization || @ticket.my_role == :broker
   end
 
   def cparty_settlement_entries
