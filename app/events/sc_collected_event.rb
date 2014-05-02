@@ -18,7 +18,7 @@ class ScCollectedEvent < CollectionEvent
     ActiveSupport::Deprecation.silence do
       prov_service_call.events << ScCollectedEvent.new(triggering_event: self,
                                                        amount:           self.amount,
-                                                       collector:        self.collector,
+                                                       collector:        service_call.organization,
                                                        payment_type:     self.payment_type)
     end
   end
