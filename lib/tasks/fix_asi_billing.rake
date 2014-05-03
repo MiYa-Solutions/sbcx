@@ -13,7 +13,7 @@ namespace :fix do
                 ticket:      job,
                 agreement:   job.customer.agreements.first,
                 event:       job.events.where(type: ScCollectedByEmployeeEvent).first,
-                description: "#{job.payment_type} payment collected by #{job.collector} (system fix)" }
+                description: "#{job.payment_type} payment collected by #{job.collector.name} (system fix)" }
 
       props[:account] = job.customer.account if args.debug =='true'
 
