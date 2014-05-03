@@ -7,7 +7,8 @@ class ScCollectedByEmployeeEvent < ServiceCallEvent
   end
 
   def process_event
-    #todo invoke employee billing service
+    set_customer_account_as_paid if service_call.provider.subcontrax_member?
+    AffiliateBillingService.new(self).execute unless service_call.counterparty.nil?
   end
 
 end
