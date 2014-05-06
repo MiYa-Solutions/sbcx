@@ -65,6 +65,17 @@ describe '3rd Party Collection' do
               expect(subcon_job.prov_collection_status_name).to eq :is_deposited
             end
 
+            context 'when the broker confirms the deposit' do
+              before do
+                broker_job.deposited_entries.last.confirm!
+                broker_job.reload
+              end
+              it 'subcon collection status should be is_deposited' do
+                expect(broker_job.subcon_collection_status_name).to eq :deposited
+              end
+
+            end
+
             context 'when broker deposits subcon deposit entry' do
               before do
                 broker_job.collection_entries.last.deposit!
@@ -340,10 +351,12 @@ describe '3rd Party Collection' do
             context 'when broker deposits subcon deposit entry' do
               before do
                 broker_job.collection_entries.last.deposit!
+                broker_job.collection_entries.first.deposit!
                 subcon_job.reload
                 broker_job.reload
                 job.reload
               end
+
               it 'subcon collection status should be is_deposited (since  all was deposited)' do
                 expect(job.subcon_collection_status_name).to eq :is_deposited
               end

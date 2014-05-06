@@ -68,6 +68,15 @@ class Event < ActiveRecord::Base
 
   before_validation :set_default_creator, :init
 
+  def self.event_chain(e = nil)
+
+    res = []
+
+    res.concat [e.id] unless e.nil?
+    res.concat(event_chain(e.triggering_event)) if (!e.nil? && !e.triggering_event.nil?)
+    res
+  end
+
   # todo add a state machine to capture event status and processing times
   def process_event
     raise "Event base class was invoked instead of one of the sub-classes"

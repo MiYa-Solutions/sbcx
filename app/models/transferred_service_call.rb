@@ -205,6 +205,7 @@ class TransferredServiceCall < ServiceCall
     end
   end
 
+  # all none rejected payments
   def valid_payment_entries
     EntryCollection.new(payment_entries.reject { |e| e.status == CustomerPayment::STATUS_REJECTED })
   end
@@ -222,7 +223,7 @@ class TransferredServiceCall < ServiceCall
   alias_method :payment_cleared?, :payment_paid?
 
   def payment_collected?
-    valid_payment_entries.sum(:amount_cents).abs >= total.cents
+    work_done? && valid_payment_entries.sum(:amount_cents).abs >= total.cents
   end
 
   def can_uncancel?
@@ -269,12 +270,21 @@ class TransferredServiceCall < ServiceCall
   end
 
   def mixed_payment_entries
-    collections    = entries.where(type: PaymentEntry.descendants.map(&:name)).all
-    collection_ids = collections.map(&:matching_entry_id).compact
+    collections    = entries.where(type: CollectionEntry.descendants.map(&:name)).all
+    events_ids = entries_events(payments)
 
-    payments = provider_ticket.payments.reject { |payment| collection_ids.include?(payment.matching_entry_id) }
+    the_collections = collections.reject { |collection| events_ids.include?(collection.event.id) }
 
-    EntryCollection.new(payments + collections)
+    EntryCollection.new(payments + the_collections)
+  end
+
+  def  entries_events(entries)
+
+    res = []
+    entries.each do |e|
+      res.concat Event.event_chain(e.event)
+    end
+    res.uniq
   end
 
 

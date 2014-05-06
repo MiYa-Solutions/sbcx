@@ -2,6 +2,7 @@ class EntryCollection
   include Enumerable
 
   delegate :all, to: :entries
+  delegate :last, to: :entries
 
   def initialize(entries)
     @entries = entries

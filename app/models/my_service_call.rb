@@ -62,6 +62,8 @@ class MyServiceCall < ServiceCall
 
   collection_status :subcon_collection_status, initial: :na, namespace: 'subcon_collection'
 
+  alias_method :can_subcon_deposited_subcon_collection?, :can_deposited_subcon_collection?
+
   before_validation do
     self.provider = self.organization.becomes(Provider) if self.organization
   end
@@ -130,6 +132,10 @@ class MyServiceCall < ServiceCall
     end
 
 
+  end
+
+  def fully_deposited?
+    collected_entries.map(&:status).select { |status| status == CollectedEntry::STATUS_SUBMITTED }.empty?
   end
 
 

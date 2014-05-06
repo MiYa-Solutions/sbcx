@@ -316,11 +316,11 @@ class ServiceCall < Ticket
   end
 
   def all_deposit_entries_confirmed?
-    entries.where(type: DepositEntry.subclasses).map(&:status).select { |status| status != ConfirmableEntry::STATUS_CONFIRMED }.empty?
+    entries.where(type: DepositEntry.subclasses.map(&:name)).map(&:status).select { |status| status != ConfirmableEntry::STATUS_CONFIRMED }.empty?
   end
 
   def all_collection_entries_deposited?
-    entries.where(type: CollectionEntry.subclasses).map(&:status).select { |status| status != CollectionEntry::STATUS_DEPOSITED }.empty?
+    entries.where(type: CollectionEntry.subclasses.map(&:name)).map(&:status).select { |status| status != CollectionEntry::STATUS_DEPOSITED }.empty?
   end
 
 end

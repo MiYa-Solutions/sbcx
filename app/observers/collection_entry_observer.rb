@@ -1,12 +1,12 @@
 class CollectionEntryObserver < ActiveRecord::Observer
   observe [CollectedEntry.subclasses, CollectionEntry.subclasses, CollectedEntry, CollectionEntry]
 
-  def before_deposit(entry, transition)
+  def after_deposit(entry, transition)
     entry.ticket.events << ScDepositEvent.new(amount: -entry.amount, entry_id: entry.id)
   end
 
 
-  def before_deposited(entry, transition)
+  def after_deposited(entry, transition)
     entry.ticket.events << ScSubconDepositedEvent.new(entry_id: entry.id) unless transition.args.first == :transition_only
   end
 

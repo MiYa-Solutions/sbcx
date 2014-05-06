@@ -61,5 +61,18 @@ class BrokerServiceCall < TransferredServiceCall
 
   collection_status :subcon_collection_status, initial: :pending, namespace: 'subcon_collection'
   collection_status :prov_collection_status, initial: :pending, namespace: 'prov_collection'
+  alias_method :can_subcon_deposited_subcon_collection?, :can_deposited_subcon_collection?
+
+  # add another event for subcon depositing
+  state_machine  :subcon_collection_status, namespace: 'subcon_collection' do
+    event :deposited do
+      transition [:partially_collected, :collected, :disputed] => :is_deposited, if: ->(sc) { sc.subcon_fully_deposited? }
+    end
+
+  end
+
+  def subcon_fully_deposited?
+    collected_entries.map(&:status).select { |status| status == CollectedEntry::STATUS_SUBMITTED }.empty?
+  end
 
 end
