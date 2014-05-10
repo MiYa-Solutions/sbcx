@@ -182,14 +182,14 @@ end
 
 shared_examples 'provider job is canceled' do
   it 'job status should be canceled' do
-    expect(job.reload).to be_canceled
+    expect(Ticket.find(job.id)).to be_canceled
   end
 end
 
 shared_examples 'subcon job is canceled' do
 
   it 'subcon job status should be canceled' do
-    expect(subcon_job.reload).to be_canceled
+    expect(Ticket.find(subcon_job.id)).to be_canceled
   end
 end
 

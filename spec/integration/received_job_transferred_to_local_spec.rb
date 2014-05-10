@@ -52,12 +52,8 @@ describe 'Received Job When Transferred To Local Subcon' do
         expect(job.subcontractor_status_events).to eq []
       end
 
-      it 'payment status should be pending' do
-        expect(job.billing_status_name).to eq :pending
-      end
-
-      it 'the available payment status events should be: provider_collected' do
-        expect(job.billing_status_events).to eq [:provider_collected]
+      it 'the available payment status events should be: collect' do
+        expect(job.billing_status_events).to eq [:collect]
       end
 
       it 'work status should be pending' do
@@ -102,12 +98,12 @@ describe 'Received Job When Transferred To Local Subcon' do
           expect(job.subcontractor_status_events).to eq []
         end
 
-        it 'payment status should be pending' do
-          expect(job.billing_status_name).to eq :pending
+        it 'payment status should be na' do
+          expect(job.billing_status_name).to eq :na
         end
 
-        it 'the available payment status events should be: collect, provider_collected and subcon_collected' do
-          expect(job.billing_status_events).to eq [:provider_collected, :collect, :subcon_collected]
+        it 'the available payment status events should be: collect' do
+          expect(job.billing_status_events).to eq [:collect]
         end
 
         it 'work status should be accepted' do
@@ -122,8 +118,8 @@ describe 'Received Job When Transferred To Local Subcon' do
         context 'when canceled' do
           include_context 'when canceling the job' do
             let(:job_to_cancel) { job }
+            it_behaves_like 'provider job is canceled'
           end
-          it_behaves_like 'provider job is canceled'
         end
 
         context 'when started the work' do
@@ -158,12 +154,8 @@ describe 'Received Job When Transferred To Local Subcon' do
             expect(job.subcontractor_status_events).to eq []
           end
 
-          it 'payment status should be pending' do
-            expect(job.billing_status_name).to eq :pending
-          end
-
-          it 'the available payment status events should be: :provider_collected, :collect, :subcon_collected' do
-            expect(job.billing_status_events).to eq [:provider_collected, :collect, :subcon_collected]
+          it 'the available payment status events should be: :collect' do
+            expect(job.billing_status_events).to eq [:collect]
           end
 
           it 'work status should be in progress' do
@@ -213,17 +205,9 @@ describe 'Received Job When Transferred To Local Subcon' do
               expect(job.subcontractor_status_events).to eq [:settle]
             end
 
-            it 'payment status should be pending' do
-              expect(job.billing_status_name).to eq :pending
-            end
 
             it 'the available payment events should be: invoice, invoiced by prov, invoiced by subcon, collect, provider_collected, subcon_collected' do
-              expect(job.billing_status_events).to eq [:invoice, :subcon_invoiced, :provider_invoiced, :provider_collected, :collect, :subcon_collected]
-              expect(event_permitted_for_job?('billing_status', 'invoice', org_admin, job)).to be_true
-              expect(event_permitted_for_job?('billing_status', 'provider_invoiced', org_admin, job)).to be_true
-              expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_true
-              expect(event_permitted_for_job?('billing_status', 'provider_collected', org_admin, job)).to be_true
-              expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
+              expect(job.billing_status_events).to eq [:collect]
               expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
             end
 

@@ -188,3 +188,9 @@ def deposit_all_entries(entries)
   end
 end
 
+def confirm_all_deposits(entries)
+  entries.each do |entry|
+    entry.confirm! if entry.can_confirm?
+  end
+end
+

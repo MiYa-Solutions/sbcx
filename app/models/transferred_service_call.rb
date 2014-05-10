@@ -226,6 +226,10 @@ class TransferredServiceCall < ServiceCall
     work_done? && valid_payment_entries.sum(:amount_cents).abs >= total.cents
   end
 
+  def payment_deposited?
+     deposit_entries.with_status(:submitted, :disputed).size == 0 && deposit_entries.size > 0
+  end
+
   def can_uncancel?
     !self.work_done? && !self.provider.subcontrax_member? &&
         ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?) || self.subcontractor.nil?)

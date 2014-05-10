@@ -26,7 +26,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
 
   def process_event
     update_subcon_account
-    entry.deposited!(:transition_only)
+    entry.deposited!(:transition_only) if entry.can_deposited?
     entry.ticket.deposited_subcon_collection!(:transition_only) if entry.ticket.can_subcon_deposited_subcon_collection?
     super
   end
