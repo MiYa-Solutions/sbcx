@@ -300,14 +300,6 @@ class ServiceCall < Ticket
   end
 
 
-  def subcon_deposit_confirmed
-    confirm_deposit_payment! if fully_deposited?
-  end
-
-  def fully_deposited?
-    all_collection_entries_deposited? && all_deposit_entries_confirmed?
-  end
-
 
   private
 

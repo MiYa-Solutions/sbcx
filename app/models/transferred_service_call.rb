@@ -251,6 +251,16 @@ class TransferredServiceCall < ServiceCall
 
   end
 
+  def prov_collection_fully_deposited?
+    collection_entries.map(&:status).select { |status| status == CollectionEntry::STATUS_PENDING }.empty?
+  end
+
+
+  def prov_collection_disputed?
+    deposit_entries.with_status(:disputed).size > 0
+  end
+
+
   private
   def provider_is_not_a_member
     if provider

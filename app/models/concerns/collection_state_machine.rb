@@ -27,7 +27,7 @@ module CollectionStateMachine
         end
 
         event :deposited do
-          transition [:partially_collected, :collected, :disputed] => :is_deposited, if: ->(sc) { sc.fully_deposited? }
+          transition [:partially_collected, :collected, :disputed] => :is_deposited, if: ->(sc) { sc.send("#{self.machine.namespace}_fully_deposited?") }
         end
 
         event :deposit_disputed do
@@ -36,7 +36,8 @@ module CollectionStateMachine
 
         event :confirmed do
           transition :is_deposited => :deposited
-          transition :disputed => :is_deposited, if: ->(sc) { sc.fully_deposited? }
+          transition :disputed => :deposited, if: ->(sc) { sc.send("#{self.machine.namespace}_fully_deposited?") }
+          transition :disputed => :is_deposited, unless: ->(sc) { sc.send("#{self.machine.namespace}_disputed?")  }
         end
 
       end

@@ -134,10 +134,14 @@ class MyServiceCall < ServiceCall
 
   end
 
-  def fully_deposited?
+  def subcon_collection_fully_deposited?
     collected_entries.map(&:status).select { |status| status == CollectedEntry::STATUS_SUBMITTED }.empty?
   end
 
+
+  def subcon_collection_disputed?
+    deposited_entries.with_status(:disputed).size > 0
+  end
 
 
 end
