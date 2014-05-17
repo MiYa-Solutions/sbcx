@@ -4,7 +4,7 @@ shared_examples 'payment successfully collected' do |the_billing_status, the_sub
   end
 
   it 'subcon collection status should be correct' do
-    expect(collection_job.subcon_collection_status_name).to eq send(the_subcon_collection) unless send(the_subcon_collection).nil?
+    expect(collection_job.reload.subcon_collection_status_name).to eq send(the_subcon_collection) unless send(the_subcon_collection).nil?
   end
 
   it 'provider collection status should be correct' do
@@ -36,10 +36,6 @@ shared_examples 'customer billing is successful' do |entry_status, entry_status_
 
   it 'entry status should be correct' do
     expect(customer_entry.status_name).to eq entry_status
-  end
-
-  it 'entry status events should be correct' do
-    expect(customer_entry.status_events).to eq entry_status_events
   end
 
   it 'entry amount should be the payment amount' do
@@ -79,7 +75,7 @@ shared_examples 'successful customer payment collection' do
 
     it_behaves_like 'payment successfully collected', 'billing_status_4_cash', 'subcon_collection_status_4_cash', 'prov_collection_status_4_cash'
 
-    it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
+    it_behaves_like 'customer billing is successful', :pending, []
 
     it_behaves_like  'correct provider billing statuses'
   end
@@ -94,7 +90,7 @@ shared_examples 'successful customer payment collection' do
 
     it_behaves_like 'payment successfully collected', 'billing_status', 'subcon_collection_status', 'prov_collection_status'
 
-    it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
+    it_behaves_like 'customer billing is successful', :pending, []
 
   end
 
@@ -108,7 +104,7 @@ shared_examples 'successful customer payment collection' do
 
     it_behaves_like 'payment successfully collected', 'billing_status', 'subcon_collection_status', 'prov_collection_status'
 
-    it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
+    it_behaves_like 'customer billing is successful', :pending, []
 
   end
 
@@ -122,7 +118,7 @@ shared_examples 'successful customer payment collection' do
 
     it_behaves_like 'payment successfully collected', 'billing_status', 'subcon_collection_status', 'prov_collection_status'
 
-    it_behaves_like 'customer billing is successful', :pending, [:deposit, :clear, :reject]
+    it_behaves_like 'customer billing is successful', :pending, []
 
   end
 

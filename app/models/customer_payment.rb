@@ -49,17 +49,26 @@ class CustomerPayment < AccountingEntry
   end
 
   def allowed_status_events
-    matching_entry ? events_for_3rd_party_collection : status_events
+    matching_entry ? events_for_3rd_party_collection : the_status_events
   end
 
   private
 
   def events_for_3rd_party_collection
     if matching_entry.deposited?
-      status_events
+      the_status_events
     else
       []
     end
+  end
+
+  def the_status_events
+    if deposited?
+      [:clear, :reject]
+    else
+      [:deposit]
+    end
+
   end
 
 end

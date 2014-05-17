@@ -36,7 +36,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
   end
 
   it 'the available payment events for the job are: collect' do
-    expect(job.billing_status_events).to eq [:collect]
+    expect(job.billing_status_events).to eq [:late, :collect]
     expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
   end
 
@@ -85,9 +85,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
     end
 
     it 'the available payment events for the job are collect and subcon collected' do
-      expect(job.billing_status_events).to eq [:collect, :subcon_collected]
+      expect(job.billing_status_events).to eq [:late, :collect]
       expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
-      expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
     end
 
     it 'subcon status should be pending' do
@@ -137,8 +136,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
         expect(event_permitted_for_job?('work_status', 'complete', org_admin, job)).to be_true
       end
 
-      it 'the provider and subcontractor should be allowed to collect a payment' do
-        expect(job.billing_status_events).to eq [:collect, :subcon_collected]
+      it 'late and collect are the only billing actions available' do
+        expect(job.billing_status_events).to eq [:late, :collect]
       end
 
       it 'subcon status should be pending' do
@@ -182,11 +181,10 @@ describe 'My Job When I Transfer to a Local Affiliate' do
           expect(job.work_status_events).to be_empty
         end
 
-        it 'job available payment events are: invoice, invoiced by subcon, collect and subcon_collected' do
-          expect(job.reload.billing_status_events).to eq [:invoice, :subcon_invoiced, :collect, :subcon_collected]
-          expect(event_permitted_for_job?('billing_status', 'invoice', org_admin, job)).to be_true
-          expect(event_permitted_for_job?('billing_status', 'subcon_invoiced', org_admin, job)).to be_true
-          expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
+        it 'job available payment events are: late and collect' do
+          expect(job.reload.billing_status_events).to eq [:late, :collect]
+          expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
+          expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
         end
 
         it 'subcon status should be pending' do
@@ -208,133 +206,133 @@ describe 'My Job When I Transfer to a Local Affiliate' do
           it_should_behave_like 'provider job canceled after completion'
         end
 
-        context 'when subcon invoices' do
-          before do
-            job.update_attributes(billing_status_event: 'subcon_invoiced')
-          end
 
-          it 'the job status should be transferred' do
-            expect(job).to be_transferred
-          end
+        it 'the job status should be transferred' do
+          expect(job).to be_transferred
+        end
 
-          it 'job work status should be completed' do
-            expect(job).to be_work_done
-          end
+        it 'job work status should be completed' do
+          expect(job).to be_work_done
+        end
 
-          it 'job payment status should be invoiced by subcon' do
-            expect(job).to be_payment_invoiced_by_subcon
-          end
+        it 'there are no available work status events for job' do
+          expect(job.work_status_events).to be_empty
+        end
 
-          it 'there are no available work status events for job' do
-            expect(job.work_status_events).to be_empty
-          end
+        it 'job available payment events are late and collect' do
+          expect(job.billing_status_events).to eq [:late, :collect]
+          expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
+          expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
+        end
 
-          it 'job available payment events are overdue, collect and collected by subcon' do
-            expect(job.billing_status_events).to eq [:overdue, :collect, :subcon_collected]
-            expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
-            expect(event_permitted_for_job?('billing_status', 'subcon_collected', org_admin, job)).to be_true
-            expect(event_permitted_for_job?('billing_status', 'overdue', org_admin, job)).to be_true
-          end
+        it 'subcon status should be pending' do
+          expect(job.subcontractor_status_name).to eq :pending
+        end
 
-          it 'subcon status should be pending' do
-            expect(job.subcontractor_status_name).to eq :pending
-          end
+        it 'should have no job available subcon events' do
+          expect(job.subcontractor_status_events).to eq [:settle]
+        end
 
-          it 'should have no job available subcon events' do
-            expect(job.subcontractor_status_events).to eq [:settle]
-          end
+        context 'when canceled' do
+          include_context 'when the provider cancels the job'
+          it_should_behave_like 'provider job is canceled'
+          it_should_behave_like 'provider job canceled after completion'
+        end
 
-          context 'when canceled' do
-            include_context 'when the provider cancels the job'
-            it_should_behave_like 'provider job is canceled'
-            it_should_behave_like 'provider job canceled after completion'
-          end
+        context 'when prov collects' do
 
-          context 'when prov collects' do
+          describe 'for a multi user organization' do
 
-            describe 'for a multi user organization' do
+            describe 'collecting payment' do
+              describe 'collecting full payment' do
 
-              describe 'collecting payment' do
-                describe 'collecting full payment' do
+                let(:collection_job) { job }
+                let(:collector) { job.organization.users.last }
+                let(:billing_status) { :collected }                    # since the job is not done it is set to partial
+                let(:billing_status_events) { [:deposited] }
+                let(:billing_status_4_cash) { :collected } # since the job is not done it is set to partial
+                let(:billing_status_events_4_cash) { [:deposited] }
+                let(:customer_balance_before_payment) { 100 }
+                let(:payment_amount) { 100 }
+                let(:job_events) { [ServiceCallTransferEvent,
+                                    ServiceCallStartedEvent,
+                                    ServiceCallCompleteEvent,
+                                    ScCollectEvent] }
+                let(:subcon_collection_status_4_cash) { :pending }
+                let(:prov_collection_status_4_cash) { nil }
+                let(:subcon_collection_status) { :pending }
+                let(:prov_collection_status) { nil }
+                let(:the_prov_job) { nil }
 
+                include_examples 'successful customer payment collection', 'collect'
+
+                context 'after full collection' do
+                  before do
+                    job.update_attributes(billing_status_event: 'collect',
+                                          payment_type:         'cash',
+                                          payment_amount:       payment_amount.to_s,
+                                          collector:            collector)
+                  end
+
+                  it 'balance should be updated with the cash payment fee only as the contractor collected the payment' do
+                    expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 10000*0.01)
+                  end
+
+
+                  it 'subcon status should be pending' do
+                    expect(job.subcontractor_status_name).to eq :pending
+                  end
+
+                  it 'job available subcon events are settle' do
+                    expect(job.subcontractor_status_events).to eq [:settle]
+                    expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                  end
+                end
+
+              end
+
+              describe 'collecting partial payment' do
+                include_examples 'successful customer payment collection', 'collect' do
                   let(:collection_job) { job }
                   let(:collector) { job.organization.users.last }
-                  let(:billing_status) { :collected_by_employee }        # since the job is not done it is set to partial
-                  let(:billing_status_events) { [:deposited] }
-                  let(:billing_status_4_cash) { :collected_by_employee } # since the job is not done it is set to partial
-                  let(:billing_status_events_4_cash) { [:deposited] }
+                  let(:billing_status) { :partially_collected } # since the job is not done it is set to partial
+                  let(:billing_status_events) { [:collect, :deposited] }
+                  let(:billing_status_4_cash) { :partially_collected }
+                  let(:billing_status_events_4_cash) { [:collect, :deposited] }
+
                   let(:customer_balance_before_payment) { 100 }
-                  let(:payment_amount) { 100 }
+                  let(:payment_amount) { 10 }
                   let(:job_events) { [ServiceCallTransferEvent,
                                       ServiceCallStartedEvent,
                                       ServiceCallCompleteEvent,
-                                      ServiceCallInvoicedEvent,
-                                      ScCollectedByEmployeeEvent] }
+                                      ScCollectEvent
+                                      ] }
 
-                  include_examples 'successful customer payment collection', 'collect'
+                  let(:subcon_collection_status_4_cash) { :pending }
+                  let(:prov_collection_status_4_cash) { nil }
+                  let(:subcon_collection_status) { :pending }
+                  let(:prov_collection_status) { nil }
+                  let(:the_prov_job) { nil }
 
-                  context 'after full collection' do
-                    before do
-                      job.update_attributes(billing_status_event: 'collect',
-                                            payment_type:         'cash',
-                                            payment_amount:       payment_amount.to_s,
-                                            collector:            collector)
-                    end
-
-                    it 'balance should be updated with the cash payment fee only as the contractor collected the payment' do
-                      expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 10000*0.01)
-                    end
-
-
-                    it 'subcon status should be pending' do
-                      expect(job.subcontractor_status_name).to eq :pending
-                    end
-
-                    it 'job available subcon events are settle' do
-                      expect(job.subcontractor_status_events).to eq [:settle]
-                      expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-                    end
-                  end
 
                 end
-
-                describe 'collecting partial payment' do
-                  include_examples 'successful customer payment collection', 'collect' do
-                    let(:collection_job) { job }
-                    let(:collector) { job.organization.users.last }
-                    let(:billing_status) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
-                    let(:billing_status_events) { [:collect, :deposited] }
-                    let(:billing_status_4_cash) { :partial_payment_collected_by_employee }
-                    let(:billing_status_events_4_cash) { [:collect, :deposited] }
-
-                    let(:customer_balance_before_payment) { 100 }
-                    let(:payment_amount) { 10 }
-                    let(:job_events) { [ServiceCallTransferEvent,
-                                        ServiceCallStartedEvent,
-                                        ServiceCallCompleteEvent,
-                                        ServiceCallInvoicedEvent,
-                                        ScCollectedByEmployeeEvent] }
-
+                context 'after partial collection' do
+                  before do
+                    job.update_attributes(billing_status_event: 'collect',
+                                          payment_type:         'cash',
+                                          payment_amount:       payment_amount.to_s,
+                                          collector:            collector)
                   end
-                  context 'after partial collection' do
-                    before do
-                      job.update_attributes(billing_status_event: 'collect',
-                                            payment_type:         'cash',
-                                            payment_amount:       payment_amount.to_s,
-                                            collector:            collector)
-                    end
 
-                    it 'subcon status should be pending' do
-                      expect(job.subcontractor_status_name).to eq :pending
-                    end
-
-                    it 'job available subcon events are settle' do
-                      expect(job.subcontractor_status_events).to eq [:settle]
-                      expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-                    end
-
-
+                  it 'subcon status should be pending' do
+                    expect(job.subcontractor_status_name).to eq :pending
                   end
+
+                  it 'job available subcon events are settle' do
+                    expect(job.subcontractor_status_events).to eq [:settle]
+                    expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                  end
+
 
                 end
 
@@ -342,74 +340,140 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
             end
 
-            describe 'for a single user organization' do
-              before do
-                job.organization.users.map { |user| user.destroy unless user == org_admin }
-                job.organization.reload
-              end
+          end
 
-              describe 'collecting payment' do
+          describe 'for a single user organization' do
+            before do
+              job.organization.users.map { |user| user.destroy unless user == org_admin }
+              job.organization.reload
+            end
 
-                describe 'collecting full payment' do
-                  let(:collection_job) { job }
-                  let(:collector) { job.organization }
-                  let(:billing_status) { :paid }           # since the job is not done it is set to partial
-                  let(:billing_status_events) { [:clear, :reject] }
-                  let(:billing_status_4_cash) { :cleared } # since the job is not done it is set to partial
-                  let(:billing_status_events_4_cash) { [] }
-                  let(:customer_balance_before_payment) { 100 }
-                  let(:payment_amount) { 100 }
-                  let(:job_events) { [ServiceCallTransferEvent,
-                                      ServiceCallStartedEvent,
-                                      ServiceCallCompleteEvent,
-                                      ServiceCallInvoicedEvent,
-                                      ServiceCallPaidEvent] }
+            describe 'collecting payment' do
 
-                  include_examples 'successful customer payment collection', 'paid'
+              describe 'collecting full payment' do
+                let(:collection_job) { job }
+                let(:collector) { job.subcontractor.becomes(Organization) }
+                let(:billing_status) { :collected }           # since the job is not done it is set to partial
+                let(:billing_status_events) { [:deposit] }
+                let(:billing_status_4_cash) { :collected } # since the job is not done it is set to partial
+                let(:billing_status_events_4_cash) { [] }
+                let(:customer_balance_before_payment) { 100 }
+                let(:payment_amount) { 100 }
+                let(:job_events) { [ServiceCallTransferEvent,
+                                    ServiceCallStartedEvent,
+                                    ServiceCallCompleteEvent,
+                                    ScCollectEvent] }
 
-                  context 'after full collection' do
+                let(:subcon_collection_status_4_cash) { :collected }
+                let(:prov_collection_status_4_cash) { nil }
+                let(:subcon_collection_status) { :collected }
+                let(:prov_collection_status) { nil }
+                let(:the_prov_job) { nil }
+
+
+                include_examples 'successful customer payment collection', 'paid'
+
+                context 'after full collection' do
+                  before do
+                    collect_full_amount job, type: 'cash', collector: collector
+                    job.collected_entries.last.deposited!
+                    job.deposited_entries.last.confirm!
+                    job.payments.last.deposit!
+                    job.reload
+                  end
+
+                  it 'job available subcon events are settle' do
+                    expect(job.subcontractor_status_events).to eq [:settle]
+                    expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                  end
+
+                  it 'billing status should be paid' do
+                    expect(job.billing_status_name).to eq :paid
+                  end
+
+                  context 'when cash settled with the subcon' do
                     before do
-                      job.update_attributes(billing_status_event: 'paid',
-                                            payment_type:         'cash',
-                                            payment_amount:       payment_amount.to_s,
-                                            collector:            collector)
-                      job.payment_amount = nil # simulating a new user require request by removing a virtuall attr
+                      job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'cash')
                     end
 
-                    it 'job available subcon events are settle' do
-                      expect(job.subcontractor_status_events).to eq [:settle]
-                      expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                    it 'the job status should be transferred' do
+                      expect(job).to be_transferred
                     end
 
-                    it 'billing status should be cleared' do
-                      expect(job.billing_status_name).to eq :cleared
+                    it 'the available status events for job are cancel and close' do
+                      expect(job.status_events).to eq [:cancel, :close]
+                      expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
+                      expect(event_permitted_for_job?('status', 'close', org_admin, job)).to be_true
                     end
 
-                    context 'when cash settled with the subcon' do
+                    it 'job work status should be completed' do
+                      expect(job).to be_work_done
+                    end
+
+                    it 'there are no available work status events for job' do
+                      expect(job.work_status_events).to be_empty
+                    end
+
+                    it 'job available payment events are deposited' do
+                      expect(job.billing_status_events).to eq []
+                    end
+
+                    it 'subcon status should be cleared' do
+                      expect(job.subcontractor_status_name).to eq :cleared
+                    end
+
+                    it 'there are no available subcon events' do
+                      expect(job.subcontractor_status_events).to eq []
+                    end
+
+                  end
+
+                  context 'when none cash settled with the subcon' do
+                    before do
+                      job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'credit_card')
+                    end
+
+                    it 'the job status should be transferred' do
+                      expect(job).to be_transferred
+                    end
+
+                    it 'job work status should be completed' do
+                      expect(job).to be_work_done
+                    end
+
+                    it 'there are no available work status events for job' do
+                      expect(job.work_status_events).to eq []
+                    end
+
+                    it 'job available payment events are deposited' do
+                      expect(job.billing_status_events).to eq []
+                    end
+
+                    it 'subcon status should be settled' do
+                      expect(job.subcontractor_status_name).to eq :settled
+                    end
+
+                    it 'available subcon events are clear' do
+                      expect(job.subcontractor_status_events).to eq [:clear]
+                      expect(event_permitted_for_job?('subcontractor_status', 'clear', org_admin, job)).to be_true
+                    end
+
+                    context 'when clearing the subcon payment' do
+
                       before do
-                        job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'cash')
+                        job.update_attributes(subcontractor_status_event: 'clear')
                       end
 
                       it 'the job status should be transferred' do
                         expect(job).to be_transferred
                       end
 
-                      it 'the available status events for job are cancel and close' do
-                        expect(job.status_events).to eq [:cancel, :close]
-                        expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
-                        expect(event_permitted_for_job?('status', 'close', org_admin, job)).to be_true
-                      end
-
                       it 'job work status should be completed' do
                         expect(job).to be_work_done
                       end
 
-                      it 'job payment status should be cleared' do
-                        expect(job.billing_status_name).to eq :cleared
-                      end
-
                       it 'there are no available work status events for job' do
-                        expect(job.work_status_events).to be_empty
+                        expect(job.work_status_events).to eq []
                       end
 
                       it 'job available payment events are deposited' do
@@ -423,121 +487,9 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                       it 'there are no available subcon events' do
                         expect(job.subcontractor_status_events).to eq []
                       end
-
                     end
 
-                    context 'when none cash settled with the subcon' do
-                      before do
-                        job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'credit_card')
-                      end
-
-                      it 'the job status should be transferred' do
-                        expect(job).to be_transferred
-                      end
-
-                      it 'job work status should be completed' do
-                        expect(job).to be_work_done
-                      end
-
-                      it 'job payment status should be cleared' do
-                        expect(job.billing_status_name).to eq :cleared
-                      end
-
-                      it 'there are no available work status events for job' do
-                        expect(job.work_status_events).to eq []
-                      end
-
-                      it 'job available payment events are deposited' do
-                        expect(job.billing_status_events).to eq []
-                      end
-
-                      it 'subcon status should be settled' do
-                        expect(job.subcontractor_status_name).to eq :settled
-                      end
-
-                      it 'available subcon events are clear' do
-                        expect(job.subcontractor_status_events).to eq [:clear]
-                        expect(event_permitted_for_job?('subcontractor_status', 'clear', org_admin, job)).to be_true
-                      end
-
-                      context 'when clearing the subcon payment' do
-
-                        before do
-                          job.update_attributes(subcontractor_status_event: 'clear')
-                        end
-
-                        it 'the job status should be transferred' do
-                          expect(job).to be_transferred
-                        end
-
-                        it 'job work status should be completed' do
-                          expect(job).to be_work_done
-                        end
-
-                        it 'job payment status should be cleared' do
-                          expect(job.billing_status_name).to eq :cleared
-                        end
-
-                        it 'there are no available work status events for job' do
-                          expect(job.work_status_events).to eq []
-                        end
-
-                        it 'job available payment events are deposited' do
-                          expect(job.billing_status_events).to eq []
-                        end
-
-                        it 'subcon status should be settled' do
-                          expect(job.subcontractor_status_name).to eq :cleared
-                        end
-
-                        it 'there are no available subcon events' do
-                          expect(job.subcontractor_status_events).to eq []
-                        end
-                      end
-
-                      pending 'implement subcon settlement rejection and overdue'
-
-                    end
-
-                  end
-
-                end
-
-                describe 'collecting partial payment' do
-                  include_examples 'successful customer payment collection', 'paid' do
-                    let(:collection_job) { job }
-                    let(:collector) { job.organization.users.last }
-                    let(:billing_status) { :partially_paid }        # since the job is not done it is set to partial
-                    let(:billing_status_events) { [:clear, :overdue, :paid, :reject] }
-                    let(:billing_status_4_cash) { :partially_paid } # since the job is not done it is set to partial
-                    let(:billing_status_events_4_cash) { [:paid, :overdue] }
-                    let(:customer_balance_before_payment) { 100 }
-                    let(:payment_amount) { 10 }
-                    let(:job_events) { [ServiceCallTransferEvent,
-                                        ServiceCallStartedEvent,
-                                        ServiceCallCompleteEvent,
-                                        ServiceCallInvoicedEvent,
-                                        ServiceCallPaidEvent] }
-
-                  end
-                  context 'after partial collection' do
-                    before do
-                      job.update_attributes(billing_status_event: 'paid',
-                                            payment_type:         'cheque',
-                                            payment_amount:       payment_amount.to_s,
-                                            collector:            collector)
-                    end
-
-                    it 'job available subcon events are settle' do
-                      expect(job.subcontractor_status_events).to eq [:settle]
-                      expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-                    end
-
-                    it 'clear and reject are not allowed for the user' do
-                      expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
-                      expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
-                    end
-
+                    pending 'implement subcon settlement rejection and overdue'
 
                   end
 
@@ -545,341 +497,35 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
               end
 
-              it 'subcon status should be pending' do
-                expect(job.subcontractor_status_name).to eq :pending
-              end
+              describe 'collecting partial payment' do
+                include_examples 'successful customer payment collection', 'paid' do
+                  let(:collection_job) { job }
+                  let(:collector) { job.organization.users.last }
+                  let(:billing_status) { :partially_collected }        # since the job is not done it is set to partial
+                  let(:billing_status_events) { [:clear, :overdue, :paid, :reject] }
+                  let(:billing_status_4_cash) { :partially_collected } # since the job is not done it is set to partial
+                  let(:billing_status_events_4_cash) { [:paid, :overdue] }
+                  let(:customer_balance_before_payment) { 100 }
+                  let(:payment_amount) { 10 }
+                  let(:job_events) { [ServiceCallTransferEvent,
+                                      ServiceCallStartedEvent,
+                                      ServiceCallCompleteEvent,
+                                      ScCollectEvent] }
 
-              it 'job available subcon events are settle' do
-                expect(job.subcontractor_status_events).to eq [:settle]
-                expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-              end
+                  let(:subcon_collection_status_4_cash) { :pending }
+                  let(:prov_collection_status_4_cash) { nil }
+                  let(:subcon_collection_status) { :pending }
+                  let(:prov_collection_status) { nil }
+                  let(:the_prov_job) { nil }
 
-            end
-
-          end
-
-          context 'when prov collects none cash' do
-
-            describe 'for a multi user organization' do
-              before do
-                with_user(org_admin) do
-                  job.update_attributes(billing_status_event: 'collect',
-                                        payment_type:         'credit_card',
-                                        collector:            org_admin,
-                                        payment_amount:       '100')
 
                 end
-              end
-
-              it 'the available status events for job are: cancel' do
-                expect(job.status_events).to eq [:cancel]
-                expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
-              end
-
-              it 'the job status should be transferred' do
-                expect(job).to be_transferred
-              end
-
-              it 'job work status should be completed' do
-                expect(job).to be_work_done
-              end
-
-              it 'job payment status should be collected by employee' do
-                expect(job.billing_status_name).to eq :collected_by_employee
-              end
-
-              it 'there are no available work status events for job' do
-                expect(job.work_status_events).to eq []
-              end
-
-              it 'job available payment events are deposited' do
-                expect(job.billing_status_events).to eq [:deposited]
-                expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
-              end
-
-              it 'subcon status should be pending' do
-                expect(job.subcontractor_status_name).to eq :pending
-              end
-
-              it 'job available subcon events are settle' do
-                expect(job.subcontractor_status_events).to eq [:settle]
-                expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-              end
-
-              describe 'billing' do
-
-                describe 'customer billing' do
-                  before { job.customer.account.reload }
-                  let(:customer_entry) { job.payments.order('ID ASC').last }
-
-                  it 'entry should have the organization as the collector' do
-                    expect(customer_entry.collector).to eq org_admin
-                  end
-
-                  it 'entry status should be pending' do
-                    expect(customer_entry.status_name).to eq :pending
-                  end
-
-                  it 'customer balance should be zero' do
-                    expect(job.customer.account.balance).to eq Money.new(0, 'USD')
-                  end
-                end
-              end
-
-
-              context 'when deposited' do
-
-                before do
-                  job.update_attributes(billing_status_event: 'deposited')
-                end
-
-                it 'the available status events for job are: cancel' do
-                  expect(job.status_events).to eq [:cancel]
-                  expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
-                end
-
-                it 'the job status should be transferred' do
-                  expect(job).to be_transferred
-                end
-
-                it 'job work status should be completed' do
-                  expect(job).to be_work_done
-                end
-
-                it 'job payment status should be paid' do
-                  expect(job.billing_status_name).to eq :paid
-                end
-
-                it 'there are no available work status events for job' do
-                  expect(job.work_status_events).to eq []
-                end
-
-                it 'job available payment events are deposited' do
-                  expect(job.billing_status_events).to eq [:clear, :reject]
-                  expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
-                  expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
-                end
-
-                it 'subcon status should be pending' do
-                  expect(job.subcontractor_status_name).to eq :pending
-                end
-
-                it 'job available subcon events are settle' do
-                  expect(job.subcontractor_status_events).to eq [:settle]
-                  expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-                end
-
-              end
-
-            end
-
-            describe 'for a single user organization' do
-              before do
-                job.organization.users.map { |user| user.destroy unless user == org_admin }
-                job.organization.reload
-                job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque', payment_amount: '100')
-              end
-
-              it 'the job status should be transferred' do
-                expect(job).to be_transferred
-              end
-
-              it 'the available status events for job are: cancel' do
-                expect(job.status_events).to eq [:cancel]
-                expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
-              end
-
-              it 'job work status should be completed' do
-                expect(job).to be_work_done
-              end
-
-              it 'job payment status should be paid' do
-                expect(job.billing_status_name).to eq :paid
-              end
-
-              it 'there are no available work status events for job' do
-                expect(job.work_status_events).to be_empty
-              end
-
-              it 'job available payment events are deposited' do
-                expect(job.billing_status_events).to eq [:clear, :reject]
-                expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
-              end
-
-              it 'subcon status should be pending' do
-                expect(job.subcontractor_status_name).to eq :pending
-              end
-
-              it 'job available subcon events are settle' do
-                expect(job.subcontractor_status_events).to eq [:settle]
-                expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-              end
-
-              describe 'billing' do
-
-                describe 'customer billing' do
-                  before { job.customer.account.reload }
-                  let(:customer_entry) { job.payments.order('ID ASC').last }
-
-                  it 'entry should have the organization as the collector' do
-                    expect(customer_entry.collector).to eq org
-                  end
-
-                  it 'entry status should be pending' do
-                    expect(customer_entry.status_name).to eq :pending
-                  end
-
-
-                  it 'customer balance should be zero' do
-                    expect(job.customer.account.balance).to eq Money.new(0, 'USD')
-                  end
-                end
-              end
-
-              context 'when cash settled with the subcon' do
-                before do
-                  job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'cash')
-                end
-
-                it 'the job status should be transferred' do
-                  expect(job).to be_transferred
-                end
-
-                it 'the available status events for job are cancel and close' do
-                  expect(job.status_events).to eq [:cancel]
-                  expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
-                end
-
-                it 'job work status should be completed' do
-                  expect(job).to be_work_done
-                end
-
-                it 'job payment status should be paid' do
-                  expect(job.billing_status_name).to eq :paid
-                end
-
-                it 'there are no available work status events for job' do
-                  expect(job.work_status_events).to be_empty
-                end
-
-                it 'job available payment events are clear and reject' do
-                  expect(job.billing_status_events).to eq [:clear, :reject]
-                end
-
-                it 'subcon status should be cleared' do
-                  expect(job.subcontractor_status_name).to eq :cleared
-                end
-
-                it 'there are no available subcon events' do
-                  expect(job.subcontractor_status_events).to eq []
-                end
-
-              end
-
-              context 'when none cash settled with the subcon' do
-                before do
-                  job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'credit_card')
-                end
-
-                it 'the job status should be transferred' do
-                  expect(job).to be_transferred
-                end
-
-                it 'job work status should be completed' do
-                  expect(job).to be_work_done
-                end
-
-                it 'job payment status should be paid' do
-                  expect(job.billing_status_name).to eq :paid
-                end
-
-                it 'there are no available work status events for job' do
-                  expect(job.work_status_events).to eq []
-                end
-
-                it 'job available payment events are deposited' do
-                  expect(job.billing_status_events).to eq [:clear, :reject]
-                end
-
-                it 'subcon status should be settled' do
-                  expect(job.subcontractor_status_name).to eq :settled
-                end
-
-                it 'available subcon events are clear' do
-                  expect(job.subcontractor_status_events).to eq [:clear]
-                  expect(event_permitted_for_job?('subcontractor_status', 'clear', org_admin, job)).to be_true
-                end
-
-                context 'when clearing the subcon payment' do
-
+                context 'after partial collection' do
                   before do
-                    job.update_attributes(subcontractor_status_event: 'clear')
-                  end
+                    collect_a_payment job, type: 'cheque', collector: collector, amount: 5
+                    job.payments.last.deposit!
+                    job.reload
 
-                  it 'the job status should be transferred' do
-                    expect(job).to be_transferred
-                  end
-
-                  it 'job work status should be completed' do
-                    expect(job).to be_work_done
-                  end
-
-                  it 'job payment status should be paid' do
-                    expect(job.billing_status_name).to eq :paid
-                  end
-
-                  it 'there are no available work status events for job' do
-                    expect(job.work_status_events).to eq []
-                  end
-
-                  it 'job available payment events are deposited' do
-                    expect(job.billing_status_events).to eq [:clear, :reject]
-                  end
-
-                  it 'subcon status should be settled' do
-                    expect(job.subcontractor_status_name).to eq :cleared
-                  end
-
-                  it 'there are no available subcon events' do
-                    expect(job.subcontractor_status_events).to eq []
-                  end
-                end
-
-                pending 'implement subcon settlement rejection and overdue'
-
-              end
-
-            end
-
-          end
-
-          context 'when subcon collects' do
-
-            describe 'collecting payment' do
-
-              describe 'collecting full payment' do
-                let(:collection_job) { job }
-                let(:collector) { job.subcontractor.becomes(Organization) }
-                let(:billing_status) { :collected_by_subcon }
-                let(:billing_status_events) { [:subcon_deposited] }
-                let(:billing_status_4_cash) { :collected_by_subcon } # since the job is not done it is set to partial
-                let(:billing_status_events_4_cash) { [:subcon_deposited] }
-                let(:customer_balance_before_payment) { 100 }
-                let(:payment_amount) { 100 }
-                let(:job_events) { [ServiceCallTransferEvent,
-                                    ServiceCallStartedEvent,
-                                    ServiceCallCompleteEvent,
-                                    ServiceCallInvoicedEvent,
-                                    ScCollectedEvent] }
-
-                include_examples 'successful customer payment collection', 'subcon_collected'
-
-                context 'after full cash collection' do
-                  before do
-                    job.update_attributes(billing_status_event: 'subcon_collected',
-                                          payment_type:         'cash',
-                                          payment_amount:       payment_amount.to_s,
-                                          collector:            collector)
                   end
 
                   it 'job available subcon events are settle' do
@@ -887,14 +533,387 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                   end
 
-                  it 'billing status should be cleared' do
-                    expect(job.billing_status_name).to eq :collected_by_subcon
+                  it 'clear and reject are not allowed for the user' do
+                    expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
+                    expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
                   end
 
-                  it 'deposited is an available billing event but it is not permitted for a user' do
-                    expect(job.billing_status_events).to eq [:subcon_deposited]
-                    expect(event_permitted_for_job?('billing_status', 'subcon_deposited', org_admin, job)).to be_false
+
+                end
+
+              end
+
+            end
+
+            it 'subcon status should be pending' do
+              expect(job.subcontractor_status_name).to eq :pending
+            end
+
+            it 'job available subcon events are settle' do
+              expect(job.subcontractor_status_events).to eq [:settle]
+              expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+            end
+
+          end
+
+        end
+
+        context 'when prov collects none cash' do
+
+          describe 'for a multi user organization' do
+            before do
+              with_user(org_admin) do
+                job.update_attributes(billing_status_event: 'collect',
+                                      payment_type:         'credit_card',
+                                      collector:            org_admin,
+                                      payment_amount:       '100')
+
+              end
+            end
+
+            it 'the available status events for job are: cancel' do
+              expect(job.status_events).to eq [:cancel]
+              expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
+            end
+
+            it 'the job status should be transferred' do
+              expect(job).to be_transferred
+            end
+
+            it 'job work status should be completed' do
+              expect(job).to be_work_done
+            end
+
+            it 'job payment status should be collected by employee' do
+              expect(job.billing_status_name).to eq :collected
+            end
+
+            it 'there are no available work status events for job' do
+              expect(job.work_status_events).to eq []
+            end
+
+            it 'job available payment events are deposited' do
+              expect(job.billing_status_events).to eq [:deposited]
+              expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_false
+            end
+
+            it 'subcon status should be pending' do
+              expect(job.subcontractor_status_name).to eq :pending
+            end
+
+            it 'job available subcon events are settle' do
+              expect(job.subcontractor_status_events).to eq [:settle]
+              expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+            end
+
+            describe 'billing' do
+
+              describe 'customer billing' do
+                before { job.customer.account.reload }
+                let(:customer_entry) { job.payments.order('ID ASC').last }
+
+                it 'entry should have the organization as the collector' do
+                  expect(customer_entry.collector).to eq org_admin
+                end
+
+                it 'entry status should be pending' do
+                  expect(customer_entry.status_name).to eq :pending
+                end
+
+                it 'customer balance should be zero' do
+                  expect(job.customer.account.balance).to eq Money.new(0, 'USD')
+                end
+              end
+            end
+
+          end
+
+        end
+
+        context 'when subcon collects' do
+
+          describe 'collecting payment' do
+
+            describe 'collecting full payment' do
+              let(:collection_job) { job }
+              let(:collector) { job.subcontractor.becomes(Organization) }
+              let(:billing_status) { :collected }
+              let(:billing_status_events) { [:late, :collect] }
+              let(:billing_status_4_cash) { :collected } # since the job is not done it is set to partial
+              let(:billing_status_events_4_cash) { [:late, :collect] }
+              let(:customer_balance_before_payment) { 100 }
+              let(:payment_amount) { 100 }
+              let(:job_events) { [ServiceCallTransferEvent,
+                                  ServiceCallStartedEvent,
+                                  ServiceCallCompleteEvent,
+                                  ScCollectEvent] }
+
+
+              let(:subcon_collection_status_4_cash) { :collected }
+              let(:prov_collection_status_4_cash) { nil }
+              let(:subcon_collection_status) { :collected }
+              let(:prov_collection_status) { nil }
+              let(:the_prov_job) { nil }
+
+
+              include_examples 'successful customer payment collection', 'subcon_collected'
+
+              context 'after full cash collection' do
+                before do
+                  collect_full_amount job, type: 'cash', collector: collector
+                end
+
+                it 'job available subcon events are settle' do
+                  expect(job.subcontractor_status_events).to eq [:settle]
+                  expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                end
+
+                it 'billing status should be cleared' do
+                  expect(job.billing_status_name).to eq :collected
+                end
+
+                it 'deposited is an available billing event but it is not permitted for a user' do
+                  expect(job.billing_status_events).to eq [:deposited]
+                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_false
+                end
+
+                context 'when marking payment as deposited by the subcon' do
+                  let(:collected_entry) { job.collected_entries.last }
+                  let(:deposit_entry) { job.accounting_entries.last }
+
+                  before do
+                    collected_entry.deposited!
                   end
+
+                  it 'should change entry status to cleared' do
+                    expect(collected_entry.status_name).to eq :deposited
+                  end
+
+                  it 'should create a CashDepositFromSubcon entry' do
+                    expect(job.reload.accounting_entries.last).to be_instance_of(CashDepositFromSubcon)
+                  end
+
+                  it 'billing status should be subcon_claim_deposited' do
+                    expect(job.reload.billing_status_name).to eq :collected
+                  end
+
+                  it 'billing status should have the deposit event only once' do
+                    expect(job.reload.events.map { |e| e.class.name }).to eq ['ScSubconDepositedEvent',
+                                                                              'ScCollectEvent',
+                                                                              'ServiceCallCompleteEvent',
+                                                                              'ServiceCallStartedEvent',
+                                                                              'ServiceCallTransferEvent']
+
+
+                  end
+
+                  it 'affiliate balance should be updated with the deposit' do
+                    expect(collected_entry.account.reload.balance).to eq Money.new(-10900)
+                  end
+
+
+                  context 'when deposit confirmed' do
+
+                    before do
+                      deposit_entry.confirm!
+                    end
+
+                    it 'deposit entry status should be confirmed' do
+                      expect(deposit_entry.status_name).to eq :confirmed
+                    end
+
+                    it 'payment status should be cleared' do
+                      expect(job.reload.billing_status_name).to eq :collected
+                    end
+
+                    it 'a cash payment reimbursement exists with the amount derived from the payment' do
+                      entry = ReimbursementForCashPayment.find_by_ticket_id(job.id)
+                      expect(entry).to_not be_nil
+                      expect(entry.amount).to eq Money.new(100)
+                    end
+                  end
+
+                  context 'when the deposit is disputed' do
+                    before do
+                      deposit_entry.dispute!
+                    end
+
+                    it 'deposit entry status should be confirmed' do
+                      expect(deposit_entry.status_name).to eq :disputed
+                    end
+
+                    it 'the last event should be EntryDisputedEvent' do
+                      expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
+                    end
+
+                    it 'payment status should be collected' do
+                      expect(job.reload.billing_status_name).to eq :collected
+                    end
+
+                    it 'available entry status events are canceled and confirmed' do
+                      expect(deposit_entry.status_events).to eq [:confirm]
+                    end
+
+                    context 'when confirming' do
+                      before do
+                        deposit_entry.confirm!
+                      end
+
+                      it 'deposit entry status should be confirmed' do
+                        expect(deposit_entry.status_name).to eq :confirmed
+                      end
+
+
+                    end
+                  end
+
+                end
+              end
+              context 'after full amex collection' do
+                before do
+                  collect_a_payment job, type: 'cash', collector: collector, type: 'amex_credit_card', amount: payment_amount
+                end
+
+                it 'job available subcon events are settle' do
+                  expect(job.subcontractor_status_events).to eq [:settle]
+                  expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                end
+
+                it 'billing status should be collected' do
+                  expect(job.billing_status_name).to eq :collected
+                end
+
+                it 'balance should be updated' do
+                  expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 10000*0.01 + 10000)
+                end
+
+
+                context 'when marking payment as deposited by the subcon' do
+                  let(:collected_entry) { job.collected_entries.last }
+
+                  before do
+                    collected_entry.deposited!
+                  end
+
+                  it 'billing status should be collected and subcon collection is deposited' do
+                    expect(job.reload.billing_status_name).to eq :collected
+                    expect(job.subcon_collection_status_name).to eq :is_deposited
+                  end
+
+                  it 'should change entry status to deposited' do
+                    expect(collected_entry.status_name).to eq :deposited
+                  end
+
+                  it 'should create a CashDepositFromSubcon entry' do
+                    expect(job.reload.accounting_entries.last).to be_instance_of(AmexDepositFromSubcon)
+                  end
+
+                  it 'balance should be updated' do
+                    expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 10000*0.01)
+                  end
+
+                  context 'when confirming the subcon deposit and depositing the payment' do
+                    let(:deposit_entry) { job.accounting_entries.last }
+                    before do
+                      deposit_entry.confirm!
+                      job.payments.last.deposit!
+                    end
+
+                    it 'deposit entry status should be confirmed' do
+                      expect(deposit_entry.status_name).to eq :confirmed
+                    end
+
+                    it 'payment status should stay collected' do
+                      expect(job.reload.billing_status_name).to eq :in_process
+                    end
+
+                    it 'the balance should not change' do
+                      # amount is 100 subcon fee, 10 bom reimbursement + 1% cash payment fee
+                      expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 10000*0.01)
+                    end
+
+                    describe 'customer entry' do
+
+                      it 'customer entry events should be clear and reject' do
+                        expect(job.payments.order('ID ASC').last.allowed_status_events).to eq [:clear, :reject]
+                      end
+
+                      context 'when marking the entry as cleared' do
+                        let(:customer_entry) { job.payments.order('ID ASC').last }
+                        before do
+                          customer_entry.update_attributes(status_event: 'deposit')
+                          customer_entry.update_attributes(status_event: 'clear')
+                          job.reload
+                        end
+
+                        it 'job billing status should be paid' do
+                          expect(job.billing_status_name).to eq :paid
+                        end
+                      end
+                    end
+
+                  end
+
+                end
+              end
+
+
+            end
+
+            describe 'collecting partial payment' do
+
+              include_examples 'successful customer payment collection', 'subcon_collected' do
+                let(:collection_job) { job }
+                let(:collector) { job.subcontractor.becomes(Organization) }
+                let(:billing_status) { :partially_collected }
+                let(:billing_status_events) { [:collect, :late] }
+                let(:billing_status_4_cash) { :partially_collected }
+                let(:billing_status_events_4_cash) { [:collect, :late] }
+                let(:customer_balance_before_payment) { 100 }
+                let(:payment_amount) { 10 }
+                let(:job_events) { [ServiceCallTransferEvent,
+                                    ServiceCallStartedEvent,
+                                    ServiceCallCompleteEvent,
+                                    ScCollectEvent] }
+
+
+                let(:subcon_collection_status_4_cash) { :partially_collected }
+                let(:prov_collection_status_4_cash) { nil }
+                let(:subcon_collection_status) { :partially_collected }
+                let(:prov_collection_status) { nil }
+                let(:the_prov_job) { nil }
+
+
+              end
+
+              context 'after partial collection' do
+
+                context 'when using a cheque' do
+                  before do
+                     collect_a_payment job, amount: payment_amount, collector: collector, type: 'cheque'
+                    job.reload
+                  end
+
+                  it 'job available subcon events are settle' do
+                    expect(job.subcontractor_status_events).to eq [:settle]
+                    expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
+                  end
+
+                  it 'clear and reject are not allowed for the user' do
+                    expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
+                    expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
+                  end
+
+                  it 'a cheque payment reimbursement exists with the amount derived from the payment' do
+                    entry = ReimbursementForChequePayment.find_by_ticket_id(job.id)
+                    expect(entry).to_not be_nil
+                    expect(entry.amount).to eq Money.new(10)
+                  end
+
+                  it 'affiliate balance should be updated with the deposit' do
+                    expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 1000 + 1000*0.01)
+                  end
+
 
                   context 'when marking payment as deposited by the subcon' do
                     let(:collected_entry) { job.collected_entries.last }
@@ -909,17 +928,16 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     end
 
                     it 'should create a CashDepositFromSubcon entry' do
-                      expect(job.reload.accounting_entries.last).to be_instance_of(CashDepositFromSubcon)
+                      expect(job.reload.accounting_entries.last).to be_instance_of(ChequeDepositFromSubcon)
                     end
 
-                    it 'billing status should be subcon_claim_deposited' do
-                      expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
+                    it 'billing status should be partially_collected' do
+                      expect(job.reload.billing_status_name).to eq :partially_collected
                     end
 
                     it 'billing status should have the deposit event only once' do
                       expect(job.reload.events.map { |e| e.class.name }).to eq ['ScSubconDepositedEvent',
-                                                                                'ScCollectedEvent',
-                                                                                'ServiceCallInvoicedEvent',
+                                                                                'ScCollectEvent',
                                                                                 'ServiceCallCompleteEvent',
                                                                                 'ServiceCallStartedEvent',
                                                                                 'ServiceCallTransferEvent']
@@ -928,7 +946,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     end
 
                     it 'affiliate balance should be updated with the deposit' do
-                      expect(collected_entry.account.balance).to eq Money.new(-9900)
+                      expect(deposit_entry.account.balance).to eq Money.new(-11000 + 1000*0.01)
                     end
 
 
@@ -943,13 +961,13 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                       end
 
                       it 'payment status should be cleared' do
-                        expect(job.reload.billing_status_name).to eq :cleared
+                        expect(job.reload.billing_status_name).to eq :partially_collected
                       end
 
                       it 'a cash payment reimbursement exists with the amount derived from the payment' do
-                        entry = ReimbursementForCashPayment.find_by_ticket_id(job.id)
+                        entry = ReimbursementForChequePayment.find_by_ticket_id(job.id)
                         expect(entry).to_not be_nil
-                        expect(entry.amount).to eq Money.new(100)
+                        expect(entry.amount).to eq Money.new(10)
                       end
                     end
 
@@ -966,8 +984,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                         expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
                       end
 
-                      it 'payment status should be subcon_claim_deposited' do
-                        expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
+                      it 'payment status should be partially_collected' do
+                        expect(job.reload.billing_status_name).to eq :partially_collected
                       end
 
                       it 'available entry status events are canceled and confirmed' do
@@ -983,8 +1001,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                           expect(deposit_entry.status_name).to eq :confirmed
                         end
 
-                        it 'payment status should be cleared' do
-                          expect(job.reload.billing_status_name).to eq :cleared
+                        it 'payment status should be partially_collected' do
+                          expect(job.reload.billing_status_name).to eq :partially_collected
                         end
 
                       end
@@ -992,307 +1010,115 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
                   end
                 end
-                context 'after full amex collection' do
-                  before do
-                    job.update_attributes(billing_status_event: 'subcon_collected',
-                                          payment_type:         'amex_credit_card',
-                                          payment_amount:       payment_amount.to_s,
-                                          collector:            collector)
-                  end
 
-                  it 'job available subcon events are settle' do
-                    expect(job.subcontractor_status_events).to eq [:settle]
-                    expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-                  end
+                context 'when using cash' do
 
-                  it 'billing status should be collected by subcon' do
-                    expect(job.billing_status_name).to eq :collected_by_subcon
-                  end
+                  context 'when collecting partial amount' do
 
-                  it 'balance should be updated' do
-                    expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 10000*0.01 + 10000)
-                  end
-
-
-                  context 'when marking payment as deposited by the subcon' do
-                    let(:collected_entry) { job.collected_entries.last }
-
-                    before do
-                      collected_entry.deposited!
-                    end
-
-                    it 'billing status should be subcon_claim_deposited' do
-                      expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
-                    end
-
-                    it 'should change entry status to cleared' do
-                      expect(collected_entry.status_name).to eq :deposited
-                    end
-
-                    it 'should create a CashDepositFromSubcon entry' do
-                      expect(job.reload.accounting_entries.last).to be_instance_of(AmexDepositFromSubcon)
-                    end
-
-                    it 'balance should be updated' do
-                      expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 10000*0.01)
-                    end
-
-                    context 'when confirming the deposit' do
-                      let(:deposit_entry) { job.accounting_entries.last }
+                    describe 'when collecting cash' do
                       before do
-                        deposit_entry.confirm!
+                        collect_a_payment job, amount: payment_amount, type: 'cash', collector: collector
+                        job.reload
                       end
 
-                      it 'deposit entry status should be confirmed' do
-                        expect(deposit_entry.status_name).to eq :confirmed
+                      it 'job payment status should be partially_collected' do
+                        expect(job.billing_status_name).to eq :partially_collected
                       end
 
-                      it 'payment status should be paid' do
-                        expect(job.reload.billing_status_name).to eq :paid
+                      it 'available payment events should be subcon deposited and subcon collected' do
+                        expect(job.billing_status_events).to eq [:late, :collect]
                       end
 
-                      it 'the balance should not change' do
-                        # amount is 100 subcon fee, 10 bom reimbursement + 1% cash payment fee
-                        expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 10000*0.01)
-                      end
+                      context 'when the depositing the amount to the provider' do
 
-                      context 'when marking the entry as cleared' do
-                        let(:customer_entry) { job.payments.order('ID ASC').last }
+                        let(:collected_entry) { job.collected_entries.last }
+                        let(:deposit_entry) { job.accounting_entries.last }
+
                         before do
-                          customer_entry.update_attributes(status_event: 'clear')
+                          job.collected_entries.last.deposited!
                           job.reload
                         end
 
-                        it 'job billing status should be cleared' do
-                          expect(job.billing_status_name).to eq :cleared
-                        end
-                      end
-
-                    end
-
-                  end
-                end
-
-
-              end
-
-              describe 'collecting partial payment' do
-
-                include_examples 'successful customer payment collection', 'subcon_collected' do
-                  let(:collection_job) { job }
-                  let(:collector) { job.subcontractor.becomes(Organization) }
-                  let(:billing_status) { :partial_payment_collected_by_subcon }
-                  let(:billing_status_events) { [:subcon_collected, :subcon_deposited] }
-                  let(:billing_status_4_cash) { :partial_payment_collected_by_subcon }
-                  let(:billing_status_events_4_cash) { [:subcon_collected, :subcon_deposited] }
-                  let(:customer_balance_before_payment) { 100 }
-                  let(:payment_amount) { 10 }
-                  let(:job_events) { [ServiceCallTransferEvent,
-                                      ServiceCallStartedEvent,
-                                      ServiceCallCompleteEvent,
-                                      ServiceCallInvoicedEvent,
-                                      ScCollectedEvent] }
-
-                end
-                context 'after partial collection' do
-
-                  context 'when using a cheque' do
-                    before do
-                      job.update_attributes(billing_status_event: 'subcon_collected',
-                                            payment_type:         'cheque',
-                                            payment_amount:       payment_amount.to_s,
-                                            collector:            collector)
-                    end
-
-                    it 'job available subcon events are settle' do
-                      expect(job.subcontractor_status_events).to eq [:settle]
-                      expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
-                    end
-
-                    it 'clear and reject are not allowed for the user' do
-                      expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
-                      expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
-                    end
-
-                    it 'a cheque payment reimbursement exists with the amount derived from the payment' do
-                      entry = ReimbursementForChequePayment.find_by_ticket_id(job.id)
-                      expect(entry).to_not be_nil
-                      expect(entry.amount).to eq Money.new(10)
-                    end
-
-                    it 'affiliate balance should be updated with the deposit' do
-                      expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 1000 + 1000*0.01)
-                    end
-
-
-                    context 'when marking payment as deposited by the subcon' do
-                      let(:collected_entry) { job.collected_entries.last }
-                      let(:deposit_entry) { job.accounting_entries.last }
-
-                      before do
-                        collected_entry.deposited!
-                      end
-
-                      it 'should change entry status to cleared' do
-                        expect(collected_entry.status_name).to eq :deposited
-                      end
-
-                      it 'should create a CashDepositFromSubcon entry' do
-                        expect(job.reload.accounting_entries.last).to be_instance_of(ChequeDepositFromSubcon)
-                      end
-
-                      it 'billing status should be subcon_claim_deposited' do
-                        expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
-                      end
-
-                      it 'billing status should have the deposit event only once' do
-                        expect(job.reload.events.map { |e| e.class.name }).to eq ['ScSubconDepositedEvent',
-                                                                                  'ScCollectedEvent',
-                                                                                  'ServiceCallInvoicedEvent',
-                                                                                  'ServiceCallCompleteEvent',
-                                                                                  'ServiceCallStartedEvent',
-                                                                                  'ServiceCallTransferEvent']
-
-
-                      end
-
-                      it 'affiliate balance should be updated with the deposit' do
-                        expect(deposit_entry.account.balance).to eq Money.new(-11000 + 1000*0.01)
-                      end
-
-
-                      context 'when deposit confirmed' do
-
-                        before do
-                          deposit_entry.confirm!
+                        it 'payment status should be subcon  partially_collected' do
+                          expect(job.billing_status_name).to eq :partially_collected
                         end
 
-                        it 'deposit entry status should be confirmed' do
-                          expect(deposit_entry.status_name).to eq :confirmed
+                        it 'affiliate balance should be updated with the deposit' do
+                          expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 1000*0.01)
                         end
 
-                        it 'payment status should be cleared' do
-                          expect(job.reload.billing_status_name).to eq :partially_paid
-                        end
 
-                        it 'a cash payment reimbursement exists with the amount derived from the payment' do
-                          entry = ReimbursementForChequePayment.find_by_ticket_id(job.id)
-                          expect(entry).to_not be_nil
-                          expect(entry.amount).to eq Money.new(10)
-                        end
-                      end
 
-                      context 'when the deposit is disputed' do
-                        before do
-                          deposit_entry.dispute!
-                        end
-
-                        it 'deposit entry status should be confirmed' do
-                          expect(deposit_entry.status_name).to eq :disputed
-                        end
-
-                        it 'the last event should be EntryDisputedEvent' do
-                          expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
-                        end
-
-                        it 'payment status should be subcon_claim_deposited' do
-                          expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
-                        end
-
-                        it 'available entry status events are canceled and confirmed' do
-                          expect(deposit_entry.status_events).to eq [:confirm]
-                        end
-
-                        context 'when confirming' do
-                          before do
-                            deposit_entry.confirm!
+                          it 'should change entry status to cleared' do
+                            expect(collected_entry.status_name).to eq :deposited
                           end
 
-                          it 'deposit entry status should be confirmed' do
-                            expect(deposit_entry.status_name).to eq :confirmed
+                          it 'should create a CashDepositFromSubcon entry' do
+                            expect(job.reload.accounting_entries.last).to be_instance_of(CashDepositFromSubcon)
                           end
 
-                          it 'payment status should be cleared' do
-                            expect(job.reload.billing_status_name).to eq :partially_paid
+                          it 'billing status should be partially_collected' do
+                            expect(job.reload.billing_status_name).to eq :partially_collected
                           end
 
-                        end
-                      end
+                          it 'billing status should have the deposit event only once' do
+                            expect(job.reload.events.map { |e| e.class.name }).to eq ['ScSubconDepositedEvent',
+                                                                                      'ScCollectEvent',
+                                                                                      'ServiceCallCompleteEvent',
+                                                                                      'ServiceCallStartedEvent',
+                                                                                      'ServiceCallTransferEvent']
 
-                    end
-                  end
 
-                  context 'when using cash' do
-
-                    context 'when collecting partial amount' do
-
-                      describe 'when collecting cash' do
-                        before do
-                          job.update_attributes(billing_status_event: 'subcon_collected',
-                                                payment_type:         'cash',
-                                                payment_amount:       '10',
-                                                collector:            job.subcontractor)
-                        end
-
-                        it 'job payment status should be partial_payment_collected_by_subcon' do
-                          expect(job.billing_status_name).to eq :partial_payment_collected_by_subcon
-                        end
-
-                        it 'available payment events should be subcon deposited and subcon collected' do
-                          expect(job.billing_status_events).to eq [:subcon_collected, :subcon_deposited]
-                        end
-
-                        context 'when the depositing the amount to the provider' do
-                          before do
-                            job.update_attributes(billing_status_event: 'subcon_deposited')
-                          end
-
-                          it 'payment status should be subcon claim deposited' do
-                            expect(job.billing_status_name).to eq :subcon_claim_deposited
                           end
 
                           it 'affiliate balance should be updated with the deposit' do
-                            expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000 + 1000 + 1000*0.01)
+                            expect(deposit_entry.account.balance).to eq Money.new(-11000 + 1000*0.01)
                           end
 
-                          context 'when marking payment as deposited by the subcon' do
-                            let(:collected_entry) { job.collected_entries.last }
-                            let(:deposit_entry) { job.accounting_entries.last }
+
+                          context 'when deposit confirmed' do
 
                             before do
-                              collected_entry.deposited!
+                              deposit_entry.confirm!
                             end
 
-                            it 'should change entry status to cleared' do
-                              expect(collected_entry.status_name).to eq :deposited
+                            it 'deposit entry status should be confirmed' do
+                              expect(deposit_entry.status_name).to eq :confirmed
                             end
 
-                            it 'should create a CashDepositFromSubcon entry' do
-                              expect(job.reload.accounting_entries.last).to be_instance_of(CashDepositFromSubcon)
+                            it 'payment status should be partially_collected' do
+                              expect(job.reload.billing_status_name).to eq :partially_collected
                             end
 
-                            it 'billing status should be subcon_claim_deposited' do
-                              expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
+                            it 'a cash payment reimbursement exists with the amount derived from the payment' do
+                              entry = ReimbursementForCashPayment.find_by_ticket_id(job.id)
+                              expect(entry).to_not be_nil
+                              expect(entry.amount).to eq Money.new(10)
+                            end
+                          end
+
+                          context 'when the deposit is disputed' do
+                            before do
+                              deposit_entry.dispute!
                             end
 
-                            it 'billing status should have the deposit event only once' do
-                              expect(job.reload.events.map { |e| e.class.name }).to eq ['ScSubconDepositedEvent',
-                                                                                        'ScCollectedEvent',
-                                                                                        'ServiceCallInvoicedEvent',
-                                                                                        'ServiceCallCompleteEvent',
-                                                                                        'ServiceCallStartedEvent',
-                                                                                        'ServiceCallTransferEvent']
-
-
+                            it 'deposit entry status should be confirmed' do
+                              expect(deposit_entry.status_name).to eq :disputed
                             end
 
-                            it 'affiliate balance should be updated with the deposit' do
-                              expect(deposit_entry.account.balance).to eq Money.new(-11000 + 1000*0.01)
+                            it 'the last event should be EntryDisputedEvent' do
+                              expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
                             end
 
+                            it 'payment status should be partially_collected' do
+                              expect(job.reload.billing_status_name).to eq :partially_collected
+                            end
 
-                            context 'when deposit confirmed' do
+                            it 'available entry status events are canceled and confirmed' do
+                              expect(deposit_entry.status_events).to eq [:confirm]
+                            end
 
+                            context 'when confirming' do
                               before do
                                 deposit_entry.confirm!
                               end
@@ -1302,191 +1128,137 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                               end
 
                               it 'payment status should be cleared' do
-                                expect(job.reload.billing_status_name).to eq :partially_paid
+                                expect(job.reload.billing_status_name).to eq :partially_collected
                               end
 
-                              it 'a cash payment reimbursement exists with the amount derived from the payment' do
-                                entry = ReimbursementForCashPayment.find_by_ticket_id(job.id)
-                                expect(entry).to_not be_nil
-                                expect(entry.amount).to eq Money.new(10)
+                              it 'subcon collection status deposited' do
+                                expect(job.reload.subcon_collection_status_name).to eq :deposited
                               end
+
                             end
-
-                            context 'when the deposit is disputed' do
-                              before do
-                                deposit_entry.dispute!
-                              end
-
-                              it 'deposit entry status should be confirmed' do
-                                expect(deposit_entry.status_name).to eq :disputed
-                              end
-
-                              it 'the last event should be EntryDisputedEvent' do
-                                expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
-                              end
-
-                              it 'payment status should be subcon_claim_deposited' do
-                                expect(job.reload.billing_status_name).to eq :subcon_claim_deposited
-                              end
-
-                              it 'available entry status events are canceled and confirmed' do
-                                expect(deposit_entry.status_events).to eq [:confirm]
-                              end
-
-                              context 'when confirming' do
-                                before do
-                                  deposit_entry.confirm!
-                                end
-
-                                it 'deposit entry status should be confirmed' do
-                                  expect(deposit_entry.status_name).to eq :confirmed
-                                end
-
-                                it 'payment status should be cleared' do
-                                  expect(job.reload.billing_status_name).to eq :partially_paid
-                                end
-
-                              end
-                            end
-
                           end
-                        end
+
+
                       end
-                      describe 'when collecting credit card' do
+                    end
+                    describe 'when collecting credit card' do
+                      before do
+                        collect_a_payment job, collector: job.subcontractor, amount: 10, type: 'credit_card'
+                      end
+
+                      it 'job payment status should be partially_collected' do
+                        expect(job.billing_status_name).to eq :partially_collected
+                      end
+
+                      it 'available payment events should be subcon deposited and subcon collected' do
+                        expect(job.billing_status_events).to eq [:late, :collect]
+                      end
+
+                      context 'when the depositing the amount to the provider' do
                         before do
-                          job.update_attributes(billing_status_event: 'subcon_collected',
-                                                payment_type:         'credit_card',
-                                                payment_amount:       '10',
-                                                collector:            job.subcontractor)
+                          job.collected_entries.last.update_attributes(status_event: 'deposited')
+                          #job.update_attributes(billing_status_event: 'subcon_deposited')
                         end
 
-                        it 'job payment status should be partial_payment_collected_by_subcon' do
-                          expect(job.billing_status_name).to eq :partial_payment_collected_by_subcon
-                        end
 
-                        it 'available payment events should be subcon deposited and subcon collected' do
-                          expect(job.billing_status_events).to eq [:subcon_collected, :subcon_deposited]
-                        end
-
-                        context 'when the depositing the amount to the provider' do
+                        context 'when confirming the deposit' do
                           before do
-                            job.update_attributes(billing_status_event: 'subcon_deposited')
+                            job.deposited_entries.last.update_attributes(status_event: 'confirm')
                           end
 
-                          it 'payment status should be subcon claim deposited' do
-                            expect(job.billing_status_name).to eq :subcon_claim_deposited
+                          it 'payment status should be partially_collected' do
+                            expect(job.billing_status_name).to eq :partially_collected
                           end
 
-                          context 'when confirming the deposit' do
-                            before do
-                              job.update_attributes(billing_status_event: 'confirm_deposit')
-                            end
-
-                            it 'payment status should be partially paid' do
-                              expect(job.billing_status_name).to eq :partially_paid
-                            end
-
-                            it 'a cash payment reimbursement exists with the amount derived from the payment' do
-                              entry = ReimbursementForCreditPayment.find_by_ticket_id(job.id)
-                              expect(entry).to_not be_nil
-                              expect(entry.amount).to eq Money.new(10)
-                            end
+                          it 'a cash payment reimbursement exists with the amount derived from the payment' do
+                            entry = ReimbursementForCreditPayment.find_by_ticket_id(job.id)
+                            expect(entry).to_not be_nil
+                            expect(entry.amount).to eq Money.new(10)
                           end
                         end
                       end
-                      describe 'when collecting amex' do
+                    end
+                    describe 'when collecting amex' do
 
+                      before do
+                        collect_a_payment job, type:  'amex_credit_card', collector: job.subcontractor, amount: 10
+                      end
+
+                      it 'job payment status should be partially_collected' do
+                        expect(job.billing_status_name).to eq :partially_collected
+                      end
+
+                      it 'available payment events should be subcon deposited and subcon collected' do
+                        expect(job.billing_status_events).to eq [ :late, :collect]
+                      end
+
+                      context 'when the depositing the amount to the provider' do
                         before do
-                          job.update_attributes(billing_status_event: 'subcon_collected',
-                                                payment_type:         'amex_credit_card',
-                                                payment_amount:       '10',
-                                                collector:            job.subcontractor)
+                          job.update_attributes(billing_status_event: 'subcon_deposited')
                         end
 
-                        it 'job payment status should be partial_payment_collected_by_subcon' do
-                          expect(job.billing_status_name).to eq :partial_payment_collected_by_subcon
+                        it 'payment status should be partially_collected' do
+                          expect(job.billing_status_name).to eq :partially_collected
                         end
 
-                        it 'available payment events should be subcon deposited and subcon collected' do
-                          expect(job.billing_status_events).to eq [:subcon_collected, :subcon_deposited]
-                        end
-
-                        context 'when the depositing the amount to the provider' do
+                        context 'when confirming the deposit' do
                           before do
-                            job.update_attributes(billing_status_event: 'subcon_deposited')
+                            job.update_attributes(billing_status_event: 'confirm_deposit')
                           end
 
-                          it 'payment status should be subcon claim deposited' do
-                            expect(job.billing_status_name).to eq :subcon_claim_deposited
+                          it 'payment status should be partially_collected' do
+                            expect(job.billing_status_name).to eq :partially_collected
                           end
 
-                          context 'when confirming the deposit' do
-                            before do
-                              job.update_attributes(billing_status_event: 'confirm_deposit')
-                            end
-
-                            it 'payment status should be partially paid' do
-                              expect(job.billing_status_name).to eq :partially_paid
-                            end
-
-                            it 'an amex payment reimbursement exists with the amount derived from the payment' do
-                              entry = ReimbursementForAmexPayment.find_by_ticket_id(job.id)
-                              expect(entry).to_not be_nil
-                              expect(entry.amount).to eq Money.new(10)
-                            end
+                          it 'an amex payment reimbursement exists with the amount derived from the payment' do
+                            entry = ReimbursementForAmexPayment.find_by_ticket_id(job.id)
+                            expect(entry).to_not be_nil
+                            expect(entry.amount).to eq Money.new(10)
                           end
                         end
                       end
-                      describe 'when collecting cheque' do
+                    end
+                    describe 'when collecting cheque' do
 
+                      before do
+                        collect_a_payment job, amount: 10, type: 'cheque', collector: job.subcontractor
+                      end
+
+                      it 'job payment status should be partially_collected' do
+                        expect(job.billing_status_name).to eq :partially_collected
+                      end
+
+                      it 'available payment events should be late and collect' do
+                        expect(job.billing_status_events).to eq [:late, :collect]
+                      end
+
+                      context 'when the depositing the amount to the provider' do
                         before do
-                          job.update_attributes(billing_status_event: 'subcon_collected',
-                                                payment_type:         'cheque',
-                                                payment_amount:       '10',
-                                                collector:            job.subcontractor)
+                          job.collected_entries.last.update_attributes(status_event: 'deposited')
                         end
 
-                        it 'job payment status should be partial_payment_collected_by_subcon' do
-                          expect(job.billing_status_name).to eq :partial_payment_collected_by_subcon
-                        end
-
-                        it 'available payment events should be subcon deposited and subcon collected' do
-                          expect(job.billing_status_events).to eq [:subcon_collected, :subcon_deposited]
-                        end
-
-                        context 'when the depositing the amount to the provider' do
+                        context 'when confirming the deposit' do
                           before do
-                            job.update_attributes(billing_status_event: 'subcon_deposited')
+                            job.deposited_entries.last.update_attributes(status_event: 'confirm')
                           end
 
-                          it 'payment status should be subcon claim deposited' do
-                            expect(job.billing_status_name).to eq :subcon_claim_deposited
+                          it 'payment status should be partially collected' do
+                            expect(job.billing_status_name).to eq :partially_collected
                           end
 
-                          context 'when confirming the deposit' do
-                            before do
-                              job.update_attributes(billing_status_event: 'confirm_deposit')
-                            end
-
-                            it 'payment status should be partially paid' do
-                              expect(job.billing_status_name).to eq :partially_paid
-                            end
-
-                            it 'a cheque payment reimbursement exists with the amount derived from the payment' do
-                              entry = ReimbursementForChequePayment.find_by_ticket_id(job.id)
-                              expect(entry).to_not be_nil
-                              expect(entry.amount).to eq Money.new(10)
-                            end
+                          it 'a cheque payment reimbursement exists with the amount derived from the payment' do
+                            entry = ReimbursementForChequePayment.find_by_ticket_id(job.id)
+                            expect(entry).to_not be_nil
+                            expect(entry.amount).to eq Money.new(10)
                           end
                         end
                       end
-
                     end
 
                   end
 
-
                 end
+
 
               end
 
@@ -1494,11 +1266,12 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
           end
 
-          context 'when payment is overdue' do
-            pending
-          end
-
         end
+
+        context 'when payment is overdue' do
+          pending
+        end
+
 
         context 'when the prov invoices' do
           pending

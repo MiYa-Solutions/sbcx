@@ -36,7 +36,7 @@ describe 'My Service Call When I Do The Work' do
     end
 
     it 'paid should be the only available billing status' do
-      expect(job.billing_status_events).to eq [:paid]
+      expect(job.billing_status_events).to eq [:late, :collect]
     end
 
     it 'subcontractor status should be na' do
@@ -62,7 +62,7 @@ describe 'My Service Call When I Do The Work' do
         end
 
         it 'available billing events should be collect' do
-          job.billing_status_events.should =~ [:collect]
+          job.billing_status_events.should =~ [:collect, :late]
         end
 
         describe 'collecting payment' do
@@ -70,13 +70,20 @@ describe 'My Service Call When I Do The Work' do
             include_examples 'successful customer payment collection', 'collect' do
               let(:collection_job) { job }
               let(:collector) { job.organization.users.last }
-              let(:billing_status) { :partial_payment_collected_by_employee }        # since the job is not done it is set to partial
+              let(:billing_status) { :partially_collected }        # since the job is not done it is set to partial
               let(:billing_status_events) { [:collect, :deposited] }
-              let(:billing_status_4_cash) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+              let(:billing_status_4_cash) { :partially_collected } # since the job is not done it is set to partial
               let(:billing_status_events_4_cash) { [:collect, :deposited] }
               let(:customer_balance_before_payment) { 0 }
               let(:payment_amount) { 100 }
-              let(:job_events) { [ScCollectedByEmployeeEvent] }
+              let(:job_events) { [ScCollectEvent] }
+
+              let(:subcon_collection_status_4_cash) { nil }
+              let(:prov_collection_status_4_cash) { nil }
+              let(:subcon_collection_status) { nil }
+              let(:prov_collection_status) { nil }
+              let(:the_prov_job) { nil }
+
             end
           end
 
@@ -84,13 +91,20 @@ describe 'My Service Call When I Do The Work' do
             include_examples 'successful customer payment collection', 'collect' do
               let(:collection_job) { job }
               let(:collector) { job.organization.users.last }
-              let(:billing_status) { :partial_payment_collected_by_employee }        # since the job is not done it is set to partial
+              let(:billing_status) { :partially_collected }        # since the job is not done it is set to partial
               let(:billing_status_events) { [:collect, :deposited] }
-              let(:billing_status_4_cash) { :partial_payment_collected_by_employee } # since the job is not done it is set to partial
+              let(:billing_status_4_cash) { :partially_collected } # since the job is not done it is set to partial
               let(:billing_status_events_4_cash) { [:collect, :deposited] }
               let(:customer_balance_before_payment) { 0 }
               let(:payment_amount) { 10 }
-              let(:job_events) { [ScCollectedByEmployeeEvent] }
+              let(:job_events) { [ScCollectEvent] }
+
+              let(:subcon_collection_status_4_cash) { nil }
+              let(:prov_collection_status_4_cash) { nil }
+              let(:subcon_collection_status) { nil }
+              let(:prov_collection_status) { nil }
+              let(:the_prov_job) { nil }
+
             end
           end
         end
@@ -123,7 +137,7 @@ describe 'My Service Call When I Do The Work' do
           end
 
           it 'collect is the only available payment events' do
-            job.billing_status_events.should =~ [:collect]
+            job.billing_status_events.should =~ [:collect, :late]
           end
 
           it 'dispatch event is associated with the job' do
@@ -140,21 +154,17 @@ describe 'My Service Call When I Do The Work' do
               job.start_work!
               add_bom_to_job job, price: 100, cost: 100, quantity: 1
               job.complete_work!
-              job.invoice_payment!
             end
 
             it 'payment events are collect' do
-              job.billing_status_events.should =~ [:collect, :overdue]
+              job.billing_status_events.should =~ [:collect, :late]
             end
 
             context 'when collecting cash' do
 
               context 'when collecting the full amount' do
                 before do
-                  job.update_attributes(billing_status_event: 'collect',
-                                        payment_type:         'cash',
-                                        payment_amount:       '100',
-                                        collector:            technician)
+                  collect_a_payment job, type: 'cash', amount: 100, collector: technician
                 end
 
                 it 'status should be open' do
@@ -166,7 +176,7 @@ describe 'My Service Call When I Do The Work' do
                 end
 
                 it 'payment status should be collected' do
-                  expect(job).to be_payment_collected_by_employee
+                  expect(job).to be_payment_collected
                 end
 
                 it 'available status events should be cancel' do
@@ -185,12 +195,11 @@ describe 'My Service Call When I Do The Work' do
                   job.events.map(&:class).should =~ [ServiceCallDispatchEvent,
                                                      ServiceCallStartEvent,
                                                      ServiceCallCompleteEvent,
-                                                     ServiceCallInvoiceEvent,
-                                                     ScCollectedByEmployeeEvent]
+                                                     ScCollectEvent]
                 end
 
-                it 'the org admin is allowed to invoke the deposit event' do
-                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
+                it 'the org admin is NOT allowed to invoke the deposit event' do
+                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_false
                 end
 
                 it 'the technician is not allowed to invoke the deposit event' do
@@ -211,7 +220,8 @@ describe 'My Service Call When I Do The Work' do
 
                   before do
                     job.payment_amount = nil # this is to replicate a separate user request (as it impacts job.overpaid?)
-                    job.deposited_payment!
+                    job.payments.last.deposit!
+                    job.reload
                   end
 
                   it 'status should be open' do
@@ -222,8 +232,8 @@ describe 'My Service Call When I Do The Work' do
                     expect(job).to be_work_done
                   end
 
-                  it 'payment status should be cleared' do
-                    expect(job.billing_status_name).to eq :cleared
+                  it 'payment status should be paid' do
+                    expect(job.billing_status_name).to eq :paid
                   end
 
                   it 'available status events should be cancel and close' do
@@ -242,9 +252,7 @@ describe 'My Service Call When I Do The Work' do
                     job.events.map(&:class).should =~ [ServiceCallStartEvent,
                                                        ServiceCallDispatchEvent,
                                                        ServiceCallCompleteEvent,
-                                                       ServiceCallInvoiceEvent,
-                                                       ScCollectedByEmployeeEvent,
-                                                       ScEmployeeDepositedEvent]
+                                                       ScCollectEvent]
                   end
 
                 end
@@ -320,8 +328,8 @@ describe 'My Service Call When I Do The Work' do
                 expect(job).to be_work_done
               end
 
-              it 'payment status should be collected by employee' do
-                expect(job).to be_payment_collected_by_employee
+              it 'payment status should be collected' do
+                expect(job.billing_status_name).to eq :collected
               end
 
               it 'available status events should be cancel' do
@@ -340,12 +348,11 @@ describe 'My Service Call When I Do The Work' do
                 job.events.map(&:class).should =~ [ServiceCallDispatchEvent,
                                                    ServiceCallStartEvent,
                                                    ServiceCallCompleteEvent,
-                                                   ServiceCallInvoiceEvent,
-                                                   ScCollectedByEmployeeEvent]
+                                                   ScCollectEvent]
               end
 
-              it 'the org admin is allowed to invoke the deposit event' do
-                expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_true
+              it 'the org admin is NOT allowed to invoke the deposit event' do
+                expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_false
               end
 
               it 'the technician is not allowed to invoke the deposit event' do
@@ -356,7 +363,7 @@ describe 'My Service Call When I Do The Work' do
               context 'when the employee deposits the payment' do
 
                 before do
-                  job.update_attributes(billing_status_event: 'deposited')
+                  job.payments.last.deposit!
                 end
 
                 it 'status should be open' do
@@ -390,9 +397,8 @@ describe 'My Service Call When I Do The Work' do
                   job.events.map(&:class).should =~ [ServiceCallDispatchEvent,
                                                      ServiceCallStartEvent,
                                                      ServiceCallCompleteEvent,
-                                                     ServiceCallInvoiceEvent,
-                                                     ScCollectedByEmployeeEvent,
-                                                     ScEmployeeDepositedEvent]
+                                                     ScCollectEvent,
+                                                     ScDepositEvent]
 
                 end
 
@@ -447,8 +453,8 @@ describe 'My Service Call When I Do The Work' do
           job.work_status_events.should =~ [:complete]
         end
 
-        it 'paid is the only available payment events' do
-          expect(job.billing_status_events).to eq [:paid]
+        it '[:late, :collect] are the available payment events' do
+          expect(job.billing_status_events).to eq [:late, :collect]
         end
 
         it 'start event is associated with the job' do
@@ -457,7 +463,7 @@ describe 'My Service Call When I Do The Work' do
 
         context 'partial payment' do
           before do
-            job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '10')
+            collect_a_payment job, type: 'cash', amount: '10'
           end
 
           it 'payment status should be partially paid' do
@@ -469,8 +475,7 @@ describe 'My Service Call When I Do The Work' do
           end
 
           it 'payment event is associated with the job' do
-            job.events.map(&:class).should =~ [ServiceCallStartEvent,
-                                               ServiceCallPaidEvent]
+            job.events.map(&:class).should =~ [ServiceCallStartEvent, ScCollectEvent]
           end
 
           it 'payment amount is the submitted one' do
@@ -652,7 +657,7 @@ describe 'My Service Call When I Do The Work' do
 
                   context 'when collecting partial payment' do
                     before do
-                      job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '10')
+                      collect_a_payment job, amount: 10, type: 'cash'
                     end
 
                     it 'status should be open' do
@@ -700,11 +705,11 @@ describe 'My Service Call When I Do The Work' do
 
                     context 'another partial payment' do
                       before do
-                        job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '10')
+                        collect_a_payment job, amount: 10, type: 'cash'
                       end
 
-                      it 'payment status should be partially paid' do
-                        expect(job.billing_status_name).to eq :partially_paid
+                      it 'payment status should be partially collected' do
+                        expect(job.billing_status_name).to eq :partially_collected
                       end
 
                       describe 'billing' do
@@ -717,11 +722,11 @@ describe 'My Service Call When I Do The Work' do
 
                       context 'when paying the remainder' do
                         before do
-                          job.update_attributes(billing_status_event: 'paid', payment_type: 'cash', payment_amount: '80')
+                          collect_a_payment job, amount: 80, type: 'cash'
                         end
 
-                        it 'payment status should be partially cleared' do
-                          expect(job.billing_status_name).to eq :cleared
+                        it 'payment status should be partially paid' do
+                          expect(job.billing_status_name).to eq :paid
                         end
 
                       end
@@ -737,8 +742,7 @@ describe 'My Service Call When I Do The Work' do
 
                   context 'when collecting partial amount' do
                     before do
-                      job.update_attributes(billing_status_event: 'paid', payment_type: 'cheque', payment_amount: '10')
-                      job.payment_amount = nil # to simulate a separate request (payment amount is a virtual attribute )
+                      collect_a_payment job, amount: 10, type: 'cheque'
                     end
 
                     it 'status should be open' do
