@@ -66,7 +66,7 @@ class CustomerPayment < AccountingEntry
     if deposited?
       [:clear, :reject]
     else
-      [:deposit]
+      self.status_events & [:deposit]
     end
 
   end

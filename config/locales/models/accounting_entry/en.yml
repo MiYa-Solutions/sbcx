@@ -23,7 +23,7 @@ en:
       recieved_adj_entry:
         status:
           states:
-            rejected: LuLu
+            rejected: Rejected
   payment_reimbursement:
     cash:
       description: 'Reimbursement for cash payment clearing for %{ticket}'
