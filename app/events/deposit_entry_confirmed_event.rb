@@ -7,7 +7,7 @@ class DepositEntryConfirmedEvent < EntryEvent
   end
 
   def process_event
-    entry.confirmed!
+    entry.confirmed! unless triggering_event.nil?
     entry.ticket.confirmed_prov_collection! if entry.ticket.can_confirmed_prov_collection?
   end
 

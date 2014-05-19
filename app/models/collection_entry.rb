@@ -27,6 +27,6 @@ class CollectionEntry < PaymentEntry
   include Collectible
 
   def allowed_status_events
-    [:deposit]
+    self.status_events & [:deposit]
   end
 end
