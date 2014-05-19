@@ -373,7 +373,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
     res = false
 
-    if obj.present? && obj.allow_collection?
+    if (obj.present? && obj.allow_collection?) || (obj.present? && obj.instance_of?(MyServiceCall))
       if params[:service_call]
         res = billing_event_allowed? params[:service_call]
       else
@@ -513,7 +513,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_provider_status_attrs
-    obj.instance_of?(TransferredServiceCall) && provider_event_allowed? ? [:provider_status_event, :provider_payment] : []
+    obj.kind_of?(TransferredServiceCall) && provider_event_allowed? ? [:provider_status_event, :provider_payment] : []
   end
 
   def sc_transfer_attrs

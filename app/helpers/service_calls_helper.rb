@@ -56,7 +56,7 @@ module ServiceCallsHelper
 
   def provider_status_forms(service_call)
     if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event)
-      if service_call.instance_of?(TransferredServiceCall) && service_call.provider_settlement_allowed?
+      if service_call.kind_of?(TransferredServiceCall) && service_call.provider_settlement_allowed?
         service_call.provider_status_events.collect do |event|
           if permitted_params(service_call).permitted_attribute?(:service_call, :provider_status_event, event.to_s)
             concat(render "service_calls/action_forms/prov_status_forms/#{event}_form", job: service_call)

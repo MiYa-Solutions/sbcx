@@ -6,7 +6,7 @@
         <li><h1><%= I18n.t('general.general.job_statuses').html_safe %></h1>
         <li class="job_icons">
           <% if @service_call.class == MyServiceCall %>
-              <% if @service_call.transferred? %>
+              <% unless @service_call.subcon_na? %>
                   <%= image_tag("Itransferred.png", :title => I18n.t('general.messages.transferred_job').html_safe, :rel => 'tooltip') %>
               <% end %>
               <%= image_tag("myJobLarge.png", :title => I18n.t('general.messages.myJob').html_safe, :rel => 'tooltip') %>

@@ -227,7 +227,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def payment_deposited?
-     deposit_entries.with_status(:submitted, :disputed).size == 0 && deposit_entries.size > 0
+     deposit_entries.with_status(:submitted, :disputed).size == 0 && deposit_entries.size >= 0
   end
 
   def can_uncancel?
