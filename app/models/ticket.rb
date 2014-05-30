@@ -435,11 +435,6 @@ class Ticket < ActiveRecord::Base
 
   end
 
-  def available_payment_collectors
-    res = [self.organization]
-    res << self.subcontractor if subcontractor && !subcontractor.member?
-    res
-  end
 
 
   protected

@@ -138,10 +138,14 @@ class MyServiceCall < ServiceCall
     collected_entries.map(&:status).select { |status| status == CollectedEntry::STATUS_SUBMITTED }.empty?
   end
 
-
   def subcon_collection_disputed?
     deposited_entries.with_status(:disputed).size > 0
   end
 
+  def available_payment_collectors
+    res = [self.organization]
+    res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
+    res
+  end
 
 end

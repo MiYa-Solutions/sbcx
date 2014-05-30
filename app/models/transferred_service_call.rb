@@ -211,7 +211,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def provider_settlement_allowed?
-    (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
+    work_done? && (!allow_collection? || payment_deposited?)
   end
 
   # to make the subcon_settlement_allowed? in ServiceCall work
@@ -227,7 +227,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def payment_deposited?
-     deposit_entries.with_status(:submitted, :disputed).size == 0 && deposit_entries.size >= 0
+    none_deposited_collections? || unconfirmed_deposits? ? false : true
   end
 
   def can_uncancel?
@@ -260,6 +260,10 @@ class TransferredServiceCall < ServiceCall
     deposit_entries.with_status(:disputed).size > 0
   end
 
+  def available_payment_collectors
+    provider_pending? ? [self.organization] : []
+  end
+
 
   private
   def provider_is_not_a_member
@@ -284,21 +288,29 @@ class TransferredServiceCall < ServiceCall
   end
 
   def mixed_payment_entries
-    collections    = entries.where(type: CollectionEntry.descendants.map(&:name)).all
-    events_ids = entries_events(payments)
+    collections = entries.where(type: CollectionEntry.descendants.map(&:name)).all
+    events_ids  = entries_events(payments)
 
     the_collections = collections.reject { |collection| events_ids.include?(collection.event.id) }
 
     EntryCollection.new(payments + the_collections)
   end
 
-  def  entries_events(entries)
+  def entries_events(entries)
 
     res = []
     entries.each do |e|
       res.concat Event.event_chain(e.event)
     end
     res.uniq
+  end
+
+  def unconfirmed_deposits?
+    deposit_entries.size >= 0 && deposit_entries.with_status(:submitted, :disputed).size > 0
+  end
+
+  def none_deposited_collections?
+    collection_entries.size > 0 && collection_entries.with_status(:pending).size > 0
   end
 
 

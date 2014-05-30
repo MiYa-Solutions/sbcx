@@ -144,31 +144,12 @@ class AffiliatePostingRule < PostingRule
 
   def cparty_settlement_entries
     result = []
-    total  = Money.new_with_amount(0)
 
-    charge = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
-    total += charge.amount if charge.present?
+    charge_amount = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
+    bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id).sum(:amount_cents)
+    payment_fee = AccountingEntry.where(type: ['CashPaymentFee', 'CreditPaymentFee', 'AmexPaymentFee', 'ChequePaymentFee'], ticket_id: @ticket.id).sum(:amount_cents)
 
-    entries = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id)
-    entries.each do |entry|
-      total += entry.amount
-    end
-
-    case @event.payment_type
-      when 'cash'
-        payment_fee = AccountingEntry.where(type: CashPaymentFee, ticket_id: @ticket.id).first
-      when 'credit_card'
-        payment_fee = AccountingEntry.where(type: CreditPaymentFee, ticket_id: @ticket.id).first
-      when 'amex_credit_card'
-        payment_fee = AccountingEntry.where(type: AmexPaymentFee, ticket_id: @ticket.id).first
-      when 'cheque'
-        payment_fee = AccountingEntry.where(type: ChequePaymentFee, ticket_id: @ticket.id).first
-      else
-        Rails.logger.debug { "ProfitSplit#counterparty_settlement_entries - payment fees are not taken into account when calculating settlement amount" } #raise "ProfitSplit#organization_settlement_entries - unexpected payment type: #{@ticket.payment_type}. expected 'cash', 'credit_cart' or 'cheque'"
-
-    end
-
-    total += payment_fee.amount if payment_fee.present?
+    total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
 
 
     case @ticket.provider_payment
@@ -265,31 +246,13 @@ class AffiliatePostingRule < PostingRule
 
   def org_settlement_entries
     result = []
-    total  = Money.new_with_amount(0)
 
-    charge = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
-    total += charge.amount if charge.present?
+    charge_amount = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
+    bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id).sum(:amount_cents)
+    payment_fee = AccountingEntry.where(type: ['ReimbursementForCashPayment', 'ReimbursementForCreditPayment', 'ReimbursementForAmexPayment', 'ReimbursementForChequePayment'], ticket_id: @ticket.id).sum(:amount_cents)
 
-    entries = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id)
-    entries.each do |entry|
-      total += entry.amount
-    end
+    total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
 
-    case @ticket.payment_type
-      when 'cash'
-        payment_reimbursement = AccountingEntry.where(type: ReimbursementForCashPayment, ticket_id: @ticket.id).first
-      when 'credit_card'
-        payment_reimbursement = AccountingEntry.where(type: ReimbursementForCreditPayment, ticket_id: @ticket.id).first
-      when 'amex_credit_card'
-        payment_reimbursement = AccountingEntry.where(type: ReimbursementForAmexPayment, ticket_id: @ticket.id).first
-      when 'cheque'
-        payment_reimbursement = AccountingEntry.where(type: ReimbursementForChequePayment, ticket_id: @ticket.id).first
-      else
-        Rails.logger.debug { "ProfitSplit#organization_settlement_entries - payment fees are not taken in account when calculating settlement amount" } #raise "ProfitSplit#organization_settlement_entries - unexpected payment type: #{@ticket.payment_type}. expected 'case', 'credit_cart' or 'cheque'"
-
-    end
-
-    total += payment_reimbursement.amount if payment_reimbursement.present?
 
     case @ticket.subcon_payment
       when 'cash'

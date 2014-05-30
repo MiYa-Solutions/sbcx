@@ -258,10 +258,11 @@ class ServiceCall < Ticket
 
 
   def subcon_settlement_allowed?
+    subcon_collection_fully_deposited? && all_deposited_entries_confirmed? && work_done?(
 
     (subcontractor.subcontrax_member? && !allow_collection?) ||
         (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
-        (!subcontractor.subcontrax_member? && work_done?)
+        (!subcontractor.subcontrax_member? && work_done?))
   end
 
   def can_change_boms?
@@ -302,6 +303,11 @@ class ServiceCall < Ticket
 
 
   private
+
+  def all_deposited_entries_confirmed?
+    deposited_entries.map(&:status).select { |status| status != ConfirmableEntry::STATUS_CONFIRMED }.empty?
+  end
+
 
   def financial_data_change
     errors.add :tax, "Can't change tax when job is completed or transferred" if !self.system_update && self.changed_attributes.has_key?('tax') && !can_change_financial_data?
