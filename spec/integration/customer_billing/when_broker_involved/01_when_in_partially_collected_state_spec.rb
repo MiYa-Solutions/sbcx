@@ -92,7 +92,7 @@ describe 'Billing when broker involved and in partially collected state' do
         let(:customer_balance_before_payment) { 900 }
         let(:payment_amount) { 900 }
         let(:job_events) { [ScCollectEvent, ScCollectEvent, ServiceCallAcceptEvent, ServiceCallCompleteEvent, ServiceCallReceivedEvent, ServiceCallStartEvent] }
-        let(:the_prov_job) { job.reload }
+        let(:the_prov_job) { broker_job.reload }
         let(:the_billing_status) { :collected }
         let(:the_subcon_collection_status) { :collected }
 

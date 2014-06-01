@@ -395,21 +395,24 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def subcontractor_status_allowed?
+    params_to_check = params[:service_call] ? params[:service_call] : params
     res = false
     unless obj.nil? || obj.subcontractor.nil?
       res = true
-      res = false if params[:subcontractor_status_event] == "subcon_marked_as_settled" && obj.subcontractor.subcontrax_member?
-      res = false if params[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
+      res = false if params_to_check[:subcontractor_status_event] == "subcon_marked_as_settled" && obj.subcontractor.subcontrax_member?
+      res = false if params_to_check[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
+      res = false if params_to_check[:subcontractor_status_event] == "clear" && obj.subcontractor.subcontrax_member?
     end
     res
   end
 
   def provider_event_allowed?
+    params_to_check = params[:service_call] ? params[:service_call] : params
     res = false
     unless obj.nil? || obj.provider.nil?
       res = true
-      res = false if params[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
-      res = false if params[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
+      res = false if params_to_check[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
+      res = false if params_to_check[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
     end
     res
 

@@ -143,6 +143,7 @@ class TransferredServiceCall < ServiceCall
     # for cash payment, paid means cleared
     after_transition any => :settled do |sc, transition|
       sc.provider_status = SUBCON_STATUS_CLEARED if sc.provider_payment == 'cash'
+      sc.save!
     end
 
 
@@ -261,7 +262,11 @@ class TransferredServiceCall < ServiceCall
   end
 
   def available_payment_collectors
-    provider_pending? ? [self.organization] : []
+    res = [self.organization]
+    res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
+    res
+
+    #provider_pending? ? [self.organization] : []
   end
 
 
