@@ -89,7 +89,7 @@ en:
         status:
           events:
             transfer: "Transfer"
-            dispatch: "Lala"
+            dispatch: "Disptach"
           states:
             open: Open
             new: "New"

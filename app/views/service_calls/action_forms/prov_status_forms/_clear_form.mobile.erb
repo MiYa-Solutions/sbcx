@@ -1,5 +1,4 @@
 <%= simple_form_for job.becomes(ServiceCall), html: { class: 'button-green' } do |f| %>
-    <%= f.input :provider_payment, collection: payment_types %>
     <%= hidden_field_tag 'service_call[provider_status_event]', 'clear' %>
     <%= f.submit job.class.human_provider_status_event_name(:clear).titleize,
                  id:    'provider_settle_service_call_btn',

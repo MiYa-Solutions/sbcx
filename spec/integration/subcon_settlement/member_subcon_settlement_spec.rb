@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe 'Member Subcon Settlement' do
   include_context 'transferred job'
-  describe 'when NOT collecting payments (before work completion)' do
+
+  context 'when NOT collecting payments (before work completion)' do
 
     before do
       transfer_the_job
@@ -19,11 +20,11 @@ describe 'Member Subcon Settlement' do
       expect(subcon_job.provider_status_name).to eq :pending
     end
 
-    it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+    it 'provider job: subcon settlement is not allowed yet (need to complete the work first)' do
       expect(job.subcontractor_status_events).to eq []
     end
 
-    it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+    it 'subcon job: provider settlement is not allowed yet (need to complete the first)' do
       expect(subcon_job.provider_status_events).to eq []
     end
 
@@ -36,12 +37,14 @@ describe 'Member Subcon Settlement' do
       it 'provider job: subcon settlement is allowed' do
         expect(job.subcontractor_status_events).to eq [:subcon_marked_as_settled, :settle]
         expect(event_permitted_for_job?('subcontractor_status', 'subcon_marked_as_settled', subcon_admin, subcon_job)).to be_false
+        expect(event_permitted_for_job?('subcontractor_status', 'settle', subcon_admin, subcon_job)).to be_true
 
       end
 
       it 'subcon job: provider settlement is allowed ' do
         expect(subcon_job.provider_status_events).to eq [:provider_marked_as_settled, :settle]
         expect(event_permitted_for_job?('provider_status', 'provider_marked_as_settled', subcon_admin, subcon_job)).to be_false
+        expect(event_permitted_for_job?('provider_status', 'settle', subcon_admin, subcon_job)).to be_true
       end
 
       context 'when subcon initiates the cheque settlement' do
@@ -59,12 +62,12 @@ describe 'Member Subcon Settlement' do
           expect(subcon_job.provider_status_name).to eq :claim_settled
         end
 
-        it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+        it 'provider job: is able to confirm settlement' do
           expect(job.subcontractor_status_events).to eq [:confirm_settled]
           expect(event_permitted_for_job?('subcontractor_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
         end
 
-        it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+        it 'subcon job: not allowed to mark the job as settlement confirmed' do
           expect(subcon_job.provider_status_events).to eq [:provider_confirmed]
           expect(event_permitted_for_job?('provider_status', 'provider_confirmed', subcon_admin, subcon_job)).to be_false
         end
@@ -83,20 +86,20 @@ describe 'Member Subcon Settlement' do
             subcon_job.reload
           end
 
-          it 'provider job: subcon status should be pending' do
+          it 'provider job: subcon status should be settled' do
             expect(job.subcontractor_status_name).to eq :settled
           end
 
-          it 'subcon job: subcon status should be pending' do
+          it 'subcon job: subcon status should be settled' do
             expect(subcon_job.provider_status_name).to eq :settled
           end
 
-          it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+          it 'provider job: subcon settlement clearing is not allowed for a user' do
             expect(job.subcontractor_status_events).to eq [:clear]
             expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
           end
 
-          it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+          it 'subcon job: provider settlement is allowed' do
             expect(subcon_job.provider_status_events).to eq [:clear]
             expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
           end
@@ -115,32 +118,25 @@ describe 'Member Subcon Settlement' do
               job.reload
             end
 
-            it 'provider job: subcon status should be pending' do
+            it 'provider job: subcon status should be cleared' do
               expect(job.subcontractor_status_name).to eq :cleared
             end
 
-            it 'subcon job: subcon status should be pending' do
+            it 'subcon job: subcon status should be cleared' do
               expect(subcon_job.provider_status_name).to eq :cleared
             end
 
-            it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+            it 'provider job: there are no more settlement events available' do
               expect(job.subcontractor_status_events).to eq []
-              #expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
             end
 
-            it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+            it 'subcon job: there are no more settlement events available' do
               expect(subcon_job.provider_status_events).to eq []
-              #expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
             end
 
           end
 
-
-
         end
-
-
-
 
       end
 
@@ -164,7 +160,7 @@ describe 'Member Subcon Settlement' do
           expect(event_permitted_for_job?('subcontractor_status', 'subcon_confirmed', subcon_admin, subcon_job)).to be_false
         end
 
-        it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+        it 'subcon job: provider settlement confirmation is permitted for a user' do
           expect(subcon_job.provider_status_events).to eq [:confirm_settled]
           expect(event_permitted_for_job?('provider_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
         end
@@ -183,20 +179,20 @@ describe 'Member Subcon Settlement' do
             job.reload
           end
 
-          it 'provider job: subcon status should be pending' do
+          it 'provider job: subcon status should be settled' do
             expect(job.subcontractor_status_name).to eq :settled
           end
 
-          it 'subcon job: subcon status should be pending' do
+          it 'subcon job: subcon status should be settled' do
             expect(subcon_job.provider_status_name).to eq :settled
           end
 
-          it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+          it 'provider job: subcon settlement clearing is not allowed for a user' do
             expect(job.subcontractor_status_events).to eq [:clear]
             expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
           end
 
-          it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+          it 'subcon job: provider settlement clearing is allowed' do
             expect(subcon_job.provider_status_events).to eq [:clear]
             expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
           end
@@ -215,32 +211,25 @@ describe 'Member Subcon Settlement' do
               job.reload
             end
 
-            it 'provider job: subcon status should be pending' do
+            it 'provider job: subcon status should be cleared' do
               expect(job.subcontractor_status_name).to eq :cleared
             end
 
-            it 'subcon job: subcon status should be pending' do
+            it 'subcon job: subcon status should be cleared' do
               expect(subcon_job.provider_status_name).to eq :cleared
             end
 
-            it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+            it 'provider job: no subcon settlement events are left' do
               expect(job.subcontractor_status_events).to eq []
-              #expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
             end
 
-            it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+            it 'subcon job: no provider settlement events are left' do
               expect(subcon_job.provider_status_events).to eq []
-              #expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
             end
 
           end
 
-
-
         end
-
-
-
 
       end
 
@@ -251,20 +240,20 @@ describe 'Member Subcon Settlement' do
           job.reload
         end
 
-        it 'provider job: subcon status should be pending' do
+        it 'provider job: subcon status should be claimed_as_settled' do
           expect(job.subcontractor_status_name).to eq :claimed_as_settled
         end
 
-        it 'subcon job: subcon status should be pending' do
+        it 'subcon job: subcon status should be claim_settled' do
           expect(subcon_job.provider_status_name).to eq :claim_settled
         end
 
-        it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+        it 'provider job: subcon settlement confirmation is allowed' do
           expect(job.subcontractor_status_events).to eq [:confirm_settled]
           expect(event_permitted_for_job?('subcontractor_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
         end
 
-        it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+        it 'subcon job: provider settlement confirmation is not allowed for a user' do
           expect(subcon_job.provider_status_events).to eq [:provider_confirmed]
           expect(event_permitted_for_job?('provider_status', 'provider_confirmed', subcon_admin, subcon_job)).to be_false
         end
@@ -283,22 +272,20 @@ describe 'Member Subcon Settlement' do
             subcon_job.reload
           end
 
-          it 'provider job: subcon status should be pending' do
+          it 'provider job: subcon status should be cleared' do
             expect(job.subcontractor_status_name).to eq :cleared
           end
 
-          it 'subcon job: subcon status should be pending' do
+          it 'subcon job: subcon status should be cleared' do
             expect(subcon_job.provider_status_name).to eq :cleared
           end
 
-          it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+          it 'provider job: no subcon settlement events are left' do
             expect(job.subcontractor_status_events).to eq []
-            #expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
           end
 
-          it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+          it 'subcon job: no provider settlement events are left' do
             expect(subcon_job.provider_status_events).to eq []
-            #expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
           end
 
           it 'subcon account balance for prov should be: zero' do
@@ -308,7 +295,6 @@ describe 'Member Subcon Settlement' do
           it 'prov account balance for prov should be: zero' do
             expect(subcon_job.organization.account_for(job.provider.becomes(Organization)).balance).to eq Money.new(0)
           end
-
 
         end
 
@@ -361,14 +347,12 @@ describe 'Member Subcon Settlement' do
             expect(subcon_job.provider_status_name).to eq :cleared
           end
 
-          it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
+          it 'provider job: no subcon settlement events are left' do
             expect(job.subcontractor_status_events).to eq []
-            #expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
           end
 
-          it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
+          it 'subcon job: no provider settlement events are left' do
             expect(subcon_job.provider_status_events).to eq []
-            #expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
           end
 
           it 'subcon account balance for prov should be: zero' do
@@ -379,20 +363,16 @@ describe 'Member Subcon Settlement' do
             expect(subcon_job.organization.account_for(job.provider.becomes(Organization)).balance).to eq Money.new(0)
           end
 
-
         end
 
-
-
-
       end
-
 
     end
 
 
   end
-  describe 'when collecting a payment' do
+
+  context 'when collecting a payment' do
     before do
       transfer_the_job
       accept_the_job subcon_job
