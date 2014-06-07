@@ -31,7 +31,11 @@ shared_examples 'customer billing is successful' do |entry_status, entry_status_
   end
 
   it 'entry should have the expected collector' do
-    expect(customer_entry.collector).to eq collector
+    if brokered_job?(customer_entry.ticket) && customer_entry.ticket.organization != collector
+      expect(customer_entry.collector).to eq customer_entry.ticket.subcontractor.becomes(Organization)
+    else
+      expect(customer_entry.collector).to eq collector
+    end
   end
 
   it 'entry status should be correct' do
@@ -40,6 +44,11 @@ shared_examples 'customer billing is successful' do |entry_status, entry_status_
 
   it 'entry amount should be the payment amount' do
     expect(customer_entry.amount).to eq Money.new(-payment_amount*100)
+  end
+
+  def brokered_job?(job)
+    subcon_job = Ticket.find_by_organization_id_and_ref_id(job.subcontractor_id, job.ref_id)
+    subcon_job && subcon_job.my_role == :broker
   end
 
 
@@ -77,7 +86,7 @@ shared_examples 'successful customer payment collection' do
 
     it_behaves_like 'customer billing is successful', :pending, []
 
-    it_behaves_like  'correct provider billing statuses'
+    it_behaves_like 'correct provider billing statuses'
   end
 
   context 'when collecting credit card' do
@@ -136,11 +145,15 @@ shared_examples 'correct provider billing statuses' do
   let(:subcon_collection_status) { the_subcon_collection_status || raise('you need to pass a let(:the_subcon_collection_status) when including when including correct provider billing statuses examples') }
 
   it 'should have the expected billing status' do
-    expect(provider_job.reload.billing_status_name).to eq  billing_status unless the_prov_job.nil?
+    if provider_job.instance_of?(BrokerServiceCall)
+      expect(provider_job.reload.billing_status_name).to eq :na
+    else
+      expect(provider_job.reload.billing_status_name).to eq billing_status unless the_prov_job.nil?
+    end
   end
 
   it 'should have the expected subcon collection status' do
-    expect(provider_job.reload.subcon_collection_status_name).to eq  billing_status unless the_prov_job.nil?
+    expect(provider_job.reload.subcon_collection_status_name).to eq billing_status unless the_prov_job.nil?
   end
 
 end

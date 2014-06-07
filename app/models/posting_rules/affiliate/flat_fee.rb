@@ -96,6 +96,7 @@ class FlatFee < AffiliatePostingRule
   def org_charge_entries
     entries = []
     entries << PaymentToSubcontractor.new(agreement:   agreement,
+                                          status: AccountingEntry::STATUS_CLEARED,
                                           event:       @event,
                                           ticket:      @ticket,
                                           amount:      counterparty_cut,
@@ -103,6 +104,7 @@ class FlatFee < AffiliatePostingRule
     @ticket.boms.each do |bom|
       if bom.buyer == agreement.counterparty
         entries << MaterialReimbursementToCparty.new(agreement:   agreement,
+                                                     status: AccountingEntry::STATUS_CLEARED,
                                                      event:       @event,
                                                      ticket:      @ticket,
                                                      amount:      bom.total_cost,
@@ -114,10 +116,10 @@ class FlatFee < AffiliatePostingRule
 
   def cparty_charge_entries
     entries = []
-    entries << IncomeFromProvider.new(agreement: agreement, event: @event, ticket: @ticket, amount: counterparty_cut, description: "Entry to subcontractor owned account")
+    entries << IncomeFromProvider.new(agreement: agreement, event: @event, ticket: @ticket, amount: counterparty_cut,status: AccountingEntry::STATUS_CLEARED, description: "Entry to subcontractor owned account")
     @ticket.boms.each do |bom|
       if bom.mine?
-        entries << MaterialReimbursement.new(agreement: agreement, event: @event, ticket: @ticket, amount: bom.total_cost, description: "Material Reimbursement to subcon")
+        entries << MaterialReimbursement.new(agreement: agreement, event: @event, ticket: @ticket, amount: bom.total_cost, status: AccountingEntry::STATUS_CLEARED, description: "Material Reimbursement to subcon")
       end
     end if get_transfer_props.prov_bom_reimbursement?
 

@@ -24,12 +24,14 @@
           </td>
 
       <% end %>
-      <td class="show_more_button">
+  <% end %>
+
+  <td class="show_more_button">
                             <span class="link_blue" id="show_provider_entries">
                                <%= link_to t('general.general.get_entries'), "#prov_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
                               <i class="icon-chevron-down"></i>
                             </span>
-      </td>
-  <% end %>
+  </td>
+
 
 

@@ -48,7 +48,7 @@ describe 'Billing when in collected state' do
         end
 
         it 'the corresponding payment should now allow to deposit clear and reject as the subcon marked collection as deposited' do
-          expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject]
+          expect(job.reload.payments.last.allowed_status_events.sort).to eq [:deposit]
         end
 
         it 'billing status should be in_process' do
@@ -135,8 +135,8 @@ describe 'Billing when in collected state' do
           deposit_all_entries subcon_job.collection_entries
         end
 
-        it 'the corresponding payment should now allow to deposit clear and reject as the subcon marked collection as deposited' do
-          expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject]
+        it 'the corresponding payment should now allow to deposit the payment as the subcon marked collection as deposited' do
+          expect(job.reload.payments.last.allowed_status_events.sort).to eq [:deposit]
         end
 
         it 'billing status should be in_process' do
@@ -186,8 +186,8 @@ describe 'Billing when in collected state' do
       end
 
 
-      it 'the corresponding payment should allow to deposit clear and reject as this was collected but the provider' do
-        expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject]
+      it 'the corresponding payment should allow to deposit the payment as this was collected but the provider' do
+        expect(job.reload.payments.last.allowed_status_events.sort).to eq [:deposit]
       end
 
       it 'billing status should be collected' do
@@ -228,8 +228,8 @@ describe 'Billing when in collected state' do
           deposit_all_entries subcon_job.collection_entries
         end
 
-        it 'the corresponding payment should now allow to deposit clear and reject as the subcon marked collection as deposited' do
-          expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject]
+        it 'the corresponding payment should now allow to deposit the payment as the subcon marked collection as deposited' do
+          expect(job.reload.payments.last.allowed_status_events.sort).to eq [:deposit]
         end
 
         it 'billing status should be in_process' do
@@ -318,7 +318,7 @@ describe 'Billing when in collected state' do
       end
 
       it 'the provider collected payment should allow to deposit clear and reject ' do
-        expect(job.payments.first.allowed_status_events.sort).to eq [:clear, :deposit, :reject]
+        expect(job.payments.first.allowed_status_events.sort).to eq [:deposit]
       end
 
       it 'the subcon collected payment should not allow to deposit clear and reject ' do

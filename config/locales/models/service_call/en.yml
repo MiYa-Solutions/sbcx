@@ -226,8 +226,8 @@ en:
     name: "Subcontractor has Deposited Payment"
     description: 'Subcontractor Name: &nbsp; %{subcontractor} has indicated that payment has been deposited for this Job'
   service_call_collect_event:
-    name: "Payment has been Collected"
-    description: "The payment for this Job has been collected"
+    name: "Customer Payment Collection"
+    description: 'A customer %{type} payment of %{amount} was collected by %{collector}'
   sc_collected_by_employee_event:
     name: "Payment has been collected by an employee"
     description: "The payment for this Job has been collected by %{employee}"

@@ -15,6 +15,7 @@ class PaymentRejectedEvent < PaymentEvent
 
   def update_account_balance
     rev_entry = RejectedPayment.new(event:       self,
+                                    status: AccountingEntry::STATUS_CLEARED,
                                     ticket:      payment.ticket,
                                     agreement:   payment.agreement,
                                     amount:      -payment.amount,

@@ -60,8 +60,8 @@ describe 'Customer Billing When Provider Transfers To Local' do
             expect(job.subcon_collection_status_name).to eq :is_deposited
           end
 
-          it 'the corresponding payment should now allow to deposit clear and reject as the subcon marked collection as deposited' do
-            expect(job.reload.payments.last.allowed_status_events.sort).to eq [:clear, :deposit, :reject ]
+          it 'the corresponding payment should now allow to deposit the payment as the subcon marked collection as deposited' do
+            expect(job.reload.payments.last.allowed_status_events.sort).to eq [:deposit]
           end
 
 
@@ -313,9 +313,106 @@ describe 'Customer Billing When Provider Transfers To Local' do
   describe 'collecting payment after the job is done' do
 
     before do
+      complete_the_work job
+    end
+
+    context 'when and collecting partial amount' do
       before do
-        complete_the_work subcon_job
+        collect_a_payment job, amount: 50, type: 'cheque', collector: job.subcontractor
       end
+
+      it 'should allow the collection of additional payments' do
+        expect(job.billing_status_events).to eq [:reject, :late, :collect]
+      end
+
+      it 'billing status should be partially_collected' do
+        expect(job.billing_status_name).to eq :partially_collected
+      end
+
+
+      context 'when depositing the collection on behalf of the subcon' do
+        before do
+          job.collected_entries.last.deposited!
+        end
+
+        it 'should allow the collection of additional payments' do
+          expect(job.billing_status_events).to eq [:reject, :late, :collect]
+        end
+
+        it 'billing status should be partially_collected' do
+          expect(job.billing_status_name).to eq :partially_collected
+        end
+
+
+        context 'when depositing the customer payment' do
+          before do
+            job.payments.last.deposit!
+          end
+
+          it 'should allow the collection of additional payments' do
+            expect(job.billing_status_events).to eq [:reject, :late, :collect]
+          end
+
+          it 'billing status should be partially_collected' do
+            expect(job.billing_status_name).to eq :partially_collected
+          end
+
+
+          context 'when collecting the full amount' do
+            before do
+              collect_full_amount job, collector: job.subcontractor, type: 'cash'
+              job.reload
+            end
+
+            it 'should allow the collection of additional payments' do
+              expect(job.billing_status_events).to eq [:reject]
+            end
+
+            it 'billing status should be in_process' do
+              expect(job.billing_status_name).to eq :in_process
+            end
+
+
+            context 'when customer cheque is rejected' do
+              before do
+                job.payments.order('ID ASC').first.reject!
+                job.reload
+              end
+
+              it 'should allow the collection of additional payments' do
+                expect(job.billing_status_events).to eq [:late, :collect]
+              end
+
+              it 'billing status should be rejected' do
+                expect(job.billing_status_name).to eq :rejected
+              end
+
+
+              context 'when depositing the cash payment' do
+                before do
+                  job.collected_entries.order('ID DESC').first.deposited!
+                  job.reload
+                end
+
+                context 'when depositing the customer payment' do
+                  before do
+                    job.payments.order('ID ASC').last.deposit!
+                  end
+
+                  it 'should allow the collection of additional payments' do
+                    expect(job.billing_status_events).to eq [:late, :collect]
+                  end
+
+                end
+
+              end
+
+            end
+
+          end
+        end
+      end
+
 
     end
 

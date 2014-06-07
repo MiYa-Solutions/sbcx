@@ -1,7 +1,9 @@
 class ScCollectEvent < CollectionEvent
+  include MoneyRails::ActionViewExtension
+
   def init
     self.name         = I18n.t('service_call_collect_event.name')
-    self.description  = I18n.t('service_call_collect_event.description')
+    self.description  = I18n.t('service_call_collect_event.description', collector: collector.name, amount: humanized_money_with_symbol(amount), type: payment_type)
     self.reference_id = 100023
   end
 

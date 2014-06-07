@@ -73,6 +73,14 @@ describe 'My behaviour', skip_basic_job: true do
         expect(broker_job.billing_status_events.sort).to eq [:collect]
       end
 
+      it 'an entry for income from provider was created with status cleared' do
+        expect(broker_job.entries.where(type: IncomeFromProvider).last.status_name).to eq :cleared
+      end
+
+      it 'an entry for the bom reimbursement was created with status cleared' do
+        expect(broker_job.entries.where(type: MaterialReimbursementToCparty).last.status_name).to eq :cleared
+      end
+
       it 'broker: account balance for prov should be -101.00 (collection + collection fee - subcon fee - bom)' do
         expect(org.account_for(broker_job.provider.becomes(Organization)).balance).to eq Money.new(-10000 - 100 + 10000 + 10000)
       end

@@ -33,7 +33,7 @@ module CustomerJobBilling
       end
 
       event :reject do
-        transition :in_process => :rejected
+        transition [:partially_collected, :in_process] => :rejected
       end
 
       event :late do
@@ -41,6 +41,8 @@ module CustomerJobBilling
       end
 
       event :collect do
+        transition :partially_collected => :in_process, if: ->(sc) { sc.fully_paid? && sc.any_payment_deposited? }
+
         transition [:pending,
                     :rejected,
                     :overdue,
@@ -105,6 +107,14 @@ module CustomerJobBilling
 
   def fully_cleared?
     cleared_payment_cents >= total.cents
+  end
+
+  def any_payment_deposited?
+    payments.with_status(:deposited).size > 0
+  end
+
+  def any_payment_rejected?
+    payments.without_status(:rejected).size > 0
   end
 
   alias_method :payment_cleared?, :fully_cleared?

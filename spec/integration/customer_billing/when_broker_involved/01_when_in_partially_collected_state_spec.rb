@@ -23,7 +23,7 @@ describe 'Billing when broker involved and in partially collected state' do
   end
 
   it 'billing events should be :collect, :late' do
-    expect(job.reload.billing_status_events.sort).to eq [:collect, :late]
+    expect(job.reload.billing_status_events.sort).to eq [:collect, :late, :reject]
   end
 
   describe 'when payment is late' do
@@ -58,8 +58,8 @@ describe 'Billing when broker involved and in partially collected state' do
       let(:collector) { org }
       let(:billing_status) { :partially_collected }        # since the job is not done it is set to partial
       let(:billing_status_4_cash) { :partially_collected } # since the job is not done it is set to partial
-      let(:subcon_collection_status) { :pending }
-      let(:subcon_collection_status_4_cash) { :pending }
+      let(:subcon_collection_status) { :partially_collected }
+      let(:subcon_collection_status_4_cash) { :partially_collected }
       let(:prov_collection_status) { nil }
       let(:prov_collection_status_4_cash) { nil }
 

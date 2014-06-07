@@ -3,27 +3,33 @@ class MultiplePayments < ActiveRecord::Migration
     MyServiceCall.all.each do |job|
       job.billing_status           = new_billing_status(job)
       job.subcon_collection_status = new_subcon_collection_status(job)
-      job.save!
+
+      Ticket.transaction do
+        job.save!
+        update_entries(job)
+      end
     end
 
     TransferredServiceCall.all.each do |job|
 
       case job.my_role
         when :subcon
-          job.prov_collection_status = new_prov_collection_status(job) if job.allow_collection?
+          job.prov_collection_status = new_prov_collection_status(job)
           job.billing_status = 0
-          job.type = 'SubconServiceCall'
+          job.type           = 'SubconServiceCall'
         when :broker
-          job.subcon_collection_status = new_subcon_collection_status(job) if job.allow_collection?
-          job.prov_collection_status = new_prov_collection_status(job) if job.allow_collection?
+          job.subcon_collection_status = new_subcon_collection_status(job)
+          job.prov_collection_status = new_prov_collection_status(job)
           job.billing_status = 0
-          job.type = 'BrokerServiceCall'
+          job.type           = 'BrokerServiceCall'
         else
           raise "Unexpected ticket my_role: #{job.my_role}"
 
       end
-
-      job.save! if job.changed?
+      Ticket.transaction do
+        job.save! if job.changed?
+        update_entries(job)
+      end
     end
 
 
@@ -117,7 +123,7 @@ class MultiplePayments < ActiveRecord::Migration
         4210 => CollectionStateMachine::STATUS_PENDING
     }
 
-    map[job.billing_status]
+    job.allow_collection? ? map[job.billing_status] : CollectionStateMachine::STATUS_NA
   end
 
   def new_subcon_collection_status(job)
@@ -171,7 +177,15 @@ class MultiplePayments < ActiveRecord::Migration
         4210 => CollectionStateMachine::STATUS_PENDING
     }
 
-    map[job.billing_status]
+    job.subcontractor ? map[job.billing_status] : CollectionStateMachine::STATUS_NA
 
+  end
+
+  def update_entries(job)
+    entries = job.entries.where(type: ['MaterialReimbursement', 'MaterialReimbursementToCparty', 'PaymentToSubcontractor', 'IncomeFromProvider','CanceledJobAdjustment']).all
+    entries.each do |e|
+      e.status = AccountingEntry::STATUS_CLEARED
+      e.save!
+    end
   end
 end
