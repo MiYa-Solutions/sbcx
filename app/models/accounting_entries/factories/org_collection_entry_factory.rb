@@ -24,22 +24,22 @@ class OrgCollectionEntryFactory < CollectionEntryFactory
     case @event.payment_type
       when 'cash'
         if valid_rate?(@posting_rule.cash_rate)
-          entry = ReimbursementForCashPayment.new(fee_props.update(amount: @posting_rule.cash_fee,
+          entry = ReimbursementForCashPayment.new(fee_props.update(amount:         @posting_rule.cash_fee,
                                                                    matching_entry: matching_entry(CashPaymentFee)))
         end
       when 'credit_card'
         if valid_rate?(@posting_rule.credit_rate)
-          entry = ReimbursementForCreditPayment.new(fee_props.update(amount: @posting_rule.credit_fee,
+          entry = ReimbursementForCreditPayment.new(fee_props.update(amount:         @posting_rule.credit_fee,
                                                                      matching_entry: matching_entry(CreditPaymentFee)))
         end
       when 'amex_credit_card'
         if valid_rate?(@posting_rule.amex_rate)
-          entry = ReimbursementForAmexPayment.new(fee_props.update(amount: @posting_rule.amex_fee,
+          entry = ReimbursementForAmexPayment.new(fee_props.update(amount:         @posting_rule.amex_fee,
                                                                    matching_entry: matching_entry(AmexPaymentFee)))
         end
       when 'cheque'
         if valid_rate?(@posting_rule.cheque_rate)
-          entry = ReimbursementForChequePayment.new(fee_props.update(amount: @posting_rule.cheque_fee,
+          entry = ReimbursementForChequePayment.new(fee_props.update(amount:         @posting_rule.cheque_fee,
                                                                      matching_entry: matching_entry(ChequePaymentFee)))
         end
 
@@ -70,6 +70,7 @@ class OrgCollectionEntryFactory < CollectionEntryFactory
         collector:   @event.collector,
         ticket:      @ticket,
         event:       @event,
+        notes:       @event.notes,
         agreement:   @agreement,
         description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }

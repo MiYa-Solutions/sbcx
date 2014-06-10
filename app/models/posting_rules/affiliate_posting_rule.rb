@@ -96,6 +96,7 @@ class AffiliatePostingRule < PostingRule
         collector:   @event.collector,
         ticket:      @ticket,
         event:       @event,
+        notes:       @event.notes,
         agreement:   agreement,
         description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }

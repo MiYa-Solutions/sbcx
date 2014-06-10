@@ -105,6 +105,7 @@ class JobCharge < CustomerPostingRule
     props = { amount:      -@event.amount,
               ticket:      @ticket,
               event:       @event,
+              notes:       @event.notes,
               agreement:   agreement,
               description: I18n.t("payment.#{@event.payment_type}.description", ticket: @ticket.id).html_safe }
 

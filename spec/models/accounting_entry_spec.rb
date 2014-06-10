@@ -38,6 +38,7 @@ describe AccountingEntry do
     should respond_to(:ticket_id)
     should respond_to(:type)
     should respond_to(:description)
+    should respond_to(:notes)
   end
 
   describe "validation" do

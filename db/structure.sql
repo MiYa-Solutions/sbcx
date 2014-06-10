@@ -79,7 +79,8 @@ CREATE TABLE accounting_entries (
     external_ref character varying(255),
     collector_id integer,
     collector_type character varying(255),
-    matching_entry_id integer
+    matching_entry_id integer,
+    notes character varying(255)
 );
 
 
@@ -894,7 +895,6 @@ CREATE TABLE tickets (
     provider_status integer,
     work_status integer,
     re_transfer boolean DEFAULT true,
-    payment_type character varying(255),
     subcon_payment character varying(255),
     provider_payment character varying(255),
     company character varying(255),
@@ -1798,3 +1798,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140216195150');
 INSERT INTO schema_migrations (version) VALUES ('20140301234659');
 
 INSERT INTO schema_migrations (version) VALUES ('20140519171406');
+
+INSERT INTO schema_migrations (version) VALUES ('20140610111510');
+
+INSERT INTO schema_migrations (version) VALUES ('20140610112820');

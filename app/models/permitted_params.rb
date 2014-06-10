@@ -489,7 +489,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_billing_status_attrs
-    billing_allowed? ? [:billing_status_event, :collector_id, :collector_type, :payment_type, :payment_amount] : []
+    billing_allowed? ? [:billing_status_event, :collector_id, :collector_type, :payment_type, :payment_amount, :payment_notes] : []
   end
 
   def sc_collection_attrs

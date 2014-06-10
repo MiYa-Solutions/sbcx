@@ -11,7 +11,8 @@ class ServiceCallObserver < ActiveRecord::Observer
       ActiveSupport::Deprecation.silence do
         service_call.events << ScCollectEvent.new(amount:       service_call.payment_money,
                                                   payment_type: service_call.payment_type,
-                                                  collector:    service_call.collector)
+                                                  collector:    service_call.collector,
+                                                  notes:        service_call.payment_notes)
       end
     end
   end

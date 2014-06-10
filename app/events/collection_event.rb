@@ -5,6 +5,7 @@ class CollectionEvent < ServiceCallEvent
 
   setup_hstore_attr 'collector_id'
   setup_hstore_attr 'collector_type'
+  setup_hstore_attr 'notes'
   include Collectible
 
 end
