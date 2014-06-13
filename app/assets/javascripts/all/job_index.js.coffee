@@ -14,6 +14,8 @@ jQuery ->
       sSwfPath: "assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     oColumnFilterWidgets:
       aiExclude: [ 0, 1, 6, 7, 8, 9 ]
+      sSeparator: ', '
+
 
   $.datepicker.regional[""].dateFormat = 'MM dd, yy'
   $.datepicker.setDefaults($.datepicker.regional[''])

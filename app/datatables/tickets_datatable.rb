@@ -27,7 +27,8 @@ class TicketsDatatable
           h(ticket.customer.name),
           h(ticket.human_status_name),
           humanized_money_with_symbol(ticket.total_price),
-          humanized_money_with_symbol(ticket.total_cost)
+          humanized_money_with_symbol(ticket.total_cost),
+          ticket.tags.map(&:name).join(';')
       ]
     end
   end

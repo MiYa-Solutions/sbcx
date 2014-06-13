@@ -29,6 +29,7 @@
           <th><%= Ticket.human_attribute_name(:subcon_balance) %></th>
           <th><%= Ticket.human_attribute_name(:total_price) %></th>
           <th><%= Ticket.human_attribute_name(:total_cost) %></th>
+          <th><%= Ticket.human_attribute_name(:tags) %></th>
         </tr>
         </thead>
         <tbody>
@@ -44,6 +45,7 @@
               <td><%= sc.subcon_balance %></td>
               <td><%= sc.total_price %></td>
               <td><%= sc.total_cost %></td>
+              <td><%= sc.tags.map(&:name).join(', ') %></td>
             </tr>
         <% end %>
 
@@ -60,6 +62,7 @@
           <th><%= Ticket.human_attribute_name(:subcon_balance) %></th>
           <th><%= Ticket.human_attribute_name(:total_price) %></th>
           <th><%= Ticket.human_attribute_name(:total_cost) %></th>
+          <th><%= Ticket.human_attribute_name(:tags) %></th>
         </tr>
         </tfoot>
 
