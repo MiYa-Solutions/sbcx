@@ -10,7 +10,6 @@
 #
 
 class OrgToRole < ActiveRecord::Base
-  #validates_presence_of :organization_id, :organization_role_id, message: "both organization_id and organization_role id must be valid"
   belongs_to :organization
   belongs_to :organization_role
 

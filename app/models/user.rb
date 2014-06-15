@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  belongs_to :organization
+  belongs_to :organization, inverse_of: :users
   model_stamper
 
   # associations necessary for the Authorization functionality using declarative_authorization
