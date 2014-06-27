@@ -139,7 +139,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :phone,
      :state,
      :work_phone,
-     :zip
+     :zip,
+     :status_event
     ]
   end
 
@@ -396,7 +397,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
   def subcontractor_status_allowed?
     params_to_check = params[:service_call] ? params[:service_call] : params
-    res = false
+    res             = false
     unless obj.nil? || obj.subcontractor.nil?
       res = true
       res = false if params_to_check[:subcontractor_status_event] == "subcon_marked_as_settled" && obj.subcontractor.subcontrax_member?
@@ -408,7 +409,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
   def provider_event_allowed?
     params_to_check = params[:service_call] ? params[:service_call] : params
-    res = false
+    res             = false
     unless obj.nil? || obj.provider.nil?
       res = true
       res = false if params_to_check[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?

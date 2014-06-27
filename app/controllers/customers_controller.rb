@@ -63,18 +63,19 @@ class CustomersController < ApplicationController
       format.js do
         if params[:organization_id].nil? || params[:organization_id].empty?
           if params[:search].nil?
-            @customers = Customer.fellow_customers(current_user.organization.id)
-
+            @customers = Customer.with_status(:active).fellow_customers(current_user.organization.id)
           else
-            @customers = Customer.search(params[:search], current_user.organization.id)
+            scope = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
+            @customers = scope.search(params[:search], current_user.organization.id)
           end
           render 'customers/index'
         else
           unless  Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
             if params[:search].nil?
-              @customers = Customer.fellow_customers(params[:organization_id])
+              @customers = Customer.with_status(:active).fellow_customers(params[:organization_id])
             else
-              @customers = Customer.search(params[:search], params[:organization_id])
+              scope = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
+              @customers = scope.search(params[:search], params[:organization_id])
             end
             render 'customers/customer_select'
           end
@@ -85,16 +86,18 @@ class CustomersController < ApplicationController
       format.any(:html, :mobile) do
         if params[:organization_id].nil? || params[:organization_id].empty?
           if params[:search].nil?
-            @customers = Customer.fellow_customers(current_user.organization.id).paginate(page: params[:page], per_page: 10)
+            @customers = Customer.with_status(:active).fellow_customers(current_user.organization.id).paginate(page: params[:page], per_page: 10)
           else
-            @customers = Customer.search(params[:search], current_user.organization.id).paginate(page: params[:page], per_page: 10)
+            scope = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
+            @customers = scope.search(params[:search], current_user.organization.id).paginate(page: params[:page], per_page: 10)
           end
         else
           unless  Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
             if params[:search].nil?
-              @customers = Customer.fellow_customers(params[:organization_id]).paginate(page: params[:page], per_page: 10)
+              @customers = Customer.with_status(:active).fellow_customers(params[:organization_id]).paginate(page: params[:page], per_page: 10)
             else
-              @customers = Customer.search(params[:search], params[:organization_id]).paginate(page: params[:page], per_page: 10)
+              scope = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
+              @customers = scope.search(params[:search], params[:organization_id]).paginate(page: params[:page], per_page: 10)
             end
           end
 

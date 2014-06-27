@@ -1,0 +1,8 @@
+en:
+  customer:
+    forms:
+      status:
+        disable:
+          tooltip: 'click to hide this customer from all reports'
+        activate:
+          tooltip: 'click to un-hide this customer from all reports'

@@ -6,6 +6,7 @@
       <li>
         <%= form_tag customers_path, id: "search_customer_form", :method => :get, :remote => true do %>
             <%= text_field_tag :search, params[:search] %>
+            <%= check_box_tag :include_disabled, params[:include_disabled] %>
             <%= submit_tag "Search", :name => nil, class: 'btn btn-medium', id: 'customer-search-button' %>
         <% end %>
       </li>

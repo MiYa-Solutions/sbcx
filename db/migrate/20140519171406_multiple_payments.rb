@@ -32,6 +32,25 @@ class MultiplePayments < ActiveRecord::Migration
       end
     end
 
+    CollectionEntry.all.each do |e|
+      if e.collector.nil?
+        e.collector = e.account.organization
+        e.save!
+      end
+    end
+
+    CustomerPayment.all.each do |e|
+      if e.collector.nil?
+        e.collector = e.account.organization
+        if e.ticket.nil?
+          e.destroy
+        else
+          e.save!
+        end
+
+      end
+    end
+
 
   end
 

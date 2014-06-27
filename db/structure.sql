@@ -393,7 +393,8 @@ CREATE TABLE customers (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     creator_id integer,
-    updater_id integer
+    updater_id integer,
+    status integer
 );
 
 
@@ -1796,6 +1797,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140126212619');
 INSERT INTO schema_migrations (version) VALUES ('20140216195150');
 
 INSERT INTO schema_migrations (version) VALUES ('20140301234659');
+
+INSERT INTO schema_migrations (version) VALUES ('20140518213919');
 
 INSERT INTO schema_migrations (version) VALUES ('20140519171406');
 

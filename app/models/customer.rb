@@ -47,4 +47,19 @@ class Customer < ActiveRecord::Base
     self
   end
 
+  STATUS_ACTIVE = 1
+  STATUS_DISABLED = 0
+  state_machine :status, initial: :active do
+    state :active, value: STATUS_ACTIVE
+    state :disabled, value: STATUS_DISABLED
+
+    event :activate do
+      transition :disabled => :active
+    end
+
+    event :disable do
+      transition :active => :disabled
+    end
+  end
+
 end
