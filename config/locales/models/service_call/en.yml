@@ -265,8 +265,8 @@ en:
     name: "Subcontractor has Confirmed Settlement"
     description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
   service_call_clear_customer_payment_event:
-    name: "Payment for this job is marked as cleared"
-    description: "The payment status for this job has been cleared, which means the check was cleared by the bank etc."
+    name: "The total payment(s) for this job are marked as cleared"
+    description: "The payment for this job has been cleared, which means the check was cleared by the bank etc."
   service_call_close_event:
     name: "The job is closed"
     description: "The job was marked as closed - no more actions are expected to happen in regards to this job"

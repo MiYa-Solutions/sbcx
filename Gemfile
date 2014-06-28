@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby '1.9.3'
 
-gem 'rails', '3.2.16'
+gem 'rails', '3.2.18'
 gem 'jquery-rails', '2.1.4'
 gem 'jquery_mobile_rails', '1.2.0'
 gem 'bootstrap-sass', '2.0.4'
@@ -27,7 +27,7 @@ gem 'declarative_authorization', '0.5.5'
 gem 'state_machine', '1.1.2'
 gem 'magiclabs-userstamp', '2.0.2'
 gem 'strong_parameters', '0.2.0'
-gem 'paper_trail', '~> 3.0.0'
+gem 'paper_trail', '3.0.0'
 
 gem 'best_in_place', git: 'git://github.com/MiYa-Solutions/best_in_place.git'
 gem 'unicorn', '~> 4.8.0', platform: :ruby

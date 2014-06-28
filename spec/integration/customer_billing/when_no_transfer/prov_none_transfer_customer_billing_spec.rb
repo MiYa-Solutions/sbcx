@@ -643,6 +643,34 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
     end
 
+    context 'trivial credit card collection' do
+
+      before do
+        start_the_job job
+        add_bom_to_job job, cost: 100, price: 1000, quantity: 1
+        complete_the_work job
+        collect_a_payment job, amount: 1000, type: 'credit_card', collector: org
+      end
+
+      context 'when deposting the payment' do
+        before do
+          job.payments.last.deposit!
+        end
+
+        context 'when clearing the payment' do
+          before do
+            job.payments.last.clear!
+          end
+
+          it 'billing status should be paid' do
+            expect(job.billing_status_name).to eq :paid
+          end
+        end
+      end
+
+
+    end
+
   end
 
 end

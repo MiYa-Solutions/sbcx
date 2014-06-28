@@ -5,10 +5,11 @@ FactoryGirl.define do
 
 
     after(:build) do |job|
+      job.organization.users << FactoryGirl.build(:user, organization: job.organization) if job.organization.users.size == 0
+      User.stamper = job.organization.users.first
       job.customer = FactoryGirl.build(:member_customer, organization: job.organization)
       job.organization.customers << job.customer
       job.provider = job.organization.becomes(Provider)
-      job.organization.users << FactoryGirl.build(:user, organization: job.organization) if job.organization.users.size == 0
     end
 
     factory :my_transferred_job, class: MyServiceCall do
