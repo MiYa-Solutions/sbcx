@@ -10,9 +10,25 @@
     </div>
 
     <br>
+    <div id="table-filters" class="all_jobs_filter">
+      <p>Use the following drop-down list to filter your results. To cancel selected filter, simply click on its link on
+        the right. </p>
 
-    <div class="all_jobs_filter">
-     <p>Use the following drop-down list to filter your results. To cancel selected filter, simply click on its link on the right. </p>
+      <div id="status_filter"></div>
+      <div id="created_range_filter"></div>
+      <div id="tags_filter" ></div>
+      <div id="provider_filter" ><%= select_tag :provider, options_from_collection_for_select(current_user.organization.providers, 'id', 'name'), prompt: "Provider",  class: 'chosen-select' %></div>
+      <div id="customer_filter"><%= text_field_tag :customer_search, nil, placeholder: 'Customer',
+                                                   'data-autocomplete' => '/service_calls/autocomplete_customer_name',
+                                                   'data-update-elements' => {id: '#customer_filter_id'}.to_json,
+                                                   'data-ref-id' => ''
+      %>
+        <%= button_tag 'x', type: 'button', id: 'clear-customer', class: 'yadcf-filter-reset-button' %>
+      </div>
+      <%= hidden_field_tag :customer_filter_id %>
+
+
+
     </div>
 
     <div id="">
@@ -33,22 +49,6 @@
         </tr>
         </thead>
         <tbody>
-        <% current_user.organization.service_calls.each do |sc| %>
-            <tr>
-              <td><%= link_to sc.ref_id, sc %></td>
-              <td><%= l sc.created_at, format: :date_only %></td>
-              <td><%= sc.customer.name %></td>
-              <td><%= sc.provider.name if sc.provider.present? %></td>
-              <td><%= sc.subcontractor.name if sc.subcontractor.present? %></td>
-              <td><%= sc.human_status_name %></td>
-              <td><%= sc.provider_balance if sc.instance_of?(TransferredServiceCall) %></td>
-              <td><%= sc.subcon_balance %></td>
-              <td><%= sc.total_price %></td>
-              <td><%= sc.total_cost %></td>
-              <td><%= sc.tags.map(&:name).join(', ') %></td>
-            </tr>
-        <% end %>
-
         </tbody>
         <tfoot>
         <tr>

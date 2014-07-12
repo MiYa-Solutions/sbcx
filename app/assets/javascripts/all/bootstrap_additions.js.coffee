@@ -18,11 +18,11 @@ jQuery ->
   $('.best_in_place').best_in_place()
 
   $.datepicker.setDefaults
-    dateFormat: "M dd, yy"
+    dateFormat: "mm/dd/yyyy"
     showButtonPanel: true
 
   $(".datepicker").datepicker
-    dateFormat: "M dd, yy",
+    dateFormat: "mm/dd/yyyy",
     showButtonPanel: false,
     changeMonth: true,
     changeYear: true

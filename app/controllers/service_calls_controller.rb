@@ -6,11 +6,11 @@ class ServiceCallsController < ApplicationController
   autocomplete :customer, :name, extra_data: [:address1, :address2, :company, :phone, :email, :mobile_phone, :work_phone, :country, :state, :city, :zip], full: true, limit: 50
 
   def index
-    @service_calls    = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
-    @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
-
     respond_to do |format|
-      format.html {}
+      format.html {
+        @service_calls    = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
+        @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
+      }
 
       format.json { render json: TicketsDatatable.new(view_context) }
     end

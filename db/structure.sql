@@ -1507,6 +1507,20 @@ CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON tagg
 
 
 --
+-- Name: index_tags_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tags_on_organization_id ON tags USING btree (organization_id);
+
+
+--
+-- Name: index_tickets_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_organization_id ON tickets USING btree (organization_id);
+
+
+--
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1809,3 +1823,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140610112820');
 INSERT INTO schema_migrations (version) VALUES ('20140628193518');
 
 INSERT INTO schema_migrations (version) VALUES ('20140702162338');
+
+INSERT INTO schema_migrations (version) VALUES ('20140707225143');
+
+INSERT INTO schema_migrations (version) VALUES ('20140711005442');
