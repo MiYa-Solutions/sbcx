@@ -22,11 +22,11 @@ class TicketsDatatable
           h(ticket.ref_id),
           h(ticket.created_at.strftime("%b %d, %Y")),
           h(ticket.customer.name),
+          link_to(ticket.name, ticket),
           h(ticket.provider.name),
           h(ticket.subcontractor.try(:name)),
           h(ticket.human_status_name),
-          ticket.provider_balance.to_s,
-          ticket.subcon_balance.to_s,
+          ticket.my_profit.to_s,
           ticket.total_price.to_s,
           ticket.total_cost.to_s,
           ticket.tags.map(&:name).join(', ')
@@ -41,7 +41,7 @@ class TicketsDatatable
   def fetch_tickets
     tickets = current_user.organization.service_calls.scoped
     if params[:sSearch].present?
-      tickets = tickets.where("name ilike :search", search: "#{params[:sSearch]}")
+      tickets = tickets.where("name ilike ?",  "%#{params[:sSearch]}%")
     end
 
     if params[:sSearch_5].present?
