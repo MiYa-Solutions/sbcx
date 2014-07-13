@@ -184,6 +184,10 @@ module ServiceCallsHelper
 
   end
 
+  def service_call_statueses
+    (I18n.t('activerecord.state_machines.my_service_call.status.states').values + I18n.t('activerecord.state_machines.transferred_service_call.status.states').values).uniq
+  end
+
 
   class FormRenderer
     include Abstract

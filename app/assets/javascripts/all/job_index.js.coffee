@@ -5,7 +5,7 @@ jQuery ->
 
   $('#job-search-results').dataTable(
     dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
-    columnDefs: [{ orderable: false, tragets: [ 1,2,3,4,5,6,7,8,9,10 ] }]
+    aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4,5,6,7,8,9,10 ] }]
     order: [0, 'desc']
     aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
@@ -51,17 +51,20 @@ jQuery ->
     }
     {
       column_number: 5
+      filter_type: 'multi_select'
       select_type: 'chosen'
+      data: $('#table-filters').data("statuses")
       filter_container_id: 'status_filter'
       filter_default_label: 'Status'
       select_type_options: {
-        width: '100%'
+        width: '200px'
       }
 
     }
     {
       column_number: 10
       select_type: 'chosen'
+      filter_type: 'multi_select'
       filter_default_label: 'Tags'
       filter_container_id: 'tags_filter'
       data: $('#table-filters').data("tags")
@@ -103,5 +106,6 @@ jQuery ->
     $('#subcontractor').val($('#subcontractor option:first').val())
     $("#subcontractor").trigger("chosen:updated")
     $('#job-search-results').dataTable().api().ajax.reload()
+
 
 

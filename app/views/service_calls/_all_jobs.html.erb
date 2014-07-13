@@ -10,7 +10,7 @@
     </div>
 
     <br>
-    <div id="table-filters" class="all_jobs_filter" data-tags="<%= current_user.organization.tags.map(&:name) %>">
+    <div id="table-filters" class="all_jobs_filter" data-statuses="<%= service_call_statueses %>" data-tags="<%= current_user.organization.tags.map(&:name) %>">
       <p>Use the following drop-down list to filter your results. To cancel selected filter, simply click on its link on
         the right. </p>
 

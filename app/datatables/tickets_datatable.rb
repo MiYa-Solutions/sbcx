@@ -11,7 +11,6 @@ class TicketsDatatable
         iTotalRecords:        tickets.size,
         iTotalDisplayRecords: tickets.total_entries,
         aaData:               data,
-        yadcf_data_10: current_user.organization.tags.map(&:name)
     }
   end
 
@@ -99,7 +98,17 @@ class TicketsDatatable
   end
 
   def status_scope
-    status_map = {
+    term = params[:sSearch_5].split('|').map {|t| status_map[t]}
+    Ticket.where('status in (?)', term)
+  end
+
+  def tags_scope
+    term = params[:sSearch_10].split('|')
+    Ticket.joins(:tags).where("tags.name in (?)", term)
+  end
+
+  def status_map
+    {
         'Closed' => Ticket::STATUS_CLOSED,
         'New' => Ticket::STATUS_NEW,
         'Received New' => Ticket::STATUS_NEW,
@@ -109,13 +118,6 @@ class TicketsDatatable
         'Rejcted' => TransferredServiceCall::STATUS_REJECTED,
         'Canceled' => Ticket::STATUS_CANCELED
     }
-
-    Ticket.where(status: status_map[params[:sSearch_5]])
-  end
-
-  def tags_scope
-    term = params[:sSearch_10].sub('|', ', ')
-    Ticket.joins(:tags).where("tags.name = '#{params[:sSearch_10]}'")
   end
 
 end
