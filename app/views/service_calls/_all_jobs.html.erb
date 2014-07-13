@@ -10,14 +10,21 @@
     </div>
 
     <br>
-    <div id="table-filters" class="all_jobs_filter">
+    <div id="table-filters" class="all_jobs_filter" data-tags="<%= current_user.organization.tags.map(&:name) %>">
       <p>Use the following drop-down list to filter your results. To cancel selected filter, simply click on its link on
         the right. </p>
 
       <div id="status_filter"></div>
       <div id="created_range_filter"></div>
       <div id="tags_filter" ></div>
-      <div id="provider_filter" ><%= select_tag :provider, options_from_collection_for_select(current_user.organization.providers, 'id', 'name'), prompt: "Provider",  class: 'chosen-select' %></div>
+      <div id="provider_filter" >
+        <%= select_tag :provider, options_from_collection_for_select(current_user.organization.providers, 'id', 'name'), prompt: "Select Provider",  class: 'chosen-select' %>
+        <%= button_tag 'x', type: 'button', id: 'clear-provider', class: 'yadcf-filter-reset-button' %>
+      </div>
+      <div id="subcontractor_filter" >
+        <%= select_tag :subcontractor, options_from_collection_for_select(current_user.organization.subcontractors, 'id', 'name'), prompt: "Select Subcontractor",  class: 'chosen-select' %>
+        <%= button_tag 'x', type: 'button', id: 'clear-subcontractor', class: 'yadcf-filter-reset-button' %>
+      </div>
       <div id="customer_filter"><%= text_field_tag :customer_search, nil, placeholder: 'Customer',
                                                    'data-autocomplete' => '/service_calls/autocomplete_customer_name',
                                                    'data-update-elements' => {id: '#customer_filter_id'}.to_json,

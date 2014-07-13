@@ -24,10 +24,10 @@ jQuery ->
 
     fnServerData: (sSource, aoData, fnCallback) ->
       aoData.push
-        name: "from-date"
+        name: "from_date"
         value: $('#yadcf-filter--job-search-results-from-date-1').val()
       aoData.push
-        name: "to-date"
+        name: "to_date"
         value: $('#yadcf-filter--job-search-results-to-date-1').val()
       aoData.push
         name: "customer_id"
@@ -35,6 +35,9 @@ jQuery ->
       aoData.push
         name: "provider_id"
         value: $('#provider').val()
+      aoData.push
+        name: "subcontractor_id"
+        value: $('#subcontractor').val()
 
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
@@ -83,9 +86,22 @@ jQuery ->
     $('#customer_search').data('ref-id', $('#provider').val())
     $('#job-search-results').dataTable().api().ajax.reload()
 
+  $('#subcontractor').on 'change', ->
+    $('#job-search-results').dataTable().api().ajax.reload()
+
   $('#clear-customer').live 'click', ->
     $('#customer_filter_id').val('')
     $('#customer_search').val('')
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#clear-provider').live 'click', ->
+    $('#provider').val($('#provider option:first').val())
+    $("#provider").trigger("chosen:updated")
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#clear-subcontractor').live 'click', ->
+    $('#subcontractor').val($('#subcontractor option:first').val())
+    $("#subcontractor").trigger("chosen:updated")
     $('#job-search-results').dataTable().api().ajax.reload()
 
 

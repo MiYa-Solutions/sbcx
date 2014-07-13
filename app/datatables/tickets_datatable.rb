@@ -61,6 +61,23 @@ class TicketsDatatable
       tickets = tickets.where(provider_id: params[:provider_id])
     end
 
+    if params[:subcontractor_id].present?
+      tickets = tickets.where(subcontractor_id: params[:subcontractor_id])
+    end
+
+    if params[:from_date].present? && !params[:to_date].present?
+      tickets = tickets.where('created_at >= ?',  params[:from_date])
+    end
+
+    if params[:to_date].present? &&  !params[:from_date].present?
+      tickets = tickets.where('created_at <= ?',  params[:to_date])
+    end
+
+    if params[:to_date].present? &&  params[:from_date].present?
+      tickets = tickets.where('created_at between ? and ?', params[:from_date], params[:to_date])
+    end
+
+
     tickets.order("#{sort_column} #{sort_direction}").page(page).per_page(per_page)
   end
 
