@@ -184,7 +184,7 @@ module ServiceCallsHelper
 
   end
 
-  def service_call_statueses
+  def service_call_statuses
     (I18n.t('activerecord.state_machines.my_service_call.status.states').values + I18n.t('activerecord.state_machines.transferred_service_call.status.states').values).uniq
   end
 
