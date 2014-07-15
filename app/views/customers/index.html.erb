@@ -3,13 +3,17 @@
   <div class="smart_label">
     <ul>
       <li><h1>My Customers</h1></li>
-      <li>
         <%= form_tag customers_path, id: "search_customer_form", :method => :get, :remote => true do %>
+
+      <li>
             <%= text_field_tag :search, params[:search] %>
-            <%= check_box_tag :include_disabled, params[:include_disabled] %>
             <%= submit_tag "Search", :name => nil, class: 'btn btn-medium', id: 'customer-search-button' %>
-        <% end %>
       </li>
+      <li id="search_del_customer">
+        <%= check_box_tag :include_disabled, params[:include_disabled] %>
+        <p id="include_disabled_p"><%= I18n.t('general.general.search_del_customers') %></p>
+      </li>
+        <% end %>
       <li>
         <%= link_to 'Add Customer', new_customer_path, :class => 'btn btn-primary', id: 'new-customer-button' %>
       </li>

@@ -1,5 +1,5 @@
 <div class="span6">
-  <%= simple_form_for customer, html: { class: 'btn btn-danger' } do |f| %>
+  <%= simple_form_for customer do |f| %>
       <%= hidden_field_tag 'customer[status_event]', 'activate' %>
       <%= f.submit customer.class.human_status_event_name(:activate).titleize,
                    id:    'disable_customer_btn',

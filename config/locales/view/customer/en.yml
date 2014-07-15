@@ -3,6 +3,6 @@ en:
     forms:
       status:
         disable:
-          tooltip: 'click to hide this customer from all reports'
+          tooltip: 'Click to hide this customer from all reports'
         activate:
-          tooltip: 'click to un-hide this customer from all reports'
+          tooltip: 'Click to un-hide this customer from all reports'

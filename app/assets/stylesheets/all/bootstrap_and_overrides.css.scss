@@ -968,6 +968,12 @@ input, textarea {
     font-size: 12px;
   }
 
+  input[type="radio"], input[type="checkbox"] {
+    cursor: pointer;
+    line-height: normal;
+    margin-top: 20px;
+  }
+
   span {
     font-weight: normal;
     color: $white;
@@ -1044,6 +1050,23 @@ input, textarea {
     vertical-align: text-top;
   }
 }
+
+#search_del_customer {
+  float: left;
+}
+
+#include_disabled {
+
+    margin-top: 0;
+
+}
+
+#include_disabled_p {
+
+  margin-left: 20px;
+  margin-top: -15px;
+}
+
 
 .job_icons {
   imp {
@@ -3391,10 +3414,11 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 .customer_title {
-  background-color: #C09853;
+  background-color: #31b0d5;
   background-repeat: repeat-x;
-  border-color: #C09853;
+  border-color: #269abc;
   margin-bottom: 14px;
+  margin-left: -1.5%;om: 14px;
   margin-left: -1.5%;
 
   h2 {
@@ -3437,6 +3461,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   li:nth-child(3) {
     float: right;
+  }
+
+  .simple_form {
+    margin: 0;
   }
 
 }
