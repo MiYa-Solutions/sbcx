@@ -11,17 +11,17 @@
 <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
   <tr>
     <td align="center" valign="top" style="padding-top:20px;">
-      <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+
+      <!--CSS change -->
+      <table border="1px solid #DDDDDD" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
         <tr>
           <td align="center" valign="top">
-            <!-- // Begin Template Header \\ -->
+
             <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
               <tr>
-                <td class="headerContent">
-                  <!-- // Begin Module: Standard Header Image \\ -->
-                  <img src="http://www.subcontrax.com/assets/LogoImg.png" style="max-width:600px;" id="headerImage campaign-icon"/>
-                  <!--<#%= image_tag 'LogoImg.png', style: 'max-width:600px', id: "headerImage campaign-icon" %>-->
-                  <!-- // End Module: Standard Header Image \\ -->
+                <!--CSS change -->
+                <td class="headerContent" style="background-color: #737373; height: 50px; vertical-align:middle; text-align:center; ">
+                  <img src="http://www.subcontrax.com/assets/LogoImg.png" style="max-width:600px; height:auto; max-width:600px !important;" id="headerImage campaign-icon"/>
 
                 </td>
               </tr>
@@ -32,26 +32,34 @@
         <tr>
           <td align="center" valign="top">
             <!-- // Begin Template Body \\ -->
-            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
+            <!--CSS change -->
+            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody" style="font-family:Arial; font-size:14px;">
               <tr>
                 <td valign="top">
 
                   <!-- // Begin Module: Standard Content \\ -->
                   <table border="0" cellpadding="20" cellspacing="0" width="100%">
                     <tr>
-                      <td valign="top" class="bodyContent">
+                      <!--CSS change -->
+                      <td valign="top" class="bodyContent" style="color:#505050; font-family:Arial; font-size:14px; line-height:150%;">
                         <div>
-                          <h4 class="h4"><%= I18n.t('notification_mailer.agr_change_rejected_notification.title').html_safe %></h4>
+                          <!--CSS change -->
+                          <h4 class="h4" style="font-family:Arial; font-size:18px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                            <%= I18n.t('notification_mailer.agr_change_rejected_notification.title').html_safe %>
+                          </h4>
                           <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>
                           ,<br>
-                          <%= I18n.t('notification_mailer.agr_change_rejected_notification.content').html_safe %>&nbsp;<strong><%= @agreement.creator.name.html_safe %></strong>.<br>
+                          <%= I18n.t('notification_mailer.agr_change_rejected_notification.content').html_safe %>
+                          &nbsp;<strong><%= @agreement.creator.name.html_safe %></strong>.<br>
                         </div>
                       </td>
                     </tr>
                     <tr>
                       <td valign="top" style="padding-top:0; padding-bottom:0;">
-                        <table border="0" cellpadding="10" cellspacing="0" width="100%" class="templateDataTable">
-                          <tr>
+                        <!--CSS change -->
+                        <table cellpadding="10" cellspacing="0" width="100%" class="templateDataTable" style="border:2px solid #f5f5f5;">
+                          <!--CSS change -->
+                          <tr style="background-color:#F5F5F5; color:#336699; font-family:Arial; font-size:14px; font-weight:bold; text-align:left; line-height:150%;">
                             <th scope="col" valign="top" width="40%" class="dataTableHeading">
                               <%= @agreement.class.human_attribute_name(:name) %>
                             </th>
@@ -59,7 +67,8 @@
                               <%= @agreement.name %>
                             </th>
                           </tr>
-                          <tr>
+                          <!--CSS change -->
+                          <tr border= "1px solid #f5f5f5;">
                             <td valign="top" class="dataTableContent">
                               <%= @agreement.class.human_attribute_name(:id) %>
                             </td>
@@ -67,38 +76,33 @@
                               <strong><%= @agreement.id %></strong>
                             </td>
                           </tr>
-                          <tr>
-                              <td valign="top" class="dataTableContent">
-                                <%= AgrChangeSubmittedEvent.human_attribute_name(:change_reason) %>
-                              </td>
-                              <td valign="top" class="dataTableContent">
-                                <strong><%= @event.change_reason %></strong>
-                              </td>
+
+                          <tr border= "1px solid #f5f5f5;">
+                            <td valign="top" class="dataTableContent">
+                              <%= AgrChangeSubmittedEvent.human_attribute_name(:change_reason) %>
+                            </td>
+                            <td valign="top" class="dataTableContent">
+                              <strong><%= @event.change_reason %></strong>
+                            </td>
                           </tr>
-                          <tr>
-                              <td valign="top" class="dataTableContent">
-                                <%= AgrChangeSubmittedEvent.human_attribute_name(:description) %>
-                              </td>
-                              <td valign="top" class="dataTableContent">
-                                <strong><%= @event.description %></strong>
-                              </td>
-                          </tr>
-                          <!--<tr>-->
-                          <!--<td valign="top" class="dataTableContent">-->
-                          <!--<#%= @agreement.class.human_attribute_name(:description) %>-->
-                          <!--</td>-->
-                          <!--<td valign="top" class="dataTableContent">-->
-                          <!--<strong><#%= @agreement.description %></strong>-->
-                          <!--</td>-->
+                          <!--CSS change -->
+                          <!--<tr border= "1px solid #f5f5f5;">-->
+                            <!--<td valign="top" class="dataTableContent">-->
+                              <!--<#%= AgrChangeSubmittedEvent.human_attribute_name(:description) %>-->
+                            <!--</td>-->
+                            <!--<td valign="top" class="dataTableContent">-->
+                              <!--<strong><#%= @event.description %></strong>-->
+                            <!--</td>-->
                           <!--</tr>-->
                         </table>
                       </td>
                     </tr>
+
                     <tr>
-                      <td valign="top" class="bodyContent">
+                      <!--CSS change -->
+                      <td valign="top" class="bodyContent" style="font-family:Arial; font-size:14px; line-height:150%;">
                         <div>
-                          <%= I18n.t('notification_mailer.agr_new_subcon_notification.bottom_content').html_safe %><%= @agreement.creator.name.html_safe %>
-                          .
+                          <%= I18n.t('notification_mailer.agr_change_rejected_notification.bottom_content').html_safe %><%= @agreement.creator.name.html_safe %>.
                         </div>
                       </td>
                     </tr>
@@ -107,10 +111,10 @@
                         <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
                           <tr>
                             <td valign="middle" class="templateButtonContent">
-                              <div>
+                              <div style="border:0; text-decoration:none !important;">
                                 <!--<a href="http://www.mandrill.com/" target="_blank">More Details</a>-->
-                                <%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, agreement_url(@agreement) %>
-
+                                <!--<#%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, agreement_url(@agreement) %>-->
+                                <%= link_to '<input class="btn btm-primary" type="button" value="More Details" style="text-decoration:none !important;">'.html_safe, agreement_url(@agreement) %>
                               </div>
                             </td>
                           </tr>

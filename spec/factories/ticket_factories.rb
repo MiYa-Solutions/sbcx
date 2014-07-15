@@ -5,10 +5,11 @@ FactoryGirl.define do
 
 
     after(:build) do |job|
+      job.organization.users << FactoryGirl.build(:user, organization: job.organization) if job.organization.users.size == 0
+      User.stamper = job.organization.users.first
       job.customer = FactoryGirl.build(:member_customer, organization: job.organization)
       job.organization.customers << job.customer
       job.provider = job.organization.becomes(Provider)
-      job.organization.users << FactoryGirl.build(:user, organization: job.organization) if job.organization.users.size == 0
     end
 
     factory :my_transferred_job, class: MyServiceCall do
@@ -20,7 +21,7 @@ FactoryGirl.define do
       end
     end
 
-    factory :transferred_job, class: TransferredServiceCall do
+    factory :transferred_job, class: SubconServiceCall do
       association :provider, factory: :member_org, strategy: :build
       allow_collection true
       after(:build) do |job|
@@ -67,7 +68,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :job_from_local, class: TransferredServiceCall do
+  factory :job_from_local, class: SubconServiceCall do
     association :organization, factory: :member_org, strategy: :build
     association :provider, factory: :local_provider, strategy: :build
     scheduled_for 1.day.from_now
@@ -79,6 +80,8 @@ FactoryGirl.define do
       job.provider.customers << job.customer
       job.organization.users << FactoryGirl.build(:user, organization: job.organization) if job.organization.users.size == 0
     end
+
+    factory :local_subcon_job, class: SubconServiceCall
 
   end
 

@@ -29,6 +29,7 @@ en:
         provider_status: "Contractor Status"
 
 
+
       service_call:
         provider: "Contractor"
         tag_list: "Job Type(s)"
@@ -88,14 +89,11 @@ en:
         status:
           events:
             transfer: "Transfer"
-            dispatch: "Lala"
+            dispatch: "Disptach"
           states:
             open: Open
             new: "New"
             transferred: "Transferred"
-            dispatched: "Dispatched"
-            in_progress: "In Progress"
-            work_done: "Done"
             closed: "Closed"
             canceled: "Canceled"
 
@@ -124,7 +122,7 @@ en:
       transferred_service_call:
         status:
           events:
-            transfer: "Transfer Again"
+            transfer: "re-transfer"
             accept: "Accept"
             dispatch: "Dispatch"
             work_done: "Complete"
@@ -135,9 +133,6 @@ en:
             received_new: "Received New"
             accepted: "Accepted"
             dispatched: "Dispatched"
-            in_progress: "In Progress"
-
-            work_done: "Done"
             canceled: "Canceled"
         subcontractor_status:
           states:
@@ -225,8 +220,8 @@ en:
     name: "Subcontractor has Deposited Payment"
     description: 'Subcontractor Name: &nbsp; %{subcontractor} has indicated that payment has been deposited for this Job'
   service_call_collect_event:
-    name: "Payment has been Collected"
-    description: "The payment for this Job has been collected"
+    name: "Customer Payment Collection"
+    description: 'A customer %{type} payment of %{amount} was collected by %{collector}'
   sc_collected_by_employee_event:
     name: "Payment has been collected by an employee"
     description: "The payment for this Job has been collected by %{employee}"
@@ -237,8 +232,8 @@ en:
     name: 'The subcontractor (%{subcon}) has cleared the payment'
     description: 'The payment for this Job has been cleared by the subcontractor (%{subcon})'
   service_call_collected_event:
-    name: "Subcontractor has Collected Payment"
-    description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has collected the payment from the customer'
+    name: "Payment Collection"
+    description: 'Name: &nbsp; (%{collector}) collected the payment from the customer'
   service_call_deposit_confirmed_event:
     name: "Contractor has Confirmed Deposit"
     description: 'Contractor Name: &nbsp; (%{provider}) has confirmed receiving payment for this Job'
@@ -264,8 +259,8 @@ en:
     name: "Subcontractor has Confirmed Settlement"
     description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
   service_call_clear_customer_payment_event:
-    name: "Payment for this job is marked as cleared"
-    description: "The payment status for this job has been cleared, which means the check was cleared by the bank etc."
+    name: "The total payment(s) for this job are marked as cleared"
+    description: "The payment for this job has been cleared, which means the check was cleared by the bank etc."
   service_call_close_event:
     name: "The job is closed"
     description: "The job was marked as closed - no more actions are expected to happen in regards to this job"
@@ -284,3 +279,6 @@ en:
     description: "The following job properties were updated by: %{updating_org}"
   service_call_prop_synch_event:
     description: '%{attr_name} - New Value: ''%{new_val}'', Old Value: ''%{old_val}'''
+  sc_customer_reimbursement_event:
+    name: "Customer_Reimbursement"
+    description: "You have reimbursed the customer for overpaying."

@@ -1,14 +1,10 @@
 class TransferredServiceCallObserver < ServiceCallObserver
+  observe [SubconServiceCall, BrokerServiceCall]
 
 
   def after_deposit_to_prov_payment(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE deposit_to_prov \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.events << ScDepositEvent.new
-  end
-
-  def after_subcon_deposited_payment(service_call, transition)
-    Rails.logger.debug { "invoked observer BEFORE deposit_to_prov \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.events << ScSubconDepositedEvent.new
+    service_call.events << ScDepositEvent.new(amount: service_call.payment_money, payment_type: service_call.payment_type)
   end
 
   def after_clear_provider(service_call, transition)
@@ -27,23 +23,14 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ServiceCallAcceptEvent.new
   end
 
-  def before_collect_payment(service_call, transition)
-    Rails.logger.debug { "invoked observer BEFORE collect \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.collector_type = "User" unless service_call.collector_type
-  end
-
-  def after_collect_payment(service_call, transition)
-    Rails.logger.debug { "invoked observer AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ScCollectEvent.new
-  end
-
   def before_start_work(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE start \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.started_on = Time.zone.now unless service_call.started_on
+
   end
 
   def after_start_work(service_call, transition)
     Rails.logger.debug { "invoked observer AFTER start \n #{service_call.inspect} \n #{transition.args.inspect}\n transition args: #{transition.args}" }
+    service_call.started_on = Time.zone.now unless service_call.started_on
     service_call.events << ServiceCallStartEvent.new unless transition.args.first == :state_only
   end
 

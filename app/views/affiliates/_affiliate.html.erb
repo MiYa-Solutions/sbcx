@@ -13,11 +13,13 @@
   <% if  affiliate.account_for(current_user.organization).try(:balance).present? %>
       <% if affiliate.account_for(current_user.organization).balance < 0 %>
           <td class="red_balance">
+            <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
             <%= humanized_money_with_symbol affiliate.account_for(current_user.organization).balance %>
           </td>
       <% else %>
           <% if affiliate.account_for(current_user.organization).balance > 0 %>
               <td class="green_balance">
+                <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
                 <%= humanized_money_with_symbol affiliate.account_for(current_user.organization).balance %>
               </td>
           <% else %>

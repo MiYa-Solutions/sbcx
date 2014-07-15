@@ -1,8 +1,9 @@
-class ScCollectEvent < ServiceCallEvent
+class ScCollectEvent < CollectionEvent
+  include MoneyRails::ActionViewExtension
 
   def init
     self.name         = I18n.t('service_call_collect_event.name')
-    self.description  = I18n.t('service_call_collect_event.description')
+    self.description  = I18n.t('service_call_collect_event.description', collector: collector.name, amount: humanized_money_with_symbol(amount), type: payment_type)
     self.reference_id = 100023
   end
 
@@ -15,39 +16,40 @@ class ScCollectEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ScCollectedEvent.new(triggering_event: self)
+    ActiveSupport::Deprecation.silence do
+      prov_service_call.events << ScCollectedEvent.new(triggering_event: self,
+                                                       amount:           self.amount,
+                                                       collector:        service_call.organization,
+                                                       payment_type:     self.payment_type)
+    end
+  end
+
+  def update_subcontractor
+    subcon_service_call.events << ScProviderCollectedEvent.new(triggering_event: self, amount: self.amount, collector: service_call.organization, payment_type: payment_type)
   end
 
   def process_event
-    set_customer_account_as_paid if service_call.provider.subcontrax_member?
-    AffiliateBillingService.new(self).execute
+    AffiliateBillingService.new(self).execute if affiliate_involved?
+    CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
+    service_call.collected_prov_collection if update_provider_collection?
+    service_call.collected_subcon_collection if update_subcon_collection?
     super
   end
 
   private
 
-  #def update_provider_account
-  #  account = Account.for_affiliate(service_call.organization, service_call.provider).lock(true).first
-  #  props = { amount:      service_call.total_price,
-  #            ticket:      service_call,
-  #            event:       self,
-  #            description: I18n.t("payment.#{service_call.payment_type}.description", ticket: service_call.id).html_safe }
-  #
-  #  case service_call.payment_type
-  #    when 'cash'
-  #      entry =  CashCollectionForProvider.new(props)
-  #    when 'credit_card'
-  #      entry =  CreditCardCollectionForProvider.new(props)
-  #    when 'cheque'
-  #      entry =  ChequeCollectionForProvider.new(props)
-  #    else
-  #      raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
-  #  end
-  #
-  #  account.entries << entry
-  #  entry.clear
-  #
-  #end
+  def affiliate_involved?
+    service_call.transferred? || service_call.kind_of?(TransferredServiceCall)
+  end
 
+  def update_provider_collection?
+    service_call.kind_of?(TransferredServiceCall) && service_call.can_collected_prov_collection?
+  end
+
+  def update_subcon_collection?
+    service_call.respond_to?(:can_collected_subcon_collection?) &&
+        service_call.can_collected_subcon_collection? &&
+        (collector.becomes(Organization) == service_call.subcontractor.becomes(Organization))
+  end
 
 end

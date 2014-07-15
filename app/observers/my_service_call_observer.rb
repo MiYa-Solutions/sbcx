@@ -13,8 +13,10 @@ class MyServiceCallObserver < ServiceCallObserver
   def after_start_work(service_call, transition)
     Rails.logger.debug { "invoked AFTER start_work \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
-    unless service_call.transferred?
-      service_call.activate unless service_call.open?
+    if service_call.transferred?
+      service_call.events << ServiceCallStartedEvent.new unless transition.args.first == :state_only
+    else
+      service_call.activate unless  service_call.open?
       service_call.events << ServiceCallStartEvent.new
     end
 
@@ -47,23 +49,11 @@ class MyServiceCallObserver < ServiceCallObserver
   def after_paid_payment(service_call, transition)
     Rails.logger.debug { "invoked AFTER paid \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
-    service_call.events << ServiceCallPaidEvent.new
+    service_call.events << ServiceCallPaidEvent.new(amount:       service_call.payment_money,
+                                                    payment_type: service_call.payment_type)
   end
 
-  def after_collect_payment(service_call, transition)
-    Rails.logger.debug { "invoked AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.collector_type = 'User'
-    service_call.events << ScCollectedByEmployeeEvent.new
-
-  end
-
-  def after_deposited_payment(service_call, transition)
-    Rails.logger.debug { "invoked AFTER deposited \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.collector_type = 'User'
-    service_call.events << ScEmployeeDepositedEvent.new
-  end
-
-  def before_overdue_payment(service_call, transition)
+  def before_late_payment(service_call, transition)
     Rails.logger.debug { "invoked BEFORE overdue \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.events << ScPaymentOverdueEvent.new
   end
@@ -71,6 +61,11 @@ class MyServiceCallObserver < ServiceCallObserver
   def after_reject_payment(service_call, transition)
     Rails.logger.debug { "invoked AFTER overdue \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.events << ScPaymentRejectedEvent.new
+  end
+
+  def after_reimburse_payment(service_call, transition)
+    Rails.logger.debug { "invoked AFTER reimburse \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    service_call.events << ScCustomerReimbursementEvent.new
   end
 
 

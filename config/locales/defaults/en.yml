@@ -5,6 +5,7 @@ en:
     flash:
       created_successfully: "the user was created successfully"
       updated_successfully: "User updated successfully"
+      update_error: "Update failed. Please review the problem below"
   general:
     general:
       source: "Source"
@@ -15,7 +16,7 @@ en:
       appointment_for: "Appointment for Job:"
       balance_affiliates: "Balance - Affiliates"
       balance_customers: "Balance - Customers"
-      job_main: "Job: Main"
+      job_main: "Job: Info"
       job_name: "Job Name"
       send: "Send"
       send_inst: "Send me Instructions"
@@ -30,7 +31,7 @@ en:
       subcon_entries: "Subcontractor Billing Entries"
       provider_entries: "Contractor Billing Entries"
       customer_entries: "Customer Billing Entries"
-      get_entries: "Get Billing Entries"
+      get_entries: "Billing Entries"
       select_subcon: "Select Subcontractor"
       transfer_job: "Transfer Job"
       customer_billing: "Customer Billing"
@@ -57,6 +58,8 @@ en:
       learn_more: "Learn More"
       new_appointment: "New Appointment"
       manage_jobs: "Manage Jobs"
+      see_changes: "See Changes"
+      received: "Received"
     messages:
       job_location_info: '<strong>Note:</strong>&nbsp; Address Information will be automatically filled out once you select a customer. You can override the address info and set the Job location.'
       transferred_job: "Jobs that I Transferred"
@@ -72,6 +75,8 @@ en:
       aff_invited_me_p2: "Please Accept or Reject the invitation"
       I_invited_Aff: "Invites Sent To: "
       click_more: "Click for more details"
+      balance_out: "Money I owe"
+      balance_in: "Money owed to me"
     message:
       contact_us: "Please fill out the form below and we will contact you shortly."
       forgot_pass: "Forgot your password?"

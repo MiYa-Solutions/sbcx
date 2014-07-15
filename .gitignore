@@ -25,6 +25,8 @@ bundler_stubs/
 # RubyMine idea files to ignore
 .idea/**
 .idea/*.*
+.idea.old/**
+.idea.old/*.*
 
 # ignorethe bullshit twitter boot rails lib that only Ishay has the zevel
 /twitter-bootstrap-rails
@@ -35,3 +37,6 @@ bundler_stubs/
 #ignore zeus file
 custom_plan.rb
 zeus.json
+
+# ignore coverage reports
+/coverage

@@ -1,9 +1,20 @@
 class ServiceCallObserver < ActiveRecord::Observer
 
-  def after_create(record)
-    Rails.logger.debug { "invoked ServiceCallObserver after create" }
-    #record.ref_id ||= record.id
-    #record.save
+  def before_collect_payment(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE collect \n #{service_call.inspect} \n #{transition.inspect}" }
+    service_call.collector_type = "User" unless service_call.collector_type
+  end
+
+  def after_collect_payment(service_call, transition)
+    Rails.logger.debug { "invoked observer AFTER collect \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    unless transition.args.first == :state_only
+      ActiveSupport::Deprecation.silence do
+        service_call.events << ScCollectEvent.new(amount:       service_call.payment_money,
+                                                  payment_type: service_call.payment_type,
+                                                  collector:    service_call.collector,
+                                                  notes:        service_call.payment_notes)
+      end
+    end
   end
 
   def after_close(service_call, transition)
@@ -22,6 +33,7 @@ class ServiceCallObserver < ActiveRecord::Observer
   def before_transfer(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE transfer \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.subcontractor_status = ServiceCall::SUBCON_STATUS_PENDING
+    service_call.subcon_collection_status = CollectionStateMachine::STATUS_PENDING if service_call.allow_collection?
   end
 
 
@@ -83,7 +95,9 @@ class ServiceCallObserver < ActiveRecord::Observer
 
   def after_subcon_collected_payment(service_call, transition)
     Rails.logger.debug { "invoked observer AFTER subcon_collected_payment \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ScCollectedEvent.new unless transition.args.first == :state_only
+    service_call.events << ScCollectedEvent.new(amount:       service_call.payment_money,
+                                                payment_type: service_call.payment_type,
+                                                collector:    service_call.collector) unless transition.args.first == :state_only
 
   end
 

@@ -1,3 +1,39 @@
+# == Schema Information
+#
+# Table name: posting_rules
+#
+#  id             :integer          not null, primary key
+#  agreement_id   :integer
+#  type           :string(255)
+#  rate           :decimal(, )
+#  rate_type      :string(255)
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  properties     :hstore
+#  time_bound     :boolean          default(FALSE)
+#  sunday         :boolean          default(FALSE)
+#  monday         :boolean          default(FALSE)
+#  tuesday        :boolean          default(FALSE)
+#  wednesday      :boolean          default(FALSE)
+#  thursday       :boolean          default(FALSE)
+#  friday         :boolean          default(FALSE)
+#  saturday       :boolean          default(FALSE)
+#  sunday_from    :time
+#  monday_from    :time
+#  tuesday_from   :time
+#  wednesday_from :time
+#  thursday_from  :time
+#  friday_from    :time
+#  saturday_from  :time
+#  sunday_to      :time
+#  monday_to      :time
+#  tuesday_to     :time
+#  wednesday_to   :time
+#  thursday_to    :time
+#  friday_to      :time
+#  saturday_to    :time
+#
+
 class AffiliatePostingRule < PostingRule
 
   def get_transfer_props(ticket = nil)
@@ -22,8 +58,7 @@ class AffiliatePostingRule < PostingRule
       when ServiceCallCompletedEvent.name
         true
       when ServiceCallCompleteEvent.name
-        event.eventable.instance_of?(MyServiceCall) && event.eventable.transferred? ||
-            event.eventable.instance_of?(TransferredServiceCall)
+        true
       when ScSubconSettleEvent.name
         true
       when ScProviderSettleEvent.name
@@ -44,6 +79,8 @@ class AffiliatePostingRule < PostingRule
         true
       when ScProviderCollectedEvent.name
         true
+      when ScCollectedByEmployeeEvent.name
+        true
       else
         false
     end
@@ -55,10 +92,11 @@ class AffiliatePostingRule < PostingRule
     entries = []
 
     collection_props = {
-        status:      AccountingEntry::STATUS_CLEARED,
-        amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
+        amount:      @event.amount,
+        collector:   @event.collector,
         ticket:      @ticket,
         event:       @event,
+        notes:       @event.notes,
         agreement:   agreement,
         description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
@@ -70,24 +108,24 @@ class AffiliatePostingRule < PostingRule
                   description: I18n.t("payment_fee.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
-        entries << CashCollectionForProvider.new(collection_props)
+        entries << CashCollectionForProvider.new(collection_props) if collected_by_me?
         fee_props[:amount] = cash_fee
         entries << CashPaymentFee.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0
 
       when 'credit_card'
         fee_props[:amount] = credit_fee
-        entries << CreditCardCollectionForProvider.new(collection_props)
+        entries << CreditCardCollectionForProvider.new(collection_props) if collected_by_me?
         entries << CreditPaymentFee.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0
 
       when 'amex_credit_card'
         fee_props[:amount] = amex_fee
-        entries << AmexCollectionForProvider.new(collection_props)
+        entries << AmexCollectionForProvider.new(collection_props) if collected_by_me?
         entries << AmexPaymentFee.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0
 
       when 'cheque'
-        fee_props[:amount] = cheque_fee
+        fee_props[:amount] = cheque_fee if collected_by_me?
         entries << ChequeCollectionForProvider.new(collection_props)
         entries << ChequePaymentFee.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0
 
@@ -100,33 +138,19 @@ class AffiliatePostingRule < PostingRule
     entries
   end
 
+  def collected_by_me?
+    @event.collector.instance_of?(User) && @event.collector.organization == @account.organization ||
+        @event.collector.becomes(Organization) == @account.organization || @ticket.my_role == :broker
+  end
+
   def cparty_settlement_entries
     result = []
-    total  = Money.new_with_amount(0)
 
-    charge = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
-    total += charge.amount if charge.present?
+    charge_amount = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
+    bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id).sum(:amount_cents)
+    payment_fee = AccountingEntry.where(type: ['CashPaymentFee', 'CreditPaymentFee', 'AmexPaymentFee', 'ChequePaymentFee'], ticket_id: @ticket.id).sum(:amount_cents)
 
-    entries = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id)
-    entries.each do |entry|
-      total += entry.amount
-    end
-
-    case @ticket.payment_type
-      when 'cash'
-        payment_fee = AccountingEntry.where(type: CashPaymentFee, ticket_id: @ticket.id).first
-      when 'credit_card'
-        payment_fee = AccountingEntry.where(type: CreditPaymentFee, ticket_id: @ticket.id).first
-      when 'amex_credit_card'
-        payment_fee = AccountingEntry.where(type: AmexPaymentFee, ticket_id: @ticket.id).first
-      when 'cheque'
-        payment_fee = AccountingEntry.where(type: ChequePaymentFee, ticket_id: @ticket.id).first
-      else
-        Rails.logger.debug { "ProfitSplit#counterparty_settlement_entries - payment fees are not taken into account when calculating settlement amount" } #raise "ProfitSplit#organization_settlement_entries - unexpected payment type: #{@ticket.payment_type}. expected 'cash', 'credit_cart' or 'cheque'"
-
-    end
-
-    total += payment_fee.amount if payment_fee.present?
+    total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
 
 
     case @ticket.provider_payment
@@ -214,75 +238,22 @@ class AffiliatePostingRule < PostingRule
   end
 
   def org_collection_entries
-    entries          = []
-    collection_props = { status:      AccountingEntry::STATUS_CLEARED,
-                         amount:      @ticket.total_price + (@ticket.total_price * (@ticket.tax / 100.0)),
-                         ticket:      @ticket,
-                         event:       @event,
-                         agreement:   agreement,
-                         description: I18n.t("payment.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
-
-    fee_props = { status:      AccountingEntry::STATUS_CLEARED,
-                  ticket:      @ticket,
-                  event:       @event,
-                  agreement:   agreement,
-                  description: I18n.t("payment_reimbursement.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe }
-
-
-    case @ticket.payment_type
-      when 'cash'
-        entries << CashCollectionFromSubcon.new(collection_props)
-
-        fee_props[:amount] = cash_fee
-        entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0
-      when 'credit_card'
-        fee_props[:amount] = credit_fee
-        entries << CreditCardCollectionFromSubcon.new(collection_props)
-        entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0
-      when 'amex_credit_card'
-        fee_props[:amount] = amex_fee
-        entries << AmexCollectionFromSubcon.new(collection_props)
-        entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0
-      when 'cheque'
-        fee_props[:amount] = cheque_fee
-        entries << ChequeCollectionFromSubcon.new(collection_props)
-        entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0
-
-      else
-
-    end
-
-
-    entries
+    OrgCollectionEntryFactory.new(event:        @event,
+                                  ticket:       @ticket,
+                                  agreement:    agreement,
+                                  posting_rule: self,
+                                  account:      @account).generate
   end
 
   def org_settlement_entries
     result = []
-    total  = Money.new_with_amount(0)
 
-    charge = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
-    total += charge.amount if charge.present?
+    charge_amount = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
+    bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id).sum(:amount_cents)
+    payment_fee = AccountingEntry.where(type: ['ReimbursementForCashPayment', 'ReimbursementForCreditPayment', 'ReimbursementForAmexPayment', 'ReimbursementForChequePayment'], ticket_id: @ticket.id).sum(:amount_cents)
 
-    entries = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id)
-    entries.each do |entry|
-      total += entry.amount
-    end
+    total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
 
-    case @ticket.payment_type
-      when 'cash'
-        payment_reimbursement = AccountingEntry.where(type: ReimbursementForCashPayment, ticket_id: @ticket.id).first
-      when 'credit_card'
-        payment_reimbursement = AccountingEntry.where(type: ReimbursementForCreditPayment, ticket_id: @ticket.id).first
-      when 'amex_credit_card'
-        payment_reimbursement = AccountingEntry.where(type: ReimbursementForAmexPayment, ticket_id: @ticket.id).first
-      when 'cheque'
-        payment_reimbursement = AccountingEntry.where(type: ReimbursementForChequePayment, ticket_id: @ticket.id).first
-      else
-        Rails.logger.debug { "ProfitSplit#organization_settlement_entries - payment fees are not taken in account when calculating settlement amount" } #raise "ProfitSplit#organization_settlement_entries - unexpected payment type: #{@ticket.payment_type}. expected 'case', 'credit_cart' or 'cheque'"
-
-    end
-
-    total += payment_reimbursement.amount if payment_reimbursement.present?
 
     case @ticket.subcon_payment
       when 'cash'
@@ -312,24 +283,24 @@ class AffiliatePostingRule < PostingRule
         description: I18n.t("payment_fee.#{@ticket.payment_type}.description", ticket: @ticket.id).html_safe
     }
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
-        fee_props[:amount] = cash_fee * (rate / 100.0)
+        fee_props[:amount] = cash_fee
         entries << CashPaymentFee.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0.0
 
       when 'credit_card'
-        fee_props[:amount] = credit_fee * (rate / 100.0)
+        fee_props[:amount] = credit_fee
         entries << CreditPaymentFee.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0.0
 
       when 'amex_credit_card'
-        fee_props[:amount] = amex_fee * (rate / 100.0)
+        fee_props[:amount] = amex_fee
         entries << AmexPaymentFee.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0.0
 
       when 'cheque'
-        fee_props[:amount] = cheque_fee * (rate / 100.0)
+        fee_props[:amount] = cheque_fee
         entries << ChequePaymentFee.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0.0
       else
-        raise "#{self.class.name}: Unexpected payment type (#{@ticket.payment_type}) when processing the event"
+        raise "#{self.class.name}: Unexpected payment type (#{@event.payment_type}) when processing the event"
     end
 
     entries
@@ -346,18 +317,18 @@ class AffiliatePostingRule < PostingRule
     }
 
 
-    case @ticket.payment_type
+    case @event.payment_type
       when 'cash'
-        fee_props[:amount] = cash_fee * (rate / 100.0)
+        fee_props[:amount] = cash_fee
         entries << ReimbursementForCashPayment.new(fee_props) unless cash_rate.nil? || cash_rate.delete(',').to_f == 0.0
       when 'credit_card'
-        fee_props[:amount] = credit_fee * (rate / 100.0)
+        fee_props[:amount] = credit_fee
         entries << ReimbursementForCreditPayment.new(fee_props) unless credit_rate.nil? || credit_rate.delete(',').to_f == 0.0
       when 'amex_credit_card'
-        fee_props[:amount] = amex_fee * (rate / 100.0)
+        fee_props[:amount] = amex_fee
         entries << ReimbursementForAmexPayment.new(fee_props) unless amex_rate.nil? || amex_rate.delete(',').to_f == 0.0
       when 'cheque'
-        fee_props[:amount] = cheque_fee * (rate / 100.0)
+        fee_props[:amount] = cheque_fee
         entries << ReimbursementForChequePayment.new(fee_props) unless cheque_rate.nil? || cheque_rate.delete(',').to_f == 0.0
       else
     end

@@ -1,66 +1,111 @@
 jQuery ->
   $('#myJobTab a:first').tab 'show'
-  $('#job-search-results').dataTable
-    sDom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+  $('#myJobTab a:last').one 'shown.bs.tab', ->
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#job-search-results').dataTable(
+    dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+    aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4,5,6,7,8,9,10 ] }]
+    order: [0, 'desc']
+    aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
-    bProcessing: false
-    bStateSave: false
     oTableTools:
       aButtons: ["copy", "print",
         sExtends: "collection"
         sButtonText: "Save <span class=\"caret\" />"
         aButtons: ["csv", "xls", "pdf"]
       ],
-      sSwfPath: "assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
-    oColumnFilterWidgets:
-      aiExclude: [ 0, 1, 6, 7, 8, 9 ]
+      sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
+    processing: true
+    stateSave: true
+    serverSide: true
+    sAjaxSource: '/service_calls/'
+    deferLoading: 0
 
-  $.datepicker.regional[""].dateFormat = 'MM dd, yy'
-  $.datepicker.setDefaults($.datepicker.regional[''])
+    fnServerData: (sSource, aoData, fnCallback) ->
+      aoData.push
+        name: "from_date"
+        value: $('#yadcf-filter--job-search-results-from-date-1').val()
+      aoData.push
+        name: "to_date"
+        value: $('#yadcf-filter--job-search-results-to-date-1').val()
+      aoData.push
+        name: "customer_id"
+        value: $('#customer_filter_id').val()
+      aoData.push
+        name: "provider_id"
+        value: $('#provider').val()
+      aoData.push
+        name: "subcontractor_id"
+        value: $('#subcontractor').val()
 
-  $('#job-search-results').dataTable().columnFilter
-    aoColumns: [
+      $.getJSON sSource, aoData, (json) ->
+        fnCallback json
 
-      type: "text"
-      bRegex: true
-      bSortCellsTop: true
-      bSmart: true
-    ,
-      type: "date-range"
-    ,
-      type: null
-    ,
-      type: null
-    ,
-      type: null
-    ,
-      type: null
-    ,
-      type: "number-range"
-    ,
-      type: "number-range"
-    ,
-      type: "number-range"
-    ,
-      type: "number-range"
+  ).yadcf([
+    {
+      column_number: 1
+      filter_container_id: 'created_range_filter'
+      date_format: 'mm/dd/yyyy'
+      filter_type: "range_date"
+    }
+    {
+      column_number: 5
+      filter_type: 'multi_select'
+      select_type: 'chosen'
+      data: $('#table-filters').data("statuses")
+      filter_container_id: 'status_filter'
+      filter_default_label: 'Status'
+      select_type_options: {
+        width: '200px'
+      }
 
-    ]
+    }
+    {
+      column_number: 10
+      select_type: 'chosen'
+      filter_type: 'multi_select'
+      filter_default_label: 'Tags'
+      filter_container_id: 'tags_filter'
+      data: $('#table-filters').data("tags")
+      select_type_options: {
+        width: '200px'
+      }
 
-#  $('#job-search-results').dataTable().columnFilter
-#    sPlaceHolder: "head:after"
-#    bServerSide: true
-#    sAjaxSource: "/service_calls/"
-#    fnServerData: (sSource, aoData, fnCallback) ->
-#      # Add some extra data to the sender
-#      aoData.push
-#        name: "affiliate_id"
-#        value: $('#affiliate_id').val()
-#      aoData.push
-#        name: "customer_id"
-#        value: $('#customer_id').val()
-#      aoData.push
-#        name: "account_id"
-#        value: $('#account_id').val()
-#      #            value: $('#get-entries-btn').data('account-id')
-#      $.getJSON sSource, aoData, (json) ->
-#        fnCallback json
+    }
+
+  ])
+
+  # enable chosen js
+  $('.chosen-select').chosen
+    allow_single_deselect: true
+    no_results_text: 'No results matched'
+    width: '200px'
+
+  $('#customer_search').bind 'railsAutocomplete.select', (e, data)->
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#provider').on 'change', ->
+    $('#customer_search').data('ref-id', $('#provider').val())
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#subcontractor').on 'change', ->
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#clear-customer').live 'click', ->
+    $('#customer_filter_id').val('')
+    $('#customer_search').val('')
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#clear-provider').live 'click', ->
+    $('#provider').val($('#provider option:first').val())
+    $("#provider").trigger("chosen:updated")
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#clear-subcontractor').live 'click', ->
+    $('#subcontractor').val($('#subcontractor option:first').val())
+    $("#subcontractor").trigger("chosen:updated")
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+
+

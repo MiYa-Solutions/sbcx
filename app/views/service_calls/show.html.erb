@@ -3,7 +3,7 @@
 <div class="title_label job_title">
   <ul>
     <li>
-      <h1 id="job_name_show"><%= best_in_place @service_call, :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1>
+      <h1 id="job_name_show"><%= best_in_place @service_call.becomes(ServiceCall), :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1>
     </li>
     <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1></li>
   </ul>
@@ -12,41 +12,91 @@
 <div class="row-fluid">
   <div class="well_height job_show_well">
 
-       <div class="span4" id="job_statuses_tab">
-            <%= render :partial => 'job_actions_statuses' %>
-       </div>
+    <div class="span4" id="job_statuses_tab">
+      <%= render :partial => 'job_actions_statuses' %>
+    </div>
 
-       <div class="span8" id="job_show_tab">
+    <div class="span8" id="job_show_tab">
 
-         <ul class="nav nav-tabs" id="myJobShowTab">
-            <li class="active"><a href="#jobMain" data-toggle="tab"><%= I18n.t('general.general.job_main') %></a></li>
-            <li><a href="#jobBilling" data-toggle="tab"><%= I18n.t('general.general.job_billing') %></a></li>
-            <li><a href="#job_appointments" data-toggle="tab"><%= I18n.t('general.general.appointments') %></a></li>
-            <li><a href="#jobHistory" data-toggle="tab"><%= I18n.t('general.general.job_history') %></a></li>
+      <ul class="nav nav-tabs" id="myJobShowTab">
+        <li><a href="#jobBilling" data-toggle="tab"><%= I18n.t('general.general.job_billing') %></a></li>
+        <li class="active"><a href="#jobMain" data-toggle="tab"><%= I18n.t('general.general.job_main') %></a></li>
+        <li><a href="#job_appointments" data-toggle="tab"><%= I18n.t('general.general.appointments') %></a></li>
+        <li><a href="#jobHistory" data-toggle="tab"><%= I18n.t('general.general.job_history') %></a></li>
 
-          </ul>
+      </ul>
 
-             <div class="tab-content">
+      <div class="tab-content">
 
-              <div class="tab-pane active" id="jobMain"><%= render 'job_details' %></div>
-              <div class="tab-pane" id="jobBilling"><%= render 'job_billing' %></div>
-              <div class="tab-pane" id="job_appointments"><%= render 'job_appointments' %></div>
-              <div class="tab-pane" id="jobHistory"><%= render 'job_history' %></div>
+        <div class="tab-pane" id="jobBilling"><%= render 'job_billing' %></div>
+        <div class="tab-pane active" id="jobMain"><%= render 'job_details' %></div>
+        <div class="tab-pane" id="job_appointments"><%= render 'job_appointments' %></div>
+        <div class="tab-pane" id="jobHistory"><%= render 'job_history' %></div>
 
-             </div>
+      </div>
 
-          <script>
-              $(function () {
-                  $('#myJobShowTab a:first').tab('show');
-              })
-          </script>
+      <script>
+          $(function () {
+              $('#myJobShowTab a:first').tab('show');
+          })
+      </script>
 
-       </div>
+    </div>
 
 
     <!--end well-->
+  </div>
+
+  <!--end row-->
 </div>
-<!--end row-->
+
+
+<!--
+
+<h2>Actions</h2>
+<div class="row-fluid well">
+  <#%= status_forms(@service_call) %>
 </div>
+<div class="row-fluid well">
+  <#%= work_status_forms(@service_call) %>
+</div>
+<div class="row-fluid well">
+  <#%= billing_status_forms(@service_call) %>
+</div>
+<div class="row-fluid well">
+  <#%= subcontractor_status_forms(@service_call) %>
+</div>
+<div class="row-fluid well">
+  <#%= provider_status_forms(@service_call) %>
+</div>
+
+<h2>Payments, Collections, Deposits</h2>
+<div class="row-fluid">
+  <hr>
+  <div class="well">
+    <h3>Payments (customer billing)</h3>
+    <#%= render 'accounting_entries/entries_table', entries: @service_call.payments %>
+  </div>
+  <hr>
+
+  <div class="well">
+    <h3>Collections(when I collected for a provider)</h3>
+    <#%= render 'accounting_entries/entries_table', entries: @service_call.collection_entries %>
+  </div>
+  <hr>
+<div class="well">
+  <h3>Collected (collected by a subcon for me)</h3>
+  <#%= render 'accounting_entries/entries_table', entries: @service_call.collected_entries %>
+</div>  <hr>
+<div class="well">
+  <h3>My Deposits (when I'm broker or subcon and deposited a collection to a provider)</h3>
+  <#%= render 'accounting_entries/entries_table', entries: @service_call.deposit_entries %>
+</div>
+  <hr>
+<div class="well">  <h3>Deposits To Me (by affilaite)</h3>
+  <#%= render 'accounting_entries/entries_table', entries: @service_call.deposited_entries %>
+</div></div>
+
+-->
 
 

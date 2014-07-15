@@ -2,52 +2,58 @@
 #
 # Table name: tickets
 #
-#  id                    :integer          not null, primary key
-#  customer_id           :integer
-#  notes                 :text
-#  started_on            :datetime
-#  organization_id       :integer
-#  completed_on          :datetime
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  status                :integer
-#  subcontractor_id      :integer
-#  technician_id         :integer
-#  provider_id           :integer
-#  subcontractor_status  :integer
-#  type                  :string(255)
-#  ref_id                :integer
-#  creator_id            :integer
-#  updater_id            :integer
-#  settled_on            :datetime
-#  billing_status        :integer
-#  settlement_date       :datetime
-#  name                  :string(255)
-#  scheduled_for         :datetime
-#  transferable          :boolean          default(FALSE)
-#  allow_collection      :boolean          default(TRUE)
-#  collector_id          :integer
-#  collector_type        :string(255)
-#  provider_status       :integer
-#  work_status           :integer
-#  re_transfer           :boolean
-#  payment_type          :string(255)
-#  subcon_payment        :string(255)
-#  provider_payment      :string(255)
-#  company               :string(255)
-#  address1              :string(255)
-#  address2              :string(255)
-#  city                  :string(255)
-#  state                 :string(255)
-#  zip                   :string(255)
-#  country               :string(255)
-#  phone                 :string(255)
-#  mobile_phone          :string(255)
-#  work_phone            :string(255)
-#  email                 :string(255)
-#  subcon_agreement_id   :integer
-#  provider_agreement_id :integer
-#  tax                   :float            default(0.0)
+#  id                       :integer          not null, primary key
+#  customer_id              :integer
+#  notes                    :text
+#  started_on               :datetime
+#  organization_id          :integer
+#  completed_on             :datetime
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  status                   :integer
+#  subcontractor_id         :integer
+#  technician_id            :integer
+#  provider_id              :integer
+#  subcontractor_status     :integer
+#  type                     :string(255)
+#  ref_id                   :integer
+#  creator_id               :integer
+#  updater_id               :integer
+#  settled_on               :datetime
+#  billing_status           :integer
+#  settlement_date          :datetime
+#  name                     :string(255)
+#  scheduled_for            :datetime
+#  transferable             :boolean          default(TRUE)
+#  allow_collection         :boolean          default(TRUE)
+#  collector_id             :integer
+#  collector_type           :string(255)
+#  provider_status          :integer
+#  work_status              :integer
+#  re_transfer              :boolean          default(TRUE)
+#  payment_type             :string(255)
+#  subcon_payment           :string(255)
+#  provider_payment         :string(255)
+#  company                  :string(255)
+#  address1                 :string(255)
+#  address2                 :string(255)
+#  city                     :string(255)
+#  state                    :string(255)
+#  zip                      :string(255)
+#  country                  :string(255)
+#  phone                    :string(255)
+#  mobile_phone             :string(255)
+#  work_phone               :string(255)
+#  email                    :string(255)
+#  subcon_agreement_id      :integer
+#  provider_agreement_id    :integer
+#  tax                      :float            default(0.0)
+#  subcon_fee_cents         :integer          default(0), not null
+#  subcon_fee_currency      :string(255)      default("USD"), not null
+#  properties               :hstore
+#  external_ref             :string(255)
+#  subcon_collection_status :integer
+#  prov_collection_status   :integer
 #
 
 class TransferredServiceCall < ServiceCall
@@ -71,6 +77,10 @@ class TransferredServiceCall < ServiceCall
     end
     state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED
+
+    before_transition any => :transferred do |sc, transition|
+      sc.type = 'BrokerServiceCall'
+    end
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "Transferred Service Call status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -98,7 +108,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :cancel do
-      transition [:accepted, :new, :transferred] => :canceled
+      transition [:accepted, :transferred] => :canceled
     end
 
     event :un_cancel do
@@ -133,6 +143,7 @@ class TransferredServiceCall < ServiceCall
     # for cash payment, paid means cleared
     after_transition any => :settled do |sc, transition|
       sc.provider_status = SUBCON_STATUS_CLEARED if sc.provider_payment == 'cash'
+      sc.save!
     end
 
 
@@ -158,103 +169,50 @@ class TransferredServiceCall < ServiceCall
     end
   end
 
-  BILLING_STATUS_NA                     = 4200
-  BILLING_STATUS_PENDING                = 4201
-  BILLING_STATUS_INVOICED               = 4202
-  BILLING_STATUS_COLLECTED_BY_EMPLOYEE  = 4203
-  BILLING_STATUS_COLLECTED              = 4204
-  BILLING_STATUS_DEPOSITED_TO_PROV      = 4205
-  BILLING_STATUS_DEPOSITED              = 4206
-  BILLING_STATUS_INVOICED_BY_SUBCON     = 4207
-  BILLING_STATUS_COLLECTED_BY_SUBCON    = 4208
-  BILLING_STATUS_SUBCON_CLAIM_DEPOSITED = 4209
-  BILLING_STATUS_INVOICED_BY_PROV       = 4210
-  # if collection is not allowed for this service call, then the initial status is set to na - not applicable
-  state_machine :billing_status, initial: lambda { |sc| sc.allow_collection? ? :pending : :na }, namespace: 'payment' do
-    state :na, value: BILLING_STATUS_NA
-    state :pending, value: BILLING_STATUS_PENDING
-    state :invoiced, value: BILLING_STATUS_INVOICED
-    state :collected_by_employee, value: BILLING_STATUS_COLLECTED_BY_EMPLOYEE do
-      validate { |sc| sc.validate_collector }
-    end
-    state :collected, value: BILLING_STATUS_COLLECTED do
-      validate do |sc|
-        sc.validate_collector
-        sc.validate_payment
-      end
-    end
-    state :deposited_to_prov, value: BILLING_STATUS_DEPOSITED_TO_PROV
-    state :deposited, value: BILLING_STATUS_DEPOSITED do
-      validate { |sc| sc.validate_collector }
-    end
-    state :invoiced_by_subcon, value: BILLING_STATUS_INVOICED_BY_SUBCON
-    state :collected_by_subcon, value: BILLING_STATUS_COLLECTED_BY_SUBCON do
-      validate do |sc|
-        sc.validate_collector
-        sc.validate_payment
-      end
-    end
-    state :subcon_claim_deposited, value: BILLING_STATUS_SUBCON_CLAIM_DEPOSITED
-    state :invoiced_by_prov, value: BILLING_STATUS_INVOICED_BY_PROV
-
-    after_failure do |service_call, transition|
-      Rails.logger.debug { "Transferred Service Call billing status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
-    end
-
-    event :invoice do
-      transition :pending => :invoiced, if: lambda { |sc| sc.work_done? }
-    end
-
-    event :subcon_invoiced do
-      transition :pending => :invoiced_by_subcon, if: lambda { |sc| sc.work_done? && !sc.subcon_na? }
-    end
-
-    event :provider_invoiced do
-      transition :pending => :invoiced_by_prov, if: lambda { |sc| sc.work_done? }
-    end
-
-    event :provider_collected do
-      transition [:invoiced_by_subcon, :invoiced_by_prov, :invoiced] => :deposited
-    end
+  state_machine :billing_status, initial: :na, namespace: 'payment' do
+    state :na, value: 0
 
     event :collect do
-      transition [:invoiced, :invoiced_by_subcon] => :collected_by_employee, if: lambda { |sc| sc.organization.multi_user? }
-      transition [:invoiced, :invoiced_by_subcon] => :collected, if: lambda { |sc| !sc.organization.multi_user? }
+      transition :na => :na, if: ->(sc) { sc.collection_allowed? }
     end
+  end
 
-    event :employee_deposit do
-      transition :collected_by_employee => :collected
-    end
+  def collection_allowed?
+    (accepted? || transferred?) && !payment_collected?
+  end
 
-    event :subcon_collected do
-      transition :invoiced_by_subcon => :collected_by_subcon
-    end
-
-    event :subcon_deposited do
-      transition :collected_by_subcon => :subcon_claim_deposited
-    end
-
-    event :confirm_deposit do
-      transition :subcon_claim_deposited => :collected
-    end
-
-    event :deposit_to_prov do
-      transition :collected => :deposited_to_prov
-    end
-
-    event :prov_confirmed_deposit do
-      transition :deposited_to_prov => :deposited
+  def payments
+    if provider.member?
+      provider_ticket.payments
+    else
+      payment_entries
     end
 
   end
 
-  # local transferred jobs don't have a ref_id set, therefore if not set then defaults to the id
-  #def ref_id
-  #  read_attribute(:ref_id) || id
-  #end
+  def provider_ticket
+    ServiceCall.where(organization_id: provider_id).where(ref_id: ref_id).first
+  end
+
+  def paid_amount
+    Money.new(-(payment_entries.sum(:amount_cents) + payment_amount.to_f*100))
+  end
+
+  def payment_entries
+    if provider.member?
+      mixed_payment_entries
+    else
+      entries.where(type: CollectionEntry.subclasses.map(&:name))
+    end
+  end
+
+  # all none rejected payments
+  def valid_payment_entries
+    EntryCollection.new(payment_entries.reject { |e| e.status == CustomerPayment::STATUS_REJECTED })
+  end
 
   def provider_settlement_allowed?
-    (allow_collection? && payment_deposited?) || (!allow_collection? && work_done?)
+    work_done? && (!allow_collection? || payment_deposited?)
   end
 
   # to make the subcon_settlement_allowed? in ServiceCall work
@@ -264,6 +222,14 @@ class TransferredServiceCall < ServiceCall
 
   # to make the subcon_settlement_allowed? in ServiceCall work
   alias_method :payment_cleared?, :payment_paid?
+
+  def payment_collected?
+    work_done? && valid_payment_entries.sum(:amount_cents).abs >= total.cents
+  end
+
+  def payment_deposited?
+    none_deposited_collections? || unconfirmed_deposits? ? false : true
+  end
 
   def can_uncancel?
     !self.work_done? && !self.provider.subcontrax_member? &&
@@ -281,6 +247,28 @@ class TransferredServiceCall < ServiceCall
     super
     self.errors.add :subcontractor, I18n.t('activerecord.errors.ticket.circular_transfer') if self.validate_circular_transfer && self.status_changed? && self.status == ServiceCall::STATUS_TRANSFERRED
   end
+
+  def check_and_set_as_fully_paid
+
+  end
+
+  def prov_collection_fully_deposited?
+    collection_entries.map(&:status).select { |status| status == CollectionEntry::STATUS_PENDING }.empty?
+  end
+
+
+  def prov_collection_disputed?
+    deposit_entries.with_status(:disputed).size > 0
+  end
+
+  def available_payment_collectors
+    res = [self.organization]
+    res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
+    res
+
+    #provider_pending? ? [self.organization] : []
+  end
+
 
   private
   def provider_is_not_a_member
@@ -302,6 +290,32 @@ class TransferredServiceCall < ServiceCall
       self.ref_id = id
       self.save!
     end
+  end
+
+  def mixed_payment_entries
+    collections = entries.where(type: CollectionEntry.descendants.map(&:name)).all
+    events_ids  = entries_events(payments)
+
+    the_collections = collections.reject { |collection| events_ids.include?(collection.event.id) }
+
+    EntryCollection.new(payments + the_collections)
+  end
+
+  def entries_events(entries)
+
+    res = []
+    entries.each do |e|
+      res.concat Event.event_chain(e.event)
+    end
+    res.uniq
+  end
+
+  def unconfirmed_deposits?
+    deposit_entries.size >= 0 && deposit_entries.with_status(:submitted, :disputed).size > 0
+  end
+
+  def none_deposited_collections?
+    collection_entries.size > 0 && collection_entries.with_status(:pending).size > 0
   end
 
 

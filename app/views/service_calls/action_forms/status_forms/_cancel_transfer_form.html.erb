@@ -1,6 +1,7 @@
+<div class="span6">
 <%= simple_form_for job.becomes(ServiceCall), html: { class: style('service_call.forms.work_status.cancel_transfer.form_classes') } do |f| %>
     <%= hidden_field_tag 'service_call[status_event]', 'cancel_transfer' %>
-    <%= f.submit job.class.human_status_event_name(:cancel_transfer).titleize,
+    <%= f.submit t('general.general.cancel_transfer'),
                  id:    'cancel_transfer_service_call_btn',
                  class: style('service_call.forms.status.cancel_transfer.button_classes'),
                  title: I18n.t('service_call.forms.status.cancel_transfer.tooltip'),
@@ -9,3 +10,4 @@
     %>
 <% end %>
 
+</div>

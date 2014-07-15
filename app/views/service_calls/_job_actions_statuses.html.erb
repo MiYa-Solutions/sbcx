@@ -29,10 +29,68 @@
       </div>
     </li>
     <li>
-      <div class="action_buttons_service_call">
-        <%= event_list(@service_call) %>
+      <div class="row-fluid action_buttons_service_call">
+        <div class="service_call_events">
+        <!--<div class="service_call_events">-->
+               <%= status_forms(@service_call) %>
+               <%= work_status_forms(@service_call) %>
+      <!--</div>-->
+        <!--<#%= event_list(@service_call) %>-->
+          </div>
       </div>
     </li>
+
+    <% unless @service_call.subcontractor_status_events.empty? %>
+    <li>
+      <div class="smart_label">
+        <ul>
+          <li>
+            <h1><%= I18n.t('general.general.subcon_actions') %>
+              <%= image_tag("question24.png", :title => I18n.t('general.messages.actions_subcontractor'), :rel => 'tooltip') %>
+            </h1>
+          </li>
+          <li></li>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <div class="action_buttons_service_call affiliate_actions">
+
+          <div class="row-fluid">
+            <div class="service_call_events">
+          <%= subcontractor_status_forms(@service_call) %>
+
+          </div>
+       </div>
+      </div>
+    </li>
+    <% end %>
+
+
+    <% if @service_call.kind_of?(TransferredServiceCall) && @service_call.provider_settlement_allowed? %>
+        <li>
+          <div class="smart_label">
+            <ul>
+              <li>
+                <h1><%= I18n.t('general.general.provider_actions') %>
+                  <%= image_tag("question24.png", :title => I18n.t('general.messages.actions_provider'), :rel => 'tooltip') %>
+                </h1>
+              </li>
+              <li></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="action_buttons_service_call affiliate_actions">
+              <div class="row-fluid">
+                <div class="service_call_events">
+                 <%= provider_status_forms(@service_call) %>
+              </div>
+            </div>
+          </div>
+        </li>
+    <% end %>
+
   </ul>
 
 </div>

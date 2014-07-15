@@ -1,148 +1,162 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title><%= I18n.t('notification_mailer.sc_rejected_notification.subject').html_safe %></title>
-  <%= render 'styling' %>
-</head>
+  <html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title><%= I18n.t('notification_mailer.sc_rejected_notification.subject').html_safe %></title>
+    <%= render 'styling' %>
+  </head>
 
-<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
-<!--<#%= link_to "#{ServiceCall.name.humanize} #{@service_call.ref_id}", @service_call.becomes(ServiceCall) %>-->
+  <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
 
-<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
-  <tr>
-    <td align="center" valign="top" style="padding-top:20px;">
-      <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
-        <tr>
-          <td align="center" valign="top">
-            <!-- // Begin Template Header \\ -->
-            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
-              <tr>
-                <td class="headerContent">
-                  <img src="http://www.subcontrax.com/assets/LogoImg.png" style="max-width:600px;" id="headerImage campaign-icon"/>
+  <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+    <tr>
+      <td align="center" valign="top" style="padding-top:20px;">
 
-                </td>
-              </tr>
-            </table>
-            <!-- // End Template Header \\ -->
-          </td>
-        </tr>
-        <tr>
-          <td align="center" valign="top">
-            <!-- // Begin Template Body \\ -->
-            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody">
-              <tr>
-                <td valign="top">
+        <!--CSS change -->
+        <table border="1px solid #DDDDDD" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+          <tr>
+            <td align="center" valign="top">
 
-                  <!-- // Begin Module: Standard Content \\ -->
-                  <table border="0" cellpadding="20" cellspacing="0" width="100%">
-                    <tr>
-                      <td valign="top" class="bodyContent">
-                        <div>
-                          <h4 class="h4"><%= I18n.t('notification_mailer.sc_rejected_notification.title').html_safe %></h4>
-                          <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>
-                          ,<br>
-                          <%= I18n.t('notification_mailer.sc_rejected_notification.content').html_safe %>
-                          &nbsp;<strong><%= @service_call.subcontractor.name.html_safe %></strong>.
+              <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+                <tr>
+                  <!--CSS change -->
+                  <td class="headerContent" style="background-color: #737373; height: 50px; vertical-align:middle; text-align:center; ">
+                    <img src="http://www.subcontrax.com/assets/LogoImg.png" style="max-width:600px; height:auto; max-width:600px !important;" id="headerImage campaign-icon"/>
+
+                  </td>
+                </tr>
+              </table>
+              <!-- // End Template Header \\ -->
+            </td>
+          </tr>
+          <tr>
+            <td align="center" valign="top">
+              <!-- // Begin Template Body \\ -->
+              <!--CSS change -->
+              <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody" style="font-family:Arial; font-size:14px;">
+                <tr>
+                  <td valign="top">
+
+                    <!-- // Begin Module: Standard Content \\ -->
+                    <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                      <tr>
+                        <!--CSS change -->
+                        <td valign="top" class="bodyContent" style="color:#505050; font-family:Arial; font-size:14px; line-height:150%;">
+                          <div>
+                            <!--CSS change -->
+                            <h4 class="h4" style="font-family:Arial; font-size:18px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                              <%= I18n.t('notification_mailer.sc_rejected_notification.title').html_safe %>
+                            </h4>
+                            <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>,<br>
+                            <%= I18n.t('notification_mailer.sc_rejected_notification.content').html_safe %>
+                            &nbsp;<strong><%= @service_call.subcontractor.name.html_safe %></strong>.
+                            <br>
+                          </div>
+                        </td>
+
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-top:0; padding-bottom:0;">
+                          <!--CSS change -->
+                          <table cellpadding="10" cellspacing="0" width="100%" class="templateDataTable" style="border:2px solid #f5f5f5;">
+                            <!--CSS change -->
+                            <tr style="background-color:#F5F5F5; color:#336699; font-family:Arial; font-size:14px; font-weight:bold; text-align:left; line-height:150%;">
+                              <th scope="col" valign="top" width="40%" class="dataTableHeading">
+                                <%= I18n.t('general.emails.job').html_safe %>:
+                              </th>
+                              <th scope="col" valign="top" width="60%" class="dataTableHeading">
+                                <%= @service_call.ref_id %>
+                              </th>
+                            </tr>
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <%= I18n.t('general.general.job_name').html_safe %>
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @service_call.name %></strong>
+                              </td>
+                            </tr>
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <%= @service_call.class.human_attribute_name(:customer) %>:
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @service_call.customer.name %></strong><br>
+                                <%= @service_call.customer.address1 %>&nbsp;<%= @service_call.customer.try(:address2) %>
+                                <br>
+                                <%= @service_call.customer.city %>
+                                ,&nbsp;<%= @service_call.customer.state %>&nbsp;<%= @service_call.customer.zip %>
+                                <br>
+                                <strong><%= @service_call.customer.class.human_attribute_name(:phone) %>
+                                  :</strong>&nbsp;<%= @service_call.customer.phone %>
+                                <% unless @service_call.customer.mobile_phone.nil? %>
+                                    &nbsp;<strong><%= @service_call.customer.class.human_attribute_name(:mobile_phone) %>
+                                :</strong>&nbsp;<%= @service_call.customer.mobile_phone %>
+                                <% end %>
+                              </td>
+                            </tr>
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <%= @service_call.class.human_attribute_name(:scheduled_for) %>:
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <!--<strong><#%= @service_call.scheduled_for %></strong>-->
+                                <strong><%= I18n.l @service_call.scheduled_for, format: :default if @service_call.scheduled_for %></strong>
+
+
+                              </td>
+                            </tr>
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <%= @service_call.class.human_attribute_name(:notes) %>:
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @service_call.notes %></strong>
+                              </td>
+                            </tr>
+                            <!--CSS change -->
+                          </table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <!--CSS change -->
+                        <td valign="top" class="bodyContent" style="font-family:Arial; font-size:14px; line-height:150%;">
                           <br>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td valign="top" style="padding-top:0; padding-bottom:0;">
-                        <table border="0" cellpadding="10" cellspacing="0" width="100%" class="templateDataTable">
-                          <tr>
-                            <th scope="col" valign="top" width="25%" class="dataTableHeading">
-                              <%= I18n.t('general.emails.job').html_safe %>:
-                            </th>
-                            <th scope="col" valign="top" width="75%" class="dataTableHeading">
-                              <%= @service_call.ref_id %>
-                            </th>
-                          </tr>
-                          <tr>
-                            <td valign="top" class="dataTableContent">
-                              <%= I18n.t('general.general.job_name').html_safe %>
-                            </td>
-                            <td valign="top" class="dataTableContent">
-                              <strong><%= @service_call.name %></strong>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td valign="top" class="dataTableContent">
-                              <%= @service_call.class.human_attribute_name(:customer) %>:
-                            </td>
-                            <td valign="top" class="dataTableContent">
-                              <strong><%= @service_call.customer.name %></strong><br>
-                              <%= @service_call.customer.address1 %>&nbsp;<%= @service_call.customer.try(:address2) %>
-                              <br>
-                              <%= @service_call.customer.city %>
-                              ,&nbsp;<%= @service_call.customer.state %>&nbsp;<%= @service_call.customer.zip %>
-                              <br>
-                              <strong><%= @service_call.customer.class.human_attribute_name(:phone) %>
-                                :</strong>&nbsp;<%= @service_call.customer.phone %>
-                              <% unless @service_call.customer.mobile_phone.nil? %>
-                                  &nbsp;<strong><%= @service_call.customer.class.human_attribute_name(:mobile_phone) %>
-                              :</strong>&nbsp;<%= @service_call.customer.mobile_phone %>
-                              <% end %>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td valign="top" class="dataTableContent">
-                              <%= @service_call.class.human_attribute_name(:scheduled_for) %>:
-                            </td>
-                            <td valign="top" class="dataTableContent">
-                              <strong><%= @service_call.scheduled_for %></strong>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td valign="top" class="dataTableContent">
-                              <%= @service_call.class.human_attribute_name(:notes) %>:
-                            </td>
-                            <td valign="top" class="dataTableContent">
-                              <strong><%= @service_call.notes %></strong>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td valign="top" class="bodyContent">
-                        <div>
-                          <%= I18n.t('notification_mailer.sc_rejected_notification.bottom_content').html_safe %>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td align="center" valign="top" style="padding-top:0;">
-                        <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
-                          <tr>
-                            <td valign="middle" class="templateButtonContent">
-                              <div>
-                                <!--<a href="http://www.mandrill.com/" target="_blank">More Details</a>-->
+                          <div>
+                            <%= I18n.t('notification_mailer.sc_rejected_notification.bottom_content').html_safe %>.
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" valign="top" style="padding-top:0;">
+                          <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
+                            <tr>
+                              <td valign="middle" class="templateButtonContent">
                                 <%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, service_call_url(@service_call) %>
-                              </div>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                  <!-- // End Module: Standard Content \\ -->
-                </td>
-              </tr>
-            </table>
-            <!-- // End Template Body \\ -->
-          </td>
-        </tr>
-        <tr>
-          <%= render 'footer' %>
-        </tr>
-      </table>
-      <br/>
-    </td>
-  </tr>
-</table>
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- // End Module: Standard Content \\ -->
+                  </td>
+                </tr>
+              </table>
+              <!-- // End Template Body \\ -->
+            </td>
+          </tr>
+          <tr>
+            <%= render 'footer' %>
+          </tr>
+        </table>
+        <br>
+      </td>
+    </tr>
+  </table>
 
-</body>
+  </body>
 
-</html>
+  </html>

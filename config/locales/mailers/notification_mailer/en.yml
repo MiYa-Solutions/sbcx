@@ -25,7 +25,7 @@ en:
       title: 'New Subcontractor Agreement'
       subject: 'New Subcontractor Agreement'
       content: 'New Subcontractor Agreement was submitted to you by:'
-      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from '
 
     agr_change_submitted_notification:
       title: 'Subcontractor Agreement Negotiation: Change Submitted'
@@ -152,7 +152,7 @@ en:
       subject: 'Payment has been collected by Subcontractor'
       content: 'Please note that payment has been collected by Subcontractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
-    sc_properties_updated:
+    sc_properties_updated_notification:
       title: 'Job details have been updated'
       subject: 'Job details have been updated'
       content: 'Please note that one or more details have been updated by Subcontractor Name: '
@@ -170,7 +170,7 @@ en:
     sbcx_reference_notification:
       subject: "%{org} invites you to join SubconTraX"
       title: "Join SubconTraX for FREE"
-      content: "is already using SubconTraX and and would like to invite you to try it"
+      content: "is already using SubconTraX and and would like to invite you to try it."
       bottom_content: 'Please click on the link below for more details'
     invite_declined:
       subject: "The invitation to join your network has been declined"
@@ -230,3 +230,16 @@ en:
       bottom_content: 'Please click on "Unlock Account" below to unlock your account.'
 
 
+  general:
+    general:
+      collection_status: "Collection Status"
+      subcon_agreement: "Agreement"
+      show_history: "Show History"
+      collect_payments: "Customer Payments"
+      download_invoice: "Download Invoice"
+      submit: "Submit"
+      more: "More"
+    messages:
+      show_entries: "Click to see all cutsomer billing entries"
+      show_subcon_entries: "Click to see all subcontractor billing entries"
+      show_prov_entries: "Click to see all contractor billing entries"

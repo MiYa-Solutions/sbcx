@@ -46,12 +46,12 @@ class RegistrationsController < Devise::RegistrationsController
   def create
 
     @user = build_resource
-    @user.organization.make_sbcx_member
     @organization  = @user.organization
+    @organization.make_member
     @user.role_ids = [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME).id]
 
-
     if resource.save
+      @organization.events << NewMemberEvent.new(name: "#{@organization.name} is a new member", description: "a new member was created")
       if resource.active_for_authentication?
         set_flash_message :success, :signed_up if is_navigational_format?
         sign_in(resource_name, resource)
@@ -80,6 +80,9 @@ class RegistrationsController < Devise::RegistrationsController
     #hash          ||= params[resource_name].permit(*permitted_params(nil).new_user_attributes) || { }
     hash          ||= permitted_params(nil).registration || {}
     self.resource = resource_class.new_with_session(hash, session)
+    #self.resource.organization.organization_roles = [OrganizationRole.find(OrganizationRole::SUBCONTRACTOR_ROLE_ID), OrganizationRole.find(OrganizationRole::PROVIDER_ROLE_ID)]
+    #self.resource.organization.subcontrax_member = true
+    #self.resource
   end
 
   private

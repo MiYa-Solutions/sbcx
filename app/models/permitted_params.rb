@@ -115,7 +115,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
 
   alias_method :my_service_call_attributes, :service_call_attributes
-  alias_method :transferred_service_call_attributes, :service_call_attributes
+  alias_method :broker_service_call_attributes, :service_call_attributes
+  alias_method :subcon_service_call_attributes, :service_call_attributes
 
   def customer
     if params[:customer].nil?
@@ -138,7 +139,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :phone,
      :state,
      :work_phone,
-     :zip
+     :zip,
+     :status_event
     ]
   end
 
@@ -372,7 +374,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
     res = false
 
-    if obj.present? && obj.allow_collection?
+    if (obj.present? && obj.allow_collection?) || (obj.present? && obj.instance_of?(MyServiceCall))
       if params[:service_call]
         res = billing_event_allowed? params[:service_call]
       else
@@ -385,34 +387,33 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
   def billing_event_allowed?(params_to_check)
     res = true
-    res = false if params_to_check[:billing_status_event] == 'provider_invoiced' && obj.provider.subcontrax_member?
-    res = false if params_to_check[:billing_status_event] == 'provider_collected' && obj.provider.subcontrax_member?
-    res = false if params_to_check[:billing_status_event] == 'subcon_collected' && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
-    res = false if params_to_check[:billing_status_event] == 'subcon_invoiced' && (obj.subcontractor.nil? || obj.subcontractor.subcontrax_member?)
-    res = false if params_to_check[:billing_status_event] == 'prov_confirmed_deposit' && (obj.provider.nil? || (obj.organization_id != obj.provider_id && obj.provider.subcontrax_member?))
-    res = false if params_to_check[:billing_status_event] == 'subcon_deposited' && obj.subcontractor.member?
-    res = false if params_to_check[:billing_status_event] == 'deposited' && !user.roles.map(&:name).include?('Org Admin')
-    #res = false if params[:billing_status_event] == 'deposit_to_prov' && obj.provider.member?
-    res = false if obj.instance_of?(TransferredServiceCall) && obj.provider.member? && obj.payment_deposited_to_prov?
+
+    res = false if params_to_check[:billing_status_event] == 'deposited'
+    res = false if params_to_check[:billing_status_event] == 'clear'
+    res = false if params_to_check[:billing_status_event] == 'reject'
+
     res
   end
 
   def subcontractor_status_allowed?
-    res = false
+    params_to_check = params[:service_call] ? params[:service_call] : params
+    res             = false
     unless obj.nil? || obj.subcontractor.nil?
       res = true
-      res = false if params[:subcontractor_status_event] == "subcon_marked_as_settled" && obj.subcontractor.subcontrax_member?
-      res = false if params[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
+      res = false if params_to_check[:subcontractor_status_event] == "subcon_marked_as_settled" && obj.subcontractor.subcontrax_member?
+      res = false if params_to_check[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
+      res = false if params_to_check[:subcontractor_status_event] == "clear" && obj.subcontractor.subcontrax_member?
     end
     res
   end
 
   def provider_event_allowed?
-    res = false
+    params_to_check = params[:service_call] ? params[:service_call] : params
+    res             = false
     unless obj.nil? || obj.provider.nil?
       res = true
-      res = false if params[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
-      res = false if params[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
+      res = false if params_to_check[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
+      res = false if params_to_check[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
     end
     res
 
@@ -472,16 +473,16 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   def sc_status_event_permitted?
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = true
-    res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.instance_of?(TransferredServiceCall)
+    res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.kind_of?(TransferredServiceCall)
     res
   end
 
   def sc_work_status_attr
-    case obj.class.name
-      when MyServiceCall.name
+    case obj
+      when MyServiceCall
         # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
         obj.transferred? && obj.subcontractor.subcontrax_member? ? [] : [:work_status_event]
-      when TransferredServiceCall.name
+      when TransferredServiceCall
         obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?) ? [:work_status_event] : []
       else
         []
@@ -489,7 +490,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_billing_status_attrs
-    billing_allowed? ? [:billing_status_event, :collector_id, :collector_type, :payment_type] : []
+    billing_allowed? ? [:billing_status_event, :collector_id, :collector_type, :payment_type, :payment_amount, :payment_notes] : []
   end
 
   def sc_collection_attrs
@@ -516,7 +517,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_provider_status_attrs
-    obj.instance_of?(TransferredServiceCall) && provider_event_allowed? ? [:provider_status_event, :provider_payment] : []
+    obj.kind_of?(TransferredServiceCall) && provider_event_allowed? ? [:provider_status_event, :provider_payment] : []
   end
 
   def sc_transfer_attrs

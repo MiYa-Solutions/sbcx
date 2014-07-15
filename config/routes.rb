@@ -30,6 +30,8 @@ Sbcx::Application.routes.draw do
 
   resources :my_service_calls, controller: :service_calls
   resources :transferred_service_calls, controller: :service_calls
+  resources :subcon_service_calls, controller: :service_calls
+  resources :broker_service_calls, controller: :service_calls
 
   resources :agreements, only: [:new, :create, :edit, :show, :index, :update] do
     resources :posting_rules

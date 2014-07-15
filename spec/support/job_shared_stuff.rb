@@ -22,6 +22,48 @@ shared_context 'basic job testing' do
                                      buyer:    buyer)
   end
 
+  def start_the_job(job)
+    job.start_work!
+  end
+
+  def dispatch_the_job(job, technician)
+    job.technician = technician
+    job.dispatch_work!
+  end
+
+  def accept_the_job(job)
+    job.accept!
+  end
+
+  def accept_on_behalf_of_subcon(job)
+    job.accept_work!
+
+  end
+
+  def complete_the_work(job)
+    job.complete_work!
+  end
+
+  def collect_a_payment(job, options = {})
+    job.payment_type   = options[:type] || 'cash'
+    job.payment_amount = options[:amount] || 0
+    job.collector      = options[:collector] || job.organization
+
+    job.collect_payment!
+    job.payment_type   = nil
+    job.payment_amount = nil
+    job.collector      = nil
+  end
+
+  def invoice(job)
+    job.invoice_payment!
+  end
+
+  def confirm_employee_deposit(entry)
+    entry.confirm!
+  end
+
+
   def event_permitted_for_job?(state_machine_name, event_name, user, job)
     params = ActionController::Parameters.new({ service_call: {
         "#{state_machine_name}_event".to_sym => event_name
@@ -30,12 +72,25 @@ shared_context 'basic job testing' do
     p.service_call.include?("#{state_machine_name}_event")
   end
 
+  def collect_full_amount(job, options = {})
+    type      = options[:type] ? options[:type] : 'cash'
+    collector = options[:collector] ? options[:collector] : job.organization
+
+    amount         = job.total - job.paid_amount
+    payment_amount = amount > 0 ? amount : nil
+    collect_a_payment job, amount: payment_amount, type: type, collector: collector
+  end
 end
 
 shared_context 'transferred job' do
   include_context 'basic job testing' unless example.metadata[:skip_basic_job]
   let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
-  let(:subcon) { subcon_agr.counterparty }
+  let(:subcon) {
+    s = subcon_agr.counterparty
+    s.name = "subcon-#{s.name}"
+    s.save!
+    s
+  }
   let(:subcon_admin) do
     u = FactoryGirl.build(:user, organization: subcon)
     subcon.users << u
@@ -45,6 +100,41 @@ shared_context 'transferred job' do
 
 
 end
+
+shared_context 'brokered job' do
+  include_context 'transferred job'
+  let(:broker_prov_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
+  let(:broker_subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: broker) }
+  let(:broker) {
+    b = broker_prov_agr.counterparty
+    b.name = "broker-#{b.name}"
+    b.save!
+    b
+  }
+  let(:subcon) {
+    s = broker_subcon_agr.counterparty
+    s.name = "subcon-#{s.name}"
+    s.save!
+    s
+  }
+  let(:broker_admin) do
+    u = FactoryGirl.build(:user, organization: broker)
+    subcon.users << u
+    u
+  end
+  let(:subcon_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
+  let(:broker_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
+  let(:broker_b4_transfer_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
+  before do
+    transfer_the_job job: job, subcon: broker, agreement: broker_prov_agr
+    accept_the_job broker_b4_transfer_job
+    transfer_the_job job: broker_b4_transfer_job, subcon: subcon, agreement: broker_subcon_agr
+  end
+
+
+
+end
+
 
 shared_context 'job transferred to local subcon' do
   include_context 'basic job testing' unless example.metadata[:skip_basic_job]
@@ -67,13 +157,17 @@ shared_context 'job transferred from a local provider' do
 
 end
 
-def transfer_the_job
-  subcon_agr.save!
-  job.save!
-  job.update_attributes(subcontractor:    subcon.becomes(Subcontractor),
-                        properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => 'true' },
-                        subcon_agreement: subcon_agr,
-                        status_event:     'transfer')
+def transfer_the_job(options = {})
+  the_agr    = options[:agreement] || subcon_agr
+  the_job    = options[:job] || job
+  the_subcon = options[:subcon] || subcon
+
+  the_agr.save!
+  the_job.save!
+  the_job.update_attributes(subcontractor:    the_subcon.becomes(Subcontractor),
+                            properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => 'true' },
+                            subcon_agreement: the_agr,
+                            status_event:     'transfer')
 end
 
 shared_context 'when canceling the job' do
@@ -88,14 +182,14 @@ end
 
 shared_examples 'provider job is canceled' do
   it 'job status should be canceled' do
-    expect(job.reload).to be_canceled
+    expect(Ticket.find(job.id)).to be_canceled
   end
 end
 
 shared_examples 'subcon job is canceled' do
 
   it 'subcon job status should be canceled' do
-    expect(subcon_job.reload).to be_canceled
+    expect(Ticket.find(subcon_job.id)).to be_canceled
   end
 end
 

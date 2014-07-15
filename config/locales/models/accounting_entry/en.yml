@@ -19,11 +19,11 @@ en:
       my_adj_entry:
         status:
           states:
-            rejected: LiLi
+            rejected: Rejected
       recieved_adj_entry:
         status:
           states:
-            rejected: LuLu
+            rejected: Rejected
   payment_reimbursement:
     cash:
       description: 'Reimbursement for cash payment clearing for %{ticket}'
@@ -33,3 +33,13 @@ en:
       description: 'Reimbursement for American Express payment clearing for %{ticket}'
     cheque:
       description: 'Reimbursement for check clearing for %{ticket}'
+  accounting_entry:
+    description:
+      customer_reimbursement: 'Reimbursement submitted for the amount of: %{amount}'
+
+  payment_cleared_event:
+    name: 'Cleared Payment'
+    description: 'payment has been cleared successfully'
+  payment_deposited_event:
+    name: 'Deposited Payment'
+    description: 'payment has been deposited successfully'

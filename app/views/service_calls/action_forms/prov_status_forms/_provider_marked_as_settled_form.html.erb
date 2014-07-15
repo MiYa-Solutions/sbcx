@@ -1,3 +1,4 @@
+<div class="span6">
 <%= simple_form_for job.becomes(ServiceCall), html: { class: 'green-blue' } do |f| %>
     <%= f.input :provider_payment, collection: payment_types, input_html: { id: 'provider_payment_type' } %>
     <%= hidden_field_tag 'service_call[provider_status_event]', 'provider_marked_as_settled' %>
@@ -9,3 +10,4 @@
     %>
 <% end %>
 
+</div>

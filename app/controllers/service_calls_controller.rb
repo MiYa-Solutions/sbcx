@@ -6,11 +6,11 @@ class ServiceCallsController < ApplicationController
   autocomplete :customer, :name, extra_data: [:address1, :address2, :company, :phone, :email, :mobile_phone, :work_phone, :country, :state, :city, :zip], full: true, limit: 50
 
   def index
-    @service_calls    = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
-    @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
-
     respond_to do |format|
-      format.html {}
+      format.html {
+        @service_calls    = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
+        @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
+      }
 
       format.json { render json: TicketsDatatable.new(view_context) }
     end
@@ -18,6 +18,7 @@ class ServiceCallsController < ApplicationController
   end
 
   def show
+    store_location
     respond_to do |format|
       format.html do
         @customer = Customer.new
@@ -97,7 +98,7 @@ class ServiceCallsController < ApplicationController
   # TODO move autocomplete to CustomerController
   def autocomplete_customer_name_where
     Rails.logger.debug { "Invoked #{self.class.name}#autocomplete_customer_name_where" }
-    default = "organization_id = #{current_user.organization.id}"
+    default = "organization_id = #{current_user.organization.id} AND status = #{Customer::STATUS_ACTIVE}"
 
     if params[:ref_id].nil? || params[:ref_id].blank?
       return default

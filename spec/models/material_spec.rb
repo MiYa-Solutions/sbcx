@@ -16,6 +16,7 @@
 #  cost_currency   :string(255)      default("USD"), not null
 #  price_cents     :integer          default(0), not null
 #  price_currency  :string(255)      default("USD"), not null
+#  deleted_at      :datetime
 #
 
 require 'spec_helper'

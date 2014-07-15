@@ -14,6 +14,7 @@ class Tag < ActiveRecord::Base
   belongs_to :organization
   has_many :taggings
   has_many :taggables, through: :taggings
+  has_many :tickets, through: :taggings, source: :taggable, source_type: 'Ticket'
 
   ### VALIDATIONS:
   validates_presence_of :organization_id

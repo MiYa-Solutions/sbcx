@@ -20,6 +20,9 @@
 #  status            :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  parent_org_id     :integer
+#  industry          :string(255)
+#  other_industry    :string(255)
 #
 
 class Organization < ActiveRecord::Base
@@ -48,7 +51,7 @@ class Organization < ActiveRecord::Base
   ### ASSOCIATIONS:
   has_many :invites
   has_many :invite_req, class_name: 'Invite', foreign_key: 'affiliate_id'
-  has_many :users
+  has_many :users, inverse_of: :organization
   has_many :customers, inverse_of: :organization do
     #def << (customer)
     #  customer.build_account(organization: proxy_association.owner)
@@ -190,7 +193,6 @@ class Organization < ActiveRecord::Base
     state :sbcx_member, value: STATUS_SBCX_ACTIVE_MEMBER
     state :sbcx_member_disabled, value: STATUS_SBCX_INACTIVE_MEMBER
 
-    before_transition :new => :sbcx_member, :do => :make_member
     after_transition :new => :local_enabled, :do => :alert_local
 
     event :make_local do
@@ -222,9 +224,8 @@ class Organization < ActiveRecord::Base
 
   def make_member
     self.subcontrax_member  = true
-    self.organization_roles = [OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID),
-                               OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)]
-    self.events << NewMemberEvent.new(name: "#{self.name} is a new member", description: "a new member was created")
+    self.organization_roles = [OrganizationRole.find(OrganizationRole::PROVIDER_ROLE_ID),
+                               OrganizationRole.find(OrganizationRole::SUBCONTRACTOR_ROLE_ID)]
   end
 
   def alert_local
@@ -309,6 +310,10 @@ class Organization < ActiveRecord::Base
 
   def open_jobs
     ServiceCall.open_jobs(self).all
+  end
+
+  def active_jobs
+    ServiceCall.active_jobs(self).order('id desc')
   end
 
   private

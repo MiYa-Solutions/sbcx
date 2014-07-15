@@ -67,6 +67,7 @@ service_call:
       un_cancel:
 #        form_classes: "red-button"
         button_classes: "btn btn-large btn-primary"
+
     work_status:
       start:
 #        form_classes: "green-button"
@@ -158,17 +159,17 @@ service_call:
       pending: "status_grey"
       claim_settled: "status_blue"
       claimed_as_settled: "status_blue"
-      settled: "status_blue"
+      settled: "status_green"
       cleared: "status_green"
     provider_status:
       pending: "status_grey"
       claim_settled: "status_blue"
       claimed_as_settled: "status_blue"
-      settled: "status_blue"
+      settled: "status_green"
       cleared: "status_green"
     billing_status:
       na:  "status_grey"
-      pending: "status_grey"
+      pending:  "status_grey"
       invoiced: "status_blue"
       collected_by_employee: "status_blue"
       collected: "status_blue"
@@ -179,7 +180,19 @@ service_call:
       subcon_claim_deposited: "status_blue"
       invoiced_by_prov: "status_blue"
       overdue: "status_red"
-      paid: "status_blue"
+      paid: "status_green"
       cleared: "status_green"
       rejected: "status_red"
+      partially_collected: "status_blue"
+      in_process: "status_blue"
+      over_paid: "status_red"
+    subcon_collection_status:
+      deposited: "status_green"
+      pending: "status_grey"
+      collected: "status_blue"
+      p_collected: "status_blue"
+      is_deposited: "status_green"
+      disputed: "status_red"
+      partially_collected: "status_blue"
+
 

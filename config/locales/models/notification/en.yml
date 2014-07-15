@@ -176,3 +176,8 @@ en:
       html_message: '%{affiliate} is claiming that the your account balance should be adjusted and therefore submitted the %{link}'
       subject:  "%{affiliate} has submitted a balance adjustment"
       content: "%{affiliate} has submitted a balance adjustment"
+
+    sc_properties_updated_notification:
+      html_message: '%{subcontractor} has updated job %{link}'
+      subject:  "Please note that Job %{ref} has been updated"
+      content: "Please note that one or more details have been updated by Subcontractor Name: %{subcontractor}."

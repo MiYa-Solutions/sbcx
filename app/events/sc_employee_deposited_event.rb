@@ -1,4 +1,6 @@
+require 'hstore_amount'
 class ScEmployeeDepositedEvent < ServiceCallEvent
+  include HstoreAmount
 
   def init
     self.name         = I18n.t('sc_employee_deposited_event.name')

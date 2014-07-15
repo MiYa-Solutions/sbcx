@@ -1,3 +1,4 @@
+<div class="span6">
 <div class="transfer_btn">
     <%= link_to(job.class.human_status_event_name(:transfer), '#transfer_modal',
                 class: "#{style("service_call.forms.status.transfer.button_classes")}",
@@ -6,6 +7,8 @@
                 rel:   'tooltip',
                 role: "button",
                 id: "transfer_btn") %>
+</div>
+
 </div>
 
 <div id='transfer_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

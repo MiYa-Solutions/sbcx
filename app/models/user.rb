@@ -30,6 +30,10 @@
 #  work_phone             :string(255)
 #  preferences            :hstore
 #  time_zone              :string(255)
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -58,7 +62,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  belongs_to :organization
+  belongs_to :organization, inverse_of: :users
   model_stamper
 
   # associations necessary for the Authorization functionality using declarative_authorization

@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require File.expand_path("../../config/environment", __FILE__)
 require 'rubygems'
 require 'spork'
@@ -10,6 +13,8 @@ require 'capybara/poltergeist'
 require 'declarative_authorization/maintenance'
 require 'money-rails/test_helpers'
 require 'active_attr/rspec'
+require 'factory_girl_rails'
+
 
 
 #uncomment the following line to use spork with the debugger
@@ -21,12 +26,18 @@ Spork.prefork do
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
   # This file is copied to spec/ when you run 'rails generate rspec:install'
-  require 'factory_girl_rails'
+  #require 'factory_girl_rails'
   Capybara.javascript_driver = :poltergeist
 
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app, :debug => false) #, :js_errors => false)
   end
+
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
+
 
   Capybara.ignore_hidden_elements = false
 
@@ -35,9 +46,17 @@ Spork.prefork do
   include Authorization::TestHelper
   include MoneyRails::TestHelpers
 
-  Spork.trap_method(Rails::Application, :eager_load!)
+  # this is to eager load models properly
   Spork.trap_method(Rails::Application, :reload_routes!)
   Spork.trap_method(Rails::Application::RoutesReloader, :reload!)
+
+  #Spork.trap_method(Rails::ActiveRecord, :load_models)
+
+  Spork.trap_method(Rails::Application, :eager_load!)
+
+  require File.expand_path("../../config/environment", __FILE__)
+
+  Rails.application.railties.all { |r| r.eager_load! }
   #
   #
   #Spork.trap_class_method(FactoryGirl, :find_definitions)
@@ -49,6 +68,9 @@ Spork.prefork do
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
   RSpec.configure do |config|
+
+    #config.filter_run :focus => true
+    #config.run_all_when_everything_filtered = true
 
     # ## Mock Framework
     #
@@ -104,9 +126,16 @@ Spork.each_run do
   #  load model unless model == "/Users/mark/RubymineProjects/sbcx/app/models/permitted_params.rb"
   #end
 
-  #require 'factory_girl_rails'
+  if ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
+
   #FactoryGirl.factories.clear
   # reload all the models
+  Dir["#{Rails.root}/app/models/concerns/*.rb"].each do |model|
+    require model
+  end
   Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
     load model unless model.include? 'permitted_params'
   end
@@ -119,12 +148,12 @@ Spork.each_run do
   Dir["#{Rails.root}/app/observers/**/*.rb"].each do |model|
     load model
   end
-  Dir["#{Rails.root}/app/services/**/*.rb"].each do |model|
-    load model
-  end
-  Dir["#{Rails.root}/app/notifications/**/*.rb"].each do |model|
-    load model
-  end
+  #Dir["#{Rails.root}/app/services/**/*.rb"].each do |model|
+  #  load model
+  #end
+  #Dir["#{Rails.root}/app/notifications/**/*.rb"].each do |model|
+  #  load model
+  #end
   Dir["#{Rails.root}/spec/support/**/*.rb"].each do |model|
     load model
   end

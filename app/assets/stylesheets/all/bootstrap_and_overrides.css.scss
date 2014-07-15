@@ -563,7 +563,7 @@ footer {
 
   float: right;
   width: 30%;
-  margin-top: -10px;
+  margin-top: -5px;
 }
 
 #boms-table {
@@ -573,15 +573,19 @@ footer {
 }
 
 #bom_price {
-  width: 30%;
+  width: 70%;
 }
 
 #bom_quantity {
-  width: 30%;
+  width: 20%;
+}
+
+#bom_desc {
+  width: 90%;
 }
 
 #bom_cost {
-  width: 30%;
+  width: 70%;
 }
 
 select {
@@ -964,6 +968,12 @@ input, textarea {
     font-size: 12px;
   }
 
+  input[type="radio"], input[type="checkbox"] {
+    cursor: pointer;
+    line-height: normal;
+    margin-top: 20px;
+  }
+
   span {
     font-weight: normal;
     color: $white;
@@ -1040,6 +1050,23 @@ input, textarea {
     vertical-align: text-top;
   }
 }
+
+#search_del_customer {
+  float: left;
+}
+
+#include_disabled {
+
+    margin-top: 0;
+
+}
+
+#include_disabled_p {
+
+  margin-left: 20px;
+  margin-top: -15px;
+}
+
 
 .job_icons {
   imp {
@@ -1129,6 +1156,10 @@ fieldset label {
   //display: block;
   margin-left: -1.5%;
   margin-right: 1.5%;
+
+  .close {
+    margin-right: 22px;
+  }
 }
 
 .add_member {
@@ -1323,7 +1354,8 @@ fieldset label {
   }
 
   .table th, .table td {
-    max-width: 160px;
+    //max-width: 160px;
+    width: 100%;
   }
 
   .badge {
@@ -1699,10 +1731,14 @@ a:hover {
 
 .service_call_events {
   padding-bottom: 10px;
-  margin-left: 14%;
+  margin-left: 5%;
   padding-top: 15px;
-  width: 80%;
+  width: 90%;
 
+  .span6 {
+   float: left;
+    margin-left: 0.1%;
+  }
 
   .transfer_btn {
     margin-right: 24px;
@@ -1710,18 +1746,21 @@ a:hover {
 
   h3 {
     background-color: #999999;
-    color: white;
+    border-radius: 4px;
+    color: #FFFFFF;
+    font-family: Century Gothic;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: normal;
     letter-spacing: 0.01em;
     line-height: 18px;
     margin-bottom: 10px;
-    margin-left: 0;
+    margin-left: -5px;
+    margin-right: 0;
+    padding: 4px 5px;
     text-align: center;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    width: 90%;
-    padding-bottom: 3px;
-    padding-top: 3px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    width: 93%;
+
   }
 
   a {
@@ -1730,10 +1769,10 @@ a:hover {
 
   .btn-large {
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: normal;
     height: 30px;
-    min-width: 90%;
+    min-width: 95%;
     padding-top: 7px;
     text-transform: uppercase;
   }
@@ -1771,7 +1810,36 @@ a:hover {
     margin-top: 3px;
   }
 
+  .btn_collapse {
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    height: 19px;
+    min-width: 75%;
+    padding-top: 6px;
+    text-transform: uppercase;
+  }
 
+  #dispatch-button {
+    margin-bottom: 5px;
+    margin-left: -0.9%;
+  }
+
+  #start_service_call_btn {
+    margin-left: -0.9%;
+  }
+
+  #complete_service_call_btn {
+    margin-left: -0.9%;
+  }
+
+  #service_call_payment_type {
+    width: 84%;
+  }
+
+  #service_call_collector_id {
+    width: 84%;
+  }
 
 
   label {
@@ -1781,9 +1849,7 @@ a:hover {
 
 }
 
-.action_buttons_service_call {
-  background-color: #EEEEEE;
-}
+
 
 .success {
   background-color: #468847;
@@ -2050,6 +2116,10 @@ a:hover {
 
 }
 
+#bom_material_name {
+  width: 50%;
+}
+
 .add_part_service_call {
   input, textarea, text_field {
     width: 60%;
@@ -2074,6 +2144,30 @@ a:hover {
     float: right;
     width: 10%;
 
+  }
+
+  .error {
+    display: inline;
+  }
+
+  .bom_label_frame {
+    padding: 4px 1px;
+    text-shadow: 0 1px 0 #FFFFFF;
+    vertical-align: middle;
+    width: auto;
+  }
+
+  .part_frame {
+    margin-right: 6px;
+  }
+
+  .qty_frame {
+    //margin-right: 6px;
+  }
+
+
+  .control-group:before, .control-group:after {
+    display: inline;
   }
 
   .alert {
@@ -2119,9 +2213,9 @@ a:hover {
   }
 
   .add_button {
-    margin-left: 1px;
+    margin-left: 23px;
     position: relative;
-    width: 10%;
+    width: 100%;
 
     .add_part_service_call input, .add_part_service_call textarea, .add_part_service_call text_field {
       margin-left: -5px;
@@ -2135,15 +2229,22 @@ a:hover {
   }
 
   .alert .close {
-    line-height: 18px;
+    //line-height: 18px;
+    //position: relative;
+    //right: -1px;
+    //top: -46px;
+    line-height: 3px;
     position: relative;
-    //right: -27px;
-    right: -1px;
-    top: -46px;
+    right: -26px;
+    top: 7px;
+  }
+
+  #bom_close {
+    line-height: 3px;
   }
 
   select {
-    width: 60%;
+    width: 70%;
     margin-left: -4px;
   }
 
@@ -2437,9 +2538,13 @@ div.DTTT_collection {
   border-color: black;
   border-width: 1px;
   color: #3A87AD;
-  padding-top: 18px;
+  //padding-top: 18px;
   margin-top: -15px;
-  height: 58px;
+  height: 105px;
+
+  .parts_2nd {
+    margin-top: 3px;
+  }
 }
 
 .add_entry_frame {
@@ -2740,7 +2845,7 @@ hr {
 
 #job_show_tab {
   margin-left: 12px;
-  width: 67%;
+  width: 66.6%;
 }
 
 #job_statuses_tab {
@@ -2879,14 +2984,14 @@ hr {
   #agreement_change_reason {
     margin-right: 5px;
     margin-top: 10px;
-    max-width: 42%;
+    max-width: 314px;
   }
 }
 
 #agreement_change_reason {
   margin-right: 5px;
   margin-top: 10px;
-  max-width: 42%;
+  max-width: 260px;
 }
 
 .agreement_fields {
@@ -3285,13 +3390,37 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     text-transform: capitalize;
     margin-left: 10px;
   }
+
+  h2 {
+    color: #FFFFFF;
+    font-family: Century Gothic;
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.01em;
+    line-height: 20px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    text-transform: capitalize;
+    margin-left: 10px;
+  }
+
+  .close {
+    color: #FFFFFF;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 18px;
+    text-shadow: none;
+  }
 }
 
+
+
 .customer_title {
-  background-color: #C09853;
+  background-color: #31b0d5;
   background-repeat: repeat-x;
-  border-color: #C09853;
+  border-color: #269abc;
   margin-bottom: 14px;
+  margin-left: -1.5%;om: 14px;
   margin-left: -1.5%;
 
   h2 {
@@ -3334,6 +3463,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   li:nth-child(3) {
     float: right;
+  }
+
+  .simple_form {
+    margin: 0;
   }
 
 }
@@ -3443,6 +3576,19 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   }
 }
 
+.subcon_collection_status {
+  .tr_1 {
+    width: 60%;
+  }
+  .tr_2 {
+    width: 6.67%;
+  }
+  .tr_3 {
+    width: 33.33%;
+  }
+
+}
+
 .show_more_button {
 
   button {
@@ -3450,6 +3596,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     argin-right: 4%;
     text-transform: capitalize;
 
+  }
+
+  .icon-chevron-down {
+    margin-left: 3px;
   }
   font-weight: bold;
 }
@@ -4020,7 +4170,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .positive {
     color: #44AD3F;
     font-size: 14px;
-    padding-right: 14px;
+    padding-right: 1px;
     text-transform: uppercase;
     font-weight: bold;
   }
@@ -4028,9 +4178,21 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .negative {
     color: #DA4E49;
     font-size: 14px;
+    padding-right: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .balanced {
+    font-size: 14px;
     padding-right: 14px;
     text-transform: uppercase;
     font-weight: bold;
+  }
+
+  .help_icon {
+    width: 30px;
+    margin-left: 5px;
   }
 
 }
@@ -4053,49 +4215,60 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   margin-left: -0.5%;
 }
 
-#invite_accept_btn {
-  background-color: #5CB85C;
-  border-color: #4CAE4C;
-  color: #FFFFFF;
-  -moz-user-select: none;
-  background-image: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857;
-  padding: 6px 12px;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-}
-
-#invite_decline_btn {
-  background-color: #D9534F;
-  border-color: #D43F3A;
-  color: #FFFFFF;
-  -moz-user-select: none;
-  background-image: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857;
-  padding: 6px 12px;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-}
+//#invite_accept_btn {
+//  background-color: #5CB85C;
+//  border-color: #4CAE4C;
+//  color: #FFFFFF;
+//  -moz-user-select: none;
+//  background-image: none;
+//  border-radius: 4px;
+//  cursor: pointer;
+//  display: inline-block;
+//  font-size: 14px;
+//  font-weight: normal;
+//  line-height: 1.42857;
+//  padding: 6px 12px;
+//  text-align: center;
+//  vertical-align: middle;
+//  white-space: nowrap;
+//  font-family: inherit;
+//}
+//
+//#invite_decline_btn {
+//  background-color: #D9534F;
+//  border-color: #D43F3A;
+//  color: #FFFFFF;
+//  -moz-user-select: none;
+//  background-image: none;
+//  border-radius: 4px;
+//  cursor: pointer;
+//  display: inline-block;
+//  font-size: 14px;
+//  font-weight: normal;
+//  line-height: 1.42857;
+//  padding: 6px 12px;
+//  text-align: center;
+//  vertical-align: middle;
+//  white-space: nowrap;
+//  font-family: inherit;
+//}
 
 .entry_small_btn {
   font-size: 12px;
   padding: 1px 7px;
   margin-top: -18px;
   margin-right: 2px;
+}
+
+.customer_entry_small_btn {
+  font-size: 11px;
+  margin-bottom: -6px;
+  margin-right: -5px;
+  padding: 2px 6px;
+}
+
+.customer_entries_actions {
+  width: 29%;
 }
 
 .entry_large_btn {
@@ -4105,58 +4278,26 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 }
 
-#adjustment_entry_accept_btn {
-  background-color: #5CB85C;
-  border-color: #4CAE4C;
-  color: #FFFFFF;
-  -moz-user-select: none;
-  background-image: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-weight: normal;
-  line-height: 1.42857;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-  float: left;
-}
+.adj_entry_events {
 
-#adjustment_entry_reject_btn {
-  background-color: #D9534F;
-  border-color: #D43F3A;
-  color: #FFFFFF;
-  -moz-user-select: none;
-  background-image: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-weight: normal;
-  line-height: 1.42857;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-  float: left;
-}
+  form {
+    margin: 0 0 4px;
+  }
 
-#adjustment_entry_cancel_btn {
-  background-color: #D9534F;
-  border-color: #D43F3A;
-  color: #FFFFFF;
-  -moz-user-select: none;
-  background-image: none;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-block;
-  font-weight: normal;
-  line-height: 1.42857;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  font-family: inherit;
-  float: left;
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    line-height: 16px;
+    margin-right: 10px;
+  }
+
+  li:last-child {
+    float: inherit;
+  }
 }
 
 .status_adj_entry {
@@ -4322,6 +4463,88 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .icon-pencil {
     float: right;
   }
+}
+
+.affiliate_statuses {
+    padding-right: 1px;
+}
+
+.subco_statuses_collapse {
+  margin-left: 2.5%;
+  margin-top: 8px;
+  width: 95%;
+}
+
+.subco_statuses_collapse_frame {
+  background-color: #EEEEEE;
+}
+
+.collapse_frame{
+  background-color: #EEEEEE;
+  border: thin solid #000000;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.collapse_body{
+  margin-left: 2.5%;
+  margin-top: 8px;
+  width: 95%;
+}
+
+.collapse_collect {
+  margin-top: 5px;
+}
+
+
+.agr_diff_table {
+
+  background-color: #999999;
+  border-collapse: separate !important;
+  border-spacing: 0.7px;
+  margin-left: 2.5%;
+  margin-top: 15px;
+  width: 95%;
+
+  td {
+    vertical-align: top;
+  }
+
+  thead th {
+    text-align: center;
+  }
+}
+
+.agr_diff_posting {
+  margin-left: 2.5%;
+  margin-top: 8px;
+  width: 95%;
+
+  h4 {
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+
+.agr_diff_changes {
+  margin-top: 10px;
+}
+
+
+.affiliate_actions {
+  min-height: 100px;
+}
+
+.job_actions_r {
+  margin-top: 1px;
+
+
+}
+
+.action_buttons_service_call {
+  background-color: #EEEEEE;
+  padding-bottom: 10px;
 }
 
 

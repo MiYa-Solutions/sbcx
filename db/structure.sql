@@ -5,9 +5,9 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = ON;
-SET check_function_bodies = FALSE;
-SET client_min_messages = WARNING;
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -37,31 +37,50 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
-SET search_path = PUBLIC, pg_catalog;
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
+SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
 
-SET default_with_oids = FALSE;
+SET default_with_oids = false;
 
 --
 -- Name: accounting_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE accounting_entries (
-  id               INTEGER                                                   NOT NULL,
-  status           INTEGER,
-  event_id         INTEGER,
-  amount_cents     INTEGER DEFAULT 0                                         NOT NULL,
-  amount_currency  CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  ticket_id        INTEGER,
-  account_id       INTEGER,
-  created_at       TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  updated_at       TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  type             CHARACTER VARYING(255),
-  description      CHARACTER VARYING(255),
-  balance_cents    INTEGER DEFAULT 0                                         NOT NULL,
-  balance_currency CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  agreement_id     INTEGER
+    id integer NOT NULL,
+    status integer,
+    event_id integer,
+    amount_cents integer DEFAULT 0 NOT NULL,
+    amount_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    ticket_id integer,
+    account_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    type character varying(255),
+    description character varying(255),
+    balance_cents integer DEFAULT 0 NOT NULL,
+    balance_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    agreement_id integer,
+    external_ref character varying(255),
+    collector_id integer,
+    collector_type character varying(255),
+    matching_entry_id integer,
+    notes character varying(255)
 );
 
 
@@ -70,11 +89,11 @@ CREATE TABLE accounting_entries (
 --
 
 CREATE SEQUENCE accounting_entries_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -89,15 +108,15 @@ ALTER SEQUENCE accounting_entries_id_seq OWNED BY accounting_entries.id;
 --
 
 CREATE TABLE accounts (
-  id               INTEGER                                                   NOT NULL,
-  organization_id  INTEGER                                                   NOT NULL,
-  accountable_id   INTEGER                                                   NOT NULL,
-  accountable_type CHARACTER VARYING(255)                                    NOT NULL,
-  created_at       TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  updated_at       TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  balance_cents    INTEGER DEFAULT 0                                         NOT NULL,
-  balance_currency CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  synch_status     INTEGER
+    id integer NOT NULL,
+    organization_id integer NOT NULL,
+    accountable_id integer NOT NULL,
+    accountable_type character varying(255) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    balance_cents integer DEFAULT 0 NOT NULL,
+    balance_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    synch_status integer
 );
 
 
@@ -106,11 +125,11 @@ CREATE TABLE accounts (
 --
 
 CREATE SEQUENCE accounts_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -125,15 +144,15 @@ ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
 --
 
 CREATE TABLE active_admin_comments (
-  id            INTEGER                     NOT NULL,
-  namespace     CHARACTER VARYING(255),
-  body          TEXT,
-  resource_id   CHARACTER VARYING(255)      NOT NULL,
-  resource_type CHARACTER VARYING(255)      NOT NULL,
-  author_id     INTEGER,
-  author_type   CHARACTER VARYING(255),
-  created_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL
+    id integer NOT NULL,
+    namespace character varying(255),
+    body text,
+    resource_id character varying(255) NOT NULL,
+    resource_type character varying(255) NOT NULL,
+    author_id integer,
+    author_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -142,11 +161,11 @@ CREATE TABLE active_admin_comments (
 --
 
 CREATE SEQUENCE active_admin_comments_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -161,19 +180,19 @@ ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
 --
 
 CREATE TABLE admin_users (
-  id                     INTEGER                                                NOT NULL,
-  email                  CHARACTER VARYING(255) DEFAULT '' :: CHARACTER VARYING NOT NULL,
-  encrypted_password     CHARACTER VARYING(255) DEFAULT '' :: CHARACTER VARYING NOT NULL,
-  reset_password_token   CHARACTER VARYING(255),
-  reset_password_sent_at TIMESTAMP WITHOUT TIME ZONE,
-  remember_created_at    TIMESTAMP WITHOUT TIME ZONE,
-  sign_in_count          INTEGER DEFAULT 0,
-  current_sign_in_at     TIMESTAMP WITHOUT TIME ZONE,
-  last_sign_in_at        TIMESTAMP WITHOUT TIME ZONE,
-  current_sign_in_ip     CHARACTER VARYING(255),
-  last_sign_in_ip        CHARACTER VARYING(255),
-  created_at             TIMESTAMP WITHOUT TIME ZONE                            NOT NULL,
-  updated_at             TIMESTAMP WITHOUT TIME ZONE                            NOT NULL
+    id integer NOT NULL,
+    email character varying(255) DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying(255) DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying(255),
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip character varying(255),
+    last_sign_in_ip character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -182,11 +201,11 @@ CREATE TABLE admin_users (
 --
 
 CREATE SEQUENCE admin_users_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -201,21 +220,21 @@ ALTER SEQUENCE admin_users_id_seq OWNED BY admin_users.id;
 --
 
 CREATE TABLE agreements (
-  id                INTEGER                     NOT NULL,
-  name              CHARACTER VARYING(255),
-  counterparty_id   INTEGER,
-  organization_id   INTEGER,
-  description       TEXT,
-  created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  status            INTEGER,
-  counterparty_type CHARACTER VARYING(255),
-  type              CHARACTER VARYING(255),
-  creator_id        INTEGER,
-  updater_id        INTEGER,
-  starts_at         TIMESTAMP WITHOUT TIME ZONE,
-  ends_at           TIMESTAMP WITHOUT TIME ZONE,
-  payment_terms     CHARACTER VARYING(255)
+    id integer NOT NULL,
+    name character varying(255),
+    counterparty_id integer,
+    organization_id integer,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status integer,
+    counterparty_type character varying(255),
+    type character varying(255),
+    creator_id integer,
+    updater_id integer,
+    starts_at timestamp without time zone,
+    ends_at timestamp without time zone,
+    payment_terms character varying(255)
 );
 
 
@@ -224,11 +243,11 @@ CREATE TABLE agreements (
 --
 
 CREATE SEQUENCE agreements_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -243,20 +262,20 @@ ALTER SEQUENCE agreements_id_seq OWNED BY agreements.id;
 --
 
 CREATE TABLE appointments (
-  id               INTEGER                     NOT NULL,
-  starts_at        TIMESTAMP WITHOUT TIME ZONE,
-  ends_at          TIMESTAMP WITHOUT TIME ZONE,
-  title            CHARACTER VARYING(255),
-  description      TEXT,
-  all_day          BOOLEAN,
-  recurring        BOOLEAN,
-  appointable_id   INTEGER,
-  appointable_type CHARACTER VARYING(255),
-  created_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  creator_id       INTEGER,
-  updater_id       INTEGER,
-  organization_id  INTEGER
+    id integer NOT NULL,
+    starts_at timestamp without time zone,
+    ends_at timestamp without time zone,
+    title character varying(255),
+    description text,
+    all_day boolean,
+    recurring boolean,
+    appointable_id integer,
+    appointable_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    creator_id integer,
+    updater_id integer,
+    organization_id integer
 );
 
 
@@ -265,11 +284,11 @@ CREATE TABLE appointments (
 --
 
 CREATE SEQUENCE appointments_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -284,11 +303,11 @@ ALTER SEQUENCE appointments_id_seq OWNED BY appointments.id;
 --
 
 CREATE TABLE assignments (
-  id         INTEGER                     NOT NULL,
-  user_id    INTEGER,
-  role_id    INTEGER,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+    id integer NOT NULL,
+    user_id integer,
+    role_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -297,11 +316,11 @@ CREATE TABLE assignments (
 --
 
 CREATE SEQUENCE assignments_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -316,20 +335,20 @@ ALTER SEQUENCE assignments_id_seq OWNED BY assignments.id;
 --
 
 CREATE TABLE boms (
-  id             INTEGER                                                   NOT NULL,
-  ticket_id      INTEGER,
-  created_at     TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  updated_at     TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  quantity       NUMERIC,
-  material_id    INTEGER,
-  cost_cents     INTEGER DEFAULT 0                                         NOT NULL,
-  cost_currency  CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  price_cents    INTEGER DEFAULT 0                                         NOT NULL,
-  price_currency CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  buyer_id       INTEGER,
-  buyer_type     CHARACTER VARYING(255),
-  creator_id     INTEGER,
-  updater_id     INTEGER
+    id integer NOT NULL,
+    ticket_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    quantity numeric,
+    material_id integer,
+    cost_cents integer DEFAULT 0 NOT NULL,
+    cost_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    price_cents integer DEFAULT 0 NOT NULL,
+    price_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    buyer_id integer,
+    buyer_type character varying(255),
+    creator_id integer,
+    updater_id integer
 );
 
 
@@ -338,11 +357,11 @@ CREATE TABLE boms (
 --
 
 CREATE SEQUENCE boms_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -357,24 +376,25 @@ ALTER SEQUENCE boms_id_seq OWNED BY boms.id;
 --
 
 CREATE TABLE customers (
-  id              INTEGER                     NOT NULL,
-  name            CHARACTER VARYING(255),
-  organization_id INTEGER,
-  company         CHARACTER VARYING(255),
-  address1        CHARACTER VARYING(255),
-  address2        CHARACTER VARYING(255),
-  city            CHARACTER VARYING(255),
-  state           CHARACTER VARYING(255),
-  zip             CHARACTER VARYING(255),
-  country         CHARACTER VARYING(255),
-  phone           CHARACTER VARYING(255),
-  mobile_phone    CHARACTER VARYING(255),
-  work_phone      CHARACTER VARYING(255),
-  email           CHARACTER VARYING(255),
-  created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  creator_id      INTEGER,
-  updater_id      INTEGER
+    id integer NOT NULL,
+    name character varying(255),
+    organization_id integer,
+    company character varying(255),
+    address1 character varying(255),
+    address2 character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zip character varying(255),
+    country character varying(255),
+    phone character varying(255),
+    mobile_phone character varying(255),
+    work_phone character varying(255),
+    email character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    creator_id integer,
+    updater_id integer,
+    status integer
 );
 
 
@@ -383,11 +403,11 @@ CREATE TABLE customers (
 --
 
 CREATE SEQUENCE customers_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -402,20 +422,20 @@ ALTER SEQUENCE customers_id_seq OWNED BY customers.id;
 --
 
 CREATE TABLE events (
-  id                  INTEGER                     NOT NULL,
-  name                CHARACTER VARYING(255),
-  type                CHARACTER VARYING(255),
-  description         TEXT,
-  eventable_type      CHARACTER VARYING(255),
-  eventable_id        INTEGER,
-  created_at          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  user_id             INTEGER,
-  reference_id        INTEGER,
-  creator_id          INTEGER,
-  updater_id          INTEGER,
-  triggering_event_id INTEGER,
-  properties          hstore
+    id integer NOT NULL,
+    name character varying(255),
+    type character varying(255),
+    description text,
+    eventable_type character varying(255),
+    eventable_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer,
+    reference_id integer,
+    creator_id integer,
+    updater_id integer,
+    triggering_event_id integer,
+    properties hstore
 );
 
 
@@ -424,11 +444,11 @@ CREATE TABLE events (
 --
 
 CREATE SEQUENCE events_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -443,15 +463,15 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 --
 
 CREATE TABLE invites (
-  id              INTEGER                     NOT NULL,
-  message         CHARACTER VARYING(255),
-  organization_id INTEGER,
-  affiliate_id    INTEGER,
-  status          INTEGER,
-  created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  creator_id      INTEGER,
-  updater_id      INTEGER
+    id integer NOT NULL,
+    message character varying(255),
+    organization_id integer,
+    affiliate_id integer,
+    status integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    creator_id integer,
+    updater_id integer
 );
 
 
@@ -460,11 +480,11 @@ CREATE TABLE invites (
 --
 
 CREATE SEQUENCE invites_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -479,21 +499,21 @@ ALTER SEQUENCE invites_id_seq OWNED BY invites.id;
 --
 
 CREATE TABLE materials (
-  id              INTEGER                                                   NOT NULL,
-  organization_id INTEGER,
-  supplier_id     INTEGER,
-  name            CHARACTER VARYING(255),
-  description     TEXT,
-  creator_id      INTEGER,
-  updater_id      INTEGER,
-  status          INTEGER,
-  created_at      TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  updated_at      TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  cost_cents      INTEGER DEFAULT 0                                         NOT NULL,
-  cost_currency   CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  price_cents     INTEGER DEFAULT 0                                         NOT NULL,
-  price_currency  CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  deleted_at      TIMESTAMP WITHOUT TIME ZONE
+    id integer NOT NULL,
+    organization_id integer,
+    supplier_id integer,
+    name character varying(255),
+    description text,
+    creator_id integer,
+    updater_id integer,
+    status integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    cost_cents integer DEFAULT 0 NOT NULL,
+    cost_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    price_cents integer DEFAULT 0 NOT NULL,
+    price_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    deleted_at timestamp without time zone
 );
 
 
@@ -502,11 +522,11 @@ CREATE TABLE materials (
 --
 
 CREATE SEQUENCE materials_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -521,17 +541,17 @@ ALTER SEQUENCE materials_id_seq OWNED BY materials.id;
 --
 
 CREATE TABLE notifications (
-  id              INTEGER                     NOT NULL,
-  subject         CHARACTER VARYING(255),
-  content         TEXT,
-  status          INTEGER,
-  user_id         INTEGER,
-  created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  notifiable_id   INTEGER,
-  notifiable_type CHARACTER VARYING(255),
-  type            CHARACTER VARYING(255),
-  event_id        INTEGER
+    id integer NOT NULL,
+    subject character varying(255),
+    content text,
+    status integer,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    notifiable_id integer,
+    notifiable_type character varying(255),
+    type character varying(255),
+    event_id integer
 );
 
 
@@ -540,11 +560,11 @@ CREATE TABLE notifications (
 --
 
 CREATE SEQUENCE notifications_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -559,11 +579,11 @@ ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
 --
 
 CREATE TABLE org_to_roles (
-  id                   INTEGER                     NOT NULL,
-  organization_id      INTEGER,
-  organization_role_id INTEGER,
-  created_at           TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at           TIMESTAMP WITHOUT TIME ZONE NOT NULL
+    id integer NOT NULL,
+    organization_id integer,
+    organization_role_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -572,11 +592,11 @@ CREATE TABLE org_to_roles (
 --
 
 CREATE SEQUENCE org_to_roles_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -591,10 +611,10 @@ ALTER SEQUENCE org_to_roles_id_seq OWNED BY org_to_roles.id;
 --
 
 CREATE TABLE organization_roles (
-  id         INTEGER                     NOT NULL,
-  name       CHARACTER VARYING(255),
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+    id integer NOT NULL,
+    name character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -603,27 +623,27 @@ CREATE TABLE organization_roles (
 --
 
 CREATE TABLE organizations (
-  id                INTEGER                     NOT NULL,
-  name              CHARACTER VARYING(255),
-  phone             CHARACTER VARYING(255),
-  website           CHARACTER VARYING(255),
-  company           CHARACTER VARYING(255),
-  address1          CHARACTER VARYING(255),
-  address2          CHARACTER VARYING(255),
-  city              CHARACTER VARYING(255),
-  state             CHARACTER VARYING(255),
-  zip               CHARACTER VARYING(255),
-  country           CHARACTER VARYING(255),
-  mobile            CHARACTER VARYING(255),
-  work_phone        CHARACTER VARYING(255),
-  email             CHARACTER VARYING(255),
-  subcontrax_member BOOLEAN,
-  status            INTEGER,
-  created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  parent_org_id     INTEGER,
-  industry          CHARACTER VARYING(255),
-  other_industry    CHARACTER VARYING(255)
+    id integer NOT NULL,
+    name character varying(255),
+    phone character varying(255),
+    website character varying(255),
+    company character varying(255),
+    address1 character varying(255),
+    address2 character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zip character varying(255),
+    country character varying(255),
+    mobile character varying(255),
+    work_phone character varying(255),
+    email character varying(255),
+    subcontrax_member boolean,
+    status integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    parent_org_id integer,
+    industry character varying(255),
+    other_industry character varying(255)
 );
 
 
@@ -632,11 +652,11 @@ CREATE TABLE organizations (
 --
 
 CREATE SEQUENCE organizations_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -651,13 +671,13 @@ ALTER SEQUENCE organizations_id_seq OWNED BY organizations.id;
 --
 
 CREATE TABLE payments (
-  id           INTEGER                     NOT NULL,
-  agreement_id INTEGER,
-  type         CHARACTER VARYING(255),
-  rate         DOUBLE PRECISION,
-  rate_type    CHARACTER VARYING(255),
-  created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL
+    id integer NOT NULL,
+    agreement_id integer,
+    type character varying(255),
+    rate double precision,
+    rate_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -666,11 +686,11 @@ CREATE TABLE payments (
 --
 
 CREATE SEQUENCE payments_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -685,36 +705,36 @@ ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
 --
 
 CREATE TABLE posting_rules (
-  id             INTEGER                     NOT NULL,
-  agreement_id   INTEGER,
-  type           CHARACTER VARYING(255),
-  rate           NUMERIC,
-  rate_type      CHARACTER VARYING(255),
-  created_at     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at     TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  properties     hstore,
-  time_bound     BOOLEAN DEFAULT FALSE,
-  sunday         BOOLEAN DEFAULT FALSE,
-  monday         BOOLEAN DEFAULT FALSE,
-  tuesday        BOOLEAN DEFAULT FALSE,
-  wednesday      BOOLEAN DEFAULT FALSE,
-  thursday       BOOLEAN DEFAULT FALSE,
-  friday         BOOLEAN DEFAULT FALSE,
-  saturday       BOOLEAN DEFAULT FALSE,
-  sunday_from    TIME WITHOUT TIME ZONE,
-  monday_from    TIME WITHOUT TIME ZONE,
-  tuesday_from   TIME WITHOUT TIME ZONE,
-  wednesday_from TIME WITHOUT TIME ZONE,
-  thursday_from  TIME WITHOUT TIME ZONE,
-  friday_from    TIME WITHOUT TIME ZONE,
-  saturday_from  TIME WITHOUT TIME ZONE,
-  sunday_to      TIME WITHOUT TIME ZONE,
-  monday_to      TIME WITHOUT TIME ZONE,
-  tuesday_to     TIME WITHOUT TIME ZONE,
-  wednesday_to   TIME WITHOUT TIME ZONE,
-  thursday_to    TIME WITHOUT TIME ZONE,
-  friday_to      TIME WITHOUT TIME ZONE,
-  saturday_to    TIME WITHOUT TIME ZONE
+    id integer NOT NULL,
+    agreement_id integer,
+    type character varying(255),
+    rate numeric,
+    rate_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    properties hstore,
+    time_bound boolean DEFAULT false,
+    sunday boolean DEFAULT false,
+    monday boolean DEFAULT false,
+    tuesday boolean DEFAULT false,
+    wednesday boolean DEFAULT false,
+    thursday boolean DEFAULT false,
+    friday boolean DEFAULT false,
+    saturday boolean DEFAULT false,
+    sunday_from time without time zone,
+    monday_from time without time zone,
+    tuesday_from time without time zone,
+    wednesday_from time without time zone,
+    thursday_from time without time zone,
+    friday_from time without time zone,
+    saturday_from time without time zone,
+    sunday_to time without time zone,
+    monday_to time without time zone,
+    tuesday_to time without time zone,
+    wednesday_to time without time zone,
+    thursday_to time without time zone,
+    friday_to time without time zone,
+    saturday_to time without time zone
 );
 
 
@@ -723,11 +743,11 @@ CREATE TABLE posting_rules (
 --
 
 CREATE SEQUENCE posting_rules_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -742,10 +762,10 @@ ALTER SEQUENCE posting_rules_id_seq OWNED BY posting_rules.id;
 --
 
 CREATE TABLE roles (
-  id         INTEGER                     NOT NULL,
-  name       CHARACTER VARYING(255),
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+    id integer NOT NULL,
+    name character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -754,11 +774,11 @@ CREATE TABLE roles (
 --
 
 CREATE SEQUENCE roles_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -773,7 +793,7 @@ ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
 --
 
 CREATE TABLE schema_migrations (
-  version CHARACTER VARYING(255) NOT NULL
+    version character varying(255) NOT NULL
 );
 
 
@@ -782,14 +802,14 @@ CREATE TABLE schema_migrations (
 --
 
 CREATE TABLE taggings (
-  id            INTEGER NOT NULL,
-  tag_id        INTEGER,
-  taggable_id   INTEGER,
-  taggable_type CHARACTER VARYING(255),
-  tagger_id     INTEGER,
-  tagger_type   CHARACTER VARYING(255),
-  context       CHARACTER VARYING(128),
-  created_at    TIMESTAMP WITHOUT TIME ZONE
+    id integer NOT NULL,
+    tag_id integer,
+    taggable_id integer,
+    taggable_type character varying(255),
+    tagger_id integer,
+    tagger_type character varying(255),
+    context character varying(128),
+    created_at timestamp without time zone
 );
 
 
@@ -798,11 +818,11 @@ CREATE TABLE taggings (
 --
 
 CREATE SEQUENCE taggings_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -817,9 +837,9 @@ ALTER SEQUENCE taggings_id_seq OWNED BY taggings.id;
 --
 
 CREATE TABLE tags (
-  id              INTEGER NOT NULL,
-  name            CHARACTER VARYING(255),
-  organization_id INTEGER
+    id integer NOT NULL,
+    name character varying(255),
+    organization_id integer
 );
 
 
@@ -828,11 +848,11 @@ CREATE TABLE tags (
 --
 
 CREATE SEQUENCE tags_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -847,55 +867,57 @@ ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
 --
 
 CREATE TABLE tickets (
-  id                    INTEGER                                                   NOT NULL,
-  customer_id           INTEGER,
-  notes                 TEXT,
-  started_on            TIMESTAMP WITHOUT TIME ZONE,
-  organization_id       INTEGER,
-  completed_on          TIMESTAMP WITHOUT TIME ZONE,
-  created_at            TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  updated_at            TIMESTAMP WITHOUT TIME ZONE                               NOT NULL,
-  status                INTEGER,
-  subcontractor_id      INTEGER,
-  technician_id         INTEGER,
-  provider_id           INTEGER,
-  subcontractor_status  INTEGER,
-  type                  CHARACTER VARYING(255),
-  ref_id                INTEGER,
-  creator_id            INTEGER,
-  updater_id            INTEGER,
-  settled_on            TIMESTAMP WITHOUT TIME ZONE,
-  billing_status        INTEGER,
-  settlement_date       TIMESTAMP WITHOUT TIME ZONE,
-  name                  CHARACTER VARYING(255),
-  scheduled_for         TIMESTAMP WITHOUT TIME ZONE,
-  transferable          BOOLEAN DEFAULT TRUE,
-  allow_collection      BOOLEAN DEFAULT TRUE,
-  collector_id          INTEGER,
-  collector_type        CHARACTER VARYING(255),
-  provider_status       INTEGER,
-  work_status           INTEGER,
-  re_transfer           BOOLEAN DEFAULT TRUE,
-  payment_type          CHARACTER VARYING(255),
-  subcon_payment        CHARACTER VARYING(255),
-  provider_payment      CHARACTER VARYING(255),
-  company               CHARACTER VARYING(255),
-  address1              CHARACTER VARYING(255),
-  address2              CHARACTER VARYING(255),
-  city                  CHARACTER VARYING(255),
-  state                 CHARACTER VARYING(255),
-  zip                   CHARACTER VARYING(255),
-  country               CHARACTER VARYING(255),
-  phone                 CHARACTER VARYING(255),
-  mobile_phone          CHARACTER VARYING(255),
-  work_phone            CHARACTER VARYING(255),
-  email                 CHARACTER VARYING(255),
-  subcon_agreement_id   INTEGER,
-  provider_agreement_id INTEGER,
-  tax                   DOUBLE PRECISION DEFAULT 0.0,
-  subcon_fee_cents      INTEGER DEFAULT 0                                         NOT NULL,
-  subcon_fee_currency   CHARACTER VARYING(255) DEFAULT 'USD' :: CHARACTER VARYING NOT NULL,
-  properties            hstore
+    id integer NOT NULL,
+    customer_id integer,
+    notes text,
+    started_on timestamp without time zone,
+    organization_id integer,
+    completed_on timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status integer,
+    subcontractor_id integer,
+    technician_id integer,
+    provider_id integer,
+    subcontractor_status integer,
+    type character varying(255),
+    ref_id integer,
+    creator_id integer,
+    updater_id integer,
+    settled_on timestamp without time zone,
+    billing_status integer,
+    settlement_date timestamp without time zone,
+    name character varying(255),
+    scheduled_for timestamp without time zone,
+    transferable boolean DEFAULT true,
+    allow_collection boolean DEFAULT true,
+    collector_id integer,
+    collector_type character varying(255),
+    provider_status integer,
+    work_status integer,
+    re_transfer boolean DEFAULT true,
+    subcon_payment character varying(255),
+    provider_payment character varying(255),
+    company character varying(255),
+    address1 character varying(255),
+    address2 character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zip character varying(255),
+    country character varying(255),
+    phone character varying(255),
+    mobile_phone character varying(255),
+    work_phone character varying(255),
+    email character varying(255),
+    subcon_agreement_id integer,
+    provider_agreement_id integer,
+    tax double precision DEFAULT 0.0,
+    subcon_fee_cents integer DEFAULT 0 NOT NULL,
+    subcon_fee_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
+    properties hstore,
+    external_ref character varying(255),
+    subcon_collection_status integer,
+    prov_collection_status integer
 );
 
 
@@ -904,11 +926,11 @@ CREATE TABLE tickets (
 --
 
 CREATE SEQUENCE tickets_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -923,38 +945,38 @@ ALTER SEQUENCE tickets_id_seq OWNED BY tickets.id;
 --
 
 CREATE TABLE users (
-  id                     INTEGER                                                NOT NULL,
-  email                  CHARACTER VARYING(255) DEFAULT '' :: CHARACTER VARYING NOT NULL,
-  encrypted_password     CHARACTER VARYING(255) DEFAULT '' :: CHARACTER VARYING NOT NULL,
-  reset_password_token   CHARACTER VARYING(255),
-  reset_password_sent_at TIMESTAMP WITHOUT TIME ZONE,
-  remember_created_at    TIMESTAMP WITHOUT TIME ZONE,
-  sign_in_count          INTEGER DEFAULT 0,
-  current_sign_in_at     TIMESTAMP WITHOUT TIME ZONE,
-  last_sign_in_at        TIMESTAMP WITHOUT TIME ZONE,
-  current_sign_in_ip     CHARACTER VARYING(255),
-  last_sign_in_ip        CHARACTER VARYING(255),
-  created_at             TIMESTAMP WITHOUT TIME ZONE                            NOT NULL,
-  updated_at             TIMESTAMP WITHOUT TIME ZONE                            NOT NULL,
-  organization_id        INTEGER,
-  first_name             CHARACTER VARYING(255),
-  last_name              CHARACTER VARYING(255),
-  phone                  CHARACTER VARYING(255),
-  company                CHARACTER VARYING(255),
-  address1               CHARACTER VARYING(255),
-  address2               CHARACTER VARYING(255),
-  country                CHARACTER VARYING(255),
-  state                  CHARACTER VARYING(255),
-  city                   CHARACTER VARYING(255),
-  zip                    CHARACTER VARYING(255),
-  mobile_phone           CHARACTER VARYING(255),
-  work_phone             CHARACTER VARYING(255),
-  preferences            hstore,
-  time_zone              CHARACTER VARYING(255),
-  confirmation_token     CHARACTER VARYING(255),
-  confirmed_at           TIMESTAMP WITHOUT TIME ZONE,
-  confirmation_sent_at   TIMESTAMP WITHOUT TIME ZONE,
-  unconfirmed_email      CHARACTER VARYING(255)
+    id integer NOT NULL,
+    email character varying(255) DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying(255) DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying(255),
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip character varying(255),
+    last_sign_in_ip character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    organization_id integer,
+    first_name character varying(255),
+    last_name character varying(255),
+    phone character varying(255),
+    company character varying(255),
+    address1 character varying(255),
+    address2 character varying(255),
+    country character varying(255),
+    state character varying(255),
+    city character varying(255),
+    zip character varying(255),
+    mobile_phone character varying(255),
+    work_phone character varying(255),
+    preferences hstore,
+    time_zone character varying(255),
+    confirmation_token character varying(255),
+    confirmed_at timestamp without time zone,
+    confirmation_sent_at timestamp without time zone,
+    unconfirmed_email character varying(255)
 );
 
 
@@ -963,11 +985,11 @@ CREATE TABLE users (
 --
 
 CREATE SEQUENCE users_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -982,14 +1004,14 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 --
 
 CREATE TABLE versions (
-  id         INTEGER                NOT NULL,
-  item_type  CHARACTER VARYING(255) NOT NULL,
-  item_id    INTEGER                NOT NULL,
-  event      CHARACTER VARYING(255) NOT NULL,
-  whodunnit  CHARACTER VARYING(255),
-  object     TEXT,
-  created_at TIMESTAMP WITHOUT TIME ZONE,
-  assoc_id   INTEGER
+    id integer NOT NULL,
+    item_type character varying(255) NOT NULL,
+    item_id integer NOT NULL,
+    event character varying(255) NOT NULL,
+    whodunnit character varying(255),
+    object text,
+    created_at timestamp without time zone,
+    assoc_id integer
 );
 
 
@@ -998,11 +1020,11 @@ CREATE TABLE versions (
 --
 
 CREATE SEQUENCE versions_id_seq
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
@@ -1016,161 +1038,161 @@ ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounting_entries ALTER COLUMN id SET DEFAULT nextval('accounting_entries_id_seq' :: REGCLASS);
+ALTER TABLE ONLY accounting_entries ALTER COLUMN id SET DEFAULT nextval('accounting_entries_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq' :: REGCLASS);
+ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('active_admin_comments_id_seq' :: REGCLASS);
+ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('active_admin_comments_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id_seq' :: REGCLASS);
+ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY agreements ALTER COLUMN id SET DEFAULT nextval('agreements_id_seq' :: REGCLASS);
+ALTER TABLE ONLY agreements ALTER COLUMN id SET DEFAULT nextval('agreements_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY appointments ALTER COLUMN id SET DEFAULT nextval('appointments_id_seq' :: REGCLASS);
+ALTER TABLE ONLY appointments ALTER COLUMN id SET DEFAULT nextval('appointments_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY assignments ALTER COLUMN id SET DEFAULT nextval('assignments_id_seq' :: REGCLASS);
+ALTER TABLE ONLY assignments ALTER COLUMN id SET DEFAULT nextval('assignments_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY boms ALTER COLUMN id SET DEFAULT nextval('boms_id_seq' :: REGCLASS);
+ALTER TABLE ONLY boms ALTER COLUMN id SET DEFAULT nextval('boms_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq' :: REGCLASS);
+ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq' :: REGCLASS);
+ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq' :: REGCLASS);
+ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY materials ALTER COLUMN id SET DEFAULT nextval('materials_id_seq' :: REGCLASS);
+ALTER TABLE ONLY materials ALTER COLUMN id SET DEFAULT nextval('materials_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY notifications ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq' :: REGCLASS);
+ALTER TABLE ONLY notifications ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY org_to_roles ALTER COLUMN id SET DEFAULT nextval('org_to_roles_id_seq' :: REGCLASS);
+ALTER TABLE ONLY org_to_roles ALTER COLUMN id SET DEFAULT nextval('org_to_roles_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY organizations ALTER COLUMN id SET DEFAULT nextval('organizations_id_seq' :: REGCLASS);
+ALTER TABLE ONLY organizations ALTER COLUMN id SET DEFAULT nextval('organizations_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq' :: REGCLASS);
+ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY posting_rules ALTER COLUMN id SET DEFAULT nextval('posting_rules_id_seq' :: REGCLASS);
+ALTER TABLE ONLY posting_rules ALTER COLUMN id SET DEFAULT nextval('posting_rules_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq' :: REGCLASS);
+ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq' :: REGCLASS);
+ALTER TABLE ONLY taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq' :: REGCLASS);
+ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY tickets ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq' :: REGCLASS);
+ALTER TABLE ONLY tickets ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq' :: REGCLASS);
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq' :: REGCLASS);
+ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
 
 
 --
@@ -1178,7 +1200,7 @@ ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq' 
 --
 
 ALTER TABLE ONLY accounting_entries
-ADD CONSTRAINT accounting_entries_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT accounting_entries_pkey PRIMARY KEY (id);
 
 
 --
@@ -1186,7 +1208,7 @@ ADD CONSTRAINT accounting_entries_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY accounts
-ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -1194,7 +1216,7 @@ ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY active_admin_comments
-ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1202,7 +1224,7 @@ ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY admin_users
-ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
 
 
 --
@@ -1210,7 +1232,7 @@ ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY agreements
-ADD CONSTRAINT agreements_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT agreements_pkey PRIMARY KEY (id);
 
 
 --
@@ -1218,7 +1240,7 @@ ADD CONSTRAINT agreements_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY assignments
-ADD CONSTRAINT assignments_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT assignments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1226,7 +1248,7 @@ ADD CONSTRAINT assignments_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY boms
-ADD CONSTRAINT boms_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT boms_pkey PRIMARY KEY (id);
 
 
 --
@@ -1234,7 +1256,7 @@ ADD CONSTRAINT boms_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY appointments
-ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -1242,7 +1264,7 @@ ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY customers
-ADD CONSTRAINT customers_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT customers_pkey PRIMARY KEY (id);
 
 
 --
@@ -1250,7 +1272,7 @@ ADD CONSTRAINT customers_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY events
-ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 
 
 --
@@ -1258,7 +1280,7 @@ ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY invites
-ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
 
 
 --
@@ -1266,7 +1288,7 @@ ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY materials
-ADD CONSTRAINT materials_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT materials_pkey PRIMARY KEY (id);
 
 
 --
@@ -1274,7 +1296,7 @@ ADD CONSTRAINT materials_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY notifications
-ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -1282,7 +1304,7 @@ ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY org_to_roles
-ADD CONSTRAINT org_to_roles_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT org_to_roles_pkey PRIMARY KEY (id);
 
 
 --
@@ -1290,7 +1312,7 @@ ADD CONSTRAINT org_to_roles_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY organization_roles
-ADD CONSTRAINT organization_roles_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT organization_roles_pkey PRIMARY KEY (id);
 
 
 --
@@ -1298,7 +1320,7 @@ ADD CONSTRAINT organization_roles_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY organizations
-ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
 
 
 --
@@ -1306,7 +1328,7 @@ ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY payments
-ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1314,7 +1336,7 @@ ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY posting_rules
-ADD CONSTRAINT posting_rules_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT posting_rules_pkey PRIMARY KEY (id);
 
 
 --
@@ -1322,7 +1344,7 @@ ADD CONSTRAINT posting_rules_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY roles
-ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
 
 
 --
@@ -1330,7 +1352,7 @@ ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY tickets
-ADD CONSTRAINT service_calls_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT service_calls_pkey PRIMARY KEY (id);
 
 
 --
@@ -1338,7 +1360,7 @@ ADD CONSTRAINT service_calls_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY taggings
-ADD CONSTRAINT taggings_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT taggings_pkey PRIMARY KEY (id);
 
 
 --
@@ -1346,7 +1368,7 @@ ADD CONSTRAINT taggings_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY tags
-ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
 
 
 --
@@ -1354,7 +1376,7 @@ ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY users
-ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --
@@ -1362,189 +1384,203 @@ ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 --
 
 ALTER TABLE ONLY versions
-ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
 
 
 --
 -- Name: events_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX events_properties ON events USING GIN (properties);
+CREATE INDEX events_properties ON events USING gin (properties);
 
 
 --
 -- Name: index_accounts_on_accountable_id_and_accountable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_accounts_on_accountable_id_and_accountable_type ON accounts USING BTREE (accountable_id, accountable_type);
+CREATE INDEX index_accounts_on_accountable_id_and_accountable_type ON accounts USING btree (accountable_id, accountable_type);
 
 
 --
 -- Name: index_accounts_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_accounts_on_organization_id ON accounts USING BTREE (organization_id);
+CREATE INDEX index_accounts_on_organization_id ON accounts USING btree (organization_id);
 
 
 --
 -- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING BTREE (author_type, author_id);
+CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING btree (author_type, author_id);
 
 
 --
 -- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING BTREE (namespace);
+CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING btree (namespace);
 
 
 --
 -- Name: index_active_admin_comments_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING BTREE (resource_type, resource_id);
+CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING btree (resource_type, resource_id);
 
 
 --
 -- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_admin_users_on_email ON admin_users USING BTREE (email);
+CREATE UNIQUE INDEX index_admin_users_on_email ON admin_users USING btree (email);
 
 
 --
 -- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USING BTREE (reset_password_token);
+CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USING btree (reset_password_token);
 
 
 --
 -- Name: index_boms_on_material_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_boms_on_material_id ON boms USING BTREE (material_id);
+CREATE INDEX index_boms_on_material_id ON boms USING btree (material_id);
 
 
 --
 -- Name: index_events_on_eventable_id_and_eventable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_events_on_eventable_id_and_eventable_type ON events USING BTREE (eventable_id, eventable_type);
+CREATE INDEX index_events_on_eventable_id_and_eventable_type ON events USING btree (eventable_id, eventable_type);
 
 
 --
 -- Name: index_materials_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_materials_on_name ON materials USING BTREE (name);
+CREATE INDEX index_materials_on_name ON materials USING btree (name);
 
 
 --
 -- Name: index_materials_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_materials_on_organization_id ON materials USING BTREE (organization_id);
+CREATE INDEX index_materials_on_organization_id ON materials USING btree (organization_id);
 
 
 --
 -- Name: index_materials_on_supplier_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_materials_on_supplier_id ON materials USING BTREE (supplier_id);
+CREATE INDEX index_materials_on_supplier_id ON materials USING btree (supplier_id);
 
 
 --
 -- Name: index_org_to_roles_on_organization_id_and_organization_role_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_org_to_roles_on_organization_id_and_organization_role_id ON org_to_roles USING BTREE (organization_id, organization_role_id);
+CREATE INDEX index_org_to_roles_on_organization_id_and_organization_role_id ON org_to_roles USING btree (organization_id, organization_role_id);
 
 
 --
 -- Name: index_service_calls_on_ref_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_service_calls_on_ref_id ON tickets USING BTREE (ref_id);
+CREATE INDEX index_service_calls_on_ref_id ON tickets USING btree (ref_id);
 
 
 --
 -- Name: index_taggings_on_tag_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_taggings_on_tag_id ON taggings USING BTREE (tag_id);
+CREATE INDEX index_taggings_on_tag_id ON taggings USING btree (tag_id);
 
 
 --
 -- Name: index_taggings_on_taggable_id_and_taggable_type_and_context; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON taggings USING BTREE (taggable_id, taggable_type, context);
+CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON taggings USING btree (taggable_id, taggable_type, context);
+
+
+--
+-- Name: index_tags_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tags_on_organization_id ON tags USING btree (organization_id);
+
+
+--
+-- Name: index_tickets_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_organization_id ON tickets USING btree (organization_id);
 
 
 --
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_users_on_confirmation_token ON users USING BTREE (confirmation_token);
+CREATE UNIQUE INDEX index_users_on_confirmation_token ON users USING btree (confirmation_token);
 
 
 --
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_users_on_email ON users USING BTREE (email);
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
 -- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING BTREE (reset_password_token);
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
 
 
 --
 -- Name: index_versions_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_versions_on_item_type_and_item_id ON versions USING BTREE (item_type, item_id);
+CREATE INDEX index_versions_on_item_type_and_item_id ON versions USING btree (item_type, item_id);
 
 
 --
 -- Name: posting_rule_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX posting_rule_properties ON posting_rules USING GIN (properties);
+CREATE INDEX posting_rule_properties ON posting_rules USING gin (properties);
 
 
 --
 -- Name: tickets_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX tickets_properties ON tickets USING GIN (properties);
+CREATE INDEX tickets_properties ON tickets USING gin (properties);
 
 
 --
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING BTREE (version);
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
 
 
 --
 -- Name: users_preferences; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX users_preferences ON users USING GIN (preferences);
+CREATE INDEX users_preferences ON users USING gin (preferences);
 
 
 --
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", PUBLIC;
+SET search_path TO "$user",public;
 
 INSERT INTO schema_migrations (version) VALUES ('20120704151322');
 
@@ -1765,3 +1801,29 @@ INSERT INTO schema_migrations (version) VALUES ('20131230231007');
 INSERT INTO schema_migrations (version) VALUES ('20131230231018');
 
 INSERT INTO schema_migrations (version) VALUES ('20131231165209');
+
+INSERT INTO schema_migrations (version) VALUES ('20140125215407');
+
+INSERT INTO schema_migrations (version) VALUES ('20140126025608');
+
+INSERT INTO schema_migrations (version) VALUES ('20140126212619');
+
+INSERT INTO schema_migrations (version) VALUES ('20140216195150');
+
+INSERT INTO schema_migrations (version) VALUES ('20140301234659');
+
+INSERT INTO schema_migrations (version) VALUES ('20140518213919');
+
+INSERT INTO schema_migrations (version) VALUES ('20140519171406');
+
+INSERT INTO schema_migrations (version) VALUES ('20140610111510');
+
+INSERT INTO schema_migrations (version) VALUES ('20140610112820');
+
+INSERT INTO schema_migrations (version) VALUES ('20140628193518');
+
+INSERT INTO schema_migrations (version) VALUES ('20140702162338');
+
+INSERT INTO schema_migrations (version) VALUES ('20140707225143');
+
+INSERT INTO schema_migrations (version) VALUES ('20140711005442');

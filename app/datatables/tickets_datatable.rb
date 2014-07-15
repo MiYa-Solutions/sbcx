@@ -3,17 +3,14 @@ class TicketsDatatable
 
   def initialize(view)
     @view         = view
-    @affiliate_id = params[:affiliate_id]
-    @customer_id  = params[:customer_id]
-    @account_id   = params[:account_id]
   end
 
   def as_json(options = {})
     {
         sEcho:                params[:sEcho].to_i,
-        iTotalRecords:        data.size,
-        iTotalDisplayRecords: tickets.size,
-        aaData:               data
+        iTotalRecords:        tickets.size,
+        iTotalDisplayRecords: tickets.total_entries,
+        aaData:               data,
     }
   end
 
@@ -23,11 +20,16 @@ class TicketsDatatable
     tickets.map do |ticket|
       [
           h(ticket.ref_id),
-          h(ticket.created_at.strftime("%B %e, %Y, %H:%m")),
+          h(ticket.created_at.strftime("%b %d, %Y")),
           h(ticket.customer.name),
+          link_to(ticket.name, ticket),
+          h(ticket.provider.name),
+          h(ticket.subcontractor.try(:name)),
           h(ticket.human_status_name),
-          humanized_money_with_symbol(ticket.total_price),
-          humanized_money_with_symbol(ticket.total_cost)
+          ticket.my_profit.to_s,
+          ticket.total_price.to_s,
+          ticket.total_cost.to_s,
+          ticket.tags.map(&:name).join(', ')
       ]
     end
   end
@@ -38,33 +40,44 @@ class TicketsDatatable
 
   def fetch_tickets
     tickets = current_user.organization.service_calls.scoped
-    if @account_id.present?
-      acc = Account.find(@account_id)
-
-      case acc.accountable_type
-        when 'Customer'
-          tickets = tickets.customer_jobs(current_user.organization, acc.accountable)
-        when 'Organization'
-          tickets = tickets.affiliated_jobs(current_user.organization, acc.accountable)
-        else
-          raise 'unrecognized account type when fetching tickets'
-      end
-
-    else
-      if @affiliate_id.present?
-        aff     = Affiliate.find(@affiliate_id)
-        tickets = tickets.affiliated_jobs(current_user.organization, aff)
-      end
-      if @customer_id.present?
-        cus     = Customer.find(@customer_id)
-        tickets = tickets.customer_jobs(current_user.organization, cus)
-      end
-
-    end
     if params[:sSearch].present?
-      tickets = tickets.where("name ilike :search", search: "#{params[:sSearch]}")
+      tickets = tickets.where("tickets.name ilike ?",  "%#{params[:sSearch]}%")
     end
-    tickets.order("#{sort_column} #{sort_direction}").page(page).per_page(per_page)
+
+    if params[:sSearch_5].present?
+      tickets = tickets.merge(status_scope)
+    end
+
+    if params[:sSearch_10].present?
+      tickets = tickets.merge(tags_scope)
+    end
+
+    if params[:customer_id].present?
+      tickets = tickets.where(customer_id: params[:customer_id])
+    end
+
+    if params[:provider_id].present?
+      tickets = tickets.where(provider_id: params[:provider_id])
+    end
+
+    if params[:subcontractor_id].present?
+      tickets = tickets.where(subcontractor_id: params[:subcontractor_id])
+    end
+
+    if params[:from_date].present? && !params[:to_date].present?
+      tickets = tickets.where('tickets.created_at >= ?',  params[:from_date])
+    end
+
+    if params[:to_date].present? &&  !params[:from_date].present?
+      tickets = tickets.where('tickets.created_at <= ?',  params[:to_date])
+    end
+
+    if params[:to_date].present? &&  params[:from_date].present?
+      tickets = tickets.where('tickets.created_at between ? and ?', params[:from_date], params[:to_date])
+    end
+
+
+    tickets.order("tickets.#{sort_column} #{sort_direction}").page(page).per_page(per_page)
   end
 
   def page
@@ -76,12 +89,35 @@ class TicketsDatatable
   end
 
   def sort_column
-    columns = %w[id created_at customer_id status]
+    columns = %w[id]
     columns[params[:iSortCol_0].to_i]
   end
 
   def sort_direction
     params[:sSortDir_0] == "desc" ? "desc" : "asc"
+  end
+
+  def status_scope
+    term = params[:sSearch_5].split('|').map {|t| status_map[t]}
+    Ticket.where('tickets.status in (?)', term)
+  end
+
+  def tags_scope
+    term = params[:sSearch_10].split('|')
+    Ticket.joins(:tags).where("tags.name in (?)", term)
+  end
+
+  def status_map
+    {
+        'Closed' => Ticket::STATUS_CLOSED,
+        'New' => Ticket::STATUS_NEW,
+        'Received New' => Ticket::STATUS_NEW,
+        'Open' => Ticket::STATUS_OPEN,
+        'Transferred' => Ticket::STATUS_TRANSFERRED,
+        'Accepted' => TransferredServiceCall::STATUS_ACCEPTED,
+        'Rejcted' => TransferredServiceCall::STATUS_REJECTED,
+        'Canceled' => Ticket::STATUS_CANCELED
+    }
   end
 
 end

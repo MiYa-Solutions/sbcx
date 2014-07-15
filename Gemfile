@@ -1,15 +1,14 @@
 source 'http://rubygems.org'
 ruby '1.9.3'
 
-gem 'rails', '3.2.16'
+gem 'rails', '3.2.18'
 gem 'jquery-rails', '2.1.4'
 gem 'jquery_mobile_rails', '1.2.0'
-gem 'bootstrap-sass', '2.0.4'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.5'
 gem 'bootstrap-will_paginate', '0.0.5'
-gem 'bootstrap-datepicker-rails', '1.0.0'
+gem 'bootstrap-datepicker-rails', '1.3.0.2'
 gem 'carmen', '1.0.0.beta2'
 gem 'carmen-rails', '1.0.0.beta3'
 gem 'active_attr', '0.7.0'
@@ -20,21 +19,22 @@ gem 'american_date', '1.0.0'
 gem 'pg', '0.17.1'
 gem 'activerecord-postgres-hstore', '0.7.5'
 
-gem 'devise', '2.0.0'
+gem 'devise', '2.0.5'
 gem 'simple_form', '2.0.2'
 gem 'declarative_authorization', '0.5.5'
 
 gem 'state_machine', '1.1.2'
 gem 'magiclabs-userstamp', '2.0.2'
 gem 'strong_parameters', '0.2.0'
-gem 'paper_trail', '~> 3.0.0'
+gem 'paper_trail', '3.0.0'
 
 gem 'best_in_place', git: 'git://github.com/MiYa-Solutions/best_in_place.git'
-gem 'unicorn', '~> 4.8.0'
+gem 'unicorn', '~> 4.8.0', platform: :ruby
 gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 
-gem 'money-rails', '0.8.1'
+gem 'monetize'
+gem 'money-rails', '0.9.0'
 gem 'select2-rails', '3.3.1'
 gem 'bootstrap-editable-rails', '0.0.4'
 gem 'RedCloth', '~> 4.2.9', :require => 'redcloth'
@@ -70,12 +70,15 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails', '3.2.4'
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
-  gem 'jquery-datatables-rails'
+  gem 'jquery-datatables-rails', '2.1.10.0.2'
   gem 'jquery-ui-rails', '4.1.1'
   gem 'fullcalendar-rails', '1.5.4.0'
+  gem 'sass-rails', '3.2.4'
+  gem 'bootstrap-sass', '2.0.4'
+  gem 'chosen-rails', '1.1.0'
+  gem 'compass', '0.12.6'
 end
 
 group :test do
@@ -91,4 +94,5 @@ group :test do
   gem 'shoulda'
   gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.4.4'
+  gem 'simplecov'
 end

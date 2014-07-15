@@ -1,3 +1,4 @@
+
 <%= simple_form_for job.becomes(ServiceCall), html: { class: 'green-button' } do |f| %>
     <%= hidden_field_tag 'service_call[subcontractor_status_event]', 'confirm_settled' %>
     <%= f.input :subcon_payment, collection: payment_types %>

@@ -31,6 +31,8 @@ module Sbcx
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths                     += %W(#{config.root}/app/models/accounting_entries)
+    config.autoload_paths                     += %W(#{config.root}/app/models/accounting_entries/factories)
+    config.autoload_paths                     += %W(#{config.root}/app/models/concerns)
     config.autoload_paths                     += %W(#{config.root}/app/models/payments)
     config.autoload_paths                     += %W(#{config.root}/app/models/posting_rules)
     config.autoload_paths                     += %W(#{config.root}/app/models/posting_rules/customer)
@@ -47,7 +49,11 @@ module Sbcx
         :event_observer,
         :subcontracting_agreement_observer,
         :received_adj_entry_observer,
-        :my_adj_entry_observer
+        :my_adj_entry_observer,
+        :customer_payment_observer,
+        :collection_entry_observer,
+        :deposit_entry_observer
+
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.

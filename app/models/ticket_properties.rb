@@ -1,3 +1,9 @@
+# == Schema Information
+#
+# Table name: ticket_properties
+#
+#
+
 class TicketProperties < ActiveRecord::Base
   def self.columns
     @columns ||= []

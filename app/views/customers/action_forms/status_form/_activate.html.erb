@@ -1,0 +1,12 @@
+<div class="span6">
+  <%= simple_form_for customer do |f| %>
+      <%= hidden_field_tag 'customer[status_event]', 'activate' %>
+      <%= f.submit customer.class.human_status_event_name(:activate).titleize,
+                   id:    'disable_customer_btn',
+                   class: 'btn btn-success',
+                   title: I18n.t('customer.forms.status.disable.tooltip'),
+                   rel:   'tooltip'
+      %>
+  <% end %>
+
+</div>

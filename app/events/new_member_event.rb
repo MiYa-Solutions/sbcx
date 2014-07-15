@@ -27,6 +27,7 @@ class NewMemberEvent < Event
     Rails.logger.debug "Running NewMemberEvent process"
     org              = associated_object
     self.description = I18n.t('new_member_event.description', name: org.name)
+    org.make_sbcx_member
 
     AdminMailer.sign_up_alert(org).deliver
   end
