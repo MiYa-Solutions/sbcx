@@ -32,6 +32,8 @@ hide_agreement_select = (obj) ->
   $("label[for='" + obj.attr('id') + "']").hide(400)
 
 jQuery ->
+  $('#service_call_create_btn').on 'click', ->
+    $('#service_call_create_btn').attr('disabled', true)
   $(".best_in_place").bind "ajax:success", ->
     $(this).JQtextile "textile", @innerHTML  if $(this).attr("data-type") is "textarea"
 
