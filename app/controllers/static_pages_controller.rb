@@ -18,7 +18,7 @@ class StaticPagesController < ApplicationController
       respond_to do |format|
         format.html do
           @notifications = current_user.notifications
-          @service_calls = current_user.organization.open_jobs
+          @service_calls = current_user.organization.active_jobs
           @affiliates    = current_user.organization.affiliates
         end
 

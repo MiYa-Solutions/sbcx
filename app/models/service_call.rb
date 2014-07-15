@@ -94,6 +94,7 @@ class ServiceCall < Ticket
   scope :my_transferred_jobs, ->(org) { where("tickets.organization_id = ?", org.id).transferred_status }
   scope :jobs_to_work_on, ->(org) { where("tickets.organization_id = ?", org.id) & (new_status | open_status | where("tickets.status = ?", TransferredServiceCall::STATUS_ACCEPTED)) }
   scope :open_jobs, ->(org) { where('tickets.organization_id = ?', org.id).where('tickets.status NOT IN (?)', [STATUS_CLOSED, STATUS_CANCELED]) }
+  scope :active_jobs, ->(org) { open_jobs(org).where('tickets.work_status != ?', WORK_STATUS_DONE) }
 
   WORK_STATUS_PENDING     = 2000
   WORK_STATUS_DISPATCHED  = 2001

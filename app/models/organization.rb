@@ -312,6 +312,10 @@ class Organization < ActiveRecord::Base
     ServiceCall.open_jobs(self).all
   end
 
+  def active_jobs
+    ServiceCall.active_jobs(self).order('id desc')
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0

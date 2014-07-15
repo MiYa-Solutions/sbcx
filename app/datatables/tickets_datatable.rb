@@ -41,7 +41,7 @@ class TicketsDatatable
   def fetch_tickets
     tickets = current_user.organization.service_calls.scoped
     if params[:sSearch].present?
-      tickets = tickets.where("name ilike ?",  "%#{params[:sSearch]}%")
+      tickets = tickets.where("tickets.name ilike ?",  "%#{params[:sSearch]}%")
     end
 
     if params[:sSearch_5].present?
@@ -65,19 +65,19 @@ class TicketsDatatable
     end
 
     if params[:from_date].present? && !params[:to_date].present?
-      tickets = tickets.where('created_at >= ?',  params[:from_date])
+      tickets = tickets.where('tickets.created_at >= ?',  params[:from_date])
     end
 
     if params[:to_date].present? &&  !params[:from_date].present?
-      tickets = tickets.where('created_at <= ?',  params[:to_date])
+      tickets = tickets.where('tickets.created_at <= ?',  params[:to_date])
     end
 
     if params[:to_date].present? &&  params[:from_date].present?
-      tickets = tickets.where('created_at between ? and ?', params[:from_date], params[:to_date])
+      tickets = tickets.where('tickets.created_at between ? and ?', params[:from_date], params[:to_date])
     end
 
 
-    tickets.order("#{sort_column} #{sort_direction}").page(page).per_page(per_page)
+    tickets.order("tickets.#{sort_column} #{sort_direction}").page(page).per_page(per_page)
   end
 
   def page
@@ -89,7 +89,7 @@ class TicketsDatatable
   end
 
   def sort_column
-    columns = %w[id created_at customer_id status]
+    columns = %w[id]
     columns[params[:iSortCol_0].to_i]
   end
 
@@ -99,7 +99,7 @@ class TicketsDatatable
 
   def status_scope
     term = params[:sSearch_5].split('|').map {|t| status_map[t]}
-    Ticket.where('status in (?)', term)
+    Ticket.where('tickets.status in (?)', term)
   end
 
   def tags_scope

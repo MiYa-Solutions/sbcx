@@ -94,9 +94,6 @@ en:
             open: Open
             new: "New"
             transferred: "Transferred"
-            dispatched: "Dispatched"
-            in_progress: "In Progress"
-            work_done: "Done"
             closed: "Closed"
             canceled: "Canceled"
 
@@ -136,9 +133,6 @@ en:
             received_new: "Received New"
             accepted: "Accepted"
             dispatched: "Dispatched"
-            in_progress: "In Progress"
-
-            work_done: "Done"
             canceled: "Canceled"
         subcontractor_status:
           states:
