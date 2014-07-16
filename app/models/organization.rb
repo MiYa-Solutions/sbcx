@@ -51,7 +51,7 @@ class Organization < ActiveRecord::Base
   ### ASSOCIATIONS:
   has_many :invites
   has_many :invite_req, class_name: 'Invite', foreign_key: 'affiliate_id'
-  has_many :users, inverse_of: :organization
+  has_many :users
   has_many :customers, inverse_of: :organization do
     #def << (customer)
     #  customer.build_account(organization: proxy_association.owner)

@@ -34,6 +34,10 @@ describe 'Billing when in process state' do
       expect(job.customer.account.balance).to eq Money.new(0)
     end
 
+    it 'reimbursement entry created with a cleared status' do
+      expect(job.entries.last.status_name).to eq :cleared
+    end
+
   end
 
 end

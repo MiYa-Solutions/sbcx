@@ -116,7 +116,7 @@ class JobCharge < CustomerPostingRule
     end
 
     # if the collector is the subcon update matching collection entry
-    if @ticket.subcontractor && (props[:collector].becomes(Organization) ==  @ticket.subcontractor.becomes(Organization))
+    if @ticket.subcontractor && (props[:collector].becomes(Organization) == @ticket.subcontractor.becomes(Organization))
       props[:matching_entry] = @event.accounting_entries.where(type: CollectedEntry.subclasses.map(&:name)).first
     end
 
@@ -143,6 +143,7 @@ class JobCharge < CustomerPostingRule
 
     props = { amount:      the_amount,
               ticket:      @ticket,
+              status:      AccountingEntry::STATUS_CLEARED,
               event:       @event,
               agreement:   agreement,
               description: I18n.t('accounting_entry.description.customer_reimbursement', amount: the_amount) }
