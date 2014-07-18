@@ -42,7 +42,7 @@ FactoryGirl.define do
 
   factory :mem_material, class: Material do
     association :organization, factory: :member_org, strategy: :build
-    name Faker::Name.name
+    sequence(:name) { |n| "Test Material #{n}" }
     description Faker::Lorem.paragraph(1)
     cost Money.new_with_amount(123.4)
     price Money.new_with_amount(254.7)

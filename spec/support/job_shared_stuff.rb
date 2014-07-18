@@ -83,8 +83,9 @@ shared_context 'basic job testing' do
 end
 
 shared_context 'transferred job' do
+  let(:the_agr_factory) {agr_factory ? agr_factory : :subcon_agreement}
   include_context 'basic job testing' unless example.metadata[:skip_basic_job]
-  let(:subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
+  let(:subcon_agr) { FactoryGirl.build(the_agr_factory, organization: job.organization) }
   let(:subcon) {
     s = subcon_agr.counterparty
     s.name = "subcon-#{s.name}"
@@ -132,7 +133,6 @@ shared_context 'brokered job' do
   end
 
 
-
 end
 
 
@@ -158,14 +158,15 @@ shared_context 'job transferred from a local provider' do
 end
 
 def transfer_the_job(options = {})
-  the_agr    = options[:agreement] || subcon_agr
-  the_job    = options[:job] || job
-  the_subcon = options[:subcon] || subcon
+  the_agr           = options[:agreement] || subcon_agr
+  the_job           = options[:job] || job
+  the_subcon        = options[:subcon] || subcon
+  bom_reimbursement = options[:bom_reimbursement] || 'true'
 
   the_agr.save!
   the_job.save!
   the_job.update_attributes(subcontractor:    the_subcon.becomes(Subcontractor),
-                            properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => 'true' },
+                            properties:       { 'subcon_fee' => '100', 'bom_reimbursement' => bom_reimbursement },
                             subcon_agreement: the_agr,
                             status_event:     'transfer')
 end
