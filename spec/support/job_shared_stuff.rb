@@ -83,7 +83,7 @@ shared_context 'basic job testing' do
 end
 
 shared_context 'transferred job' do
-  let(:the_agr_factory) {agr_factory ? agr_factory : :subcon_agreement}
+  let(:the_agr_factory) { defined?(agr_factory) ? agr_factory : :subcon_agreement}
   include_context 'basic job testing' unless example.metadata[:skip_basic_job]
   let(:subcon_agr) { FactoryGirl.build(the_agr_factory, organization: job.organization) }
   let(:subcon) {
@@ -106,6 +106,7 @@ shared_context 'brokered job' do
   include_context 'transferred job'
   let(:broker_prov_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
   let(:broker_subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: broker) }
+  let(:bom_reimb) {defined?(bom_reimbursement) ? bom_reimbursement : 'true'}
   let(:broker) {
     b = broker_prov_agr.counterparty
     b.name = "broker-#{b.name}"
@@ -127,9 +128,9 @@ shared_context 'brokered job' do
   let(:broker_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
   let(:broker_b4_transfer_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
   before do
-    transfer_the_job job: job, subcon: broker, agreement: broker_prov_agr
+    transfer_the_job job: job, subcon: broker, agreement: broker_prov_agr, bom_reimbursement: bom_reimb
     accept_the_job broker_b4_transfer_job
-    transfer_the_job job: broker_b4_transfer_job, subcon: subcon, agreement: broker_subcon_agr
+    transfer_the_job job: broker_b4_transfer_job, subcon: subcon, agreement: broker_subcon_agr, bom_reimbursement: bom_reimb
   end
 
 

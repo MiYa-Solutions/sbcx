@@ -124,13 +124,17 @@ class MyServiceCall < ServiceCall
   end
 
   def my_profit
-    if PaymentToSubcontractor.where(ticket_id: self.id).size >0
-      payment = Money.new(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents), PaymentToSubcontractor.where(ticket_id: self.id).first.amount_currency)
-      total_profit + payment # payment is always a negative number
+    customer_cents = entries.where(type: 'ServiceCallCharge').sum(:amount_cents)
+    my_bom_cents     = boms.select { |b| b.mine? }.map {|b| b.cost_cents}.sum
+
+    if subcontractor
+      subcon_account    = organization.account_for(subcontractor.becomes(Organization))
+      subcon_fee_amount = entries.where(account_id: subcon_account.id).sum(:amount_cents)
     else
-      total_profit
+      subcon_fee_amount = 0
     end
 
+    Money.new(customer_cents - my_bom_cents + subcon_fee_amount)
 
   end
 

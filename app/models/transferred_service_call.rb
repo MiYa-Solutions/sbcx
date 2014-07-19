@@ -237,10 +237,19 @@ class TransferredServiceCall < ServiceCall
   end
 
   def my_profit
-    income  = Money.new(IncomeFromProvider.where(ticket_id: self.id).sum(:amount_cents))
-    payment = Money.new(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents))
-    income + payment # payment is expected to be a negative number
 
+    my_bom_cents = boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
+    prov_account = organization.account_for(provider.becomes(Organization))
+    prov_income  = entries.where(account_id: prov_account.id).sum(:amount_cents)
+
+    if subcontractor_id != organization_id
+      subcon_account    = organization.account_for(subcontractor.becomes(Organization))
+      subcon_fee_amount = entries.where(account_id: subcon_account.id).sum(:amount_cents)
+    else
+      subcon_fee_amount = 0
+    end
+
+    Money.new(prov_income - my_bom_cents + subcon_fee_amount)
   end
 
   def validate_subcon
