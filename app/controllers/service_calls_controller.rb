@@ -7,7 +7,7 @@ class ServiceCallsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html {
+      format.any(:html, :mobile) {
         @service_calls    = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
         @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
       }

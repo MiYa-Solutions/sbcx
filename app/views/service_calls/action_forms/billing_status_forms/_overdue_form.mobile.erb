@@ -1,6 +1,6 @@
 <%= simple_form_for job.becomes(ServiceCall), html: { class: 'red-button' } do |f| %>
     <%= hidden_field_tag 'service_call[billing_status_event]', 'overdue' %>
-    <%= f.submit job.class.human_billing_status_event_name(:overdue).titleize,
+    <%= f.submit job.class.human_billing_status_event_name(:late).titleize,
                  id:    'overdue_service_call_btn',
                  class: "ui-btn-up-r",
                  "data-theme" => "r",
