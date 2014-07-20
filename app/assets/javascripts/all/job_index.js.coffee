@@ -42,6 +42,18 @@ jQuery ->
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
 
+    fnStateSaveParams: (oSettings, oData) ->
+      oData.customer_id = $('#customer_filter_id').val()
+      oData.customer_name = $('#customer_search').val()
+      oData.provider_id = $('#provider').val()
+      oData.subcontractor_id = $('#subcontractor').val()
+
+    fnStateLoadParams: (oSettings, oData) ->
+      $('#customer_search').val(oData.customer_name)
+      $('#customer_filter_id').val(oData.customer_id)
+      $('#provider').val(oData.provider_id)
+      $('#subcontractor').val(oData.subcontractor_id)
+
   ).yadcf([
     {
       column_number: 1

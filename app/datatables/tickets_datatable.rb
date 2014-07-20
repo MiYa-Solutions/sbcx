@@ -114,6 +114,7 @@ class TicketsDatatable
         'Received New' => Ticket::STATUS_NEW,
         'Open' => Ticket::STATUS_OPEN,
         'Transferred' => Ticket::STATUS_TRANSFERRED,
+        'Passed On' => Ticket::STATUS_TRANSFERRED,
         'Accepted' => TransferredServiceCall::STATUS_ACCEPTED,
         'Rejcted' => TransferredServiceCall::STATUS_REJECTED,
         'Canceled' => Ticket::STATUS_CANCELED
