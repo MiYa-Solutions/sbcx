@@ -6,7 +6,7 @@
           <li><h1><%= I18n.t('general.general.billing_summary').html_safe %></h1></li>
           <li>
             <%= button_tag t('general.general.collect_payments'), :class => 'btn btn-primary',
-                           id: 'new-collect-button', data: { toggle: "collapse", target: "#payment_collect" }%>
+                           id: 'new-collect-button', data: { toggle: "collapse", target: "#payment_collect" } unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
             <%= link_to t('general.general.download_invoice'), service_call_path(@service_call, format: :pdf), target: '_blank', :class => 'btn btn-primary' if @service_call.already_invoiced? %>
           </li>
         </ul>

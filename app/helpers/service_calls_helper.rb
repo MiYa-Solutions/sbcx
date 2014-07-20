@@ -253,6 +253,10 @@ module ServiceCallsHelper
       end
     end
 
+    def available_events
+      @obj.billing_status_events.map { |event| event if @view.permitted_params(@obj).permitted_attribute?('service_call', :billing_status_event, event.to_s) }.compact
+    end
+
     protected
 
     def form_view_home_path
@@ -287,10 +291,6 @@ module ServiceCallsHelper
           mark_as_overpaid:       'overdue_form'
 
       }
-    end
-
-    def available_events
-      @obj.billing_status_events.map { |event| event if @view.permitted_params(@obj).permitted_attribute?('service_call', :billing_status_event, event.to_s) }.compact
     end
 
   end
