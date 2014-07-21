@@ -1549,6 +1549,20 @@ CREATE INDEX index_versions_on_item_type_and_item_id ON versions USING btree (it
 
 
 --
+-- Name: organization_company; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX organization_company ON organizations USING gin (to_tsvector('english'::regconfig, (company)::text));
+
+
+--
+-- Name: organization_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX organization_name ON organizations USING gin (to_tsvector('english'::regconfig, (name)::text));
+
+
+--
 -- Name: posting_rule_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1827,3 +1841,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140702162338');
 INSERT INTO schema_migrations (version) VALUES ('20140707225143');
 
 INSERT INTO schema_migrations (version) VALUES ('20140711005442');
+
+INSERT INTO schema_migrations (version) VALUES ('20140721221038');
