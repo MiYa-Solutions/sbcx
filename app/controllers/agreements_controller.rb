@@ -47,6 +47,8 @@ class AgreementsController < ApplicationController
       end
     else
       respond_to do |format|
+        @affiliate = @agreement.organization if current_user.organization == @agreement.counterparty
+        @affiliate = @agreement.counterparty if current_user.organization == @agreement.organization
 
         format.html { render :show }
         format.json { render json: @agreement.errors, status: :unprocessable_entity }
