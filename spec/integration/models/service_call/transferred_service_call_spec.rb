@@ -22,6 +22,40 @@ describe 'Transferred Service Call Int' do
       it 'my profit for subcon job should be 100.00' do
         expect(job.my_profit).to eq Money.new(80000)
       end
+
+      context 'after collection' do
+        before do
+          collect_a_payment subcon_job, amount: 100, type: 'cheque'
+        end
+
+        it 'my profit for subcon job should be 100.00' do
+          expect(subcon_job.my_profit).to eq Money.new(9900)
+        end
+
+        it 'my profit for subcon job should be 100.00' do
+          expect(job.my_profit).to eq Money.new(80100)
+        end
+
+
+      end
+
+      context 'after affiliate settlement' do
+        before do
+          subcon_job.provider_payment = 'cash'
+          subcon_job.settle_provider!
+          job.reload
+        end
+
+        it 'my profit for subcon job should be 100.00' do
+          expect(subcon_job.my_profit).to eq Money.new(10000)
+        end
+
+        it 'my profit for subcon job should be 100.00' do
+          expect(job.my_profit).to eq Money.new(80000)
+        end
+
+
+      end
     end
 
     context 'when bom reimbursement for subcon is off' do
@@ -73,7 +107,7 @@ describe 'Transferred Service Call Int' do
     include_context 'brokered job'
 
     context 'when bom reimbursement is on' do
-      let(:bom_reimb) {'true'}
+      let(:bom_reimb) { 'true' }
       before do
         accept_the_job subcon_job
         start_the_job subcon_job
@@ -95,7 +129,7 @@ describe 'Transferred Service Call Int' do
     end
 
     context 'when bom reimbursement for subcon is off' do
-      let(:bom_reimb) {'false'}
+      let(:bom_reimb) { 'false' }
       before do
         accept_the_job subcon_job
         start_the_job subcon_job

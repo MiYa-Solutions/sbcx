@@ -238,18 +238,16 @@ class TransferredServiceCall < ServiceCall
 
   def my_profit
 
-    my_bom_cents = boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
-    prov_account = organization.account_for(provider.becomes(Organization))
-    prov_income  = entries.where(account_id: prov_account.id).sum(:amount_cents)
+    prov_income  = entries.select{|e| e.type == 'IncomeFromProvider' }.map { |e| e.amount_cents }.sum
+    payment_fee  = entries.select{|e| ['AmexPaymentFee', 'CashPaymentFee', 'ChequePaymentFee', 'CreditPaymentFee'].include? e.type }.map { |e| e.amount_cents }.sum
+    bom_reimb  = entries.select{|e| e.type == 'MaterialReimbursement' }.map { |e| e.amount_cents }.sum
 
-    if subcontractor_id != organization_id
-      subcon_account    = organization.account_for(subcontractor.becomes(Organization))
-      subcon_fee_amount = entries.where(account_id: subcon_account.id).sum(:amount_cents)
-    else
-      subcon_fee_amount = 0
-    end
+    subcon_payments = entries.select{|e| e.type == 'PaymentToSubcontractor' }.map { |e| e.amount_cents }.sum
+    subcon_reimb_amount = entries.select{|e| e.type == 'MaterialReimbursementToCparty' }.map { |e| e.amount_cents }.sum
+    my_bom_cents = - boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
+    payment_reimb = entries.select{|e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type  }.map { |e| e.amount_cents }.sum
 
-    Money.new(prov_income - my_bom_cents + subcon_fee_amount)
+    Money.new(prov_income + payment_fee + bom_reimb + subcon_payments + subcon_reimb_amount + my_bom_cents + payment_reimb )
   end
 
   def validate_subcon

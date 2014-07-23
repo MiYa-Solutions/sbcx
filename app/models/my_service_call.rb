@@ -124,17 +124,14 @@ class MyServiceCall < ServiceCall
   end
 
   def my_profit
-    customer_cents = entries.where(type: 'ServiceCallCharge').sum(:amount_cents)
-    my_bom_cents     = boms.select { |b| b.mine? }.map {|b| b.cost_cents}.sum
+    customer_cents  = entries.select{|e| e.type == 'ServiceCallCharge' }.map { |b| b.amount_cents }.sum
+    subcon_payments = entries.select{|e| e.type == 'PaymentToSubcontractor' }.map { |b| b.amount_cents }.sum
+    reimb_amount    = entries.select{|e| e.type == 'MaterialReimbursementToCparty' }.map { |b| b.amount_cents }.sum
+    my_bom_cents    = -boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
+    payment_reimb   = entries.select{|e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |b| b.amount_cents }.sum
 
-    if subcontractor
-      subcon_account    = organization.account_for(subcontractor.becomes(Organization))
-      subcon_fee_amount = entries.where(account_id: subcon_account.id).sum(:amount_cents)
-    else
-      subcon_fee_amount = 0
-    end
 
-    Money.new(customer_cents - my_bom_cents + subcon_fee_amount)
+    Money.new(customer_cents + reimb_amount + subcon_payments + my_bom_cents + payment_reimb)
 
   end
 
