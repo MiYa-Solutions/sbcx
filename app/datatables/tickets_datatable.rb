@@ -2,7 +2,7 @@ class TicketsDatatable
   delegate :humanized_money_with_symbol, :current_user, :params, :h, :link_to, :number_to_currency, to: :@view
 
   def initialize(view)
-    @view         = view
+    @view = view
   end
 
   def as_json(options = {})
@@ -17,20 +17,34 @@ class TicketsDatatable
   private
 
   def data
-    tickets.map do |ticket|
-      [
-          h(ticket.ref_id),
-          h(ticket.created_at.strftime("%b %d, %Y")),
-          h(ticket.customer.name),
-          link_to(ticket.name, ticket),
-          h(ticket.provider.name),
-          h(ticket.subcontractor.try(:name)),
-          h(ticket.human_status_name),
-          ticket.my_profit.to_s,
-          ticket.total_price.to_s,
-          ticket.total_cost.to_s,
-          ticket.tags.map(&:name).join(', ')
-      ]
+    case params[:table_type]
+      when 'customer_active_jobs'
+        tickets.map do |ticket|
+          [
+              h(ticket.ref_id),
+              h(ticket.created_at.strftime("%b %d, %Y")),
+              link_to(ticket.name, ticket),
+              h(ticket.human_work_status_name),
+              ticket.total_price.to_s,
+          ]
+        end
+      else
+        tickets.map do |ticket|
+          [
+              h(ticket.ref_id),
+              h(ticket.created_at.strftime("%b %d, %Y")),
+              h(ticket.customer.name),
+              link_to(ticket.name, ticket),
+              h(ticket.provider.name),
+              h(ticket.subcontractor.try(:name)),
+              h(ticket.human_status_name),
+              ticket.my_profit.to_s,
+              ticket.total_price.to_s,
+              ticket.total_cost.to_s,
+              ticket.tags.map(&:name).join(', ')
+          ]
+        end
+
     end
   end
 
@@ -41,7 +55,7 @@ class TicketsDatatable
   def fetch_tickets
     tickets = current_user.organization.service_calls.scoped
     if params[:sSearch].present?
-      tickets = tickets.where("tickets.name ilike ?",  "%#{params[:sSearch]}%")
+      tickets = tickets.where("tickets.name ilike ?", "%#{params[:sSearch]}%")
     end
 
     if params[:sSearch_5].present?
@@ -65,14 +79,14 @@ class TicketsDatatable
     end
 
     if params[:from_date].present? && !params[:to_date].present?
-      tickets = tickets.where('tickets.created_at >= ?',  params[:from_date])
+      tickets = tickets.where('tickets.created_at >= ?', params[:from_date])
     end
 
-    if params[:to_date].present? &&  !params[:from_date].present?
-      tickets = tickets.where('tickets.created_at <= ?',  params[:to_date])
+    if params[:to_date].present? && !params[:from_date].present?
+      tickets = tickets.where('tickets.created_at <= ?', params[:to_date])
     end
 
-    if params[:to_date].present? &&  params[:from_date].present?
+    if params[:to_date].present? && params[:from_date].present?
       tickets = tickets.where('tickets.created_at between ? and ?', params[:from_date], params[:to_date])
     end
 
@@ -98,7 +112,7 @@ class TicketsDatatable
   end
 
   def status_scope
-    term = params[:sSearch_5].split('|').map {|t| status_map[t]}
+    term = params[:sSearch_5].split('|').map { |t| status_map[t] }
     Ticket.where('tickets.status in (?)', term)
   end
 
@@ -109,15 +123,15 @@ class TicketsDatatable
 
   def status_map
     {
-        'Closed' => Ticket::STATUS_CLOSED,
-        'New' => Ticket::STATUS_NEW,
+        'Closed'       => Ticket::STATUS_CLOSED,
+        'New'          => Ticket::STATUS_NEW,
         'Received New' => Ticket::STATUS_NEW,
-        'Open' => Ticket::STATUS_OPEN,
-        'Transferred' => Ticket::STATUS_TRANSFERRED,
-        'Passed On' => Ticket::STATUS_TRANSFERRED,
-        'Accepted' => TransferredServiceCall::STATUS_ACCEPTED,
-        'Rejcted' => TransferredServiceCall::STATUS_REJECTED,
-        'Canceled' => Ticket::STATUS_CANCELED
+        'Open'         => Ticket::STATUS_OPEN,
+        'Transferred'  => Ticket::STATUS_TRANSFERRED,
+        'Passed On'    => Ticket::STATUS_TRANSFERRED,
+        'Accepted'     => TransferredServiceCall::STATUS_ACCEPTED,
+        'Rejcted'      => TransferredServiceCall::STATUS_REJECTED,
+        'Canceled'     => Ticket::STATUS_CANCELED
     }
   end
 
