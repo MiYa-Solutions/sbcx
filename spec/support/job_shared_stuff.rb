@@ -80,6 +80,10 @@ shared_context 'basic job testing' do
     payment_amount = amount > 0 ? amount : nil
     collect_a_payment job, amount: payment_amount, type: type, collector: collector
   end
+
+  def cancel_the_job(ticket)
+    ticket.cancel!
+  end
 end
 
 shared_context 'transferred job' do

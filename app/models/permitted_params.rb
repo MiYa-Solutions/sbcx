@@ -86,7 +86,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
 
   def service_call
     params[:service_call] = params[:my_service_call] if params[:my_service_call].present?
-    params[:service_call] = params[:transferred_service_call] if params[:transferred_service_call].present?
+    params[:service_call] = params[:subcon_service_call] if params[:subcon_service_call].present?
+    params[:service_call] = params[:broker_service_call] if params[:broker_service_call].present?
     if params[:service_call].nil?
       params.permit
     else

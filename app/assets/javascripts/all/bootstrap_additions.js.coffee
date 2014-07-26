@@ -18,24 +18,27 @@ jQuery ->
   $('.best_in_place').best_in_place()
 
   $.datepicker.setDefaults
-    dateFormat: "mm/dd/yyyy"
+    dateFormat: "D M, dd yy"
     showButtonPanel: true
 
   $(".datepicker").datepicker
-    dateFormat: "mm/dd/yyyy",
-    showButtonPanel: false,
-    changeMonth: true,
+    formatDate: "D M, dd yy"
+    showButtonPanel: false
+    changeMonth: true
     changeYear: true
 
   $(".datetimepicker").datetimepicker
+    formatDate: "D M, dd yy"
     timeFormat: "hh:mm tt"
     stepHour: 1,
     stepMinute: 1
+#    controlType: 'select'
 
   $(".timepicker").timepicker
     timeFormat: "HH:mm"
     stepHour: 1,
     stepMinute: 1
+#    controlType: 'select'
 
 
   $(".datepicker2").datepicker
