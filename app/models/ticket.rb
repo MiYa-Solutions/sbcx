@@ -471,7 +471,7 @@ class Ticket < ActiveRecord::Base
 
   def set_name
     if self.name.nil?
-      self.name = "#{self.tags.map(&:name).join(", ")}: #{self.address1}"
+      self.name = "#{self.address1}: #{self.tags.map(&:name).join(", ")}"
     end
   end
 
