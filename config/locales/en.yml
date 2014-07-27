@@ -141,7 +141,7 @@ en:
       email: "Email"
       actions: "Actions"
       search_affiliate: "Search for private affiliates and SubConTraX members"
-      search_del_customers: "Search in deleted customers"
+      search_del_customers: "Search in disabled customers"
       provider: "Contractor"
       subcontractor: "Subcontractor"
       member: "SubConTraX member"

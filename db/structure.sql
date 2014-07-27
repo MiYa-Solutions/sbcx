@@ -1451,6 +1451,13 @@ CREATE INDEX index_boms_on_material_id ON boms USING btree (material_id);
 
 
 --
+-- Name: index_customers_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_customers_on_organization_id ON customers USING btree (organization_id);
+
+
+--
 -- Name: index_events_on_eventable_id_and_eventable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1843,3 +1850,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140707225143');
 INSERT INTO schema_migrations (version) VALUES ('20140711005442');
 
 INSERT INTO schema_migrations (version) VALUES ('20140721221038');
+
+INSERT INTO schema_migrations (version) VALUES ('20140727214318');
