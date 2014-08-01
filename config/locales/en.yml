@@ -185,7 +185,7 @@ en:
       invite_status: "Invitation Status: "
       note: "Note: "
       cancel_transfer: "Un-Transfer"
-      filter_all_jobs_l1: "Use the following drop-down list to filter your results."
+      filter_all_jobs_l1: "Use the following drop-downs to filter your results."
       filter_all_jobs_l2: "To cancel selected filter, simply click on its 'X' link on the right."
     buttons:
       get_entries: "Get Entries"
