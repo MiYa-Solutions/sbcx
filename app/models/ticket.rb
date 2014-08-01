@@ -192,7 +192,11 @@ class Ticket < ActiveRecord::Base
   end
 
   def total
-    total_price + tax_amount
+    if canceled?
+      Money.new(0)
+    else
+      total_price + tax_amount
+    end
   end
 
   def completed_on_text

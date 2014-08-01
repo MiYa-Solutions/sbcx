@@ -11,7 +11,7 @@ describe 'Billing when in overdue state' do
   include_context 'when late'
 
   it 'billing events should be :collect' do
-    expect(job.billing_status_events.sort).to eq [:collect]
+    expect(job.billing_status_events.sort).to eq [:cancel, :collect]
   end
 
   context 'when collecting partial amount' do
