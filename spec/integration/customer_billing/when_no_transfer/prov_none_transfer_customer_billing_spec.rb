@@ -100,7 +100,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                   expect(job.billing_status_name).to eq :partially_collected
                 end
 
-                it 'available payment events are :collect, :late, :mark_as_overpaid' do
+                it 'available payment events are :collect, :late, :reject and :cancel' do
                   job.billing_status_events.should =~ [:cancel, :collect, :late, :reject]
                 end
 
