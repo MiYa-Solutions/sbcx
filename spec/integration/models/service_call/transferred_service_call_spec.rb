@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe 'Transferred Service Call Int' do
 
-
   describe '#my_profit for transferred job' do
     include_context 'transferred job'
 

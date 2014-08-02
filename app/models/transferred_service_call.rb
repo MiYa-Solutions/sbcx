@@ -238,6 +238,7 @@ class TransferredServiceCall < ServiceCall
 
   def my_profit
 
+    cancel_adjustment = entries.select{|e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum
     prov_income  = entries.select{|e| e.type == 'IncomeFromProvider' }.map { |e| e.amount_cents }.sum
     payment_fee  = entries.select{|e| ['AmexPaymentFee', 'CashPaymentFee', 'ChequePaymentFee', 'CreditPaymentFee'].include? e.type }.map { |e| e.amount_cents }.sum
     bom_reimb  = entries.select{|e| e.type == 'MaterialReimbursement' }.map { |e| e.amount_cents }.sum
@@ -247,7 +248,7 @@ class TransferredServiceCall < ServiceCall
     my_bom_cents = - boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
     payment_reimb = entries.select{|e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type  }.map { |e| e.amount_cents }.sum
 
-    Money.new(prov_income + payment_fee + bom_reimb + subcon_payments + subcon_reimb_amount + my_bom_cents + payment_reimb )
+    Money.new(prov_income + payment_fee + bom_reimb + subcon_payments + subcon_reimb_amount + my_bom_cents + payment_reimb + cancel_adjustment )
   end
 
   def validate_subcon

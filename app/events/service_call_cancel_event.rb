@@ -44,7 +44,7 @@ class ServiceCallCancelEvent < ServiceCallEvent
 
   def process_event
     CustomerBillingService.new(self).execute if service_call.work_done? && service_call.is_a?(MyServiceCall)
-    service_call.cancel_payment! if service_call.can_cancel_payment?
+    service_call.cancel_payment! if service_call.is_a?(MyServiceCall) && service_call.can_cancel_payment?
     invoke_affiliate_billing
     super
   end
