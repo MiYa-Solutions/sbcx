@@ -114,7 +114,7 @@ class Bom < ActiveRecord::Base
           self.buyer == self.ticket.organization || (self.ticket.my_role == :broker && self.buyer == self.ticket.subcontractor.becomes(Organization))
         end
       when User
-        User.where(organization_id: self.organization.id).pluck(:id).include?(buyer.id)
+        User.where(organization_id: ticket.organization.id).pluck(:id).include?(buyer.id)
       else
         raise "Unexpected buyer type (not user nor Organization): #{buyer.class}"
     end
