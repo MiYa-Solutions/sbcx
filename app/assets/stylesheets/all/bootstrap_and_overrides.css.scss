@@ -174,9 +174,9 @@ a {
     margin: -8px -6px 5px;
     padding: 0;
 
-   .btn {
-    margin-top: 4px;
-   }
+    .btn {
+      margin-top: 4px;
+    }
   }
 
 }
@@ -636,7 +636,7 @@ input, textarea {
     line-height: 28px;
     letter-spacing: .01em;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
-    font-family: Century Gothic;
+    font-family: helvetica;
 
   }
 
@@ -648,7 +648,7 @@ input, textarea {
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     line-height: 28px;
     letter-spacing: .01em;
-    font-family: Century Gothic;
+    font-family: helvetica;
 
   }
 
@@ -668,7 +668,7 @@ input, textarea {
   span {
     font-weight: normal;
     color: $white;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 14px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
   }
@@ -709,7 +709,7 @@ input, textarea {
     line-height: 28px;
     letter-spacing: .01em;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
-    font-family: Century Gothic;
+    font-family: helvetica;
   }
 
   h2 {
@@ -738,7 +738,7 @@ input, textarea {
   span {
     font-weight: normal;
     color: $white;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 14px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
   }
@@ -782,14 +782,14 @@ input, textarea {
     line-height: 28px;
     letter-spacing: .01em;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
-    font-family: Century Gothic;
+    font-family: helvetica;
 
   }
 
   span {
     font-weight: normal;
     color: $white;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 16px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 
@@ -926,7 +926,7 @@ input, textarea {
 
   h1 {
     color: white;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 18px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -962,7 +962,7 @@ input, textarea {
   p {
     max-width: 350px;
     font-style: italic;
-    font-weight: bold;
+    font-weight: normal;
     color: $white;
     font-family: arial;
     font-size: 12px;
@@ -1057,7 +1057,7 @@ input, textarea {
 
 #include_disabled {
 
-    margin-top: 0;
+  margin-top: 0;
 
 }
 
@@ -1077,7 +1077,7 @@ input, textarea {
 .add_meeting {
 
   .form-horizontal .control-label {
-    font-weight: bold;
+    font-weight: normal;
   }
 
   .radio input[type="radio"], .checkbox input[type="checkbox"] {
@@ -1341,12 +1341,12 @@ fieldset label {
     text-decoration: underline;
   }
 
-.affiiate_statuses {
-  a {
-    color: #696969;
-    text-decoration: underline;
+  .affiiate_statuses {
+    a {
+      color: #696969;
+      text-decoration: underline;
+    }
   }
-}
 
   a:hover {
     background-color: #3A87AD;
@@ -1512,9 +1512,9 @@ a:hover {
 }
 
 .notification_content {
- a {
-   text-decoration: underline;
- }
+  a {
+    text-decoration: underline;
+  }
 
 }
 
@@ -1546,6 +1546,171 @@ a:hover {
 
 }
 
+.all_jobs_filter {
+  border: 1px solid #000000;
+  background: none repeat scroll 0 0 #EEEEEE;
+  margin-bottom: 45px;
+  margin-left: 1%;
+  margin-top: 10px;
+  padding: 7px;
+  width: 90%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+  border-radius: 3px 3px 3px 3px;
+
+  h4 {
+    background-color: #999999;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+    overflow: auto;
+    padding: 3px 5px 2px;
+    font-weight: normal;
+  }
+
+  .header5 {
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  //
+  //textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  //width: 50%
+  //}
+
+  .input_field {
+    float: left;
+    margin-top: 5px;
+  }
+
+  .customer_field {
+    margin-left: 3px;
+    min-width: 239px;
+  }
+
+  #tags_filter {
+    margin-left: 2px;
+  }
+
+  .affiliates_filter {
+    margin-left: 3px;
+  }
+
+  .line2 {
+    margin-top: 6px;
+  }
+
+  #subcontractor_filter {
+    margin-left: 18px;
+  }
+
+  #created_range_filter {
+    margin-left: 17px;
+  }
+
+  .cancel_filter_btn {
+    margin-left: -3px;
+  }
+
+  #clear-customer {
+    margin-top: -8px;
+  }
+
+  .yadcf-filter-range-date {
+    background: -moz-linear-gradient(center top , white 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%) repeat scroll 0 0 padding-box rgba(0, 0, 0, 0);
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    box-shadow: 0 0 4px white inset, 0 1px 1px rgba(0, 0, 0, 0.1);
+    color: #444;
+    display: inline;
+    height: 23px;
+    line-height: 24px;
+    margin-left: -5px;
+    overflow: hidden;
+    padding: 0 0 0 4px;
+    position: relative;
+    text-decoration: none;
+    white-space: nowrap;
+    width: 86px;
+  }
+
+
+  .yadcf-filter-reset-button {
+    height: 25px;
+    padding-top: 0;
+    width: 25px;
+    background-color: #da4e49;
+    background-image: -moz-linear-gradient(center top , #ee5f5b, #bd362f);
+    background-repeat: repeat-x;
+    border-color: #bd362f #bd362f #802420;
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-image: none;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    margin-bottom: 0;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .yadcf-filter-wrapper-inner {
+    margin-right: 1px;
+    padding-right: 0;
+    border: medium none;
+    display: inline-block;
+    padding-left: 2px
+  }
+
+  #subcontractor_chosen {
+    min-height: 22px;
+    padding-right: 1px;
+  }
+
+  #provider_chosen {
+    min-height: 22px;
+  }
+
+  #yadcf_filter__job_search_results_10_chosen {
+    margin-right: 1px;
+  }
+
+  #yadcf_filter__job_search_results_5_chosen {
+    margin-right: 1px;
+  }
+
+  button {
+    background-color: #da4e49;
+    background-image: -moz-linear-gradient(center top , #ee5f5b, #bd362f);
+    background-repeat: repeat-x;
+    border-color: #bd362f #bd362f #802420;
+  }
+}
+
+#job-search-results_wrapper {
+
+  .ColVis button {
+    margin-bottom: 8px;
+  }
+
+}
+
+.job_search_table {
+
+  ul {
+    list-style: none outside none;
+  }
+}
+
 .list_account_entry {
 
   address {
@@ -1570,6 +1735,7 @@ a:hover {
     margin-bottom: 3px;
     overflow: auto;
     padding: 3px 5px 2px;
+    font-weight: normal;
   }
 
   label {
@@ -1668,7 +1834,6 @@ a:hover {
   padding: 4px;
 }
 
-
 .list_service_calls {
 
   address {
@@ -1736,7 +1901,7 @@ a:hover {
   width: 90%;
 
   .span6 {
-   float: left;
+    float: left;
     margin-left: 0.1%;
   }
 
@@ -1748,7 +1913,7 @@ a:hover {
     background-color: #999999;
     border-radius: 4px;
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 16px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -3221,7 +3386,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 #appointment_description {
- height: 80px;
+  height: 80px;
 }
 
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
@@ -3361,7 +3526,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     line-height: 28px;
     letter-spacing: .01em;
-    font-family: Century Gothic;
+    font-family: helvetica;
   }
 
 }
@@ -3381,7 +3546,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h1 {
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 16px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -3393,7 +3558,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h2 {
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 14px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -3425,7 +3590,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h2 {
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 16px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -3436,7 +3601,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h1 {
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 16px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -3697,7 +3862,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h2 {
     color: #ffffff;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 20px;
     font-weight: normal;
     line-height: 25px;
@@ -3710,7 +3875,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h1 {
     color: #376092;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 28px;
     font-weight: bold;
     line-height: 30px;
@@ -3722,7 +3887,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h4 {
     color: #254061;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 23px;
     font-weight: bold;
     line-height: 24px;
@@ -3734,7 +3899,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h6 {
     color: #254061;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 20px;
     font-weight: normal;
     line-height: 22px;
@@ -3770,7 +3935,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
   h3 {
     color: #254061;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 20px;
     font-weight: 800;
     line-height: 20px;
@@ -3859,7 +4024,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     color: #F5F5F5;
     font-weight: normal;
     font-size: 16px;
-    font-family: Century Gothic;
+    font-family: helvetica;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 
   }
@@ -3914,7 +4079,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   h4 {
     width: 92%;
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 18px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -4004,7 +4169,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   h4 {
     width: 92%;
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 18px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -4051,7 +4216,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   h4 {
     width: 92%;
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 18px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -4267,9 +4432,9 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   padding: 2px 6px;
 }
 
-.customer_entries_actions {
-  width: 29%;
-}
+//.customer_entries_actions {
+//  width: 29%;
+//}
 
 .entry_large_btn {
   padding: 6px 12px;
@@ -4316,7 +4481,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   h4 {
     border-radius: 3px;
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 14px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -4349,7 +4514,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   h4 {
     border-radius: 3px;
     color: #FFFFFF;
-    font-family: Century Gothic;
+    font-family: helvetica;
     font-size: 14px;
     font-weight: normal;
     letter-spacing: 0.01em;
@@ -4381,7 +4546,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 #accounting_entry_status {
   color: #FFFFFF;
-  font-family: Century Gothic;
+  font-family: helvetica;
   font-size: 18px;
   font-weight: normal;
   letter-spacing: 0.01em;
@@ -4404,11 +4569,11 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 #calendar {
 
- h2 {
-  font-size: 12px;
-  margin-top: -7px;
-  white-space: nowrap;
- }
+  h2 {
+    font-size: 12px;
+    margin-top: -7px;
+    white-space: nowrap;
+  }
 }
 
 .reset_pass {
@@ -4440,9 +4605,9 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     color: #3A87AD;
   }
 
-   img {
-     margin-top: -5px;
-   }
+  img {
+    margin-top: -5px;
+  }
 
 
 }
@@ -4456,8 +4621,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 #roles_user_index {
-   width: 35%;
- }
+  width: 35%;
+}
 
 .bom_table_summary {
   .icon-pencil {
@@ -4466,7 +4631,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 .affiliate_statuses {
-    padding-right: 1px;
+  padding-right: 1px;
 }
 
 .subco_statuses_collapse {
