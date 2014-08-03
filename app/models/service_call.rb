@@ -102,6 +102,7 @@ class ServiceCall < Ticket
   WORK_STATUS_ACCEPTED    = 2003
   WORK_STATUS_REJECTED    = 2004
   WORK_STATUS_DONE        = 2005
+  WORK_STATUS_CANCELED    = 2006
 
   state_machine :work_status, initial: :pending, namespace: 'work' do
     state :pending, value: WORK_STATUS_PENDING
@@ -114,6 +115,7 @@ class ServiceCall < Ticket
     state :accepted, value: WORK_STATUS_ACCEPTED
     state :rejected, value: WORK_STATUS_REJECTED
     state :done, value: WORK_STATUS_DONE
+    state :canceled, value: WORK_STATUS_CANCELED
 
     after_transition any => :done do |sc, transition|
       if sc.payments.size > 0
@@ -150,11 +152,16 @@ class ServiceCall < Ticket
     end
 
     event :reset do
-      transition :rejected => :pending, if: ->(sc) { !sc.canceled? }
+      transition [:rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
     end
 
     event :complete do
       transition :in_progress => :done, if: ->(sc) { !sc.canceled? }
+    end
+
+    event :cancel do
+      transition [:accepted, :done] => :canceled
+      transition :in_progress => :canceled, if: ->(sc) { sc.transferred? }
     end
 
   end
@@ -261,9 +268,9 @@ class ServiceCall < Ticket
   def subcon_settlement_allowed?
     subcontractor && subcon_collection_fully_deposited? && all_deposited_entries_confirmed? && work_done?(
 
-    (subcontractor.subcontrax_member? && !allow_collection?) ||
-        (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
-        (!subcontractor.subcontrax_member? && work_done?))
+        (subcontractor.subcontrax_member? && !allow_collection?) ||
+            (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
+            (!subcontractor.subcontrax_member? && work_done?))
   end
 
   def can_change_boms?
@@ -300,7 +307,6 @@ class ServiceCall < Ticket
   def deposited_entries
     DepositFromEntry.where(ticket_id: self.id)
   end
-
 
 
   private
