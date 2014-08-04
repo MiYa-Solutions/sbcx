@@ -1,62 +1,99 @@
-$('#bom').find('.error').removeClass('error');
-$('#bom').find('.error-msg').remove();
-$('#bom_cost').val('');
-$('#bom_price').val('');
-$('#bom_material_name').val('');
-$('#bom_quantity').val('');
-$('#bom_buyer_id').val('');
-
 <% if @bom.errors.any? %>
-<% unless @bom.errors[:quantity].empty? %>
-$('#bom_quantity').wrap('<div class="control-group error" />')
+
+<% if @bom.errors[:quantity].empty? %>
+$('#bom_quantity').parent().removeClass('control-group error')
+$('#bom_quantity').siblings('.error-msg').remove()
+<% else %>
+$('#bom_quantity').parent().addClass('control-group error')
+$('#bom_quantity').siblings('.error-msg').remove()
 
 <% @bom.errors[:quantity].each do |err| %>
 $('#bom_quantity').after('<span class="error-msg help-inline"><%= err %> </span>')
 <% end%>
 <%end %>
-<% unless @bom.errors[:material_name].empty? %>
-$('#bom_material_name').wrap('<div class="control-group error" />')
+
+<% if @bom.errors[:material_name].empty? %>
+$('#bom_material_name').parent().removeClass('control-group error')
+$('#bom_material_name').siblings('.error-msg').remove()
+
+<% else %>
+$('#bom_material_name').parent().addClass('control-group error')
+$('#bom_material_name').siblings('.error-msg').remove()
 
 <% @bom.errors[:material_name].each do |err| %>
 $('#bom_material_name').after('<span class="error-msg help-inline"><%= err %> </span>')
 <% end%>
 <%end %>
-<% unless @bom.errors[:material_id].empty? %>
-$('#bom_material_name').wrap('<div class="control-group error" />')
+
+<% if @bom.errors[:material_id].empty? %>
+$('#bom_material_name').parent().removeClass('control-group error')
+$('#bom_material_name').siblings('.error-msg').remove()
+
+<% else %>
+$('#bom_material_name').parent().addClass('control-group error')
+$('#bom_material_name').siblings('.error-msg').remove()
 
 <% @bom.errors[:material_id].each do |err| %>
 $('#bom_material_name').after('<span class="error-msg help-inline"><%= err %> </span>')
 <% end%>
 <%end %>
-<% unless @bom.errors[:price].empty? %>
-$('#bom_price').wrap('<div class="control-group error" />')
+
+<% if @bom.errors[:price].empty? %>
+$('#bom_price').parent().removeClass('control-group error')
+$('#bom_price').siblings('.error-msg').remove()
+<% else %>
+$('#bom_price').parent().addClass('control-group error')
+$('#bom_price').siblings('.error-msg').remove()
 
 <% @bom.errors[:price].each do |err| %>
 $('#bom_price').after('<span class="error-msg help-inline"><%= err %> </span>')
 <% end%>
 <%end %>
-<% unless @bom.errors[:cost].empty? %>
-$('#bom_cost').wrap('<div class="control-group error" />')
+
+<% if @bom.errors[:cost].empty? %>
+$('#bom_cost').parent().removeClass('control-group error')
+$('#bom_cost').siblings('.error-msg').remove()
+<% else %>
+$('#bom_cost').parent().addClass('control-group error')
+$('#bom_cost').siblings('.error-msg').remove()
 
 <% @bom.errors[:cost].each do |err| %>
 $('#bom_cost').after('<span class="error-msg help-inline"><%= err %> </span>')
 <% end%>
 <%end %>
+
 <% unless @bom.errors[:ticket].empty? %>
 
 <% @bom.errors[:ticket].each do |err| %>
 $('#new_bom').append('<span class="error-msg alert-error help-inline"><%= err %> </span>')
 <% end%>
 <%end %>
-<% unless @bom.errors[:buyer_id].empty? %>
 
-$('.buyer_field div').wrap('<div class="control-group error" />');
+<% if @bom.errors[:buyer_id].empty? %>
+$('.buyer_field div').parent().removeClass('control-group error')
+$('.buyer_field div').siblings('.error-msg').remove()
+
+<% else %>
+
+$('.buyer_field div').parent().addClass('control-group error')
+$('.buyer_field div').siblings('.error-msg').remove()
+
 <% @bom.errors[:buyer_id].each do |err| %>
 $('#new_bom').append('<span class="error-msg alert-error help-inline"><%= err %> </span>')
 <% end%>
 <%end %>
 
 <% else %>
+$('#bom').find('.error').removeClass('error');
+$('#bom').find('.error-msg').remove();
+$('#bom_cost').val('');
+$('#bom_price').val('');
+$('#bom_material_name').val('');
+$('#bom_material_id').val('');
+$('#bom_description').text('');
+$('#bom_quantity').val('');
+$('#bom_buyer_id').val('');
+
 $('#boms:last').append('<%= j render(@bom) %>');
 $('#job_total_cost').html('<%= j(humanized_money_with_symbol @bom.ticket.total_cost) %>');
 $('#job_total_price').html('<%= j(humanized_money_with_symbol @bom.ticket.total_price) %>');

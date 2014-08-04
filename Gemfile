@@ -33,7 +33,7 @@ gem 'unicorn', '~> 4.8.0', platform: :ruby
 gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 
-gem 'monetize'
+gem 'monetize', '0.1.4'
 gem 'money-rails', '0.9.0'
 gem 'select2-rails', '3.3.1'
 gem 'bootstrap-editable-rails', '0.0.4'

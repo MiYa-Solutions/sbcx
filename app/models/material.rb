@@ -27,14 +27,13 @@ class Material < ActiveRecord::Base
   has_many :boms
 
   validates_presence_of :supplier, :organization, :status, :name, allow_blank: false
-  validates_uniqueness_of :name, scope: [:organization_id, :supplier_id]
 
   monetize :cost_cents
   monetize :price_cents
 
   scope :my_materials, ->(org_id) { where("organization_id = ?", org_id) }
 
-  scope :search, ->(org_id, query) { my_materials(org_id).where(arel_table[:name].matches("%#{query}%")).order('name') }
+  scope :search, ->(org_id, query) { my_materials(org_id).where(arel_table[:name].matches("%#{query}%")).order('id desc') }
 
 
   # virtual attributes
@@ -65,6 +64,12 @@ class Material < ActiveRecord::Base
     event :back_in_stock do
       transition :out_of_stock => :available
     end
+  end
+
+  def name_web
+    res = "[#{id}] #{name}"
+    res = res + " (#{description.first(7)})" if description
+    res
   end
 
 end

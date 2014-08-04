@@ -24,14 +24,14 @@ class Bom < ActiveRecord::Base
   belongs_to :buyer, :polymorphic => true
 
   stampable
+  monetize :cost_cents, :numericality => { :greater_than => 0 }
+  monetize :price_cents, :numericality => { :greater_than => 0 }
 
   validates_presence_of :ticket, :cost_cents, :price_cents, :quantity, :material_id
-  validates_numericality_of :quantity, :cost_cents, :price_cents
+  validates_numericality_of :quantity
   validate :validate_buyer
   validate :check_ticket_status
 
-  monetize :cost_cents
-  monetize :price_cents
 
   before_validation :set_material
   before_validation :set_default_buyer

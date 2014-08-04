@@ -402,7 +402,7 @@ DEPENDENCIES
   meta_request
   meta_search (>= 1.1.0.pre)
   mocha
-  monetize
+  monetize (= 0.1.4)
   money-rails (= 0.9.0)
   newrelic_rpm
   nifty-generators
