@@ -2,6 +2,7 @@
   <div class="smart_label designed_tooltip">
     <ul>
       <li><h1><%= t('general.general.customer_billing') %></h1></li>
+      <li id="customer_name_jobBilling"><h1>(<%= link_to @service_call.customer.name, @service_call.customer %>)</h1></li>
       <li>
         <% if @service_call.can_change_boms? %>
             <%= button_tag t('general.general.add_part'), :class => 'btn btn-primary', id: 'new-bom-button', data: { toggle: "collapse", target: "#bom" } %></li>

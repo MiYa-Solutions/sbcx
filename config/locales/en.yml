@@ -190,6 +190,8 @@ en:
       filter_all_jobs_l2: "To cancel selected filter, simply click on its 'X' link on the right."
       in_progress: "In Progress"
       done: "Done"
+      billing_summary_for: "Billing Summary for:"
+      customer_billing_for: "Customer Billing for:"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

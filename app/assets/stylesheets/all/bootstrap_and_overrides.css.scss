@@ -100,6 +100,17 @@ body {
   color: #000000;
 }
 
+#customer_name_jobBilling {
+
+  a {
+    color: #eeeeee;
+    font-size: 14px;
+    font-weight: normal;
+    text-decoration: underline;
+    text-shadow: none;
+  }
+}
+
 .well {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
@@ -1977,7 +1988,7 @@ a:hover {
 
   .btn_collapse {
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: normal;
     height: 19px;
     min-width: 75%;
