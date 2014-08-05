@@ -35,8 +35,8 @@ describe 'Material Pages', js: true do
       before do
         fill_in INPUT_MATERIAL_NAME, with: 'TEST MATERIAL'
         fill_in INPUT_MATERIAL_DESCRIPTION, with: 'TEST DESCRIPTION'
-        fill_in INPUT_MATERIAL_COST, with: 'TEST DESCRIPTION'
-        fill_in INPUT_MATERIAL_PRICE, with: 'TEST DESCRIPTION'
+        fill_in INPUT_MATERIAL_COST, with: 10
+        fill_in INPUT_MATERIAL_PRICE, with: 100
         click_button BTN_CREATE_MATERIAL
       end
 
