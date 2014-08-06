@@ -1,6 +1,6 @@
 jQuery ->
   $('#customer-jobs').dataTable
-    dom: "<'row-fluid'<'span6'><'span6'>r>t<'row-fluid'<'span6'i><'span6'p>>"
+    dom: "t<'row-fluid'<'span7'i><'span5'p>>"
     pagingType: 'simple'
     iDisplayLength: 5
     aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4 ] }]
