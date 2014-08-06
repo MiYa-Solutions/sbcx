@@ -192,6 +192,7 @@ en:
       done: "Done"
       billing_summary_for: "Billing Summary for:"
       customer_billing_for: "Customer Billing for:"
+      external_ref: "External Number"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
