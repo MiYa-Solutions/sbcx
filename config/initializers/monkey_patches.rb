@@ -63,7 +63,7 @@ end
 
 
 # to overcome a state_machine:draw task bug
-unless defined? StateMachine::Machine::Constants::RGV_VERSION
+unless defined? StateMachine::Machine::Constants::RGV_VERSION || Rail.env == 'test'
   warn "StateMachine::Machine::Constants overriden in #{__FILE__}"
 
   class StateMachine::Machine::Constants

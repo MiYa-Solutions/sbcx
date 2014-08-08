@@ -58,11 +58,11 @@
 
 class ServiceCall < Ticket
 
-  def fully_paid?(options = {})
+  def fully_paid?
     current_payment = payment_amount || 0
 
-    if options[:work_in_progress].nil?
-      work_done? ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+    if self.canceled?
+      true
     else
       total > 0 ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
     end
@@ -130,7 +130,7 @@ class ServiceCall < Ticket
     end
 
     event :start do
-      transition [:pending] => :in_progress, if: lambda { |sc| !sc.canceled? && !sc.organization.multi_user? && !sc.transferred? }
+      transition :pending => :in_progress, if: lambda { |sc| !sc.canceled? && !sc.organization.multi_user? && !sc.transferred? }
       transition [:accepted, :dispatched] => :in_progress, if: ->(sc) { !sc.canceled? }
     end
 
@@ -160,8 +160,7 @@ class ServiceCall < Ticket
     end
 
     event :cancel do
-      transition [:accepted, :done] => :canceled
-      transition :in_progress => :canceled, if: ->(sc) { sc.transferred? }
+      transition [:accepted, :in_progress] => :canceled
     end
 
   end
@@ -223,6 +222,11 @@ class ServiceCall < Ticket
     event :clear do
       transition :settled => :cleared
     end
+
+    event :cancel do
+      transition :pending => :na
+    end
+
   end
 
 
@@ -268,9 +272,9 @@ class ServiceCall < Ticket
   def subcon_settlement_allowed?
     subcontractor && subcon_collection_fully_deposited? && all_deposited_entries_confirmed? && work_done?(
 
-        (subcontractor.subcontrax_member? && !allow_collection?) ||
-            (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
-            (!subcontractor.subcontrax_member? && work_done?))
+    (subcontractor.subcontrax_member? && !allow_collection?) ||
+        (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
+        (!subcontractor.subcontrax_member? && work_done?))
   end
 
   def can_change_boms?
@@ -307,6 +311,7 @@ class ServiceCall < Ticket
   def deposited_entries
     DepositFromEntry.where(ticket_id: self.id)
   end
+
 
 
   private

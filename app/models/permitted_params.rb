@@ -404,6 +404,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = false if params_to_check[:subcontractor_status_event] == "subcon_marked_as_settled" && obj.subcontractor.subcontrax_member?
       res = false if params_to_check[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
       res = false if params_to_check[:subcontractor_status_event] == "clear" && obj.subcontractor.subcontrax_member?
+      res = false if params_to_check[:subcontractor_status_event] == "cancel"
     end
     res
   end

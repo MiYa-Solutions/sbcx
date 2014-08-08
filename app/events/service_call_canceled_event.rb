@@ -28,7 +28,12 @@ class ServiceCallCanceledEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.cancel(:state_only)
+    CustomerBillingService.new(self).execute if service_call.work_done? && service_call.is_a?(MyServiceCall)
+    service_call.cancel_payment! if service_call.is_a?(MyServiceCall) && service_call.can_cancel_payment?
+    service_call.cancel_work!
+    service_call.cancel_subcon_collection! if defined?(service_call.can_cancel_subcon_collection?) && service_call.can_cancel_subcon_collection?
+    service_call.cancel_subcon!
+    invoke_affiliate_billing
     super
   end
 

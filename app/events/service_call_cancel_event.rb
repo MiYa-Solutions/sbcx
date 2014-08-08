@@ -38,13 +38,15 @@ class ServiceCallCancelEvent < ServiceCallEvent
   end
 
   def update_subcontractor
-    subcon_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self)
+    subcon_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self) unless subcon_service_call.canceled?
     subcon_service_call
   end
 
   def process_event
     CustomerBillingService.new(self).execute if service_call.work_done? && service_call.is_a?(MyServiceCall)
     service_call.cancel_payment! if service_call.is_a?(MyServiceCall) && service_call.can_cancel_payment?
+    service_call.cancel_prov_collection! if service_call.kind_of?(TransferredServiceCall) && service_call.can_cancel_prov_collection?
+    service_call.cancel_provider! if service_call.kind_of?(TransferredServiceCall) && service_call.can_cancel_provider?
     invoke_affiliate_billing
     super
   end
