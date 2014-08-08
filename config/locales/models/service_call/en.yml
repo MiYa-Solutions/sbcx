@@ -185,7 +185,11 @@ en:
     name: "Job has been Un-Canceled"
     description: 'The Job has been un canceled by %{user}'
   service_call_canceled_event:
+    name: 'Subcontractor canceled the job'
     description: 'The Job has been canceled by %{subcontractor}'
+  service_call_reset_event:
+    name: 'Job Reset'
+    description: 'The Job reset after a subcontractor canceled it'
   service_call_received_event:
     name: "Received New Job"
     description: 'Received a new Job from %{name}'

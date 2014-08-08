@@ -17,15 +17,13 @@
 class ServiceCallCanceledEvent < ServiceCallEvent
 
   def init
-    self.name = I18n.t('service_call_cancel_event.name') if name.nil?
-    self.description = I18n.t('service_call_canceled_event.description', subcontractor: service_call.subcontractor.name) if description.nil?
+    self.name = I18n.t('service_call_cancel_event.name')
+    self.description = I18n.t('service_call_canceled_event.description', subcontractor: service_call.subcontractor.name)
     self.reference_id = 100004
   end
 
   def process_event
     service_call.cancel_work! if service_call.can_cancel_work?
-    service_call.cancel_subcon_collection! if defined?(service_call.can_cancel_subcon_collection?) && service_call.can_cancel_subcon_collection?
-    service_call.cancel_subcon! if service_call.can_cancel_subcon?
     super
   end
 

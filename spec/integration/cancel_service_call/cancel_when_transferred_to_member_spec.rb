@@ -37,16 +37,16 @@ describe 'Cancel Job When Transferred To a Member' do
       expect(subcon_job.status_name).to eq :canceled
     end
 
-    it 'prov job subcon status should be :na' do
-      expect(job.subcontractor_status_name).to eq :na
+    it 'prov job subcon status should be :pending' do
+      expect(job.subcontractor_status_name).to eq :pending
     end
 
     it 'subcon job prov status should be :na' do
       expect(subcon_job.provider_status_name).to eq :na
     end
 
-    it 'prov job subcon collection status is :na' do
-      expect(job.subcon_collection_status_name).to eq :na
+    it 'prov job subcon collection status is :pending' do
+      expect(job.subcon_collection_status_name).to eq :pending
     end
 
     it 'subcon job prov collection status is :na' do
@@ -105,7 +105,6 @@ describe 'Cancel Job When Transferred To a Member' do
         expect(job.customer.account.balance).to eq Money.new(-5000)
       end
 
-
       it 'subcon job status should be :canceled' do
         expect(subcon_job.status_name).to eq :canceled
       end
@@ -114,8 +113,8 @@ describe 'Cancel Job When Transferred To a Member' do
         expect(job.work_status_name).to eq :canceled
       end
 
-      it 'prov job subcon collection status is :collected' do
-        expect(job.subcon_collection_status_name).to eq :collected
+      it 'prov job subcon collection status is :partially_collected' do
+        expect(job.subcon_collection_status_name).to eq :partially_collected
       end
 
       it 'subcon job prov collection status is :collected' do
@@ -139,6 +138,66 @@ describe 'Cancel Job When Transferred To a Member' do
 
       end
 
+      context 'when prov resets the job' do
+        before do
+          reset_the_job job
+          job.reload
+          subcon_job.reload
+        end
+
+        it 'prov work status should be :pending' do
+          expect(job.work_status_name).to eq :pending
+        end
+
+        it 'prov job subcon collection status is :partially_collected' do
+          expect(job.subcon_collection_status_name).to eq :partially_collected
+        end
+
+        it 'prov job subcon status is :na' do
+          expect(job.subcontractor_status_name).to eq :na
+        end
+
+        it 'subcon job prov collection status is :collected' do
+          expect(subcon_job.prov_collection_status_name).to eq :collected
+        end
+
+
+      end
+
+      context 'when prov cancels the job' do
+        before do
+          cancel_the_job job
+          job.reload
+          subcon_job.reload
+        end
+
+        it 'billing status should be :collected' do
+          expect(job.billing_status_name).to eq :collected
+        end
+
+        it 'customer account balance should be -50' do
+          expect(job.customer.account.balance).to eq Money.new(-5000)
+        end
+
+        it 'subcon job status should be :canceled' do
+          expect(subcon_job.status_name).to eq :canceled
+        end
+
+        it 'prov work status should be :canceled' do
+          expect(job.work_status_name).to eq :canceled
+        end
+
+        it 'prov job subcon collection status is :collected' do
+          expect(job.subcon_collection_status_name).to eq :collected
+        end
+
+        it 'subcon job prov collection status is :na' do
+          expect(subcon_job.prov_collection_status_name).to eq :collected
+        end
+
+
+      end
+
     end
 
 
@@ -153,7 +212,7 @@ describe 'Cancel Job When Transferred To a Member' do
       job.reload
     end
 
-    it 'job status events should be :cancel' do
+    it 'job status events should be :cancel and reset' do
       expect(job.status_events.sort).to eq [:cancel, :reset]
     end
 
@@ -176,6 +235,33 @@ describe 'Cancel Job When Transferred To a Member' do
 
     end
 
+    context 'when prov un-cancels (reset)' do
+      before do
+        reset_the_job job
+        job.reload
+      end
+
+      it 'job status should be :new' do
+        expect(job.status_name).to eq :new
+      end
+
+      it 'job work status should be :pending' do
+        expect(job.work_status_name).to eq :pending
+      end
+
+
+      context 'when transferring again' do
+        before do
+          transfer_the_job job
+        end
+
+        it 'subcon should have two tickets, one canceled and one new' do
+          expect(subcon.tickets.map(&:status_name).sort).to eq [:canceled, :new]
+        end
+
+      end
+
+    end
 
   end
 

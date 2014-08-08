@@ -63,6 +63,7 @@ class Organization < ActiveRecord::Base
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
   has_many :service_calls, :inverse_of => :organization
+  has_many :tickets, :inverse_of => :organization
   has_many :events, as: :eventable
   has_many :materials
   has_many :accounts

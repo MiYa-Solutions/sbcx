@@ -84,6 +84,10 @@ shared_context 'basic job testing' do
   def cancel_the_job(ticket)
     ticket.cancel!
   end
+
+  def reset_the_job(ticket)
+    ticket.reset!
+  end
 end
 
 shared_context 'transferred job' do

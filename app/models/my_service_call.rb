@@ -110,7 +110,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :reset do
-      transition :transferred => :new, if: ->(sc) { sc.work_canceled? }
+      transition :transferred => :new, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
     end
 
     event :cancel_transfer do
