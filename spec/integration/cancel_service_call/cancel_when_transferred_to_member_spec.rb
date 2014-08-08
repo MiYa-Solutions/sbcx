@@ -96,6 +96,16 @@ describe 'Cancel Job When Transferred To a Member' do
         subcon_job.reload
       end
 
+
+      it 'billing status should be :partially_collected' do
+        expect(job.billing_status_name).to eq :partially_collected
+      end
+
+      it 'customer account balance should be -50' do
+        expect(job.customer.account.balance).to eq Money.new(-5000)
+      end
+
+
       it 'subcon job status should be :canceled' do
         expect(subcon_job.status_name).to eq :canceled
       end
@@ -147,6 +157,10 @@ describe 'Cancel Job When Transferred To a Member' do
       expect(job.status_events.sort).to eq [:cancel, :reset]
     end
 
+    it 'the job should have a notification associated to it' do
+      expect(job.notifications.where(type: 'ScCanceledNotification').size).to eq job.organization.users.size
+    end
+
     context 'when prov cancels' do
       before do
         cancel_the_job job
@@ -156,6 +170,9 @@ describe 'Cancel Job When Transferred To a Member' do
         expect(job.status_name).to eq :canceled
       end
 
+      it 'customer account balance should be 0' do
+        expect(job.customer.account.balance).to eq Money.new(000)
+      end
 
     end
 
@@ -177,6 +194,110 @@ describe 'Cancel Job When Transferred To a Member' do
 
     it 'prov should not be able to cancel the job' do
       expect(job.status_events).to_not include(:cancel)
+    end
+
+  end
+
+  describe 'when the prov cancels' do
+    before do
+      cancel_the_job job
+      job.reload
+      subcon_job.reload
+    end
+
+    it 'prov job billing status should be :pending' do
+      expect(job.billing_status_name).to eq :pending
+    end
+
+    it 'prov job status should be :canceled' do
+      expect(job.status_name).to eq :canceled
+    end
+
+    it 'subcon job status should be :canceled' do
+      expect(subcon_job.status_name).to eq :canceled
+    end
+
+    it 'prov job subcon status should be :na' do
+      expect(job.subcontractor_status_name).to eq :na
+    end
+
+    it 'subcon job prov status should be :na' do
+      expect(subcon_job.provider_status_name).to eq :na
+    end
+
+    it 'prov job subcon collection status is :na' do
+      expect(job.subcon_collection_status_name).to eq :na
+    end
+
+    it 'subcon job prov collection status is :na' do
+      expect(subcon_job.prov_collection_status_name).to eq :na
+    end
+
+    it 'prov work status should be :canceled' do
+      expect(job.work_status_name).to eq :pending
+    end
+
+    it 'subcon job work status should be :pending' do
+      expect(subcon_job.work_status_name).to eq :pending
+    end
+
+    it 'the subcon job should have a notification associated to it' do
+      expect(subcon_job.notifications.where(type: 'ScProviderCanceledNotification').size).to be > 0
+      expect(subcon_job.notifications.where(type: 'ScProviderCanceledNotification').size).to eq subcon_job.organization.users.size
+    end
+
+
+  end
+
+  describe 'when the prov cancels after the subcon started the job' do
+    before do
+      accept_the_job subcon_job
+      start_the_job subcon_job
+      add_bom_to_job subcon_job, cost: 100, price: 1000, quantity: 1
+      cancel_the_job job
+      job.reload
+      subcon_job.reload
+    end
+
+    it 'prov job billing status should be :pending' do
+      expect(job.billing_status_name).to eq :pending
+    end
+
+    it 'prov job status should be :canceled' do
+      expect(job.status_name).to eq :canceled
+    end
+
+    it 'subcon job status should be :canceled' do
+      expect(subcon_job.status_name).to eq :canceled
+    end
+
+    it 'prov job subcon status should be :na' do
+      expect(job.subcontractor_status_name).to eq :na
+    end
+
+    it 'subcon job prov status should be :na' do
+      expect(subcon_job.provider_status_name).to eq :na
+    end
+
+    it 'prov job subcon collection status is :na' do
+      expect(job.subcon_collection_status_name).to eq :na
+    end
+
+    it 'subcon job prov collection status is :na' do
+      expect(subcon_job.prov_collection_status_name).to eq :na
+    end
+
+    it 'prov work status should be :canceled' do
+      expect(job.work_status_name).to eq :in_progress
+    end
+
+    it 'subcon job work status should be :pending' do
+      expect(subcon_job.work_status_name).to eq :in_progress
+    end
+
+    it 'the subcon job should have a notification associated to it' do
+      expect(subcon_job.notifications.where(type: 'ScProviderCanceledNotification').size).to be > 0
+      expect(subcon_job.notifications.where(type: 'ScProviderCanceledNotification').size).to eq subcon_job.organization.users.size
     end
 
   end

@@ -22,18 +22,10 @@ class ServiceCallCanceledEvent < ServiceCallEvent
     self.reference_id = 100004
   end
 
-  def update_provider
-    prov_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self)
-    prov_service_call
-  end
-
   def process_event
-    CustomerBillingService.new(self).execute if service_call.work_done? && service_call.is_a?(MyServiceCall)
-    service_call.cancel_payment! if service_call.is_a?(MyServiceCall) && service_call.can_cancel_payment?
-    service_call.cancel_work!
+    service_call.cancel_work! if service_call.can_cancel_work?
     service_call.cancel_subcon_collection! if defined?(service_call.can_cancel_subcon_collection?) && service_call.can_cancel_subcon_collection?
-    service_call.cancel_subcon!
-    invoke_affiliate_billing
+    service_call.cancel_subcon! if service_call.can_cancel_subcon?
     super
   end
 

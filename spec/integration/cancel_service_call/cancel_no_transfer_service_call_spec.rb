@@ -95,6 +95,11 @@ describe 'Cancel My Job - No Transfer' do
       expect(job.billing_status_name).to eq :collected
     end
 
+    it 'customer account balance should be -1000' do
+      expect(job.customer.account.balance).to eq Money.new(-100000)
+    end
+
+
     context 'when depositing all payments' do
       before do
         deposit_all_entries job.payments
@@ -132,6 +137,11 @@ describe 'Cancel My Job - No Transfer' do
             expect(reimbursement.size).to eq 1
             expect(reimbursement.first.amount).to eq Money.new(10000)
           end
+
+          it 'customer account balance should be 0' do
+            expect(job.customer.account.balance).to eq Money.new(000)
+          end
+
 
         end
       end
