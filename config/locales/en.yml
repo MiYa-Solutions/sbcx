@@ -195,6 +195,7 @@ en:
       external_ref: "External Number"
       customers_balance: "Customers Balance"
       affiliates_balance: "Affiliates Balance"
+      customer_balance: "Customer Balance"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

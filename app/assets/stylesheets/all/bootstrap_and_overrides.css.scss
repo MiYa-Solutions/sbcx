@@ -2231,9 +2231,16 @@ a:hover {
 
 .affiliate_balance {
   //min-height: 334px;
-  min-height: 352px;
+  min-height: 334px;
   overflow: auto;
 }
+
+.customer_balance {
+  min-height: 334px;
+  overflow: auto;
+}
+
+
 
 .agreement_rules {
   min-height: 148px;
@@ -4377,6 +4384,15 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     margin-left: 5px;
   }
 
+
+
+}
+
+.job_billing_summary_table {
+  a {
+    color: #3a87ad;
+    text-decoration: underline;
+  }
 }
 
 .positive {
