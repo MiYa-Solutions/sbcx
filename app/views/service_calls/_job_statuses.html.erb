@@ -63,11 +63,12 @@
         <table class="table table-striped table-condensed table-sbcx">
           <tbody>
           <tr>
-            <% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>
-              <td class="affiiate_statuses">
+            <td class="affiiate_statuses">
               <!--Customized Tooltip-->
-               <strong>  <%= @service_call.class.human_attribute_name(:subcontractor_status) %></strong>
-              </td>
+              <strong>  <%= @service_call.class.human_attribute_name(:subcontractor_status) %></strong>
+            </td>
+            <% if @service_call.subcon_transfer_props.first.attribute_names.size > 0 %>
+
                <td>
                  <span class="badge custom_tooltip">
                       <div class="hover">

@@ -8,6 +8,7 @@
       <td class="balanced">
         <%= humanized_money_with_symbol @service_call.subcon_balance %>
       </td>
+      <td></td>
       <!--<td></td>-->
   <% else %>
       <% if @service_call.try(:subcon_balance) > 0 %>
