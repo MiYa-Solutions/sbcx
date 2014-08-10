@@ -585,10 +585,15 @@ footer {
 
 #bom_price {
   width: 70%;
+  margin-left: 2px;
 }
 
 #bom_quantity {
-  width: 20%;
+  width: 60%;
+}
+
+#bom_buyer_id {
+  margin-left: -3px;
 }
 
 #bom_desc {
@@ -2293,7 +2298,8 @@ a:hover {
 }
 
 #bom_material_name {
-  width: 50%;
+  width: 90%;
+  margin-left: 2px;
 }
 
 .add_part_service_call {
@@ -2389,7 +2395,7 @@ a:hover {
   }
 
   .add_button {
-    margin-left: 23px;
+    margin-left: 27px;
     position: relative;
     width: 100%;
 
@@ -4727,5 +4733,21 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   margin-left: 35%;
 }
 
+.notification_message_link {
+  a {
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  a:hover {
+    background-color: #003580;
+    color: #ffffff;
+  }
+}
 
+.notification_subject_link {
+  a:hover {
+    background-color: #003580;
+    color: #ffffff;
+  }
+}
 
