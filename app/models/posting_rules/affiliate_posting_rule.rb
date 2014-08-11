@@ -71,6 +71,8 @@ class AffiliatePostingRule < PostingRule
         true
       when ServiceCallCanceledEvent.name
         true
+      when ScProviderCanceledEvent.name
+        true
       when ScCollectEvent.name
         true
       when ServiceCallPaidEvent.name

@@ -142,7 +142,7 @@ class PostingRule < ActiveRecord::Base
         charge_entries
       when ScSubconSettleEvent.name, ScSubconSettledEvent.name, ScProviderSettleEvent.name, ScProviderSettledEvent.name
         settlement_entries
-      when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
+      when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name, ScProviderCanceledEvent.name
         cancellation_entries
       when ScCollectEvent.name, ScCollectedEvent.name, ScCollectedByEmployeeEvent.name
         collection_entries

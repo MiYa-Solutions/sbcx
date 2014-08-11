@@ -49,6 +49,7 @@ class ServiceCallCancelEvent < ServiceCallEvent
     service_call.cancel_provider! if service_call.kind_of?(TransferredServiceCall) && service_call.can_cancel_provider?
     service_call.cancel_subcon_collection! if defined?(service_call.can_cancel_subcon_collection?) && service_call.can_cancel_subcon_collection?
     service_call.cancel_subcon! if service_call.can_cancel_subcon?
+    invoke_affiliate_billing
     super
   end
 

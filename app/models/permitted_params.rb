@@ -392,6 +392,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     res = false if params_to_check[:billing_status_event] == 'deposited'
     res = false if params_to_check[:billing_status_event] == 'clear'
     res = false if params_to_check[:billing_status_event] == 'reject'
+    res = false if params_to_check[:billing_status_event] == 'cancel'
 
     res
   end
@@ -416,6 +417,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = true
       res = false if params_to_check[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
       res = false if params_to_check[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
+      res = false if params_to_check[:provider_status_event] == "cancel"
+
     end
     res
 
