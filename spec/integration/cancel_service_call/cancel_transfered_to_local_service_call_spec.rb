@@ -54,8 +54,8 @@ describe 'Cancel Job Transferred To Local' do
       expect(job.billing_status_name).to eq :collected
     end
 
-    it 'subcon balance should be 100.00' do
-      expect(job.organization.account_for(subcon).balance).to eq Money.new(10000)
+    it 'subcon balance should be 101.00 (collection + fee)' do
+      expect(job.organization.account_for(subcon).balance).to eq Money.new(10000 + 100)
     end
   end
 end

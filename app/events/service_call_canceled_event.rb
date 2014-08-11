@@ -24,6 +24,7 @@ class ServiceCallCanceledEvent < ServiceCallEvent
 
   def process_event
     service_call.cancel_work! if service_call.can_cancel_work?
+    AffiliateBillingService.new(self, affiliate_mask: [service_call.subcontractor]).execute
     super
   end
 

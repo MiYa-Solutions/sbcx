@@ -5,6 +5,7 @@ describe 'Cancel Job When Transferred To a Member' do
   include_context 'transferred job'
 
   before do
+    subcon_admin # ensure the subcon has a user
     transfer_the_job
   end
 

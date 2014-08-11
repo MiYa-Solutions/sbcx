@@ -24,7 +24,8 @@ class Account < ActiveRecord::Base
 
   has_many :accounting_entries do
     def << (entry)
-      proxy_association.owner.balance += (entry.amount * entry.amount_direction)
+      entry.amount = (entry.amount_direction < 0 && entry.amount > 0) ? entry.amount * entry.amount_direction : entry.amount
+      proxy_association.owner.balance += entry.amount
       entry.account                   = proxy_association.owner
       entry.balance                   = proxy_association.owner.balance
       entry.save

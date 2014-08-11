@@ -8,9 +8,9 @@ FactoryGirl.define do
 
     factory :member_org, class: Organization do
       subcontrax_member true
-      after(:build) do |org|
-        org.users << FactoryGirl.build(:user, organization: org)
-      end
+      #after(:build) do |org|
+      #  org.users << FactoryGirl.build(:user, organization: org)
+      #end
     end
 
     factory :affiliate, class: Affiliate do

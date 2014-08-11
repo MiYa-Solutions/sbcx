@@ -40,8 +40,6 @@ class AccountingEntry < ActiveRecord::Base
   belongs_to :agreement
   belongs_to :matching_entry, class_name: 'AccountingEntry'
 
-  before_create :set_amount_direction
-
   scope :by_account_and_datetime_range, ->(acc, range) { where(account_id: acc.id).where(created_at: range) }
   scope :by_account_and_ticket, ->(acc, ticket) { where(account_id: acc.id).where(ticket_id: ticket.id) }
   scope :by_acc, ->(acc) { where(account_id: acc.id) }
@@ -83,13 +81,6 @@ class AccountingEntry < ActiveRecord::Base
 
   def <=>(other)
     self.id <=> other.id
-  end
-
-
-
-  protected
-  def set_amount_direction
-    self.amount = self.amount * amount_direction
   end
 
   def amount_direction

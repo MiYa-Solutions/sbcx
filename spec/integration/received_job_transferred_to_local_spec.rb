@@ -115,13 +115,6 @@ describe 'Received Job When Transferred To Local Subcon' do
           expect(event_permitted_for_job?('work_status', 'start', org_admin, broker_job)).to be_true
         end
 
-        context 'when canceled' do
-          include_context 'when canceling the job' do
-            let(:job_to_cancel) { broker_job }
-            it_behaves_like 'provider job is canceled'
-          end
-        end
-
         context 'when started the work' do
 
           before do
@@ -167,13 +160,6 @@ describe 'Received Job When Transferred To Local Subcon' do
             expect(event_permitted_for_job?('work_status', 'complete', org_admin, broker_job)).to be_true
           end
 
-          context 'when canceled' do
-            include_context 'when canceling the job' do
-              let(:job_to_cancel) { broker_job }
-            end
-            it_behaves_like 'provider job is canceled'
-          end
-
           context 'when completed the broker_job' do
             before do
               add_bom_to_job broker_job, buyer: broker_job.subcontractor
@@ -217,13 +203,6 @@ describe 'Received Job When Transferred To Local Subcon' do
 
             it 'there should be no available work status events' do
               expect(broker_job.work_status_events).to eq []
-            end
-
-            context 'when canceled' do
-              include_context 'when canceling the job' do
-                let(:job_to_cancel) { broker_job }
-              end
-              it_behaves_like 'provider job canceled after completion'
             end
 
             context 'when I invoice' do
@@ -273,13 +252,6 @@ describe 'Received Job When Transferred To Local Subcon' do
 
               it 'there should be no available work status events' do
                 expect(broker_job.work_status_events).to eq []
-              end
-
-              context 'when canceled' do
-                include_context 'when canceling the job' do
-                  let(:job_to_cancel) { broker_job }
-                end
-                it_behaves_like 'provider job canceled after completion'
               end
 
               context 'when I collect' do
@@ -335,13 +307,6 @@ describe 'Received Job When Transferred To Local Subcon' do
                     expect(broker_job.work_status_events).to eq []
                   end
 
-                  context 'when canceled' do
-                    include_context 'when canceling the job' do
-                      let(:job_to_cancel) { broker_job }
-                    end
-                    it_behaves_like 'provider job canceled after completion'
-                  end
-
                   context 'when deposited to provider' do
                     before do
                       broker_job.update_attributes(billing_status_event: 'deposit_to_prov')
@@ -385,13 +350,6 @@ describe 'Received Job When Transferred To Local Subcon' do
                       expect(broker_job.work_status_events).to eq []
                     end
 
-                    context 'when canceled' do
-                      include_context 'when canceling the job' do
-                        let(:job_to_cancel) { job }
-                      end
-                      it_behaves_like 'provider job canceled after completion'
-                    end
-
                     context 'when provider confirms the deposit' do
                       before do
                         broker_job.update_attributes(billing_status_event: 'prov_confirmed_deposit')
@@ -433,13 +391,6 @@ describe 'Received Job When Transferred To Local Subcon' do
 
                       it 'there should be no available work status events' do
                         expect(broker_job.work_status_events).to eq []
-                      end
-
-                      context 'when canceled' do
-                        include_context 'when canceling the job' do
-                          let(:job_to_cancel) { job }
-                        end
-                        it_behaves_like 'provider job canceled after completion'
                       end
 
                       context 'when settling with the provider' do
@@ -487,12 +438,6 @@ describe 'Received Job When Transferred To Local Subcon' do
                             expect(broker_job.work_status_events).to eq []
                           end
 
-                          context 'when canceled' do
-                            include_context 'when canceling the job' do
-                              let(:job_to_cancel) { job }
-                            end
-                            it_behaves_like 'provider job canceled after completion'
-                          end
                         end
 
                         context 'when using a cheque' do
@@ -539,13 +484,6 @@ describe 'Received Job When Transferred To Local Subcon' do
                             expect(broker_job.work_status_events).to eq []
                           end
 
-                          context 'when canceled' do
-                            include_context 'when canceling the job' do
-                              let(:job_to_cancel) { job }
-                            end
-                            it_behaves_like 'provider job canceled after completion'
-                          end
-
                           context 'when provider clears the payment' do
 
                             before do
@@ -587,13 +525,6 @@ describe 'Received Job When Transferred To Local Subcon' do
 
                             it 'there should be no available work status events' do
                               expect(broker_job.work_status_events).to eq []
-                            end
-
-                            context 'when canceled' do
-                              include_context 'when canceling the job' do
-                                let(:job_to_cancel) { job }
-                              end
-                              it_behaves_like 'provider job canceled after completion'
                             end
 
                             context 'when settling with the subcon' do
@@ -643,13 +574,6 @@ describe 'Received Job When Transferred To Local Subcon' do
 
                                 it 'subcon status available events should be clear' do
                                   expect(broker_job.subcontractor_status_events).to eq [:clear]
-                                end
-
-                                context 'when canceled' do
-                                  include_context 'when canceling the job' do
-                                    let(:job_to_cancel) { job }
-                                  end
-                                  it_behaves_like 'provider job canceled after completion'
                                 end
 
                                 context 'when the subcontractor cheque payment is cleared' do
@@ -744,13 +668,6 @@ describe 'Received Job When Transferred To Local Subcon' do
       end
 
       context 'when rejected'
-
-      context 'when canceled' do
-        include_context 'when canceling the job' do
-          let(:job_to_cancel) { job }
-        end
-        it_behaves_like 'provider job is canceled'
-      end
 
 
     end

@@ -171,7 +171,7 @@ class AffiliatePostingRule < PostingRule
   end
 
   def cparty_cancellation_entries
-    entry =  AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
+    entry                = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
     original_entry_cents = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
     original_entry_ccy   = entry ? entry.amount_currency : Money.default_currency.to_s
 
@@ -187,7 +187,7 @@ class AffiliatePostingRule < PostingRule
   end
 
   def org_cancellation_entries
-    entry = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
+    entry                = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
     original_entry_cents = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
     original_entry_ccy   = entry ? entry.amount_currency : Money.default_currency.to_s
 
@@ -347,10 +347,10 @@ class AffiliatePostingRule < PostingRule
   end
 
   def cancellation_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         org_cancellation_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         cparty_cancellation_entries
       else
         raise "Unrecognized role when creating profit split entries"

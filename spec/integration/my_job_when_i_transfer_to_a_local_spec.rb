@@ -52,11 +52,6 @@ describe 'My Job When I Transfer to a Local Affiliate' do
     pending
   end
 
-  context 'when canceled' do
-    include_context 'when the provider cancels the job'
-    it_should_behave_like 'provider job is canceled'
-  end
-
   context 'when accepting on behalf of the subcon' do
 
     before do
@@ -97,11 +92,6 @@ describe 'My Job When I Transfer to a Local Affiliate' do
       expect(job.subcontractor_status_events).to eq []
     end
 
-
-    context 'when canceled' do
-      include_context 'when the provider cancels the job'
-      it_should_behave_like 'provider job is canceled'
-    end
 
     context 'when starting the job' do
 
@@ -146,12 +136,6 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
       it 'should have no job available subcon events' do
         expect(job.subcontractor_status_events).to eq []
-      end
-
-
-      context 'when canceled' do
-        include_context 'when the provider cancels the job'
-        it_should_behave_like 'provider job is canceled'
       end
 
       context 'when the job is completed' do
@@ -200,11 +184,6 @@ describe 'My Job When I Transfer to a Local Affiliate' do
           expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-11000)
         end
 
-        context 'when canceled' do
-          include_context 'when the provider cancels the job'
-          it_should_behave_like 'provider job is canceled'
-          it_should_behave_like 'provider job canceled after completion'
-        end
 
 
         it 'the job status should be transferred' do
@@ -231,12 +210,6 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
         it 'should have no job available subcon events' do
           expect(job.subcontractor_status_events).to eq [:settle]
-        end
-
-        context 'when canceled' do
-          include_context 'when the provider cancels the job'
-          it_should_behave_like 'provider job is canceled'
-          it_should_behave_like 'provider job canceled after completion'
         end
 
         context 'when prov collects' do
