@@ -100,6 +100,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :un_cancel do
+      transition :transferred => :new, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
       transition :canceled => :transferred, if: ->(sc) { sc.can_uncancel? && sc.subcontractor.present? }
       transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
     end
@@ -107,10 +108,6 @@ class MyServiceCall < ServiceCall
     event :close do
       transition :transferred => :closed, if: ->(sc) { sc.subcon_cleared? && sc.payment_cleared? }
       transition :open => :closed, if: ->(sc) { sc.payment_paid? }
-    end
-
-    event :reset do
-      transition :transferred => :new, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
     end
 
     event :cancel_transfer do

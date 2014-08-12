@@ -113,6 +113,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :un_cancel do
+      transition :transferred => :new, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
       transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
     end
 

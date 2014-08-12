@@ -86,8 +86,10 @@ shared_context 'basic job testing' do
   end
 
   def reset_the_job(ticket)
-    ticket.reset!
+    ticket.un_cancel!
   end
+
+  alias_method :un_cancel_the_job, :reset_the_job
 end
 
 shared_context 'transferred job' do
