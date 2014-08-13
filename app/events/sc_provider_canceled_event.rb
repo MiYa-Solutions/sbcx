@@ -20,7 +20,7 @@ class ScProviderCanceledEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.cancel!(:state_only)
+    service_call.provider_canceled!
     service_call.cancel_prov_collection! if service_call.kind_of?(TransferredServiceCall) && service_call.can_cancel_prov_collection?
     service_call.cancel_provider! if service_call.kind_of?(TransferredServiceCall) && service_call.can_cancel_provider?
     service_call.cancel_subcon_collection! if defined?(service_call.can_cancel_subcon_collection?) && service_call.can_cancel_subcon_collection?

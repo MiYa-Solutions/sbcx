@@ -22,6 +22,15 @@ describe 'Canceling Job With A Broker' do
   end
 
 
+  it 'broker job should not have provider_canceled event' do
+    expect(event_permitted_for_job?('status', 'provider_canceled', broker_admin, broker_job.reload)).to be_false
+  end
+
+  it 'subcon job should not have provider_canceled event' do
+    expect(event_permitted_for_job?('status', 'provider_canceled', subcon_admin, subcon_job.reload)).to be_false
+  end
+
+
   it 'prov job should not allow a user to cancel work' do
     expect(event_permitted_for_job?('work_status', 'cancel', org_admin, job.reload)).to be_false
   end
@@ -200,7 +209,7 @@ describe 'Canceling Job With A Broker' do
       end
 
       it 'broker should have the :accept and :reject as work status' do
-        expect(broker_job.status_events.sort).to eq [:accept, :reject]
+        expect(broker_job.status_events.sort).to eq [:accept, :provider_canceled, :reject]
       end
 
     end

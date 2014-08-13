@@ -162,6 +162,110 @@ describe 'Cancel Job When Transferred To a Member' do
           expect(subcon_job.prov_collection_status_name).to eq :collected
         end
 
+        context 'when the subcon deposits the collected payment' do
+
+          before do
+            deposit_all_entries subcon_job.collection_entries
+            job.reload
+            subcon_job.reload
+          end
+
+          it 'prov job subcon collection status is :is_deposited' do
+            expect(job.subcon_collection_status_name).to eq :is_deposited
+          end
+
+          it 'subcon job prov collection status is :is_deposited' do
+            expect(subcon_job.prov_collection_status_name).to eq :is_deposited
+          end
+
+          context 'when transferring to another subcon' do
+            let(:agr3) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
+            let(:subcon3) {
+              s      = agr3.counterparty
+              s.name = "subcon3-#{s.name}"
+              s.save!
+              s
+            }
+
+            let(:subcon_admin3) {
+              u = FactoryGirl.build(:user, organization: subcon3)
+              subcon3.users << u
+              u
+            }
+            let(:subcon3_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon3.id, job.ref_id) }
+
+            before do
+              transfer_the_job job: job, subcon: subcon3, agreement: agr3
+            end
+
+            it 'should transfer successfuly' do
+              expect(job.status_name).to eq :transferred
+            end
+
+            context 'when subcon3 collects a payment' do
+              before do
+                accept_the_job subcon3_job
+                collect_a_payment subcon3_job, amount: 100, type: 'cash'
+                job.reload
+                subcon_job.reload
+                subcon3_job.reload
+              end
+
+              it 'the prov work status should be accepted' do
+                expect(job.work_status_name).to eq :accepted
+              end
+
+              it 'the prov subcon collection status should be partially_collected' do
+                expect(job.subcon_collection_status_name).to eq :partially_collected
+              end
+
+              it 'subcon job prov collection status is :is_deposited' do
+                expect(subcon_job.prov_collection_status_name).to eq :is_deposited
+              end
+
+              it 'subcon3 job prov collection status is :partially_collected' do
+                expect(subcon3_job.prov_collection_status_name).to eq :partially_collected
+              end
+
+              context 'when confirming the deposit of the first subcon' do
+                before do
+                  confirm_all_deposits job.deposited_entries
+                  job.reload
+                  subcon_job.reload
+                  subcon3_job.reload
+                end
+
+                it 'the prov subcon collection status should be partially_collected' do
+                  expect(job.subcon_collection_status_name).to eq :partially_collected
+                end
+
+                it 'subcon job prov collection status is :is_deposited' do
+                  expect(subcon_job.prov_collection_status_name).to eq :deposited
+                end
+
+                it 'subcon3 job prov collection status is :partially_collected' do
+                  expect(subcon3_job.prov_collection_status_name).to eq :partially_collected
+                end
+
+                it 'org balance for first subcon should be 0 ' do
+                  expect(job.organization.account_for(subcon).balance).to eq Money.new(0)
+                end
+
+                it 'org balance for subcon3 should be 101.00 (collection + fee) ' do
+                  expect(job.organization.account_for(subcon3).balance).to eq Money.new(10100)
+                end
+
+
+
+              end
+
+            end
+
+          end
+
+
+        end
+
 
       end
 
@@ -214,7 +318,7 @@ describe 'Cancel Job When Transferred To a Member' do
     end
 
     it 'job status events should be :cancel and reset' do
-      expect(job.status_events.sort).to eq [:cancel, :reset]
+      expect(job.status_events.sort).to eq [:cancel, :un_cancel]
     end
 
     it 'the job should have a notification associated to it' do
@@ -388,8 +492,6 @@ describe 'Cancel Job When Transferred To a Member' do
     end
 
   end
-
-
 
 
 end

@@ -479,6 +479,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = true
     res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.kind_of?(TransferredServiceCall)
+    res = false if params_to_check[:status_event] == 'provider_canceled'
     res
   end
 
@@ -494,6 +495,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     res             = true
 
     res = false if params_to_check[:work_status_event] == 'cancel' && obj.subcontractor.member?
+    res = false if params_to_check[:work_status_event] == 'reset'
     res
 
   end

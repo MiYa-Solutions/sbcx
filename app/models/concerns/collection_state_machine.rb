@@ -23,10 +23,11 @@ module CollectionStateMachine
 
         event :collected do
           transition [:pending, :is_deposited, :partially_collected, :deposited] => :collected, if: ->(sc) { sc.fully_paid? }
-          transition [:pending, :is_deposited, :deposited] => :partially_collected, if: ->(sc) { !sc.fully_paid? }
+          transition [:pending, :is_deposited, :deposited, :collected] => :partially_collected, if: ->(sc) { !sc.fully_paid? }
         end
 
         event :deposited do
+          #transition [:partially_collected, :collected, :disputed] => :is_deposited, if: ->(sc) { sc.send("#{self.machine.namespace}_fully_deposited?") && (sc.work_done? || sc.canceled?) }
           transition [:partially_collected, :collected, :disputed] => :is_deposited, if: ->(sc) { sc.send("#{self.machine.namespace}_fully_deposited?") }
         end
 
@@ -37,13 +38,13 @@ module CollectionStateMachine
         event :confirmed do
           transition :is_deposited => :deposited
           transition :disputed => :deposited, if: ->(sc) { sc.send("#{self.machine.namespace}_fully_deposited?") && !sc.send("#{self.machine.namespace}_disputed?") }
-          transition :disputed => :is_deposited, unless: ->(sc) { sc.send("#{self.machine.namespace}_disputed?")  }
+          transition :disputed => :is_deposited, unless: ->(sc) { sc.send("#{self.machine.namespace}_disputed?") }
         end
 
         event :cancel do
           transition :pending => :na
           transition :partially_collected => :is_deposited, if: ->(sc) { sc.send("#{self.machine.namespace}_fully_deposited?") }
-          transition :partially_collected => :collected
+          transition :partially_collected => :collected, if: ->(sc) { sc.canceled? }
         end
 
       end
