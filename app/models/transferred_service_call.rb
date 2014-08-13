@@ -104,14 +104,21 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :cancel_transfer do
-      transition :transferred => :new, if: ->(sc) { !sc.work_done? }
+      transition :transferred => :new, unless: ->(sc) { sc.work_done? }
     end
 
     event :cancel do
-      transition [:accepted, :transferred] => :canceled
+      transition [:accepted, :transferred] => :canceled, unless: ->(sc) { sc.work_done? }
+      transition [:new] => :canceled, if: ->(sc) { sc.provider_ticket.canceled? }
     end
 
+    event :provider_canceled do
+      transition [:new, :accepted, :transferred] => :canceled
+    end
+
+
     event :un_cancel do
+      transition :transferred => :new, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
       transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
     end
 
@@ -135,6 +142,7 @@ class TransferredServiceCall < ServiceCall
     state :settled, value: SUBCON_STATUS_SETTLED do
       validates_presence_of :provider_payment
     end
+    state :na, value: SUBCON_STATUS_NA
 
     after_failure do |service_call, transition|
       Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -167,6 +175,11 @@ class TransferredServiceCall < ServiceCall
     event :clear do
       transition :settled => :cleared
     end
+
+    event :cancel do
+      transition :pending => :na, if: ->(sc) { sc.canceled? }
+    end
+
   end
 
   state_machine :billing_status, initial: :na, namespace: 'payment' do
@@ -238,16 +251,17 @@ class TransferredServiceCall < ServiceCall
 
   def my_profit
 
-    prov_income  = entries.select{|e| e.type == 'IncomeFromProvider' }.map { |e| e.amount_cents }.sum
-    payment_fee  = entries.select{|e| ['AmexPaymentFee', 'CashPaymentFee', 'ChequePaymentFee', 'CreditPaymentFee'].include? e.type }.map { |e| e.amount_cents }.sum
-    bom_reimb  = entries.select{|e| e.type == 'MaterialReimbursement' }.map { |e| e.amount_cents }.sum
+    cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum
+    prov_income       = entries.select { |e| e.type == 'IncomeFromProvider' }.map { |e| e.amount_cents }.sum
+    payment_fee       = entries.select { |e| ['AmexPaymentFee', 'CashPaymentFee', 'ChequePaymentFee', 'CreditPaymentFee'].include? e.type }.map { |e| e.amount_cents }.sum
+    bom_reimb         = entries.select { |e| e.type == 'MaterialReimbursement' }.map { |e| e.amount_cents }.sum
 
-    subcon_payments = entries.select{|e| e.type == 'PaymentToSubcontractor' }.map { |e| e.amount_cents }.sum
-    subcon_reimb_amount = entries.select{|e| e.type == 'MaterialReimbursementToCparty' }.map { |e| e.amount_cents }.sum
-    my_bom_cents = - boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
-    payment_reimb = entries.select{|e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type  }.map { |e| e.amount_cents }.sum
+    subcon_payments     = entries.select { |e| e.type == 'PaymentToSubcontractor' }.map { |e| e.amount_cents }.sum
+    subcon_reimb_amount = entries.select { |e| e.type == 'MaterialReimbursementToCparty' }.map { |e| e.amount_cents }.sum
+    my_bom_cents        = -boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
+    payment_reimb       = entries.select { |e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |e| e.amount_cents }.sum
 
-    Money.new(prov_income + payment_fee + bom_reimb + subcon_payments + subcon_reimb_amount + my_bom_cents + payment_reimb )
+    Money.new(prov_income + payment_fee + bom_reimb + subcon_payments + subcon_reimb_amount + my_bom_cents + payment_reimb + cancel_adjustment)
   end
 
   def validate_subcon

@@ -178,11 +178,18 @@ en:
   service_call_cancel_event:
     name: "Job has been Canceled"
     description: 'The Job has been canceled by %{user}'
+  service_call_provider_canceled_event:
+    name: "Job canceled by contractor"
+    description: 'The job was canceled by the contractor (%{contractor})'
   service_call_un_cancel_event:
-    name: "Job has been Un-Canceled"
-    description: 'The Job has been un canceled by %{user}'
+    name: "Job Reset"
+    description: 'The Job has been un canceled(reset) by %{user} after a subcontractor canceled it'
   service_call_canceled_event:
+    name: 'Subcontractor canceled the job'
     description: 'The Job has been canceled by %{subcontractor}'
+  service_call_cancel_transfer_event:
+    name: 'Transfer Canceled'
+    description: 'The the transfer to %{subcontractor} was canceled'
   service_call_received_event:
     name: "Received New Job"
     description: 'Received a new Job from %{name}'

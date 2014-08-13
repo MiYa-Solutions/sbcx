@@ -21,8 +21,16 @@ class ServiceCallObserver < ActiveRecord::Observer
     service_call.events << ScCloseEvent.new
   end
 
+  def after_reset(service_call, transition)
+    service_call.events << ScResetEvent.new
+  end
+
   def after_cancel(service_call, transition)
     service_call.events << ServiceCallCancelEvent.new unless transition.args.first == :state_only
+  end
+
+  def after_cancel_transfer(service_call, transition)
+    service_call.events << ScCancelTransferEvent.new
   end
 
   def after_un_cancel(service_call, transition)

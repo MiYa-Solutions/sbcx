@@ -431,18 +431,6 @@ describe 'My Job When Transferred To a Member' do
 
   end
 
-  context 'when prov cancels' do
-    include_context 'when the provider cancels the job'
-    it_should_behave_like 'provider job is canceled'
-    it_should_behave_like 'subcon job is canceled'
-  end
-
-  context 'when the subcon cancels' do
-    include_context 'when the subcon cancels the job'
-    it_should_behave_like 'provider job is canceled'
-    it_should_behave_like 'subcon job is canceled'
-  end
-
   context 'when subcon accepts the job' do
 
     before do
@@ -1648,66 +1636,14 @@ describe 'My Job When Transferred To a Member' do
             expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
           end
 
-          context 'when prov cancels' do
-            include_context 'when the provider cancels the job'
-            it_should_behave_like 'provider job is canceled'
-            it_should_behave_like 'subcon job is canceled'
-          end
-
-          context 'when the subcon cancels' do
-            include_context 'when the subcon cancels the job'
-            it_should_behave_like 'provider job is canceled'
-            it_should_behave_like 'subcon job is canceled'
-          end
-
 
         end
 
-        context 'when prov cancels' do
-          include_context 'when the provider cancels the job'
-          it_should_behave_like 'provider job is canceled'
-          it_should_behave_like 'subcon job is canceled'
-        end
-
-        context 'when the subcon cancels' do
-          include_context 'when the subcon cancels the job'
-          it_should_behave_like 'provider job is canceled'
-          it_should_behave_like 'subcon job is canceled'
-        end
-
-
       end
 
-      context 'when prov cancels' do
-        include_context 'when the provider cancels the job'
-        it_should_behave_like 'provider job is canceled'
-        it_should_behave_like 'subcon job is canceled'
-      end
-
-      context 'when the subcon cancels' do
-        include_context 'when the subcon cancels the job'
-        it_should_behave_like 'provider job is canceled'
-        it_should_behave_like 'subcon job is canceled'
-      end
 
     end
 
-    context 'when prov cancels' do
-      include_context 'when the provider cancels the job'
-      it_should_behave_like 'provider job is canceled'
-      it_should_behave_like 'subcon job is canceled'
-    end
-
-    context 'when the subcon cancels' do
-      include_context 'when the subcon cancels the job'
-      it_should_behave_like 'provider job is canceled'
-      it_should_behave_like 'subcon job is canceled'
-    end
-
-  end
-
-  context 'when subcon rejects the job' do
-    pending
   end
 
 end

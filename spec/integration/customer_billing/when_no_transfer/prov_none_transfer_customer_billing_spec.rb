@@ -100,8 +100,8 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                   expect(job.billing_status_name).to eq :partially_collected
                 end
 
-                it 'available payment events are :collect, :late, :mark_as_overpaid' do
-                  job.billing_status_events.should =~ [:collect, :late, :reject]
+                it 'available payment events are :collect, :late, :reject and :cancel' do
+                  job.billing_status_events.should =~ [:cancel, :collect, :late, :reject]
                 end
 
                 it 'collect event is associated with the job' do
@@ -170,7 +170,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                 end
 
                 it 'available payment events are collect and late' do
-                  job.billing_status_events.should =~ [:collect, :late, :reject]
+                  job.billing_status_events.should =~ [:cancel, :collect, :late, :reject]
                 end
 
 
@@ -193,7 +193,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
               end
 
               it 'available payment events are collect and late' do
-                job.billing_status_events.should =~ [:collect, :late, :reject]
+                job.billing_status_events.should =~ [:cancel, :collect, :late, :reject]
               end
 
             end
@@ -229,7 +229,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
           end
 
           it 'available payment events are collect and late' do
-            expect(job.billing_status_events.sort).to eq [:collect, :late, :reject]
+            expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject]
           end
 
           it 'payment event is associated with the job' do
@@ -336,7 +336,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                     end
 
                     it 'there are no available payment events' do
-                      job.billing_status_events.should =~ []
+                      job.billing_status_events.should =~ [:cancel]
                     end
                   end
                 end
@@ -351,7 +351,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                   end
 
                   it 'available payment events are paid and overdue' do
-                    job.billing_status_events.should =~ [:late, :collect, :reject]
+                    job.billing_status_events.should =~ [:cancel, :late, :collect, :reject]
                   end
 
                   it 'payment amount is the submitted one' do
@@ -416,7 +416,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                   end
 
                   it 'available payment events are collect and late' do
-                    job.billing_status_events.should =~ [:late, :collect, :reject]
+                    job.billing_status_events.should =~ [:cancel, :late, :collect, :reject]
                   end
 
                   it 'only collect and late  are events allowed for a user' do
@@ -436,7 +436,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                     end
 
                     it 'should have collect, and late as possible payment events, both available for the user' do
-                      job.billing_status_events.should =~ [:collect, :late]
+                      job.billing_status_events.should =~ [:cancel, :collect, :late]
                       expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
                       expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
                     end
@@ -476,7 +476,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                           end
 
                           it 'billing events should be :collect, :late' do
-                            expect(job.billing_status_events.sort).to eq [:collect, :late]
+                            expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late]
                           end
 
 
@@ -590,7 +590,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                       end
 
                       it 'should have collect and late as possible payment events both available for a user' do
-                        job.reload.billing_status_events.should =~ [:collect, :late]
+                        job.reload.billing_status_events.should =~ [:cancel, :collect, :late]
                         expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
                         expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
                       end
@@ -607,7 +607,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
 
                       it 'should have no payment events' do
-                        job.reload.billing_status_events.should =~ []
+                        job.reload.billing_status_events.should eq [:cancel]
                       end
                     end
                   end
@@ -627,7 +627,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
               end
 
               it 'available payment events are only collect' do
-                job.billing_status_events.should =~ [:collect]
+                job.billing_status_events.should eq [:cancel, :collect]
               end
 
 
@@ -660,6 +660,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
         context 'when clearing the payment' do
           before do
             job.payments.last.clear!
+            job.reload
           end
 
           it 'billing status should be paid' do

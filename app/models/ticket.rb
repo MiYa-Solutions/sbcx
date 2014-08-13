@@ -192,7 +192,11 @@ class Ticket < ActiveRecord::Base
   end
 
   def total
-    total_price + tax_amount
+    if canceled?
+      Money.new(0)
+    else
+      total_price + tax_amount
+    end
   end
 
   def completed_on_text
@@ -301,7 +305,7 @@ class Ticket < ActiveRecord::Base
 
   # this validator runs only for a specific state of a service call
   def validate_technician
-    if organization.multi_user? && !transferred? && !canceled?
+    if organization.multi_user? && !transferred? && !canceled? && !changed_from_transferred?
       self.errors.add :technician, "You must specify a technician" unless self.technician
     else
       self.technician = organization.users.first unless (transferred? || canceled?)
@@ -490,6 +494,10 @@ class Ticket < ActiveRecord::Base
                                     ends_at:      self.scheduled_for + 3600,
                                     title:        I18n.t('appointment.auto_title', id: self.ref_id),
                                     description:  I18n.t('appointment.auto_description', id: self.ref_id)) if self.scheduled_for_changed?
+  end
+
+  def changed_from_transferred?
+    changes[:status] && changes[:status][0] == ServiceCall::STATUS_TRANSFERRED
   end
 
 end

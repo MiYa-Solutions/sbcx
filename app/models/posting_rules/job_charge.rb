@@ -67,15 +67,23 @@ class JobCharge < CustomerPostingRule
   end
 
   def cancellation_entries
-    [
+    amount       = ServiceCallCharge.where(ticket_id: @ticket.id).last
+    amount_cents = amount ? amount.amount_cents : 0
+    if amount_cents > 0
+      amount_ccy = amount ? amount.amount_currency : 'USD'
+      [
 
-        CanceledJobAdjustment.new(event:       @event,
-                                  status:      AccountingEntry::STATUS_CLEARED,
-                                  ticket:      @ticket,
-                                  amount:      -charge_amount,
-                                  agreement:   agreement,
-                                  description: 'Reimbursement for a canceled job')
-    ]
+          CanceledJobAdjustment.new(event:           @event,
+                                    status:          AccountingEntry::STATUS_CLEARED,
+                                    ticket:          @ticket,
+                                    amount_cents:    -amount_cents,
+                                    amount_currency: amount_ccy,
+                                    agreement:       agreement,
+                                    description:     'Reimbursement for a canceled job')
+      ]
+    else
+      []
+    end
   end
 
   def charge_amount

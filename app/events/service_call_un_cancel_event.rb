@@ -30,18 +30,10 @@ class ServiceCallUnCancelEvent < ServiceCallEvent
     nil
   end
 
-  def update_provider
-    prov_service_call.events << ServiceCallUnCanceledEvent.new(triggering_event: self)
-    prov_service_call
-  end
-  def update_subcontractor
-    subcon_service_call.events << ServiceCallUnCanceledEvent.new(triggering_event: self)
-    subcon_service_call
-  end
-
   def process_event
-    service_call.work_status = ServiceCall::WORK_STATUS_PENDING
-    service_call.save!
+    service_call.cancel_subcon!
+    service_call.reset_work!
+    service_call.cancel_subcon_collection! if defined?(service_call.can_cancel_subcon_collection?) && service_call.can_cancel_subcon_collection?
     super
   end
 

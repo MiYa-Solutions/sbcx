@@ -84,6 +84,16 @@ shared_context 'basic job testing' do
   def cancel_the_job(ticket)
     ticket.cancel!
   end
+
+  def cancel_the_transfer(ticket)
+    ticket.cancel_transfer!
+  end
+
+  def reset_the_job(ticket)
+    ticket.un_cancel!
+  end
+
+  alias_method :un_cancel_the_job, :reset_the_job
 end
 
 shared_context 'transferred job' do
@@ -121,6 +131,8 @@ shared_context 'brokered job' do
     s = broker_subcon_agr.counterparty
     s.name = "subcon-#{s.name}"
     s.save!
+    u = FactoryGirl.build(:user, organization: s, email: "subcon-#{s.name}@example.com")
+    s.users << u
     s
   }
   let(:broker_admin) do
@@ -128,6 +140,11 @@ shared_context 'brokered job' do
     subcon.users << u
     u
   end
+
+  let(:subcon_admin) do
+    subcon.users.first
+  end
+
   let(:subcon_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
   let(:broker_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
   let(:broker_b4_transfer_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
@@ -185,37 +202,3 @@ shared_context 'when canceling the job' do
     expect(job_to_cancel.status_events).to include(:cancel)
   end
 end
-
-shared_examples 'provider job is canceled' do
-  it 'job status should be canceled' do
-    expect(Ticket.find(job.id)).to be_canceled
-  end
-end
-
-shared_examples 'subcon job is canceled' do
-
-  it 'subcon job status should be canceled' do
-    expect(Ticket.find(subcon_job.id)).to be_canceled
-  end
-end
-
-shared_context 'when the subcon cancels the job' do
-  include_context 'when canceling the job' do
-    let(:job_to_cancel) { subcon_job }
-  end
-end
-
-shared_context 'when the provider cancels the job' do
-  include_context 'when canceling the job' do
-    let(:job_to_cancel) { job }
-  end
-end
-
-shared_examples 'provider job canceled after completion' do
-  pending 'verify reimbursement'
-end
-
-shared_examples 'subcon job canceled after completion' do
-  pending 'verify reimbursement'
-end
-

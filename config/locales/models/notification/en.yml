@@ -34,6 +34,10 @@ en:
       html_message: '%{subcontractor} reported the customer has canceled the %{link}'
       subject: 'Transferred service call %{ref} has been canceled '
       content: '%{subcontractor} has reported the service call as canceled by the customer accepted the service call'
+    sc_provider_canceled_notification:
+      html_message: '%{provider} canceled the %{link}'
+      subject: '%{provider} canceled his transferred job (%{ref})'
+      content: '%{provider} has canceled job (%{ref}), %{job_name} '
     sc_un_canceled_notification:
       html_message: '%{subcontractor} reported has changed his mind reverted the %{link} back from canceled to new'
       subject: 'Transferred service call %{ref} has been un-canceled '

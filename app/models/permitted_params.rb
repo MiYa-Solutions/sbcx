@@ -392,6 +392,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     res = false if params_to_check[:billing_status_event] == 'deposited'
     res = false if params_to_check[:billing_status_event] == 'clear'
     res = false if params_to_check[:billing_status_event] == 'reject'
+    res = false if params_to_check[:billing_status_event] == 'cancel'
 
     res
   end
@@ -404,6 +405,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = false if params_to_check[:subcontractor_status_event] == "subcon_marked_as_settled" && obj.subcontractor.subcontrax_member?
       res = false if params_to_check[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
       res = false if params_to_check[:subcontractor_status_event] == "clear" && obj.subcontractor.subcontrax_member?
+      res = false if params_to_check[:subcontractor_status_event] == "cancel"
     end
     res
   end
@@ -415,6 +417,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = true
       res = false if params_to_check[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
       res = false if params_to_check[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
+      res = false if params_to_check[:provider_status_event] == "cancel"
+
     end
     res
 
@@ -475,19 +479,25 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = true
     res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.kind_of?(TransferredServiceCall)
+    res = false if params_to_check[:status_event] == 'provider_canceled'
     res
   end
 
   def sc_work_status_attr
-    case obj
-      when MyServiceCall
-        # if the service call is transferred to a local subcontractor, allow the provider to update the service call with subcontractor events
-        obj.transferred? && obj.subcontractor.subcontrax_member? ? [] : [:work_status_event]
-      when TransferredServiceCall
-        obj.accepted? || (obj.transferred? && !obj.subcontractor.subcontrax_member?) ? [:work_status_event] : []
-      else
-        []
-    end
+    attr = []
+    attr << :work_status_event if sc_work_event_permitted?
+    attr
+  end
+
+  def sc_work_event_permitted?
+
+    params_to_check = params[:service_call] ? params[:service_call] : params
+    res             = true
+
+    res = false if params_to_check[:work_status_event] == 'cancel' && obj.subcontractor.member?
+    res = false if params_to_check[:work_status_event] == 'reset'
+    res
+
   end
 
   def sc_billing_status_attrs

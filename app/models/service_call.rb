@@ -58,11 +58,11 @@
 
 class ServiceCall < Ticket
 
-  def fully_paid?(options = {})
+  def fully_paid?
     current_payment = payment_amount || 0
 
-    if options[:work_in_progress].nil?
-      work_done? ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+    if self.canceled?
+      true
     else
       total > 0 ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
     end
@@ -102,6 +102,7 @@ class ServiceCall < Ticket
   WORK_STATUS_ACCEPTED    = 2003
   WORK_STATUS_REJECTED    = 2004
   WORK_STATUS_DONE        = 2005
+  WORK_STATUS_CANCELED    = 2006
 
   state_machine :work_status, initial: :pending, namespace: 'work' do
     state :pending, value: WORK_STATUS_PENDING
@@ -114,6 +115,7 @@ class ServiceCall < Ticket
     state :accepted, value: WORK_STATUS_ACCEPTED
     state :rejected, value: WORK_STATUS_REJECTED
     state :done, value: WORK_STATUS_DONE
+    state :canceled, value: WORK_STATUS_CANCELED
 
     after_transition any => :done do |sc, transition|
       if sc.payments.size > 0
@@ -128,7 +130,7 @@ class ServiceCall < Ticket
     end
 
     event :start do
-      transition [:pending] => :in_progress, if: lambda { |sc| !sc.canceled? && !sc.organization.multi_user? && !sc.transferred? }
+      transition :pending => :in_progress, if: lambda { |sc| !sc.canceled? && !sc.organization.multi_user? && !sc.transferred? }
       transition [:accepted, :dispatched] => :in_progress, if: ->(sc) { !sc.canceled? }
     end
 
@@ -150,11 +152,17 @@ class ServiceCall < Ticket
     end
 
     event :reset do
-      transition :rejected => :pending, if: ->(sc) { !sc.canceled? }
+      #transition [:rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
+      transition [:in_progress, :accepted, :rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
+
     end
 
     event :complete do
       transition :in_progress => :done, if: ->(sc) { !sc.canceled? }
+    end
+
+    event :cancel do
+      transition [:accepted, :in_progress] => :canceled
     end
 
   end
@@ -216,6 +224,11 @@ class ServiceCall < Ticket
     event :clear do
       transition :settled => :cleared
     end
+
+    event :cancel do
+      transition :pending => :na
+    end
+
   end
 
 

@@ -96,10 +96,11 @@ class MyServiceCall < ServiceCall
     end
 
     event :cancel do
-      transition [:new, :open, :transferred] => :canceled
+      transition [:new, :open, :transferred] => :canceled, unless: ->(sc) { sc.work_done? }
     end
 
     event :un_cancel do
+      transition :transferred => :new, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
       transition :canceled => :transferred, if: ->(sc) { sc.can_uncancel? && sc.subcontractor.present? }
       transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
     end
@@ -110,7 +111,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :cancel_transfer do
-      transition :transferred => :new, if: ->(sc) { !sc.work_done? }
+      transition :transferred => :new, unless: ->(sc) { sc.work_done? || sc.work_canceled?}
     end
   end
 
@@ -124,14 +125,15 @@ class MyServiceCall < ServiceCall
   end
 
   def my_profit
-    customer_cents  = entries.select{|e| e.type == 'ServiceCallCharge' }.map { |b| b.amount_cents }.sum
-    subcon_payments = entries.select{|e| e.type == 'PaymentToSubcontractor' }.map { |b| b.amount_cents }.sum
-    reimb_amount    = entries.select{|e| e.type == 'MaterialReimbursementToCparty' }.map { |b| b.amount_cents }.sum
-    my_bom_cents    = -boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
-    payment_reimb   = entries.select{|e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |b| b.amount_cents }.sum
+    cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum
+    customer_cents    = entries.select { |e| e.type == 'ServiceCallCharge' }.map { |b| b.amount_cents }.sum
+    subcon_payments   = entries.select { |e| e.type == 'PaymentToSubcontractor' }.map { |b| b.amount_cents }.sum
+    reimb_amount      = entries.select { |e| e.type == 'MaterialReimbursementToCparty' }.map { |b| b.amount_cents }.sum
+    my_bom_cents      = -boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
+    payment_reimb     = entries.select { |e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |b| b.amount_cents }.sum
 
 
-    Money.new(customer_cents + reimb_amount + subcon_payments + my_bom_cents + payment_reimb)
+    Money.new(customer_cents + reimb_amount + subcon_payments + my_bom_cents + payment_reimb + cancel_adjustment)
 
   end
 
