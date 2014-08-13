@@ -1,5 +1,10 @@
 <tr>
-  <td><strong><%= I18n.t('general.general.provider_balance') %></strong></td>
+
+  <td><strong>
+    <%= link_to(I18n.t('general.general.provider_balance'), affiliate_path(@service_call.provider),
+                :title => @service_call.provider.try(:name).html_safe, :rel => 'tooltip') if @service_call.provider.present? %>
+  </strong></td>
+
   <% if @service_call.try(:provider_balance) == 0 %>
       <td class="balanced">
         <%= humanized_money_with_symbol @service_call.provider_balance %>

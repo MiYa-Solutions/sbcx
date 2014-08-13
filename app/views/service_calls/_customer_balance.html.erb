@@ -1,5 +1,10 @@
 <tr>
-  <td><strong> <%= "Customer Balance" %></strong></td>
+
+  <td><strong>
+    <%= link_to(I18n.t('general.general.customer_balance'), customer_path(@service_call.customer),
+                :title => @service_call.customer.try(:name).html_safe, :rel => 'tooltip') if @service_call.customer.present? %>
+  </strong></td>
+
   <% if @service_call.try(:customer_balance) == 0 %>
       <td class="balanced"><%= humanized_money_with_symbol @service_call.customer_balance %></td>
       <!--<td></td>-->

@@ -1,9 +1,14 @@
 <tr>
-  <td><strong><%= I18n.t('general.general.subcontractor_balance') %></strong></td>
+  <td><strong>
+          <%= link_to(I18n.t('general.general.subcontractor_balance'), affiliate_path(@service_call.subcontractor),
+          :title => @service_call.subcontractor.try(:name).html_safe, :rel => 'tooltip') if @service_call.subcontractor.present? %>
+  </strong></td>
+
   <% if @service_call.try(:subcon_balance) == 0 %>
       <td class="balanced">
         <%= humanized_money_with_symbol @service_call.subcon_balance %>
       </td>
+      <td></td>
       <!--<td></td>-->
   <% else %>
       <% if @service_call.try(:subcon_balance) > 0 %>

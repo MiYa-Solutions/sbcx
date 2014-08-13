@@ -29,8 +29,8 @@
           <% @notifications.each do |notification| %>
               <tr class="<%= "#{notification.class.model_name.underscore} #{notification.notifiable_type.underscore}_#{notification.notifiable_id}" %>">
                 <td><%= l notification.created_at, format: :short %></td>
-                <td><%= link_to notification.subject, notification.becomes(Notification) %></td>
-                <td><%= notification.html_message %></td>
+                <td class="notification_subject_link"><%= link_to notification.subject, notification.becomes(Notification) %></td>
+                <td class="notification_message_link"><%= notification.html_message %></td>
                 <td><%= notification.human_status_name.titleize %></td>
 
                 <td><%= link_to 'Dismiss', notification.becomes(Notification), method: :delete, confirm: 'Are you sure?', :class => 'btn btn-mini btn-danger' %></td>

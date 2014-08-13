@@ -70,10 +70,10 @@ en:
       html_message: '%{link} %{ref} has been settled'
       subject: 'Service call %{ref} is settled'
       content: 'Please note that service call %{ref} has been settled'
-    sc_settled_notification:
-      html_message: 'The subcontractor (%{subcontractor}) has marked %{link} %{ref} as settled'
-      subject: 'Service call %{ref} was marked as settled by the subcontractor'
-      content: 'Please note that service call %{ref} was marked as settled by the subcontractor (%{subcontractor})'
+#    sc_settled_notification:
+#      html_message: 'The subcontractor (%{subcontractor}) has marked %{link} %{ref} as settled'
+#      subject: 'Service call %{ref} was marked as settled by the subcontractor'
+#      content: 'Please note that service call %{ref} was marked as settled by the subcontractor (%{subcontractor})'
     sc_started_notification:
       html_message: 'The %{subcontractor} has started the %{link}'
       subject: 'Job %{ref} has started'

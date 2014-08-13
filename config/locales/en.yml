@@ -86,6 +86,7 @@ en:
       agr_no_add_rule_no_active: "You can add rules only in case the agreement is not Pending or a Draft."
 
 
+      done_jobs: "Completed jobs that are pending settlement"
     errors:
       error: "Error"
       403_title: "Forbidden. (403)"
@@ -187,6 +188,14 @@ en:
       cancel_transfer: "Un-Transfer"
       filter_all_jobs_l1: "Use the following drop-downs to filter your results."
       filter_all_jobs_l2: "To cancel selected filter, simply click on its 'X' link on the right."
+      in_progress: "In Progress"
+      done: "Done"
+      billing_summary_for: "Billing Summary for:"
+      customer_billing_for: "Customer Billing for:"
+      external_ref: "External Number"
+      customers_balance: "Customers Balance"
+      affiliates_balance: "Affiliates Balance"
+      customer_balance: "Customer Balance"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
