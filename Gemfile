@@ -26,7 +26,7 @@ gem 'declarative_authorization', '0.5.5'
 gem 'state_machine', '1.1.2'
 gem 'magiclabs-userstamp', '2.0.2'
 gem 'strong_parameters', '0.2.0'
-gem 'paper_trail', '3.0.0'
+gem 'paper_trail', '3.0.3'
 
 gem 'best_in_place', git: 'git://github.com/MiYa-Solutions/best_in_place.git'
 gem 'unicorn', '~> 4.8.0', platform: :ruby

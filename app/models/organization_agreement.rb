@@ -38,22 +38,23 @@ class OrganizationAgreement < Agreement
     state :draft, value: STATUS_DRAFT
     state :active, value: STATUS_ACTIVE do
       validate ->(agr) { agr.check_rules }
+      validates_presence_of :payment_terms
     end
     state :pending_org_approval, value: STATUS_PENDING_ORG_APPROVAL do
 
-      validates_presence_of :posting_rules
+      validates_presence_of :posting_rules, :payment_terms
     end
     state :pending_cparty_approval, value: STATUS_PENDING_CPARTY_APPROVAL do
 
-      validates_presence_of :posting_rules
+      validates_presence_of :posting_rules, :payment_terms
     end
     state :rejected_by_org, value: STATUS_REJECTED_BY_ORG do
 
-      validates_presence_of :posting_rules
+      validates_presence_of :posting_rules, :payment_terms
     end
     state :rejected_by_cparty, value: STATUS_REJECTED_BY_CPARTY do
 
-      validates_presence_of :posting_rules
+      validates_presence_of :posting_rules, :payment_terms
     end
     state :canceled, value: STATUS_CANCELED
     state :replaced, value: STATUS_REPLACED
