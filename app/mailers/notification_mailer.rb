@@ -42,7 +42,7 @@ class NotificationMailer < ActionMailer::Base
 
   AdjustmentEntryNotification.subclasses.each do |subclass|
     define_method subclass.name.underscore do |subject, user, entry, event|
-      @entry = entry
+      @entry = event.entry
       @user  = user
       @event = event
 

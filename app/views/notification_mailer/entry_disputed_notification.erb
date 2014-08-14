@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+  <html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title><%= I18n.t('notification_mailer.deposit_entry_disputed.subject').html_safe %></title>
+    <%= render 'styling' %>
+  </head>
+
+  <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+
+  <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+    <tr>
+      <td align="center" valign="top" style="padding-top:20px;">
+
+        <!--CSS change -->
+        <table border="1px solid #DDDDDD" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+          <tr>
+            <td align="center" valign="top">
+
+              <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+                <tr>
+                  <!--CSS change -->
+                  <td class="headerContent" style="background-color: #737373; height: 50px; vertical-align:middle; text-align:center; ">
+                    <img src="http://www.subcontrax.com/assets/LogoImg.png" style="max-width:600px; height:auto; max-width:600px !important;" id="headerImage campaign-icon"/>
+
+                  </td>
+                </tr>
+              </table>
+              <!-- // End Template Header \\ -->
+            </td>
+          </tr>
+          <tr>
+            <td align="center" valign="top">
+              <!-- // Begin Template Body \\ -->
+              <!--CSS change -->
+              <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody" style="font-family:Arial; font-size:14px;">
+                <tr>
+                  <td valign="top">
+
+                    <!-- // Begin Module: Standard Content \\ -->
+                    <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                      <tr>
+                        <!--CSS change -->
+                        <td valign="top" class="bodyContent" style="color:#505050; font-family:Arial; font-size:14px; line-height:150%;">
+                          <div>
+                            <!--CSS change -->
+                            <h4 class="h4" style="font-family:Arial; font-size:18px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                              <%= I18n.t('notification_mailer.deposit_entry_disputed.title').html_safe %>
+                            </h4>
+                            <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>,<br>
+                            <%= I18n.t('notification_mailer.deposit_entry_disputed.content').html_safe %>
+                            &nbsp;<strong><%= @entry.account.organization.name.html_safe %></strong>.
+                            <br>
+                          </div>
+                        </td>
+
+                      </tr>
+                      <tr>
+                        <td valign="top" style="padding-top:0; padding-bottom:0;">
+                          <!--CSS change -->
+                          <table cellpadding="10" cellspacing="0" width="100%" class="templateDataTable" style="border:2px solid #f5f5f5;">
+                            <!--CSS change -->
+                            <tr style="background-color:#F5F5F5; color:#336699; font-family:Arial; font-size:14px; font-weight:bold; text-align:left; line-height:150%;">
+                              <th scope="col" valign="top" width="95%" class="dataTableHeading">
+                                <%= I18n.t('general.general.message').html_safe %>
+                              </th>
+
+                            </tr>
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @entry.description %></strong>
+                              </td>
+
+                            </tr>
+
+                            <!--CSS change -->
+                          </table>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <!--CSS change -->
+                        <td valign="top" class="bodyContent" style="font-family:Arial; font-size:14px; line-height:150%;">
+                          <br>
+                          <div>
+                            <%= I18n.t('notification_mailer.deposit_entry_disputed.bottom_content').html_safe %>.
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" valign="top" style="padding-top:0;">
+                          <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
+                            <tr>
+                              <td valign="middle" class="templateButtonContent">
+                                <%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, accounting_entry_url(@entry) %>
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- // End Module: Standard Content \\ -->
+                  </td>
+                </tr>
+              </table>
+              <!-- // End Template Body \\ -->
+            </td>
+          </tr>
+          <tr>
+            <%= render 'footer' %>
+          </tr>
+        </table>
+        <br>
+      </td>
+    </tr>
+  </table>
+
+  </body>
+
+  </html>

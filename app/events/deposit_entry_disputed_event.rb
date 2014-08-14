@@ -6,10 +6,18 @@ class DepositEntryDisputedEvent < EntryEvent
     self.reference_id = 300012
   end
 
+  def notification_class
+    EntryDisputedNotification
+  end
+
+  def notification_recipients
+    User.my_admins(entry.account.organization_id)
+  end
+
   def process_event
     entry.disputed! unless triggering_event.nil?
     entry.ticket.deposit_disputed_prov_collection! if entry.ticket.can_deposit_disputed_prov_collection?
-
+    super
   end
 
 end

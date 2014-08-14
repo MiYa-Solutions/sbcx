@@ -622,6 +622,9 @@ describe 'My Job When Transferred To a Member' do
                 expect(deposited_entry.account.reload.balance).to eq Money.new(1000*0.01)
               end
 
+              it 'subcon should not be allowed to confirm the deposited payments' do
+                expect(subcon_job.deposit_entries.last.allowed_status_events).to be_empty
+              end
 
               context 'when deposit confirmed' do
 
@@ -654,7 +657,12 @@ describe 'My Job When Transferred To a Member' do
 
               context 'when the deposit is disputed' do
                 before do
+                  subcon_admin
                   deposited_entry.dispute!
+                end
+
+                it 'subcon should not be allowed to confirm the deposited payments' do
+                  expect(subcon_job.deposit_entries.last.allowed_status_events).to be_empty
                 end
 
                 it 'deposit entry status should be confirmed' do
@@ -663,6 +671,10 @@ describe 'My Job When Transferred To a Member' do
 
                 it 'the last event should be DepositEntryDisputeEvent' do
                   expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
+                end
+
+                it 'subcon should have a notification associated' do
+                  expect(subcon_job.notifications.last).to be_instance_of(EntryDisputedNotification)
                 end
 
                 it 'payment status should be subcon_claim_deposited' do

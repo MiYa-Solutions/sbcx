@@ -65,6 +65,10 @@ describe '3rd Party Collection' do
               expect(subcon_job.prov_collection_status_name).to eq :is_deposited
             end
 
+            it 'subcon should not be allowed to confirm the deposited payments' do
+              expect(subcon_job.deposit_entries.last.allowed_status_events).to be_empty
+            end
+
             context 'when the broker confirms the deposit' do
               before do
                 broker_job.deposited_entries.last.confirm!

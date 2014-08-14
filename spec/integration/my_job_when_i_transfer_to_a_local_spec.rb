@@ -724,7 +724,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     end
 
                     it 'available entry status events are canceled and confirmed' do
-                      expect(deposit_entry.status_events).to eq [:confirm]
+                      expect(deposit_entry.allowed_status_events).to eq [:confirm]
                     end
 
                     context 'when confirming' do

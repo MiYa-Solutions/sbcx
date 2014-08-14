@@ -171,6 +171,11 @@ en:
       subject: '%{affiliate} has accepted the account adjustment'
       content: '%{affiliate} has accepted the account adjustment'
 
+    entry_disputed_notification:
+      html_message: "%{affiliate} has disputed your deposit %{link}"
+      subject: '%{affiliate} has disputed an entry for job %{ref}'
+      content: '%{affiliate} has disputed an entry for job ${ref}'
+
     acc_adj_rejected_notification:
       html_message: "%{affiliate} has rejected your %{link}"
       subject: '%{affiliate} has rejected the account adjustment'
