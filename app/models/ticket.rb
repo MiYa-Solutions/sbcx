@@ -376,6 +376,11 @@ class Ticket < ActiveRecord::Base
     end
   end
 
+  def active_subcon_entries
+    subcon_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED])
+  end
+
+
   def provider_entries
     if provider
       acc = Account.for_affiliate(organization, provider).first
@@ -383,6 +388,10 @@ class Ticket < ActiveRecord::Base
     else
       []
     end
+  end
+
+  def active_provider_entries
+    provider_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED])
   end
 
   def customer_entries
@@ -393,6 +402,12 @@ class Ticket < ActiveRecord::Base
       []
     end
   end
+
+  def active_customer_entries
+    customer_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, CustomerPayment::STATUS_REJECTED])
+  end
+
+
 
   def counterparty
     case my_role
