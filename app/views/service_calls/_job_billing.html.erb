@@ -83,7 +83,7 @@
                                          title:       I18n.t('service_call.forms.billing_status.collection.tooltip'),
                                          rel:         'tooltip'
                             %>
-                        <% end %>
+                        <% end if @service_call.billing_status_events.include? :collect %>
 
                       </div>
 

@@ -24,10 +24,8 @@ module ServiceCallsHelper
   end
 
   def work_status_forms(service_call)
-    if permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)
-      #concat(content_tag :h3, t('headers.work_actions')) unless service_call.work_status_events.empty?
-      service_call.work_status_events.collect do |event|
-        #concat(content_tag :li, send("work_#{event}_form".to_sym, service_call))
+    service_call.work_status_events.collect do |event|
+      if permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event, event.to_s)
         concat(render "service_calls/action_forms/work_status_forms/#{event}_form", job: service_call)
       end
     end
@@ -239,7 +237,7 @@ module ServiceCallsHelper
 
     protected
     def available_events
-      @obj.status_events
+      @obj.status_events.map { |event| event if @view.permitted_params(@obj).permitted_attribute?('service_call', :status_event, event.to_s) }.compact
     end
 
   end

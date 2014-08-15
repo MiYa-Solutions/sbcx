@@ -41,7 +41,7 @@
           </span>
         </td>
       </tr>
-      <% unless @service_call.instance_of?(TransferredServiceCall) && @service_call.payment_na? %>
+      <% unless @service_call.kind_of?(TransferredServiceCall) && @service_call.payment_na? %>
           <tr>
             <td><strong><%= t('general.general.customer_payment') %></strong></td>
             <td>

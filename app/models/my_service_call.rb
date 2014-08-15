@@ -111,7 +111,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :cancel_transfer do
-      transition :transferred => :new, unless: ->(sc) { sc.work_done? || sc.work_canceled?}
+      transition :transferred => :new, unless: ->(sc) { sc.work_done? || sc.work_canceled? }
     end
   end
 
@@ -149,6 +149,10 @@ class MyServiceCall < ServiceCall
     res = [self.organization]
     res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
     res
+  end
+
+  def work_start_allowed?
+    true
   end
 
 end

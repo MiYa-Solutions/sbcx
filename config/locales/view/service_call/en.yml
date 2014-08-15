@@ -70,6 +70,9 @@ en:
           tooltip: "Click to reset the job after rejected in order to dispatch or outsource to another subcontractor"
         complete:
           tooltip: "Click to indicate the service has completed"
+        cancel:
+          tooltip: "Click to indicate the subcontractor has canceled the job"
+
 
 
       billing_status:

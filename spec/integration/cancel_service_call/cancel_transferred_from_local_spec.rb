@@ -12,6 +12,15 @@ describe 'Cancel Job Transferred From Local' do
     accept_the_job job
   end
 
+  it 'should have the cancel event available' do
+
+  end
+
+  it 'subcon collection events should be :cancel' do
+    expect(job.status_events.sort).to eq [:cancel]
+  end
+
+
   context 'when canceling the job before starting it' do
     before do
       cancel_the_job job

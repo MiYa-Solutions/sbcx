@@ -130,7 +130,7 @@ class ServiceCall < Ticket
     end
 
     event :start do
-      transition :pending => :in_progress, if: lambda { |sc| !sc.canceled? && !sc.organization.multi_user? && !sc.transferred? }
+      transition :pending => :in_progress, if: ->(sc) { sc.work_start_allowed? && !sc.organization.multi_user?}
       transition [:accepted, :dispatched] => :in_progress, if: ->(sc) { !sc.canceled? }
     end
 
@@ -148,7 +148,7 @@ class ServiceCall < Ticket
     #end
 
     event :dispatch do
-      transition :pending => :dispatched, if: ->(sc) { !sc.canceled? && sc.organization.multi_user? && !sc.transferred? }
+      transition [:pending, :accepted] => :dispatched, if: ->(sc) { sc.organization.multi_user? && sc.work_start_allowed? }
     end
 
     event :reset do
