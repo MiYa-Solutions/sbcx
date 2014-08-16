@@ -1,4 +1,4 @@
-<tr>
+<tr class="col_entry_table">
 
   <td><strong>
     <%= link_to(I18n.t('general.general.customer_balance'), customer_path(@service_call.customer),
@@ -7,7 +7,6 @@
 
   <% if @service_call.try(:customer_balance) == 0 %>
       <td class="balanced"><%= humanized_money_with_symbol @service_call.customer_balance %></td>
-      <!--<td></td>-->
   <% else %>
       <% if @service_call.try(:customer_balance) > 0 %>
           <td class="positive">
@@ -30,12 +29,13 @@
   <% end %>
   <td class="show_more_button">
     <% unless @service_call.customer_entries.size == 0 %>
-
       <span class="link_blue" id="show_customer_entries">
-           <%= link_to t('general.general.get_entries'), "#customer_billing_entries", class: "", data: {toggle: 'collapse'}, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+
+        <span class="label label_new_entry"><%= "#{@service_call.active_customer_entries.size} new" if @service_call.active_customer_entries.size > 0 %></span>
+
+        <%= link_to t('general.general.get_entries'), "#customer_billing_entries", class: "", data: {toggle: 'collapse'}, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
         <i class="icon-chevron-down"></i>
       </span>
-        <span><%= "YESH #{@service_call.active_customer_entries.size}" if @service_call.active_customer_entries.size > 0 %></span>
 
 
   <% end %>

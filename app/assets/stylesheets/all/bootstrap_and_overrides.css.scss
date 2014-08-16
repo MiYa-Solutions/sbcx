@@ -4479,7 +4479,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 .adj_entry_events {
 
   form {
-    margin: 0 0 4px;
+//    margin: 0 0 4px;
+    margin: -2px 0 7px;
   }
 
   ul {
@@ -4494,7 +4495,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   }
 
   li:last-child {
-    float: inherit;
+    float: left;
   }
 }
 
@@ -4764,6 +4765,16 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   a:hover {
     background-color: #003580;
     color: #ffffff;
+  }
+}
+
+.label_new_entry {
+  background-color: #5bb65b;
+}
+
+.col_entry_table {
+  tr {
+    width: 33.33%;
   }
 }
 

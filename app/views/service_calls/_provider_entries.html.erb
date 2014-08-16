@@ -60,7 +60,7 @@
           <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
           <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
           <th><%= AccountingEntry.human_attribute_name(:type) %></th>
-          <th><%= AccountingEntry.human_attribute_name(:description) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:payment_notes) %></th>
           <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
           <th><%= AccountingEntry.human_attribute_name(:balance) %> </th>
         </tr>
@@ -73,7 +73,7 @@
               <td><%= entry.account.accountable.class.model_name.human %></td>
               <td><%= l entry.created_at %></td>
               <td><%= entry.type.constantize.model_name.human %></td>
-              <td><%= entry.description %></td>
+              <td><%= entry.notes %></td>
               <td><%= humanized_money_with_symbol entry.amount %></td>
               <td><%= humanized_money_with_symbol entry.balance %></td>
             </tr>

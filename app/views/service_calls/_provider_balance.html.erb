@@ -1,6 +1,7 @@
-<tr>
+<tr class="col_entry_table">
 
-  <td><strong>
+
+<td><strong>
     <%= link_to(I18n.t('general.general.provider_balance'), affiliate_path(@service_call.provider),
                 :title => @service_call.provider.try(:name).html_safe, :rel => 'tooltip') if @service_call.provider.present? %>
   </strong></td>
@@ -9,7 +10,6 @@
       <td class="balanced">
         <%= humanized_money_with_symbol @service_call.provider_balance %>
       </td>
-      <td></td>
   <% else %>
       <% if @service_call.try(:provider_balance) > 0 %>
           <td class="positive">
@@ -32,12 +32,13 @@
   <% end %>
 
   <td class="show_more_button">
-                            <span class="link_blue" id="show_provider_entries">
-                               <%= link_to t('general.general.get_entries'), "#prov_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
-                              <i class="icon-chevron-down"></i>
-                            </span>
-    <span><%= "YESH #{@service_call.active_provider_entries.size}" if @service_call.active_provider_entries.size > 0 %></span>
-
+     <span class="link_blue" id="show_provider_entries">
+      <% if @service_call.active_provider_entries.size > 0 %>
+         <span class="label label_new_entry"><%= "#{@service_call.active_provider_entries.size} new"  %></span>
+      <% end %>
+         <%= link_to t('general.general.get_entries'), "#prov_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+         <i class="icon-chevron-down"></i>
+      </span>
   </td>
 
 
