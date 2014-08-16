@@ -19,12 +19,13 @@ class StaticPagesController < ApplicationController
         format.html do
           @notifications = current_user.notifications
           @service_calls = current_user.organization.active_jobs
-          @affiliates    = current_user.organization.affiliates
+          @aff_accounts    = Account.for_affiliates_with_balance(current_user.organization)
+          @customer_accounts    = Account.for_customers_with_balance(current_user.organization)
         end
 
         format.mobile do
-          @notifications = current_user.notifications
-          @appointments  = current_user.organization.appointments
+          @notifications = current_user.notifications.order('id desc').limit(5)
+          @appointments  = current_user.organization.appointments.where('starts_at >= ?', Time.zone.today).order('starts_at ASC').limit(10)
         end
 
       end

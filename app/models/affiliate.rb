@@ -27,6 +27,8 @@
 
 class Affiliate < Organization
 
+  scope :with_balance, ->(org) {my_affiliates(org.id).where()}
+
   def save
     self.parent_org.providers << self if !self.parent_org.providers.include?(self) && self.organization_role_ids.include?(OrganizationRole::PROVIDER_ROLE_ID)
     self.parent_org.subcontractors << self if !self.parent_org.subcontractors.include?(self) && self.organization_role_ids.include?(OrganizationRole::SUBCONTRACTOR_ROLE_ID)

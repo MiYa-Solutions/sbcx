@@ -493,8 +493,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = true
 
-    res = false if obj.transferred? && obj.subcontractor.subcontrax_member?
-    res = false if params_to_check[:work_status_event] == 'cancel' && obj.subcontractor.member?
+    res = false if obj && obj.transferred? && obj.subcontractor.subcontrax_member?
+    res = false if params_to_check[:work_status_event] == 'cancel'
     res = false if params_to_check[:work_status_event] == 'reset'
     res
 
