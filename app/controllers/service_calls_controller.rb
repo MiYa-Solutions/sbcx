@@ -80,7 +80,10 @@ class ServiceCallsController < ApplicationController
           redirect_to service_call_path @service_call
         end
 
-        format.json { respond_with_bip @service_call }
+        format.json do
+          update_params_for_bip
+          respond_with_bip @service_call
+        end
 
       else
         format.js { respond_bip_error @service_call }
@@ -121,6 +124,12 @@ class ServiceCallsController < ApplicationController
       return "organization_id = -1" # force a blank result
     end
 
+  end
+
+  def update_params_for_bip
+    params[:my_service_call] = params[:service_call]
+    params[:subcon_service_call] = params[:service_call]
+    params[:broker_service_call]  = params[:service_call]
   end
 
 end
