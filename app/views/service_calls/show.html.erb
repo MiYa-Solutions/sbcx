@@ -7,7 +7,7 @@
     </li>
     <li id="external_job_id">
       <% unless  @service_call.external_ref.nil? %>
-         <h1><%= I18n.t('general.general.external_ref').html_safe + ": ".html_safe + "#{@service_call.external_ref}" %></h1>
+         <h1><%= Ticket.human_attribute_name(:external_ref) + ": ".html_safe + "#{@service_call.external_ref}" %></h1>
       <% end %>
     </li>
     <li></li>
