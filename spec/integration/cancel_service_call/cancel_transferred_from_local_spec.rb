@@ -16,8 +16,8 @@ describe 'Cancel Job Transferred From Local' do
 
   end
 
-  it 'subcon collection events should be :cancel' do
-    expect(job.status_events.sort).to eq [:cancel]
+  it 'subcon status events should be :cancel' do
+    expect(job.status_events.sort).to eq [:cancel, :provider_canceled, :transfer]
   end
 
 

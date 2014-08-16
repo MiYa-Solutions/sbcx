@@ -152,8 +152,8 @@ describe 'Canceling Job With A Broker' do
         expect(job.status_name).to eq :transferred
       end
 
-      it 'broker job status should be :new' do
-        expect(broker_job.status_name).to eq :new
+      it 'broker job status should be :accepted' do
+        expect(broker_job.status_name).to eq :accepted
       end
 
       it 'prov job subcon status should be :pending' do
@@ -209,7 +209,7 @@ describe 'Canceling Job With A Broker' do
       end
 
       it 'broker should have the :accept and :reject as work status' do
-        expect(broker_job.status_events.sort).to eq [:accept, :provider_canceled, :reject]
+        expect(broker_job.status_events.sort).to eq [:cancel, :provider_canceled, :transfer]
       end
 
     end
