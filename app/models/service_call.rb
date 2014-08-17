@@ -280,8 +280,7 @@ class ServiceCall < Ticket
   end
 
   def can_change_boms?
-
-    (self.work_status_was == WORK_STATUS_IN_PROGRESS || self.work_in_progress?)&& (!self.transferred? || self.transferred? && !self.subcontractor.subcontrax_member?)
+    !self.work_done?
   end
 
   alias_method :can_change_financial_data?, :can_change_boms?

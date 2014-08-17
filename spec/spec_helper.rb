@@ -1,7 +1,6 @@
 require 'simplecov'
 SimpleCov.start
 
-require 'paper_trail/frameworks/active_record/models/paper_trail/version'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rubygems'
 require 'spork'
@@ -15,6 +14,7 @@ require 'declarative_authorization/maintenance'
 require 'money-rails/test_helpers'
 require 'active_attr/rspec'
 require 'factory_girl_rails'
+require 'paper_trail/frameworks/active_record/models/paper_trail/version'
 
 
 

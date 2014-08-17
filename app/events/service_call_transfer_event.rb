@@ -59,7 +59,10 @@ class ServiceCallTransferEvent < ServiceCallEvent
       new_service_call.properties         = create_transfer_props(service_call)
       new_service_call.events << ServiceCallReceivedEvent.new(triggering_event: self, description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
 
-      new_service_call.save!
+      Ticket.transaction do
+        new_service_call.save!
+        copy_boms_to_subcon(new_service_call)
+      end
       Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
 
 
@@ -87,5 +90,26 @@ class ServiceCallTransferEvent < ServiceCallEvent
 
     result
   end
+
+  def copy_boms_to_subcon(ticket)
+    service_call.boms.each do |bom|
+      Bom.without_stamps do
+        new_bom           = bom.dup
+        new_bom.ticket_id = nil
+        new_bom.creator   = nil
+        new_bom.updater   = nil
+        new_bom.provider_bom = bom
+        # if the material buyer is the subcontractor or the technician make the buyer the owner of this service call
+        if new_bom.buyer.instance_of?(User) || new_bom.buyer == service_call.subcontractor.becomes(Organization)
+          new_bom.buyer = service_call.organization
+        end
+        # todo make atomic operation to allow a proper rollback
+        ticket.boms << new_bom
+        bom.subcon_bom = new_bom
+        bom.save!
+      end
+    end
+  end
+
 
 end

@@ -456,6 +456,9 @@ class Ticket < ActiveRecord::Base
 
   end
 
+  def subcon_ticket
+    Ticket.where(organization_id: subcontractor_id).where(ref_id: ref_id).first
+  end
 
 
   protected
