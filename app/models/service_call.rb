@@ -280,7 +280,7 @@ class ServiceCall < Ticket
   end
 
   def can_change_boms?
-    !self.work_done?
+    !self.work_done? && !self.canceled? && !self.work_canceled?
   end
 
   alias_method :can_change_financial_data?, :can_change_boms?

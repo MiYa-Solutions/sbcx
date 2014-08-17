@@ -294,6 +294,10 @@ class TransferredServiceCall < ServiceCall
     !self.canceled? && self.accepted?
   end
 
+  def can_change_boms?
+    !self.work_done? && (self.accepted? || self.transferred?) && !self.canceled? && !self.work_canceled?
+  end
+
   private
   def provider_is_not_a_member
     if provider

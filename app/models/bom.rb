@@ -90,8 +90,8 @@ class Bom < ActiveRecord::Base
 
   def check_ticket_status
     unless ticket.nil?
-      errors.add :ticket, "Can't add/update a bom for a ticket transferred to a member subcon" if ticket.transferred? && ticket.subcontractor.subcontrax_member? && creator.present?
       errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done?
+      errors.add :ticket, "Can't add/update a bom before accepting the job " if ticket.kind_of?(TransferredServiceCall) && !(ticket.accepted? || ticket.transferred?) && self.creator
     end
   end
 
