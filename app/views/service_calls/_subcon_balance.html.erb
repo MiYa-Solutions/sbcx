@@ -1,5 +1,5 @@
-<tr>
-  <td><strong>
+<tr class="col_entry_table">
+<td><strong>
           <%= link_to(I18n.t('general.general.subcontractor_balance'), affiliate_path(@service_call.subcontractor),
           :title => @service_call.subcontractor.try(:name).html_safe, :rel => 'tooltip') if @service_call.subcontractor.present? %>
   </strong></td>
@@ -8,7 +8,7 @@
       <td class="balanced">
         <%= humanized_money_with_symbol @service_call.subcon_balance %>
       </td>
-      <td></td>
+
       <!--<td></td>-->
   <% else %>
       <% if @service_call.try(:subcon_balance) > 0 %>
@@ -30,14 +30,17 @@
 
       <% end %>
   <% end %>
-      <td class="show_more_button">
-                            <span class="link_blue" id="show_subcon_entries">
-                               <%= link_to t('general.general.get_entries'), "#subco_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
-                              <i class="icon-chevron-down"></i>
-                            </span>
-        <span><%= "YESH #{@service_call.active_subcon_entries.size}" if @service_call.active_subcon_entries.size > 0 %></span>
 
-      </td>
+  <td class="show_more_button">
+       <span class="link_blue" id="show_subcon_entries">
+
+           <% if @service_call.active_subcon_entries.size > 0%>
+                <span class="label label_new_entry"><%= "#{@service_call.active_subcon_entries.size} new" %></span>
+           <% end %>
+
+           <%= link_to t('general.general.get_entries'), "#subco_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+           <i class="icon-chevron-down"></i>
+       </span>
+  </td>
+
 </tr>
-
-

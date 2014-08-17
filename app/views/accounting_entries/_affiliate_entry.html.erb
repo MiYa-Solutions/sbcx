@@ -10,7 +10,7 @@
   <td id="entry_<%= accounting_entry.id %>_status"><%= accounting_entry.human_status_name.humanize %></td>
   <td id="entry_<%= accounting_entry.id %>_collector"><%= accounting_entry.collector.name if defined? accounting_entry.collector %></td>
   <td id="entry_<%= accounting_entry.id %>_amount"><%= humanized_money_with_symbol accounting_entry.amount %></td>
-  <td id="entry_<%= accounting_entry.id %>_balance"><%= humanized_money_with_symbol accounting_entry.balance %></td>
+  <!--<td id="entry_<#%= accounting_entry.id %>_balance"><#%= humanized_money_with_symbol accounting_entry.balance %></td>-->
   <td class="customer_entries_actions" id="entry_<%= accounting_entry.id %>_actions"><%= adjustment_entry_actions(accounting_entry, "customer_entry_small_btn") %></td>
   <td>
   </td>
