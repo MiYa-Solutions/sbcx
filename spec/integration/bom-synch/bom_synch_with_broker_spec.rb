@@ -91,8 +91,7 @@ describe 'Bom Sync With Broker' do
 
     context 'when creating a single bom' do
       before do
-        #accept_the_job subcon_job
-        Authorization.current_user = subcon.users.first
+        accept_the_job subcon_job
         add_bom_to_job subcon_job, cost: 10, price: 100, quantity: 1, buyer: subcon_job.organization
         job.reload
         broker_job.reload

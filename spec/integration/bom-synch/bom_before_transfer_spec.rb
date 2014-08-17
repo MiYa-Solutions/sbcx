@@ -16,6 +16,7 @@ describe 'Creating BOM Before Transfer' do
   context 'when transferring the job' do
     before do
       transfer_the_job job
+      accept_the_job subcon_job
     end
 
     it 'the subcon job should have a copy of the bom' do
@@ -71,6 +72,49 @@ describe 'Creating BOM Before Transfer' do
         end
 
       end
+
+      context 'when transferring to another subcon' do
+        let(:agr3) { FactoryGirl.build(:subcon_agreement, organization: subcon_job.organization) }
+        let(:subcon3) {
+          s      = agr3.counterparty
+          s.name = "subcon3-#{s.name}"
+          s.save!
+          s
+        }
+
+        let(:subcon_admin3) {
+          u = FactoryGirl.build(:user, organization: subcon3)
+          subcon3.users << u
+          u
+        }
+        let(:subcon3_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon3.id, job.ref_id) }
+
+        before do
+          transfer_the_job job: subcon_job, subcon: subcon3, agreement: agr3
+        end
+
+        it 'should transfer successfully' do
+          expect(subcon_job.status_name).to eq :transferred
+        end
+
+        it 'the subcon3 job should have a copy of the boms' do
+          expect(subcon3_job.boms.size).to eq 2
+          expect(subcon3_job.boms.sum(:price_cents)).to eq job.boms.sum(:price_cents)
+        end
+
+        it 'the subcon job should have the original 2 boms' do
+          expect(subcon_job.boms.size).to eq 2
+          expect(subcon_job.boms.sum(:price_cents)).to eq job.boms.sum(:price_cents)
+        end
+
+        it 'the prov job should have the original 2 boms' do
+          expect(job.boms.size).to eq 2
+        end
+
+
+
+      end
+
 
 
     end
