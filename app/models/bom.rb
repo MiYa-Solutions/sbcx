@@ -22,6 +22,8 @@ class Bom < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :material, with_deleted: true
   belongs_to :buyer, :polymorphic => true
+  belongs_to :provider_bom, class_name: 'Bom'
+  belongs_to :subcon_bom, class_name: 'Bom'
 
   stampable
   monetize :cost_cents, :numericality => { :greater_than => 0 }
@@ -35,6 +37,7 @@ class Bom < ActiveRecord::Base
 
   before_validation :set_material
   before_validation :set_default_buyer
+  after_save :synch_with_affiliates
 
   # virtual attributes
   attr_accessor :material_name
@@ -71,7 +74,7 @@ class Bom < ActiveRecord::Base
       valid_values = [ticket.provider_id,
                       ticket.subcontractor_id,
                       ticket.organization_id,
-                      ticket.technician_id].compact
+                      ].compact + ticket.organization.user_ids
 
       errors.add(:buyer_id, I18n.t('activerecord.errors.models.bom.buyer')) unless valid_values.include? buyer_id
     end
@@ -87,8 +90,8 @@ class Bom < ActiveRecord::Base
 
   def check_ticket_status
     unless ticket.nil?
-      errors.add :ticket, "Can't add/update a bom for a ticket transferred to a member subcon" if ticket.transferred? && ticket.subcontractor.subcontrax_member? && creator.present?
       errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done?
+      errors.add :ticket, "Can't add/update a bom before accepting the job " if ticket.kind_of?(TransferredServiceCall) && !(ticket.accepted? || ticket.transferred?) && self.creator
     end
   end
 
@@ -98,6 +101,8 @@ class Bom < ActiveRecord::Base
       raise ActiveRecord::RecordInvalid.new(self)
     end
     super
+    provider_bom.destroy if provider_bom
+    subcon_bom.destroy if subcon_bom
   end
 
   # determines if the bom was paid by the org that owns the ticket
@@ -118,6 +123,12 @@ class Bom < ActiveRecord::Base
       else
         raise "Unexpected buyer type (not user nor Organization): #{buyer.class}"
     end
+  end
+
+  private
+
+  def synch_with_affiliates
+    BomSynchService.new(self).synch
   end
 end
 

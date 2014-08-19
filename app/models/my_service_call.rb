@@ -152,7 +152,7 @@ class MyServiceCall < ServiceCall
   end
 
   def work_start_allowed?
-    true
+    !self.transferred? && !self.canceled?
   end
 
 end

@@ -291,7 +291,11 @@ class TransferredServiceCall < ServiceCall
   end
 
   def work_start_allowed?
-    !self.canceled? && self.accepted?
+    self.accepted?
+  end
+
+  def can_change_boms?
+    !self.work_done? && (self.accepted? || self.transferred?) && !self.canceled? && !self.work_canceled?
   end
 
   private

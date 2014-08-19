@@ -57,9 +57,14 @@ class ServiceCallTransferEvent < ServiceCallEvent
       new_service_call.notes              = service_call.notes
       new_service_call.provider_agreement = service_call.subcon_agreement
       new_service_call.properties         = create_transfer_props(service_call)
+      new_service_call.tax                = service_call.tax
+
+      Ticket.transaction do
+        new_service_call.save!
+        copy_boms_to_subcon
+      end
       new_service_call.events << ServiceCallReceivedEvent.new(triggering_event: self, description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
 
-      new_service_call.save!
       Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
 
 
@@ -87,5 +92,12 @@ class ServiceCallTransferEvent < ServiceCallEvent
 
     result
   end
+
+  def copy_boms_to_subcon
+    service_call.boms.each do |bom|
+      BomSynchService.new(bom).synch
+    end
+  end
+
 
 end

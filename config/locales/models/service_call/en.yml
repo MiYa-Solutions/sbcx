@@ -118,7 +118,8 @@ en:
             subcon_claim_deposited: "Subcontractor Deposited?"
         work_status:
           events:
-            dispach: Lulu
+            dispach: Disptach
+            cancel: Subcon Canceled
       transferred_service_call:
         status:
           events:
