@@ -62,7 +62,9 @@
     <h3><%= I18n.t('general.general.actions') %></h3>
 
     <div class="service-call-actions" data-theme="d">
-      <%= event_list(@service_call) %>
+      <!--<#%= event_list(@service_call) %>-->
+      <%= status_forms(@service_call) %>
+      <%= work_status_forms(@service_call) %>
     </div>
 
   </div>
