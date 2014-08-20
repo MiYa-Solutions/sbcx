@@ -3,21 +3,20 @@
 
 <%= render 'bom' %>
 <br>
-<!--
-<#%= link_to 'Back', :back %>-->
 
-<p>
-<div class="ui-grid-solo">
-  <%= link_to I18n.t('general.general.back'), service_call_path(@bom.ticket), "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>
+<div class="edit_bom_back_btn">
+     <div class="ui-grid-solo">
+          <%= link_to I18n.t('general.general.back'), service_call_path(@bom.ticket), "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>
+      </div>
+
+     <br>
+
+     <div class="ui-grid-solo">
+              <%= link_to I18n.t('general.general.delete'), service_call_bom_path(@bom.ticket, @bom), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete", id: 'dismiss_notification_btn' %>
+     </div>
+
 </div>
-</p>
 
-<p>
-<div class="ui-grid-solo">
-  <%= link_to I18n.t('general.general.delete'), service_call_bom_path(@bom.ticket, @bom), :method => 'delete', :confirm => 'Are you sure?', "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete", id: 'dismiss_notification_btn' %>
-
-</div>
-</p>
 
 
 

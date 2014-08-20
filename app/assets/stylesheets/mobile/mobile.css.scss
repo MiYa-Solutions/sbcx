@@ -1324,6 +1324,7 @@ input.ui-input-text, textarea.ui-input-text {
     margin-right: 15%;
     margin-top: -16px;
     text-align: left;
+    padding-top: 2px;
    }
 
   .billing_price_label {
@@ -2038,4 +2039,25 @@ div.ui-slider {
 
 #subcon_statuses {
   width: 100%;
+}
+
+.new_bom {
+ line-height: 20px;
+}
+
+.edit_bom_info {
+  line-height: 32px;
+}
+
+.bom_buyer {
+  line-height: 16px;
+}
+
+.edit_bom_back_btn {
+  line-height: 18px;
+  margin-left: -6px;
+}
+
+.bom_description {
+  margin-top: 10px;
 }
