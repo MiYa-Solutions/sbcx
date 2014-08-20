@@ -17,43 +17,24 @@
   </div>
 
   <div class="job_show_status">
-    <ul data-role="listview">
-      <li class="ui-li ui-li-static">
-        <div class="ui-grid-a">
-          <div class="ui-block-a"><%= t('general.general.work') %></div>
-          <div class="ui-block-b">
-            <span class="<%= StylingService.instance.get_style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
-                <%= @service_call.human_status_name %>
-          </span>
-          </div>
-        </div>
-      </li>
-      <li class="ui-li ui-li-static">
-        <div class="ui-grid-a">
-          <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:work_status) %></div>
-          <div class="ui-block-b">
-           <span class="<%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.work_status_name}") %>" id="service_call_work_status">
-                <%= @service_call.human_work_status_name %>
-          </span>
-          </div>
-        </div>
-      </li>
-      <li class="ui-li ui-li-static">
-        <div class="ui-grid-a">
-          <div class="ui-block-a"><%= t('general.general.customer_payment') %></div>
-          <div class="ui-block-b">
-          <span class="<%= StylingService.instance.get_style("service_call.states.billing_status.#{@service_call.billing_status_name}") %>" id="service_call_billing_status">
-                <%= @service_call.human_billing_status_name %>
-          </span>
-          </div>
-        </div>
-      </li>
-    </ul>
+    <%= render :partial => 'job_statuses' %>
+
   </div>
 
 </div>
 
 
+
+<!--To do next-->
+
+
+
+
+
+
+
+
+<!--end of job statuses-->
 <div data-role="collapsible-set" data-inset="false">
 
 
@@ -62,7 +43,9 @@
     <h3><%= I18n.t('general.general.actions') %></h3>
 
     <div class="service-call-actions" data-theme="d">
-      <%= event_list(@service_call) %>
+      <!--<#%= event_list(@service_call) %>-->
+      <%= status_forms(@service_call) %>
+      <%= work_status_forms(@service_call) %>
     </div>
 
   </div>
@@ -104,8 +87,6 @@
     <%= render :partial => 'job_info' %>
   </div>
 
-  <!--Affiliates Status-->
-  <%= render :partial => 'job_statuses' %>
 
   <!--Job Contact Details-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">

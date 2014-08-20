@@ -320,7 +320,7 @@ footer {
 }
 
 .job_status_list {
-  margin-top: 10px;
+  margin-top: 18px;
 
   .ui-bar-b {
     background: linear-gradient(#6FACD5, #497BAE) repeat scroll 0 0 #5E87B0;
@@ -333,6 +333,25 @@ footer {
 
   .status_grey {
     float: right;
+    margin-top: 2px;
+  }
+
+  .status_green {
+    float: right;
+    margin-top: 2px;
+    text-align: right;
+  }
+
+  .status_red {
+    float: right;
+    margin-top: 2px;
+    text-align: right;
+  }
+
+  .status_blue {
+    float: right;
+    margin-top: 2px;
+    text-align: right;
   }
 
 }
@@ -374,8 +393,10 @@ footer {
 }
 
 .service-call-actions {
+  margin-left: 10%;
+  margin-top: 0;
   width: 80%;
-  margin-top: -18px;
+  text-transform: uppercase;
 }
 
 #affiliate_status_fee {
@@ -695,6 +716,11 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+.aff_status_wLink {
+  margin-left: 53%;
+  position: absolute;
+  top: 8px;
+}
 
 
 
@@ -2000,4 +2026,16 @@ div.ui-slider {
 
 #side_bar {
   margin-left: 35%;
+}
+
+.affiliate_statuses_main {
+  .ui-btn-text {
+    margin-bottom: -3px;
+    margin-left: -16px;
+    margin-top: -6px;
+  }
+}
+
+#subcon_statuses {
+  width: 100%;
 }
