@@ -351,6 +351,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    validates_email_format_of (1.5.3)
     warden (1.1.1)
       rack (>= 1.0)
     websocket-driver (0.3.3)
@@ -429,4 +430,5 @@ DEPENDENCIES
   strong_parameters (= 0.2.0)
   uglifier (= 1.2.3)
   unicorn (~> 4.8.0)
+  validates_email_format_of
   will_paginate (= 3.0.5)

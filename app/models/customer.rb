@@ -31,6 +31,7 @@ class Customer < ActiveRecord::Base
 
   validates_presence_of :organization
   validates_presence_of :name
+  validates_email_format_of :email, allow_nil: true, allow_blank: true
 
   after_create :set_default_agreement
 

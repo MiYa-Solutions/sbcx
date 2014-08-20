@@ -148,6 +148,7 @@ class Organization < ActiveRecord::Base
   validates_with OneOwnerValidator
   validates_uniqueness_of :name, scope: [:subcontrax_member], if: Proc.new { |org| org.subcontrax_member }
   validate :check_industry, unless: ->(org) { org.kind_of?(Affiliate) }
+  validates_email_format_of :email, allow_nil: true, allow_blank: true
 
   ### EAGER LOADS:
   includes :organization_roles
