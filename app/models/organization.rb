@@ -97,7 +97,7 @@ class Organization < ActiveRecord::Base
 
       unless subcontractor.reverse_agreements.where(:organization_id => proxy_association.owner.id).first
         subcon_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-        Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator, name: FlatFee.model_name.titleize }) { self.concat subcontractor }
+        Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator, name: FlatFee.model_name.titleize, payment_terms: Agreement.payment_options[:net_15] }) { self.concat subcontractor }
         agr = subcontractor.reverse_agreements.where(:organization_id => proxy_association.owner.id).first
         agr.rules << FlatFee.new
         agr.status = Agreement::STATUS_ACTIVE
@@ -118,7 +118,7 @@ class Organization < ActiveRecord::Base
 
       unless provider.agreements.where(:counterparty_id => proxy_association.owner.id, counterparty_type: 'Organization').first
         prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator, name: FlatFee.model_name.titleize }) { self.concat provider }
+        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator, name: FlatFee.model_name.titleize, payment_terms: Agreement.payment_options[:net_15] }) { self.concat provider }
         agr = provider.agreements.where(:counterparty_id => proxy_association.owner.id, counterparty_type: "Organization").first
         agr.rules << FlatFee.new
         agr.status = Agreement::STATUS_ACTIVE
