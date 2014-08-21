@@ -127,6 +127,7 @@ class Ticket < ActiveRecord::Base
   validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
   validate :check_subcon_agreement, :check_provider_agreement
   validates_numericality_of :tax
+  validates_email_format_of :email, allow_nil: true, allow_blank: true
 
   accepts_nested_attributes_for :customer
 

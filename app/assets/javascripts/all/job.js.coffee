@@ -33,7 +33,13 @@ hide_agreement_select = (obj) ->
 
 jQuery ->
   $('#new_service_call').on 'submit', ->
-    $('#service_call_create_btn').attr('disabled', true)
+    if $('#service_call_address1').val() == ''
+      res = confirm('Address is empty - do you really want to create the job?');
+      $('#service_call_create_btn').attr('disabled', true) if res
+      return res
+    else
+      $('#service_call_create_btn').attr('disabled', true)
+
   $(".best_in_place").bind "ajax:success", ->
     $(this).JQtextile "textile", @innerHTML  if $(this).attr("data-type") is "textarea"
 
