@@ -1,101 +1,140 @@
-class Invoice
+class Invoice < ActiveRecord::Base
 
-  def initialize(job)
-    @job     = job
-    @company = job_owner
-  end
+  belongs_to :organization
+  belongs_to :ticket
+  belongs_to :account
+
+  monetize :total_cents, allow_nil: true
+
+  has_many :invoice_items, :source => :invoice
+  has_many :bom_invoice_items, through: :invoice_items, :source => :bom, conditions: "invoice_items.invoiceable_type = 'Bom'"
+  has_many :entry_invoice_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AmexPayment', 'CashPayment', 'ChequePayment','CreditPayment' )"
+
+  after_create :finalize
+
+  validates_presence_of :organization, :ticket, :account
 
   def generate_pdf(view)
     InvoicePdf.new(self, view).render
   end
+
+  private
+
+  def finalize
+    generate_invoice_items
+    calculate_total
+    self.save!
+  end
+
+  def generate_invoice_items
+    if ticket.work_done?
+      generate_final_invoice
+    else
+      generate_active_invoice
+    end
+  end
+
+  def generate_final_invoice
+    ticket.boms.each do |bom|
+      item = InvoiceItem.new(invoiceable_id: bom.id, invoiceable_type: bom.class.name)
+      self.invoice_items << item
+    end
+
+    ticket.payments.each do |payment|
+      item = InvoiceItem.new(invoiceable_id: payment.id, invoiceable_type: payment.class.name)
+      self.invoice_items << item
+    end
+
+  end
+
+  def calculate_total
+    self.total = ticket.total + entry_invoice_items.collect {|e| e.amount}.sum
+  end
+
 
   def company_logo
     'LogoImg.png'
   end
 
   def customer_name
-    @job.customer.name || ''
+    ticket.customer.name || ''
   end
 
   def customer_company
-    @job.customer.company || ''
+    ticket.customer.company || ''
   end
 
   def customer_address1
-    @job.customer.address1 || ''
+    ticket.customer.address1 || ''
   end
 
   def customer_address2
-    @job.customer.address2 || ''
+    ticket.customer.address2 || ''
   end
 
   def customer_city
-    @job.customer.city || ''
+    ticket.customer.city || ''
   end
 
   def customer_state
-    @job.customer.state || ''
+    ticket.customer.state || ''
   end
 
   def customer_phone
-    @job.customer.phone || ''
+    ticket.customer.phone || ''
   end
 
   def customer_zip
-    @job.customer.zip || ''
+    ticket.customer.zip || ''
   end
 
   def number
-    @job.ref_id || ''
+    ticket.ref_id || ''
   end
 
   def date
-    event = @job.events.where(reference_id: [100018, 100019, 100020]).first
+    event = ticket.events.where(reference_id: [100018, 100019, 100020]).first
     event ? event.created_at : nil
   end
 
   def total_before_tax
-    @job.total_price
-  end
-
-  def total
-    @job.total_price + @job.tax_amount
+    ticket.total_price
   end
 
   def tax
-    @job.tax || ''
+    ticket.tax || ''
   end
 
   def tax_amount
-    @job.tax_amount || ''
+    ticket.tax_amount || ''
   end
 
   def company_name
-    @company.name || ''
+    organization.name || ''
   end
 
   def company_address1
-    @company.address1 || ''
+    organization.address1 || ''
   end
 
   def company_address2
-    @company.address2 || ''
+    organization.address2 || ''
   end
 
   def company_city_and_state
-    "#{@company.city}, #{@company.state} #{@company.zip}"
+    "#{organization.city}, #{organization.state} #{organization.zip}"
   end
 
   def boms
-    @job.boms
+    ticket.boms
   end
 
   private
 
   def job_owner
-    member_job = MyServiceCall.find_by_ref_id @job.ref_id
+    member_job = MyServiceCall.find_by_ref_id ticket.ref_id
     if member_job.nil?
-      res = TransferredServiceCall.where(ref_id: @job.ref_id).order('id desc').first.provider
+      res = TransferredServiceCall.where(ref_id: ticket.ref_id).order('id desc').first.provider
     else
       res = member_job.organization
     end

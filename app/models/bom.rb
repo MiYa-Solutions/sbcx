@@ -24,6 +24,8 @@ class Bom < ActiveRecord::Base
   belongs_to :buyer, :polymorphic => true
   belongs_to :provider_bom, class_name: 'Bom'
   belongs_to :subcon_bom, class_name: 'Bom'
+  has_many :invoice_items, as: :invoiceable
+  has_many :invoices, through: :invoice_items
 
   stampable
   monetize :cost_cents, :numericality => { :greater_than => 0 }
@@ -74,7 +76,7 @@ class Bom < ActiveRecord::Base
       valid_values = [ticket.provider_id,
                       ticket.subcontractor_id,
                       ticket.organization_id,
-                      ].compact + ticket.organization.user_ids
+      ].compact + ticket.organization.user_ids
 
       errors.add(:buyer_id, I18n.t('activerecord.errors.models.bom.buyer')) unless valid_values.include? buyer_id
     end
@@ -90,7 +92,7 @@ class Bom < ActiveRecord::Base
 
   def check_ticket_status
     unless ticket.nil?
-      errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done?
+      errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done? && (self.changed? || self.new_record?)
       errors.add :ticket, "Can't add/update a bom before accepting the job " if ticket.kind_of?(TransferredServiceCall) && !(ticket.accepted? || ticket.transferred?) && self.creator
     end
   end

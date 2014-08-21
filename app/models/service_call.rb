@@ -285,14 +285,6 @@ class ServiceCall < Ticket
 
   alias_method :can_change_financial_data?, :can_change_boms?
 
-  def invoice
-    Invoice.new(self)
-  end
-
-  def already_invoiced?
-    invoice.date ? true : false
-  end
-
   def check_payment_amount
     errors.add :payment_amount, "Payment must be a number greater than zero" if self.payment_amount.nil? || self.payment_amount.try(:empty?) || self.payment_amount.to_f == 0.0
   end
