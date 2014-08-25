@@ -39,55 +39,60 @@
       <!--<#%= event_list(@service_call) %>-->
       <%= status_forms(@service_call) %>
       <%= work_status_forms(@service_call) %>
+
     </div>
 
+      <% if @service_call.work_done? %>
+          <% unless @service_call.subcontractor_status_events.empty? %>
+
+
+              <ul data-role="listview" id="affiliate_show_actions">
+                <li data-role="list-divider" data-theme="d" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.subcon_actions')%> </li>
+              </ul>
+               <%= subcontractor_status_forms(@service_call) %>
+          <% end %>
+
+          <% if @service_call.kind_of?(TransferredServiceCall) && @service_call.provider_settlement_allowed? %>
+            <ul data-role="listview" id="affiliate_show_actions">
+              <li data-role="list-divider" data-theme="d" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.provider_actions')%> </li>
+            </ul>
+                 <%= provider_status_forms(@service_call) %>
+          <% end %>
+      <% end %>
+
+
+
   </div>
-
-
-  <!--Parts and Labor-->
-  <div data-role="collapsible" data-theme="d">
-    <h3><%= I18n.t('general.general.parts_labor') %></h3>
-
-    <%= render 'job_boms' %>
-  </div>
-
 
   <!--Billing-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
 
-    <h3><%= I18n.t('general.general.billing') %>
+    <h3><%= I18n.t('general.general.customer_billing') %>
       <span class="blue_badge_collape">
                 <badge><%= Bom.human_attribute_name(:price) %> <%= '&nbsp;'.html_safe %>
                   <span id='job_total_price'><%= humanized_money_with_symbol @service_call.total_price %></span></badge>
      </span>
-     <span class="blue_badge_collape">
-                 <badge><%= Bom.human_attribute_name(:cost) %> <%= '&nbsp;'.html_safe %>
-                   <span id='job_total_cost'><%= humanized_money_with_symbol @service_call.total_cost %></span></badge>
-     </span>
-     <!--<span class="blue_badge_collape">
-                 <badge><#%= ServiceCall.human_attribute_name(:total) %> <#%= '&nbsp;'.html_safe %>
-                   <!--<span id='job_total_cost'><#%= humanized_money_with_symbol @service_call.total %></span></badge>-->
+     <!--<span class="blue_badge_collape">-->
+      <!--  <badge><#%= Bom.human_attribute_name(:cost) %> <#%= '&nbsp;'.html_safe %>
+                   <!--<span id='job_total_cost'><#%= humanized_money_with_symbol @service_call.total_cost %></span></badge>-->
      <!--</span>-->
     </h3>
-
+    <%= render 'job_boms' %>
     <%= render :partial => 'job_billing' %>
 
   </div>
 
 
-<!--Subcon Billing-->
-    <%= render :partial => 'subcon_balance' %>
-    <%= render :partial => 'provider_balance' %>
-
-
-
-
-
-
-
-
-
-
+<!-- Billing-->
+  <% case @service_call.my_role when :subcon %>
+      <%= render :partial => 'provider_balance' %>
+  <% when :broker %>
+      <%= render :partial => 'provider_balance' %>
+      <%= render :partial => 'subcon_balance' %>
+  <% else %>
+      <%= render :partial => 'customer_payments' %>
+      <%= render :partial => 'subcon_balance' unless @service_call.subcon_na? %>
+  <% end %>
 
 
   <!--Job Info-->

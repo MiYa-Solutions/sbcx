@@ -49,8 +49,13 @@
 
   <div class="ui-grid-a">
     <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
-    <div class="ui-block-b"><%= f.text_field :scheduled_for, class: "mobi-datetime", value: (Time.now) %></div>
+    <div class="ui-block-b"><%= f.text_field :scheduled_for, class: "mobi-datetime", value: (Time.now), format: :short %></div>
   </div>
+</div>
+
+<div class="ui-grid-a">
+  <div class="ui-block-a position_lable"><%= @service_call.class.human_attribute_name(:external_ref) %></div>
+  <div class="ui-block-b hide_lable" ><%= f.input :external_ref %></div>
 </div>
 
 <%= f.input :notes %>
@@ -102,10 +107,6 @@
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:email) %></div>
         <div class="ui-block-b"><%= f.input :email %></div>
-      </div>
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:external_ref) %></div>
-        <div class="ui-block-b"><%= f.input :external_ref %></div>
       </div>
     </div>
   </li>

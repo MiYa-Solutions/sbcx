@@ -1,52 +1,15 @@
-<div data-role="collapsible" data-collapsed="true" data-theme="d">
-  <h3>
-      <span class="aff_icon_job">
-      <%= image_tag("sub24.png", :title => I18n.t('general.messages.subco_icon').html_safe, :rel => 'tooltip') %>
-      </span>
-    <%= @service_call.subcontractor.try(:name) %>
+<!--show all pending actions-->
+<%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries %>
 
-    <% if @service_call.active_subcon_entries.size > 0 %>
-        <span class="blue_badge_collape">
-                    <badge><%= "#{@service_call.active_subcon_entries.size} new" %></badge>
-        </span>
-    <% end %>
-    <% if @service_call.work_done? %>
-            <% if @service_call.subcon_balance < 0 %>
-                <span class="red_badge_collape"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-            <% else %>
-                <span class="blue_badge_collape"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-            <% end %>
-            </span>
 
-    <% end %>
-  </h3>
+<br>
+<!--show all entries-->
+<%= link_to I18n.t('general.general.show_all'), "#customer_show_all_entries", "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-rel" => "popup", "data-transition" => "pop" %>
 
-  <% if @service_call.work_done? %>
-  <div class="affiliate_balance_billing_total">
-    <ul data-role="listview" class="job_billing_info ">
-      <li>
-        <%= t('general.general.total_balance') %>
-        <% if @service_call.subcon_balance < 0 %>
-            <span class="red_badge" id="aff_total_balance"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-        <% else %>
-            <span class="green_badge aff_total_balance" id="aff_total_balance"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-        <% end %>
-      </li>
-    </ul>
-  </div>
-  <% end %>
 
-  <!--show all pending actions-->
-  <%= render 'accounting_entries/affiliate_entries_table', entries: @service_call.active_subcon_entries %>
-
-    <br>
-  <!--show all entries-->
-  <%= link_to I18n.t('general.general.show_all'), "#subcon_show_all_entries", "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-rel" => "popup", "data-transition" => "pop" %>
-
-</div>
 
 <!--show all entries-->
-<div data-role="popup" id="subcon_show_all_entries" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="min-width:200px;" class="ui-corner-all close_btn_header">
+<div data-role="popup" id="customer_show_all_entries" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="min-width:200px;" class="ui-corner-all close_btn_header">
 
   <div data-role="header" data-theme="a" class="ui-corner-top">
     <h1 id="entries_header"><%= t('general.general.subcon_entries') %></h1>
@@ -59,11 +22,11 @@
 
     <div data-role="collapsible-set" data-inset="false">
 
-        <% @service_call.subcon_entries.each do |entry| %>
+      <% @service_call.customer_entries.each do |entry| %>
 
           <div data-role="collapsible" data-collapsed="true" data-theme="d">
             <h3><%= entry.type.constantize.model_name.human %>
-            (<%= humanized_money_with_symbol entry.amount %>)
+              (<%= humanized_money_with_symbol entry.amount %>)
             </h3>
             <br>
             <ul data-role="listview">
@@ -122,13 +85,13 @@
                 </div>
               </li>
 
-           </ul>
+            </ul>
           </div>
-       <% end %>
+      <% end %>
 
       <!--collapses-->
-   </div>
-<!--content-->
+    </div>
+    <!--content-->
   </div>
-<!--popup-->
+  <!--popup-->
 </div>

@@ -386,6 +386,11 @@ footer {
     line-height: 22px;
   }
 
+  .status_grey {
+    margin-top: 2px;
+    text-align: left;
+  }
+
 }
 
 .job_info_list, .ui-collapsible-content .ui-btn-up-d {
@@ -2105,7 +2110,7 @@ div.ui-slider {
   img {
     margin-bottom: -8px;
     margin-top: -5px;
-
+    float: right;
   }
 }
 
@@ -2119,4 +2124,33 @@ div.ui-slider {
   margin-top: 11px;
   padding-bottom: 22px;
 
+}
+
+.hide_lable {
+
+  label {
+    display: none;
+  }
+}
+
+.position_lable {
+  margin-top: 9px;
+}
+
+#service_call_payment_notes {
+  height: 50px;
+}
+
+.collect_payment_notes {
+  margin-bottom: 19px;
+}
+
+#service_call_customer_name_job {
+  text-transform: capitalize;
+}
+
+
+#affiliate_show_actions {
+  margin-bottom: 16px;
+  margin-top: -8px;
 }

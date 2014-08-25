@@ -15,6 +15,7 @@
           <span class="shift_total_price"><%= humanized_money_with_symbol @service_call.total_cost %></span></div>
       </div>
     </li>
+    <% if @service_call.work_done? %>
     <li>
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= t('general.general.my_profit').html_safe %></div>
@@ -22,6 +23,7 @@
           <span class="shift_total_price"><%= humanized_money_with_symbol @service_call.my_profit %></span></div>
       </div>
     </li>
+    <% end %>
 
     <!--Tax-->
     <% if (permitted_attribute? @service_call, :tax) %>

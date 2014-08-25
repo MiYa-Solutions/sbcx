@@ -197,6 +197,9 @@ en:
       affiliates_balance: "Affiliates Balance"
       customer_balance: "Customer Balance"
       show_all: "Show All"
+      customer_payments: "Customer Payments"
+      collect_payments_mobile: "Collect Payment"
+      subcon_payment: "Subcontractor Payment"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
