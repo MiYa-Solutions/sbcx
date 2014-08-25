@@ -56,7 +56,7 @@ shared_context 'basic job testing' do
   end
 
   def invoice(job)
-    job.invoice_payment!
+    job.invoices << Invoice.new(account: job.customer.account, organization: job.organization)
   end
 
   def confirm_employee_deposit(entry)

@@ -87,7 +87,8 @@ class JobCharge < CustomerPostingRule
   end
 
   def charge_amount
-    (@ticket.total_price - (@ticket.total_price * (rate / 100.0))) + @ticket.total_price * (@ticket.tax / 100.0)
+    (@ticket.total_price - (@ticket.total_price * (rate / 100.0))) + @ticket.total_price * (@ticket.tax / 100.0) -
+        Money.new(@ticket.entries.where(type: 'AdvancePayment').sum(:amount_cents))
   end
 
   def applicable?(event)

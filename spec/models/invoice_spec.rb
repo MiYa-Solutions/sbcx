@@ -2,7 +2,11 @@ require 'spec_helper'
 
 describe Invoice do
 
-  subject { Invoice.new }
+  let(:ticket) { FactoryGirl.build(:my_job) }
+  let(:org) { ticket.organization }
+  let(:account) { ticket.customer.account }
+
+  subject { Invoice.new(ticket: ticket, organization: org, account: account) }
 
   it 'should have a generate_pdf method' do
     should respond_to(:generate_pdf)
@@ -22,7 +26,6 @@ describe Invoice do
   # validations
 
   it { should validate_presence_of :organization }
-  it { should validate_presence_of :ticket }
   it { should validate_presence_of :account }
   pending 'good way to test the generated pdf'
 

@@ -53,6 +53,8 @@ class Bom < ActiveRecord::Base
     self.price * self.quantity unless self.quantity.nil?
   end
 
+  alias_method :amount, :total_price
+
 
   def set_material
 

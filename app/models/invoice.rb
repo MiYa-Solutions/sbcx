@@ -7,8 +7,10 @@ class Invoice < ActiveRecord::Base
   monetize :total_cents, allow_nil: true
 
   has_many :invoice_items, :source => :invoice
-  has_many :bom_invoice_items, through: :invoice_items, :source => :bom, conditions: "invoice_items.invoiceable_type = 'Bom'"
-  has_many :entry_invoice_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AmexPayment', 'CashPayment', 'ChequePayment','CreditPayment' )"
+  has_many :bom_items, through: :invoice_items, :source => :bom, conditions: "invoice_items.invoiceable_type = 'Bom'"
+  has_many :payment_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AmexPayment', 'CashPayment', 'ChequePayment','CreditPayment', 'RejectedPayment' )"
+  has_many :adv_payment_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AdvancePayment')"
+  has_many :charge_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('ServiceCallCharge')"
 
   after_create :finalize
 
@@ -18,20 +20,23 @@ class Invoice < ActiveRecord::Base
     InvoicePdf.new(self, view).render
   end
 
+  def total
+    @total ||= Money.new(invoice_items.collect { |e| e.invoiceable.amount }.sum) + tax_amount
+  end
+
+
   private
 
   def finalize
-    generate_invoice_items
-    calculate_total
-    self.save!
-  end
-
-  def generate_invoice_items
     if ticket.work_done?
       generate_final_invoice
     else
       generate_active_invoice
     end
+
+    total
+
+    self.save!
   end
 
   def generate_final_invoice
@@ -47,9 +52,28 @@ class Invoice < ActiveRecord::Base
 
   end
 
-  def calculate_total
-    self.total = ticket.total + entry_invoice_items.collect {|e| e.amount}.sum
+  def generate_active_invoice
+    ticket.payments.each do |payment|
+      item = InvoiceItem.new(invoiceable_id: payment.id, invoiceable_type: payment.class.name)
+      self.invoice_items << item
+    end
+
+    ticket.entries.where(type: ['RejectedPayment', 'AdvancePayment']).each do |e|
+      item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
+      self.invoice_items << item
+    end
   end
+
+  #def calculate_final_total
+  #  paid       = payment_items.size > 0 ? payment_items.collect { |e| e.amount }.sum : Money.new(0)
+  #  self.total = Money.new(charge_items.collect { |e| e.amount }.sum) + paid
+  #
+  #end
+
+  #def calculate_active_total
+  #  paid       = payment_items.size > 0 ? payment_items.collect { |e| e.amount }.sum : Money.new(0)
+  #  self.total = adv_payment_items.collect { |e| e.amount }.sum +  paid
+  #end
 
 
   def company_logo
@@ -106,7 +130,7 @@ class Invoice < ActiveRecord::Base
   end
 
   def tax_amount
-    ticket.tax_amount || ''
+    ticket.tax_amount || Money.new(0)
   end
 
   def company_name
