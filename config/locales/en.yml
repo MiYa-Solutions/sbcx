@@ -196,6 +196,7 @@ en:
       customers_balance: "Customers Balance"
       affiliates_balance: "Affiliates Balance"
       customer_balance: "Customer Balance"
+      show_all: "Show All"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

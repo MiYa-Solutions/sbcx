@@ -76,22 +76,18 @@
 
 
 <!--Subcon Billing-->
-  <div data-role="collapsible" data-collapsed="true" data-theme="d">
-    <h3><%= I18n.t('general.general.subcontractor_balance') %>
+    <%= render :partial => 'subcon_balance' %>
+    <%= render :partial => 'provider_balance' %>
 
 
-      <% if @service_call.active_subcon_entries.size > 0%>
-        <span class="blue_badge_collape">
-                    <badge><%= "#{@service_call.active_subcon_entries.size} new" %></badge>
-        </span>
-      <% end %>
-    </h3>
 
 
-    <%= render 'accounting_entries/affiliate_entries_table', entries: @service_call.active_subcon_entries %>
 
 
-  </div>
+
+
+
+
 
 
   <!--Job Info-->
