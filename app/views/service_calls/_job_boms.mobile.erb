@@ -6,7 +6,7 @@
     <ul data-role="listview">
       <% @service_call.boms.each do |bom| %>
           <li class="job_billing">
-            <%= link_to bom.material_name, edit_service_call_bom_path(@service_call, bom), "data-transition" => "slide" %>
+            <%= link_to bom.material_name, service_call_bom_path(@service_call, bom), "data-transition" => "slide" %>
             <p class= "billing_price_label"><%= Bom.human_attribute_name(:price) %></p>
             <p class="billing_price"><%= humanized_money_with_symbol bom.total_price %></p>
 
