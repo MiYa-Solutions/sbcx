@@ -1,34 +1,40 @@
 <tr class="col_entry_table">
-<td><strong>
-          <%= link_to(I18n.t('general.general.subcontractor_balance'), affiliate_path(@service_call.subcontractor),
-          :title => @service_call.subcontractor.try(:name).html_safe, :rel => 'tooltip') if @service_call.subcontractor.present? %>
+<td>
+  <%= image_tag("sub24.png", :title => I18n.t('general.messages.subco_icon'), :rel => 'tooltip') %>
+  <strong>
+          <%= link_to @service_call.subcontractor.name, affiliate_path(@service_call.subcontractor) if @service_call.subcontractor.present? %>
   </strong></td>
 
-  <% if @service_call.try(:subcon_balance) == 0 %>
-      <td class="balanced">
-        <%= humanized_money_with_symbol @service_call.subcon_balance %>
-      </td>
+  <% if @service_call.work_done? %>
 
-      <!--<td></td>-->
-  <% else %>
-      <% if @service_call.try(:subcon_balance) > 0 %>
-          <td class="positive">
+        <% if @service_call.try(:subcon_balance) == 0 %>
+          <td class="balanced">
             <%= humanized_money_with_symbol @service_call.subcon_balance %>
+          </td>
 
-            <span class="help_icon">
-            <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
+          <!--<td></td>-->
+        <% else %>
+          <% if @service_call.try(:subcon_balance) > 0 %>
+              <td class="positive">
+                <%= humanized_money_with_symbol @service_call.subcon_balance %>
+
+                <span class="help_icon">
+                <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
+              </span>
+              </td>
+          <% else %>
+              <td class="negative">
+                <%= humanized_money_with_symbol @service_call.subcon_balance %>
+
+                <span class="help_icon">
+            <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
           </span>
-          </td>
-      <% else %>
-          <td class="negative">
-            <%= humanized_money_with_symbol @service_call.subcon_balance %>
+              </td>
 
-            <span class="help_icon">
-        <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
-      </span>
-          </td>
-
+          <% end %>
       <% end %>
+  <% else %>
+    <td></td>
   <% end %>
 
   <td class="show_more_button">

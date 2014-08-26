@@ -1,34 +1,42 @@
 <tr class="col_entry_table">
 
 
-<td><strong>
-    <%= link_to(I18n.t('general.general.provider_balance'), affiliate_path(@service_call.provider),
-                :title => @service_call.provider.try(:name).html_safe, :rel => 'tooltip') if @service_call.provider.present? %>
+<td>
+    <%= image_tag("prov24.png", :title => I18n.t('general.messages.provider_icon'), :rel => 'tooltip') %>
+    <strong>
+  <%= link_to @service_call.provider.name, affiliate_path(@service_call.provider) if @service_call.provider.present? %>
   </strong></td>
 
-  <% if @service_call.try(:provider_balance) == 0 %>
-      <td class="balanced">
-        <%= humanized_money_with_symbol @service_call.provider_balance %>
-      </td>
+  <% if @service_call.work_done? %>
+
+
+        <% if @service_call.try(:provider_balance) == 0 %>
+              <td class="balanced">
+                <%= humanized_money_with_symbol @service_call.provider_balance %>
+              </td>
+          <% else %>
+              <% if @service_call.try(:provider_balance) > 0 %>
+                  <td class="positive">
+                    <%= humanized_money_with_symbol @service_call.provider_balance %>
+
+                    <span class="help_icon">
+                    <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
+                  </span>
+                  </td>
+              <% else %>
+                  <td class="negative">
+                    <%= humanized_money_with_symbol @service_call.provider_balance %>
+
+                    <span class="help_icon">
+                <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
+              </span>
+                  </td>
+
+              <% end %>
+          <% end %>
+
   <% else %>
-      <% if @service_call.try(:provider_balance) > 0 %>
-          <td class="positive">
-            <%= humanized_money_with_symbol @service_call.provider_balance %>
-
-            <span class="help_icon">
-            <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
-          </span>
-          </td>
-      <% else %>
-          <td class="negative">
-            <%= humanized_money_with_symbol @service_call.provider_balance %>
-
-            <span class="help_icon">
-        <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
-      </span>
-          </td>
-
-      <% end %>
+      <td></td>
   <% end %>
 
   <td class="show_more_button">

@@ -19,6 +19,7 @@
           <!--General Summary-->
           <table class="table table-striped table-condensed table-sbcx customer_balance">
             <tbody>
+            <% if @service_call.work_done? %>
             <tr>
               <td><strong> <%= t('general.general.my_profit').html_safe %></strong></td>
               <% if @service_call.try(:my_profit) < 0 %>
@@ -34,6 +35,7 @@
               <td></td>
 
             </tr>
+            <% end %>
 
                 <!-- Balance-->
                 <% case @service_call.my_role when :subcon %>
