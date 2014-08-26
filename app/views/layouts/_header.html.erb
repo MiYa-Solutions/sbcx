@@ -42,6 +42,13 @@
       <% if user_signed_in? %>
 
           <li class="<%= 'active' if current_page?(user_root_path) %>"><%= link_to I18n.t('general.general.home'), user_root_path %></li>
+          <li class="<%= 'active' if current_page?(notifications_path) %>"><a href="#"><%= link_to 'Incoming', notifications_path %>
+              <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
+            </a>
+
+          </li>
+
+
           <li class="<%= 'active' if current_page?(service_calls_path) %>"><%= link_to I18n.t('general.general.jobs'), service_calls_path %></li>
           <li class="<%= 'active' if current_page?(accounting_entries_path) %>"><%= link_to I18n.t('general.general.billing'), accounting_entries_path %></li>
           <li class="<%= 'active' if current_page?(affiliates_path) %>"><%= link_to Affiliate.model_name.pluralize, affiliates_path %></li>
