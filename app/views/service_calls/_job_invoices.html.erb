@@ -1,0 +1,80 @@
+<div class="well well_job_show well_job_history">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= Invoice.model_name.human.pluralize %></h1></li>
+      <li>
+        <%= button_tag t('general.general.new_invoice'), :class => 'btn btn-primary',
+                       id:                                      'new-invoice-btn', data: { toggle: 'modal', target: '#new_invoice' } %>
+      </li>
+    </ul>
+  </div>
+  <br>
+
+  <table class="table table-striped" id="event_log_in_service_call">
+    <thead>
+    <tr>
+      <th><%= Invoice.human_attribute_name(:id) %> </th>
+      <th><%= Invoice.human_attribute_name(:total) %> </th>
+      <th><%= Invoice.human_attribute_name(:notes) %></th>
+      <th><%= Invoice.human_attribute_name(:created_at) %></th>
+      <th><%= Invoice.human_attribute_name(:creator) %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @service_call.invoices.each do |invoice| %>
+        <tr>
+          <td><%= link_to invoice.id, invoice %></td>
+          <td><%= humanized_money_with_symbol invoice.total %></td>
+          <td><%= textilize(invoice.notes).try(:html_safe) %></td>
+          <td><%= l invoice.created_at, :format => :default %></td>
+          <td><%= invoice.creator.name %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<div id='new_invoice' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.new_invoice') %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+    <% invoice = @service_call.invoices.build %>
+    <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
+        <div class="row-fluid">
+          <div class="span6">
+            <% unless @service_call.work_done? %>
+                <%= f.input :adv_payment_amount %>
+                <%= f.input :adv_payment_desc %>
+            <% end %>
+            <%= f.input :notes %>
+            <%= f.input :ticket_id, as: :hidden, input_html: { value: @service_call.id } %>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <div class="transfer_btn_modal">
+            <%= f.submit I18n.t('general.general.Save'),
+                         id:    'invoice_btn',
+                         class: "btn btn-large btn-primary",
+                         title: 'Click to create an invoice',
+                         rel:   'tooltip' %>
+
+          </div>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+
+    <% end %>
+  </div>
+
+</div>

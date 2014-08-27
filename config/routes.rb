@@ -5,7 +5,7 @@ Sbcx::Application.routes.draw do
 
 
   resources :invites
-
+  resources :invoices, only: [:new, :create, :show, :index], controller: 'invoices'
 
                                                                                 # for rails4 unmark the 'via:' part
   match '(errors)/:status', to: 'errors#show', constraints: { status: /\d{3}/ } # via: :all

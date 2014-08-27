@@ -19,6 +19,9 @@ authorization do
     has_permission_on :boms, to: [:new, :create, :index, :show, :read, :update, :destroy, :edit] do
       if_attribute :ticket => { :organization => is { user.organization } }
     end
+    has_permission_on :invoices, to: [:new, :create, :index, :show, :read] do
+      if_attribute :organization_id => is { user.organization_id }
+    end
     has_permission_on :materials, to: [:new, :index]
     has_permission_on :materials, to: [:create, :show, :read, :update, :edit] do
       if_attribute :organization_id => is { user.organization_id }

@@ -1,4 +1,5 @@
 class Invoice < ActiveRecord::Base
+  include Forms::InvoiceForm
 
   belongs_to :organization
   belongs_to :ticket
@@ -20,11 +21,6 @@ class Invoice < ActiveRecord::Base
     InvoicePdf.new(self, view).render
   end
 
-  def total
-    @total ||= Money.new(invoice_items.collect { |e| e.invoiceable.amount }.sum) + tax_amount
-  end
-
-
   private
 
   def finalize
@@ -34,10 +30,15 @@ class Invoice < ActiveRecord::Base
       generate_active_invoice
     end
 
-    total
+    self.total = calc_total
 
     self.save!
   end
+
+  def calc_total
+    Money.new(invoice_items.collect { |e| e.invoiceable.amount }.sum) + tax_amount
+  end
+
 
   def generate_final_invoice
     ticket.boms.each do |bom|
@@ -63,18 +64,6 @@ class Invoice < ActiveRecord::Base
       self.invoice_items << item
     end
   end
-
-  #def calculate_final_total
-  #  paid       = payment_items.size > 0 ? payment_items.collect { |e| e.amount }.sum : Money.new(0)
-  #  self.total = Money.new(charge_items.collect { |e| e.amount }.sum) + paid
-  #
-  #end
-
-  #def calculate_active_total
-  #  paid       = payment_items.size > 0 ? payment_items.collect { |e| e.amount }.sum : Money.new(0)
-  #  self.total = adv_payment_items.collect { |e| e.amount }.sum +  paid
-  #end
-
 
   def company_logo
     'LogoImg.png'
@@ -152,8 +141,6 @@ class Invoice < ActiveRecord::Base
   def boms
     ticket.boms
   end
-
-  private
 
   def job_owner
     member_job = MyServiceCall.find_by_ref_id ticket.ref_id

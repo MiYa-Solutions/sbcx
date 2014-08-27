@@ -241,6 +241,7 @@ en:
       subcon_agreement: "Agreement"
       show_history: "Show History"
       collect_payments: "Customer Payments"
+      new_invoice: "New Invoice"
       download_invoice: "Download Invoice"
       submit: "Submit"
       more: "More"
