@@ -18,13 +18,6 @@
       <% end %>
 
     </li>
-    <li>
-      <% if mobile_device? %>
-          <%= link_to "Full Site", :mobile => 0 %>
-      <% else %>
-          <%= link_to "Mobile Site", :mobile => 1 %>
-      <% end %>
-    </li>
   </ul>
 
 
@@ -41,8 +34,8 @@
     <ul class="nav pull-right">
       <% if user_signed_in? %>
 
-          <li class="<%= 'active' if current_page?(user_root_path) %>"><%= link_to I18n.t('general.general.home'), user_root_path %></li>
-          <li class="<%= 'active' if current_page?(notifications_path) %>"><a href="#"><%= link_to 'Incoming', notifications_path %>
+          <li><%= link_to I18n.t('general.general.home'), user_root_path %></li>
+          <li><a href="#"><%= link_to 'Incoming', notifications_path %>
               <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
             </a>
 
@@ -57,24 +50,41 @@
               <li><a href="#"><%= link_to I18n.t('general.general.new_job'), new_service_call_path %></a></li>
              </ul>
           </li>
-
-
-          <li class="<%= 'active' if current_page?(accounting_entries_path) %>"><%= link_to I18n.t('general.general.billing'), accounting_entries_path %></li>
-          <li class="<%= 'active' if current_page?(affiliates_path) %>"><%= link_to Affiliate.model_name.pluralize, affiliates_path %></li>
-          <li class="<%= 'active' if current_page?(customers_path) %>"><%= link_to Customer.model_name.pluralize, customers_path %></li>
-          <li class="<%= 'active' if current_page?(materials_path) %>"><%= link_to I18n.t('general.general.parts'), materials_path %></li>
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.my_affiliates') %> <b class="caret"></b></a>
+            <ul class="dropdown-menu" id="menu2">
+              <li><a href="#"><%= link_to I18n.t('general.general.my_affiliates'), affiliates_path %></a></li>
+              <li><a href="#"><%= link_to I18n.t('general.general.new_affiliate'), new_affiliate_path %></a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= Customer.model_name.pluralize %><b class="caret"></b></a>
+            <ul class="dropdown-menu" id="menu3">
+              <li><a href="#"><%= link_to I18n.t('general.general.my_customers'), customers_path %></a></li>
+              <li><a href="#"><%= link_to I18n.t('general.general.new_customer'), new_customer_path %></a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.employees') %> <b class="caret"></b></a>
+            <ul class="dropdown-menu" id="menu4">
+              <li><a href="#"><%= link_to I18n.t('general.general.my_employees'), my_users_path %></a></li>
+              <li><a href="#"><%= link_to I18n.t('general.general.new_employee'), new_my_user_path %></a></li>
+            </ul>
+          </li>
+          <li><%= link_to I18n.t('general.general.billing'), accounting_entries_path %></li>
+          <li><%= link_to I18n.t('general.general.parts'), materials_path %></li>
           <% permitted_to? :index, :organizations do %>
-              <li class="<%= 'active' if current_page?(organizations_path) %>"><%= link_to Organization.model_name.pluralize, organizations_path %></li>
+              <li><%= link_to Organization.model_name.pluralize, organizations_path %></li>
           <% end %>
-          <li class="<%= 'active' if current_page?(my_users_path) %>"><%= link_to I18n.t('general.general.employees'), my_users_path %></li>
+
 
           <li>
-            <div class="btn-group">
+            <div class="dropdown" id="header_profile_btn">
               <a href="#" data-toggle="dropdown" class="btn dropdown-toggle">
                 <i class="icon-user"></i> <%= current_user.name %>
                 <span class="caret"></span>
               </a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu" id="menu5">
                 <!--<li class="login_info"><a><#%= current_user.name %></a></li>-->
                 <li class="login_info"><a><%= current_user.email %></a></li>
                 <li class="divider"></li>
@@ -84,6 +94,14 @@
                 <li><%= link_to I18n.t('general.general.contact_us'), contact_us_path %></li>
                 <!--<li><#%= link_to I18n.t('general.general.miya_billing') %></li>-->
                 <li class="divider"></li>
+                <li>
+                  <% if mobile_device? %>
+                      <%= link_to "Full Site", :mobile => 0 %>
+                  <% else %>
+                      <%= link_to "Mobile Site", :mobile => 1 %>
+                  <% end %>
+                </li>
+
                 <li>
                   <%= link_to I18n.t('general.general.sign_out'), destroy_user_session_path, method: "delete", id: "sign_out_header_link" %>
                 </li>

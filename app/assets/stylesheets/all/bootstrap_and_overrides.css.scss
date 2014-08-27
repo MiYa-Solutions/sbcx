@@ -4832,3 +4832,51 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   margin-top: 14px;
 }
 
+#header_profile_btn {
+  .caret {
+    margin-top: 7px;
+  }
+}
+
+.select2-container .select2-choice {
+  -moz-user-select: none;
+  background-clip: padding-box;
+  background-color: #fff;
+  background-image: -moz-linear-gradient(center bottom , #eeeeee 0%, white 50%);
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  color: #444;
+  display: block;
+  height: 26px;
+  line-height: 26px;
+  overflow: hidden;
+  padding: 0 0 0 8px;
+  position: relative;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.select2-container .select2-choice span {
+  display: block;
+  margin-right: 26px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select2-container .select2-choice {
+  color: #444;
+  line-height: 26px;
+}
+
+.select2-container .select2-choice div {
+  background: -moz-linear-gradient(center bottom , #cccccc 0%, #eeeeee 60%) repeat scroll 0 0 #ccc;
+  border-left: 1px solid #aaa;
+  border-radius: 0 4px 4px 0;
+  display: block;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 18px;
+}
