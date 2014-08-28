@@ -88,4 +88,8 @@ class AccountingEntry < ActiveRecord::Base
     raise "The amount direction is not defined - you need to define amount_direction method for #{self.class}"
   end
 
+  def name
+    self.class.model_name.human
+  end
+
 end

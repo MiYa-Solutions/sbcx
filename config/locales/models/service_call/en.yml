@@ -73,15 +73,9 @@ en:
             cleared: "Cleared"
         billing_status:
           states:
-            invoiced_by_subcon: "Invoiced (Subcontractor)"
-            invoiced: "Invoiced"
             paid: "Paid"
             pending: "Pending"
-            invoiced_by_prov: "Invoiced (Contractor)"
           events:
-            invoice: I Invoiced
-            provider_invoiced: Contractor
-            subcon_invoiced: Subcontractor
             collect: I Collceted
             provider_collected: Contractor
             subcon_collected: Subcontractor
@@ -100,7 +94,6 @@ en:
         billing_status:
           events:
             clear: 'Clear'
-            subcon_invoiced: LILI
           states:
             paid: "Paid"
             overdue: "Overdue"
@@ -110,8 +103,6 @@ en:
             deposited_to_prov: "Deposited to Contractor"
             deposited_to_subcon: "Deposited to Subcontractor"
             collected_by_provider: "Contractor Collected"
-            invoiced_by_subcon: "Subcontractor Invoiced"
-            invoiced_by_provider: "Contractor Invoiced"
             provider_claim_deposited: "Contractor Deposited?"
             collected_by_employee: "Employee Collected"
             collected_by_subcon: "Subcontractor Collected"
@@ -150,8 +141,6 @@ en:
             deposited_to_subcon: "Deposited to Subcontractor"
             deposited: "Deposit Confirmed"
             collected_by_provider: "Contractor Collected"
-            invoiced_by_subcon: "Subcontractor Invoiced"
-            invoiced_by_provider: "Contractor Invoiced"
             provider_claim_deposited: "Contractor Deposited?"
             collected_by_employee: "Employee Collected"
             collected_by_subcon: "Subcontractor Collected"
@@ -215,12 +204,6 @@ en:
   service_call_invoice_event:
     name: "Customer has been Invoiced"
     description: "The customer has received the Job invoice"
-  service_call_invoiced_event:
-    name: "Job has been Invoiced"
-    description: '%{subcontractor} has submitted the Job invoice to the customer'
-  service_call_provider_invoiced_event:
-    name: "Invoiced by Contractor"
-    description: 'Please note that the Contractor &nbsp; (%{provider}) has submitted the Job invoice to the customer. You are no longer expected to collect the payment from the customer.'
   service_call_deposit_event:
     name: "Deposited Payment to Contractor"
     description: 'The payment has been deposited to Contractor Name: &nbsp; %{provider}'

@@ -56,6 +56,7 @@
                 <%= f.input :adv_payment_amount %>
                 <%= f.input :adv_payment_desc %>
             <% end %>
+            <%= f.input :email_customer, as: :boolean %>
             <%= f.input :notes %>
             <%= f.input :ticket_id, as: :hidden, input_html: { value: @service_call.id } %>
           </div>

@@ -51,9 +51,9 @@ en:
       subject: '%{subcontractor} has dispatched service call %{ref}'
       content: 'Please note that %{subcontractor} has dispatched service call %{ref}'
     sc_invoiced_notification:
-      html_message: '%{subcontractor} has invoiced the %{link}'
-      subject: '%{subcontractor} has invoiced service call %{ref}'
-      content: 'Please note that %{subcontractor} has invoiced service call %{ref}'
+      html_message: '%{link} was invoiced'
+      subject: '%{org} Invoice For Job %{ref}'
+      content: 'An invoice was sent to the customer'
     sc_paid_notification:
       html_message: '%{customer} has paid for the %{link}'
       subject: '%{customer} has paid for service call %{ref}'

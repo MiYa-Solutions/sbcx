@@ -28,6 +28,59 @@ describe 'Invoice Active Job' do
       expect(job.customer_balance).to eq Money.new(10000)
     end
 
+    context 'when collecting a cheque' do
+      before do
+        collect_a_payment job, amount: 10, type: 'cheque'
+        invoice job
+        job.reload
+      end
+
+      it 'should create a successful invoice' do
+        expect(job.invoices.size).to eq 2
+      end
+
+      it 'the invoice should have just one invoice item (the advance payment + collection)' do
+        expect(job.invoices.last.invoice_items.size).to eq 2
+      end
+
+      it 'customer account balance should be 90.00' do
+        expect(job.customer.account.balance).to eq Money.new(9000)
+        expect(job.customer_balance).to eq Money.new(9000)
+      end
+
+      context 'when rejecting the cheque deposit' do
+        before do
+          job.payments.last.deposit!
+          job.payments.last.reject
+          job.reload
+          invoice job
+        end
+
+        it 'should create a successful invoice' do
+          expect(job.invoices.size).to eq 3
+        end
+
+        it 'the invoice should have just one invoice item (the advance payment + collection + rejection)' do
+          expect(job.invoices.last.invoice_items.size).to eq 3
+        end
+
+        it 'customer account balance should be 100.00' do
+          expect(job.customer.account.balance).to eq Money.new(10000)
+          expect(job.customer_balance).to eq Money.new(10000)
+        end
+
+        it 'invoice total should be 100' do
+          expect(job.invoices.last.total).to eq Money.new(10000)
+        end
+
+
+
+      end
+
+
+
+    end
+
     context 'after completing the work' do
       before do
         start_the_job job
@@ -50,7 +103,7 @@ describe 'Invoice Active Job' do
 
       context 'when collecting payment' do
         before do
-          collect_a_payment job, amount: 100, type: 'cash'
+          collect_a_payment job, amount: 100, type: 'cheque'
           invoice job
         end
 
@@ -65,6 +118,36 @@ describe 'Invoice Active Job' do
         it 'invoice total should be the job total - payment' do
           expect(job.invoices.last.total).to eq job.total - Money.new(10000)
         end
+
+        context 'when rejecting the cheque deposit' do
+          before do
+            job.payments.last.deposit!
+            job.payments.last.reject!
+            job.reload
+            invoice job
+          end
+
+          it 'should create a successful invoice' do
+            expect(job.invoices.size).to eq 4
+          end
+
+          it 'the invoice should have just one invoice item (two boms + collection + rejection)' do
+            expect(job.invoices.last.invoice_items.size).to eq 4
+          end
+
+          it 'customer account balance should be 1100.00' do
+            expect(job.customer.account.balance).to eq Money.new(110000)
+            expect(job.customer_balance).to eq Money.new(110000)
+          end
+
+          it 'invoice total should be 1100.00' do
+            expect(job.invoices.last.total).to eq job.total
+          end
+
+
+
+        end
+
 
       end
 

@@ -33,12 +33,6 @@ class ServiceCallsController < ApplicationController
         @customer = Customer.new
         @bom      = Bom.new
       end
-      format.pdf do
-        send_data @service_call.invoice.generate_pdf(view_context),
-                  filename:    "invoice_#{@service_call.ref_id}.pdf",
-                  type:        "application/pdf",
-                  disposition: "inline"
-      end
     end
 
   end

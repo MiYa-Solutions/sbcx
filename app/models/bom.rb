@@ -76,6 +76,10 @@ class Bom < ActiveRecord::Base
     @material_name ||= material.try(:name)
   end
 
+  def name
+    material_name
+  end
+
   def validate_buyer
 
     unless ticket.nil? || ticket.invalid? # if there is no ticket associated this bom is invalid anyway

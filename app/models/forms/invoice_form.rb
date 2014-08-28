@@ -1,6 +1,7 @@
 module Forms::InvoiceForm
   attr_accessor :adv_payment_amount
   attr_accessor :adv_payment_desc
+  attr_accessor :email_customer
 
   def self.included(base)
     base.before_create :generate_adv_payment, unless: -> { adv_payment_amount.blank? }

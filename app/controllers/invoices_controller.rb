@@ -21,6 +21,13 @@ class InvoicesController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @invoice }
+      format.pdf do
+        send_data @invoice.generate_pdf(view_context),
+                  filename:    "invoice_#{@invoice.id}.pdf",
+                  type:        "application/pdf",
+                  disposition: "inline"
+      end
+
     end
   end
 
@@ -46,7 +53,7 @@ class InvoicesController < ApplicationController
 
     respond_to do |format|
       if @invoice.save
-        format.html { redirect_to @invoice.ticket, notice: 'Invoice was successfully created.' }
+        format.html { redirect_to @invoice, notice: 'Invoice was successfully created.' }
         format.json { render json: @invoice, status: :created, location: @invoice }
       else
         flash[:error] = "Failed to create the invoice. #{humanized_errors}".html_safe
