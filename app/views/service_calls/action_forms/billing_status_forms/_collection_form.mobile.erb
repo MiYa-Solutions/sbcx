@@ -1,27 +1,48 @@
-<%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
-    <% if collection_events(job).size > 1 %>
-        <%= f.input :billing_status,
-                    collection: collection_events(job),
-                    as:         :radio_buttons,
-                    label:      I18n.t('service_call.forms.billing_status.collection.label'),
-                    input_html: { name: 'service_call[billing_status_event]' } %>
-    <% else %>
-        <% event = collection_events(job).first.second %>
-        <%= hidden_field_tag 'service_call[billing_status_event]', event %>
-    <% end %>
+<%= link_to I18n.t('general.general.collect_payments_mobile'), "#payment_collect",
+            "data-role" => "button", "data-theme" => "b",
+            :id => 'new-collect-button',
+            :class => "ui-btn-up-b", "data-rel" => "popup",
+            "data-transition" => "pop" unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
 
-    <% if job.organization.multi_user? %>
-        <%= f.label :collector %>
-        <%= collector_tag(job) %>
-    <% end %>
 
-    <%= f.input :payment_type, collection: payment_types %>
-    <%= f.submit I18n.t('service_call.forms.billing_status.collection.btn_name'),
-                 id:          'collect_service_call_btn',
-                 class:       'btn btn-large btn-primary',
-                 "data-theme" => "b",
-                 title:       I18n.t('service_call.forms.billing_status.collection.tooltip'),
-                 rel:         'tooltip'
-    %>
-<% end %>
+
+<div data-role="popup" id="payment_collect" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="min-width:300px;" class="ui-corner-all">
+
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1><%= t('general.general.collect_payments') %></h1>
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+  </div>
+
+
+
+
+
+  <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+    <br>
+    <%= simple_form_for @service_call.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
+        <div class="customer_contacts">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:collector) unless @service_call.available_payment_collectors.size == 1 %></div>
+            <div class="ui-block-b"> <%= collector_tag(@service_call) %><%= hidden_field_tag 'service_call[billing_status_event]', 'collect' %></div>
+          </div>
+          <div class="ui-grid-a">
+            <div class="ui-block-a position_lable"><%= @service_call.class.human_attribute_name(:payment_type) %></div>
+            <div class="ui-block-b hide_lable"> <%= f.input :payment_type, collection: payment_types %></div>
+          </div>
+          <div class="ui-grid-a collect_payment_notes">
+            <div class="ui-block-a position_lable" ><%= @service_call.class.human_attribute_name(:amount) %></div>
+            <div class="ui-block-b hide_lable"> <%= f.input :payment_amount %></div>
+          </div>
+          <%= f.input :payment_notes %>
+        </div>
+
+        <%= f.submit t('general.general.submit'), class: "ui-btn-up-b", id: 'collect_service_call_btn', "data-theme" => "b", "data-role" => "button","data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
+
+        <br>
+        <%= link_to I18n.t('general.general.back'), service_call_path(@service_call), "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>
+
+    <% end if @service_call.billing_status_events.include? :collect %>
+    <br>
+  </div>
+</div>
 

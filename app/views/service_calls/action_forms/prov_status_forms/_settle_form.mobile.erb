@@ -1,11 +1,41 @@
-<%= simple_form_for job.becomes(ServiceCall), html: { id: 'provider_status_settle', class: 'button-green' } do |f| %>
-    <%= f.input :provider_payment, collection: payment_types, input_html: { id: 'service_call_provider_payment' } %>
-    <%= hidden_field_tag 'service_call[provider_status_event]', 'settle' %>
-    <%= f.submit job.class.human_provider_status_event_name(:settle).titleize,
-                 id:    'settle_service_call_btn',
-                 class: 'btn btn-large btn-success',
-                 title: I18n.t('service_call.forms.provider_status.settle.tooltip'),
-                 rel:   'tooltip'
-    %>
-<% end %>
+<%= link_to @service_call.class.human_attribute_name(:settle),
+            "#settle_provider",
+            "data-role" => "button", "data-theme" => "b",
+            :id => 'subcon_status_settle',
+            :class => "ui-btn-up-b", "data-rel" => "popup",
+            "data-transition" => "pop" %>
 
+
+
+<div data-role="popup" id="settle_provider" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="min-width:300px;" class="ui-corner-all">
+
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1><%= t('general.general.subcon_payment') %></h1>
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+  </div>
+
+
+
+
+
+  <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+    <br>
+    <%= simple_form_for job.becomes(ServiceCall), html: { id: 'provider_status_settle' } do |f| %>
+        <%= hidden_field_tag 'service_call[provider_status_event]', 'settle' %>
+        <div class="customer_contacts">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"><%= t('general.general.payment_type') %></div>
+            <div class="ui-block-b hide_lable"> <%= f.input :provider_payment, collection: payment_types %></div>
+          </div>
+        </div>
+
+        <br>
+        <%= f.submit t('general.general.submit'), class: "ui-btn-up-b", id: 'settle_service_call_btn', "data-theme" => "b", "data-role" => "button","data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
+
+        <br>
+        <%= link_to I18n.t('general.general.back'), service_call_path(@service_call), "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>
+
+    <% end %>
+    <br>
+  </div>
+</div>

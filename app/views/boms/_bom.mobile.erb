@@ -1,7 +1,7 @@
 <%= simple_form_for([@bom.ticket.becomes(ServiceCall), @bom], :html => { :class => 'form-horizontal' }) do |f| %>
     <%= render 'shared/error_messages', object: @bom %>
 
-    <div class="form-inputs" id="hi">
+    <div class="form-inputs edit_bom_info" id="edit_bom_info">
       <!--<div class="control-group string ">-->
       <!--<div class="controls">-->
 
@@ -15,6 +15,12 @@
             <ul id="material-suggestions" data-role="listview" data-inset="true"></ul>
           </div>
         </div>
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Bom.human_attribute_name(:description) %></div>
+          <div class="ui-block-b bom_description"><%= truncate(@bom.material.description, length: 15) %></div>
+        </div>
+
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:quantity) %></div>
           <div class="ui-block-b"> <%= f.text_field :quantity, "type" => "range", "name" => "bom[quantity]", id: "slider-1", "value" => "1", "min" => "0", "max" => "100" %></div>
@@ -27,7 +33,7 @@
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:cost) %></div>
           <div class="ui-block-b">  <%= f.text_field :cost, placeholder: 'cost', "type" => "number" %></div>
         </div>
-        <div class="ui-grid-a">
+        <div class="ui-grid-a bom_buyer">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:buyer) %></div>
           <div class="ui-block-b">
             <%= f.select :buyer_id, options_for_select(buyer_options(@bom.ticket), @bom.buyer.try(:id)), include_blank: true %>

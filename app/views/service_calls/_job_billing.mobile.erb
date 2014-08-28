@@ -15,6 +15,7 @@
           <span class="shift_total_price"><%= humanized_money_with_symbol @service_call.total_cost %></span></div>
       </div>
     </li>
+    <% if @service_call.work_done? %>
     <li>
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= t('general.general.my_profit').html_safe %></div>
@@ -22,6 +23,7 @@
           <span class="shift_total_price"><%= humanized_money_with_symbol @service_call.my_profit %></span></div>
       </div>
     </li>
+    <% end %>
 
     <!--Tax-->
     <% if (permitted_attribute? @service_call, :tax) %>
@@ -50,63 +52,6 @@
       </div>
     </li>
 
-    <% case @service_call.my_role when :subcon %>
-        <li class="affiliate_balance_billing">
-
-          <%= link_to I18n.t('general.general.provider_balance'), "#provider_entries", "data-rel" => "popup", "data-transition" => "pop" %>
-          <p>
-            <% if @service_call.provider_balance < 0 %>
-                <span class="red_badge"><%= humanized_money_with_symbol @service_call.provider_balance %></span>
-            <% else %>
-                <span class="green_badge"><%= humanized_money_with_symbol @service_call.provider_balance %></span>
-            <% end %>
-          </p>
-        </li>
-
-
-    <% when :broker %>
-        <li class="affiliate_balance_billing">
-
-          <!--<#%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-transition" => "slide" %>-->
-          <%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-rel" => "popup", "data-transition" => "pop" %>
-
-
-          <p>
-            <% if @service_call.subcon_balance < 0 %>
-                <span class="red_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-            <% else %>
-                <span class="green_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-            <% end %>
-          </p>
-        </li>
-
-        <li class="affiliate_balance_billing">
-          <%= link_to I18n.t('general.general.provider_balance'), "#provider_entries", "data-rel" => "popup", "data-transition" => "pop" %>
-
-          <p>
-            <% if @service_call.provider_balance < 0 %>
-                <span class="red_badge"><%= humanized_money_with_symbol @service_call.provider_balance %></span>
-            <% else %>
-                <span class="green_badge"><%= humanized_money_with_symbol @service_call.provider_balance %></span>
-            <% end %>
-          </p>
-        </li>
-
-
-    <% else %>
-        <!--I'm the provider and has a subcon-->
-        <li class="affiliate_balance_billing">
-
-          <%= link_to I18n.t('general.general.subcontractor_balance'), "#subcon_entries", "data-rel" => "popup", "data-transition" => "pop" %>
-          <p>
-            <% if @service_call.subcon_balance < 0 %>
-                <span class="red_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-            <% else %>
-                <span class="green_badge"><%= humanized_money_with_symbol @service_call.subcon_balance %></span>
-            <% end %>
-          </p>
-        </li>
-    <% end %>
 
   </ul>
 
@@ -148,114 +93,3 @@
   </div>
 </div>
 
-
-<!--Subcon Entries Popup-->
-<div data-role="popup" id="subcon_entries" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
-
-  <div data-role="header" data-theme="a" class="ui-corner-top">
-    <h1 id="entries_header"><%= t('general.general.subcon_entries') %></h1>
-    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-
-  </div>
-
-  <div data-role="content">
-
-    <div class="subcon_entries_page">
-      <br>
-      <ul data-role="listview">
-        <li class="ui-li ui-li-static">
-          <div class="ui-grid-b">
-            <div class="ui-block-a"> <%= AccountingEntry.human_attribute_name(:amount) %></div>
-            <div class="ui-block-b"> <%= AccountingEntry.human_attribute_name(:type) %></div>
-            <div class="ui-block-c"> <%= AccountingEntry.human_attribute_name(:description) %></div>
-          </div>
-        </li>
-
-      </ul>
-
-      <br><br>
-
-      <ul data-role="listview">
-        <% @service_call.subcon_entries.each do |entry| %>
-            <li class="ui-li ui-li-static">
-              <div class="ui-grid-b">
-                <div class="ui-block-a"> <%= humanized_money_with_symbol entry.amount %></div>
-                <div class="ui-block-b"> <%= entry.type.constantize.model_name.human %></div>
-                <div class="ui-block-c">
-                  <%= entry.description %>
-                  <br><strong>at:</strong><%= '&nbsp;'.html_safe %><%= l entry.created_at, :format => :default %>
-                  <br><strong>Account
-                  For:</strong><%= '&nbsp;'.html_safe %><%= entry.account.accountable.class.model_name.human %>
-                  <br><strong>Id:</strong><%= '&nbsp;'.html_safe %><%= entry.id %>
-
-                </div>
-              </div>
-            </li>
-        <% end %>
-      </ul>
-
-      <br>
-      <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
-
-
-    </div>
-  </div>
-
-
-</div>
-
-
-<!--Provider Entries Popup-->
-<div data-role="popup" id="provider_entries" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
-
-  <div data-role="header" data-theme="a" class="ui-corner-top">
-    <h1 id="entries_header"><%= t('general.general.provider_entries') %></h1>
-    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-
-  </div>
-
-  <div data-role="content">
-
-    <div class="subcon_entries_page">
-      <br>
-      <ul data-role="listview">
-        <li class="ui-li ui-li-static">
-          <div class="ui-grid-b">
-            <div class="ui-block-a"> <%= AccountingEntry.human_attribute_name(:amount) %></div>
-            <div class="ui-block-b"> <%= AccountingEntry.human_attribute_name(:type) %></div>
-            <div class="ui-block-c"> <%= AccountingEntry.human_attribute_name(:description) %></div>
-          </div>
-        </li>
-
-      </ul>
-
-      <br><br>
-
-      <ul data-role="listview">
-        <% @service_call.provider_entries.each do |entry| %>
-            <li class="ui-li ui-li-static">
-              <div class="ui-grid-b">
-                <div class="ui-block-a"> <%= humanized_money_with_symbol entry.amount %></div>
-                <div class="ui-block-b"> <%= entry.type.constantize.model_name.human %></div>
-                <div class="ui-block-c">
-                  <%= entry.description %>
-                  <br><strong>at:</strong><%= '&nbsp;'.html_safe %><%= l entry.created_at, :format => :default %>
-                  <br><strong>Account
-                  For:</strong><%= '&nbsp;'.html_safe %><%= entry.account.accountable.class.model_name.human %>
-                  <br><strong>Id:</strong><%= '&nbsp;'.html_safe %><%= entry.id %>
-
-                </div>
-              </div>
-            </li>
-        <% end %>
-      </ul>
-
-      <br>
-      <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
-
-
-    </div>
-  </div>
-
-
-</div>

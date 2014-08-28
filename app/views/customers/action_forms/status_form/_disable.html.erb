@@ -3,7 +3,7 @@
       <%= hidden_field_tag 'customer[status_event]', 'disable' %>
       <%= f.submit customer.class.human_status_event_name(:disable).titleize,
                    id:    'disable_customer_btn',
-                   class: 'btn btn-danger',
+                   class: 'btn btn-danger btn-mini',
                    title: I18n.t('customer.forms.status.disable.tooltip'),
                    rel:   'tooltip'
       %>

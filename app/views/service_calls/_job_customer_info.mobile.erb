@@ -1,12 +1,12 @@
 <h3><%= I18n.t('general.general.contact_Info')%></h3>
 
 
-<div class="customer_in_service_call">
+<div class="customer_in_service_call job_info_list">
   <ul data-role="listview">
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
-        <div class="ui-block-b"><%= @service_call.customer.name %></div>
+        <div class="ui-block-b status_grey "><%= link_to @service_call.customer.try(:name), customer_path(@service_call.customer.id) %></div>
       </div>
     </li>
     <li class="ui-li ui-li-static">

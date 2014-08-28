@@ -33,16 +33,17 @@
         <div class="ui-block-b"> <%= @service_call.scheduled_for_text  %> </div>
       </div>
     </li>
+
+
     <li>
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
-        <div class="ui-block-b"> <%= @service_call.customer.name  %> </div>
+        <div class="ui-block-b status_grey "><%= link_to @service_call.customer.try(:name), customer_path(@service_call.customer.id) %></div>
       </div>
     </li>
 
     <% if @service_call.technician.present? && @service_call.organization.my_user?(@service_call.technician) %>
-    <!--<#% unless @service_call.technician.blank? %>-->
-        <li>
+         <li>
           <div class="ui-grid-a">
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
             <div class="ui-block-b"><%= @service_call.technician.try (:name)  %></div>
@@ -54,7 +55,9 @@
         <li>
           <div class="ui-grid-a">
             <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:subcontractor) %></div>
-            <div class="ui-block-b"><%= @service_call.subcontractor.try (:name)  %></div>
+            <div class="ui-block-b status_grey">
+              <%= link_to @service_call.subcontractor.try(:name), affiliate_path(@service_call.subcontractor.id) %>
+            </div>
           </div>
         </li>
     <% end %>

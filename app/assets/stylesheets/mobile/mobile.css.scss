@@ -386,6 +386,11 @@ footer {
     line-height: 22px;
   }
 
+  .status_grey {
+    margin-top: 2px;
+    text-align: left;
+  }
+
 }
 
 .job_info_list, .ui-collapsible-content .ui-btn-up-d {
@@ -641,7 +646,7 @@ input.ui-input-text, textarea.ui-input-text {
     color: #AB2525;
     font-size: 14px;
     font-weight: bold;
-    left: 60%;
+    left: 75%;
     margin-top: -18px;
     position: absolute;
   }
@@ -650,7 +655,7 @@ input.ui-input-text, textarea.ui-input-text {
     color: #44AD3F;
     font-size: 14px;
     font-weight: bold;
-    left: 60%;
+    left: 75%;
     margin-top: -18px;
     position: absolute;
   }
@@ -659,7 +664,7 @@ input.ui-input-text, textarea.ui-input-text {
     color: #000000;
     font-size: 14px;
     font-weight: bold;
-    left: 60%;
+    left: 75%;
     margin-top: -18px;
     position: absolute;
   }
@@ -766,6 +771,26 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+.red_badge_collape {
+  background-color: #AB2525;
+  border-radius: 1em 1em 1em 1em;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  height: 9px;
+  //margin-left: 100px;
+  margin-top: -10px;
+  padding: 3px 6px;
+  text-align: center;
+  margin-left: 10%;
+
+  badge {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    text-shadow: 0 1px 1px #194B7E;
+  }
+}
+
 .blue_badge_collape {
   background-color: #396B9E;
   border-radius: 1em 1em 1em 1em;
@@ -773,7 +798,7 @@ input.ui-input-text, textarea.ui-input-text {
   height: 9px;
   //margin-left: 100px;
   margin-top: -10px;
-  padding: 2px 4px 3px;
+  padding: 3px 6px;
   text-align: center;
   margin-left: 10%;
 
@@ -1324,6 +1349,7 @@ input.ui-input-text, textarea.ui-input-text {
     margin-right: 15%;
     margin-top: -16px;
     text-align: left;
+    padding-top: 2px;
    }
 
   .billing_price_label {
@@ -2038,4 +2064,116 @@ div.ui-slider {
 
 #subcon_statuses {
   width: 100%;
+}
+
+.new_bom {
+ line-height: 20px;
+}
+
+.edit_bom_info {
+  line-height: 32px;
+}
+
+.bom_buyer {
+  line-height: 16px;
+}
+
+.edit_bom_back_btn {
+  line-height: 18px;
+  margin-left: -6px;
+}
+
+.bom_description {
+  margin-top: 10px;
+}
+
+.close_btn_header {
+
+  .ui-btn {
+    margin-top: -2px;
+  }
+
+}
+
+
+
+.service_call_entries_actions {
+  margin-left: -10%;
+  text-transform: uppercase;
+
+  form {
+    margin-bottom: 17px;
+  }
+}
+
+.aff_icon_job {
+  img {
+    margin-bottom: -8px;
+    margin-top: -5px;
+    float: right;
+  }
+}
+
+#aff_total_balance {
+  margin-left: -6px;
+  margin-top: -1px;
+
+}
+
+.affiliate_balance_billing_total {
+  margin-top: 11px;
+  padding-bottom: 22px;
+
+}
+
+.hide_lable {
+
+  label {
+    display: none;
+  }
+}
+
+.position_lable {
+  margin-top: 9px;
+}
+
+#service_call_payment_notes {
+  height: 50px;
+}
+
+.collect_payment_notes {
+  margin-bottom: 19px;
+}
+
+#service_call_customer_name_job {
+  text-transform: capitalize;
+}
+
+
+#affiliate_show_actions {
+  margin-bottom: 16px;
+  margin-top: -8px;
+}
+
+.show_bom_info {
+  margin-top: 19px;
+  margin-bottom: 20px;
+}
+
+.new_job_parts_remb {
+  margin-top: 12px;
+  .ui-checkbox {
+    margin-left: 40%;
+    margin-top: -28px;
+    width: 30%;
+  }
+
+  .control-label {
+    margin-top: 2px;
+  }
+}
+
+#service_call_properties_provider_fee {
+  margin-left: 7px;
+  width: 47%;
 }

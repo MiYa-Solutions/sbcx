@@ -1,0 +1,28 @@
+<div data-role="collapsible" data-collapsed="true" data-theme="d">
+
+
+  <h3>
+    <%= I18n.t('general.general.customer_payments') %>
+    <% if @service_call.active_customer_entries.size > 0 %>
+        <span class="blue_badge_collape">
+                    <badge><%= "#{@service_call.active_customer_entries.size} new" %></badge>
+        </span>
+    <% end %>
+    <% if @service_call.work_done? %>
+        <% if @service_call.customer_balance < 0 %>
+            <span class="red_badge_collape"><%= humanized_money_with_symbol @service_call.customer_balance %></span>
+        <% else %>
+            <span class="blue_badge_collape"><%= humanized_money_with_symbol @service_call.customer_balance %></span>
+        <% end %>
+        </span>
+
+    <% end %>
+  </h3>
+
+
+  <%= billing_status_forms(@service_call) %>
+
+  <br>
+  <%= render :partial => 'customer_entries' %>
+
+</div>
