@@ -2238,6 +2238,7 @@ a:hover {
 .customer_balance {
 //  min-height: 334px;
   overflow: auto;
+  margin-bottom: 150px;
 }
 
 
@@ -4879,4 +4880,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   right: 0;
   top: 0;
   width: 18px;
+}
+
+#disable_customer_btn {
+  margin-top: 3px;
 }
