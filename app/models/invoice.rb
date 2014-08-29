@@ -75,120 +75,120 @@ class Invoice < ActiveRecord::Base
   end
 
   class InvoiceData
-     def initialize(invoice)
-       @invoice = invoice
-     end
+    def initialize(invoice)
+      @invoice = invoice
+    end
 
-     def ticket
-       @invoice.ticket
-     end
+    def ticket
+      @invoice.ticket
+    end
 
-     def company_logo
-       'LogoImg.png'
-     end
+    def company_logo
+      'LogoImg.png'
+    end
 
-     def customer_name
-       ticket.customer.name || ''
-     end
+    def customer_name
+      ticket.customer.name || ''
+    end
 
-     def customer_company
-       ticket.customer.company || ''
-     end
+    def customer_company
+      ticket.customer.company || ''
+    end
 
-     def customer_address1
-       ticket.customer.address1 || ''
-     end
+    def customer_address1
+      ticket.customer.address1 || ''
+    end
 
-     def customer_address2
-       ticket.customer.address2 || ''
-     end
+    def customer_address2
+      ticket.customer.address2 || ''
+    end
 
-     def customer_city
-       ticket.customer.city || ''
-     end
+    def customer_city
+      ticket.customer.city || ''
+    end
 
-     def customer_state
-       ticket.customer.state || ''
-     end
+    def customer_state
+      ticket.customer.state || ''
+    end
 
-     def customer_phone
-       ticket.customer.phone || ''
-     end
+    def customer_phone
+      ticket.customer.phone || ''
+    end
 
-     def customer_zip
-       ticket.customer.zip || ''
-     end
+    def customer_zip
+      ticket.customer.zip || ''
+    end
 
-     def ticket_address
-       "#{ticket.address1} #{ticket.address2}, #{ticket.city}, #{ticket.state} #{ticket.zip}"
+    def ticket_address
+      "#{ticket.address1} #{ticket.address2}, #{ticket.city}, #{ticket.state} #{ticket.zip}"
 
-     end
+    end
 
-     def location_differanet_from_address?
-       customer_address1 != ticket.address1
-     end
+    def location_differanet_from_address?
+      customer_address1 != ticket.address1
+    end
 
-     def number
-       @invoice.id
-     end
+    def number
+      @invoice.id
+    end
 
-     def date
-       @invoice.created_at
-     end
+    def date
+      @invoice.created_at
+    end
 
-     def total_before_tax
-       @invoice.total - tax_amount
-     end
+    def total_before_tax
+      @invoice.total - tax_amount
+    end
 
-     def total
-       @invoice.total
-     end
+    def total
+      @invoice.total
+    end
 
-     def notes
-       @invoice.notes
-     end
+    def notes
+      @invoice.notes
+    end
 
-     def tax
-       ticket.tax || ''
-     end
+    def tax
+      ticket.tax || ''
+    end
 
-     def tax_amount
-       ticket.tax_amount || Money.new(0)
-     end
+    def tax_amount
+      ticket.tax_amount || Money.new(0)
+    end
 
-     def company_name
-       job_owner.name || ''
-     end
+    def company_name
+      job_owner.name || ''
+    end
 
-     def company_address1
-       job_owner.address1 || ''
-     end
+    def company_address1
+      job_owner.address1 || ''
+    end
 
-     def company_address2
-       job_owner.address2 || ''
-     end
+    def company_address2
+      job_owner.address2 || ''
+    end
 
-     def company_city_and_state
-       "#{job_owner.city}, #{job_owner.state} #{job_owner.zip}"
-     end
+    def company_city_and_state
+      "#{job_owner.city}, #{job_owner.state} #{job_owner.zip}"
+    end
 
-     def boms
-       ticket.boms
-     end
+    def boms
+      ticket.boms
+    end
 
-     def invoice_items
-       @invoice.invoice_items
-     end
+    def invoice_items
+      @invoice.invoice_items
+    end
 
-     def job_owner
-       member_job = MyServiceCall.find_by_ref_id ticket.ref_id
-       if member_job.nil?
-         res = TransferredServiceCall.where(ref_id: ticket.ref_id).order('id desc').first.provider
-       else
-         res = member_job.organization
-       end
-       res
-     end
+    def job_owner
+      member_job = MyServiceCall.find_by_ref_id ticket.ref_id
+      if member_job.nil?
+        res = TransferredServiceCall.where(ref_id: ticket.ref_id).order('id desc').first.provider
+      else
+        res = member_job.organization
+      end
+      res
+    end
 
 
   end
@@ -258,7 +258,7 @@ class Invoice < ActiveRecord::Base
 
       text_box @invoice.customer_company, :at => [address_x, cursor]
       move_down lineheight_y
-      text_box @invoice.customer_name, :at => [address_x, cursor] unless (@invoice.customer_name == @invoice.customer_company || @invoice.customer_name.blank? )
+      text_box @invoice.customer_name, :at => [address_x, cursor] unless (@invoice.customer_name == @invoice.customer_company || @invoice.customer_name.blank?)
       move_down lineheight_y
       text_box @invoice.customer_address1, :at => [address_x, cursor]
       move_down lineheight_y
