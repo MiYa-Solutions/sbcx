@@ -37,6 +37,20 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -1964,3 +1978,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140821173348');
 INSERT INTO schema_migrations (version) VALUES ('20140821181139');
 
 INSERT INTO schema_migrations (version) VALUES ('20140821182012');
+
+INSERT INTO schema_migrations (version) VALUES ('20140829015934');

@@ -444,6 +444,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                   :email,
                   :notes,
                   :collector_id,
+                  :name,
                   :collector_type,
                   :external_ref]
 

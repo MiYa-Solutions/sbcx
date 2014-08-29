@@ -85,6 +85,12 @@ class ServiceCallsController < ApplicationController
           flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
           render :action => 'show'
         end
+
+        format.mobile do
+          flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
+          redirect_to service_call_path @service_call
+        end
+
         format.json { respond_bip_error @service_call.becomes(ServiceCall) }
       end
     end
