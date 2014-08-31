@@ -1,5 +1,7 @@
 Sbcx::Application.routes.draw do
 
+  resources :receipts, only: [:show]
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   root to: 'static_pages#index'
 

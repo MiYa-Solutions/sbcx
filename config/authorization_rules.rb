@@ -50,6 +50,10 @@ authorization do
     has_permission_on :service_calls, :to => [:new, :create] do
     end
 
+    has_permission_on :receipts, to: :show do
+      if_attribute :account => { organization_id: is { user.organization_id } }
+    end
+
   end
   role :org_admin do
     includes :dispatcher

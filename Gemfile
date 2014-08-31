@@ -44,6 +44,9 @@ gem 'meta_search', '>= 1.1.0.pre'
 gem 'prawn', '~> 0.13.1'
 gem 'validates_email_format_of'
 
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
 group :production do
   gem 'rails_12factor'
 end

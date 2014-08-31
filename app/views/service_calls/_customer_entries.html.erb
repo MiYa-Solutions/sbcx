@@ -68,7 +68,7 @@
                 <tr>
                   <td><%= entry.id %></td>
                   <td><%= entry.account.accountable.name %></td>
-                  <td><%= entry.account.accountable.class.model_name.human %></td>
+                  <td><%= entry.account.accountable.class.model_name.human %><%= link_to 'receipt', controller: 'receipts', action: 'show', id: entry.id, format: 'pdf' if entry.kind_of?(CustomerPayment)%></td>
                   <td><%= l entry.created_at %></td>
                   <td><%= entry.type.constantize.model_name.human %></td>
                   <td><%= entry.notes %></td>
