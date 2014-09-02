@@ -67,7 +67,7 @@ en:
             subcon_marked_as_settled: "Marked as Settled"
           states:
             pending: "Pending"
-            claimed_as_settled: "Claimed As Settled"
+            claimed_as_settled: "Claimed Settled"
             settled: "Settled"
             claim_settled: "Settled?"
             cleared: "Cleared"
@@ -160,7 +160,7 @@ en:
           states:
             settled: "Settled"
             claim_settled: "Settled?"
-            claimed_as_settled: "Claimed As Settled"
+            claimed_as_settled: "Claimed Settled"
             cleared: "Cleared"
   messages:
     service_call:
@@ -248,6 +248,9 @@ en:
   service_call_confirm_deposit_event:
     name: "Deposit has been Confirmed"
     description: 'You have confirmed receiving customer payment from Subcontractor Name: &nbsp; %{subcontractor}'
+  entry_confirm_event:
+    name: "Deposit has been Confirmed"
+    description: 'You have confirmed receiving payment'
   service_call_provider_collected_event:
     name: "Payment has been Collected by Contractor"
     description: "Contractor Name: &nbsp; (%{provider}) has collected the payment from the customer"

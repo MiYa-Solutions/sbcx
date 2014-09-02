@@ -84,7 +84,7 @@ en:
       agr_no_add_rule_pending: "You can't add rules in case the agreement is pending approval. \nTo edit the agreement, please delete the posting rules below and then add new rules."
       agr_select_rule: "Select 'Profit Split' from the dropdown and click on the Add button. \nPlease note you can enter more than one rule in the next following fields"
       agr_no_add_rule_no_active: "You can add rules only in case the agreement is not Pending or a Draft."
-      Overdue: "Overdue"
+      overdue: "Overdue"
 
 
       done_jobs: "Completed jobs that are pending settlement"
