@@ -480,8 +480,10 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   def sc_status_event_permitted?
     params_to_check = params[:status_event] ? params : params[:service_call]
     res             = true
-    res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.kind_of?(TransferredServiceCall)
-    res = false if params_to_check[:status_event] == 'provider_canceled'
+    if params_to_check
+      res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.kind_of?(TransferredServiceCall)
+      res = false if params_to_check[:status_event] == 'provider_canceled'
+    end
     res
   end
 
