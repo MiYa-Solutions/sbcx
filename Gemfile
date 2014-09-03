@@ -44,6 +44,9 @@ gem 'meta_search', '>= 1.1.0.pre'
 gem 'prawn', '~> 0.13.1'
 gem 'validates_email_format_of'
 
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
 group :production do
   gem 'rails_12factor'
 end
@@ -92,7 +95,7 @@ group :test do
   gem 'mocha'
   gem 'capybara-screenshot', '0.3.4'
   gem 'poltergeist', '1.4.1'
-  gem 'shoulda'
+  gem 'shoulda-matchers', require: false
   gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.4.4'
   gem 'simplecov'

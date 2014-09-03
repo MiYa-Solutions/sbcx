@@ -1,0 +1,58 @@
+<div class="row-fluid">
+  <div class="span6">
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= @invoice.id %> <%= link_to @invoice.ticket.name, @invoice.ticket %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<%= link_to t('general.general.download_invoice'), invoice_path(@invoice, format: :pdf), target: '_blank', :class => 'btn btn-primary'  %>
+
+<table class="table table-striped" id="event_log_in_service_call">
+  <thead>
+  <tr>
+    <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+    <th><%= AccountingEntry.human_attribute_name(:name) %> </th>
+    <th><%= AccountingEntry.human_attribute_name(:description) %> </th>
+    <th><%= Bom.human_attribute_name(:quantity) %> </th>
+    <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @invoice.invoice_items.each do |item| %>
+      <tr>
+        <td><%= item.invoiceable.id %></td>
+        <td><%= item.invoiceable.name %></td>
+        <td><%= item.invoiceable.description %></td>
+        <td><%= defined?(item.invoiceable.quantity) ? item.invoiceable.quantity : '1.0' %></td>
+        <td><%= humanized_money_with_symbol item.invoiceable.amount %></td>
+      </tr>
+  <% end %>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>Tax: <%= humanized_money_with_symbol @invoice.ticket.tax_amount %>(<%= @invoice.ticket.tax %>%)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>
+      <label class="bold"><%= Invoice.human_attribute_name(:total) %></label>
+      <span class="bold"><%= humanized_money_with_symbol @invoice.total %></span>
+    </td>
+  </tr>
+
+  </tbody>
+</table>
+
+<p>
+  <%= %>
+<p>
+  <label class="bold"><%= Invoice.human_attribute_name(:notes) %></label>
+  <%= @invoice.notes %>
+</p>

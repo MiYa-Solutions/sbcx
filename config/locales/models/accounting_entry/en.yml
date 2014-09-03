@@ -43,3 +43,8 @@ en:
   payment_deposited_event:
     name: 'Deposited Payment'
     description: 'payment has been deposited successfully'
+  payment_rejected_event:
+    name: 'Rejected Payment'
+    description: '%{payment_type} (%{payment_id}) was rejected'
+    entry:
+      description: '%{payment_type} (%{payment_id}) was rejected'

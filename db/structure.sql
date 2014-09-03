@@ -37,6 +37,20 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -480,6 +494,76 @@ CREATE SEQUENCE invites_id_seq
 --
 
 ALTER SEQUENCE invites_id_seq OWNED BY invites.id;
+
+
+--
+-- Name: invoice_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE invoice_items (
+    id integer NOT NULL,
+    invoice_id integer,
+    invoiceable_id integer,
+    invoiceable_type character varying(255)
+);
+
+
+--
+-- Name: invoice_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE invoice_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoice_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE invoice_items_id_seq OWNED BY invoice_items.id;
+
+
+--
+-- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE invoices (
+    id integer NOT NULL,
+    account_id integer,
+    ticket_id integer,
+    organization_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    creator_id integer,
+    updater_id integer,
+    notes text,
+    description text,
+    total_cents integer,
+    total_currency character varying(255)
+);
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE invoices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE invoices_id_seq OWNED BY invoices.id;
 
 
 --
@@ -1103,6 +1187,20 @@ ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY invoice_items ALTER COLUMN id SET DEFAULT nextval('invoice_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invoices ALTER COLUMN id SET DEFAULT nextval('invoices_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY materials ALTER COLUMN id SET DEFAULT nextval('materials_id_seq'::regclass);
 
 
@@ -1269,6 +1367,22 @@ ALTER TABLE ONLY events
 
 ALTER TABLE ONLY invites
     ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoice_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY invoice_items
+    ADD CONSTRAINT invoice_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY invoices
+    ADD CONSTRAINT invoices_pkey PRIMARY KEY (id);
 
 
 --
@@ -1450,6 +1564,20 @@ CREATE INDEX index_customers_on_organization_id ON customers USING btree (organi
 --
 
 CREATE INDEX index_events_on_eventable_id_and_eventable_type ON events USING btree (eventable_id, eventable_type);
+
+
+--
+-- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoice_items_on_invoice_id ON invoice_items USING btree (invoice_id);
+
+
+--
+-- Name: index_invoices_on_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoices_on_ticket_id ON invoices USING btree (ticket_id);
 
 
 --
@@ -1844,3 +1972,11 @@ INSERT INTO schema_migrations (version) VALUES ('20140727214318');
 INSERT INTO schema_migrations (version) VALUES ('20140814011609');
 
 INSERT INTO schema_migrations (version) VALUES ('20140816182238');
+
+INSERT INTO schema_migrations (version) VALUES ('20140821173348');
+
+INSERT INTO schema_migrations (version) VALUES ('20140821181139');
+
+INSERT INTO schema_migrations (version) VALUES ('20140821182012');
+
+INSERT INTO schema_migrations (version) VALUES ('20140829015934');

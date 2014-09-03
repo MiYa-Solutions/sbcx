@@ -87,6 +87,7 @@ module Sbcx
 
     config.assets.initialize_on_precompile = false
 
+    config.assets.precompile += ['all/bootstrap_and_overrides.css']
     config.assets.paths.unshift Rails.root.join('vendor', 'assets', 'images', 'all').to_s
 
 

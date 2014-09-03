@@ -31,8 +31,9 @@ class AccountingEntry < ActiveRecord::Base
   monetize :balance_cents
 
   validates_presence_of :account, :status, :type, :description
-  validates_presence_of :event, :ticket, unless: ->(entry) { entry.instance_of?(MyAdjEntry) }
-  validates_presence_of :agreement, unless: ->(entry) { entry.kind_of?(AdjustmentEntry) }
+  validates_presence_of :ticket, unless: ->(entry) { entry.instance_of?(MyAdjEntry) }
+  validates_presence_of :event, unless: ->(entry) { entry.instance_of?(MyAdjEntry) || entry.instance_of?(AdvancePayment) }
+  validates_presence_of :agreement, unless: ->(entry) { entry.kind_of?(AdjustmentEntry) || entry.instance_of?(AdvancePayment)  }
 
   belongs_to :account, autosave: true
   belongs_to :ticket
@@ -85,6 +86,10 @@ class AccountingEntry < ActiveRecord::Base
 
   def amount_direction
     raise "The amount direction is not defined - you need to define amount_direction method for #{self.class}"
+  end
+
+  def name
+    self.class.model_name.human
   end
 
 end

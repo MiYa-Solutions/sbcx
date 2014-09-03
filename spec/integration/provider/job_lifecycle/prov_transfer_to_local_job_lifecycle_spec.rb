@@ -31,6 +31,18 @@ describe 'Provider Transferred Job To Local Lifecycle' do
         expect(job.status_name).to eq :transferred
       end
 
+      it 'cancel is permitted events for job when submitted by a user' do
+          expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
+      end
+
+      it 'transfer is permitted events for job when submitted by a user' do
+          expect(event_permitted_for_job?('status', 'transfer', org_admin, job)).to be_true
+      end
+
+      it 'provider canceled is not permitted events for job when submitted by a user' do
+          expect(event_permitted_for_job?('status', 'provider_canceled', org_admin, job)).to be_false
+      end
+
     end
 
   end

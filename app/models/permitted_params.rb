@@ -444,6 +444,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                   :email,
                   :notes,
                   :collector_id,
+                  :name,
                   :collector_type,
                   :external_ref]
 
@@ -477,7 +478,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_status_event_permitted?
-    params_to_check = params[:service_call] ? params[:service_call] : params
+    params_to_check = params[:status_event] ? params : params[:service_call]
     res             = true
     res = false if params_to_check[:status_event] == 'cancel' && obj.provider.member? && obj.new? && obj.kind_of?(TransferredServiceCall)
     res = false if params_to_check[:status_event] == 'provider_canceled'

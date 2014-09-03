@@ -44,6 +44,7 @@ class NotificationsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :back }
+      format.mobile { redirect_to notifications_path }
       format.json { head :no_content }
     end
   end

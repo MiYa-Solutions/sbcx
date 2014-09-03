@@ -2,7 +2,7 @@ class PaymentRejectedEvent < PaymentEvent
 
   def init
     self.name         = I18n.t('payment_rejected_event.name')
-    self.description  = I18n.t('payment_rejected_event.description')
+    self.description  = I18n.t('payment_rejected_event.description', payment_id: payment.id, payment_type: payment.name)
     self.reference_id = 300010
   end
 
@@ -19,7 +19,7 @@ class PaymentRejectedEvent < PaymentEvent
                                     ticket:      payment.ticket,
                                     agreement:   payment.agreement,
                                     amount:      -payment.amount,
-                                    description: I18n.t('payment_rejected_event.entry.description'))
+                                    description: I18n.t('payment_rejected_event.entry.description', payment_id: payment.id, payment_type: payment.name))
     payment.account.entries << rev_entry
   end
 

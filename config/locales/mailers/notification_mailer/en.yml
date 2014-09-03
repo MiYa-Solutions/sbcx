@@ -86,16 +86,11 @@ en:
       subject: 'Job has been Rejected by Subcontractor'
       content: 'The following job has been rejected by Subcontractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
-    sc_provider_invoiced_notification:
-      title: 'Customer has been Invoiced by Contractor. No Collection is needed.'
-      subject: 'Invoiced by Contractor'
-      content: 'Please note that the customer has been invoiced by Contractor Name: '
-      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
-    sc_subcon_invoiced_notification:
-      title: 'Customer has been Invoiced by the Subcontractor.'
-      subject: 'Invoiced by Subcontractor'
-      content: 'Please note that the customer was invoiced by by Subcontractor Name: '
-      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_invoice_notification:
+      title: 'CHANGE ME'
+      subject: 'CHANGE ME'
+      content: CHANGE ME
+      bottom_content: CHANGE ME
     sc_subcon_deposited_notification:
       title: 'Payment has been deposited by Subcontractor'
       subject: 'Payment has been deposited'
@@ -241,6 +236,7 @@ en:
       subcon_agreement: "Agreement"
       show_history: "Show History"
       collect_payments: "Customer Payments"
+      new_invoice: "New Invoice"
       download_invoice: "Download Invoice"
       submit: "Submit"
       more: "More"

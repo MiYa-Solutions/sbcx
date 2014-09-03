@@ -28,6 +28,7 @@ class Notification < ActiveRecord::Base
 
   before_validation :set_default_subject, :set_default_content
 
+  validates_presence_of :user, unless: ->(n) { n.kind_of?(CustomerNotification) }
   validates_presence_of :user, :subject, :content, :status
 
 
