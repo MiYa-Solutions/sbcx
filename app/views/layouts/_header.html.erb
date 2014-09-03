@@ -51,10 +51,14 @@
              </ul>
           </li>
           <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.my_affiliates') %> <b class="caret"></b></a>
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.my_network') %> <b class="caret"></b></a>
             <ul class="dropdown-menu" id="menu2">
               <li><a href="#"><%= link_to I18n.t('general.general.my_affiliates'), affiliates_path %></a></li>
               <li><a href="#"><%= link_to I18n.t('general.general.new_affiliate'), new_affiliate_path %></a></li>
+              <li class="divider"></li>
+              <li><a href="#"><%= link_to I18n.t('general.general.my_employees'), my_users_path %></a></li>
+              <li><a href="#"><%= link_to I18n.t('general.general.new_employee'), new_my_user_path %></a></li>
+
             </ul>
           </li>
           <li class="dropdown">
@@ -62,13 +66,6 @@
             <ul class="dropdown-menu" id="menu3">
               <li><a href="#"><%= link_to I18n.t('general.general.my_customers'), customers_path %></a></li>
               <li><a href="#"><%= link_to I18n.t('general.general.new_customer'), new_customer_path %></a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.employees') %> <b class="caret"></b></a>
-            <ul class="dropdown-menu" id="menu4">
-              <li><a href="#"><%= link_to I18n.t('general.general.my_employees'), my_users_path %></a></li>
-              <li><a href="#"><%= link_to I18n.t('general.general.new_employee'), new_my_user_path %></a></li>
             </ul>
           </li>
           <li><%= link_to I18n.t('general.general.billing'), accounting_entries_path %></li>

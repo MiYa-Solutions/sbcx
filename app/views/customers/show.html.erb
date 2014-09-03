@@ -35,6 +35,7 @@
 
         <!--<#% else %>-->
             <!--<#%= render :partial => 'customer_agreements' %>-->
+        <%= render :partial => 'customer_jobs' %>
 
         <!--<#% end %>-->
       </div>
@@ -44,7 +45,6 @@
 
               <%= render :partial => 'customer_balance' if @customer.account.present? %>
               <!-- <#% unless @affiliate.service_calls.empty? %>-->
-              <%= render :partial => 'customer_jobs' %>
               <!-- <#% end  %> -->
       </div>
 
