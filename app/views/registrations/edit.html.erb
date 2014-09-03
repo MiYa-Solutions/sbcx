@@ -84,7 +84,7 @@
 
               <div id="edit_organization_in_edit_profile" class="collapse">
 
-              <%= simple_form_for @organization, :html => {:class => 'form-horizontal'}, :remote => true do |f| %>
+              <%= simple_form_for @organization, :html => {:class => 'form-horizontal'} do |f| %>
                   <%= render 'organizations/fields', f: f %>
                   <div class="form-actions">
                     <button class="btn btn-medium" data-toggle="collapse" data-target="#edit_organization_in_edit_profile" id="edit_org_from_edit_profile">
@@ -106,7 +106,7 @@
                    <%= f.input :current_password, :hint => "Enter your current password to confirm changes", :required => false %>
 
                    <div class="form-actions">
-                     <button class="btn btn-medium" data-toggle="collapse" data-target="#edit_password_in_edit_profile" id="edit_org_from_edit_profile">
+                     <button class="btn btn-medium" data-toggle="collapse" data-target="#edit_password_in_edit_profile" id="edit_pwd_from_edit_profile">
                        cancel
                      </button>
 
