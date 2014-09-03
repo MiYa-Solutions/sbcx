@@ -51,11 +51,11 @@ class OrganizationsController < ApplicationController
         format.js { }
         format.html do
           flash[:success] = "Profile updated"
-          redirect_to @organization
+          render 'registrations/show'
         end
       end
     else
-      render 'edit'
+      render 'registrations/edit'
     end
 
   end
