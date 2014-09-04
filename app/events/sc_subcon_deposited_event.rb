@@ -12,10 +12,6 @@ class ScSubconDepositedEvent < ServiceCallEvent
 
   end
 
-  def notification_recipients
-    User.my_admins(service_call.organization.id)
-  end
-
   def notification_class
     ScSubconDepositedNotification
   end

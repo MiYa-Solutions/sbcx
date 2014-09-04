@@ -16,7 +16,7 @@ class ScConfirmDepositEvent < ServiceCallEvent
   end
 
   def notification_class
-    ScConfirmDepositNotification
+    nil
   end
 
   def update_subcontractor

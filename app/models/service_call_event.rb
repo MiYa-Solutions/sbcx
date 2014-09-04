@@ -121,4 +121,12 @@ class ServiceCallEvent < Event
       #end
     end
   end
+
+  def notification_recipients
+    if notification_class
+      User.where(organization_id: service_call.organization_id).where("preferences @> hstore('#{notification_class.name.underscore}', 'true') OR preferences @> hstore('#{notification_class.name.underscore}', '1')").all
+    else
+      nil
+    end
+  end
 end

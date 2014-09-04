@@ -1,7 +1,31 @@
-<% ServiceCallNotification.subclasses.each do |notification| %>
-    <div>
-      <span><%= best_in_place @setting.notifications_form, notification.name.underscore.to_sym, object_name: :settings, type: :checkbox, path: settings_path, collection: ['Off', 'On'] %></span>
-      |<span><%= notification.model_name.human %></span>
-      |<span><%= I18n.t("notifications.#{notification.name.underscore}.description") %></span>
-    </div>
-<% end %>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Enabled?</th>
+    <th>Email?</th>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% ServiceCallNotification.subclasses.each do |notification| %>
+      <tr>
+        <td><%= best_in_place @settings.notifications_form,
+                              notification.name.underscore.to_sym,
+                              object_name: :settings,
+                              type:        :checkbox,
+                              path:        settings_path,
+                              collection:  [raw("<i class='icon-remove'></i>"), raw("<i class='icon-ok'></i>")] %></td>
+        <td><%= best_in_place @settings.notifications_form,
+                              "#{notification.name.underscore}_email".to_sym,
+                              object_name: :settings,
+                              type:        :checkbox,
+                              path:        settings_path,
+                              collection:  [raw("<i class='icon-remove'></i>"), raw("<i class='icon-ok'></i>")] %></td>
+        <td><%= notification.model_name.human %></td>
+        <td><%= I18n.t("notifications.#{notification.name.underscore}.description") %></td>
+      </tr>
+  <% end %>
+
+  </tbody>
+</table>

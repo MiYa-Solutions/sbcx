@@ -8,22 +8,28 @@ class Forms::NotificationsForm
   end
 
   def initialize(setting)
-    @setting = setting
+    @settings = setting
     setup_user_settings
   end
 
-  Setting.notification_settings.each do |s|
+  Settings.notification_settings.each do |s|
     attr_accessor s.to_sym
+    attr_accessor "#{s}_email".to_sym
   end
 
   private
 
   def setup_user_settings
-    @setting.notifications.each do |notification|
+    @settings.notifications.each do |notification|
       if defined?("#{notification}=")
-        send("#{notification}=", '1')
+        send("#{notification}=", 'true')
       end
+    end
 
+    @settings.notification_emails.each do |notif_email|
+      if defined?("#{notif_email}=")
+        send("#{notif_email}=", 'true')
+      end
     end
   end
 end

@@ -9,10 +9,6 @@ class ServiceCallStartEvent < ServiceCallEvent
     self.reference_id = 100015
   end
 
-  def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
-  end
-
   def notification_class
     ScStartNotification
   end

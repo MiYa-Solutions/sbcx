@@ -43,17 +43,7 @@ class User < ActiveRecord::Base
   # *notification preferences*
   serialize :preferences, ActiveRecord::Coders::Hstore
 
-  %w[alert1 alert2].each do |key|
-    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("preferences @> (? => ?)", key, value) }
-
-    define_method(key) do
-      preferences && preferences[key]
-    end
-
-    define_method("#{key}=") do |value|
-      self.preferences = (preferences || {}).merge(key => value)
-    end
-  end
+  before_create :setup_default_notifications
 
   # end of notification preferences
 
@@ -103,6 +93,15 @@ class User < ActiveRecord::Base
   end
 
   def settings
-    @settings ||= Setting.new(self)
+    @settings ||= Settings.new(self)
+  end
+
+  private
+
+  def setup_default_notifications
+    self.preferences = { ScReceivedNotification.name.underscore  => 'true',
+                         ScCompletedNotification.name.underscore => 'true',
+                         ScCompletedNotification.name.underscore => 'true',
+                         ScStartedNotification.name.underscore   => 'true' }
   end
 end

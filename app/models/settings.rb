@@ -1,4 +1,4 @@
-class Setting
+class Settings
   include ActiveModel::Validations
 
   def self.notification_settings
@@ -25,7 +25,15 @@ class Setting
   end
 
   def notifications
-    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Setting.notification_settings
+    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.notification_settings
+  end
+
+  def notification_emails
+    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.notification_settings.map {|n| "#{n}_email"}
+  end
+
+  def send_notification_email?(notif)
+    @user.preferences["#{notif.class.name.underscore}_email"] && @user.preferences["#{notif.class.name.underscore}_email"] == 'true'
   end
 
   private
