@@ -101,4 +101,8 @@ class User < ActiveRecord::Base
       role.name.underscore.tr(' ', '_').to_sym
     end
   end
+
+  def settings
+    @settings ||= Setting.new(self)
+  end
 end

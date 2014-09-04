@@ -7,6 +7,7 @@ Sbcx::Application.routes.draw do
 
 
   resources :invites
+  resource :settings, only: [:show, :edit, :update]
   resources :invoices, only: [:new, :create, :show, :index], controller: 'invoices'
 
                                                                                 # for rails4 unmark the 'via:' part
