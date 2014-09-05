@@ -1,3 +1,8 @@
+$.getRequetParam = (name)->
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
+  regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
+  results = regex.exec(location.search)
+  (if not results? then "" else decodeURIComponent(results[1].replace(/\+/g, " ")))
 jQuery ->
   $('#myJobTab a:first').tab 'show'
   $('#myJobTab a:last').one 'shown.bs.tab', ->
@@ -38,6 +43,9 @@ jQuery ->
       aoData.push
         name: "subcontractor_id"
         value: $('#subcontractor').val()
+      aoData.push
+        name: "affiliate_id"
+        value: $('#affiliate').val()
 
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
@@ -47,12 +55,14 @@ jQuery ->
       oData.customer_name = $('#customer_search').val()
       oData.provider_id = $('#provider').val()
       oData.subcontractor_id = $('#subcontractor').val()
+      oData.affiliate_id = $('#affiliate').val()
 
     fnStateLoadParams: (oSettings, oData) ->
       $('#customer_search').val(oData.customer_name)
       $('#customer_filter_id').val(oData.customer_id)
       $('#provider').val(oData.provider_id)
       $('#subcontractor').val(oData.subcontractor_id)
+      $('#affiliate').val(oData.affiliate_id)
 
   ).yadcf([
     {
@@ -101,6 +111,10 @@ jQuery ->
     $('#customer_search').data('ref-id', $('#provider').val())
     $('#job-search-results').dataTable().api().ajax.reload()
 
+  $('#affiliate').on 'change', ->
+    $('#customer_search').data('ref-id', $('#affiliate').val())
+    $('#job-search-results').dataTable().api().ajax.reload()
+
   $('#subcontractor').on 'change', ->
     $('#job-search-results').dataTable().api().ajax.reload()
 
@@ -117,6 +131,11 @@ jQuery ->
   $('#clear-subcontractor').live 'click', ->
     $('#subcontractor').val($('#subcontractor option:first').val())
     $("#subcontractor").trigger("chosen:updated")
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#clear-affiliate').live 'click', ->
+    $('#affiliate').val($('#affiliate option:first').val())
+    $("#affiliate").trigger("chosen:updated")
     $('#job-search-results').dataTable().api().ajax.reload()
 
 

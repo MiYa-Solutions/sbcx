@@ -90,6 +90,10 @@ class TicketsDatatable
       tickets = tickets.where('tickets.created_at between ? and ?', params[:from_date], params[:to_date])
     end
 
+    if params[:affiliate_id].present?
+      tickets = tickets.where("provider_id = #{params[:affiliate_id]} OR subcontractor_id = #{params[:affiliate_id]} ")
+    end
+
 
     tickets.order("tickets.#{sort_column} #{sort_direction}").page(page).per_page(per_page)
   end

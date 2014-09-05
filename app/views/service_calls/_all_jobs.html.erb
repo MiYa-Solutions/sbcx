@@ -49,6 +49,11 @@
               <%= button_tag 'x', type: 'button', id: 'clear-subcontractor', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
             </div>
 
+            <div id="affiliate_filter" class="input_field" >
+              <%= select_tag :affiliate, options_from_collection_for_select(current_user.organization.affiliates, 'id', 'name'), prompt: "Select Affiliate",  class: 'chosen-select' %>
+              <%= button_tag 'x', type: 'button', id: 'clear-affiliate', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+            </div>
+
           </div>
 
 
