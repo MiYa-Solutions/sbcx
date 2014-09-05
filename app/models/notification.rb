@@ -79,10 +79,3 @@ class Notification < ActiveRecord::Base
 
 
 end
-
-if Rails.env == 'development'
-  Dir["#{Rails.root}/app/notifications/*.rb"].each do |file|
-    require_dependency file
-  end
-end
-
