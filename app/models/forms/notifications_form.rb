@@ -3,6 +3,16 @@ class Forms::NotificationsForm
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
+  Settings.job_notification_settings.each do |s|
+    attr_accessor s.to_sym
+    attr_accessor "#{s}_email".to_sym
+  end
+
+  Settings.adj_notification_settings.each do |s|
+    attr_accessor s.to_sym
+    attr_accessor "#{s}_email".to_sym
+  end
+
   def persisted?
     false
   end
@@ -12,10 +22,6 @@ class Forms::NotificationsForm
     setup_user_settings
   end
 
-  Settings.notification_settings.each do |s|
-    attr_accessor s.to_sym
-    attr_accessor "#{s}_email".to_sym
-  end
 
   private
 

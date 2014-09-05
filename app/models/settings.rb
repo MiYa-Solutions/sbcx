@@ -1,8 +1,12 @@
 class Settings
   include ActiveModel::Validations
 
-  def self.notification_settings
+  def self.job_notification_settings
     ServiceCallNotification.subclasses.collect { |c| c.name.underscore }
+  end
+
+  def self.adj_notification_settings
+    AdjustmentEntryNotification.subclasses.collect { |c| c.name.underscore }
   end
 
 
@@ -25,11 +29,11 @@ class Settings
   end
 
   def notifications
-    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.notification_settings
+    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.job_notification_settings
   end
 
   def notification_emails
-    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.notification_settings.map {|n| "#{n}_email"}
+    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.job_notification_settings.map {|n| "#{n}_email"}
   end
 
   def send_notification_email?(notif)
