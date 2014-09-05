@@ -6,6 +6,7 @@ Sbcx::Application.routes.draw do
   root to: 'static_pages#index'
 
 
+  resource :job_imports, only: [:new, :create]
   resources :invites
   resource :settings, only: [:show, :edit, :update]
   resources :invoices, only: [:new, :create, :show, :index], controller: 'invoices'

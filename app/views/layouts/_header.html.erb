@@ -36,36 +36,40 @@
 
           <li><%= link_to I18n.t('general.general.home'), user_root_path %></li>
           <li><a href="#"><%= link_to 'Incoming', notifications_path %>
-              <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
-            </a>
+            <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
+          </a>
 
           </li>
 
 
-
           <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= link_to I18n.t('general.general.jobs'), service_calls_path %> <b class="caret"></b></a>
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= link_to I18n.t('general.general.jobs'), service_calls_path %>
+              <b class="caret"></b></a>
             <ul class="dropdown-menu" id="menu1">
-              <li><a href="#"><%= link_to I18n.t('general.general.jobs'), service_calls_path %></a></li>
-              <li><a href="#"><%= link_to I18n.t('general.general.new_job'), new_service_call_path %></a></li>
-             </ul>
+              <li><%= link_to I18n.t('general.general.jobs'), service_calls_path %></li>
+              <li><%= link_to I18n.t('general.general.new_job'), new_service_call_path %></li>
+              <li><%= link_to JobImport.model_name.human, new_job_imports_path %></li>
+            </ul>
           </li>
           <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.my_affiliates') %> <b class="caret"></b></a>
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.my_affiliates') %>
+              <b class="caret"></b></a>
             <ul class="dropdown-menu" id="menu2">
               <li><a href="#"><%= link_to I18n.t('general.general.my_affiliates'), affiliates_path %></a></li>
               <li><a href="#"><%= link_to I18n.t('general.general.new_affiliate'), new_affiliate_path %></a></li>
             </ul>
           </li>
           <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= Customer.model_name.pluralize %><b class="caret"></b></a>
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= Customer.model_name.pluralize %>
+              <b class="caret"></b></a>
             <ul class="dropdown-menu" id="menu3">
               <li><a href="#"><%= link_to I18n.t('general.general.my_customers'), customers_path %></a></li>
               <li><a href="#"><%= link_to I18n.t('general.general.new_customer'), new_customer_path %></a></li>
             </ul>
           </li>
           <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.employees') %> <b class="caret"></b></a>
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.employees') %>
+              <b class="caret"></b></a>
             <ul class="dropdown-menu" id="menu4">
               <li><a href="#"><%= link_to I18n.t('general.general.my_employees'), my_users_path %></a></li>
               <li><a href="#"><%= link_to I18n.t('general.general.new_employee'), new_my_user_path %></a></li>
