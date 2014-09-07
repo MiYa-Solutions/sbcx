@@ -11,8 +11,8 @@
       </div>
 
       <li class="job_index_divider" data-role="list-divider"><%= I18n.t('general.general.my_jobs') %></li>
-     <% unless @service_calls.empty? %>
-      <% @service_calls.each do |sc| %>
+     <% unless @new_jobs.empty? %>
+      <% @new_jobs.each do |sc| %>
           <li class="inline_mobile service_calls_index">
             <p class="ui-li-aside-blue ui-li-desc-blue">
               <badge><%= sc.ref_id %></badge>
@@ -33,8 +33,8 @@
 
 
       <li class="job_index_divider" data-role="list-divider"><%= I18n.t('general.general.transferred_jobs') %></li>
-      <% unless @transferred_jobs.empty? %>
-          <% @transferred_jobs.each do |sc| %>
+      <% unless @new_transferred_jobs.empty? %>
+          <% @new_transferred_jobs.each do |sc| %>
               <li class="inline_mobile service_calls_index">
                 <p class="ui-li-aside-blue ui-li-desc-blue">
                   <badge><%= sc.ref_id %></badge>
