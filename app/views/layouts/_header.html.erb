@@ -48,6 +48,8 @@
             <ul class="dropdown-menu" id="menu1">
               <li><a href="#"><%= link_to I18n.t('general.general.jobs'), service_calls_path %></a></li>
               <li><a href="#"><%= link_to I18n.t('general.general.new_job'), new_service_call_path %></a></li>
+              <li class="divider"></li>
+              <li><a href="#"><%= link_to JobImport.model_name.human, new_job_imports_path %></a></li>
              </ul>
           </li>
           <li class="dropdown">
