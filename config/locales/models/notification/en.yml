@@ -2,6 +2,7 @@ en:
   activerecord:
     models:
       notification: "Alert"
+      sc_accepted_notification: "Job Accepted"
     attributes:
       notification:
         subject: "Subject"
@@ -10,6 +11,7 @@ en:
       html_message: 'New %{link} from %{prov_name}'
       subject: New Service Call
       content: 'New service call was transferred to you by: <br> Contractor Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
+      description: "Alert for when you receive a new job from a contractor"
 
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
@@ -26,6 +28,7 @@ en:
       html_message: '%{subcontractor} has accepted the %{link}'
       subject: 'Transferred service call %{ref} has been accepted '
       content: '%{subcontractor} has accepted the service call'
+      description: "Alert for when your subcontractor accepted the job you transferred"
     sc_rejected_notification:
       html_message: '%{subcontractor} has rejected the %{link}'
       subject: 'Transferred service call %{ref} has been rejected '

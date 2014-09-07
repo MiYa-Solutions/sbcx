@@ -58,6 +58,7 @@ authorization do
   role :org_admin do
     includes :dispatcher
 
+    has_permission_on :job_imports, to: [:new, :create]
     has_permission_on :invites, to: :new
 
     has_permission_on :invites, to: [:show, :index] do

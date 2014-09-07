@@ -11,10 +11,6 @@ class ServiceCallStartedEvent < ServiceCallEvent
     prov_service_call.events << ServiceCallStartedEvent.new(triggering_event: self)
   end
 
-  def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
-  end
-
   def notification_class
     ScStartedNotification
   end

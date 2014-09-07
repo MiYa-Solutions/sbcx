@@ -6,10 +6,6 @@ class ScDepositConfirmedEvent < ServiceCallEvent
     self.reference_id = 100026
   end
 
-  def notification_recipients
-    User.my_admins(service_call.organization_id)
-  end
-
   def notification_class
     ScDepositConfirmedNotification
   end

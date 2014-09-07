@@ -6,10 +6,6 @@ class ServiceCallAcceptedEvent < ServiceCallEvent
 
   end
 
-  def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
-  end
-
   def notification_class
     ScAcceptedNotification
   end

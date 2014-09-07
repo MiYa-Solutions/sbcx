@@ -6,10 +6,6 @@ class ScProviderSettledEvent < ScSettlementEvent
     self.reference_id = 100029
   end
 
-  def notification_recipients
-    User.my_admins(service_call.organization_id)
-  end
-
   def notification_class
     ScProviderSettledNotification
   end

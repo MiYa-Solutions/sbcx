@@ -13,10 +13,6 @@ class ScProviderCollectedEvent < ServiceCallEvent
     self.reference_id = 100027
   end
 
-  def notification_recipients
-    nil
-  end
-
   def notification_class
     ScProviderCollectedNotification
   end

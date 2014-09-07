@@ -5,10 +5,6 @@ class ServiceCallRejectedEvent < ServiceCallEvent
     self.reference_id = 100012
   end
 
-  def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
-  end
-
   def notification_class
     ScRejectedNotification
   end

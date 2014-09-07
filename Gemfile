@@ -47,6 +47,8 @@ gem 'validates_email_format_of'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
+gem 'roo'
+
 group :production do
   gem 'rails_12factor'
 end

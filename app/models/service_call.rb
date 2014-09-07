@@ -250,7 +250,7 @@ class ServiceCall < Ticket
       sc = ServiceCall.new
     else
       params[:organization_id] = org.id
-      if params[:provider_id].empty? || params[:provider_id].to_i == org.id
+      if params[:provider_id].nil? || params[:provider_id].empty? || params[:provider_id].to_i == org.id
         sc = MyServiceCall.new(params)
       else
         params[:subcontractor_id] = nil

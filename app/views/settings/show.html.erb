@@ -1,0 +1,9 @@
+<h1>Job Notifications</h1>
+<%= render 'notifications_table', notif_names: Settings.job_notification_settings %>
+<br>
+<h1>Account Adjustment Notifications</h1>
+<div class="well">
+  I don't think this should be allowed for the user, but we want to show the available notification description somewhere. Maybe we just put a link to a help file with a link to all descriptions
+</div>
+
+<%= render 'notifications_table', notif_names: Settings.adj_notification_settings %>
