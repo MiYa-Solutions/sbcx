@@ -366,8 +366,12 @@ footer {
 }
 
 .close {
-  margin-right: 5px;
-  margin-top: 5px;
+//  margin-right: 5px;
+//  margin-top: 5px;
+//  text-decoration: none;
+  margin-bottom: 5px;
+  margin-right: -9px;
+  margin-top: -6px;
   text-decoration: none;
 }
 
@@ -2431,6 +2435,8 @@ a:hover {
 
   #bom_close {
     line-height: 3px;
+    margin-right: 4px;
+    margin-top: 3px;
   }
 
   select {
@@ -4886,3 +4892,111 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   margin-top: 3px;
 }
 
+.pdf_invoice_body {
+
+}
+
+.invoice-title h4, .invoice-title h3 {
+  display: inline-block;
+}
+
+.table > tbody > tr > .no-line {
+  border-top: none;
+}
+
+.table > thead > tr > .no-line {
+  border-bottom: none;
+}
+
+.table > tbody > tr > .thick-line {
+  border-top: 1px solid;
+}
+
+.table > tbody > tr > .thick-line-bottom {
+  border-bottom: 1px solid;
+}
+
+.invoice-title h3 {
+  border: 1px solid #000000;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+}
+
+.invoice-text-right {
+  float: right;
+}
+
+.invoice-text-right, .invoice-text-left {
+  display: inline-block;
+}
+
+.invoice_table {
+  margin-top: 75px;
+}
+
+.pdf_footer {
+  background-color: #737373;
+  background-image: -moz-linear-gradient(center top , #888888, #555555);
+  background-repeat: repeat-x;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 -1px 0 rgba(0, 0, 0, 0.1);
+  padding-bottom: 100px;
+  padding-top: 2px;
+
+  color: #ffffff;
+
+  img {
+    margin-top: -10px;
+  }
+  .left_section {
+   font-size: 9px;
+   border-top: 0px;
+  }
+
+  .center_section {
+    text-align: center;
+    border-top: 0px;
+  }
+  .right_section {
+    font-style: italic;
+    float: right;
+    border-top: 0px;
+  }
+
+}
+
+#invoice_btn {
+  float: left;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#new_invoice {
+  top: 50%;
+}
+
+
+#invoice_adv_payment_amount {
+  width: 30%;
+}
+
+#invoice_notes {
+  height: 200px;
+}
+
+.invoice_modal {
+  top: 50%;
+}
+
+.download_icon {
+  width: 10%;
+}
+.invoice_table_notes {
+  width: 30%;
+}
+
+#bom_close {
+  margin-right: 4px;
+}

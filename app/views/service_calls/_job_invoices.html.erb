@@ -1,38 +1,61 @@
-<div class="well well_job_show well_job_history">
-  <div class="smart_label">
-    <ul>
-      <li><h1><%= Invoice.model_name.human.pluralize %></h1></li>
-      <li>
-        <%= button_tag t('general.general.new_invoice'), :class => 'btn btn-primary',
-                       id:                                      'new-invoice-btn', data: { toggle: 'modal', target: '#new_invoice' } %>
-      </li>
-    </ul>
-  </div>
-  <br>
+<div class="collapse" id="job_invoices">
+  <div class="collapse_frame">
+    <div class="row-fluid collapse_body">
 
-  <table class="table table-striped" id="event_log_in_service_call">
-    <thead>
-    <tr>
-      <th><%= Invoice.human_attribute_name(:id) %> </th>
-      <th><%= Invoice.human_attribute_name(:total) %> </th>
-      <th><%= Invoice.human_attribute_name(:notes) %></th>
-      <th><%= Invoice.human_attribute_name(:created_at) %></th>
-      <th><%= Invoice.human_attribute_name(:creator) %></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @service_call.invoices.each do |invoice| %>
+
+      <div class="row-fluid">
+        <a href="#" data-toggle="collapse" data-target="#job_invoices" class="close" id="job_invoices_close">×</a>
+      </div>
+
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= Invoice.model_name.human.pluralize %></h1></li>
+          <li>
+            <%= button_tag t('general.general.new_invoice'), :class => 'btn btn-primary',
+                           id:                                      'new-invoice-btn', data: { toggle: 'modal', target: '#new_invoice' } %>
+          </li>
+        </ul>
+      </div>
+
+
+
+      <table class="table table-striped" id="event_log_in_service_call">
+        <thead>
         <tr>
-          <td><%= link_to invoice.id, invoice %></td>
-          <td><%= humanized_money_with_symbol invoice.total %></td>
-          <td><%= textilize(invoice.notes).try(:html_safe) %></td>
-          <td><%= l invoice.created_at, :format => :default %></td>
-          <td><%= invoice.creator.name %></td>
+          <th><%= Invoice.human_attribute_name(:id) %> </th>
+          <th><%= Invoice.human_attribute_name(:total) %> </th>
+          <th><%= Invoice.human_attribute_name(:created_at) %></th>
+          <th><%= t('general.general.issued_by') %></th>
+          <th class="invoice_table_notes"><%= Invoice.human_attribute_name(:notes) %></th>
+          <th class="download_icon"><%= t('general.general.download') %></th>
         </tr>
-    <% end %>
-    </tbody>
-  </table>
+        </thead>
+        <tbody>
+        <% @service_call.invoices.each do |invoice| %>
+            <tr>
+              <td><%= link_to invoice.id, invoice %></td>
+              <td><%= humanized_money_with_symbol invoice.total %></td>
+              <td><%= invoice.try(:created_at) %></td>
+              <td><%= invoice.creator.try(:name) %></td>
+              <td class="invoice_table_notes"><%= textilize(invoice.notes).try(:html_safe) %></td>
+              <td class="download_icon"><%= link_to invoice, :format => 'pdf', :target => '_blank', :class => 'btn btn-primary btn-mini' do %>
+                    <i class="icon-download-alt icon-white"></i><% end %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+
+    </div>
+    <br>
+    <br>
+  </div>
+
 </div>
+
+
+<!--modal-->
 <div id='new_invoice' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
 
@@ -48,18 +71,29 @@
   </div>
 
   <div class="modal-body">
+
     <% invoice = @service_call.invoices.build %>
     <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
+
+
         <div class="row-fluid">
           <div class="span6">
+
             <% unless @service_call.work_done? %>
+
                 <%= f.input :adv_payment_amount %>
                 <%= f.input :adv_payment_desc %>
             <% end %>
             <%= f.input :email_customer, as: :boolean %>
-            <%= f.input :notes %>
             <%= f.input :ticket_id, as: :hidden, input_html: { value: @service_call.id } %>
+
           </div>
+          <div class="span6">
+            <%= f.input :notes %>
+
+          </div>
+
+        </div>
 
         </div>
 
@@ -72,10 +106,10 @@
                          rel:   'tooltip' %>
 
           </div>
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          <!--<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>-->
         </div>
 
     <% end %>
-  </div>
+    </div>
+<!--end of modal-->
 
-</div>

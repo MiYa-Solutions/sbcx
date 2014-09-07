@@ -19,7 +19,15 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html  { render pdf: "invoice_#{@invoice.id}",
+                            layout: 'receipts',
+                            footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
+                            header:                 { html: { template: 'layouts/_header.pdf.erb' } },
+                            disable_internal_links: false }
+
+      # show.html.erb
+
+
       format.json { render json: @invoice }
                   #format.pdf do
                   #  send_data @invoice.generate_pdf(view_context),
@@ -27,7 +35,11 @@ class InvoicesController < ApplicationController
                   #            type:        "application/pdf",
                   #            disposition: "inline"
                   #end
-      format.pdf { render pdf: "invoice_#{@invoice.id}", layout: 'receipts', disable_internal_links: false }
+      format.pdf { render pdf: "invoice_#{@invoice.id}",
+                          layout: 'receipts',
+                          footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
+                          header:                 { html: { template: 'layouts/_header.pdf.erb' } },
+                          disable_internal_links: false }
 
 
     end

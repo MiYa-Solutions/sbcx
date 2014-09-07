@@ -228,6 +228,8 @@ en:
       content_p3: "Thank you for using SubConTraX."
       content_p4: "The SubConTraX team"
       bottom_content: 'Please click on "Unlock Account" below to unlock your account.'
+    invoice:
+      subject: "Invoice"
 
 
   general:
