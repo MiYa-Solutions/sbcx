@@ -38,7 +38,7 @@
                   <td><%= invoice.try(:created_at) %></td>
                   <td><%= invoice.creator.try(:name) %></td>
                   <td class="invoice_table_notes"><%= textilize(invoice.notes).try(:html_safe) %></td>
-                  <td class="download_icon"><%= link_to invoice_path(invoice, format: :pdf), :class => 'btn btn-primary', :target => '_blank' do %>
+                  <td class="download_icon"><%= link_to invoice_path(invoice, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>
                         <i class="icon-download-alt icon-white"></i>
                     <% end %>
                   </td>
