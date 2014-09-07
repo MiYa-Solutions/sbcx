@@ -9,7 +9,7 @@
       </ul>
     </div>
 
-
+    <%= link_to 'Download CSV', service_calls_path, format: 'csv', customer_id: '70' %>
     <div class="row-fluid">
       <div class="span7">
         <div id="table-filters" class="all_jobs_filter" data-statuses="<%= service_call_statuses %>" data-tags="<%= current_user.organization.tags.map(&:name) %>">

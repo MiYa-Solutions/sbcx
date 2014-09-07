@@ -15,10 +15,16 @@ jQuery ->
     aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     oTableTools:
-      aButtons: ["copy", "print",
-        sExtends: "collection"
+#      aButtons: ["copy", "print",
+#        sExtends: "collection"
+#        sButtonText: "Save <span class=\"caret\" />"
+#        aButtons: ["csv", "xls", "pdf"]
+#        sUrl: 'service_calls'
+#      ],
+      aButtons: [
+        sExtends: "download"
         sButtonText: "Save <span class=\"caret\" />"
-        aButtons: ["csv", "xls", "pdf"]
+        sUrl: 'service_calls'
       ],
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     processing: true
