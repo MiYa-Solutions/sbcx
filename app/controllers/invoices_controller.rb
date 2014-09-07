@@ -19,13 +19,7 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
 
     respond_to do |format|
-      format.html  { render pdf: "invoice_#{@invoice.id}",
-                            layout: 'receipts',
-                            footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
-                            header:                 { html: { template: 'layouts/_header.pdf.erb' } },
-                            disable_internal_links: false }
-
-      # show.html.erb
+      format.html # show.html.erb
 
 
       format.json { render json: @invoice }
