@@ -3022,6 +3022,7 @@ hr {
 .well_height {
   min-height: 575px;
   margin-left: -1.5%;
+  margin-right: 1.5%;
 }
 
 .well_signin {
@@ -3563,7 +3564,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 .help_label {
-  background-color: #563D7C;
+  background-color: #9966cc;
   border-color: #463265;
   background-repeat: repeat-x;
   border-radius: 3px;
@@ -3606,6 +3607,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     font-weight: bold;
     line-height: 18px;
     text-shadow: none;
+    margin-right: 2px;
   }
 }
 
@@ -4999,4 +5001,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 #bom_close {
   margin-right: 4px;
+}
+
+.invoice_show_billTo {
+  margin-left: 25%;
 }
