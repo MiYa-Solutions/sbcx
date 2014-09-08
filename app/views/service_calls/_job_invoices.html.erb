@@ -35,7 +35,7 @@
                 <tr>
                   <td><%= link_to invoice.id, invoice %></td>
                   <td><%= humanized_money_with_symbol invoice.total %></td>
-                  <td><%= invoice.try(:created_at) %></td>
+                  <td><%= l invoice.try(:created_at) %></td>
                   <td><%= invoice.creator.try(:name) %></td>
                   <td class="invoice_table_notes"><%= textilize(invoice.notes).try(:html_safe) %></td>
                   <td class="download_icon"><%= link_to invoice_path(invoice, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>

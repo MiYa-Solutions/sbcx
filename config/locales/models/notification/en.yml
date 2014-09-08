@@ -25,7 +25,6 @@ en:
       sc_subcon_confirmed_settled_notification: "Subcontractor Confirm Settled"
       sc_subcon_deposited_notification: "Subcontractor Deposited"
       sc_subcon_settled_notification: "Subcontractor Settled"
-      sc_un_canceled_notification: "Job Un-canceled"
       acc_adj_accepted_notification: "Adjustment Accepted"
       acc_adj_canceled_notification: "Adjustment Canceled"
       acc_adj_rejected_notification: "Adjustment Rejected"
@@ -79,11 +78,6 @@ en:
       description: "The contractor has canceled the job."
     sc_props_updated_notification:
       description: "The job has been updated."
-    sc_un_canceled_notification:
-      html_message: '%{subcontractor} reported has changed his mind reverted the %{link} back from canceled to new'
-      subject: 'Transferred job %{ref} has been un-canceled '
-      content: '%{subcontractor} has previously reported the job as canceled but has changed his mind and un-canceled it.'
-      description: "Transferred job has been un-canceled by Subcontractor"
     sc_subcon_settled_notification:
       html_message: 'Job balance has been settled with %{subcontractor}'
       subject: 'Job balance has been settled with %{subcontractor}'
