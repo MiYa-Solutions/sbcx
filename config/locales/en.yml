@@ -213,6 +213,8 @@ en:
       receipt: "Receipt"
       receipt_date: "Receipt Date"
       payment_summary: "Payment Summary"
+      setting_job_notifications: "Setting Job Notifications"
+      setting_account_notifications: "Account Adjustment Notifications"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
