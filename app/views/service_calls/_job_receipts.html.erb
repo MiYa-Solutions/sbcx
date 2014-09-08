@@ -37,9 +37,9 @@
               <td><%= entry.notes %></td>
               <td><%= humanized_money_with_symbol entry.amount %></td>
               <td class="download_icon">
-                <span class="btn btn-primary btn-mini">
-                    <%= link_to '<i class="icon-download-alt icon-white"></i>'.html_safe, controller: 'receipts', action: 'show', id: entry.id, format: 'pdf', :class => 'btn btn-primary btn-mini' if entry.kind_of?(CustomerPayment) %>
-                </span>
+                <%= link_to receipt_path(entry, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>
+                    <i class="icon-download-alt icon-white"></i>
+                <% end %>
               </td>
             </tr>
         <% end %>
