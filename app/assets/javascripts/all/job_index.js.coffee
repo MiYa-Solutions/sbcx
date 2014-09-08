@@ -1,3 +1,33 @@
+TableTools.BUTTONS.download =
+  sAction: "text"
+  sTag: "default"
+  sFieldBoundary: ""
+  sFieldSeperator: "\t"
+  sNewLine: "<br>"
+  sToolTip: ""
+  sButtonClass: "DTTT_button_text"
+  sButtonClassHover: "DTTT_button_text_hover"
+  sButtonText: "Download"
+  mColumns: "all"
+  bHeader: true
+  bFooter: true
+  sDiv: ""
+  fnMouseover: null
+  fnMouseout: null
+  fnClick: (nButton, oConfig) ->
+    oParams = @s.dt.oApi._fnAjaxParameters(@s.dt)
+    iframe = document.createElement("iframe")
+    iframe.style.height = "0px"
+    iframe.style.width = "0px"
+    iframe.src = oConfig.sUrl + "?" + $.param(oParams)
+    document.body.appendChild iframe
+    return
+
+  fnSelect: null
+  fnComplete: null
+  fnInit: null
+
+
 $.getRequetParam = (name)->
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
   regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
@@ -10,22 +40,17 @@ jQuery ->
 
   $('#job-search-results').dataTable(
     dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
-    aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4,5,6,7,8,9,10 ] }]
+    aoColumnDefs: [
+      { 'bSortable': false, 'aTargets': [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] }
+    ]
     order: [0, 'desc']
     aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     oTableTools:
-#      aButtons: ["copy", "print",
-#        sExtends: "collection"
-#        sButtonText: "Save <span class=\"caret\" />"
-#        aButtons: ["csv", "xls", "pdf"]
-#        sUrl: 'service_calls'
-#      ],
-      aButtons: [
-        sExtends: "download"
-        sButtonText: "Save <span class=\"caret\" />"
-        sUrl: 'service_calls'
-      ],
+      aButtons:[ "Save"
+        sExtends: "download",
+        sUrl: 'service_calls/']
+
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     processing: true
     stateSave: true
@@ -84,11 +109,12 @@ jQuery ->
       data: $('#table-filters').data("statuses")
       filter_container_id: 'status_filter'
       filter_default_label: 'Status'
-      select_type_options: {
-        width: '200px'
-      }
+      select_type_options:
+        {
+          width: '200px'
+        }
 
-    }
+  }
     {
       column_number: 10
       select_type: 'chosen'
@@ -96,9 +122,10 @@ jQuery ->
       filter_default_label: 'Tags'
       filter_container_id: 'tags_filter'
       data: $('#table-filters').data("tags")
-      select_type_options: {
-        width: '200px'
-      }
+      select_type_options:
+        {
+          width: '200px'
+        }
 
     }
 
