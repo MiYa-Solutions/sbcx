@@ -141,7 +141,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :state,
      :work_phone,
      :zip,
-     :status_event
+     :status_event,
+     :default_tax
     ]
   end
 
@@ -176,7 +177,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :users_attributes,
      :provider_attributes,
      :agreement_attributes,
-     :agreements
+     :agreements, :default_tax
     ]
   end
 

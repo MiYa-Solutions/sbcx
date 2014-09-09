@@ -58,6 +58,8 @@
 
 class ServiceCall < Ticket
 
+  after_create :init_tax
+
   def fully_paid?
     current_payment = payment_amount || 0
 
@@ -130,7 +132,7 @@ class ServiceCall < Ticket
     end
 
     event :start do
-      transition :pending => :in_progress, if: ->(sc) { sc.work_start_allowed? && !sc.organization.multi_user?}
+      transition :pending => :in_progress, if: ->(sc) { sc.work_start_allowed? && !sc.organization.multi_user? }
       transition [:accepted, :dispatched] => :in_progress, if: ->(sc) { !sc.canceled? }
     end
 
@@ -274,9 +276,9 @@ class ServiceCall < Ticket
   def subcon_settlement_allowed?
     subcontractor && subcon_collection_fully_deposited? && all_deposited_entries_confirmed? && work_done?(
 
-    (subcontractor.subcontrax_member? && !allow_collection?) ||
-        (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
-        (!subcontractor.subcontrax_member? && work_done?))
+        (subcontractor.subcontrax_member? && !allow_collection?) ||
+            (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
+            (!subcontractor.subcontrax_member? && work_done?))
   end
 
   def can_change_boms?
@@ -306,11 +308,25 @@ class ServiceCall < Ticket
   end
 
 
-
   private
 
   def all_deposited_entries_confirmed?
     deposited_entries.map(&:status).select { |status| status != ConfirmableEntry::STATUS_CONFIRMED }.empty?
+  end
+
+  def init_tax
+    if tax == 0.0
+      tax_number = default_tax
+      self.update_attribute(:tax, tax_number)
+    end
+  end
+
+  def default_tax
+    if self.customer.default_tax
+      self.customer.default_tax.to_f
+    else
+      organization.default_tax.to_f
+    end
   end
 
 

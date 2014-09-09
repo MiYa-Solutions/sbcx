@@ -25,7 +25,15 @@
 #  other_industry    :string(255)
 #
 
+require 'hstore_setup_methods'
 class Organization < ActiveRecord::Base
+  extend HstoreSetupMethods
+  serialize :properties, ActiveRecord::Coders::Hstore
+  setup_hstore_attr 'default_tax'
+
+  def default_tax
+    (properties['default_tax'].nil? || properties['default_tax'].empty?) ? '0' : properties['default_tax']
+  end
 
   def self.industries
     [

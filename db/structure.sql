@@ -37,6 +37,20 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -382,7 +396,8 @@ CREATE TABLE customers (
     updated_at timestamp without time zone NOT NULL,
     creator_id integer,
     updater_id integer,
-    status integer
+    status integer,
+    properties hstore
 );
 
 
@@ -527,6 +542,7 @@ CREATE TABLE invoices (
     creator_id integer,
     updater_id integer,
     notes text,
+    description text,
     total_cents integer,
     total_currency character varying(255)
 );
@@ -700,7 +716,8 @@ CREATE TABLE organizations (
     updated_at timestamp without time zone NOT NULL,
     parent_org_id integer,
     industry character varying(255),
-    other_industry character varying(255)
+    other_industry character varying(255),
+    properties hstore
 );
 
 
@@ -1475,6 +1492,13 @@ ALTER TABLE ONLY versions
 
 
 --
+-- Name: customer_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX customer_properties ON customers USING gin (properties);
+
+
+--
 -- Name: events_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1654,6 +1678,13 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (re
 --
 
 CREATE INDEX index_versions_on_item_type_and_item_id ON versions USING btree (item_type, item_id);
+
+
+--
+-- Name: org_preferences; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX org_preferences ON organizations USING gin (properties);
 
 
 --
@@ -1965,3 +1996,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140821181139');
 INSERT INTO schema_migrations (version) VALUES ('20140821182012');
 
 INSERT INTO schema_migrations (version) VALUES ('20140829015934');
+
+INSERT INTO schema_migrations (version) VALUES ('20140909193308');

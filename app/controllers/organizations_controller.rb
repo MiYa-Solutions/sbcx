@@ -25,14 +25,13 @@ class OrganizationsController < ApplicationController
   end
 
   def show
+
     if has_role? :admin
       @organization = Organization.find(params[:id])
+      @users = @organization.users
     else
-      @organization = current_user.organization
+      redirect_to profile_path
     end
-
-    @users = @organization.users
-
 
   end
 

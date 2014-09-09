@@ -67,4 +67,9 @@
     <div class="ui-block-b"><%= f.text_field :email, as: :email %></div>
   </div>
 
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= Customer.human_attribute_name(:email) %></div>
+    <div class="ui-block-b"><%= f.text_field :default_tax, as: :decimal %></div>
+  </div>
+
 </div>

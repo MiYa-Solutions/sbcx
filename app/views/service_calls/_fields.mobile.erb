@@ -25,7 +25,7 @@
 
 <br>
 
-<%= f.input :customer, input_html: { id: "customer-autocomplete" }, :label => "Select Customer" %>
+<%= f.input :customer_name, input_html: { id: "customer-autocomplete", data: { ref_id: "" } }, :label => "Select Customer" %>
 <div class="new_customer_job_button">
   <%= link_to I18n.t('general.general.new_customer'), new_customer_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
 </div>
@@ -48,7 +48,7 @@
   <% if current_user.organization.multi_user? %>
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
-        <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.customer %></div>
+        <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.technician.try(:name) %></div>
       </div>
   <% end %>
 
