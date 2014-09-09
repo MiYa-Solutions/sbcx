@@ -43,7 +43,7 @@
                       <td valign="top" class="bodyContent" style="color:#505050; font-family:Arial; font-size:14px; line-height:150%;">
                         <div>
                           <!--CSS change -->
-                          <h4 class="h4" style="font-family:Arial; font-size:18px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                          <h4 class="h4" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
                             <%= @invoice.ticket.organization.name %>
                           </h4>
                           <%= @invoice.ticket.organization.address1 %><br>
@@ -56,7 +56,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td width="50%">
+                      <td width="50%" style="font-size:14px;">
                         <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
                           <%= t('general.general.bill_to') %>
                         </h3>
@@ -71,16 +71,15 @@
                           <%= @invoice.ticket.customer.city %>, <%= @invoice.ticket.customer.state %><%= @invoice.ticket.customer.zip %><br>
                           <%= @invoice.ticket.customer.phone %><br>
                       </td>
-                      <td width="50%">
+                      <td width="50%" style="font-size:14px;">
+                        <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                          <%= t('general.general.job_number') %><%= @invoice.ticket.id %>
+                        </h3>
                         <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
                           <%= t('general.general.invoice_date') %>:
                         </h3>
                           <%= l @invoice.created_at %><br><br>
 
-
-                        <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
-                          <%= t('general.general.job_number') %><%= @invoice.ticket.id %>
-                        </h3>
 
                         <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
                           <%= t('general.general.job_name') %>:

@@ -10,48 +10,22 @@
         <%= link_to I18n.t('general.general.new'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
       </div>
 
-      <li class="job_index_divider" data-role="list-divider"><%= I18n.t('general.general.my_jobs') %></li>
-     <% unless @new_jobs.empty? %>
-      <% @new_jobs.each do |sc| %>
-          <li class="inline_mobile service_calls_index">
-            <p class="ui-li-aside-blue ui-li-desc-blue">
-              <badge><%= sc.ref_id %></badge>
-            </p>
-            <% if sc.customer.name.empty? %>
-                <%= link_to sc.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
-            <% else %>
-            <%= link_to sc.try(:name), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
-            <% end %>
-
-            <span class="service_call_status">
-              <%= sc.human_status_name %>
-            </span>
-
-          </li>
-       <% end %>
-    <% end %>
 
 
-      <li class="job_index_divider" data-role="list-divider"><%= I18n.t('general.general.transferred_jobs') %></li>
-      <% unless @new_transferred_jobs.empty? %>
-          <% @new_transferred_jobs.each do |sc| %>
-              <li class="inline_mobile service_calls_index">
-                <p class="ui-li-aside-blue ui-li-desc-blue">
-                  <badge><%= sc.ref_id %></badge>
-                </p>
+      <fieldset class="ui-grid-a ui-btn-inner-small">
+        <div class="ui-block-a">
+          <a href="#job_in_progress_index" data-role="button" data-rel="popup" data-transition= "pop" data-theme="b" class="ui-btn-up-b">
+            <span class="ui-btn-text"><%= I18n.t('general.general.in_progress') %> </span><span class="job_counter"><%= @active_jobs.length + @active_transferred_jobs.length %></span></a>
+        </div>
+        <div class="ui-block-b">
+          <a href="#job_done_index" data-role="button" data-rel="popup" data-transition= "pop" data-theme="b" class="ui-btn-up-b">
+            <span class="ui-btn-text"><%= I18n.t('general.general.done') %> </span><span class="job_counter"><%= @done_jobs.length + @done_transferred_jobs.length %></span></a>
+        </div>
+      </fieldset>
 
-                <% if sc.customer.name.empty? %>
-                    <%= link_to sc.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
-                <% else %>
-                    <%= link_to sc.customer.try(:name), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
-                <% end %>
-                <span class="service_call_status">
-                  <%= sc.human_status_name %>
-                </span>
 
-              </li>
-          <% end %>
-      <% end %>
+          <%= render :partial => 'new_jobs_index' %>
+
 
     </ul>
 
@@ -59,4 +33,27 @@
 </div>
 
 
+<div data-role="popup" id="job_in_progress_index" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="min-width:400px; min-height: 600px;" class="ui-corner-all close_btn_header">
+
+  <ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
+    <div class= "new_job_button">
+      <%= link_to I18n.t('general.general.close'), "", "data-role" => "button", "data-rel" => "back", id: 'new-service-call-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+    </div>
+
+    <%= render :partial => 'job_in_progress_index' %>
+  </ul>
+
+</div>
+
+<div data-role="popup" id="job_done_index" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="min-width:400px; min-height: 600px;" class="ui-corner-all close_btn_header">
+
+  <ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
+    <div class= "new_job_button">
+      <%= link_to I18n.t('general.general.close'), "", "data-role" => "button", "data-rel" => "back", id: 'new-service-call-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+    </div>
+
+    <%= render :partial => 'job_done_index' %>
+  </ul>
+
+</div>
 

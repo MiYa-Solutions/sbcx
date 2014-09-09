@@ -1,0 +1,50 @@
+<% unless @new_jobs.nil? %>
+<li class="job_index_divider" data-role="list-divider"><%= I18n.t('general.general.my_jobs') %></li>
+<% unless @new_jobs.empty? %>
+    <% @new_jobs.each do |sc| %>
+        <li class="inline_mobile service_calls_index">
+          <p class="ui-li-aside-blue ui-li-desc-blue">
+            <badge><%= sc.ref_id %></badge>
+          </p>
+          <% if sc.customer.name.empty? %>
+              <%= link_to sc.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
+          <% else %>
+              <%= link_to sc.try(:name), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
+          <% end %>
+
+          <span class="service_call_status">
+              <%= sc.human_status_name %>
+            </span>
+
+        </li>
+    <% end %>
+<% end %>
+
+<% end %>
+
+<% unless @new_jobs.nil? %>
+<li class="job_index_divider" data-role="list-divider"><%= I18n.t('general.general.transferred_jobs') %></li>
+
+<% unless @new_transferred_jobs.nil? %>
+    <% @new_transferred_jobs.each do |sc| %>
+        <li class="inline_mobile service_calls_index">
+          <p class="ui-li-aside-blue ui-li-desc-blue">
+            <badge><%= sc.ref_id %></badge>
+          </p>
+
+          <% if sc.customer.name.empty? %>
+              <%= link_to sc.try(:address1), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
+          <% else %>
+              <%= link_to sc.customer.try(:name), service_call_path(sc), "data-transition" => "slide", id: "jobs_index_address" %>
+          <% end %>
+          <span class="service_call_status">
+                  <%= sc.human_status_name %>
+                </span>
+
+        </li>
+    <% end %>
+<% end %>
+
+
+<% end %>
+

@@ -5,14 +5,12 @@
         <ul>
           <li><h1><%= I18n.t('general.general.billing_summary').html_safe %></h1></li>
           <li>
-            <%= button_tag t('general.general.receipts'), :class => 'btn btn-primary',
-                           id: 'show_receipt_button', data: { toggle: "collapse", target: "#job_receipts" } %>
             <%= button_tag Invoice.model_name.human.pluralize, :class => 'btn btn-primary',
                            id: 'show_invoices_button', data: { toggle: "collapse", target: "#job_invoices" } %>
             <%= button_tag t('general.general.collect_payments'), :class => 'btn btn-primary',
                            id: 'new-collect-button', data: { toggle: "collapse", target: "#payment_collect" } unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
-
-
+            <%= button_tag t('general.general.receipts'), :class => 'btn btn-primary',
+                           id: 'show_receipt_button', data: { toggle: "collapse", target: "#job_receipts" } %>
           </li>
         </ul>
       </div>
@@ -116,8 +114,8 @@
 
 
       <!-- Entries -->
-  <%= render 'job_receipts' %>
   <%= render 'job_invoices' %>
+  <%= render 'job_receipts' %>
 
 
   <% case @service_call.my_role when :subcon %>

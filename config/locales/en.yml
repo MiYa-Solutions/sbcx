@@ -61,7 +61,7 @@ en:
       send_invite: "Send your recommendation of SubConTraX."
       add_member_invite: "Send invite to join your SubConTraX network. <br> Accepted invitation enables transferring and receiving of jobs."
       no_records: "No records, click 'New Affiliate' or search for affiliates to add new members to your network"
-      no_job_records: "No records, click 'New Job' to add new contact"
+      no_job_records: "No records, click 'New Job' to open a new job"
       show_job: "Click to open Job ticket"
       no_bom: "You can't edit Billing due to one of the following reasons: \n(1) Job is pending your 'Start' action \n(2) Pending your 'Accept' action (you transferred to local subcontractor) \n(3) In progress by subcontractor (you transferred to a SubConTraX member), or \n(4) Job has been completed"
       add_note: "To add headings use the following format: h1.your text (h1,h2,h3,h4,h5)  \nTo add bullets use the following format: *your text"

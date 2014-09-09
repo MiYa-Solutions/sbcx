@@ -2177,3 +2177,43 @@ div.ui-slider {
   margin-left: 7px;
   width: 47%;
 }
+
+#job_done_index {
+  .ui-listview-filter {
+    border-width: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+  .new_job_button .ui-btn {
+    top: 8px;
+    padding-top: 7px;
+  }
+
+  .ui-input-search .ui-input-clear {
+    top: 15%;
+  }
+
+}
+
+#job_in_progress_index {
+  .ui-listview-filter {
+    border-width: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+  .new_job_button .ui-btn {
+    top: 8px;
+    padding-top: 7px;
+  }
+
+  .ui-input-search .ui-input-clear {
+    top: 15%;
+  }
+}
+
+.job_counter {
+  background: linear-gradient(#dddddd, #bbbbbb) repeat scroll 0 0 #bbbbbb;
+  border-radius: 10px;
+  margin-left: 6px;
+  padding: 4px 8px;
+}
