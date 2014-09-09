@@ -215,6 +215,10 @@ en:
       payment_summary: "Payment Summary"
       setting_job_notifications: "Setting Job Notifications"
       setting_account_notifications: "Account Adjustment Notifications"
+      job_import: "Job Import"
+      data_type: "Data Type"
+      required: "Required?"
+      default_value: "Default Value"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
@@ -224,3 +228,4 @@ en:
     message:
       invite_member: "I'd like to add you to my professional network on SubConTraX. \n \n"
       send_referral: "Hi, I'm using SubConTraX and would like to invite you to try it. \n \n"
+    general_select_file_import: "Import File"
