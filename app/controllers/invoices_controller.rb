@@ -5,7 +5,7 @@ class InvoicesController < ApplicationController
   # GET /invoices
   # GET /invoices.json
   def index
-    @invoices = Invoice.all
+    @invoices = Invoice.where(ticket_id: invoice_params[:ticket_id])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -62,7 +62,7 @@ class InvoicesController < ApplicationController
 
     respond_to do |format|
       if @invoice.save
-        format.html { redirect_to @invoice.ticket, notice: 'Invoice was successfully created.' }
+        format.any(:html, :mobile) { redirect_to @invoice.ticket, notice: 'Invoice was successfully created.' }
         format.json { render json: @invoice, status: :created, location: @invoice }
       else
         flash[:error] = "Failed to create the invoice. #{humanized_errors}".html_safe
