@@ -646,7 +646,7 @@ input.ui-input-text, textarea.ui-input-text {
     color: #AB2525;
     font-size: 14px;
     font-weight: bold;
-    left: 75%;
+    left: 60%;
     margin-top: -18px;
     position: absolute;
   }
@@ -655,7 +655,7 @@ input.ui-input-text, textarea.ui-input-text {
     color: #44AD3F;
     font-size: 14px;
     font-weight: bold;
-    left: 75%;
+    left: 60%;
     margin-top: -18px;
     position: absolute;
   }
@@ -664,7 +664,7 @@ input.ui-input-text, textarea.ui-input-text {
     color: #000000;
     font-size: 14px;
     font-weight: bold;
-    left: 75%;
+    left: 60%;
     margin-top: -18px;
     position: absolute;
   }
@@ -780,7 +780,7 @@ input.ui-input-text, textarea.ui-input-text {
   margin-top: -10px;
   padding: 3px 6px;
   text-align: center;
-  margin-left: 10%;
+  margin-left: 1%;
 
   badge {
     color: #FFFFFF;
@@ -800,7 +800,7 @@ input.ui-input-text, textarea.ui-input-text {
   margin-top: -10px;
   padding: 3px 6px;
   text-align: center;
-  margin-left: 10%;
+  margin-left: 1%;
 
   badge {
     color: #FFFFFF;
@@ -820,7 +820,7 @@ input.ui-input-text, textarea.ui-input-text {
   margin-top: -10px;
   padding: 2px 4px 3px;
   text-align: center;
-  margin-left: 10%;
+  margin-left: 1%;
 
   badge {
     color: #3A87AD;
@@ -1109,7 +1109,7 @@ input.ui-input-text, textarea.ui-input-text {
     right: 11%;
     text-overflow: ellipsis;
     top: 50%;
-    width: 76px;
+    width: 100px;
   }
 
   .service_call_status_red {
@@ -2120,9 +2120,12 @@ div.ui-slider {
 
 }
 
+
+
 .affiliate_balance_billing_total {
   margin-top: 11px;
   padding-bottom: 22px;
+
 
 }
 
@@ -2217,3 +2220,36 @@ div.ui-slider {
   margin-left: 6px;
   padding: 4px 8px;
 }
+
+//#job_done_index-popup {
+//  margin-right: 40px;
+//}
+//
+//#job_in_progress_index-popup {
+//  margin-right: 40px;
+//
+//}
+
+//#prov_statuses-popup {
+//  margin-right: 40px;
+//}
+//
+//#subcon_statuses-popup  {
+//  margin-right: 40px;
+//}
+//
+//#update_tax-popup {
+//  margin-right: 40px;
+//}
+//
+//#provider_show_all_entries-popup {
+//  margin-right: 40px;
+//}
+//
+//#subcon_show_all_entries-popup {
+//  margin-right: 40px;
+//}
+//
+//#payment_collect-popup {
+//  margin-right: 40px;
+//}
