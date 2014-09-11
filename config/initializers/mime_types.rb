@@ -3,5 +3,5 @@
 # Add new mime types for use in respond_to blocks:
 # Mime::Type.register "text/richtext", :rtf
 Mime::Type.register_alias "text/html", :mobile
-Mime::Type.register_alias "text/csv", :csv
+Mime::Type.register_alias "text/xls", :xls
 #Mime::Type.register_alias "application/pdf", :pdf

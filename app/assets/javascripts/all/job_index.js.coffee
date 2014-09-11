@@ -19,6 +19,7 @@ TableTools.BUTTONS.download =
     iframe = document.createElement("iframe")
     iframe.style.height = "0px"
     iframe.style.width = "0px"
+    oConfig.dataType = 'csv'
     iframe.src = oConfig.sUrl + "?" + $.param(oParams)
     document.body.appendChild iframe
     return
@@ -47,9 +48,15 @@ jQuery ->
     aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     oTableTools:
-      aButtons:[ "Save"
-        sExtends: "download",
-        sUrl: 'service_calls/']
+      aButtons: ["copy", "print",
+        sExtends: "collection"
+        sButtonText: "Save <span class=\"caret\" />"
+        aButtons: ["csv",
+          sExtends: "download"
+          sButtonText: "CSV"
+          sUrl: 'service_calls'
+          "xls", "pdf"]
+      ]
 
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     processing: true
