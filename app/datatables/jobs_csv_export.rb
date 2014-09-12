@@ -1,3 +1,4 @@
+require 'csv'
 class JobsCsvExport
   delegate :humanized_money_with_symbol, :current_user, :params, :h, :link_to, :number_to_currency, to: :@view
 
@@ -63,15 +64,7 @@ class JobsCsvExport
     end
 
 
-    tickets.order("tickets.#{sort_column} #{sort_direction}").page(page).per_page(per_page)
-  end
-
-  def page
-    params[:iDisplayStart].to_i/per_page + 1
-  end
-
-  def per_page
-    params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 10000
+    tickets.order("tickets.#{sort_column} #{sort_direction}")
   end
 
   def sort_column

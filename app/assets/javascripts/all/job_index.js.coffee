@@ -1,33 +1,13 @@
-TableTools.BUTTONS.download =
-  sAction: "text"
-  sTag: "default"
-  sFieldBoundary: ""
-  sFieldSeperator: "\t"
-  sNewLine: "<br>"
-  sToolTip: ""
-  sButtonClass: "DTTT_button_text"
-  sButtonClassHover: "DTTT_button_text_hover"
-  sButtonText: "Download"
-  mColumns: "all"
-  bHeader: true
-  bFooter: true
-  sDiv: ""
-  fnMouseover: null
-  fnMouseout: null
-  fnClick: (nButton, oConfig) ->
-    oParams = @s.dt.oApi._fnAjaxParameters(@s.dt)
-    iframe = document.createElement("iframe")
-    iframe.style.height = "0px"
-    iframe.style.width = "0px"
-    oConfig.dataType = 'csv'
-    iframe.src = oConfig.sUrl + "?" + $.param(oParams)
-    document.body.appendChild iframe
-    return
+filter_params = ->
 
-  fnSelect: null
-  fnComplete: null
-  fnInit: null
-
+  res = ''
+  res = res + 'from_date=' + $('#yadcf-filter--job-search-results-from-date-1').val() + '&'
+  res = res + 'to_date=' + $('#yadcf-filter--job-search-results-to-date-1').val() + '&'
+  res = res + 'customer_id=' + $('#customer_filter_id').val() + '&'
+  res = res + 'provider_id=' + $('#provider').val() + '&'
+  res = res + 'subcontractor_id=' + $('#subcontractor').val() + '&'
+  res = res + 'affiliate_id=' + $('#affiliate').val() + '&'
+  res
 
 $.getRequetParam = (name)->
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
@@ -48,16 +28,7 @@ jQuery ->
     aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     oTableTools:
-      aButtons: ["copy", "print",
-        sExtends: "collection"
-        sButtonText: "Save <span class=\"caret\" />"
-        aButtons: ["csv",
-          sExtends: "download"
-          sButtonText: "CSV"
-          sUrl: 'service_calls'
-          "xls", "pdf"]
-      ]
-
+      aButtons: ["print"]
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     processing: true
     stateSave: true
@@ -178,5 +149,13 @@ jQuery ->
     $("#affiliate").trigger("chosen:updated")
     $('#job-search-results').dataTable().api().ajax.reload()
 
+
+  $('.download_csv').on 'click', (e)->
+    e.preventDefault()
+    window.location.href = "service_calls.csv?" + filter_params() + $.param( $('#job-search-results').dataTable().api().ajax.params())
+
+  $('.download_xls').on 'click', (e)->
+    e.preventDefault()
+    window.location.href = "service_calls.xls?" + filter_params() + $.param( $('#job-search-results').dataTable().api().ajax.params())
 
 

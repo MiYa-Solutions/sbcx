@@ -22,8 +22,8 @@ class ServiceCallsController < ApplicationController
       }
 
       format.json { render json: TicketsDatatable.new(view_context) }
-      format.csv { send_data JobsCsvExport.new(view_context).get_csv }
-      format.xls { send_data JobsCsvExport.new(view_context).get_csv(delimiter: '\t') }
+      format.csv { send_data JobsCsvExport.new(view_context).get_csv, as: 'application/csv' }
+      format.xls { send_data JobsCsvExport.new(view_context).get_csv(col_sep: "\t"), as: 'application/xls' }
     end
 
   end
