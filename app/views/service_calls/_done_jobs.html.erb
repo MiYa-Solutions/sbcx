@@ -1,0 +1,306 @@
+<div class="well well_job_show">
+
+  <div class="row-fluid my_jobs">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.my_jobs') %></h1></li>
+        <li><%= link_to I18n.t('general.general.new_job'), new_service_call_path, :class => 'btn btn-primary' %></li>
+      </ul>
+    </div>
+
+    <br>
+
+    <% if service_calls.nil? %>
+        <span class="alert alert-info"><%= I18n.t('general.messages.no_job_records') %></span>
+    <% else %>
+
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th><%= ServiceCall.human_attribute_name(:id) %></th>
+            <th><%= ServiceCall.human_attribute_name(:status) %></th>
+            <th><%= ServiceCall.human_attribute_name(:name) %></th>
+            <th><%= I18n.t('general.general.customer') %></th>
+            <th><%= I18n.t('general.general.completed_at') %></th>
+            <th><%= I18n.t('general.general.customer_balance') %></th>
+            <th><%= I18n.t('general.general.provider_balance') %></th>
+            <th><%= I18n.t('general.general.actions') %></th>
+            <th class="job_source"><%= I18n.t('general.general.source') %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% service_calls.each do |sc| %>
+              <tr>
+                <td class="member_logo">
+                  <!--<#% if sc.billing_status_name == 'Overdue' %>-->
+                  <% if sc.respond_to?(:payment_overdue?) && sc.payment_overdue? %>
+                      <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+                  <% end %>
+                </td>
+                <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
+                <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
+                <td><%= link_to sc.try(:name), service_call_path(sc) %></td>
+                <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
+                <td><%= link_to sc.completed_on_text, service_call_path(sc) %></td>
+                <!--customer balance-->
+                <% if sc.try(:customer_balance) > 0 %>
+                    <td class="positive">
+                      <%= humanized_money_with_symbol sc.customer_balance %>
+                      <% if sc.active_customer_entries.size > 0 %>
+                          <span class="label label_new_entry"><%= "#{sc.active_customer_entries.size} new" if sc.active_customer_entries.size > 0 %></span>
+                      <% end %>
+                    </td>
+
+                <% else %>
+                    <% if sc.try(:customer_balance) < 0 %>
+                            <td class="negative">
+                              <%= humanized_money_with_symbol sc.customer_balance %>
+
+                              <% if sc.active_customer_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_customer_entries.size} new" if sc.active_customer_entries.size > 0 %></span>
+                              <% end %>
+                            </td>
+                    <% else %>
+                        <td class="balanced">
+                          <%= humanized_money_with_symbol sc.customer_balance %>
+
+                          <% if sc.active_customer_entries.size > 0 %>
+                              <span class="label label_new_entry"><%= "#{sc.active_customer_entries.size} new" if sc.active_customer_entries.size > 0 %></span>
+                          <% end %>
+                        </td>
+                    <% end %>
+                <% end %>
+                <!--end customer balance-->
+
+                <!--contractor balance-->
+                <% case sc.my_role when :subcon %>
+
+                    <% if sc.try(:provider_balance) == 0 %>
+                        <td class="balanced">
+                          <%= humanized_money_with_symbol sc.provider_balance %>
+                          <% if sc.active_provider_entries.size > 0 %>
+                              <span class="label label_new_entry"><%= "#{sc.active_provider_entries.size} new"  %></span>
+                          <% end %>
+                        </td>
+                    <% else %>
+                        <% if sc.try(:provider_balance) > 0 %>
+                            <td class="positive">
+                              <%= humanized_money_with_symbol sc.provider_balance %>
+                              <% if sc.active_provider_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_provider_entries.size} new"  %></span>
+                              <% end %>
+                            </td>
+                        <% else %>
+                            <td class="negative">
+                              <%= humanized_money_with_symbol sc.provider_balance %>
+                              <% if sc.active_provider_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_provider_entries.size} new"  %></span>
+                              <% end %>
+                            </td>
+
+                        <% end %>
+                    <% end %>
+                <% else %>
+                    <td>
+                     Not Applicable
+                    </td>
+
+                <% end %>
+
+
+                <!--end contractor balance-->
+
+                <td><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
+                <td class="job_source">
+
+
+                  <% case sc.my_role when :subcon %>
+                      <%= image_tag("transJob.png", :title => I18n.t('general.messages.incoming_job').html_safe, :rel => 'tooltip') %>
+                  <% when :broker %>
+
+                  <% else %>
+                      <%= image_tag("myJob.png", :title => I18n.t('general.messages.myJob').html_safe, :rel => 'tooltip') %>
+                  <% end %>
+
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+    <% end %>
+
+  </div>
+
+
+  <% unless transferred_jobs.nil? %>
+
+      <div class="row-fluid transferred_jobs">
+
+        <div class="smart_label">
+          <ul>
+            <li><h1><%= I18n.t('general.general.transferred_jobs') %></h1></li>
+            <li></li>
+          </ul>
+        </div>
+
+        <br>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th><%= ServiceCall.human_attribute_name(:id) %></th>
+            <th><%= ServiceCall.human_attribute_name(:status) %></th>
+            <th><%= ServiceCall.human_attribute_name(:name) %></th>
+            <th><%= I18n.t('general.general.customer') %></th>
+            <th><%= I18n.t('general.general.completed_at') %></th>
+            <th><%= I18n.t('general.general.customer_balance') %></th>
+            <th><%= I18n.t('general.general.provider_balance') %></th>
+            <th><%= I18n.t('general.general.subcontractor_balance') %></th>
+            <th><%= I18n.t('general.general.actions') %></th>
+            <th class="job_source"><%= I18n.t('general.general.source') %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% transferred_jobs.each do |sc| %>
+              <tr>
+                <td class="member_logo">
+                  <!--<#% if sc.billing_status_name == 'Overdue' %>-->
+                  <% if sc.respond_to?(:payment_overdue?) && sc.payment_overdue? %>
+                      <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+                  <% end %>
+                </td>
+                <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
+                <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
+                <td><%= link_to sc.try(:name), service_call_path(sc) %></td>
+                <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
+                <td><%= link_to sc.completed_on_text, service_call_path(sc) %></td>
+
+
+                <!--customer balance-->
+                <% case sc.my_role when :provider %>
+                    <% if sc.try(:customer_balance) > 0 %>
+                        <td class="positive">
+                          <%= humanized_money_with_symbol sc.customer_balance %>
+                          <% if sc.active_customer_entries.size > 0 %>
+                              <span class="label label_new_entry"><%= "#{sc.active_customer_entries.size} new" if sc.active_customer_entries.size > 0 %></span>
+                          <% end %>
+                        </td>
+
+                    <% else %>
+                        <% if sc.try(:customer_balance) < 0 %>
+                            <td class="negative">
+                              <%= humanized_money_with_symbol sc.customer_balance %>
+
+                              <% if sc.active_customer_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_customer_entries.size} new" if sc.active_customer_entries.size > 0 %></span>
+                              <% end %>
+                            </td>
+                        <% else %>
+                            <td class="balanced">
+                              <%= humanized_money_with_symbol sc.customer_balance %>
+
+                              <% if sc.active_customer_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_customer_entries.size} new" if sc.active_customer_entries.size > 0 %></span>
+                              <% end %>
+                            </td>
+                        <% end %>
+                    <% end %>
+                <% else %>
+                    <td>
+                      Not Applicable
+                    </td>
+                <% end %>
+                <!--end customer balance-->
+
+                <!--contractor balance-->
+                <% case sc.my_role when :broker %>
+
+                    <% if sc.try(:provider_balance) == 0 %>
+                        <td class="balanced">
+                          <%= humanized_money_with_symbol sc.provider_balance %>
+                          <% if sc.active_provider_entries.size > 0 %>
+                              <span class="label label_new_entry"><%= "#{sc.active_provider_entries.size} new"  %></span>
+                          <% end %>
+                        </td>
+                    <% else %>
+                        <% if sc.try(:provider_balance) > 0 %>
+                            <td class="positive">
+                              <%= humanized_money_with_symbol sc.provider_balance %>
+                              <% if sc.active_provider_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_provider_entries.size} new"  %></span>
+                              <% end %>
+                            </td>
+                        <% else %>
+                            <td class="negative">
+                              <%= humanized_money_with_symbol sc.provider_balance %>
+                              <% if sc.active_provider_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_provider_entries.size} new"  %></span>
+                              <% end %>
+                            </td>
+                        <% end %>
+                    <% end %>
+                <% else %>
+                    <td>
+                      Not Applicable
+                    </td>
+                <% end %>
+                <!--end contractor balance-->
+
+
+                <!-- Subcon balance-->
+                    <% if sc.try(:subcon_balance) == 0 %>
+                        <td class="balanced">
+                          <%= humanized_money_with_symbol sc.subcon_balance %>
+                          <% if sc.active_provider_entries.size > 0 %>
+                              <span class="label label_new_entry"><%= "#{sc.active_subcon_entries.size} new"  %></span>
+                          <% end %>
+                        </td>
+                    <% else %>
+                        <% if sc.try(:subcon_balance) > 0 %>
+                            <td class="positive">
+                              <%= humanized_money_with_symbol sc.subcon_balance %>
+                              <% if sc.active_provider_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_subcon_entries.size} new"  %></span>
+                              <% end %>
+                            </td>
+                        <% else %>
+                           <td class="negative">
+                              <%= humanized_money_with_symbol sc.subcon_balance %>
+                              <% if sc.active_provider_entries.size > 0 %>
+                                  <span class="label label_new_entry"><%= "#{sc.active_subcon_entries.size} new"  %></span>
+                              <% end %>
+                            </td>
+                        <% end %>
+                    <% end %>
+
+
+                <!-- end Subcon balance-->
+
+                <td><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
+                <td class="job_source">
+
+
+
+
+
+                  <%= image_tag("ItransferredS.png", :title => I18n.t('general.messages.transferred_job').html_safe, :rel => 'tooltip') %>
+                  <% if sc.class == MyServiceCall %>
+                      <%= image_tag("myJob.png", :title => I18n.t('general.messages.myJob').html_safe, :rel => 'tooltip') %>
+                  <% else %>
+                      <%= image_tag("IncomingS.png", :title => I18n.t('general.messages.incoming_job').html_safe, :rel => 'tooltip') %>
+                  <% end %>
+
+                </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+
+      </div>
+  <% end %>
+  <!--End of Well-->
+</div>

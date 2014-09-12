@@ -219,6 +219,8 @@ en:
       data_type: "Data Type"
       required: "Required?"
       default_value: "Default Value"
+      completed_at: "Completed on"
+      notes: "Notes"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

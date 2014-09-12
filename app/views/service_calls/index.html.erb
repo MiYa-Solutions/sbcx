@@ -21,8 +21,8 @@
 
     <div class="tab-content">
       <div class="tab-pane active" id="newJobs"><%= render 'active_jobs', service_calls: @new_jobs, transferred_jobs: @new_transferred_jobs %></div>
-      <div class="tab-pane" id="activeJobs"><%= render 'active_jobs', service_calls: @active_jobs, transferred_jobs: @active_transferred_jobs %></div>
-      <div class="tab-pane" id="doneJobs"><%= render 'active_jobs', service_calls: @done_jobs, transferred_jobs: @done_transferred_jobs %></div>
+      <div class="tab-pane" id="activeJobs"><%= render 'in_progress_jobs', service_calls: @active_jobs, transferred_jobs: @active_transferred_jobs %></div>
+      <div class="tab-pane" id="doneJobs"><%= render 'done_jobs', service_calls: @done_jobs, transferred_jobs: @done_transferred_jobs %></div>
       <div class="tab-pane" id="allJobs"><%= render 'all_jobs' %></div>
 
     </div>
