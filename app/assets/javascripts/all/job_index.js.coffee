@@ -9,6 +9,11 @@ filter_params = ->
   res = res + 'affiliate_id=' + $('#affiliate').val() + '&'
   res
 
+Jobs = {
+full_url: (postfix = 'csv')->
+  "service_calls.#{postfix}?" + filter_params() + $.param( $('#job-search-results').dataTable().api().ajax.params())
+}
+
 $.getRequetParam = (name)->
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
   regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
@@ -152,10 +157,20 @@ jQuery ->
 
   $('.download_csv').on 'click', (e)->
     e.preventDefault()
-    window.location.href = "service_calls.csv?" + filter_params() + $.param( $('#job-search-results').dataTable().api().ajax.params())
+    $(this).attr('disabled', true)
+    w = window.open(Jobs.full_url('csv'), "SubconTraX Download")
+    $(w).ready ->
+        $('.download_csv').attr('disabled', false)
+
 
   $('.download_xls').on 'click', (e)->
     e.preventDefault()
-    window.location.href = "service_calls.xls?" + filter_params() + $.param( $('#job-search-results').dataTable().api().ajax.params())
+    $(this).attr('disabled', true)
+    w = window.open(Jobs.full_url('xls'), "SubconTraX Download")
+    $(w).ready ->
+      $('.download_xls').attr('disabled', false)
+
+
+
 
 

@@ -8,14 +8,90 @@ class JobsCsvExport
 
   def get_csv(options = {})
     CSV.generate(options) do |csv|
-      csv << ServiceCall.column_names
+      csv << header_row
       tickets.each do |ticket|
-        csv << ticket.attributes.values_at(*ServiceCall.column_names)
+        csv << csv_row(ticket)
       end
     end
   end
 
   private
+
+  def header_row
+    [
+        'id',
+        'type',
+        'name',
+        'ref_id',
+
+        'my_profit',
+        'total_cost',
+        'total_price',
+
+        'customer_name',
+
+        #dates
+        'started_on',
+        'completed_on',
+        'created_at',
+        'updated_at',
+
+        #statuses
+        'status',
+        'work_status',
+        'billing_status',
+        'provider_status',
+        'subcontractor_status',
+        'subcon_collection_status',
+        'provider_collection_status',
+
+        #names
+        'technician_name',
+        'provider_name',
+        'subcontractor_name',
+
+        'creator',
+        'notes'
+
+    ]
+  end
+
+  def csv_row(ticket)
+    [
+        ticket.id,
+        ticket.type.humanize,
+        ticket.name,
+        ticket.ref_id,
+
+        ticket.my_profit.to_s,
+        ticket.total_cost.to_s,
+        ticket.total_price.to_s,
+        ticket.customer.name,
+
+        #dates
+        ticket.started_on,
+        ticket.completed_on,
+        ticket.created_at,
+        ticket.updated_at,
+
+        #statuses
+        ticket.status_name,
+        ticket.work_status_name,
+        defined?(ticket.billing_status_name) ? ticket.billing_status_name : '',
+        defined?(ticket.provider_status_name) ? ticket.provider_status_name : '',
+        defined?(ticket.subcontractor_status_name) ? ticket.subcontractor_status_name : '',
+        defined?(ticket.subcon_collection_status_name) ? ticket.subcon_collection_status_name : '',
+        defined?(ticket.prov_collection_status_name) ? ticket.prov_collection_status_name : '',
+
+        #names
+        ticket.technician.try(:name),
+        ticket.provider.name,
+        ticket.subcontractor.try(:name),
+
+        ticket.creator.name,
+        ticket.notes
+    ]
+  end
 
   def tickets
     @tickets ||= fetch_tickets
