@@ -29,8 +29,6 @@ class AdjustmentEvent < Event
     raise "process event was invoked on AccountingEvent - did you forget to implement it in the subclass?"
   end
 
-  protected
-
   def account
     eventable
   end
