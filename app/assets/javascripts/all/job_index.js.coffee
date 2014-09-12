@@ -1,3 +1,19 @@
+filter_params = ->
+
+  res = ''
+  res = res + 'from_date=' + $('#yadcf-filter--job-search-results-from-date-1').val() + '&'
+  res = res + 'to_date=' + $('#yadcf-filter--job-search-results-to-date-1').val() + '&'
+  res = res + 'customer_id=' + $('#customer_filter_id').val() + '&'
+  res = res + 'provider_id=' + $('#provider').val() + '&'
+  res = res + 'subcontractor_id=' + $('#subcontractor').val() + '&'
+  res = res + 'affiliate_id=' + $('#affiliate').val() + '&'
+  res
+
+Jobs = {
+full_url: (postfix = 'csv')->
+  "service_calls.#{postfix}?" + filter_params() + $.param( $('#job-search-results').dataTable().api().ajax.params())
+}
+
 $.getRequetParam = (name)->
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
   regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
@@ -10,16 +26,14 @@ jQuery ->
 
   $('#job-search-results').dataTable(
     dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
-    aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4,5,6,7,8,9,10 ] }]
+    aoColumnDefs: [
+      { 'bSortable': false, 'aTargets': [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] }
+    ]
     order: [0, 'desc']
     aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     oTableTools:
-      aButtons: ["copy", "print",
-        sExtends: "collection"
-        sButtonText: "Save <span class=\"caret\" />"
-        aButtons: ["csv", "xls", "pdf"]
-      ],
+      aButtons: ["print"]
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     processing: true
     stateSave: true
@@ -78,11 +92,12 @@ jQuery ->
       data: $('#table-filters').data("statuses")
       filter_container_id: 'status_filter'
       filter_default_label: 'Status'
-      select_type_options: {
-        width: '200px'
-      }
+      select_type_options:
+        {
+          width: '200px'
+        }
 
-    }
+  }
     {
       column_number: 10
       select_type: 'chosen'
@@ -90,9 +105,10 @@ jQuery ->
       filter_default_label: 'Tags'
       filter_container_id: 'tags_filter'
       data: $('#table-filters').data("tags")
-      select_type_options: {
-        width: '200px'
-      }
+      select_type_options:
+        {
+          width: '200px'
+        }
 
     }
 
@@ -137,6 +153,24 @@ jQuery ->
     $('#affiliate').val($('#affiliate option:first').val())
     $("#affiliate").trigger("chosen:updated")
     $('#job-search-results').dataTable().api().ajax.reload()
+
+
+  $('.download_csv').on 'click', (e)->
+    e.preventDefault()
+    $(this).attr('disabled', true)
+    w = window.open(Jobs.full_url('csv'), "SubconTraX Download")
+    $(w).ready ->
+        $('.download_csv').attr('disabled', false)
+
+
+  $('.download_xls').on 'click', (e)->
+    e.preventDefault()
+    $(this).attr('disabled', true)
+    w = window.open(Jobs.full_url('xls'), "SubconTraX Download")
+    $(w).ready ->
+      $('.download_xls').attr('disabled', false)
+
+
 
 
 

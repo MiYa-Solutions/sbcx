@@ -9,7 +9,6 @@
       </ul>
     </div>
 
-
     <div class="row-fluid">
       <div class="span7">
         <div id="table-filters" class="all_jobs_filter" data-statuses="<%= service_call_statuses %>" data-tags="<%= current_user.organization.tags.map(&:name) %>">
@@ -53,6 +52,14 @@
               <%= select_tag :affiliate, options_from_collection_for_select(current_user.organization.affiliates, 'id', 'name'), prompt: "Select Affiliate",  class: 'chosen-select' %>
               <%= button_tag 'x', type: 'button', id: 'clear-affiliate', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
             </div>
+
+
+            <div>
+              <button href='' class='download_csv'>Download CSV</button>
+              <button href='' class='download_xls'>Download XLS</button>
+
+            </div>
+
 
           </div>
 
