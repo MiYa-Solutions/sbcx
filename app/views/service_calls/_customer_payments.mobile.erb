@@ -28,7 +28,7 @@
 
           <%       unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
 
-                <%= link_to Invoice.model_name.human.pluralize, invoices_path('invoice[ticket_id]' =>@service_call.id),
+                <%= link_to Invoice.model_name.human.pluralize, invoices_path('invoice[ticket_id]' => @service_call.id),
                             class: "ui-btn-up-b",
                             id: 'show_invoices_button',
                             "data-theme" => "b",
