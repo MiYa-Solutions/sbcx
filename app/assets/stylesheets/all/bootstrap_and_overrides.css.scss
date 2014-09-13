@@ -2240,9 +2240,9 @@ a:hover {
 }
 
 .customer_balance {
-//  min-height: 334px;
+  min-height: 280px;
   overflow: auto;
-  margin-bottom: 150px;
+//  margin-bottom: 150px;
 }
 
 
@@ -2257,7 +2257,7 @@ a:hover {
 }
 
 .affiliate_info {
-  min-height: 334px;
+  min-height: 280px;
   .smart_label .btn-medium {
     height: 18px;
     width: auto;
@@ -2273,10 +2273,10 @@ a:hover {
     width: 35%;
   }
   .third_td {
-    width: 10%;
+    width: 15%;
   }
   .forth_td {
-    width: 40%;
+    width: 35%;
   }
 }
 
@@ -3252,6 +3252,15 @@ hr {
 .alert-notice {
   margin-right: 1.5%;
   margin-left: 1.5%;
+
+  .close {
+    margin-top: 2px;
+  }
+
+}
+
+.smart_alert .close {
+  margin-top: 2px;
 }
 
 .sidebar-nav-fixed {
@@ -3618,8 +3627,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   background-repeat: repeat-x;
   border-color: #269abc;
   margin-bottom: 14px;
-  margin-left: -1.5%;om: 14px;
   margin-left: -1.5%;
+  margin-right: 1.5%;
 
   h2 {
     color: #FFFFFF;
@@ -5041,4 +5050,17 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 #job_counter2 {
   margin-left: 30px;
+}
+
+#edit_user {
+  .control-label {
+    margin-right: 13px;
+    width: 151px;
+  }
+}
+
+
+table.dataTable thead th, table.dataTable thead td {
+    border-bottom: 1px solid #111111;
+    padding: 10px 9px;
 }

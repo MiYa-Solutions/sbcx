@@ -84,10 +84,11 @@ en:
       agr_no_add_rule_pending: "You can't add rules in case the agreement is pending approval. \nTo edit the agreement, please delete the posting rules below and then add new rules."
       agr_select_rule: "Select 'Profit Split' from the dropdown and click on the Add button. \nPlease note you can enter more than one rule in the next following fields"
       agr_no_add_rule_no_active: "You can add rules only in case the agreement is not Pending or a Draft."
-      overdue: "Overdue"
+      overdue: "Overdue payment"
 
 
       done_jobs: "Completed jobs that are pending settlement"
+      parts_reimbursement: "By leaving this unchecked - you will NOT pay back your subcontractor for the cost of parts included in this job."
     errors:
       error: "Error"
       403_title: "Forbidden. (403)"
@@ -222,6 +223,7 @@ en:
       completed_at: "Completed on"
       notes: "Notes"
       invoices: "Invoices"
+      overdue_jobs: "Payment Jobs Overdue"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

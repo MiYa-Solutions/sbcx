@@ -2,7 +2,7 @@
 
   <div class="smart_label">
     <ul>
-      <li><h1>My Customers</h1></li>
+      <li><h1><%= t('general.general.my_customers') %></h1></li>
         <%= form_tag customers_path, id: "search_customer_form", :method => :get do %>
 
       <li>
@@ -21,7 +21,6 @@
   </div>
   <br>
 
-
   <% if @customers.empty? %>
       <span class="alert alert-info">No records, click "Add Customer" to add new contact</span>
 
@@ -29,10 +28,12 @@
       <table class="table table-striped" id="customers_search_results">
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Address</th>
-          <th>Actions</th>
+          <th></th>
+          <th><%= t('general.general.name') %></th>
+          <th><%= t('general.general.phone') %></th>
+          <th><%= t('general.general.address') %></th>
+          <th><%= t('general.general.balance') %></th>
+          <th><%= t('general.general.actions') %></th>
         </tr>
         </thead>
         <tbody id="new_customers">
