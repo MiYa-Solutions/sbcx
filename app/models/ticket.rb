@@ -190,7 +190,8 @@ class Ticket < ActiveRecord::Base
   end
 
   def tax_amount
-    total_price * (tax / 100.0)
+    the_tax = tax ? tax : 0.0
+    total_price * (the_tax / 100.0)
   end
 
   def total
