@@ -52,7 +52,7 @@
   <div data-role="content">
 
     <!--<#% invoice = @service_call.invoices.build %>-->
-    <% invoice = @invoices.build %>
+    <% invoice = Invoice.new(ticket_id: @service_call.id) %>
     <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
 
         <div class="transfer_job_form">

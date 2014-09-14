@@ -74,7 +74,7 @@
 
   <div class="modal-body">
 
-    <% invoice = @service_call.invoices.build %>
+    <% invoice = Invoice.new %>
     <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
 
 
