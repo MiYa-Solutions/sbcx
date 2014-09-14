@@ -34,6 +34,12 @@
     <ul class="nav pull-right">
       <% if user_signed_in? %>
 
+
+          <% unless current_user.confirmed? %>
+              <li class="account_confirm_btn"><%= render 'shared/create_confirmation_button' %></li>
+          <% end %>
+
+
           <li><%= link_to I18n.t('general.general.home'), user_root_path %></li>
           <li><a href="#"><%= link_to I18n.t('general.general.alerts'), notifications_path %>
               <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
@@ -99,6 +105,7 @@
                       <%= link_to "Mobile Site", :mobile => 1 %>
                   <% end %>
                 </li>
+
 
                 <li>
                   <%= link_to I18n.t('general.general.sign_out'), destroy_user_session_path, method: "delete", id: "sign_out_header_link" %>
