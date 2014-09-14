@@ -22,9 +22,11 @@
             <th><%= ServiceCall.human_attribute_name(:id) %></th>
             <th><%= ServiceCall.human_attribute_name(:status) %></th>
             <th><%= ServiceCall.human_attribute_name(:name) %></th>
+            <th><%= I18n.t('general.general.customer') %></th>
             <th><%= ServiceCall.human_attribute_name(:work_status) %></th>
             <th><%= ServiceCall.human_attribute_name(:scheduled_for) %></th>
-            <th><%= I18n.t('general.general.customer') %></th>
+            <th><%= I18n.t('general.general.provider') %></th>
+
             <th><%= I18n.t('general.general.actions') %></th>
             <th class="job_source"><%= I18n.t('general.general.source') %></th>
           </tr>
@@ -41,10 +43,21 @@
                 <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
                 <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
                 <td><%= link_to sc.try(:name), service_call_path(sc) %></td>
+                <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
                 <td><%= link_to sc.human_work_status_name, service_call_path(sc) %></td>
                 <td><%= l(sc.scheduled_for, format: :short_with_day) unless sc.scheduled_for.nil? %></td>
 
-                <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
+                <% case sc.my_role when :subcon %>
+                    <td>
+                      <%= link_to sc.provider.name, affiliate_path(sc.provider) if sc.provider.present? %>
+                    </td>
+                <% else %>
+                    <td>
+                      Not Applicable
+                    </td>
+
+                <% end %>
+
                 <td><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
                 <td class="job_source">
 
@@ -87,9 +100,12 @@
             <th><%= ServiceCall.human_attribute_name(:id) %></th>
             <th><%= ServiceCall.human_attribute_name(:status) %></th>
             <th><%= ServiceCall.human_attribute_name(:name) %></th>
+            <th><%= I18n.t('general.general.customer') %></th>
+
             <th><%= ServiceCall.human_attribute_name(:work_status) %></th>
             <th><%= ServiceCall.human_attribute_name(:scheduled_for) %></th>
-            <th><%= I18n.t('general.general.customer') %></th>
+            <th><%= I18n.t('general.general.subcontractor') %></th>
+            <th><%= I18n.t('general.general.provider') %></th>
             <th class="actions_job_index"><%= I18n.t('general.general.actions') %></th>
             <th class="job_source"><%= I18n.t('general.general.source') %></th>
           </tr>
@@ -106,17 +122,28 @@
                 <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
                 <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
                 <td><%= link_to sc.try(:name), service_call_path(sc) %></td>
+                <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
                 <td><%= link_to sc.human_work_status_name, service_call_path(sc) %></td>
                 <td><%= l(sc.scheduled_for, format: :short_with_day) unless sc.scheduled_for.nil? %></td>
-                <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
+
+                <td>
+                  <%= link_to sc.subcontractor.name, affiliate_path(sc.subcontractor) if sc.subcontractor.present? %>
+                </td>
+
+                <% case sc.my_role when :broker %>
+                    <td>
+                      <%= link_to sc.provider.name, affiliate_path(sc.provider) if sc.provider.present? %>
+                    </td>
+                <% else %>
+                    <td>
+                      Not Applicable
+                    </td>
+
+                <% end %>
+
+
                 <td class="actions_job_index"><%= link_to I18n.t('general.general.show'), sc.becomes(ServiceCall), :class => 'btn btn-mini btn-primary', :title => I18n.t('general.messages.show_job').html_safe, :rel => 'tooltip' %></td>
                 <td class="job_source">
-
-
-
-
-
-
 
 
                   <%= image_tag("ItransferredS.png", :title => I18n.t('general.messages.transferred_job').html_safe, :rel => 'tooltip') %>

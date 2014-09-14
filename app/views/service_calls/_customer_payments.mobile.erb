@@ -28,7 +28,7 @@
 
           <%       unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
 
-                <%= link_to Invoice.model_name.human.pluralize, invoices_path('invoice[ticket_id]' =>@service_call.id),
+                <%= link_to Invoice.model_name.human.pluralize, invoices_path('invoice[ticket_id]' => @service_call.id),
                             class: "ui-btn-up-b",
                             id: 'show_invoices_button',
                             "data-theme" => "b",
@@ -38,7 +38,8 @@
 
 
 
-      <%= link_to "Back", service_calls_path, "data-rel" => "back", "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_service_call_btn' %>
+      <%= link_to I18n.t('general.general.receipts'), "#customer_show_all_entries", "data-role" => "button", "data-theme" => "b", id: 'show_receipts_btn', :class => "ui-btn-up-b", "data-rel" => "popup", "data-transition" => "pop" %>
+
     </div>
   </fieldset>
 

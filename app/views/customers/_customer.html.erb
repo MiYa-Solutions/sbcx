@@ -1,7 +1,27 @@
 <tr>
+
+  <td class="member_logo">
+    <% if customer.respond_to?(:payment_overdue?) && customer.payment_overdue? %>
+        <%= image_tag("overdue.png", :title => I18n.t('general.messages.overdue'), :rel => 'tooltip') %>
+    <% end %>
+  </td>
+
+
   <td><%= link_to customer.name, customer_path(customer) %></td>
   <td><%= customer.phone %></td>
   <td><%= customer.address1 %> <%= customer.address2 %>, <%= customer.city %>, <%= customer.state %>, <%= customer.zip %></td>
+
+    <% if customer.account.balance > 0 %>
+      <td class="green_balance"><%= humanized_money_with_symbol customer.account.balance %></td>
+  <% else %>
+      <% if customer.account.balance < 0 %>
+        <td class="red_balance"><%= humanized_money_with_symbol customer.account.balance %></td>
+      <% else %>
+          <td><%= humanized_money_with_symbol customer.account.balance %></td>
+    <% end %>
+  <% end %>
+
+
 
   <td>
     <%= link_to 'Edit', edit_customer_path(customer), :class => 'btn btn-mini' %>

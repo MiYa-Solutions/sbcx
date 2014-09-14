@@ -44,6 +44,7 @@
       <div class="span6">
 
               <%= render :partial => 'customer_balance' if @customer.account.present? %>
+              <%= render :partial => 'customer_overdue_jobs' %>
               <!-- <#% unless @affiliate.service_calls.empty? %>-->
               <!-- <#% end  %> -->
       </div>

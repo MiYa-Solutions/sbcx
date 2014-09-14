@@ -5,7 +5,11 @@
     <div class="smart_label">
       <ul>
         <li><h1><%= I18n.t('general.general.all_jobs') %></h1></li>
-        <li><%= link_to I18n.t('general.general.new_job'), new_service_call_path, :class => 'btn btn-primary' %></li>
+        <li>
+
+          <button href='' class='download_xls btn btn-primary'>Download XLS</button>
+          <button href='' class='download_csv btn btn-primary'>Download CSV</button>
+          <%= link_to I18n.t('general.general.new_job'), new_service_call_path, :class => 'btn btn-primary' %></li>
       </ul>
     </div>
 
@@ -51,21 +55,9 @@
             <div id="affiliate_filter" class="input_field" >
               <%= select_tag :affiliate, options_from_collection_for_select(current_user.organization.affiliates, 'id', 'name'), prompt: "Select Affiliate",  class: 'chosen-select' %>
               <%= button_tag 'x', type: 'button', id: 'clear-affiliate', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
-            </div>
+           </div>
 
-
-            <div>
-              <button href='' class='download_csv'>Download CSV</button>
-              <button href='' class='download_xls'>Download XLS</button>
-
-            </div>
-
-
-          </div>
-
-
-
-
+         </div>
 
         </div>
 
