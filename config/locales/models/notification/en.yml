@@ -30,6 +30,7 @@ en:
       acc_adj_rejected_notification: "Adjustment Rejected"
       account_adjusted_notification: "Adjustment Submitted"
       entry_disputed_notification: "Entry Disputed"
+      invite_notification: "Member Invitation Notifications"
 
     attributes:
       notification:

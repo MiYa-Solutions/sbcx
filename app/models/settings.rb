@@ -9,6 +9,14 @@ class Settings
     AdjustmentEntryNotification.subclasses.collect { |c| c.name.underscore }
   end
 
+  def self.invite_notification_settings
+    InviteNotification.subclasses.collect { |c| c.name.underscore }
+  end
+
+  def self.mandatory_emails
+      InviteNotification.subclasses.collect {|c| "#{c.name.underscore}_email"}
+  end
+
 
   def initialize(user)
     @user = user
@@ -37,6 +45,7 @@ class Settings
   end
 
   def send_notification_email?(notif)
+    Settings.mandatory_emails.include?("#{notif.class.name.underscore}_email") ||
     @user.preferences["#{notif.class.name.underscore}_email"] && @user.preferences["#{notif.class.name.underscore}_email"] == 'true'
   end
 
