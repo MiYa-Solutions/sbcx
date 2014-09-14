@@ -49,7 +49,7 @@
                             </h4>
                             <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>,<br>
                             <%= I18n.t('notification_mailer.invite_accepted.content').html_safe %>
-                            &nbsp;<strong><%= @invite.organization.name.html_safe %></strong>.
+                            &nbsp;<strong><%= @invite.affiliate.name.html_safe %></strong>.
                             <br>
                           </div>
                         </td>
@@ -92,7 +92,7 @@
                           <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
                             <tr>
                               <td valign="middle" class="templateButtonContent">
-                                <%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, invite_url(@invite) %>
+                                <%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, affiliate_url(@invite) %>
                                 </div>
                               </td>
                             </tr>
