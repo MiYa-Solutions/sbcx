@@ -85,10 +85,9 @@ en:
       agr_select_rule: "Select 'Profit Split' from the dropdown and click on the Add button. \nPlease note you can enter more than one rule in the next following fields"
       agr_no_add_rule_no_active: "You can add rules only in case the agreement is not Pending or a Draft."
       overdue: "Overdue payment"
-
-
       done_jobs: "Completed jobs that are pending settlement"
       parts_reimbursement: "By leaving this unchecked - you will NOT pay back your subcontractor for the cost of parts included in this job."
+      parts_reimbursement_prov: "By leaving this unchecked - you will NOT get paid for the cost of parts included in this job."
     errors:
       error: "Error"
       403_title: "Forbidden. (403)"

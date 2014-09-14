@@ -2243,6 +2243,11 @@ a:hover {
   min-height: 280px;
   overflow: auto;
 //  margin-bottom: 150px;
+
+  .col_entry_table {
+    line-height: 12px;
+  }
+
 }
 
 
@@ -5063,4 +5068,15 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 table.dataTable thead th, table.dataTable thead td {
     border-bottom: 1px solid #111111;
     padding: 10px 9px;
+}
+
+.parts_reimb_alert {
+  img {
+    float: left;
+  }
+
+  #service_call_properties_prov_bom_reimbursement {
+    margin-left: 3px;
+    margin-top: 8px;
+  }
 }
