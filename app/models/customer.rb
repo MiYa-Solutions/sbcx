@@ -25,6 +25,7 @@ require 'hstore_setup_methods'
 class Customer < ActiveRecord::Base
   extend HstoreSetupMethods
   serialize :properties, ActiveRecord::Coders::Hstore
+  setup_hstore_attr 'default_tax'
 
   belongs_to :organization, inverse_of: :customers
   has_many :service_calls, :inverse_of => :customer
@@ -32,7 +33,6 @@ class Customer < ActiveRecord::Base
   has_one :account, as: :accountable
   stampable
 
-  setup_hstore_attr 'default_tax'
 
   validates_presence_of :organization
   validates_presence_of :name

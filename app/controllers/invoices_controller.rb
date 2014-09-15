@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
 
-  filter_resource_access
+  filter_resource_access :attribute_check => true
 
   # GET /invoices
   # GET /invoices.json
@@ -63,7 +63,10 @@ class InvoicesController < ApplicationController
 
     respond_to do |format|
       if @invoice.save
-        format.any(:html, :mobile) { redirect_to @invoice.ticket, notice: 'Invoice was successfully created.' }
+        format.any(:html, :mobile) {
+          ticket_id = @orig_ticket_id ? @orig_ticket_id : params[:invoice][:ticket_id]
+          redirect_to service_call_path(ticket_id), notice: 'Invoice was successfully created.'
+        }
         format.json { render json: @invoice, status: :created, location: @invoice }
       else
         flash[:error] = "Failed to create the invoice. #{humanized_errors}".html_safe
@@ -115,7 +118,16 @@ class InvoicesController < ApplicationController
   # params.require(:person).permit(:name, :age)
   # Also, you can specialize this method with per-user checking of permissible attributes.
   def invoice_params
+    set_provider_ticket_id # in case the subcon issuing the invoice, it should be associated with the provider ticket
     params.require(:invoice).permit!
+  end
+
+  def set_provider_ticket_id
+    ticket = Ticket.find(params[:invoice][:ticket_id])
+    if ticket.kind_of?(TransferredServiceCall)
+      @orig_ticket_id = params[:invoice][:ticket_id]
+      params[:invoice][:ticket_id] = ticket.contractor_ticket.id
+    end
   end
 
   def humanized_errors

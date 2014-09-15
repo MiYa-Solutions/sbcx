@@ -31,7 +31,7 @@
         </thead>
         <tbody>
         <% @service_call.invoices.each do |invoice| %>
-            <% unless invoice.id.nil? %>
+            <% if permitted_to? :show, invoice %>
                 <tr>
                   <td><%= link_to invoice.id, invoice %></td>
                   <td><%= humanized_money_with_symbol invoice.total %></td>

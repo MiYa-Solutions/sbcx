@@ -31,15 +31,17 @@ class Invoice < ActiveRecord::Base
       generate_active_invoice
     end
 
-    self.total = calc_total
-
     self.save!
 
     ticket.events << ScInvoiceEvent.new(invoice: self, notify_customer?: email_customer)
   end
 
-  def calc_total
+  def final_total
     Money.new(invoice_items.collect { |e| e.invoiceable.amount }.sum) + ticket.tax_amount
+  end
+
+  def active_total
+    Money.new(invoice_items.collect { |e| e.invoiceable.amount }.sum)
   end
 
 
@@ -59,6 +61,8 @@ class Invoice < ActiveRecord::Base
       self.invoice_items << item
     end
 
+    self.total = final_total
+
 
   end
 
@@ -72,6 +76,8 @@ class Invoice < ActiveRecord::Base
       item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
       self.invoice_items << item
     end
+
+    self.total = active_total
   end
 
   class InvoiceData

@@ -99,5 +99,11 @@ module Sbcx
 
     I18n.config.enforce_available_locales = true
 
+    # this is to fix the issue where some of the translations are not working on heroku
+    config.before_configuration do
+      I18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
+      I18n.reload!
+    end
+
   end
 end
