@@ -10,11 +10,11 @@ class Settings
   end
 
   def self.invite_notification_settings
-    InviteNotification.subclasses.collect { |c| c.name.underscore }
+    InviteNotification.subclasses.select { |c| c != SbcxReferenceNotification }.collect { |c| c.name.underscore }
   end
 
   def self.mandatory_emails
-      InviteNotification.subclasses.collect {|c| "#{c.name.underscore}_email"}
+    InviteNotification.subclasses.select { |c| c != SbcxReferenceNotification }.collect { |c| "#{c.name.underscore}_email" }
   end
 
 
@@ -41,12 +41,12 @@ class Settings
   end
 
   def notification_emails
-    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.job_notification_settings.map {|n| "#{n}_email"}
+    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.job_notification_settings.map { |n| "#{n}_email" }
   end
 
   def send_notification_email?(notif)
     Settings.mandatory_emails.include?("#{notif.class.name.underscore}_email") ||
-    @user.preferences["#{notif.class.name.underscore}_email"] && @user.preferences["#{notif.class.name.underscore}_email"] == 'true'
+        @user.preferences["#{notif.class.name.underscore}_email"] && @user.preferences["#{notif.class.name.underscore}_email"] == 'true'
   end
 
   private
