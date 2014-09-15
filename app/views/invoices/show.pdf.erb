@@ -19,7 +19,7 @@
           <address>
             <strong><%= t('general.general.bill_to') %></strong><br>
             <%= @invoice.ticket.customer.name %><br>
-            <% unless @invoice.ticket.customer.company.empty? %>
+            <% unless @invoice.ticket.customer.company.nil? %>
                 <%= @invoice.ticket.customer.company %><br>
             <% end %>
 

@@ -8,7 +8,8 @@ class InvoicesController < ApplicationController
     @invoices = Invoice.where(ticket_id: invoice_params[:ticket_id])
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html                                                               # index.html.erb
+      format.mobile { @service_call = Ticket.find(invoice_params[:ticket_id]) } # index.mobile.erb
       format.json { render json: @invoices }
     end
   end
@@ -24,14 +25,14 @@ class InvoicesController < ApplicationController
 
 
       format.json { render json: @invoice }
-                  #format.pdf do
-                  #  send_data @invoice.generate_pdf(view_context),
-                  #            filename:    "invoice_#{@invoice.id}.pdf",
-                  #            type:        "application/pdf",
-                  #            disposition: "inline"
-                  #end
-      format.pdf { render pdf: "invoice_#{@invoice.id}",
-                          layout: 'receipts',
+      #format.pdf do
+      #  send_data @invoice.generate_pdf(view_context),
+      #            filename:    "invoice_#{@invoice.id}.pdf",
+      #            type:        "application/pdf",
+      #            disposition: "inline"
+      #end
+      format.pdf { render pdf:                    "invoice_#{@invoice.id}",
+                          layout:                 'receipts',
                           footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
                           header:                 { html: { template: 'layouts/_header.pdf.erb' } },
                           disable_internal_links: false }

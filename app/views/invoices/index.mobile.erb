@@ -17,7 +17,7 @@
 
   <% @invoices.each do |invoice| %>
       <li class="job_billing">
-        <%= link_to invoice.id, invoice_path(invoice, format: :pdf), "data-transition" => "slide" %>
+        <%= link_to invoice.id, invoice_path(invoice, format: :pdf), 'data-ajax' => 'false' %>
         <p class= "billing_price_label"><%= humanized_money_with_symbol invoice.total %></p>
       </li>
   <% end %>
@@ -52,32 +52,19 @@
   <div data-role="content">
 
     <!--<#% invoice = @service_call.invoices.build %>-->
-    <% invoice = @invoices.build %>
+    <% invoice = Invoice.new(ticket_id: @service_call.id) %>
     <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
 
         <div class="transfer_job_form">
           <br>
-
-
-          <!--<#% unless @service_call.work_done? %>-->
-
+          <% unless @service_call.work_done? %>
               <%= f.input :adv_payment_amount %>
               <%= f.input :adv_payment_desc %>
-          <!--<#% end %>-->
+          <% end %>
           <%= f.input :email_customer, as: :boolean %>
           <%= f.input :ticket_id, as: :hidden, input_html: { value: @service_call.id } %>
-
           <%= f.input :notes %>
-
-
-
          </div>
-
-
-          <!--<div class="ui-grid-a">-->
-            <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:allow_collection) %></div>-->
-            <!--<div class="ui-block-b collection"> <#%= f.input :allow_collection %></div>-->
-          <!--</div>-->
 
           <%= f.submit I18n.t('general.general.Save'),
                        id:    'invoice_btn',
@@ -89,10 +76,6 @@
 
         <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
     <% end %>
-
-
-
-
     <!--content-->
   </div>
   <!--popup-->
