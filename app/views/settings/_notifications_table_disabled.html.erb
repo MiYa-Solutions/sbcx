@@ -16,13 +16,13 @@
             <i class='icon-ok icon-white'></i>
           </div>
         </td>
-        <td>
+        <td class="settings_second_td">
           <div class="btn btn-mini btn-success disabled">
             <i class='icon-ok icon-white'></i>
           </div>
         </td>
 
-        <td><%= notification.classify.constantize.model_name.human %></td>
+        <td class="settings_third_td"><%= notification.classify.constantize.model_name.human %></td>
         <td><%= I18n.t("notifications.#{notification}.description") %></td>
       </tr>
   <% end %>

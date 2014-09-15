@@ -40,7 +40,8 @@
             <br>
 
             <strong><%= t('general.general.job_name') %>:</strong><br>
-            <%= link_to @receipt.ticket.name, service_call_url(@receipt.ticket) %><br>
+            <%= @receipt.ticket.name %><br>
+            <!-- <#%= link_to @receipt.ticket.name, service_call_url(@receipt.ticket) %><br>-->
           </address>
 
         </div>

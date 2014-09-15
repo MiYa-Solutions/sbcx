@@ -31,6 +31,10 @@ en:
       account_adjusted_notification: "Adjustment Submitted"
       entry_disputed_notification: "Entry Disputed"
       invite_notification: "Member Invitation Notifications"
+      invite_accepted_notification: "Accepted invitation"
+      invite_declined_notification: "Declined invitation"
+      new_invite_notification: "Invite affiliate"
+      sbcx_reference_notification: "Refer affiliate"
 
     attributes:
       notification:
@@ -41,6 +45,16 @@ en:
       subject: New Service Call
       content: 'New job was transferred to you by: <br> Contractor Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
       description: "Alert for when you receive a new job from a contractor"
+
+    invite_accepted_notification:
+      description: "Your invitation to join your SubConTraX network has been accepted."
+    invite_declined_notification:
+      description: "Your invitation to join your SubConTraX network has been declined."
+    new_invite_notification:
+      description: "New invitation to join your SubConTraX network has been sent."
+    sbcx_reference_notification:
+      description: "New invitation to join SubConTraX has been sent."
+      
 
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
@@ -83,7 +97,7 @@ en:
       html_message: 'Job balance has been settled with %{subcontractor}'
       subject: 'Job balance has been settled with %{subcontractor}'
       content: 'Job balance has been settled with %{subcontractor}'
-      description: "Job balance has been settled with subcontractor"
+      description: "Job balance has been settled with subcontractor."
     sc_dispatch_notification:
       html_message: 'You got a new %{link} to work on!'
       subject: 'A new job has been assigned to you'
