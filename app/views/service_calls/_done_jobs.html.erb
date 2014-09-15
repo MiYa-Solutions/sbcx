@@ -254,7 +254,7 @@
                     <% if sc.try(:subcon_balance) == 0 %>
                         <td class="balanced">
                           <%= humanized_money_with_symbol sc.subcon_balance %>
-                          <% if sc.active_provider_entries.size > 0 %>
+                          <% if sc.active_subcon_entries.size > 0 %>
                               <span class="label label_new_entry"><%= "#{sc.active_subcon_entries.size} new"  %></span>
                           <% end %>
                         </td>
@@ -269,7 +269,7 @@
                         <% else %>
                            <td class="negative">
                               <%= humanized_money_with_symbol sc.subcon_balance %>
-                              <% if sc.active_provider_entries.size > 0 %>
+                              <% if sc.active_subcon_entries.size > 0 %>
                                   <span class="label label_new_entry"><%= "#{sc.active_subcon_entries.size} new"  %></span>
                               <% end %>
                             </td>
