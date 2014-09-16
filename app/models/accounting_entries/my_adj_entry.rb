@@ -55,12 +55,22 @@ class MyAdjEntry < AdjustmentEntry
 
   private
   def invoke_event
-    self.account.events <<
-        AccountAdjustmentEvent.new(entry_id: self.id.to_s) if account.accountable.member?
+    if account.accountable_type == 'Organization'
+      self.account.events <<
+          AccountAdjustmentEvent.new(entry_id: self.id.to_s) if account.accountable.member?
+    end
   end
 
   def set_initial_status
-    self.status = account.accountable.member? ? STATUS_SUBMITTED : STATUS_CLEARED
+    case account.accountable_type
+      when 'Organization'
+        self.status = account.accountable.member? ? STATUS_SUBMITTED : STATUS_CLEARED
+      when 'Customer'
+        self.status = STATUS_CLEARED
+      else
+        raise "Unrecognized accountable type '#{account.accountable_type}'"
+    end
+
   end
 
 end
