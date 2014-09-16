@@ -4,6 +4,7 @@
     <%= f.submit job.class.human_provider_status_event_name(:provider_confirmed).titleize,
                  id:    'confirm_settled_prov_service_call_btn',
                  class: 'btn btn-large btn-success',
+                 "data-placement" => "right",
                  title: I18n.t('service_call.forms.provider_status.provider_confirmed.tooltip'),
                  rel:   'tooltip'
     %>

@@ -7,6 +7,7 @@ en:
       reimbursement_for_cash_payment: "Reimbursement For Cash Payment"
       affiliate_settlement_entry: "Affiliate Settlement Entry"
       credit_card_deposit_to_employer: "Credit Card Deposit To Employer"
+      amex_deposit_to_employer: "Amex Card Deposit To Employer"
       credit_card_collection_for_employer: "Credit Card Collection For Employer"
       advance_payment: "Advance Payment"
       reimbursement_for_cheque_payment: "Reimbursement For Check Payment"
@@ -77,3 +78,6 @@ en:
     description: '%{payment_type} (%{payment_id}) was rejected'
     entry:
       description: '%{payment_type} (%{payment_id}) was rejected'
+  entry_confirmed_event:
+    name: "Entry Confirmed"
+    description: "Billing Entry has been Confirmed"

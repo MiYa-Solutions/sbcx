@@ -2240,15 +2240,15 @@ a:hover {
 }
 
 .customer_balance {
-  min-height: 280px;
+//  min-height: 280px;
   overflow: auto;
 //  margin-bottom: 150px;
 
-  .col_entry_table {
-    line-height: 12px;
-  }
+
 
 }
+
+
 
 
 
@@ -4802,6 +4802,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   tr {
     width: 33.33%;
   }
+}
+
+#customer_line {
+  padding: 8px;
 }
 
 .full_page_layout {

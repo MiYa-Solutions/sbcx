@@ -1,8 +1,6 @@
 <tr class="col_entry_table">
 
-  <td><strong>
-    <%= link_to(I18n.t('general.general.customer_balance'), customer_path(@service_call.customer),
-                :title => @service_call.customer.try(:name).html_safe, :rel => 'tooltip') if @service_call.customer.present? %>
+  <td id="customer_line"><strong><%= t('general.general.customer') %> <%= link_to @service_call.customer.name, customer_path(@service_call.customer) if @service_call.customer.present? %>
   </strong></td>
 
   <% if @service_call.work_done? %>
