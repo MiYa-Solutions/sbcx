@@ -258,7 +258,7 @@ class TransferredServiceCall < ServiceCall
 
     subcon_payments     = entries.select { |e| e.type == 'PaymentToSubcontractor' }.map { |e| e.amount_cents }.sum
     subcon_reimb_amount = entries.select { |e| e.type == 'MaterialReimbursementToCparty' }.map { |e| e.amount_cents }.sum
-    my_bom_cents        = -boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents }.sum
+    my_bom_cents        = -boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents * b.quantity }.sum
     payment_reimb       = entries.select { |e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |e| e.amount_cents }.sum
 
     Money.new(prov_income + payment_fee + bom_reimb + subcon_payments + subcon_reimb_amount + my_bom_cents + payment_reimb + cancel_adjustment)
@@ -296,6 +296,10 @@ class TransferredServiceCall < ServiceCall
 
   def can_change_boms?
     !self.work_done? && (self.accepted? || self.transferred?) && !self.canceled? && !self.work_canceled?
+  end
+
+  def invoices
+    contractor_ticket.invoices
   end
 
   private

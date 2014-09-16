@@ -9,13 +9,10 @@
   <!--<td><#%= best_in_place bom, :quantity ,path: service_call_bom_path(bom.ticket, bom) %></td>-->
   <td><%= humanized_money_with_symbol bom.cost %></td>
   <td><%= humanized_money_with_symbol bom.price %></td>
-  <!--<td><#%= humanized_money_with_symbol bom.total_cost %></td>-->
+  <td><%= humanized_money_with_symbol bom.total_cost %></td>
   <td><%= humanized_money_with_symbol bom.total_price %></td>
   <td><%= bom.buyer.try(:name) %>
   <td>
-    <!--<#%= link_to 'Show', service_call_bom_path(@service_call, bom) %>-->
-    <!--<#%= link_to 'Edit', edit_service_call_bom_path(@service_call, bom) %>-->
-    <!--<#%= link_to 'Delete', material_path(material), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>-->
 
     <%= link_to 'Delete', service_call_bom_path(@service_call, bom), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, :class => 'btn btn-mini btn-danger' if bom.ticket.can_change_boms? %>
   </td>

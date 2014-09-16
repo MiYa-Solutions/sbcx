@@ -19,9 +19,16 @@ authorization do
     has_permission_on :boms, to: [:new, :create, :index, :show, :read, :update, :destroy, :edit] do
       if_attribute :ticket => { :organization => is { user.organization } }
     end
-    has_permission_on :invoices, to: [:new, :create, :index, :show, :read] do
+    has_permission_on :invoices, to: [:index, :show, :read] do
       if_attribute :organization_id => is { user.organization_id }
+      if_attribute :creator => { :organization_id => is { user.organization_id } }
     end
+
+    has_permission_on :invoices, to: [:new, :create] do
+      if_attribute :organization_id => is { user.organization_id }
+      if_attribute :ticket => { :subcon_chain_ids => contains { user.organization_id } }, :ticket => { allow_collection => is { true } }
+    end
+
     has_permission_on :materials, to: [:new, :index]
     has_permission_on :materials, to: [:create, :show, :read, :update, :edit] do
       if_attribute :organization_id => is { user.organization_id }

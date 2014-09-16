@@ -411,7 +411,6 @@ class Ticket < ActiveRecord::Base
   end
 
 
-
   def counterparty
     case my_role
       when :prov
@@ -463,6 +462,27 @@ class Ticket < ActiveRecord::Base
     Ticket.where(organization_id: subcontractor_id).where(ref_id: ref_id).first
   end
 
+  def contractor_ticket
+    @contractor_ticket ||= Ticket.find(ref_id)
+  end
+
+  def subcon_chain_ids
+    res = []
+    unless subcontractor_id.nil? || subcontractor_id == organization_id
+      res << subcontractor_id
+      res = res + subcon_ticket.subcon_chain_ids
+    end
+    res
+  end
+
+  def provider_chain_ids
+    res = []
+    unless provider_id.nil? || provider_id == organization_id
+      res << provider_id
+      res = res + provider_ticket.provider_chain_ids
+    end
+    res
+  end
 
   protected
 
