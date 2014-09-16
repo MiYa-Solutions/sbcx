@@ -9,6 +9,8 @@
                            id: 'show_invoices_button', data: { toggle: "collapse", target: "#job_invoices" } unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
             <%= button_tag t('general.general.collect_payments'), :class => 'btn btn-primary',
                            id: 'new-collect-button', data: { toggle: "collapse", target: "#payment_collect" } unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
+
+
             <%= button_tag t('general.general.receipts'), :class => 'btn btn-primary',
                            id: 'show_receipt_button', data: { toggle: "collapse", target: "#job_receipts" } unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
           </li>
