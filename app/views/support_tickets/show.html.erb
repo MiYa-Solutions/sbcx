@@ -1,0 +1,32 @@
+
+<%= link_to 'Edit', edit_support_ticket_path(@support_ticket) %> |
+<%= link_to 'Back', support_tickets_path %>
+
+<table>
+  <tr>
+    <th><%= SupportTicket.human_attribute_name(:subject) %></th>
+    <th><%= SupportTicket.human_attribute_name(:description) %></th>
+    <th><%= SupportTicket.human_attribute_name(:status) %></th>
+    <th><%= SupportTicket.human_attribute_name(:created_at) %></th>
+    <th><%= SupportTicket.human_attribute_name(:creator) %></th>
+    <th><%= SupportTicket.human_attribute_name(:updated_at) %></th>
+    <th><%= SupportTicket.human_attribute_name(:updater) %></th>
+    <th><%= I18n.t('general.general.actions') %></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+      <tr>
+        <td><%= @support_ticket.subject %></td>
+        <td><%= @support_ticket.description %></td>
+        <td><%= @support_ticket.status %></td>
+        <td><%= l @support_ticket.created_at %></td>
+        <td><%= @support_ticket.creator.name %></td>
+        <td><%= l @support_ticket.updated_at %></td>
+        <td><%= @support_ticket.updater.name %></td>
+        <td>
+          <%= link_to 'Show', @support_ticket %>
+          <%= link_to 'Edit', edit_support_ticket_path(@support_ticket) %>
+        </td>
+      </tr>
+</table>

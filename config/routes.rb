@@ -1,5 +1,8 @@
 Sbcx::Application.routes.draw do
 
+  resources :support_tickets
+
+
   resources :receipts, only: [:show]
 
   devise_for :admin_users, ActiveAdmin::Devise.config
