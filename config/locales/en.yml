@@ -223,6 +223,7 @@ en:
       notes: "Notes"
       invoices: "Invoices"
       overdue_jobs: "Payment Jobs Overdue"
+      receipt_num: "Receipt Number:"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
