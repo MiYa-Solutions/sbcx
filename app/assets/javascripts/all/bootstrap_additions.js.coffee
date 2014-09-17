@@ -52,3 +52,5 @@ jQuery ->
     $(this).next().toggle "slow"
     false
   ).next().hide()
+
+

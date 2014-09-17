@@ -17,7 +17,7 @@ en:
       sc_provider_collected_notification: "Contractor Collected"
       sc_provider_confirmed_settled_notification: "Contractor Confirm Settled"
       sc_provider_settled_notification: "Contractor Settled"
-      sc_received_notification: "Notification Received"
+      sc_received_notification: "Affiliate New Job"
       sc_rejected_notification: "Job Rejected"
       sc_start_notification: "Start Job"
       sc_started_notification: "Job Started"
@@ -29,11 +29,11 @@ en:
       acc_adj_canceled_notification: "Adjustment Canceled"
       acc_adj_rejected_notification: "Adjustment Rejected"
       account_adjusted_notification: "Adjustment Submitted"
-      entry_disputed_notification: "Entry Disputed"
+      entry_disputed_notification: "Adjustment Disputed"
       invite_notification: "Member Invitation Notifications"
       invite_accepted_notification: "Accepted invitation"
       invite_declined_notification: "Declined invitation"
-      new_invite_notification: "Invite affiliate"
+      new_invite_notification: "You Are Invited"
       sbcx_reference_notification: "Refer affiliate"
 
     attributes:
@@ -51,10 +51,10 @@ en:
     invite_declined_notification:
       description: "Your invitation to join your SubConTraX network has been declined."
     new_invite_notification:
-      description: "New invitation to join your SubConTraX network has been sent."
+      description: "A SubConTraX member would like to join your network."
     sbcx_reference_notification:
       description: "New invitation to join SubConTraX has been sent."
-      
+
 
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
@@ -80,7 +80,7 @@ en:
       content: '%{subcontractor} has rejected the job'
       description: "The subcontractor has rejected the job."
     sc_received_notification:
-      description: "New notification has been received."
+      description: "New Job has been submitted to you."
     sc_canceled_notification:
       html_message: '%{subcontractor} reported the customer has canceled the %{link}'
       subject: 'Transferred job %{ref} has been canceled '
@@ -97,7 +97,7 @@ en:
       html_message: 'Job balance has been settled with %{subcontractor}'
       subject: 'Job balance has been settled with %{subcontractor}'
       content: 'Job balance has been settled with %{subcontractor}'
-      description: "Job balance has been settled with subcontractor."
+      description: "Someone from your organization has canceled the job."
     sc_dispatch_notification:
       html_message: 'You got a new %{link} to work on!'
       subject: 'A new job has been assigned to you'
@@ -247,7 +247,7 @@ en:
       html_message: "%{affiliate} has disputed your deposit %{link}"
       subject: '%{affiliate} has disputed an entry for job %{ref}'
       content: '%{affiliate} has disputed an entry for job ${ref}'
-      description: "Your affiliate has disputed an entry for the job."
+      description: "Your affiliate has disputed a customer payment deposit."
 
     acc_adj_rejected_notification:
       html_message: "%{affiliate} has rejected your %{link}"

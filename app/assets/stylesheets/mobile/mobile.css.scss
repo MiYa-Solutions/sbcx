@@ -2251,9 +2251,9 @@ div.ui-slider {
 }
 
 #update_tax-popup {
-  width: 98% !important;
-  left: 1% !important;
-  right: 1% !important;
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
   max-width: 900px !important;
 }
 
@@ -2272,29 +2272,59 @@ div.ui-slider {
 }
 
 #payment_collect-popup {
-  width: 98% !important;
-  left: 1% !important;
-  right: 1% !important;
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
   max-width: 900px !important;
 }
 
 #betaPopup-popup {
-  width: 98% !important;
-  left: 1% !important;
-  right: 1% !important;
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
   max-width: 900px !important;
 }
-//
-//#transfer_modal-popup {
-//  width: 98% !important;
-//  left: 1% !important;
-//  right: 1% !important;
-//  max-width: 900px !important;
-//}
+
 
 #customer_show_all_entries-popup {
   width: 98% !important;
   left: 1% !important;
   right: 1% !important;
+  max-width: 900px !important;
+}
+
+
+#customer_show_receipts-popup {
+  width: 98% !important;
+  left: 1% !important;
+  right: 1% !important;
+  max-width: 900px !important;
+}
+
+#add_new_invoice-popup {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#transfer_modal {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#settle_subcon {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#settle_provider {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
   max-width: 900px !important;
 }

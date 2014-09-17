@@ -3,6 +3,7 @@
     <%= hidden_field_tag 'service_call[status_event]', 'accept' %>
     <%= f.submit job.class.human_status_event_name(:accept).titleize,
                  id:    'accept_service_call_btn',
+                 "data-placement" => "right",
                  class: style('service_call.forms.status.accept.button_classes'),
                  title: I18n.t('service_call.forms.status.accept.tooltip'),
                  rel:   'tooltip'

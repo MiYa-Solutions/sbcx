@@ -142,7 +142,7 @@ en:
       phone: "Phone"
       email: "Email"
       actions: "Actions"
-      search_affiliate: "Search for private affiliates and SubConTraX members"
+      search_affiliate: "Search for local affiliates or SubConTraX members. Please use complete words."
       search_del_customers: "Search in disabled customers"
       provider: "Contractor"
       subcontractor: "Subcontractor"
@@ -223,6 +223,7 @@ en:
       notes: "Notes"
       invoices: "Invoices"
       overdue_jobs: "Payment Jobs Overdue"
+      receipt_num: "Receipt Number:"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

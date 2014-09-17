@@ -249,6 +249,9 @@ en:
   service_call_provider_confirmed_settled_event:
     name: "Contractor has Confirmed Settlement"
     description: 'Contractor Name: &nbsp; (%{provider}) has confirmed that commission fees for this Job have been settled'
+  service_call_provider_confirm_settled_event:
+    name: "Settlement Confirmed with Contractor"
+    description: 'Settlement confirmed with Contractor Name: &nbsp; (%{provider}). Commission fees for this Job have been settled'
   service_call_subcon_confirmed_settled_event:
     name: "Subcontractor has Confirmed Settlement"
     description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
