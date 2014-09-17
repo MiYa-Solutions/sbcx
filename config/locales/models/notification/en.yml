@@ -212,7 +212,7 @@ en:
       content: 'The terms of the subcontracting agreement %{name}, were accepted by %{other_party}'
 
     new_invite:
-      html_message: "%{org} has sent you an %{link} to join his affiliate network"
+      html_message: '%{org} has sent you an %{link} to join his affiliate network'
       subject: '%{org} has invited you to become his affiliate'
       content: '%{org} is inviting you to join his affiliate network which will allow you to outsource and receive jobs from one another'
 

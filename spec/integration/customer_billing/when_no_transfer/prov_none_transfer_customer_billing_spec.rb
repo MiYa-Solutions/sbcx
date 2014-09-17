@@ -240,6 +240,36 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
             expect(job.events.where(type: 'ScCollectEvent').first.amount).to eq Money.new_with_amount(10)
           end
 
+          context 'when payment is overdue' do
+            before do
+              job.late_payment!
+            end
+
+            it 'billing status should be :overdue' do
+              expect(job.billing_status_name).to eq :overdue
+            end
+
+            it 'available payment events are only collect' do
+              expect(job.billing_status_events.sort).to eq [:cancel, :collect]
+            end
+
+            context 'when collecting another payment' do
+              before do
+                collect_a_payment job, type: 'cash', amount: '10', collector: org
+                job.reload
+              end
+
+              it 'billing status should be :partially_collected' do
+                expect(job.billing_status_name).to eq :partially_collected
+              end
+
+
+            end
+
+
+          end
+
+
         end
 
         context 'when I complete the job' do
@@ -285,6 +315,46 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
               it 'payment status should be partially_paid' do
                 expect(job.billing_status_name).to eq :partially_collected
+              end
+
+              context 'when payment is overdue' do
+                before do
+                  job.late_payment!
+                end
+
+                it 'billing status should be :overdue' do
+                  expect(job.billing_status_name).to eq :overdue
+                end
+
+                it 'available payment events are only collect' do
+                  expect(job.billing_status_events.sort).to eq [:cancel, :collect]
+                end
+
+                context 'when collecting another partial payment' do
+                  before do
+                    collect_a_payment job, type: 'cash', amount: '10', collector: org
+                    job.reload
+                  end
+
+                  it 'billing status should be :partially_collected' do
+                    expect(job.billing_status_name).to eq :overdue
+                  end
+
+                  context 'when collecting the full amount' do
+                    before do
+                      collect_a_payment job, type: 'cheque', amount: '80', collector: org
+                    end
+
+                    it 'billing status should be :collected' do
+                      expect(job.billing_status_name).to eq :collected
+                    end
+
+                  end
+
+
+                end
+
+
               end
 
             end
@@ -627,7 +697,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
               end
 
               it 'available payment events are only collect' do
-                job.billing_status_events.should eq [:cancel, :collect]
+                expect(job.billing_status_events.sort).to eq [:cancel, :collect]
               end
 
 

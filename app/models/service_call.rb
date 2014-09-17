@@ -317,7 +317,7 @@ class ServiceCall < Ticket
   def init_tax
     if tax == 0.0
       tax_number = default_tax
-      self.update_attribute(:tax, tax_number)
+      self.update_column(:tax, tax_number)
     end
   end
 

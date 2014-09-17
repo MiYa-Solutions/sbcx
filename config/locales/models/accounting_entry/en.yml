@@ -1,8 +1,7 @@
 en:
   activerecord:
     models:
-      accounting_entry: "Balance"
-      adjustment_entry: Account Adjustment
+      adjustment_entry: "Account Adjustment"
     attributes:
       accounting_entry:
         ticket: "Job"
@@ -11,6 +10,7 @@ en:
         status: "Status"
         entry_id: "Entry Number"
         balance: "Balance"
+
     state_machines:
       accounting_entry:
         status:
@@ -24,6 +24,7 @@ en:
         status:
           states:
             rejected: Rejected
+
   payment_reimbursement:
     cash:
       description: 'Reimbursement for cash payment clearing for %{ticket}'

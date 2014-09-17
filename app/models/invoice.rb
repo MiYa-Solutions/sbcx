@@ -61,6 +61,11 @@ class Invoice < ActiveRecord::Base
       self.invoice_items << item
     end
 
+    ticket.entries.where(type: 'MyAdjEntry').each do |e|
+      item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
+      self.invoice_items << item
+    end
+
     self.total = final_total
 
 

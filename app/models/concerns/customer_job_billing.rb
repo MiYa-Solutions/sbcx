@@ -60,7 +60,8 @@ module CustomerJobBilling
 
                    if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
 
-        transition :overdue => :overdue, if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
+        transition :overdue => :partially_collected, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && (sc.customer_balance <= 0) }
+        transition :overdue => :overdue, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && (sc.customer_balance > 0) }
       end
 
       event :deposited do
