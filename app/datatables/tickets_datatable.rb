@@ -25,7 +25,17 @@ class TicketsDatatable
               h(ticket.created_at.strftime("%b %d, %Y")),
               link_to(ticket.name, ticket),
               h(ticket.human_work_status_name),
-              ticket.total_price.to_s
+              humanized_money_with_symbol(ticket.total_price)
+          ]
+        end
+      when 'customer_overdue_jobs'
+        tickets.map do |ticket|
+          [
+              ticket.ref_id,
+              h(ticket.created_at.strftime("%b %d, %Y")),
+              link_to(ticket.name, ticket),
+              h(ticket.human_work_status_name),
+              humanized_money_with_symbol(ticket.customer_balance)
           ]
         end
       when 'job_search'
@@ -116,6 +126,15 @@ class TicketsDatatable
       end
 
     end
+
+    if params[:billing_status].present?
+      tickets = tickets.where(billing_status: params[:billing_status])
+    end
+
+    if params[:work_status].present?
+      tickets = tickets.where(work_status: params[:work_status])
+    end
+
 
 
     tickets.order("tickets.#{sort_column} #{sort_direction}").page(page).per_page(per_page)

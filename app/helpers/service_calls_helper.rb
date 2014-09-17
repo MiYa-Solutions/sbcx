@@ -6,6 +6,18 @@ module ServiceCallsHelper
     StylingService.instance.get_style(path)
   end
 
+  def work_status_options
+    ServiceCall.state_machines[:work_status].states.collect do |state|
+      [state.human_name, state.value]
+    end
+  end
+
+  def billing_status_options
+    MyServiceCall.state_machines[:billing_status].states.collect do |state|
+      [state.human_name, state.value]
+    end
+  end
+
 
   def event_list(service_call)
     content_tag_for :div, service_call, class: 'service_call_events unstyled' do

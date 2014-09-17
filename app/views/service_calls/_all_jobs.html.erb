@@ -38,6 +38,14 @@
               </div>
               <%= hidden_field_tag :customer_filter_id %>
             </div>
+            <div id="work_status_filter" class="input_field" >
+              <%= select_tag :work_status, options_for_select(work_status_options), prompt: "Select Work Status",  class: 'chosen-select' %>
+              <%= button_tag 'x', type: 'button', id: 'clear-work-status', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+            </div>
+            <div id="billing_status_filter" class="input_field" >
+              <%= select_tag :billing_status, options_for_select(billing_status_options), prompt: "Select Billing Status",  class: 'chosen-select' %>
+              <%= button_tag 'x', type: 'button', id: 'clear-billing-status', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+            </div>
             <div id="tags_filter" class="input_field"></div>
           </div>
 

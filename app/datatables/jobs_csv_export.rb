@@ -139,6 +139,15 @@ class JobsCsvExport
       tickets = tickets.where("provider_id = #{params[:affiliate_id]} OR subcontractor_id = #{params[:affiliate_id]} ")
     end
 
+    if params[:billing_status].present?
+      tickets = tickets.where(billing_status: params[:billing_status])
+    end
+
+    if params[:work_status].present?
+      tickets = tickets.where(work_status: params[:work_status])
+    end
+
+
 
     tickets.order("tickets.#{sort_column} #{sort_direction}")
   end
