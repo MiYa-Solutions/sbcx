@@ -4,6 +4,11 @@
     <%= f.error_notification %>
 
  <div class="alert add_entry_frame">
+
+   <div class="row-fluid add_account_entry">
+     <a href="#" data-toggle="collapse" data-target="#add_entry" class="close">×</a>
+   </div>
+
     <div class="row-fluid add_account_entry">
         <ul>
           <li></li>
@@ -13,13 +18,15 @@
               <%= f.text_field :ticket_ref_id %>
               <span class="find_entry"><%= link_to 'Find', '#ticket_search', data: { toggle: 'modal' }, class: "btn btn-primary" %>
                </span>
+
             </div>
           </li>
-          <li>
-            <label class="find_job_help">Click the <strong>'Find'</strong> button to search for Job Number </label>
-          </li>
+
           </ul>
    </div>
+   <br>
+   <label class="find_job_help">Click the <strong>'Find'</strong> button to search for Job Number </label>
+
 
    <br>
 
@@ -57,9 +64,7 @@
 
    </div>
    <br>
-   <div class="row-fluid add_account_entry">
-     <a href="#" data-toggle="collapse" data-target="#add_entry" class="close">×</a>
-   </div>
+
  </div>
 
 

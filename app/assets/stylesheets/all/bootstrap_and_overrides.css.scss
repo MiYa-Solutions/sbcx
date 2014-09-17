@@ -2560,7 +2560,7 @@ a:hover {
   }
 
   .close {
-    margin-top: -134px;
+    margin-top: -36px;
   }
 
   select {
@@ -2589,15 +2589,11 @@ a:hover {
 }
 
 .find_job_help {
-  //color: black;
-  //font-style: italic;
-  //margin-left: -26px;
-  //margin-top: -23px;
-  //width: 310px;
   color: black;
   float: left;
   font-style: italic;
-  margin-top: -23px;
+  margin-left: 1%;
+  margin-top: -11px;
   width: 310px;
 }
 
@@ -3260,9 +3256,17 @@ hr {
   margin-left: 1.5%;
 
   .close {
-    margin-top: 2px;
+//    margin-top: 2px;
+    display: none;
   }
 
+}
+
+.alert-success {
+  .close {
+    //    margin-top: 2px;
+    display: none;
+  }
 }
 
 .smart_alert .close {
@@ -4622,8 +4626,8 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 }
 
 #confirm_email_btn {
-  margin-left: 15%;
   text-shadow: 0 0 0 rgba(255, 255, 255, 0.5);
+  margin-right: 3%;
 
 }
 
@@ -5100,4 +5104,12 @@ table.dataTable thead th, table.dataTable thead td {
   #edit_User {
     margin-bottom: -18px;
   }
+}
+
+.add_entry_label {
+  margin-left: 10px;
+}
+
+.customer_balance_show {
+  min-height: 280px;
 }
