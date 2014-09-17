@@ -25,7 +25,17 @@ class TicketsDatatable
               h(ticket.created_at.strftime("%b %d, %Y")),
               link_to(ticket.name, ticket),
               h(ticket.human_work_status_name),
-              ticket.total_price.to_s,
+              ticket.total_price.to_s
+          ]
+        end
+      when 'job_search'
+        tickets.map do |ticket|
+          [
+              ticket.id,
+              ticket.name,
+              ticket.human_status_name,
+              ticket.human_work_status_name,
+              ticket.human_billing_status_name
           ]
         end
       else
@@ -92,6 +102,19 @@ class TicketsDatatable
 
     if params[:affiliate_id].present?
       tickets = tickets.where("provider_id = #{params[:affiliate_id]} OR subcontractor_id = #{params[:affiliate_id]} ")
+    end
+
+    if params[:account_id].present?
+      account = Account.find params[:account_id]
+      case account.accountable_type
+        when 'Organization'
+          tickets = tickets.where("provider_id = #{account.accountable_id} OR subcontractor_id = #{account.accountable_id} ")
+        when
+          tickets = tickets.where(customer_id: account.accountable_id)
+        else
+
+      end
+
     end
 
 
