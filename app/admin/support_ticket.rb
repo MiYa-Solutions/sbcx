@@ -1,8 +1,4 @@
 ActiveAdmin.register SupportTicket do
-  def permitted_params
-    params.permit(:other_parameter, :group => [:name, :description])
-  end
-
   filter :name
 
   index do
@@ -27,15 +23,26 @@ ActiveAdmin.register SupportTicket do
       row :subject
       row :description
     end
+    panel "Customer Comments" do
+      table_for(support_ticket.comments) do |t|
+        t.column("Body") { |c| c.body }
+        t.column("Actions") {|c| "#{link_to "Edit", edit_admin_support_comment_path(c)} | #{link_to "View", admin_support_comment_path(c)}".html_safe  }
+      end
+
+      render 'admin/support_comments/form', support_comment: SupportComment.new(support_ticket: support_ticket)
+    end
+
+
+
     active_admin_comments
   end
 
   form do |f|
-    # ...
-    f.has_many :comments do |comment|
-      comment.input :body
+    f.inputs do
+      f.input :status
+      f.input :subject
+      f.input :description
     end
-
     f.actions
   end
 

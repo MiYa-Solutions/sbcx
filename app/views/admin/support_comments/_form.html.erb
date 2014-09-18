@@ -1,0 +1,10 @@
+
+<h3>Submit Comment</h3>
+
+<%= semantic_form_for [:admin, support_comment] do |f| %>
+    <%= f.inputs :public, :body %>
+    <%= f.inputs do  %>
+        <%= f.input :commentable_id, as: :hidden %>
+        <% end %>
+    <%= f.actions %>
+<% end %>

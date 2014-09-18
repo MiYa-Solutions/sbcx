@@ -19,6 +19,6 @@ class ActiveAdmin::Devise::SessionsController
   private
 
   def resource_params
-    params.require(:admin_user).permit(:email, :password)
+    params.require(:admin_user).permit(:email, :password) if resource.kind_of? (AdminUser)
   end
 end

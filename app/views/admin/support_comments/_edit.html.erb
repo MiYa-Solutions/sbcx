@@ -1,0 +1,26 @@
+<% @support_comment ||= support_comment %>
+<%= div_for @support_comment.support_ticket, class: 'panel' do %>
+    <h3>Support Ticket</h3>
+    <%= div_for @support_comment.support_ticket, class: 'panel_contents' do %>
+        <table>
+          <tr>
+            <td>Subject</td>
+            <td><%= link_to @support_comment.support_ticket.subject, admin_support_ticket_path(@support_comment.support_ticket) %></td>
+
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td><%= @support_comment.support_ticket.description %></td>
+          </tr>
+          <tr>
+            <th>Last Comment</th>
+            <td><%= @support_comment.support_ticket.comments.last.body %></td>
+          </tr>
+
+        </table>
+    <% end %>
+<% end %>
+
+<h3>Comment</h3>
+
+<%= render 'form', support_comment: @support_comment  %>
