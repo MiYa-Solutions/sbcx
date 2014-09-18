@@ -7,6 +7,8 @@ filter_params = ->
   res = res + 'provider_id=' + $('#provider').val() + '&'
   res = res + 'subcontractor_id=' + $('#subcontractor').val() + '&'
   res = res + 'affiliate_id=' + $('#affiliate').val() + '&'
+  res = res + 'billing_status=' + $('#billing_status').val() + '&'
+  res = res + 'work_status=' + $('#work_status').val() + '&'
   res
 
 Jobs = {
@@ -60,6 +62,12 @@ jQuery ->
       aoData.push
         name: "affiliate_id"
         value: $('#affiliate').val()
+      aoData.push
+        name: "billing_status"
+        value: $('#billing_status').val()
+      aoData.push
+        name: "work_status"
+        value: $('#work_status').val()
 
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
@@ -70,6 +78,8 @@ jQuery ->
       oData.provider_id = $('#provider').val()
       oData.subcontractor_id = $('#subcontractor').val()
       oData.affiliate_id = $('#affiliate').val()
+      oData.billing_status = $('#billing_status').val()
+      oData.work_status = $('#work_status').val()
 
     fnStateLoadParams: (oSettings, oData) ->
       $('#customer_search').val(oData.customer_name)
@@ -77,6 +87,8 @@ jQuery ->
       $('#provider').val(oData.provider_id)
       $('#subcontractor').val(oData.subcontractor_id)
       $('#affiliate').val(oData.affiliate_id)
+      $('#billing_status').val(oData.billing_status)
+      $('#work_status').val(oData.work_status)
 
   ).yadcf([
     {
@@ -134,6 +146,12 @@ jQuery ->
   $('#subcontractor').on 'change', ->
     $('#job-search-results').dataTable().api().ajax.reload()
 
+  $('#work_status').on 'change', ->
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#billing_status').on 'change', ->
+    $('#job-search-results').dataTable().api().ajax.reload()
+
   $('#clear-customer').live 'click', ->
     $('#customer_filter_id').val('')
     $('#customer_search').val('')
@@ -152,6 +170,16 @@ jQuery ->
   $('#clear-affiliate').live 'click', ->
     $('#affiliate').val($('#affiliate option:first').val())
     $("#affiliate").trigger("chosen:updated")
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#clear-work-status').live 'click', ->
+    $('#work_status').val($('#work_status option:first').val())
+    $("#work_status").trigger("chosen:updated")
+    $('#job-search-results').dataTable().api().ajax.reload()
+
+  $('#clear-billing-status').live 'click', ->
+    $('#billing_status').val($('#billing_status option:first').val())
+    $("#billing_status").trigger("chosen:updated")
     $('#job-search-results').dataTable().api().ajax.reload()
 
 

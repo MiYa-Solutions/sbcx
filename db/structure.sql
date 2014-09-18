@@ -37,6 +37,20 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -360,6 +374,46 @@ ALTER SEQUENCE boms_id_seq OWNED BY boms.id;
 
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    commentable_id integer DEFAULT 0,
+    commentable_type character varying(255),
+    title character varying(255),
+    body text,
+    subject character varying(255),
+    user_id integer DEFAULT 0 NOT NULL,
+    parent_id integer,
+    lft integer,
+    rgt integer,
+    public boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
+
+
+--
 -- Name: customers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -528,6 +582,7 @@ CREATE TABLE invoices (
     creator_id integer,
     updater_id integer,
     notes text,
+    description text,
     total_cents integer,
     total_currency character varying(255)
 );
@@ -857,6 +912,42 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: support_tickets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE support_tickets (
+    id integer NOT NULL,
+    subject character varying(255),
+    description text,
+    status integer,
+    organization_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    creator_id integer,
+    updater_id integer
+);
+
+
+--
+-- Name: support_tickets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE support_tickets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: support_tickets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE support_tickets_id_seq OWNED BY support_tickets.id;
+
+
+--
 -- Name: taggings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1153,6 +1244,13 @@ ALTER TABLE ONLY boms ALTER COLUMN id SET DEFAULT nextval('boms_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq'::regclass);
 
 
@@ -1231,6 +1329,13 @@ ALTER TABLE ONLY posting_rules ALTER COLUMN id SET DEFAULT nextval('posting_rule
 --
 
 ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY support_tickets ALTER COLUMN id SET DEFAULT nextval('support_tickets_id_seq'::regclass);
 
 
 --
@@ -1330,6 +1435,14 @@ ALTER TABLE ONLY boms
 
 ALTER TABLE ONLY appointments
     ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1445,6 +1558,14 @@ ALTER TABLE ONLY tickets
 
 
 --
+-- Name: support_tickets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY support_tickets
+    ADD CONSTRAINT support_tickets_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1547,6 +1668,20 @@ CREATE INDEX index_boms_on_material_id ON boms USING btree (material_id);
 
 
 --
+-- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON comments USING btree (commentable_id, commentable_type);
+
+
+--
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
+
+
+--
 -- Name: index_customers_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1607,6 +1742,20 @@ CREATE INDEX index_org_to_roles_on_organization_id_and_organization_role_id ON o
 --
 
 CREATE INDEX index_service_calls_on_ref_id ON tickets USING btree (ref_id);
+
+
+--
+-- Name: index_support_tickets_on_creator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_support_tickets_on_creator_id ON support_tickets USING btree (creator_id);
+
+
+--
+-- Name: index_support_tickets_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_support_tickets_on_organization_id ON support_tickets USING btree (organization_id);
 
 
 --
@@ -1985,3 +2134,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140829015934');
 INSERT INTO schema_migrations (version) VALUES ('20140909193308');
 
 INSERT INTO schema_migrations (version) VALUES ('20140915221955');
+
+INSERT INTO schema_migrations (version) VALUES ('20140917174836');
+
+INSERT INTO schema_migrations (version) VALUES ('20140917202020');

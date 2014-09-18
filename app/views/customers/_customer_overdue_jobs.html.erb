@@ -7,14 +7,14 @@
     </ul>
   </div>
   <!--table of jobs-->
-  <table id="customer-jobs" class="table table-striped" data-customer-id="<%= @customer.id %>">
+  <table id="customer-overdue-jobs" class="table table-striped" data-customer-id="<%= @customer.id %>">
     <thead>
     <tr>
       <th><%= Ticket.human_attribute_name(:ref_id) %></th>
       <th><%= Ticket.human_attribute_name(:created_at) %></th>
       <th><%= Ticket.human_attribute_name(:name) %></th>
       <th><%= Ticket.human_attribute_name(:work_status) %></th>
-      <th><%= Bom.human_attribute_name(:total_price) %></th>
+      <th><%= I18n.t('general.general.balance') %></th>
     </tr>
     </thead>
     <tbody>
