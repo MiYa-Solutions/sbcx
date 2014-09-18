@@ -1,0 +1,8 @@
+<div id="comment-<%= comment.id %>">
+
+  <h4><span><%= link_to "×", comment_path(comment), :method => :delete, :remote => true, :confirm => "Are you sure you want to remove this comment?", :disable_with => "×" %></span><%= comment.user.name %></h4>
+
+  <span><%= l comment.created_at %></span>
+  <br>
+  <span><%= comment.body %></span>
+</div>

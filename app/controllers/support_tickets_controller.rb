@@ -16,8 +16,9 @@ class SupportTicketsController < ApplicationController
   # GET /support_tickets/1
   # GET /support_tickets/1.json
   def show
-    @support_ticket = SupportTicket.find(params[:id])
 
+    @comments = @support_ticket.comment_threads.order('created_at desc')
+    @new_comment = Comment.build_from(@support_ticket, current_user.id, "")
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @support_ticket }

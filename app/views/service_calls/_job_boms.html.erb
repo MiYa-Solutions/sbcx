@@ -63,12 +63,12 @@
 
     <tr class="bom_table_summary">
       <td><strong><%= t('general.general.total_cost').html_safe %></strong></td>
-      <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_cost %></h3></td>
+      <td class="bom_label"><h3 id="job_total_cost"> <%= humanized_money_with_symbol @service_call.total_cost %></h3></td>
     </tr>
 
     <tr class="bom_table_summary">
       <td><strong><%= t('general.general.total_price').html_safe %></strong></td>
-      <td class="bom_label"><h3> <%= humanized_money_with_symbol @service_call.total_price %></h3></td>
+      <td class="bom_label"><h3 id="job_total_price"> <%= humanized_money_with_symbol @service_call.total_price %></h3></td>
     </tr>
     <tr class="bom_table_summary">
       <td><strong><%= t('general.general.total').html_safe %></strong></td>

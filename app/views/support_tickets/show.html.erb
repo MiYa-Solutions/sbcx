@@ -30,3 +30,8 @@
         </td>
       </tr>
 </table>
+
+<%= render 'comments/form', comment: @new_comment %>
+<div id="comments">
+<%= render partial: 'comments/comment', collection: @comments if @comments.size > 0 %>
+</div>

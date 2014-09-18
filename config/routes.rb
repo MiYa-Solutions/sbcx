@@ -1,6 +1,7 @@
 Sbcx::Application.routes.draw do
 
   resources :support_tickets
+  resources :comments, :only => [:create, :destroy]
 
 
   resources :receipts, only: [:show]

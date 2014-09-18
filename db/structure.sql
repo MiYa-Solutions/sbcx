@@ -374,6 +374,46 @@ ALTER SEQUENCE boms_id_seq OWNED BY boms.id;
 
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    commentable_id integer DEFAULT 0,
+    commentable_type character varying(255),
+    title character varying(255),
+    body text,
+    subject character varying(255),
+    user_id integer DEFAULT 0 NOT NULL,
+    parent_id integer,
+    lft integer,
+    rgt integer,
+    public boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
+
+
+--
 -- Name: customers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1204,6 +1244,13 @@ ALTER TABLE ONLY boms ALTER COLUMN id SET DEFAULT nextval('boms_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq'::regclass);
 
 
@@ -1388,6 +1435,14 @@ ALTER TABLE ONLY boms
 
 ALTER TABLE ONLY appointments
     ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1610,6 +1665,20 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USI
 --
 
 CREATE INDEX index_boms_on_material_id ON boms USING btree (material_id);
+
+
+--
+-- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON comments USING btree (commentable_id, commentable_type);
+
+
+--
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
 
 
 --
@@ -2067,3 +2136,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140909193308');
 INSERT INTO schema_migrations (version) VALUES ('20140915221955');
 
 INSERT INTO schema_migrations (version) VALUES ('20140917174836');
+
+INSERT INTO schema_migrations (version) VALUES ('20140917202020');
