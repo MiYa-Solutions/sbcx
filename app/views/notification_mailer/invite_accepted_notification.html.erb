@@ -62,18 +62,13 @@
                             <!--CSS change -->
                             <tr style="background-color:#F5F5F5; color:#336699; font-family:Arial; font-size:14px; font-weight:bold; text-align:left; line-height:150%;">
                               <th scope="col" valign="top" width="95%" class="dataTableHeading">
-                                <%= I18n.t('general.general.message').html_safe %>
+                                <%= I18n.t('general.general.messageCongrats1').html_safe %>&nbsp;
+                                <%= @invite.affiliate.name.html_safe %>&nbsp;
+                                <%= I18n.t('general.general.messageCongrats2').html_safe %>
                               </th>
 
                             </tr>
-                            <tr border= "1px solid #f5f5f5;">
-                              <td valign="top" class="dataTableContent">
-                                <strong><%= @invite.message %></strong>
-                              </td>
-
-                            </tr>
-
-                            <!--CSS change -->
+                          <!--CSS change -->
                           </table>
                         </td>
                       </tr>
