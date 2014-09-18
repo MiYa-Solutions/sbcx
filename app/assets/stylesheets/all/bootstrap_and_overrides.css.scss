@@ -1605,8 +1605,13 @@ a:hover {
   }
 
   .customer_field {
-    margin-left: 3px;
+    margin-left: 5%;
     min-width: 239px;
+  }
+
+  #billing_status_filter {
+    margin-left: 1.5%;
+
   }
 
   #tags_filter {
@@ -1615,18 +1620,26 @@ a:hover {
 
   .affiliates_filter {
     margin-left: 3px;
+    margin-bottom: 10px;
   }
 
   .line2 {
-    margin-top: 6px;
+    margin-bottom: 10px;
+    margin-left: 3px;
+    margin-top: 0;
   }
 
   #subcontractor_filter {
-    margin-left: 18px;
+    margin-left: 1.5%;
+  }
+
+  #affiliate_filter {
+    margin-left: 0.7%;
+    width: 30%;
   }
 
   #created_range_filter {
-    margin-left: 17px;
+    margin-left: 0.5%;
   }
 
   .cancel_filter_btn {
@@ -1695,6 +1708,12 @@ a:hover {
   #subcontractor_chosen {
     min-height: 22px;
     padding-right: 1px;
+    margin-right: -0.5%;
+  }
+
+  #affiliate_chosen {
+    margin-right: 0.1%;
+    margin-left: 3%;
   }
 
   #provider_chosen {
@@ -1702,7 +1721,8 @@ a:hover {
   }
 
   #yadcf_filter__job_search_results_10_chosen {
-    margin-right: 1px;
+    margin-right: 0.5%;
+    margin-left: 5%;
   }
 
   #yadcf_filter__job_search_results_5_chosen {
