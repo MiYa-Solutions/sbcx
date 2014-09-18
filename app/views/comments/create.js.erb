@@ -14,5 +14,5 @@ $('#comment_body').find('.error').removeClass('error');
 $('#comment_body').find('.error-msg').remove();
 $('#comment_body').val('');
 
-$('#comments div:first').before('<%= j render(@comment) %>');
+$('#comments').prepend('<%= j render(@comment) %>');
 <% end %>

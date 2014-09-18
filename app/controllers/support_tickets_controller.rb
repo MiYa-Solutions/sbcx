@@ -86,7 +86,7 @@ class SupportTicketsController < ApplicationController
   protected
 
   def new_support_ticket_from_params
-    the_params                   = support_ticket_params
+    the_params                   = params[:action] == 'new' ? {} : support_ticket_params
     the_params[:organization_id] = current_user.organization_id
 
     @support_ticket = SupportTicket.new(the_params)

@@ -4,7 +4,7 @@ authorization do
     has_permission_on :authorization_rules, :to => :read
   end
   role :admin do
-    has_permission_on [:affiliates, :organizations, :users, :providers, :subcontractors, :service_calls, :customers],
+    has_permission_on [:invites, :support_tickets, :affiliates, :organizations, :users, :providers, :subcontractors, :service_calls, :customers],
                       :to => [:index, :show, :new, :create, :edit, :update, :destroy, :read]
 
   end
