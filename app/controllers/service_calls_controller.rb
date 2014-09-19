@@ -8,8 +8,8 @@ class ServiceCallsController < ApplicationController
   def index
     respond_to do |format|
       format.any(:html, :mobile) {
-        all_my_jobs           = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
-        all_transferred_job   = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
+        all_my_jobs           = ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).all(order: 'id DESC')
+        all_transferred_job   = ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).all(order: 'id DESC')
         # a set of data for each tab
         @new_jobs             = all_my_jobs.select { |j| [:pending, :canceled].include? j.work_status_name }
         @new_transferred_jobs = all_transferred_job.select { |j| [:pending, :canceled, :rejected].include? j.work_status_name }
@@ -106,7 +106,8 @@ class ServiceCallsController < ApplicationController
   end
 
   def load_service_call
-    @service_call = Ticket.find(params[:id])
+    #@service_call = Ticket.find(params[:id])
+    @service_call = Ticket.includes(boms: [:material], events: [:creator]).find(params[:id])
   end
 
   # TODO move autocomplete to CustomerController
