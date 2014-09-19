@@ -226,6 +226,12 @@ en:
       receipt_num: "Receipt Number:"
       messageCongrats1: "Congratulations!"
       messageCongrats2: "and you are now connected."
+      support_tickets: "Support Tickets"
+      new_support_tickets: "New Ticket"
+      comments: "Comments"
+      edit_support_tickets: "Edit Support Ticket"
+      entry_id: "Entry Number"
+      collector: "Collected By"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

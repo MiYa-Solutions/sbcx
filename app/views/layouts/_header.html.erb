@@ -40,8 +40,8 @@
           <% end %>
 
 
-          <li><%= link_to I18n.t('general.general.home'), user_root_path %></li>
-          <li><a href="#"><%= link_to I18n.t('general.general.alerts'), notifications_path %>
+          <li><%= link_to I18n.t('general.general.home'), user_root_path, id: "home_btn_header" %></li>
+          <li><a href="#"><%= link_to I18n.t('general.general.alerts'), notifications_path, id: "alert_btn_header" %>
               <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
             </a>
 
@@ -95,6 +95,10 @@
                 <li class="divider"></li>
                 <li><%= link_to I18n.t('general.general.profile'), profile_path, id: 'profile_header_link' %></li>
                 <li><%= link_to Settings.model_name.human, settings_path, id: 'settings_link' %></li>
+
+                <li class="divider"></li>
+
+                <li><%= link_to I18n.t('general.general.support_tickets'), support_tickets_path %></li>
                 <li><%= link_to I18n.t('general.general.contact_us'), contact_us_path %></li>
                 <!--<li><#%= link_to I18n.t('general.general.miya_billing') %></li>-->
                 <li class="divider"></li>

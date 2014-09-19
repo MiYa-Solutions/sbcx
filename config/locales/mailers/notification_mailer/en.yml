@@ -187,6 +187,11 @@ en:
       title: "Account Balance Adjustment has been accepted"
       content: "The following balance adjustment has been accepted by: "
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
+    acc_adj_disputed:
+      subject: "Balance Adjustment has been Disputed"
+      title: "Account Balance Adjustment has been disputed"
+      content: "The following balance adjustment has been disputed by: "
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
     deposit_entry_disputed:
       subject: "Deposit was disputed"
       title: "Job entry was disputed by your affiliate"

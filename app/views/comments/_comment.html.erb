@@ -1,8 +1,13 @@
 <div id="comment-<%= comment.id %>">
+    <tr>
+        <td><%= comment.user.name %></td>
+        <td><%= l comment.created_at %></td>
+        <td><%= comment.body %></td>
+         <td>
+           <%= link_to t('general.general.delete'), comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, :class => 'btn btn-mini btn-danger' %>
+         </td>
 
-  <h4><span><%= link_to "×", comment_path(comment), :method => :delete, :remote => true, :confirm => "Are you sure you want to remove this comment?", :disable_with => "×" %></span><%= comment.user.name %></h4>
-
-  <span><%= l comment.created_at %></span>
-  <br>
-  <span><%= comment.body %></span>
+    </tr>
 </div>
+
+ <!--<#%= link_to "×", comment_path(comment), :method => :delete, :remote => true, :confirm => "Are you sure you want to remove this comment?", :disable_with => "×" %>-->
