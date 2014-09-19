@@ -13,6 +13,16 @@ class Forms::NotificationsForm
     attr_accessor "#{s}_email".to_sym
   end
 
+  Settings.invite_notification_settings.each do |s|
+    attr_accessor s.to_sym
+    attr_accessor "#{s}_email".to_sym
+  end
+
+  Settings.agr_notification_settings.each do |s|
+    attr_accessor s.to_sym
+    attr_accessor "#{s}_email".to_sym
+  end
+
   def persisted?
     false
   end

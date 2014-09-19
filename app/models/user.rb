@@ -131,7 +131,35 @@ class User < ActiveRecord::Base
                          'sc_subcon_cleared_notification'             => 'true',
                          'sc_subcon_confirmed_settled_notification'   => 'true',
                          'sc_subcon_deposited_notification'           => 'true',
-                         'sc_subcon_settled_notification'             => 'true'
+                         'sc_subcon_settled_notification'             => 'true',
+                         #invite
+                         'invite_accepted_notification'               => 'true',
+                         'invite_accepted_notification_email'         => 'true',
+                         'invite_declined_notification'               => 'true',
+                         'invite_declined_notification_email'         => 'true',
+                         'new_invite_notification'                    => 'true',
+                         'new_invite_notification_email'              => 'true',
+                         #agreement notifications
+                         'agr_new_subcon_notification'                => 'true',
+                         'agr_new_subcon_notification_email'          => 'true',
+                         'agr_change_rejected_notification'           => 'true',
+                         'agr_change_rejected_notification_email'     => 'true',
+                         'agr_change_submitted_notification'          => 'true',
+                         'agr_change_submitted_notification_email'    => 'true',
+                         'agr_subcon_accepted_notification'           => 'true',
+                         'agr_subcon_accepted_notification_email'     => 'true',
+                         #adj entry notifications
+                         'acc_adj_accepted_notification'              => 'true',
+                         'acc_adj_accepted_notification_email'        => 'true',
+                         'acc_adj_rejected_notification'              => 'true',
+                         'acc_adj_rejected_notification_email'        => 'true',
+                         'acc_adj_canceled_notification'              => 'true',
+                         'acc_adj_canceled_notification_email'        => 'true',
+                         'account_adjusted_notification'              => 'true',
+                         'account_adjusted_notification_email'        => 'true',
+                         #for 3rd party collection deposit
+                         'entry_disputed_notification'                => 'true',
+                         'entry_disputed_notification_email'          => 'true'
     }
   end
 end

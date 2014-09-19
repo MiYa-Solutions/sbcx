@@ -1,4 +1,6 @@
 class SettingsController < ApplicationController
+  before_filter :authenticate_user!
+  filter_access_to :all,  model: 'Settings'
 
   # GET /settings/1
   # GET /settings/1.json

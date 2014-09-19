@@ -9,8 +9,16 @@ class Settings
     AdjustmentEntryNotification.subclasses.collect { |c| c.name.underscore }
   end
 
+  def self.agr_notification_settings
+    AgreementNotification.subclasses.collect { |c| c.name.underscore }
+  end
+
   def self.invite_notification_settings
     InviteNotification.subclasses.select { |c| c != SbcxReferenceNotification }.collect { |c| c.name.underscore }
+  end
+
+  def self.notification_settings
+    job_notification_settings + adj_notification_settings + agr_notification_settings + invite_notification_settings
   end
 
   def self.mandatory_emails
@@ -37,11 +45,11 @@ class Settings
   end
 
   def notifications
-    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.job_notification_settings
+    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.notification_settings
   end
 
   def notification_emails
-    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.job_notification_settings.map { |n| "#{n}_email" }
+    @user.preferences.select { |key, val| (val == '1' || val == 'true') }.keys & Settings.notification_settings.map { |n| "#{n}_email" }
   end
 
   def send_notification_email?(notif)

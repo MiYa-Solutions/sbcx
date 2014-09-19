@@ -49,6 +49,20 @@
     </div>
 
   </div>
+  <div class="row-fluid">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= AgreementNotification.model_name.human.pluralize %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+
+    <div class="setting_table">
+        <%= render 'notifications_table_disabled', notif_names: Settings.agr_notification_settings %>
+    </div>
+
+  </div>
 
 
   <!--end of well-->
