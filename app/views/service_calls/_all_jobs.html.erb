@@ -14,7 +14,6 @@
     </div>
 
     <div class="row-fluid">
-      <div class="span7">
         <div id="table-filters" class="all_jobs_filter" data-statuses="<%= service_call_statuses %>" data-tags="<%= current_user.organization.tags.map(&:name) %>">
           <h4><%= t('general.general.filter_all_jobs_l1') %>
 
@@ -22,12 +21,10 @@
               <%= t('general.general.filter_all_jobs_l2') %>
             </div>
           </h4>
+
+
           <div class="row-fluid">
             <div id="status_filter" class="input_field"></div>
-            <div id="created_range_filter" class="input_field"></div>
-          </div>
-          <div class="row-fluid line2">
-
             <div class="input_field">
               <div id="customer_filter" class="chosen-container-multi chosen-choices customer_field yadcf-filter-wrapper"><%= text_field_tag :customer_search, nil, placeholder: 'Customer',
                                                                                                                                              'data-autocomplete' => '/service_calls/autocomplete_customer_name',
@@ -38,6 +35,12 @@
               </div>
               <%= hidden_field_tag :customer_filter_id %>
             </div>
+            <div id="created_range_filter" class="input_field"></div>
+
+          </div>
+          <div class="row-fluid line2">
+
+
             <div id="work_status_filter" class="input_field" >
               <%= select_tag :work_status, options_for_select(work_status_options), prompt: "Select Work Status",  class: 'chosen-select' %>
               <%= button_tag 'x', type: 'button', id: 'clear-work-status', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
@@ -51,15 +54,19 @@
 
 
           <div class="row-fluid affiliates_filter">
+            <!--provider-->
             <div id="provider_filter" class="input_field" >
               <%= select_tag :provider, options_from_collection_for_select(current_user.organization.providers, 'id', 'name'), prompt: "Select Provider",  class: 'chosen-select' %>
               <%= button_tag 'x', type: 'button', id: 'clear-provider', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
             </div>
+
+            <!--subcon-->
             <div id="subcontractor_filter" class="input_field" >
               <%= select_tag :subcontractor, options_from_collection_for_select(current_user.organization.subcontractors, 'id', 'name'), prompt: "Select Subcontractor",  class: 'chosen-select' %>
               <%= button_tag 'x', type: 'button', id: 'clear-subcontractor', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
             </div>
 
+            <!--Affiliate-->
             <div id="affiliate_filter" class="input_field" >
               <%= select_tag :affiliate, options_from_collection_for_select(current_user.organization.affiliates, 'id', 'name'), prompt: "Select Affiliate",  class: 'chosen-select' %>
               <%= button_tag 'x', type: 'button', id: 'clear-affiliate', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
@@ -69,7 +76,7 @@
 
         </div>
 
-      </div>
+
 
     </div>
 

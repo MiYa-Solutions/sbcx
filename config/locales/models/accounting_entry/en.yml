@@ -81,3 +81,5 @@ en:
   entry_confirmed_event:
     name: "Entry Confirmed"
     description: "Billing Entry has been Confirmed"
+  Cash_collection_from_subcon:
+    name: "Cash collection from subcontractor"

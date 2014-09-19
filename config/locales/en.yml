@@ -224,6 +224,8 @@ en:
       invoices: "Invoices"
       overdue_jobs: "Payment Jobs Overdue"
       receipt_num: "Receipt Number:"
+      messageCongrats1: "Congratulations!"
+      messageCongrats2: "and you are now connected."
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
