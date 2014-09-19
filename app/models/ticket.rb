@@ -146,6 +146,52 @@ class Ticket < ActiveRecord::Base
   scope :closed_status, -> { where("tickets.status = ?", STATUS_CLOSED) }
   scope :canceled_status, -> { where("tickets.status = ?", STATUS_CANCELED) }
 
+  def self.find_in_batches(scope, batch_size=50, &block)
+    #find_each will batch the results instead of getting all in one go
+    scope.find_each(batch_size: batch_size) do |transaction|
+      yield transaction
+    end
+  end
+
+  def to_csv_row
+
+
+    CSV::Row.new(
+        [
+            :id, :type, :name, :ref_id, :my_profit, :total_cost, :total_price, :customer_name, :started_on,
+            :completed_on, :created_at, :updated_at, :status, :work_status, :billing_status, :provider_status, :subcontractor_status,
+            :subcon_collection_status, :provider_collection_status, :technician_name, :provider_name, :subcontractor_name, :creator,
+            :notes
+        ],
+        [
+            id,
+            type,
+            name,
+            ref_id,
+            my_profit,
+            total_cost,
+            total_price,
+            customer.name,
+            started_on,
+            completed_on,
+            created_at,
+            updated_at,
+            human_status_name,
+            human_work_status_name,
+            defined?(billing_status_name) ? billing_status_name : '',
+            defined?(provider_status_name) ? provider_status_name : '',
+            defined?(subcontractor_status_name) ? subcontractor_status_name : '',
+            defined?(subcon_collection_status_name) ? subcon_collection_status_name : '',
+            defined?(prov_collection_status_name) ? prov_collection_status_name : '',
+            technician.try(:name),
+            provider.name,
+            subcontractor.try(:name),
+            creator.name,
+            notes]
+    )
+  end
+
+
   def subcon_balance
     if transferred? # this is an abstract class and so transferred is assumed to be implemented by the subclasses
       affiliate_balance(subcontractor)

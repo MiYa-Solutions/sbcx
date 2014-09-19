@@ -71,6 +71,7 @@ group :development, :test do
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
+  gem 'thin'
 
 end
 

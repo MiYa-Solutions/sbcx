@@ -8,21 +8,21 @@ class ServiceCallsController < ApplicationController
   def index
     respond_to do |format|
       format.any(:html, :mobile) {
-        all_my_jobs = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
-        all_transferred_job = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
+        all_my_jobs           = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
+        all_transferred_job   = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
         # a set of data for each tab
-        @new_jobs    = all_my_jobs.select {|j| [:pending, :canceled].include? j.work_status_name}
-        @new_transferred_jobs = all_transferred_job.select {|j| [:pending, :canceled, :rejected].include? j.work_status_name}
+        @new_jobs             = all_my_jobs.select { |j| [:pending, :canceled].include? j.work_status_name }
+        @new_transferred_jobs = all_transferred_job.select { |j| [:pending, :canceled, :rejected].include? j.work_status_name }
 
-        @active_jobs    = all_my_jobs.select {|j| [:in_progress, :accepted, :dispatched].include? j.work_status_name}
-        @active_transferred_jobs = all_transferred_job.select {|j| j.work_status_name == :in_progress}
+        @active_jobs             = all_my_jobs.select { |j| [:in_progress, :accepted, :dispatched].include? j.work_status_name }
+        @active_transferred_jobs = all_transferred_job.select { |j| j.work_status_name == :in_progress }
 
-        @done_jobs    = all_my_jobs.select {|j| j.work_status_name == :done}
-        @done_transferred_jobs = all_transferred_job.select {|j| j.work_status_name == :done}
+        @done_jobs             = all_my_jobs.select { |j| j.work_status_name == :done }
+        @done_transferred_jobs = all_transferred_job.select { |j| j.work_status_name == :done }
       }
 
       format.json { render json: TicketsDatatable.new(view_context) }
-      format.csv { send_data JobsCsvExport.new(view_context).get_csv, as: 'application/csv' }
+      format.csv { render_csv }
       format.xls { send_data JobsCsvExport.new(view_context).get_csv(col_sep: "\t"), as: 'application/xls' }
     end
 
@@ -129,10 +129,43 @@ class ServiceCallsController < ApplicationController
   end
 
   def update_params_for_bip
-    params[:my_service_call] = params[:service_call]
+    params[:my_service_call]     = params[:service_call]
     params[:subcon_service_call] = params[:service_call]
-    params[:broker_service_call]  = params[:service_call]
+    params[:broker_service_call] = params[:service_call]
   end
+
+  private
+
+  def render_csv
+    set_file_headers
+    set_streaming_headers
+
+    response.status    = 200
+
+    #setting the body to an enumerator, rails will iterate this enumerator
+    self.response_body = csv_lines
+  end
+
+
+  def set_file_headers
+    file_name                      = "jobs.csv"
+    headers["Content-Type"]        = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=\"#{file_name}\""
+  end
+
+
+  def set_streaming_headers
+    #nginx doc: Setting this to "no" will allow unbuffered responses suitable for Comet and HTTP streaming applications
+    headers['X-Accel-Buffering'] = 'no'
+
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+  end
+
+  def csv_lines
+    JobsCsvExport.new(view_context).get_csv_enumerator
+  end
+
 
 end
 

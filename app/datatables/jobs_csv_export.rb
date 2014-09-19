@@ -15,6 +15,17 @@ class JobsCsvExport
     end
   end
 
+  def get_csv_enumerator(options = {})
+
+    Enumerator.new do |y|
+      y << CSV::Row.new(header_row.map(&:to_sym), header_row, true)
+
+      #ideally you'd validate the params, skipping here for brevity
+      Ticket.find_in_batches(fetch_tickets){ |ticket| y << ticket.to_csv_row.to_s }
+    end
+
+  end
+
   private
 
   def header_row

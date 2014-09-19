@@ -185,10 +185,14 @@ jQuery ->
 
   $('.download_csv').on 'click', (e)->
     e.preventDefault()
-    $(this).attr('disabled', true)
-    w = window.open(Jobs.full_url('csv'), "SubconTraX Download")
-    $(w).ready ->
-        $('.download_csv').attr('disabled', false)
+    window.location = Jobs.full_url()
+#    $(this).attr('disabled', true)
+#    w = window.open(Jobs.full_url('csv'), "SubconTraX Download")
+#    $(w).ready ->
+#        $('.download_csv').attr('disabled', false)
+#    $.get(Jobs.full_url(), ->
+#        $('.download_csv').attr('disabled', false)
+#    )
 
 
   $('.download_xls').on 'click', (e)->
