@@ -1,6 +1,21 @@
-<h1>Editing support_ticket</h1>
+<div class="well well_height">
 
-<%= render 'form' %>
+  <div class="row-fluid">
+    <div class="smart_label"  >
+      <ul>
+        <li><h1><%= t('general.general.edit_support_tickets') %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+  <br>
 
-<%= link_to 'Show', @support_ticket %> |
-<%= link_to 'Back', support_tickets_path %>
+  <div class="row-fluid">
+    <div class="span5 ">
+
+      <%= render 'form' %>
+
+    </div>
+  </div>
+  <!--end well-->
+</div>

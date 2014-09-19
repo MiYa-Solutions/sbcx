@@ -61,16 +61,44 @@
                           <table cellpadding="10" cellspacing="0" width="100%" class="templateDataTable" style="border:2px solid #f5f5f5;">
                             <!--CSS change -->
                             <tr style="background-color:#F5F5F5; color:#336699; font-family:Arial; font-size:14px; font-weight:bold; text-align:left; line-height:150%;">
-                              <th scope="col" valign="top" width="95%" class="dataTableHeading">
-                                <%= I18n.t('general.general.message').html_safe %>
+                              <th scope="col" valign="top" width="40%" class="dataTableHeading">
+                                <%= I18n.t('general.general.amount').html_safe %>:
                               </th>
-
+                              <th scope="col" valign="top" width="60%" class="dataTableHeading">
+                                <%= humanized_money_with_symbol @entry.amount %>
+                              </th>
                             </tr>
                             <tr border= "1px solid #f5f5f5;">
                               <td valign="top" class="dataTableContent">
-                                <strong><%= @entry.description %></strong>
+                                <%= I18n.t('general.general.entry_id').html_safe %>
                               </td>
-
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @entry.id %></strong>
+                              </td>
+                            </tr>
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <%= I18n.t('general.general.payment_type').html_safe %>
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @entry.class.model_name.human %></strong>
+                              </td>
+                            </tr>
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <%= I18n.t('general.general.status').html_safe %>
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @entry.human_status_name.humanize %></strong>
+                              </td>
+                            </tr>
+                            <tr border= "1px solid #f5f5f5;">
+                              <td valign="top" class="dataTableContent">
+                                <%= I18n.t('general.general.collector').html_safe %>
+                              </td>
+                              <td valign="top" class="dataTableContent">
+                                <strong><%= @entry.collector.name if defined? @entry.collector %></strong>
+                              </td>
                             </tr>
 
                             <!--CSS change -->

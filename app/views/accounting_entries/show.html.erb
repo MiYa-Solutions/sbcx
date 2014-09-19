@@ -43,7 +43,7 @@
             <strong><%= t('general.general.job_name') %></strong>
           </td>
           <td>
-            <%= link_to @accounting_entry.ticket.try(:name), service_call_path(@accounting_entry) %>
+            <%= link_to @accounting_entry.ticket.try(:name), service_call_path(@accounting_entry.ticket) %>
           </td>
         </tr>
         <tr>
