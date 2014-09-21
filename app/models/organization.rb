@@ -48,6 +48,7 @@ class Organization < ActiveRecord::Base
         :towing,
         :auto_repair,
         :glass_repair,
+        :photography,
         :other
     ]
   end
