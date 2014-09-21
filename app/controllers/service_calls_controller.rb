@@ -45,12 +45,18 @@ class ServiceCallsController < ApplicationController
     store_location
   end
 
-  def create
-    if @service_call.save
-      flash[:success] = t('service_call.crud_messages.success')
-      redirect_to service_call_path @service_call
-    else
-      render :action => 'new'
+  def
+  create
+
+    respond_to do |format|
+      sanitize_mobile_tag_list if request.format == 'mobile'
+      if @service_call.save
+        flash[:success] = t('service_call.crud_messages.success')
+        format.any(:html, :mobile) { redirect_to service_call_path @service_call }
+      else
+        render :action => 'new'
+      end
+
     end
   end
 
@@ -165,6 +171,12 @@ class ServiceCallsController < ApplicationController
 
   def csv_lines
     JobsCsvExport.new(view_context).get_csv_enumerator
+  end
+
+  def sanitize_mobile_tag_list
+    unless params[:service_call].nil? || params[:service_call][:tag_list].nil?
+      @service_call.tag_list = params[:service_call][:tag_list].reject! { |t| t.empty? }.join(",")
+    end
   end
 
 
