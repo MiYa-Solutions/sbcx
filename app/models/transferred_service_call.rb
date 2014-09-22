@@ -299,7 +299,12 @@ class TransferredServiceCall < ServiceCall
   end
 
   def invoices
-    contractor_ticket.invoices
+    if provider.member?
+      contractor_ticket.invoices
+    else
+      []
+    end
+
   end
 
   private
