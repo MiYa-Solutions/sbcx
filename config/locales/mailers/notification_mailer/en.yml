@@ -153,7 +153,7 @@ en:
       content: "The following invitation has been sent to you by: "
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to accept or decline.'
     sbcx_reference_notification:
-      subject: "%{org} invites you to join SubconTraX"
+      subject: '%{org} invites you to join SubconTraX'
       title: "Join SubconTraX for FREE"
       content: "is already using SubconTraX and and would like to invite you to try it."
       bottom_content: 'Please click on the link below for more details'
