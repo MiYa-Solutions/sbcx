@@ -45,7 +45,6 @@ en:
       subject: New Service Call
       content: 'New job was transferred to you by: <br> Contractor Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
       description: "Alert for when you receive a new job from a contractor"
-
     invite_accepted_notification:
       description: "Your invitation to join your SubConTraX network has been accepted."
     invite_declined_notification:
@@ -54,20 +53,15 @@ en:
       description: "A SubConTraX member would like to join your network."
     sbcx_reference_notification:
       description: "New invitation to join SubConTraX has been sent."
-
-
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
       subject: 'Service call %{ref} is completed'
       content: '%{subcontractor} has completed the job at: %{completed_at}'
       description: "The subcontractor has completed the job."
     sc_complete_notification:
-      # subject goes to the web subject and email subject
       subject: 'Service call %{ref} is completed'
-      # Contents goes to Tooltips and text messages
       content: '%{technician} has completed the job at: %{completed_at}'
       description: "Your technician has completed the job."
-      # HTML goes to web messages
       html_message: '%{technician} has completed the %{link}'
     sc_accepted_notification:
       html_message: '%{subcontractor} has accepted the %{link}'
@@ -130,10 +124,6 @@ en:
       html_message: '%{link} %{ref} has been settled'
       subject: 'Service call %{ref} is settled'
       content: 'Please note that job %{ref} has been settled'
-#    sc_settled_notification:
-#      html_message: 'The subcontractor (%{subcontractor}) has marked %{link} %{ref} as settled'
-#      subject: 'Service call %{ref} was marked as settled by the subcontractor'
-#      content: 'Please note that service call %{ref} was marked as settled by the subcontractor (%{subcontractor})'
     sc_started_notification:
       html_message: 'The %{subcontractor} has started the %{link}'
       subject: 'Job %{ref} has started'
@@ -153,7 +143,6 @@ en:
       subject: 'Payment Deposited For %{ref}'
       content: "The subcontractor (%{subcontractor}) claims to have deposited the customer payment with you or your bank account. You should confirm by clicking the appropriate button to notify the subcontractor you agree."
       description: "The subcontractor claims that Job payment has been deposited."
-
     agreement:
       new_subcon_agreement:
         html_message: '%{creator} has submitted new Subcontractor Agreement. Please click on %{link} to review and activate it.'
@@ -210,57 +199,47 @@ en:
       html_message: "The %{link} %{name} terms were accepted by ${other_party]"
       subject: 'Subcontracting agreement terms were accepted'
       content: 'The terms of the subcontracting agreement %{name}, were accepted by %{other_party}'
-
     new_invite:
       html_message: '%{org} has sent you an %{link} to join his affiliate network'
       subject: '%{org} has invited you to become his affiliate'
       content: '%{org} is inviting you to join his affiliate network which will allow you to outsource and receive jobs from one another'
-
     sbcx_reference_notification:
       html_message: "%{org} is inviting you to join SubconTraX"
       subject: '%{org} is inviting you to join SubconTraX'
       content: '%{org} is inviting you to join SubconTraX for FREE: %{message}'
-
     invite_accepted:
       html_message: "%{affiliate} has accepted your %{link} to join your affiliate network"
       subject: 'Congratulations! %{affiliate} has accepted your invitation'
       content: '%{affiliate} has accepted your invitation. You can start outsourcing and receiving jobs from one another.'
-
     invite_declined:
       html_message: "%{affiliate} has declined your %{link} to join your affiliate network"
       subject: '%{affiliate} has declined your invitation'
       content: '%{affiliate} has declined your invitation.'
-
     acc_adj_canceled_notification:
       html_message: "%{affiliate} has canceled the previously submitted %{link}"
       subject: '%{affiliate} has canceled the account adjustment'
       content: '%{affiliate} has canceled the account adjustment'
       description: "Your affiliate has canceled the account adjustment."
-
     acc_adj_accepted_notification:
       html_message: "%{affiliate} has accepted your %{link}"
       subject: '%{affiliate} has accepted the account adjustment'
       content: '%{affiliate} has accepted the account adjustment'
       description: "Your affiliate has accepted the account adjustment."
-
     entry_disputed_notification:
       html_message: "%{affiliate} has disputed your deposit %{link}"
       subject: '%{affiliate} has disputed an entry for job %{ref}'
       content: '%{affiliate} has disputed an entry for job ${ref}'
       description: "Your affiliate has disputed a customer payment deposit."
-
     acc_adj_rejected_notification:
       html_message: "%{affiliate} has rejected your %{link}"
       subject: '%{affiliate} has rejected the account adjustment'
       content: '%{affiliate} has rejected the account adjustment'
       description: "Your affiliate has rejected the account adjustment."
-
     account_adjusted_notification:
       html_message: '%{affiliate} is claiming that the your account balance should be adjusted and therefore submitted the %{link}'
       subject:  "%{affiliate} has submitted a balance adjustment"
       content: "%{affiliate} has submitted a balance adjustment"
       description: "Your affiliate has submitted a balance adjustment."
-
     sc_properties_updated_notification:
       html_message: '%{subcontractor} has updated job %{link}'
       subject:  "Please note that Job %{ref} has been updated"

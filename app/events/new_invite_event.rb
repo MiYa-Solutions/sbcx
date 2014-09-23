@@ -10,7 +10,7 @@ class NewInviteEvent < Event
     if eventable.affiliate.member?
       notify User.my_admins(eventable.affiliate_id), NewInviteNotification
     else
-      notify [User.new(email: eventable.affiliate.email)], SbcxReferenceNotification
+      notify [User.new(email: eventable.affiliate.email, preferences: {'sbcx_reference_notification_email' => 'true'})], SbcxReferenceNotification
     end
 
   end

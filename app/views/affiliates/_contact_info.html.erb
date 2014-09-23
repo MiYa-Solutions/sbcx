@@ -4,15 +4,10 @@
       <li><h1><%= I18n.t('general.general.contact_Info') %></h1></li>
       <li>
         <% if @affiliate.member? %>
-            <% if  @affiliate.id.in? current_user.organization.providers || (@affiliate.id.in? current_user.organization.subcontractors) %>
-                <!--Archive is already at the bottom-->
-            <% else %>
+            <% unless current_user.organization.my_affiliate?(@affiliate) %>
                 <%= image_tag("question24.png", :title => I18n.t('general.messages.add_member_invite'), :rel => 'tooltip') %>
                 <%= link_to(t('general.general.add_member'), "#invite_modal_index_#{@affiliate.id}", class: "btn btn-medium btn-primary", data: { toggle: 'modal' }, role: "button", id: "affiliate_invite_btn", :title => I18n.t('general.messages.invite_member').html_safe, :rel => 'tooltip') %>
                 <%= render 'affiliate_invite', affiliate: @affiliate %>
-
-                <!---->
-                <!--<#%= link_to I18n.t('general.general.add_member'), "", class: "btn btn-large btn-primary" %>-->
             <% end %>
         <% else %>
             <%= image_tag("question24.png", :title => I18n.t('general.messages.send_invite'), :rel => 'tooltip') %>

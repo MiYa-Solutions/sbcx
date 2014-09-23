@@ -17,7 +17,7 @@ class ServiceCallCompletedEvent < ScCompletionEvent
 
   def update_provider
     if notify_provider?
-      copy_boms_to_provider
+      #copy_boms_to_provider
       prov_service_call.update_attribute(:tax, service_call.tax)
       prov_service_call.save!
     end

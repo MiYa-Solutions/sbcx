@@ -1,5 +1,5 @@
 class NotificationMailer < ActionMailer::Base
-  default from: "notifications@subcontrax.com"
+  default from: "\"SubConTraX Alerts\" <notifications@subcontrax.com>"
 
   add_template_helper(ApplicationHelper)
 
@@ -36,7 +36,7 @@ class NotificationMailer < ActionMailer::Base
       @user   = user
       @event  = event
 
-      mail to: user.email, subject: subject
+      mail to: user.email, subject: subject, from: affiliate_from
     end
   end
 
@@ -61,4 +61,16 @@ class NotificationMailer < ActionMailer::Base
   #def method_missing(method, *args, &block)
   #
   #end
+
+  private
+
+  def affiliate_from
+
+    if @invite.organization.email
+      "\"#{@invite.organization.name}\" <#{@invite.organization.email}>"
+    else
+      "\"#{@invite.organization.name} via SubConTraX\" <notifications@subcontrax.com>"
+    end
+
+  end
 end

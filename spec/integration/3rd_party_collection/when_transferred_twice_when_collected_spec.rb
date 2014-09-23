@@ -27,7 +27,7 @@ describe '3rd Party Collection' do
           expect(job.subcon_collection_status_name).to eq :collected
         end
 
-        it 'subcon collection status should be collected' do
+        it 'broker collection status should be collected' do
           expect(broker_job.subcon_collection_status_name).to eq :collected
         end
 

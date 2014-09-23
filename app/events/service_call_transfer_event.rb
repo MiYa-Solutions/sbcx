@@ -28,49 +28,17 @@ class ServiceCallTransferEvent < ServiceCallEvent
 
     # create a service call copy for the subcontractor only if it is a member
     if service_call.subcontractor.subcontrax_member?
-
-      new_service_call = SubconServiceCall.new
-
-      new_service_call.prov_collection_status = CollectionStateMachine::STATUS_PENDING
-
-      new_service_call.organization = service_call.subcontractor.becomes(Organization)
-      new_service_call.provider     = service_call.organization.becomes(Provider)
-      new_service_call.customer     = service_call.customer
-      new_service_call.ref_id       = service_call.ref_id
-
-      new_service_call.company      = service_call.company
-      new_service_call.address1     = service_call.address1
-      new_service_call.address2     = service_call.address2
-      new_service_call.city         = service_call.city
-      new_service_call.state        = service_call.state
-      new_service_call.zip          = service_call.zip
-      new_service_call.country      = service_call.country
-      new_service_call.phone        = service_call.phone
-      new_service_call.mobile_phone = service_call.mobile_phone
-      new_service_call.work_phone   = service_call.work_phone
-      new_service_call.email        = service_call.email
-
-
-      new_service_call.transferable       = service_call.re_transfer
-      new_service_call.allow_collection   = service_call.allow_collection
-      new_service_call.name               = service_call.name
-      new_service_call.notes              = service_call.notes
-      new_service_call.provider_agreement = service_call.subcon_agreement
-      new_service_call.properties         = create_transfer_props(service_call)
-      new_service_call.tax                = service_call.tax
-
       Ticket.transaction do
         new_service_call.save!
         copy_boms_to_subcon
+        set_subcon_statuses_for_prov
       end
       new_service_call.events << ServiceCallReceivedEvent.new(triggering_event: self, description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
-
       Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
-
-
+      new_service_call
+    else
+      set_subcon_statuses_for_prov
     end
-
-    new_service_call
 
   end
 
@@ -83,6 +51,44 @@ class ServiceCallTransferEvent < ServiceCallEvent
   end
 
   private
+
+  def new_service_call
+    @subcon_ticket ||= generate_new_subcon_job
+  end
+
+  def generate_new_subcon_job
+    new_obj = SubconServiceCall.new
+
+    new_obj.prov_collection_status = CollectionStateMachine::STATUS_PENDING
+
+    new_obj.organization = service_call.subcontractor.becomes(Organization)
+    new_obj.provider     = service_call.organization.becomes(Provider)
+    new_obj.customer     = service_call.customer
+    new_obj.ref_id       = service_call.ref_id
+
+    new_obj.company      = service_call.company
+    new_obj.address1     = service_call.address1
+    new_obj.address2     = service_call.address2
+    new_obj.city         = service_call.city
+    new_obj.state        = service_call.state
+    new_obj.zip          = service_call.zip
+    new_obj.country      = service_call.country
+    new_obj.phone        = service_call.phone
+    new_obj.mobile_phone = service_call.mobile_phone
+    new_obj.work_phone   = service_call.work_phone
+    new_obj.email        = service_call.email
+
+
+    new_obj.transferable       = service_call.re_transfer
+    new_obj.allow_collection   = service_call.allow_collection
+    new_obj.name               = service_call.name
+    new_obj.notes              = service_call.notes
+    new_obj.provider_agreement = service_call.subcon_agreement
+    new_obj.properties         = create_transfer_props(service_call)
+    new_obj.tax                = service_call.tax
+    new_obj
+
+  end
 
   def create_transfer_props(job)
     result = {}
@@ -97,6 +103,12 @@ class ServiceCallTransferEvent < ServiceCallEvent
     service_call.boms.each do |bom|
       BomSynchService.new(bom).synch
     end
+  end
+
+  def set_subcon_statuses_for_prov
+    service_call.subcontractor_status     = ServiceCall::SUBCON_STATUS_PENDING
+    service_call.subcon_collection_status = CollectionStateMachine::STATUS_PENDING
+    service_call.save!
   end
 
 

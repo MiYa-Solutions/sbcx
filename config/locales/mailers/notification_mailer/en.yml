@@ -1,56 +1,46 @@
 en:
   notification_mailer:
-
     received_new_service_call:
       subject: 'New Job has been transferred to you'
       title: 'New Job'
       content: 'New service call has been transferred to you by Contractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the new service call'
-
     provider_invoiced_service_call:
       subject: 'The Contractor Has Invoiced The Customer'
       title: 'The Contractor Has Invoiced The Customer'
       content: '%{provider} has invoiced the customer for job %{ref}'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the service call'
-
     completed_service_call:
       title: 'Job has been Completed'
       subject: 'Job has been Completed'
       content: 'The following Job has been completed by Technician Name: '
-
     completed_transferred_service_call:
       content: 'The following Job has been completed by Subcontractor Name: '
-
     agr_new_subcon_notification:
       title: 'New Subcontractor Agreement'
       subject: 'New Subcontractor Agreement'
       content: 'New Subcontractor Agreement was submitted to you by:'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from '
-
     agr_change_submitted_notification:
       title: 'Subcontractor Agreement Negotiation: Change Submitted'
       subject: 'New Change Submitted For A Subcontractor Agreement'
       content: 'a change has been made to an agreement which is currently being negotiated:'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
-
     agr_change_rejected_notification:
       title: 'Subcontractor Agreement Negotiation: Change Rejected'
       subject: 'Change Was Rejected For A Subcontractor Agreement'
       content: 'The change was rejected'
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
-
     agr_accepted_subcon_notification:
       title: 'New Subcontractor Agreement has been Accepted'
       subject: 'New Subcontractor Agreement has been Accepted'
       content: 'New Subcontractor Agreement has been Accepted by: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview and activate the new Agreement in order to receive new Service Calls from.'
-
     sc_accepted_notification:
       title: 'Transferred Job has been Accepted'
       subject: 'Your transferred Job has been Accepted'
       content: 'Please note that this job has been accepted by Subcontractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview Job statuses.'
-
     sc_cancel_notification:
       title: 'Job has been Canceled'
       subject: 'Job has been Canceled'
@@ -163,7 +153,7 @@ en:
       content: "The following invitation has been sent to you by: "
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to accept or decline.'
     sbcx_reference_notification:
-      subject: "%{org} invites you to join SubconTraX"
+      subject: '%{org} invites you to join SubconTraX'
       title: "Join SubconTraX for FREE"
       content: "is already using SubconTraX and and would like to invite you to try it."
       bottom_content: 'Please click on the link below for more details'
@@ -235,8 +225,6 @@ en:
       bottom_content: 'Please click on "Unlock Account" below to unlock your account.'
     invoice:
       subject: "Invoice"
-
-
   general:
     general:
       collection_status: "Collection Status"
