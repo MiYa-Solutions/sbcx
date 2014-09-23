@@ -2,35 +2,67 @@ en:
   activerecord:
     models:
       accounting_entry: "Balance entry"
-      cash_payment_fee: "Cash Payment Fee"
-      payment_entry: "Payment Entry"
+      payment_entry: "Payment Collection Entry"
       reimbursement_for_cash_payment: "Reimbursement For Cash Payment"
       affiliate_settlement_entry: "Affiliate Settlement Entry"
-      credit_card_deposit_to_employer: "Credit Card Deposit To Employer"
-      amex_deposit_to_employer: "Amex Card Deposit To Employer"
-      credit_card_collection_for_employer: "Credit Card Collection For Employer"
       advance_payment: "Advance Payment"
       reimbursement_for_cheque_payment: "Reimbursement For Check Payment"
-      amex_payment_fee: "Amex Payment Fee"
       reimbursement_for_amex_payment: "Reimbursement For Amex Payment"
       material_reimbursement: "Material Reimbursement"
-      cheque_payment_fee: "Check Payment Fee"
       service_call_charge: "Job Charge"
       canceled_job_adjustment: "Canceled Job Adjustment"
       payment_to_subcontractor: "Payment To Subcontractor"
-      cheque_collection_for_employer: "Check Collection For Employer"
       customer_reimbursement: "Customer Reimbursement"
-      credit_payment_fee: "Credit Payment Fee"
       subcontracting_job: "Subcontracting Job"
-      cheque_deposit_to_employer: "Check Deposit To Employer"
       rejected_payment: "Rejected Payment"
       deposit_entry: "Deposit Entry"
       income_from_provider: "Income From Provider"
       customer_payment: "Customer Payment"
-      cash_collection_for_employer: "Cash Collection For Employer"
       material_reimbursement_to_cparty: "Material Reimbursement To Affiliate"
       reimbursement_for_credit_payment: "Reimbursement For Credit Payment"
       employee_commission: "Employee Commission"
+      cash: "Cash"
+      cash_payment: "Cash Payment"
+      cash_payment_from_affiliate: "Cash Payment from Affiliate"
+      cash_payment_to_affiliate: "Cash Payment to Affiliate"
+      cash_payment_fee: "Cash Payment Fee"
+      cash_collection_for_employer: "Cash Collection for Employer"
+      cash_collection_from_subcon: "Subcontractor Collected Cash Payment"
+      cash_collection_from_provider: "Contractor Collected Cash payment"
+      cash_deposit_from_subcon: "Subcontractor Deposited Cash Payment"
+      cash_deposit_to_employer: "Employer Deposited Cash Payment"
+      amex_credit_card: "Amex"
+      amex_payment: "Amex Payment"
+      amex_payment_from_affiliate: "Amex Payment from Affiliate "
+      amex_payment_to_affiliate: "Amex Payment to Affiliate"
+      amex_payment_fee: "Amex Payment Fee"
+      amex_collection_for_employer: "Amex Collection for Employer"
+      amex_collection_from_subcon: "Subcontractor Collected Amex Payment"
+      amex_collection_from_provider: "Contractor Collected Amex payment"
+      amex_deposit_from_subcon: "Subcontractor Deposited Amex Payment"
+      amex_deposit_to_employer: "Employer Deposited Amex Payment"
+      cheque: "Check"
+      cheque_payment: "Check Payment"
+      cheque_payment_from_affiliate: "Check Payment from Affiliate "
+      cheque_payment_to_affiliate: "Check Payment to Affiliate"
+      cheque_payment_fee: "Check Payment Fee"
+      cheque_collection_for_employer: "Check Collection for Employer"
+      cheque_collection_from_subcon: "Subcontractor Collected Check Payment"
+      cheque_collection_from_provider: "Contractor Collected Check payment"
+      cheque_deposit_from_subcon: "Subcontractor Deposited Check Payment"
+      cheque_deposit_to_employer: "Employer Deposited Check Payment"
+      credit_card: "Credit Card"
+      credit_payment: "Credit Card Payment"
+      credit_payment_from_affiliate: "Credit Card Payment from Affiliate "
+      credit_payment_to_affiliate: "Credit Card Payment to Affiliate"
+      credit_payment_fee: "Credit Card Payment Fee"
+      credit_card_collection_for_employer: "Credit Card Collection for Employer"
+      credit_card_collection_from_subcon: "Subcontractor Collected Credit Card Payment"
+      credit_card_collection_from_provider: "Contractor Collected Credit Card payment"
+      credit_card_deposit_from_subcon: "Subcontractor Deposited Credit Card Payment"
+      credit_card_deposit_to_employer: "Employer Deposited Credit Card Payment"
+
+
 
       adjustment_entry: "Account Adjustment"
     attributes:
@@ -69,10 +101,10 @@ en:
 
   payment_cleared_event:
     name: 'Cleared Payment'
-    description: 'payment has been cleared successfully'
+    description: 'Payment has been cleared successfully'
   payment_deposited_event:
     name: 'Deposited Payment'
-    description: 'payment has been deposited successfully'
+    description: 'Payment has been deposited successfully'
   payment_rejected_event:
     name: 'Rejected Payment'
     description: '%{payment_type} (%{payment_id}) was rejected'

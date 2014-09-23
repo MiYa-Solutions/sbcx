@@ -185,7 +185,7 @@ en:
     deposit_entry_disputed:
       subject: "Deposit was disputed"
       title: "Job entry was disputed by your affiliate"
-      content: "The following entry adjustment has been disputed by: "
+      content: "The following customer payment deposit has been disputed by: "
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to continue.'
     acc_adj_rejected:
       subject: "Balance Adjustment has been Declined"

@@ -1,4 +1,4 @@
-<div data-role="collapsible" data-collapsed="true" data-theme="d">
+<div data-role="collapsible" data-collapsed="true" data-theme="a">
   <h3>
       <span class="aff_icon_job">
       <%= image_tag("sub24.png", :title => I18n.t('general.messages.subco_icon').html_safe, :rel => 'tooltip') %>
@@ -61,7 +61,7 @@
 
         <% @service_call.subcon_entries.each do |entry| %>
 
-          <div data-role="collapsible" data-collapsed="true" data-theme="d">
+          <div data-role="collapsible" data-collapsed="true" data-theme="a">
             <h3><%= entry.type.constantize.model_name.human %>
             (<%= humanized_money_with_symbol entry.amount %>)
             </h3>

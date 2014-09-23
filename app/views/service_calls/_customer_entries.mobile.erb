@@ -24,7 +24,7 @@
 
       <% @service_call.customer_entries.each do |entry| %>
 
-          <div data-role="collapsible" data-collapsed="true" data-theme="d">
+          <div data-role="collapsible" data-collapsed="true" data-theme="a">
             <h3><%= entry.type.constantize.model_name.human %>
               (<%= humanized_money_with_symbol entry.amount %>)
             </h3>
