@@ -1,4 +1,4 @@
-<div data-role="collapsible" data-collapsed="true" data-theme="d">
+<div data-role="collapsible" data-collapsed="true" data-theme="a">
 
 
   <h3>
@@ -74,7 +74,7 @@
 
       <% @service_call.payments.each do |entry| %>
 
-          <div data-role="collapsible" data-collapsed="true" data-theme="d">
+          <div data-role="collapsible" data-collapsed="true" data-theme="a">
             <h3><%= t('general.general.receipt_num')%><%= entry.id %>
               (<%= humanized_money_with_symbol entry.amount %>)
             </h3>

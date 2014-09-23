@@ -75,6 +75,7 @@ footer {
 .ui-btn-left, .ui-btn-right, .ui-input-clear, .ui-btn-inline, .ui-grid-a .ui-btn, .ui-grid-b .ui-btn, .ui-grid-c .ui-btn, .ui-grid-d .ui-btn, .ui-grid-e .ui-btn, .ui-grid-solo .ui-btn {
   margin-left: 5px;
   margin-right: 5px;
+  height: 17px;
 }
 
 .ui-icon-emails {
@@ -2327,4 +2328,13 @@ div.ui-slider {
   left: 10% !important;
   right: 10% !important;
   max-width: 900px !important;
+}
+
+.ui-btn-up-b {
+  background: linear-gradient(#5f9cc5, #396b9e) repeat scroll 0 0 #396b9e;
+  border: 1px solid #044062;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 1px 1px #194b7e;
+  height: 17px;
 }
