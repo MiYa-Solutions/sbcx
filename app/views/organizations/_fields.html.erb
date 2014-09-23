@@ -36,4 +36,8 @@
 <%= f.input :work_phone %>
 <%= f.input :mobile %>
 <%= f.input :email, required: true %>
+<div class="default_tax_signup">
+<%= image_tag("overdue.png", :title => I18n.t('general.messages.default_tax_signup'), :rel => 'tooltip', "data-placement" => "left") %>
+
 <%= f.input :default_tax, as: :decimal %>
+</div>

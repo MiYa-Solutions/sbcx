@@ -88,6 +88,7 @@ en:
       done_jobs: "Completed jobs that are pending settlement"
       parts_reimbursement: "By leaving this unchecked - you will NOT pay back your subcontractor for the cost of parts included in this job."
       parts_reimbursement_prov: "By leaving this unchecked - you will NOT get paid for the cost of parts included in this job."
+      default_tax_signup: "You can set your default tax for all of your jobs. \nYou will be able to override the default tax for every job in the customer billing section"
     errors:
       error: "Error"
       403_title: "Forbidden. (403)"
