@@ -3,13 +3,13 @@ en:
     received_new_service_call:
       subject: 'New Job has been transferred to you'
       title: 'New Job'
-      content: 'New service call has been transferred to you by Contractor Name: '
-      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the new service call'
+      content: 'New Job call has been transferred to you by Contractor Name: '
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the new Job'
     provider_invoiced_service_call:
       subject: 'The Contractor Has Invoiced The Customer'
       title: 'The Contractor Has Invoiced The Customer'
       content: '%{provider} has invoiced the customer for job %{ref}'
-      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the service call'
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the new Job'
     completed_service_call:
       title: 'Job has been Completed'
       subject: 'Job has been Completed'
