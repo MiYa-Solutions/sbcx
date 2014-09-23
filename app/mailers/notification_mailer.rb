@@ -66,7 +66,7 @@ class NotificationMailer < ActionMailer::Base
 
   def affiliate_from
 
-    if @invite.organization.email
+    if @invite.organization.email.present?
       "\"#{@invite.organization.name}\" <#{@invite.organization.email}>"
     else
       "\"#{@invite.organization.name} via SubConTraX\" <notifications@subcontrax.com>"
