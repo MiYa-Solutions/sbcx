@@ -95,6 +95,7 @@ $('#bom_quantity').val('');
 $('#bom_buyer_id').val('');
 
 $('#boms:last').append('<%= j render(@bom) %>');
-$('#job_total_cost').html('<%= j(humanized_money_with_symbol @bom.ticket.total_cost) %>');
-$('#job_total_price').html('<%= j(humanized_money_with_symbol @bom.ticket.total_price) %>');
+$('#job_total_cost').text('<%= j(humanized_money_with_symbol @service_call.total_cost) %>');
+$('#job_total_price').text('<%= j(humanized_money_with_symbol @service_call.total_price) %>');
+$('#job_total').text('<%= j(humanized_money_with_symbol @service_call.total) %>');
 <% end %>
