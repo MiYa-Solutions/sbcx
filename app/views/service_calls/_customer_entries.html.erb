@@ -23,7 +23,7 @@
       </ul>
     </div>
 
-    <%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries %>
+    <%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries.order('id desc') %>
 
 
 
@@ -67,7 +67,7 @@
             </tr>
             </thead>
             <tbody>
-                <% @service_call.customer_entries.each do |entry| %>
+                <% @service_call.customer_entries.order('id desc').all.each do |entry| %>
                 <tr>
                   <td><%= entry.id %></td>
                   <td><%= entry.account.accountable.name %></td>

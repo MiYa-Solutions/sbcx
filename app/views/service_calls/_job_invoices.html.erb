@@ -30,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        <% @service_call.invoices.each do |invoice| %>
+        <% @service_call.invoices.order('id desc').all.each do |invoice| %>
             <% if permitted_to? :show, invoice %>
                 <tr>
                   <td><%= link_to invoice.id, invoice %></td>

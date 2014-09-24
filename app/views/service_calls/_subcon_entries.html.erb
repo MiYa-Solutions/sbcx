@@ -22,7 +22,7 @@
       </ul>
     </div>
 
-    <%= render 'accounting_entries/affiliate_entries_table', entries: @service_call.active_subcon_entries %>
+    <%= render 'accounting_entries/affiliate_entries_table', entries: @service_call.active_subcon_entries.order('id desc') %>
 
 
 

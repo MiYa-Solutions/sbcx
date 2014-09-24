@@ -1,5 +1,5 @@
 <!--show all pending actions-->
-<%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries %>
+<%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries.order('id desc') %>
 
 
 <br>
@@ -22,7 +22,7 @@
 
     <div data-role="collapsible-set" data-inset="false">
 
-      <% @service_call.customer_entries.each do |entry| %>
+      <% @service_call.customer_entries.order('id desc').all.each do |entry| %>
 
           <div data-role="collapsible" data-collapsed="true" data-theme="a">
             <h3><%= entry.type.constantize.model_name.human %>
