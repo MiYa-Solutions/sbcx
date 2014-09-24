@@ -49,7 +49,7 @@ en:
     agreement:
       new_subcon_agreement:
         name: "New Agreement"
-        description: 'New Subcontracting Agreement agreement was created by %{creator}. The %{role} is  %{counterparty}'
+        description: 'New subcontracting agreement was created by %{creator}. The %{role} is  %{counterparty}'
       submitted:
         name: "Submitted For Approval"
         description: '%{originator} created a new agreement with %{counterparty}'

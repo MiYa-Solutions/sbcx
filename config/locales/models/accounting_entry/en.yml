@@ -104,14 +104,23 @@ en:
     description: 'Payment has been cleared successfully'
   payment_deposited_event:
     name: 'Deposited Payment'
-    description: 'Payment has been deposited successfully'
+    description: 'A payment has been deposited successfully'
   payment_rejected_event:
     name: 'Rejected Payment'
-    description: '%{payment_type} (%{payment_id}) was rejected'
+    description: 'A %{payment_type} (id: %{payment_id}) has been rejected'
     entry:
-      description: '%{payment_type} (%{payment_id}) was rejected'
+      description: '%{payment_type} (id: %{payment_id}) was rejected'
   entry_confirmed_event:
-    name: "Entry Confirmed"
-    description: "Billing Entry has been Confirmed"
+    name: "Payment Confirmed"
+    description: 'A payment was confirmed by Contractor'
+  entry_confirm_event:
+      name: "Payment Confirmed"
+      description: 'You have confirmed receiving a payment'
   Cash_collection_from_subcon:
     name: "Cash collection from subcontractor"
+  entry_dispute_event:
+    name: "Payment Disputed"
+    description: 'You have disputed a payment'
+  entry_disputed_event:
+    name: "Payment Disputed"
+    description: 'A customer payment has been disputed by Contractor'

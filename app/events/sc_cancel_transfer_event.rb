@@ -2,7 +2,7 @@ class ScCancelTransferEvent < ServiceCallEvent
 
   def init
     self.name         = I18n.t('service_call_cancel_transfer_event.name')
-    self.description  = I18n.t('service_call_cancel_transfer_event.description')
+    self.description  = I18n.t('service_call_cancel_transfer_event.description', subcontractor: service_call.subcontractor.name)
     self.reference_id = 100051
   end
 

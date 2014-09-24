@@ -359,9 +359,14 @@ footer {
     padding-left: 15px;
   }
 
+  .left_blc_frame {
+    height: 526px;
+  }
+
   .bottom_block {
     margin-top: 15px;
-    min-height: 307px;
+//    min-height: 307px;
+    height: 325px;
   }
 }
 
@@ -5150,4 +5155,34 @@ table.dataTable thead th, table.dataTable thead td {
     float: right;
     margin-right: 20px;
   }
+}
+
+.entry_status_Cleared {
+  color: #44AD3F;
+  font-weight: bold;
+}
+
+.entry_status_deposited {
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.entry_status_rejected {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
+.entry_status_disputed {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
+.entry_status_confirmed {
+  color: #44AD3F;
+  font-weight: bold;
+}
+
+.entry_status_submitted {
+  color: #3A87AD;
+  font-weight: bold;
 }

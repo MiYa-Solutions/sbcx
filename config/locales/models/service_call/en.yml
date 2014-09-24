@@ -179,7 +179,7 @@ en:
     description: 'The Job has been canceled by %{subcontractor}'
   service_call_cancel_transfer_event:
     name: 'Transfer Canceled'
-    description: 'The the transfer to %{subcontractor} was canceled'
+    description: 'Job transfer to %{subcontractor} was canceled'
   service_call_received_event:
     name: "Received New Job"
     description: 'Received a new Job from %{name}'
@@ -224,16 +224,13 @@ en:
     description: 'The payment for this Job has been cleared by the subcontractor (%{subcon})'
   service_call_collected_event:
     name: "Payment Collection"
-    description: 'Name: &nbsp; (%{collector}) collected the payment from the customer'
+    description: '%{collector} collected payment from the customer'
   service_call_deposit_confirmed_event:
     name: "Contractor has Confirmed Deposit"
     description: 'Contractor Name: &nbsp; (%{provider}) has confirmed receiving payment for this Job'
   service_call_confirm_deposit_event:
     name: "Deposit has been Confirmed"
     description: 'You have confirmed receiving customer payment from Subcontractor Name: &nbsp; %{subcontractor}'
-  entry_confirm_event:
-    name: "Deposit has been Confirmed"
-    description: 'You have confirmed receiving payment'
   service_call_provider_collected_event:
     name: "Payment has been Collected by Contractor"
     description: "Contractor Name: &nbsp; (%{provider}) has collected the payment from the customer"
@@ -248,13 +245,16 @@ en:
     description: "You have indicated that the commission fees have been settled with the Contractor"
   service_call_provider_confirmed_settled_event:
     name: "Contractor has Confirmed Settlement"
-    description: 'Contractor Name: &nbsp; (%{provider}) has confirmed that commission fees for this Job have been settled'
+    description: 'Contractor: &nbsp; (%{provider}) has confirmed that commission fees for this Job have been settled'
   service_call_provider_confirm_settled_event:
     name: "Settlement Confirmed with Contractor"
     description: 'Settlement confirmed with Contractor Name: &nbsp; (%{provider}). Commission fees for this Job have been settled'
   service_call_subcon_confirmed_settled_event:
     name: "Subcontractor has Confirmed Settlement"
-    description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
+    description: 'Subcontractor: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
+  service_call_subcon_confirm_settled_event:
+    name: "Settlement Confirmed with Subcontractor"
+    description: 'Subcontractor: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
   service_call_clear_customer_payment_event:
     name: "The total payment(s) for this job are marked as cleared"
     description: "The payment for this job has been cleared, which means the check was cleared by the bank etc."
@@ -262,8 +262,8 @@ en:
     name: "The job is closed"
     description: "The job was marked as closed - no more actions are expected to happen in regards to this job"
   service_call_provider_clear_event:
-    name: "The payment from Contractor is cleared"
-    description: 'It was indicated that the payment from %{prov} for job %{job_ref} was cleared'
+    name: "Contractor payment is cleared"
+    description: 'A payment from %{prov} for job %{job_ref} was cleared'
   service_call_subcon_cleared_event:
     name: "Subcontractor Cleared Payment"
     description: '%{subcon} has cleared the %{payment_type} payment for job %{ref}'

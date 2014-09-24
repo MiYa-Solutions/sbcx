@@ -132,6 +132,11 @@ en:
       subject: 'Payment has been collected by Contractor'
       content: 'Please note that payment has been collected by Contractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
+    sc_provider_canceled_service_call:
+      title: 'Job has been canceled'
+      subject: 'Job has been canceled'
+      content: 'Please note that the job has been canceled by Contractor Name: '
+      bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account for more details.'
     sc_subcon_collected_notification:
       title: 'Payment has been collected by Subcontractor'
       subject: 'Payment has been collected by Subcontractor'
