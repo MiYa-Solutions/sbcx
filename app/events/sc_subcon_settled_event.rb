@@ -1,7 +1,7 @@
 class ScSubconSettledEvent < ScSettlementEvent
   def init
     self.name         = I18n.t('service_call_subcon_settled_event.name')
-    self.description  = I18n.t('service_call_subcon_settled_event.description')
+    self.description  = I18n.t('service_call_subcon_settled_event.description', subcontractor: service_call.subcontractor.name)
     self.reference_id = 100014
   end
 

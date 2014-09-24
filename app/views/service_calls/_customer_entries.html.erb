@@ -57,6 +57,7 @@
             <tr>
               <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
               <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
+              <th><%= AccountingEntry.human_attribute_name(:status) %> </th>
               <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
               <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
               <th><%= AccountingEntry.human_attribute_name(:type) %></th>
@@ -70,6 +71,7 @@
                 <tr>
                   <td><%= entry.id %></td>
                   <td><%= entry.account.accountable.name %></td>
+                  <td class="entry_status_<%= entry.human_status_name %>"><%= entry.human_status_name.humanize %></td>
                   <td><%= entry.account.accountable.class.model_name.human %></td>
                   <td><%= l entry.created_at %></td>
                   <td><%= entry.type.constantize.model_name.human %></td>
