@@ -52,10 +52,10 @@ en:
         description: 'New subcontracting agreement was created by %{creator}. The %{role} is  %{counterparty}'
       submitted:
         name: "Submitted For Approval"
-        description: '%{originator} created a new agreement with %{counterparty}'
+        description: '%{originator} submitted a new agreement'
       activated:
         name: "Agreement Activated"
-        description: '%{originator} activated the agreement with %{otherparty}'
+        description: '%{originator} activated an agreement'
   notifications:
   agreement:
     payment_options:
@@ -84,5 +84,3 @@ en:
         his_pending_org_approval: "The agreement is pending approval of your affiliate"
         my_draft: "The agreement has not been submitted yet"
         his_draft: "The agreement has not been submitted yet"
-
-

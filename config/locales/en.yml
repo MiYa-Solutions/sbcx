@@ -233,6 +233,7 @@ en:
       edit_support_tickets: "Edit Support Ticket"
       entry_id: "Entry Number"
       collector: "Collected By"
+      agreements_notifications: "Agreement Notifications"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
