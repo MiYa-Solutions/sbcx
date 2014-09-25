@@ -35,6 +35,13 @@ en:
       invite_declined_notification: "Declined invitation"
       new_invite_notification: "You Are Invited"
       sbcx_reference_notification: "Refer affiliate"
+      agr_change_rejected_notification: "Change Rejected"
+      agr_change_submitted_notification: "Change Submitted"
+      agr_new_subcon_notification: "New Agreement"
+      agr_subcon_accepted_notification: "Agreement Accepted"
+
+
+
 
     attributes:
       notification:
@@ -244,3 +251,15 @@ en:
       html_message: '%{subcontractor} has updated job %{link}'
       subject:  "Please note that Job %{ref} has been updated"
       content: "Please note that one or more details have been updated by Subcontractor Name: %{subcontractor}."
+    agr_change_rejected_notification:
+      name: "Change Rejected"
+      description: "Agreement change request has been rejected"
+    agr_change_submitted_notification:
+      name: "Change Submitted"
+      description: "Agreement change request has been submitted"
+    agr_new_subcon_notification:
+      name: "New Agreement"
+      description: "New agreement has been submitted"
+    agr_subcon_accepted_notification:
+      name: "Agreement Accepted"
+      description: "Agreement has been accepted"
