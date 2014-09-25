@@ -6,9 +6,18 @@ class DepositEntryConfirmedEvent < EntryEvent
     self.reference_id = 300014
   end
 
+  def notification_class
+    ScDepositConfirmedNotification
+  end
+
   def process_event
-    entry.confirmed! unless triggering_event.nil?
+    entry.confirmed!(:state_only) unless triggering_event.nil?
     entry.ticket.confirmed_prov_collection! if entry.ticket.can_confirmed_prov_collection?
+    clear_collection_entry
+
+    if triggering_event && notification_recipients
+      notify notification_recipients, notification_class
+    end
   end
 
 end

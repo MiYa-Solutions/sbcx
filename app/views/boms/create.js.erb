@@ -95,6 +95,7 @@ $('#bom_quantity').val('');
 $('#bom_buyer_id').val('');
 
 $('#boms:last').append('<%= j render(@bom) %>');
+$('#job_total_tax').text('<%= j(humanized_money_with_symbol @service_call.tax_amount) %>');
 $('#job_total_cost').text('<%= j(humanized_money_with_symbol @service_call.total_cost) %>');
 $('#job_total_price').text('<%= j(humanized_money_with_symbol @service_call.total_price) %>');
 $('#job_total').text('<%= j(humanized_money_with_symbol @service_call.total) %>');

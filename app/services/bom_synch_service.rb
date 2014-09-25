@@ -71,7 +71,7 @@ class BomSynchService
     # if the material buyer is a user, then set its organization
     if @bom.buyer.instance_of?(User)
       @bom.ticket.organization
-    elsif @bom.buyer == @bom.ticket.provider.becomes(Organization)
+    elsif @bom.buyer.becomes(Organization) == @bom.ticket.provider.becomes(Organization)
       @bom.ticket.provider.becomes(Organization)
     else
       @bom.ticket.organization
@@ -84,7 +84,7 @@ class BomSynchService
     # if the material buyer is a user, then set its organization
     if @bom.buyer.instance_of?(User)
       @bom.ticket.organization
-    elsif @bom.buyer == @bom.ticket.subcontractor.becomes(Organization)
+    elsif @bom.buyer.becomes(Organization) == @bom.ticket.subcontractor.becomes(Organization)
       @bom.ticket.subcontractor.becomes(Organization)
     else
       @bom.ticket.organization

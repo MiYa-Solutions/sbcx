@@ -3,6 +3,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
   extend HstoreSetupMethods
 
   setup_hstore_attr 'entry_id'
+  setup_hstore_attr 'deposit_entry_id'
 
   def init
 
@@ -26,6 +27,17 @@ class ScSubconDepositedEvent < ServiceCallEvent
     entry.ticket.deposited_subcon_collection!(:transition_only) if entry.ticket.can_subcon_deposited_subcon_collection?
     super
   end
+
+  def entry
+    @entry ||= AccountingEntry.find entry_id
+  end
+
+  def matching_deposit_entry(klass)
+    if triggering_event
+      triggering_event.accounting_entries.where(type: klass).first
+    end
+  end
+
 
   private
 
@@ -59,20 +71,10 @@ class ScSubconDepositedEvent < ServiceCallEvent
         deposit_entry.matching_entry.matching_entry = deposit_entry
         deposit_entry.matching_entry.save!
       end
-
+      self.deposit_entry_id = deposit_entry.id
+      self.save!
     end
 
-  end
-
-  private
-  def entry
-    @entry ||= AccountingEntry.find entry_id
-  end
-
-  def matching_deposit_entry(klass)
-    if triggering_event
-      triggering_event.accounting_entries.where(type: klass).first
-    end
   end
 
 

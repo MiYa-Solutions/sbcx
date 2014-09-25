@@ -62,14 +62,29 @@
     </tr>
 
     <tr class="bom_table_summary">
+      <td><strong><%= t('general.general.tax_amount').html_safe %></strong></td>
+      <td class="bom_label" id="total_cost">
+        <h3 id="job_total_tax"> <%= humanized_money_with_symbol @service_call.tax_amount %></h3></td>
+    </tr>
+
+    <tr class="bom_table_summary">
       <td><strong><%= t('general.general.total_cost').html_safe %></strong></td>
-      <td class="bom_label" id="total_cost"><h3 id="job_total_cost"> <%= humanized_money_with_symbol @service_call.total_cost %></h3></td>
+      <td class="bom_label" id="total_cost">
+        <h3 id="job_total_cost"> <%= humanized_money_with_symbol @service_call.total_cost %></h3></td>
     </tr>
 
     <tr class="bom_table_summary">
       <td><strong><%= t('general.general.total_price').html_safe %></strong></td>
-      <td class="bom_label" id="total_price"><h3 id="job_total_price"> <%= humanized_money_with_symbol @service_call.total_price %></h3></td>
+      <td class="bom_label" id="total_price">
+        <h3 id="job_total_price"> <%= humanized_money_with_symbol @service_call.total_price %></h3></td>
     </tr>
+    <% if @service_call.adj_amount > 0 %>
+        <tr class="bom_table_summary">
+          <td><strong><%= t('general.general.total_adjustment').html_safe %></strong></td>
+          <td class="bom_label" id="total_price">
+            <h3 id="job_total_price"> <%= humanized_money_with_symbol @service_call.adj_amount %></h3></td>
+        </tr>
+    <% end %>
     <tr class="bom_table_summary">
       <td><strong><%= t('general.general.total').html_safe %></strong></td>
       <td class="bom_label"><h3 id="job_total"> <%= humanized_money_with_symbol @service_call.total %></h3></td>
