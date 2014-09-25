@@ -15,7 +15,7 @@ class DepositEntryDisputedEvent < EntryEvent
   end
 
   def process_event
-    entry.disputed! unless triggering_event.nil?
+    entry.disputed!(:state_only) unless triggering_event.nil?
     entry.ticket.deposit_disputed_prov_collection! if entry.ticket.can_deposit_disputed_prov_collection?
     super
   end

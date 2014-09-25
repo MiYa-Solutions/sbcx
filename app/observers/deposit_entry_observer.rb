@@ -12,6 +12,6 @@ class DepositEntryObserver < ActiveRecord::Observer
   end
 
   def after_disputed(entry, transition)
-    entry.ticket.events << DepositEntryDisputedEvent.new(entry_id: entry.id)
+    entry.ticket.events << DepositEntryDisputedEvent.new(entry_id: entry.id) unless transition.args.first == :state_only
   end
 end
