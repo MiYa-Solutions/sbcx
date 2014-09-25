@@ -244,8 +244,12 @@ class Ticket < ActiveRecord::Base
     if canceled?
       Money.new(0)
     else
-      total_price + tax_amount
+      total_price + tax_amount + adj_amount
     end
+  end
+
+  def adj_amount
+    Money.new(AdjustmentEntry.where(ticket_id: self.id).sum(:amount_cents))
   end
 
   def completed_on_text

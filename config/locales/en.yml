@@ -160,8 +160,10 @@ en:
       save_changes: "Save Changes"
       appointments: "Appointments"
       total_price: 'Total Price: &nbsp;'
+      total_adjustment: 'Total Adjustment: &nbsp;'
       total: 'Total: &nbsp;'
       total_cost: 'Total Cost: &nbsp;'
+      tax_amount: 'Tax Amount: &nbsp;'
       billing: "Billing"
       no_address: "No Address"
       more_details: "More Details"
