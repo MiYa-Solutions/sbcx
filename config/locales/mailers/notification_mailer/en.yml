@@ -3,7 +3,7 @@ en:
     received_new_service_call:
       subject: 'New Job has been transferred to you'
       title: 'New Job'
-      content: 'New Job call has been transferred to you by Contractor Name: '
+      content: 'A new job has been transferred to you by Contractor Name: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview the new Job'
     provider_invoiced_service_call:
       subject: 'The Contractor Has Invoiced The Customer'
@@ -39,7 +39,7 @@ en:
     sc_accepted_notification:
       title: 'Transferred Job has been Accepted'
       subject: 'Your transferred Job has been Accepted'
-      content: 'Please note that this job has been accepted by Subcontractor Name: '
+      content: 'Please note that this job has been accepted by the subcontractor: '
       bottom_content: 'Please click on "More Details" below, or log into your SubConTraX account, to preview Job statuses.'
     sc_cancel_notification:
       title: 'Job has been Canceled'

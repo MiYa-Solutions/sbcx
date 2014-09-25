@@ -582,7 +582,6 @@ CREATE TABLE invoices (
     creator_id integer,
     updater_id integer,
     notes text,
-    description text,
     total_cents integer,
     total_currency character varying(255)
 );

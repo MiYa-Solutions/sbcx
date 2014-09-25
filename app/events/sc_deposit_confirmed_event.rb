@@ -19,22 +19,21 @@ class ScDepositConfirmedEvent < ServiceCallEvent
   private
 
   def update_accounting_entry
-    type  = case service_call.payment_type
-              when 'cash'
-                CashDepositToProvider
-              when 'cheque'
-                ChequeDepositToProvider
-              when 'credit_card'
-                CreditCardDepositToProvider
-              when 'amex_credit_card'
-                AmexDepositToProvider
-              else
-                raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
-            end
+    type = case service_call.payment_type
+             when 'cash'
+               CashDepositToProvider
+             when 'cheque'
+               ChequeDepositToProvider
+             when 'credit_card'
+               CreditCardDepositToProvider
+             when 'amex_credit_card'
+               AmexDepositToProvider
+             else
+               raise "#{self.class.name}: Unexpected payment type (#{service_call.payment_type}) when processing the event"
+           end
 
-    entry = AccountingEntry.where(ticket_id: service_call.id, type: type).lock(true).first
-
-    entry.clear
+    deposit_event = entry.ticket.events.where("properties @> hstore(?, ?)", 'deposit_entry_id', entry.id.to_s).first
+    deposit_event.entry.clear!
   end
 
 

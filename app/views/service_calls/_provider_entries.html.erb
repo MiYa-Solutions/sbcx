@@ -70,7 +70,7 @@
         </tr>
         </thead>
         <tbody>
-        <% @service_call.provider_entries.each do |entry| %>
+        <% @service_call.provider_entries.order('id desc').each do |entry| %>
             <tr>
               <td><%= entry.id %></td>
               <td><%= entry.account.accountable.name %></td>

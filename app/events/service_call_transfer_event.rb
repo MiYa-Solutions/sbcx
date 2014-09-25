@@ -66,17 +66,18 @@ class ServiceCallTransferEvent < ServiceCallEvent
     new_obj.customer     = service_call.customer
     new_obj.ref_id       = service_call.ref_id
 
-    new_obj.company      = service_call.company
-    new_obj.address1     = service_call.address1
-    new_obj.address2     = service_call.address2
-    new_obj.city         = service_call.city
-    new_obj.state        = service_call.state
-    new_obj.zip          = service_call.zip
-    new_obj.country      = service_call.country
-    new_obj.phone        = service_call.phone
-    new_obj.mobile_phone = service_call.mobile_phone
-    new_obj.work_phone   = service_call.work_phone
-    new_obj.email        = service_call.email
+    new_obj.company       = service_call.company
+    new_obj.address1      = service_call.address1
+    new_obj.address2      = service_call.address2
+    new_obj.city          = service_call.city
+    new_obj.state         = service_call.state
+    new_obj.zip           = service_call.zip
+    new_obj.country       = service_call.country
+    new_obj.phone         = service_call.phone
+    new_obj.mobile_phone  = service_call.mobile_phone
+    new_obj.work_phone    = service_call.work_phone
+    new_obj.email         = service_call.email
+    new_obj.scheduled_for = service_call.scheduled_for
 
 
     new_obj.transferable       = service_call.re_transfer
