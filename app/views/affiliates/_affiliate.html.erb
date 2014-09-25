@@ -9,7 +9,7 @@
   <td><%= link_to affiliate.name, affiliate_path(affiliate) %></td>
   <td><%= affiliate.phone %></td>
   <td><%= link_to affiliate.email, "mailto:#{affiliate.email}" %></td>
-  <td><%= affiliate.company %></td>
+
 
 
   <% if  affiliate.account_for(current_user.organization).try(:balance).present? %>
@@ -31,7 +31,7 @@
   <% else %><td></td>
   <% end %>
 
-
+  <td><%= affiliate.company %></td>
   <td class="actions_affiliate_index">
     <% if affiliate.subcontrax_member? %>
         <% unless  affiliate.id.in? affiliate_ids %>

@@ -357,10 +357,15 @@ footer {
 
   .left_block {
     padding-left: 15px;
+    min-height: 550px;
+  }
+
+  .right_block {
+    min-height: 550px;
   }
 
   .left_blc_frame {
-    height: 526px;
+//    height: 550px;
   }
 
   .bottom_block {
@@ -5153,7 +5158,7 @@ table.dataTable thead th, table.dataTable thead td {
 
   img {
     float: right;
-    margin-right: 20px;
+    margin-right: 5px;
   }
 }
 
