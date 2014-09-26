@@ -158,7 +158,7 @@ class Ticket < ActiveRecord::Base
 
     CSV::Row.new(
         [
-            :id, :type, :name, :ref_id, :my_profit, :total_cost, :total_price, :customer_name, :started_on,
+            :id, :type, :name, :ref_id, :my_profit, :total_cost, :total_price, :adjustment_amount, :tax, :tax_amount, :total, :customer_name, :started_on,
             :completed_on, :created_at, :updated_at, :status, :work_status, :billing_status, :provider_status, :subcontractor_status,
             :subcon_collection_status, :provider_collection_status, :technician_name, :provider_name, :subcontractor_name, :creator,
             :notes
@@ -171,6 +171,10 @@ class Ticket < ActiveRecord::Base
             my_profit,
             total_cost,
             total_price,
+            adj_amount,
+            tax,
+            tax_amount,
+            total,
             customer.name,
             started_on,
             completed_on,
@@ -513,7 +517,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def contractor_ticket
-    @contractor_ticket ||= Ticket.find(ref_id)
+    @contractor_ticket ||= MyServiceCall.where(id: ref_id).first
   end
 
   def subcon_chain_ids

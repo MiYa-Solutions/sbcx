@@ -2,6 +2,15 @@ require 'abstract'
 module ServiceCallsHelper
   include PaymentHelper
 
+  def invoice_allowed?
+    @invoice_allowed ||=
+        if @service_call.kind_of?(TransferredServiceCall)
+          @service_call.contractor_ticket && @service_call.work_done? && @service_call.allow_collection?
+        else
+          true
+        end
+  end
+
   def style(path)
     StylingService.instance.get_style(path)
   end

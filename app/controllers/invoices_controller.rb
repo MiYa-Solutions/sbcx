@@ -60,17 +60,16 @@ class InvoicesController < ApplicationController
   # POST /invoices
   # POST /invoices.json
   def create
-
+    ticket_id = @orig_ticket_id ? @orig_ticket_id : params[:invoice][:ticket_id]
     respond_to do |format|
       if @invoice.save
         format.any(:html, :mobile) {
-          ticket_id = @orig_ticket_id ? @orig_ticket_id : params[:invoice][:ticket_id]
           redirect_to service_call_path(ticket_id), notice: 'Invoice was successfully created.'
         }
         format.json { render json: @invoice, status: :created, location: @invoice }
       else
         flash[:error] = "Failed to create the invoice. #{humanized_errors}".html_safe
-        format.html { redirect_to @invoice.ticket }
+        format.html { redirect_to service_call_path(ticket_id) }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end
