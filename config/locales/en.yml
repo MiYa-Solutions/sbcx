@@ -89,6 +89,12 @@ en:
       parts_reimbursement: "By leaving this unchecked - you will NOT pay back your subcontractor for the cost of parts included in this job."
       parts_reimbursement_prov: "By leaving this unchecked - you will NOT get paid for the cost of parts included in this job."
       default_tax_signup: "You can set your default tax for all of your jobs. \nYou will be able to override the default tax for every job in the customer billing section"
+      i_owe_action: "Click the Settle button in Subcontractor Actions"
+      owed_to_me: "Click the Settle button to collect payment from your Contractor"
+      subcon_owe_to_me: "Click the Settle button to collect payment from your Subcontractor"
+      i_owe_action_subcon: "Click the Settle button in Contractor Actions"
+      owed_to_me_cus: "Click the Collect Payment button above to collect payment"
+      i_owe_action_cus: "Click the Collect Payment button above to refund payment "
     errors:
       error: "Error"
       403_title: "Forbidden. (403)"
@@ -236,6 +242,7 @@ en:
       entry_id: "Entry Number"
       collector: "Collected By"
       agreements_notifications: "Agreement Notifications"
+      owed_to_me: "Collect Payment"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
@@ -246,3 +253,4 @@ en:
       invite_member: "I'd like to add you to my professional network on SubConTraX. \n \n"
       send_referral: "Hi, I'm using SubConTraX and would like to invite you to try it. \n \n"
     general_select_file_import: "Import File"
+    general_i_owe: "Submit payment"

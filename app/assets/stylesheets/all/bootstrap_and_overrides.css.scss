@@ -1945,8 +1945,16 @@ a:hover {
 
 }
 
+#service_call_payment_notes {
+  min-height: 40px;
+}
+
+.customer_payment_job {
+  margin-top: -15px;
+}
+
 .service_call_events {
-  padding-bottom: 10px;
+  padding-bottom: 3px;
   margin-left: 5%;
   padding-top: 15px;
   width: 94%;

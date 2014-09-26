@@ -1,35 +1,47 @@
 <tr class="col_entry_table">
 
   <td id="customer_line"><strong><%= t('general.general.customer') %> <%= link_to @service_call.customer.name, customer_path(@service_call.customer) if @service_call.customer.present? %>
-  </strong></td>
+  </strong>
+  </td>
 
   <% if @service_call.work_done? %>
 
     <% if @service_call.try(:customer_balance) == 0 %>
           <td class="balanced"><%= humanized_money_with_symbol @service_call.customer_balance %></td>
+          <td></td>
       <% else %>
           <% if @service_call.try(:customer_balance) > 0 %>
               <td class="positive">
                 <%= humanized_money_with_symbol @service_call.customer_balance %>
-
+              </td>
+              <td>
                 <span class="help_icon">
                 <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
               </span>
+                <strong>
+                  <%= t('general.general.owed_to_me') %>
+                </strong>
+                <%= image_tag("question16.png", :title => I18n.t('general.messages.owed_to_me_cus').html_safe, :rel => 'tooltip') %>
               </td>
 
           <% else %>
               <td class="negative">
                 <%= humanized_money_with_symbol @service_call.customer_balance %>
-
+              </td>
+              <td>
                 <span class="help_icon">
-            <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
-          </span>
+                  <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
+                </span>
+
+                <strong>
+                  <%= t('general.general_i_owe') %>
+                </strong>
+                <%= image_tag("question16.png", :title => I18n.t('general.messages.i_owe_action_cus').html_safe, :rel => 'tooltip') %>
               </td>
           <% end %>
       <% end %>
 
   <% else %>
-      <td></td>
   <% end %>
 
 
