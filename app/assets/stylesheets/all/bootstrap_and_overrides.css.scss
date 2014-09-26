@@ -357,10 +357,15 @@ footer {
 
   .left_block {
     padding-left: 15px;
+    min-height: 550px;
+  }
+
+  .right_block {
+    min-height: 550px;
   }
 
   .left_blc_frame {
-    height: 526px;
+//    height: 550px;
   }
 
   .bottom_block {
@@ -1940,8 +1945,16 @@ a:hover {
 
 }
 
+#service_call_payment_notes {
+  min-height: 40px;
+}
+
+.customer_payment_job {
+  margin-top: -15px;
+}
+
 .service_call_events {
-  padding-bottom: 10px;
+  padding-bottom: 3px;
   margin-left: 5%;
   padding-top: 15px;
   width: 94%;
@@ -5153,7 +5166,7 @@ table.dataTable thead th, table.dataTable thead td {
 
   img {
     float: right;
-    margin-right: 20px;
+    margin-right: 5px;
   }
 }
 

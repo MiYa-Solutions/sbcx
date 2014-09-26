@@ -46,14 +46,14 @@
             <%= link_to @accounting_entry.ticket.try(:name), service_call_path(@accounting_entry.ticket) %>
           </td>
         </tr>
-        <tr>
-          <td>
-            <strong><%= t('general.general.description') %></strong>
-          </td>
-          <td>
-            <%= @accounting_entry.description %>
-          </td>
-        </tr>
+        <!--<tr>-->
+          <!--<td>-->
+            <!--<strong><#%= t('general.general.description') %></strong>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<#%= @accounting_entry.description %>-->
+          <!--</td>-->
+        <!--</tr>-->
         <tr>
           <td>
             <strong><%= t('general.general.status') %></strong>
