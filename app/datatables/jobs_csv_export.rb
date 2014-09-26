@@ -38,6 +38,10 @@ class JobsCsvExport
         'my_profit',
         'total_cost',
         'total_price',
+        'adjustment_amount',
+        'tax',
+        'tax_amount',
+        'total',
 
         'customer_name',
 
