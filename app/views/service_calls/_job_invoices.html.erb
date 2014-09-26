@@ -12,42 +12,42 @@
           <li><h1><%= Invoice.model_name.human.pluralize %></h1></li>
           <li>
             <%= button_tag t('general.general.new_invoice'), :class => 'btn btn-primary',
-                           id: 'new-invoice-btn', data: { toggle: 'modal', target: '#new_invoice' } %>
+                           id:                                      'new-invoice-btn', data: { toggle: 'modal', target: '#new_invoice' } %>
           </li>
         </ul>
       </div>
 
-
-      <table class="table table-striped" id="event_log_in_service_call">
-        <thead>
-        <tr>
-          <th><%= Invoice.human_attribute_name(:id) %> </th>
-          <th><%= Invoice.human_attribute_name(:total) %> </th>
-          <th><%= Invoice.human_attribute_name(:created_at) %></th>
-          <th><%= t('general.general.issued_by') %></th>
-          <th class="invoice_table_notes"><%= Invoice.human_attribute_name(:notes) %></th>
-          <th class="download_icon"><%= t('general.general.download') %></th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @service_call.invoices.order('id desc').all.each do |invoice| %>
-            <% if permitted_to? :show, invoice %>
-                <tr>
-                  <td><%= link_to invoice.id, invoice %></td>
-                  <td><%= humanized_money_with_symbol invoice.total %></td>
-                  <td><%= l invoice.try(:created_at) %></td>
-                  <td><%= invoice.creator.try(:name) %></td>
-                  <td class="invoice_table_notes"><%= textilize(invoice.notes).try(:html_safe) %></td>
-                  <td class="download_icon"><%= link_to invoice_path(invoice, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>
-                        <i class="icon-download-alt icon-white"></i>
-                    <% end %>
-                  </td>
-                </tr>
+      <% if @service_call.invoices.size > 0 %>
+          <table class="table table-striped" id="event_log_in_service_call">
+            <thead>
+            <tr>
+              <th><%= Invoice.human_attribute_name(:id) %> </th>
+              <th><%= Invoice.human_attribute_name(:total) %> </th>
+              <th><%= Invoice.human_attribute_name(:created_at) %></th>
+              <th><%= t('general.general.issued_by') %></th>
+              <th class="invoice_table_notes"><%= Invoice.human_attribute_name(:notes) %></th>
+              <th class="download_icon"><%= t('general.general.download') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @service_call.invoices.order('id desc').all.each do |invoice| %>
+                <% if permitted_to? :show, invoice %>
+                    <tr>
+                      <td><%= link_to invoice.id, invoice %></td>
+                      <td><%= humanized_money_with_symbol invoice.total %></td>
+                      <td><%= l invoice.try(:created_at) %></td>
+                      <td><%= invoice.creator.try(:name) %></td>
+                      <td class="invoice_table_notes"><%= textilize(invoice.notes).try(:html_safe) %></td>
+                      <td class="download_icon"><%= link_to invoice_path(invoice, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>
+                            <i class="icon-download-alt icon-white"></i>
+                        <% end %>
+                      </td>
+                    </tr>
+                <% end %>
             <% end %>
-        <% end %>
-        </tbody>
-      </table>
-
+            </tbody>
+          </table>
+      <% end %>
 
     </div>
     <br>
