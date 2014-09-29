@@ -21,6 +21,34 @@ describe 'Billing when in partially collected state' do
     expect(job.reload.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject]
   end
 
+  it 'prov not should be able to deposit the customer payment before subcon deposits with the prov' do
+    expect(job.payments.last.allowed_status_events).to eq []
+  end
+
+  context 'when subcon deposits the payment' do
+    before do
+      subcon_job.collection_entries.last.deposit!
+      job.reload
+    end
+
+    it 'prov should be able to deposit the customer payment before subcon deposits with the prov' do
+      expect(job.payments.last.allowed_status_events).to eq [:deposit]
+    end
+
+    context 'when the prov confirms the deposit' do
+      before do
+        job.deposited_entries.last.confirm!
+        job.reload
+      end
+
+      it 'prov should be able to deposit the customer payment before subcon deposits with the prov' do
+        expect(job.payments.last.allowed_status_events).to eq [:deposit]
+      end
+
+    end
+
+  end
+
   describe 'when payment is late' do
     include_context 'when late'
   end

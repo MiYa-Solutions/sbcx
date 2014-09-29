@@ -55,7 +55,7 @@ class CustomerPayment < AccountingEntry
   private
 
   def events_for_3rd_party_collection
-    if matching_entry.deposited?
+    if matching_entry.deposited? || matching_entry.cleared?
       the_status_events
     else
       []
