@@ -26,6 +26,16 @@ jQuery ->
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
 
+    columns: [
+      { data: "id" },
+      { data: "created_at" },
+      { data: "ref_id" },
+      { data: 'type' },
+      { data: "status" },
+      { data: "amount" },
+      { data: "balance" }
+      { data: "actions" }
+    ]
     fnRowCallback: (nRow, aData, iDisplayIndex) ->
       # Append the row id to allow automated testing
       $(nRow).attr('id', 'accounting_entry_' + aData[0])
