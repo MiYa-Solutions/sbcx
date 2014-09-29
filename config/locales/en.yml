@@ -1,6 +1,5 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
   date:
     formats:
@@ -29,11 +28,9 @@ en:
         date_only: "%B %d, %Y"
       am: "am"
       pm: "pm"
-
   activerecord:
     models:
       material: "Part"
-
     attributes:
       customer:
         phone: "Phone"
@@ -47,7 +44,6 @@ en:
   messages:
     subcontractor:
       subcontractor_created: "Subcontractor creates successfully!"
-
   general:
     job:
       errors:
@@ -105,7 +101,6 @@ en:
       422_content: "Maybe you tried to change something you don't have access to."
       500_title: "Server Error (500)"
       500_content: "Maybe you tried to change something you don't have access to."
-
       overdue: "This Job is overdue"
     emails:
       dear: "Dear"

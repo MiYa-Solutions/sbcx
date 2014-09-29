@@ -10,7 +10,6 @@ en:
       my_service_call: "My Job"
       service_call: "Job"
       transferred_service_call: "Incoming Job"
-
     attributes:
       my_service_call:
         customer: "Customer"
@@ -19,7 +18,6 @@ en:
         address1: "Address"
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
-
       transferred_service_call:
         customer: "Customer"
         provider: "Contractor"
@@ -27,9 +25,6 @@ en:
         address1: "Address"
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
-
-
-
       service_call:
         provider: "Contractor"
         tag_list: "Job Type(s)"
@@ -44,8 +39,6 @@ en:
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
         provider_agreement: "Contractor Agreement"
-
-
     state_machines:
       service_call:
         work_status:
@@ -61,7 +54,6 @@ en:
         provider_status:
           evnets:
             provider_marked_as_settled: "Marked as Settled"
-
         subcontractor_status:
           events:
             subcon_marked_as_settled: "Marked as Settled"
@@ -90,7 +82,6 @@ en:
             transferred: "Transferred"
             closed: "Closed"
             canceled: "Canceled"
-
         billing_status:
           events:
             clear: 'Clear'
@@ -118,7 +109,6 @@ en:
             accept: "Accept"
             dispatch: "Dispatch"
             work_done: "Complete"
-
           states:
             transferred: "Passed On"
             new: "Received New"
@@ -132,8 +122,6 @@ en:
             pending: "Pending"
             transferred: "Transferred"
             canceled: "Canceled"
-
-
         billing_status:
           states:
             collected: "Collected"
@@ -159,7 +147,6 @@ en:
       cant_create_for_member: "You can't create a transferred Job when the Contractor is a member. Please contact the Contractor and ask him to create the job"
       missing_provider: "Please specify a Contractor for this transferred Job"
       customer_does_not_belong_to_provider: "The customer must be the Contractor's customer"
-
     crud_messages:
       success: "The Job was created successfully"
       update:
@@ -200,7 +187,7 @@ en:
     description: '%{subcontractor} has dispatched the Job'
   service_call_paid_event:
     name: "Customer has Paid"
-    description: "Customer has paid for the service"
+    description: "Customer has paid for the job"
   service_call_invoice_event:
     name: "Customer has been Invoiced"
     description: "The customer has received the Job invoice"
@@ -270,7 +257,6 @@ en:
   service_call_properties_update_event:
     name: "Properties Update"
     description: 'The following properties were updated by %{user}'
-
   service_call_properties_updated_event:
     name: "Properties Got Updated"
     description: "The following job properties were updated by: %{updating_org}"

@@ -1,5 +1,4 @@
 # Additional translations at https://github.com/plataformatec/devise/wiki/I18n
-
 en:
   errors:
     messages:
@@ -10,7 +9,6 @@ en:
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
-
   devise:
     failure:
       already_authenticated: 'You are already signed in.'
@@ -99,7 +97,6 @@ en:
       get_deposits: "Get Deposits "
       subcon_actions: "Subcontractor Actions"
       provider_actions: "Contractor Actions"
-
     messages:
       new_agreement: "Click to add new agreement"
       invite_member: "Send invite to join your SubConTraX network member."

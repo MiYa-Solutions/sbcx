@@ -39,17 +39,13 @@ en:
       agr_change_submitted_notification: "Change Submitted"
       agr_new_subcon_notification: "New Agreement"
       agr_subcon_accepted_notification: "Agreement Accepted"
-
-
-
-
     attributes:
       notification:
         subject: "Subject"
   notifications:
     received_service_call_notification:
       html_message: 'New %{link} from %{prov_name}'
-      subject: New Service Call
+      subject: "New Job"
       content: 'New job was transferred to you by: <br> Contractor Name: &nbsp; <strong> %{provider}</strong> <br> Job Number: &nbsp; <strong>%{ref}</strong>'
       description: "Alert for when you receive a new job from a contractor"
     invite_accepted_notification:
@@ -62,11 +58,11 @@ en:
       description: "New invitation to join SubConTraX has been sent."
     sc_completed_notification:
       html_message: 'The %{subcontractor} has completed the %{link}'
-      subject: 'Service call %{ref} is completed'
+      subject: 'Job %{ref} is completed'
       content: '%{subcontractor} has completed the job at: %{completed_at}'
       description: "The subcontractor has completed the job."
     sc_complete_notification:
-      subject: 'Service call %{ref} is completed'
+      subject: 'Job %{ref} is completed'
       content: '%{technician} has completed the job at: %{completed_at}'
       description: "Your technician has completed the job."
       html_message: '%{technician} has completed the %{link}'
