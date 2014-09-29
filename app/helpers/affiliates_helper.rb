@@ -2,7 +2,7 @@ module AffiliatesHelper
   def applicable_roles
     roles = []
     OrganizationRole.all.each do |role|
-      unless role.id == OrganizationRole::OWNER_ROLE_ID
+      unless [OrganizationRole::OWNER_ROLE_ID, OrganizationRole::SUPPLIER_ROLE_ID].include? role.id
         roles << role
       end
     end
