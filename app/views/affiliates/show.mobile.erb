@@ -48,7 +48,7 @@
 <br>
 <!--Balance Info-->
 <ul data-role="listview" id="affiliate_show_balance">
-    <li data-role="list-divider" data-theme="a" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.balance')%>
+    <li data-role="list-divider" data-theme="d" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.balance')%>
 
     <% if @account.balance < 0 %>
         <span class="red_badge_collape">
@@ -69,19 +69,19 @@
 
 
 
-  <div data-role="collapsible" data-collapsed="true" data-theme="a" class="affiliate_agreements">
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_agreements">
     <%= render :partial => 'affiliate_agreements' %>
   </div>
 
 <!--Billing Info-->
-  <!--<div data-role="collapsible" data-collapsed="true" data-theme="a" class="affiliate_balance">-->
+  <!--<div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_balance">-->
 
     <!--<#%= render 'affiliate_balance' %>-->
   <!--</div>-->
 
 
 <!--Open Jobs-->
-  <div data-role="collapsible" data-collapsed="true" data-theme="a" class="affiliate_open_jobs">
+  <div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_open_jobs">
 
     <h3><%= I18n.t('general.general.open_jobs') %></h3>
 
@@ -124,13 +124,13 @@
 
 
 <!--Contact Info-->
-  <div data-role="collapsible" data-collapsed="true" data-theme="a">
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <%= render :partial => 'affiliates_contact_mobile' %>
   </div>
 
 
 <!--More-->
-  <div data-role="collapsible" data-collapsed="true" data-theme="a">
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <h3>More ...</h3>
 
     <p>
