@@ -238,6 +238,8 @@ en:
       collector: "Collected By"
       agreements_notifications: "Agreement Notifications"
       owed_to_me: "Collect Payment"
+      check: "Check"
+      check_rate: "Check Rate"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

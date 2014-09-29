@@ -44,6 +44,7 @@ en:
       amex_deposit_to_provider: "Amex Payment Deposit"
       amex_deposit_to_employer: "Employer Deposited Amex Payment"
       cheque: "Check"
+      cheque_rate: "Check Rate"
       cheque_payment: "Check Payment"
       cheque_payment_from_affiliate: "Check Payment from Affiliate "
       cheque_payment_to_affiliate: "Check Payment to Affiliate"

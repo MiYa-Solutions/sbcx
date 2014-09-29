@@ -18,45 +18,115 @@
     </ul>
   </div>
 
-  <br>
+
 
   <div id="posting_rules" class="collapse agreement_new_rule">
+    <br>
     <%= render 'posting_rules/posting_rule_form' %>
   </div>
 
   <% unless @agreement.posting_rules.empty? %>
-
-      <table class="table table-striped" id="posting_rules_table">
-        <thead>
-        <tr>
-          <th><%= PostingRule.human_attribute_name(:id) %> </th>
-          <th><%= PostingRule.human_attribute_name(:type) %> </th>
-          <!--<th><#%= PostingRule.human_attribute_name(:agreement) %></th>-->
-          <th><%= PostingRule.human_attribute_name(:rate) %></th>
-          <th><%= PostingRule.human_attribute_name(:rate_type) %></th>
-          <!--<th><#%= PostingRule.human_attribute_name(:properties) %></th>-->
-          <th><%= PostingRule.human_attribute_name(:created_at) %></th>
-          <th><%= I18n.t('general.general.actions') %></th>
-        </tr>
-        </thead>
-        <tbody class="<%= 'changed' if @agreement.rules_changed_from_prev_ver? %>">
-        <% @agreement.posting_rules.each do |rule| %>
+      <div class="<%= 'changed' if @agreement.rules_changed_from_prev_ver? %>">
+         <% @agreement.posting_rules.each do |rule| %>
+          <table class="table table-striped table-condensed">
+            <tbody>
             <tr>
-              <td><%= rule.id %></td>
-              <td><%= rule.type %></td>
-              <!--<td><#%= rule.agreement %></td>-->
-              <td><%= rule.rate %></td>
-              <td><%= rule.rate_type %></td>
-              <!--<td><#%= rule.properties %></td>-->
-              <td><%= l rule.created_at, :format => :long %></td>
-              <td><%= link_to 'Delete', agreement_posting_rule_path(@agreement, rule), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-mini btn-danger' if permitted_to? :destroy, rule, context: :posting_rules %></td>
-              <td><%= rule.cash_rate %></td>
+              <td><%= PostingRule.human_attribute_name(:id) %></td>
+              <td><h4><%= rule.id %></h4></td>
             </tr>
-        <% end %>
-        </tbody>
-      </table>
+            <tr>
+              <td><%= PostingRule.human_attribute_name(:type) %></td>
+              <td><h4><%= rule.type %></h4></td>
+            </tr>
+            <tr>
+              <td><%= PostingRule.human_attribute_name(:rate) %></td>
+              <td><h4><%= rule.rate %>
+                <% if rule.rate_type == "percentage" %>
+                    %
+                <% else %>
+                    $
+                <% end %>
 
+
+              </h4></td>
+            </tr>
+            <tr>
+              <td><%= PostingRule.human_attribute_name(:created_at) %></td>
+              <td><h4><%= l rule.created_at, :format => :long %></h4></td>
+            </tr>
+            <tr>
+              <td><%= t('general.general.check_rate') %></td>
+              <td><h4>
+                <% unless rule.cheque_rate.empty?  %>
+
+                    <% if rule.cheque_rate_type == "percentage" %>
+                        <%= rule.cheque_rate %>%
+                    <% else %>
+                        $ <%= rule.cheque_rate %>
+                    <% end %>
+                <% end %>
+              </h4></td>
+            </tr>
+            <tr>
+              <td><%= PostingRule.human_attribute_name(:credit_rate) %></td>
+              <td><h4>
+                <% unless rule.credit_rate.empty? %>
+
+                    <% if rule.credit_rate_type == "percentage" %>
+                        <%= rule.credit_rate %> %
+                    <% else %>
+                        $ <%= rule.credit_rate %>
+                    <% end %>
+                <% end %>
+              </h4></td>
+            </tr>
+            <tr>
+              <td><%= PostingRule.human_attribute_name(:amex_rate) %></td>
+              <td><h4>
+                <% unless rule.amex_rate.empty? %>
+
+                    <% if rule.amex_rate_type == "percentage" %>
+                        <%= rule.amex_rate %> %
+                    <% else %>
+                        $ <%= rule.amex_rate %>
+                    <% end %>
+                <% end %>
+              </h4></td>
+            </tr>
+            <tr>
+              <td><%= PostingRule.human_attribute_name(:cash_rate) %></td>
+              <td><h4>
+                <% unless rule.cash_rate.empty? %>
+
+                    <% if rule.cash_rate_type == "percentage" %>
+                        <%= rule.cash_rate %>   %
+                    <% else %>
+                        $ <%= rule.cash_rate %>
+                    <% end %>
+                <% end %>
+              </h4></td>
+            </tr>
+
+
+
+
+            <tr>
+              <td><%= I18n.t('general.general.actions') %></td>
+              <td><h4><%= link_to 'Delete', agreement_posting_rule_path(@agreement, rule), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-mini btn-danger' if permitted_to? :destroy, rule, context: :posting_rules %></h4></td>
+            </tr>
+
+
+            </tbody>
+          </table>
+
+            <br>
+            <br>
+
+      <% end %>
+
+      </div>
   <% end %>
 
 
 </div>
+
