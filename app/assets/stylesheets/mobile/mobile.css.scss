@@ -1431,6 +1431,26 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+.input-clear {
+  background: -moz-linear-gradient(center top , #c54e4e, #ab2525) repeat scroll 0 0 #ab2525;
+  border: 1px solid #721414;
+  border-radius: 5px;
+  color: #fff;
+  float: left;
+  font-weight: bold;
+  margin-right: 10%;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px #000;
+  width: 1%;
+}
+
+.mobi-datetime, .mobi-dateonly, .mobi-timeonly {
+  width: 85% !important;
+}
+
+
+
+
 .edit_appointment_details {
   .ui-grid-a .ui-block-a {
     width: 40%;

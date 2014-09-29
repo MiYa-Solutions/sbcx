@@ -44,6 +44,7 @@ en:
       amex_deposit_to_provider: "Amex Payment Deposit"
       amex_deposit_to_employer: "Employer Deposited Amex Payment"
       cheque: "Check"
+      cheque_rate: "Check Rate"
       cheque_payment: "Check Payment"
       cheque_payment_from_affiliate: "Check Payment from Affiliate "
       cheque_payment_to_affiliate: "Check Payment to Affiliate"
@@ -63,10 +64,7 @@ en:
       credit_card_collection_for_provider: "Contractor Collected Credit Card payment"
       credit_card_deposit_from_subcon: "Subcontractor Deposited Credit Card Payment"
       credit_card_deposit_to_employer: "Employer Deposited Credit Card Payment"
-
-
-
-      adjustment_entry: "Account Adjustment"
+    adjustment_entry: "Account Adjustment"
     attributes:
       accounting_entry:
         ticket: "Job"
@@ -100,7 +98,6 @@ en:
   accounting_entry:
     description:
       customer_reimbursement: 'Reimbursement submitted for the amount of: %{amount}'
-
   payment_cleared_event:
     name: 'Cleared Payment'
     description: 'Payment has been cleared successfully'

@@ -1,6 +1,5 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
   date:
     formats:
@@ -29,11 +28,9 @@ en:
         date_only: "%B %d, %Y"
       am: "am"
       pm: "pm"
-
   activerecord:
     models:
       material: "Part"
-
     attributes:
       customer:
         phone: "Phone"
@@ -47,7 +44,6 @@ en:
   messages:
     subcontractor:
       subcontractor_created: "Subcontractor creates successfully!"
-
   general:
     job:
       errors:
@@ -89,10 +85,10 @@ en:
       parts_reimbursement: "By leaving this unchecked - you will NOT pay back your subcontractor for the cost of parts included in this job."
       parts_reimbursement_prov: "By leaving this unchecked - you will NOT get paid for the cost of parts included in this job."
       default_tax_signup: "You can set your default tax for all of your jobs. \nYou will be able to override the default tax for every job in the customer billing section"
-      i_owe_action: "Click the Settle button in Subcontractor Actions"
-      owed_to_me: "Click the Settle button to collect payment from your Contractor"
-      subcon_owe_to_me: "Click the Settle button to collect payment from your Subcontractor"
-      i_owe_action_subcon: "Click the Settle button in Contractor Actions"
+      i_owe_action: "Click the Settle button in Subcontractor Actions. \nIf The Settle button is not available, check to see if you have pending Billing Entries."
+      owed_to_me: "Click the Settle button to collect payment from your Subcontractor. \nIf The Settle button is not available, check to see if you have pending Billing Entries."
+      subcon_owe_to_me: "Click the Settle button to collect payment from your Contractor. \nIf The Settle button is not available, check to see if you have pending Billing Entries. \nYour contractor might need to confirm your payment first."
+      i_owe_action_subcon: "Click the Settle button in Contractor Actions. \nIf The Settle button is not available, check to see if you have pending Billing Entries. \nYour contractor might need to confirm your payment first."
       owed_to_me_cus: "Click the Collect Payment button above to collect payment"
       i_owe_action_cus: "Click the Collect Payment button above to refund payment "
     errors:
@@ -105,7 +101,6 @@ en:
       422_content: "Maybe you tried to change something you don't have access to."
       500_title: "Server Error (500)"
       500_content: "Maybe you tried to change something you don't have access to."
-
       overdue: "This Job is overdue"
     emails:
       dear: "Dear"
@@ -243,6 +238,8 @@ en:
       collector: "Collected By"
       agreements_notifications: "Agreement Notifications"
       owed_to_me: "Collect Payment"
+      check: "Check"
+      check_rate: "Check Rate"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

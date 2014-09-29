@@ -5,7 +5,6 @@ en:
     attributes:
       bom:
         material_name: "Item"
-
     errors:
       models:
         bom:

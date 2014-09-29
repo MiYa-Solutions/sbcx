@@ -19,7 +19,6 @@ service_call:
       clear:
 #        form_classes: "blue-button"
         button_classes: "btn btn-large btn-success"
-
     provider_status:
       mark_as_settled:
 #        form_classes: "green-button"
@@ -67,7 +66,6 @@ service_call:
       un_cancel:
 #        form_classes: "red-button"
         button_classes: "btn btn-large btn-primary"
-
     work_status:
       start:
 #        form_classes: "green-button"
@@ -136,8 +134,6 @@ service_call:
       employee_deposit:
 #        form_classes: "blue-button"
         button_classes: "btn btn-large btn-primary"
-
-
   states:
     status:
       new: "status_blue"
@@ -194,5 +190,3 @@ service_call:
       is_deposited: "status_green"
       disputed: "status_red"
       partially_collected: "status_blue"
-
-

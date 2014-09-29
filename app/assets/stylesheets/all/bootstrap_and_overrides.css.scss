@@ -2358,6 +2358,65 @@ a:hover {
   margin-left: 2px;
 }
 
+.comments_frame {
+  min-height: 90px;
+  margin-bottom: 25px;
+}
+
+.comments_frame_admin {
+  min-height: 90px;
+  margin-bottom: 25px;
+  margin-left: 15%;
+}
+
+
+.add_comment_user_frame {
+
+  width: 50%;
+  background-color: #EEEEEE;
+  margin-top: -15px;
+  min-height: 81px;
+  border: none;
+
+  .parts_2nd {
+    margin-top: 3px;
+  }
+}
+
+.added_comments_user {
+
+  .span5 {
+    color: #000000;
+  }
+  .bom_label_frame {
+    color: #3A87AD;
+    margin-top: -4px !important;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    color: #000000;
+    line-height: 16px;
+    width: 18%;
+  }
+
+  li:last-child {
+    float: right;
+    width: 10%;
+
+  }
+  .bom_label_frame {
+    padding: 4px 1px;
+    text-shadow: 0 1px 0 #FFFFFF;
+    vertical-align: middle;
+    width: auto;
+  }
+}
+
 .add_part_service_call {
   input, textarea, text_field {
     width: 60%;
