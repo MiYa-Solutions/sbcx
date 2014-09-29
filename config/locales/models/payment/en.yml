@@ -12,5 +12,3 @@ en:
   activerecord:
     models:
       amex_credit_card: "American Express"
-
-
