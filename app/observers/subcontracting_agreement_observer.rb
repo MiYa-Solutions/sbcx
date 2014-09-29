@@ -1,5 +1,5 @@
 class SubcontractingAgreementObserver < ActiveRecord::Observer
-  observe OrganizationAgreement
+  observe [SubcontractingAgreement, OrganizationAgreement]
 
   def after_create(record)
     Rails.logger.debug { "invoked SubcontractingAgreementObserver after create" }
