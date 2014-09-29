@@ -11,11 +11,19 @@
   <tbody>
   <% notif_names.each do |notification| %>
       <tr>
-        <td class="settings_first_td">
-          <div class="btn btn-mini btn-success disabled">
-            <i class='icon-ok icon-white'></i>
-          </div>
-        </td>
+        <% if @settings.notifications_form.send(notification) %>
+            <td class="settings_first_td">
+              <div class="btn btn-mini btn-success disabled">
+                <i class='icon-ok icon-white'></i>
+              </div>
+            </td>
+        <% else %>
+            <td class="settings_first_td">
+              <div class="btn btn-mini btn-danger disabled">
+                <i class='icon-remove icon-white'></i>
+              </div>
+            </td>
+        <% end %>
 
          <td class="paginate_disabled_next settings_second_td"><%= best_in_place @settings.notifications_form,
                               "#{notification}_email".to_sym,
