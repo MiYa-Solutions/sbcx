@@ -72,19 +72,11 @@
 
       <%= render 'comments/form', comment: @new_comment %>
 
+      <br>
+
 
                   <div id="comments">
-                    <table class="table table-striped table-condensed">
-                      <thead>
-                        <th><%= SupportTicket.human_attribute_name(:creator) %></th>
-                        <th><%= SupportTicket.human_attribute_name(:created_at) %></th>
-                        <th><%= SupportTicket.human_attribute_name(:description) %></th>
-                        <th><%= t('general.general.actions') %></th>
-                      </thead>
-                      <tbody>
                             <%= render partial: 'comments/comment', collection: @comments if @comments.size > 0 %>
-                      </tbody>
-                    </table>
                    </div>
 
 

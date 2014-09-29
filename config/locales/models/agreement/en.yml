@@ -65,7 +65,6 @@ en:
       net_30: Net + 30
       net_60: Net + 60
       net_90: Net + 90
-
     status:
       tooltip:
         my_active: "The agreement is Active"
