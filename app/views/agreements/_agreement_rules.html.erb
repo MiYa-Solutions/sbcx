@@ -57,7 +57,7 @@
             <tr>
               <td><%= t('general.general.check_rate') %></td>
               <td><h4>
-                <% unless rule.cheque_rate.empty?  %>
+                <% if rule.cheque_rate.present?  %>
 
                     <% if rule.cheque_rate_type == "percentage" %>
                         <%= rule.cheque_rate %>%
@@ -70,7 +70,7 @@
             <tr>
               <td><%= PostingRule.human_attribute_name(:credit_rate) %></td>
               <td><h4>
-                <% unless rule.credit_rate.empty? %>
+                <% if rule.credit_rate.present? %>
 
                     <% if rule.credit_rate_type == "percentage" %>
                         <%= rule.credit_rate %> %
@@ -83,7 +83,7 @@
             <tr>
               <td><%= PostingRule.human_attribute_name(:amex_rate) %></td>
               <td><h4>
-                <% unless rule.amex_rate.empty? %>
+                <% if rule.amex_rate.present? %>
 
                     <% if rule.amex_rate_type == "percentage" %>
                         <%= rule.amex_rate %> %
@@ -96,7 +96,7 @@
             <tr>
               <td><%= PostingRule.human_attribute_name(:cash_rate) %></td>
               <td><h4>
-                <% unless rule.cash_rate.empty? %>
+                <% if rule.cash_rate.present? %>
 
                     <% if rule.cash_rate_type == "percentage" %>
                         <%= rule.cash_rate %>   %
