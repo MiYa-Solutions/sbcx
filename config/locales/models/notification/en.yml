@@ -202,6 +202,8 @@ en:
       html_message: "The %{link} %{name} terms were accepted by ${other_party]"
       subject: 'Subcontracting agreement terms were accepted'
       content: 'The terms of the subcontracting agreement %{name}, were accepted by %{other_party}'
+      name: "Agreement Accepted"
+      description: "Agreement has been accepted"
     new_invite:
       html_message: '%{org} has sent you an %{link} to join his affiliate network'
       subject: '%{org} has invited you to become his affiliate'
@@ -256,6 +258,3 @@ en:
     agr_new_subcon_notification:
       name: "New Agreement"
       description: "New agreement has been submitted"
-    agr_subcon_accepted_notification:
-      name: "Agreement Accepted"
-      description: "Agreement has been accepted"
