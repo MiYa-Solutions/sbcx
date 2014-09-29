@@ -7,7 +7,7 @@
         <h4><%= @receipt.ticket.organization.name %></h4>
         <h3 class="pull-right"><%= t('general.general.receipt') %> <%= @receipt.id %></h3><br>
         <%= @receipt.ticket.organization.address1 %><br>
-        <% unless @receipt.ticket.organization.address2.empty? %>
+        <% if @receipt.ticket.organization.address2.present? %>
             <%= @receipt.ticket.organization.address2  %><br>
         <% end %>
         <%= @receipt.ticket.organization.city %>, <%= @receipt.ticket.organization.state %><%= @receipt.ticket.organization.zip %><br>
@@ -19,12 +19,12 @@
           <address>
             <strong><%= t('general.general.bill_to') %></strong><br>
             <%= @receipt.ticket.customer.name %><br>
-            <% unless @receipt.ticket.customer.company.empty? %>
+            <% if @receipt.ticket.customer.company.present? %>
                 <%= @receipt.ticket.customer.company %><br>
             <% end %>
 
             <%= @receipt.ticket.customer.address1 %><br>
-            <% unless @receipt.ticket.customer.address2.empty? %>
+            <% if @receipt.ticket.customer.address2.present? %>
                 <%= @receipt.ticket.customer.address2  %><br>
             <% end %>
             <%= @receipt.ticket.customer.city %>, <%= @receipt.ticket.customer.state %><%= @receipt.ticket.customer.zip %><br>
