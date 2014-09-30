@@ -105,5 +105,7 @@ module Sbcx
       I18n.reload!
     end
 
+    config.log_level = ENV['LOG_LEVEL'].present? ? ENV['LOG_LEVEL'].to_sym : :warn
+
   end
 end

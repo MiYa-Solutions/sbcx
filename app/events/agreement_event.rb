@@ -9,9 +9,10 @@ class AgreementEvent < Event
   # this is the standard event method which gets invoked by the EventObserver after the creation
   def process_event
 
-    Rails.logger.debug { "Running #{self.class.name} process_event method" }
+    Rails.logger.debug { "#{self.class.name}: Running process_event method" }
 
     if notify_other_party?
+      Rails.logger.debug { "#{self.class.name}: Notifying  other_party (#{notification_recipients.map(&:name) unless notification_recipients.nil?})" }
       notify notification_recipients, notification_class unless notification_recipients.nil?
     end
   end

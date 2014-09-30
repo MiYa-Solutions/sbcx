@@ -55,9 +55,3 @@ en:
         submitted:
           name: "Submitted For Approval"
           description: '%{originator} submitted new agreement'
-    notifications:
-      agreement:
-        new_subcon_agreement:
-          html_message: '%{creator} has created %{link} with you as the %{role}. You should go to the agreement and accept it in order to be able to transfer jobs between one another. '
-          subject: '%{creator} has created a new Subcontracting Agreement with you as the %{role}'
-          content: 'Please go to the agreement, to review and accept it in order to be able to transfer jobs between one another.'

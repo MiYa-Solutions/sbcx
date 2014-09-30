@@ -50,7 +50,9 @@ class Notification < ActiveRecord::Base
 
   # this method assumes that the NotificationMailer has a method by the name of the notification class
   def deliver
-    if user.settings.send_notification_email?(self)
+    subscribed = user.settings.send_notification_email?(self)
+    Rails.logger.debug {"Email delivery: #{user.name} is #{subscribed ? 'subscribed': 'NOT subscribed'} for #{self.class.name.underscore}"}
+    if subscribed
       mailer_method = self.class.name.underscore #.sub("_notification", "")
       NotificationMailer.send(mailer_method, default_subject, user, notifiable, event).deliver
     end

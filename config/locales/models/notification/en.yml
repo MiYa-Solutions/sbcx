@@ -194,14 +194,16 @@ en:
       content: '%{subcon} (S) has confirmed that all commission and fees for job %{ref} have been settled'
       description: "The Subcontractor has confirmed settlement for the job."
     sc_subcon_cleared_notification:
-      html_message: '%{subcontractor}, has marked the payment for ${link} as cleared'
+      html_message: '%{subcontractor}, has marked the payment for %{link} as cleared'
       subject: '%{ref} was cleared by the subcontractor'
       content: '%{subcontractor} has cleared the payment'
       description: "The subcontractor has cleared the payment."
     agr_subcon_accepted_notification:
-      html_message: "The %{link} %{name} terms were accepted by ${other_party]"
+      html_message: 'The %{link} %{name} terms were accepted by %{other_party]'
       subject: 'Subcontracting agreement terms were accepted'
       content: 'The terms of the subcontracting agreement %{name}, were accepted by %{other_party}'
+      name: "Agreement Accepted"
+      description: "Agreement has been accepted"
     new_invite:
       html_message: '%{org} has sent you an %{link} to join his affiliate network'
       subject: '%{org} has invited you to become his affiliate'
@@ -256,6 +258,3 @@ en:
     agr_new_subcon_notification:
       name: "New Agreement"
       description: "New agreement has been submitted"
-    agr_subcon_accepted_notification:
-      name: "Agreement Accepted"
-      description: "Agreement has been accepted"

@@ -56,7 +56,6 @@ en:
       activated:
         name: "Agreement Activated"
         description: '%{originator} activated an agreement'
-  notifications:
   agreement:
     payment_options:
       cod: Collect On Delivery

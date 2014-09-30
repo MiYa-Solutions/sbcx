@@ -63,7 +63,7 @@ class AccountingEntriesController < ApplicationController
   def update
     respond_to do |format|
       if @accounting_entry.update_attributes(accounting_entry_params)
-        format.html {
+        format.any(:html, :mobile) {
           flash[:success] ='Accounting entry was successfully updated.'
           redirect_back_or_to @accounting_entry.becomes(AccountingEntry)
         }

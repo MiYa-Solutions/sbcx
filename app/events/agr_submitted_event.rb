@@ -19,6 +19,7 @@ class AgrSubmittedEvent < AgreementEvent
   end
 
   def process_event
+    Rails.logger.debug ("Started Process")
     update_description_with_reason
     super
   end
