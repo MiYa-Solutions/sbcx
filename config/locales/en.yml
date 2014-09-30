@@ -240,6 +240,8 @@ en:
       owed_to_me: "Collect Payment"
       check: "Check"
       check_rate: "Check Rate"
+      agreement_changes: "Changes"
+      agreement_changes_submitted: "Agreement Changes"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

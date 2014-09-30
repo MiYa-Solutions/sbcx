@@ -72,12 +72,15 @@
 
     <li class="ui-li ui-li-static affiliate_statuses_main">
         <%= link_to @service_call.class.human_attribute_name(:provider_status), "#prov_statuses", "data-rel" => "popup", "data-transition" => "pop" %>
+
         <span class="aff_status_wLink <%= StylingService.instance.get_style("service_call.states.work_status.#{@service_call.provider_status_name}") %>" id="service_call_work_status">
                     <%= @service_call.human_provider_status_name %>
         </span>
       </li>
 
   <% end %>
+
+
 
 
 </ul>

@@ -38,7 +38,14 @@
     <li>
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:customer) %></div>
-        <div class="ui-block-b status_grey "><%= link_to @service_call.customer.try(:name), customer_path(@service_call.customer.id) %></div>
+        <div class="ui-block-b status_grey ">
+
+          <% if @service_call.class != MyServiceCall || @service_call.my_role == :subcon %>
+              <%= @service_call.customer.try(:name) %>
+          <% else %>
+              <%= link_to @service_call.customer.try(:name), customer_path(@service_call.customer.id) %>
+          <% end %>
+        </div>
       </div>
     </li>
 
