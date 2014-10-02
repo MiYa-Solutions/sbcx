@@ -64,7 +64,7 @@ en:
       credit_card_collection_for_provider: "Contractor Collected Credit Card payment"
       credit_card_deposit_from_subcon: "Subcontractor Deposited Credit Card Payment"
       credit_card_deposit_to_employer: "Employer Deposited Credit Card Payment"
-    adjustment_entry: "Account Adjustment"
+      adjustment_entry: "Account Adjustment"
     attributes:
       accounting_entry:
         ticket: "Job"

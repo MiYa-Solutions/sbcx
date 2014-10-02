@@ -166,7 +166,11 @@ def setup_customer_agreement(org, customer)
 end
 
 def setup_flat_fee_agreement(prov, subcon, payment_rules = {})
-  agreement = SubcontractingAgreement.create(organization: prov, counterparty: subcon, name: "#{prov.name} (P), #{subcon.name} (S) FlatFee", creator: User.find_by_email(User::SYSTEM_USER_EMAIL))
+  agreement = SubcontractingAgreement.create(organization: prov,
+                                             counterparty: subcon,
+                                             name: "#{prov.name} (P), #{subcon.name} (S) FlatFee",
+                                             creator: User.find_by_email(User::SYSTEM_USER_EMAIL),
+                                             payment_terms: :net_10)
 
   payment_rules[:cash_rate]        ||= 0.0
   payment_rules[:cheque_rate]      ||= 0.0
@@ -196,7 +200,11 @@ def setup_flat_fee_agreement(prov, subcon, payment_rules = {})
 end
 
 def setup_profit_split_agreement(prov, subcon, rate = 50.0, payment_rules = {})
-  agreement = SubcontractingAgreement.create(organization: prov, counterparty: subcon, name: "#{prov.name} (P), #{subcon.name} (S) FlatFee", creator: User.find_by_email(User::SYSTEM_USER_EMAIL))
+  agreement = SubcontractingAgreement.create(organization:  prov,
+                                             counterparty:  subcon,
+                                             name:          "#{prov.name} (P), #{subcon.name} (S) FlatFee",
+                                             creator:       User.find_by_email(User::SYSTEM_USER_EMAIL),
+                                             payment_terms: :net_10)
 
   payment_rules[:cash_rate]        ||= 1.0
   payment_rules[:cheque_rate]      ||= 2.5
