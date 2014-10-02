@@ -40,11 +40,11 @@
             </tr>
             <tr>
               <td><%= PostingRule.human_attribute_name(:rate) %></td>
-              <td><h4><%= rule.rate %>
+              <td><h4>
                 <% if rule.rate_type == "percentage" %>
-                    %
+                    <%= rule.rate %> %
                 <% else %>
-                    $
+                    $ <%= rule.rate %>
                 <% end %>
 
 

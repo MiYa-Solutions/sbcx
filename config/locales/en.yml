@@ -91,6 +91,7 @@ en:
       i_owe_action_subcon: "Click the Settle button in Contractor Actions. \nIf The Settle button is not available, check to see if you have pending Billing Entries. \nYour contractor might need to confirm your payment first."
       owed_to_me_cus: "Click the Collect Payment button above to collect payment"
       i_owe_action_cus: "Click the Collect Payment button above to refund payment "
+      customer_email: "Enter a valid email address if you wish to send emails/notifications to your customer (i.e. invoices)"
     errors:
       error: "Error"
       403_title: "Forbidden. (403)"
@@ -240,6 +241,8 @@ en:
       owed_to_me: "Collect Payment"
       check: "Check"
       check_rate: "Check Rate"
+      agreement_changes: "Changes"
+      agreement_changes_submitted: "Agreement Changes"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

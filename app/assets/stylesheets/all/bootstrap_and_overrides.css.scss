@@ -5180,7 +5180,6 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   }
 }
 
-
 table.dataTable thead th, table.dataTable thead td {
     border-bottom: 1px solid #111111;
     padding: 10px 9px;
@@ -5257,4 +5256,8 @@ table.dataTable thead th, table.dataTable thead td {
 .entry_status_submitted {
   color: #3A87AD;
   font-weight: bold;
+}
+
+.agreement_changes_td1 {
+  width: 15%;
 }

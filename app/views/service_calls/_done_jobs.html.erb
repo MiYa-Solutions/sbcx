@@ -42,7 +42,11 @@
                 <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
                 <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
                 <td><%= link_to sc.try(:name), service_call_path(sc) %></td>
-                <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
+                <% unless sc.my_role == :subcon  %>
+                    <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
+                <% else %>
+                    <td><%= sc.customer.name unless sc.customer.nil? %></td>
+                <% end %>
                 <td><%= link_to sc.completed_on_text, service_call_path(sc) %></td>
                 <!--customer balance-->
                 <% if sc.try(:customer_balance) > 0 %>
@@ -175,7 +179,11 @@
                 <td><%= link_to sc.ref_id, service_call_path(sc) %></td>
                 <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
                 <td><%= link_to sc.try(:name), service_call_path(sc) %></td>
-                <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
+                <% if sc.class == MyServiceCall %>
+                    <td><%= link_to sc.customer.name, sc.customer unless sc.customer.nil? %></td>
+                <% else %>
+                    <td><%= sc.customer.name unless sc.customer.nil? %></td>
+                <% end %>
                 <td><%= link_to sc.completed_on_text, service_call_path(sc) %></td>
 
 
