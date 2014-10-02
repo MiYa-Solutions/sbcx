@@ -262,7 +262,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def adj_amount
-    Money.new(AdjustmentEntry.where(ticket_id: self.id).sum(:amount_cents))
+    Money.new(AdjustmentEntry.where(account_id: customer.account.id, ticket_id: self.id).sum(:amount_cents))
   end
 
   def completed_on_text
