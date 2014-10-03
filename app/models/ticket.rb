@@ -326,6 +326,7 @@ class Ticket < ActiveRecord::Base
                                                   state:        state,
                                                   zip:          zip,
                                                   phone:        phone,
+                                                  email:        email,
                                                   mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
 
     else
@@ -337,6 +338,7 @@ class Ticket < ActiveRecord::Base
                                                       state:        state,
                                                       zip:          zip,
                                                       phone:        phone,
+                                                      email:        email,
                                                       mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
     end
   end
