@@ -157,7 +157,8 @@ describe 'Invoice Active Job' do
   end
 
 
-
+  pending 'invoice with adj entry'
+  pending 'invoice with reimbursement'
 
 
 end
