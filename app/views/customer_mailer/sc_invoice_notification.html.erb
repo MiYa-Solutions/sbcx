@@ -139,6 +139,7 @@
                           </tr>
                           <% end %>
 
+                          <% if @invoice.ticket.work_done? %>
 
                           <tr border= "1px solid #f5f5f5;">
                             <td valign="top" width="10%" class="dataTableContent"></td>
@@ -148,9 +149,11 @@
                               <strong><%= t('general.general.tax') %>:</strong>
                             </td>
                             <td valign="top" width="20%" class="dataTableContent">
-                              <strong><%= humanized_money_with_symbol @invoice.ticket.tax_amount %>(<%= @invoice.ticket.tax %>%)</strong>
+                              <strong><%= humanized_money_with_symbol @invoice.ticket.tax_amount %>&nbsp;(<%= @invoice.ticket.tax %>%)</strong>
                             </td>
                           </tr>
+                          <% end %>
+
 
                           <tr border= "1px solid #f5f5f5;">
                             <td valign="top" width="10%" class="dataTableContent"></td>

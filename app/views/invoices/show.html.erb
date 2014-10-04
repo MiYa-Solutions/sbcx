@@ -2,7 +2,7 @@
   <div class="row-fluid">
 
 <div class="container">
-  <div class="row">
+  <div class="row invoice_row">
     <div class="col-xs-12">
       <div class="invoice-title">
         <br>
@@ -91,13 +91,15 @@
       <td></td>
       <td><br></td>
     </tr>
-    <tr>
-      <td class="thick-line"></td>
-      <td class="thick-line"></td>
-      <td class="thick-line"></td>
-      <td class="thick-line"><%= t('general.general.tax') %>:</td>
-      <td class="thick-line"><%= humanized_money_with_symbol @invoice.ticket.tax_amount %>(<%= @invoice.ticket.tax %>%)</td>
-    </tr>
+    <% if @invoice.ticket.work_done? %>
+        <tr>
+          <td class="thick-line"></td>
+          <td class="thick-line"></td>
+          <td class="thick-line"></td>
+          <td class="thick-line"><%= t('general.general.tax') %>:</td>
+          <td class="thick-line"><%= humanized_money_with_symbol @invoice.ticket.tax_amount %>&nbsp;(<%= @invoice.ticket.tax %>%)</td>
+        </tr>
+    <% end %>
     <tr>
       <td></td>
       <td></td>

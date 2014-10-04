@@ -4790,6 +4790,9 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
   .icon-pencil {
     float: right;
   }
+  img {
+    float: right;
+  }
 }
 
 .affiliate_statuses {
@@ -5058,6 +5061,10 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 .invoice_table {
   margin-top: 75px;
+}
+
+.invoice_row {
+  margin-left: 1.5%;
 }
 
 .pdf_footer {

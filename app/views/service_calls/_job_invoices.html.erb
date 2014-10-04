@@ -83,8 +83,8 @@
 
             <% unless @service_call.work_done? %>
 
-                <%= f.input :adv_payment_amount %>
-                <%= f.input :adv_payment_desc %>
+                <%= f.input :adv_payment_amount, required: true %>
+                <%= f.input :adv_payment_desc, required: true %>
             <% end %>
             <%= f.input :email_customer, as: :boolean %>
             <%= f.input :ticket_id, as: :hidden, input_html: { value: @service_call.id } %>
