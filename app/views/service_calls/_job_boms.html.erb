@@ -52,7 +52,9 @@
     <tr class="bom_table_summary">
       <td><strong><%= @service_call.class.human_attribute_name(:tax) %></strong>
         <% if permitted_attribute? @service_call, :tax %>
-            &nbsp;<i class="icon-pencil"></i>
+            <%= image_tag("question16.png", :title => I18n.t('general.messages.default_tax_overide'), :rel => 'tooltip', "data-placement" => "left") %>
+
+            <!--&nbsp;<i class="icon-pencil"></i>-->
         <% end %></td>
       <td class="bom_label">
         <h3>

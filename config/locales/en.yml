@@ -85,6 +85,7 @@ en:
       parts_reimbursement: "By leaving this unchecked - you will NOT pay back your subcontractor for the cost of parts included in this job."
       parts_reimbursement_prov: "By leaving this unchecked - you will NOT get paid for the cost of parts included in this job."
       default_tax_signup: "You can set your default tax for all of your jobs. \nYou will be able to override the default tax for every job in the customer billing section"
+      default_tax_overide: "You can change the tax rate for this job by clicking the number on the right."
       i_owe_action: "Click the Settle button in Subcontractor Actions. \nIf The Settle button is not available, check to see if you have pending Billing Entries."
       owed_to_me: "Click the Settle button to collect payment from your Subcontractor. \nIf The Settle button is not available, check to see if you have pending Billing Entries."
       subcon_owe_to_me: "Click the Settle button to collect payment from your Contractor. \nIf The Settle button is not available, check to see if you have pending Billing Entries. \nYour contractor might need to confirm your payment first."

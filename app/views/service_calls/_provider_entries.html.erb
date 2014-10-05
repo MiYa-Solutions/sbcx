@@ -66,7 +66,6 @@
           <th><%= AccountingEntry.human_attribute_name(:type) %></th>
           <th><%= AccountingEntry.human_attribute_name(:payment_notes) %></th>
           <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
-          <th><%= AccountingEntry.human_attribute_name(:balance) %> </th>
         </tr>
         </thead>
         <tbody>
@@ -80,7 +79,6 @@
               <td><%= entry.type.constantize.model_name.human %></td>
               <td><%= entry.notes %></td>
               <td><%= humanized_money_with_symbol entry.amount %></td>
-              <td><%= humanized_money_with_symbol entry.balance %></td>
             </tr>
         <% end %>
         </tbody>
