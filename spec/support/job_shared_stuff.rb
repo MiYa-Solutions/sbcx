@@ -211,7 +211,7 @@ def mark_as_settled_prov(ticket, options = {})
                            provider_status_event: 'settle')
 end
 
-def confirm_as_settled_prov(ticket)
+def confirm_settled_prov(ticket)
   ticket.confirm_settled_provider!
 end
 

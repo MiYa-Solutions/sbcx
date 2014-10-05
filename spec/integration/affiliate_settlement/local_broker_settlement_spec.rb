@@ -32,7 +32,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
     end
 
     it 'broker_job: subcon settlement is not allowed yet (need to complete the work first)' do
-      expect(broker_job.subcontractor_status_events).to eq []
+      expect(broker_job.subcontractor_status_events).to_not include :settle
     end
 
     it 'broker_job: provider settlement is not allowed yet (need to complete the first)' do
@@ -45,7 +45,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
       end
 
       it 'broker_job: subcon settlement is allowed' do
-        expect(broker_job.subcontractor_status_events).to eq [:settle]
+        expect(broker_job.subcontractor_status_events).to include :settle
         expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, broker_job)).to be_true
 
       end
@@ -70,7 +70,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
         end
 
         it 'broker_job: is able to settle with subcon' do
-          expect(broker_job.subcontractor_status_events).to eq [:settle]
+          expect(broker_job.subcontractor_status_events).to include :settle
           expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, broker_job)).to be_true
         end
 
@@ -103,7 +103,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
             end
 
             it 'broker_job: should be able to settle with subcon' do
-              expect(broker_job.subcontractor_status_events).to eq [:settle]
+              expect(broker_job.subcontractor_status_events).to include :settle
             end
 
             it 'broker_job: there are no more settlement events available' do
@@ -189,7 +189,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
         end
 
         it 'broker_job: subcon settlement confirmation is allowed' do
-          expect(broker_job.subcontractor_status_events).to eq [:settle]
+          expect(broker_job.subcontractor_status_events).to include :settle
           expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, broker_job)).to be_true
         end
 
@@ -266,7 +266,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
     end
 
     it 'broker_job: subcon settlement is not allowed yet (need to deposit the collection first)' do
-      expect(broker_job.subcontractor_status_events).to eq []
+      expect(broker_job.subcontractor_status_events).to_not include :settle
     end
 
     it 'broker_job: provider settlement is not allowed yet (need to deposit the collection first)' do
@@ -281,7 +281,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
       end
 
       it 'broker_job: subcon settlement is not allowed yet (need to deposit the collection first)' do
-        expect(broker_job.subcontractor_status_events).to eq []
+        expect(broker_job.subcontractor_status_events).to_not include :settle
       end
 
       it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
@@ -295,7 +295,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
         end
 
         it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
-          expect(broker_job.subcontractor_status_events).to eq []
+          expect(broker_job.subcontractor_status_events).to_not include :settle
         end
 
         it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
@@ -326,7 +326,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
 
 
           it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
-            expect(broker_job.subcontractor_status_events).to eq []
+            expect(broker_job.subcontractor_status_events).to_not include :settle
           end
 
           it 'subcon job: provider settlement is allowed (as the collection was deposited and confirmed by prov)' do
@@ -339,7 +339,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
             end
 
             it 'provider job: subcon settlement is not allowed yet (need to confirm the deposit first)' do
-              expect(broker_job.subcontractor_status_events).to eq []
+              expect(broker_job.subcontractor_status_events).to_not include :settle
             end
 
             context 'when confirming the subcon deposit' do
@@ -348,7 +348,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
               end
 
               it 'provider job: subcon settlement is not allowed yet (need to confirm the deposit first)' do
-                expect(broker_job.subcontractor_status_events).to eq [:settle]
+                expect(broker_job.subcontractor_status_events).to include :settle
               end
 
               context 'when settling with subcon' do
@@ -380,7 +380,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
                   end
 
                   it 'can close the job' do
-                    expect(broker_job.status_events).to eq [:cancel, :close]
+                    expect(broker_job.status_events).to include :close
                   end
 
                   context 'when closing the job' do

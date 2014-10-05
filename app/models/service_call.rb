@@ -276,11 +276,7 @@ class ServiceCall < Ticket
 
 
   def subcon_settlement_allowed?
-    subcontractor && subcon_collection_fully_deposited? && all_deposited_entries_confirmed? && work_done?(
-
-        (subcontractor.subcontrax_member? && !allow_collection?) ||
-            (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
-            (!subcontractor.subcontrax_member? && work_done?))
+    subcontractor && work_done? && subcon_collection_fully_deposited? && all_deposited_entries_confirmed?
   end
 
   def can_change_boms?

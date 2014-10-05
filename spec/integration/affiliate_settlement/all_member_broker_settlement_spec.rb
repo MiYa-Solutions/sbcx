@@ -174,6 +174,176 @@ describe 'All Members Broker Settlement' do
     end
 
   end
-  context 'when the provider marks the job as settled with the broker'
+
+  context 'when the provider marks the job as settled with the broker' do
+    before do
+      job.reload
+      mark_as_settled_subcon job
+      broker_job.reload
+      subcon_job.reload
+    end
+
+    it 'broker subcontractor status should be pending' do
+      expect(broker_job.subcontractor_status_name).to eq :pending
+    end
+
+    it 'provider subcontractor status should be claim_settled' do
+      expect(job.subcontractor_status_name).to eq :claim_settled
+    end
+
+    it 'broker provider status should be claimed_as_settled' do
+      expect(broker_job.provider_status_name).to eq :claimed_as_settled
+    end
+
+    it 'subcontractor provider status should be pending' do
+      expect(subcon_job.provider_status_name).to eq :pending
+    end
+
+    it 'broker balance with subcon should be -200.00 (subcon fee +  bom reimb)' do
+      expect(broker.account_for(subcon).balance).to eq Money.new(-20000)
+    end
+
+    it 'subcon balance with broker should be 200.00 (subcon fee +  bom reimb)' do
+      expect(subcon.account_for(broker).balance).to eq Money.new(20000)
+    end
+
+    it 'broker balance with provider should be 0' do
+      expect(broker.account_for(org).balance).to eq Money.new(0)
+    end
+
+    it 'prov balance with broker should be 0' do
+      expect(org.account_for(broker).balance).to eq Money.new(0)
+    end
+
+    context 'when the broker confirms the settlement' do
+      before do
+        confirm_settled_prov broker_job
+        job.reload
+        subcon_job.reload
+      end
+
+      it 'broker subcontractor status should be pending' do
+        expect(broker_job.subcontractor_status_name).to eq :pending
+      end
+
+      it 'provider subcontractor status should be cleared' do
+        expect(job.subcontractor_status_name).to eq :cleared
+      end
+
+      it 'broker provider status should be cleared' do
+        expect(broker_job.provider_status_name).to eq :cleared
+      end
+
+      it 'subcontractor provider status should be pending' do
+        expect(subcon_job.provider_status_name).to eq :pending
+      end
+
+      it 'broker balance with subcon should be -200.00 (subcon fee +  bom reimb)' do
+        expect(broker.account_for(subcon).balance).to eq Money.new(-20000)
+      end
+
+      it 'subcon balance with broker should be 200.00 (subcon fee +  bom reimb)' do
+        expect(subcon.account_for(broker).balance).to eq Money.new(20000)
+      end
+
+      it 'broker balance with provider should be 0' do
+        expect(broker.account_for(org).balance).to eq Money.new(0)
+      end
+
+      it 'prov balance with broker should be 0' do
+        expect(org.account_for(broker).balance).to eq Money.new(0)
+      end
+
+      context 'when the broker settles with the subcon' do
+        before do
+          mark_as_settled_subcon broker_job
+          job.reload
+          subcon_job.reload
+        end
+
+        it 'broker subcontractor status should be claim_settled' do
+          expect(broker_job.subcontractor_status_name).to eq :claim_settled
+        end
+
+        it 'provider subcontractor status should be cleared' do
+          expect(job.subcontractor_status_name).to eq :cleared
+        end
+
+        it 'broker provider status should be cleared' do
+          expect(broker_job.provider_status_name).to eq :cleared
+        end
+
+        it 'subcontractor provider status should be claimed_as_settled' do
+          expect(subcon_job.provider_status_name).to eq :claimed_as_settled
+        end
+
+        it 'broker balance with subcon should be 0.00' do
+          expect(broker.account_for(subcon).balance).to eq Money.new(0)
+        end
+
+        it 'subcon balance with broker should be 0.00' do
+          expect(subcon.account_for(broker).balance).to eq Money.new(0)
+        end
+
+        it 'broker balance with provider should be 0' do
+          expect(broker.account_for(org).balance).to eq Money.new(0)
+        end
+
+        it 'prov balance with broker should be 0' do
+          expect(org.account_for(broker).balance).to eq Money.new(0)
+        end
+
+        context 'when the subcon confirms the settlement' do
+          before do
+            confirm_settled_prov subcon_job
+            job.reload
+            broker_job.reload
+          end
+
+          it 'broker subcontractor status should be cleared' do
+            expect(broker_job.subcontractor_status_name).to eq :cleared
+          end
+
+          it 'provider subcontractor status should be cleared' do
+            expect(job.subcontractor_status_name).to eq :cleared
+          end
+
+          it 'broker provider status should be cleared' do
+            expect(broker_job.provider_status_name).to eq :cleared
+          end
+
+          it 'subcontractor provider status should be cleared' do
+            expect(subcon_job.provider_status_name).to eq :cleared
+          end
+
+          it 'broker balance with subcon should be 0.00' do
+            expect(broker.account_for(subcon).balance).to eq Money.new(0)
+          end
+
+          it 'subcon balance with broker should be 0.00' do
+            expect(subcon.account_for(broker).balance).to eq Money.new(0)
+          end
+
+          it 'broker balance with provider should be 0' do
+            expect(broker.account_for(org).balance).to eq Money.new(0)
+          end
+
+          it 'prov balance with broker should be 0' do
+            expect(org.account_for(broker).balance).to eq Money.new(0)
+          end
+
+
+        end
+
+
+
+      end
+
+
+
+    end
+
+
+  end
 
 end

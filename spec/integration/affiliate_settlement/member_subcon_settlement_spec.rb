@@ -21,7 +21,7 @@ describe 'Member Subcon Settlement' do
     end
 
     it 'provider job: subcon settlement is not allowed yet (need to complete the work first)' do
-      expect(job.subcontractor_status_events).to eq []
+      expect(job.subcontractor_status_events).to_not include :settle
     end
 
     it 'subcon job: provider settlement is not allowed yet (need to complete the first)' do
@@ -35,7 +35,8 @@ describe 'Member Subcon Settlement' do
       end
 
       it 'provider job: subcon settlement is allowed' do
-        expect(job.subcontractor_status_events).to eq [:subcon_marked_as_settled, :settle]
+        expect(job.subcontractor_status_events).to include :settle
+        expect(job.subcontractor_status_events).to include :subcon_marked_as_settled
         expect(event_permitted_for_job?('subcontractor_status', 'subcon_marked_as_settled', subcon_admin, subcon_job)).to be_false
         expect(event_permitted_for_job?('subcontractor_status', 'settle', subcon_admin, subcon_job)).to be_true
 
@@ -390,7 +391,7 @@ describe 'Member Subcon Settlement' do
     end
 
     it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
-      expect(job.subcontractor_status_events).to eq []
+      expect(job.subcontractor_status_events).to_not include :settle
     end
 
     it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
@@ -406,7 +407,7 @@ describe 'Member Subcon Settlement' do
       end
 
       it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
-        expect(job.subcontractor_status_events).to eq []
+        expect(job.subcontractor_status_events).to_not include :settle
       end
 
       it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
@@ -421,7 +422,7 @@ describe 'Member Subcon Settlement' do
         end
 
         it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
-          expect(job.subcontractor_status_events).to eq []
+          expect(job.subcontractor_status_events).to_not include :settle
         end
 
         it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
@@ -453,7 +454,8 @@ describe 'Member Subcon Settlement' do
 
 
           it 'provider job: subcon settlement is not allowed yet (need to deposit the collection first)' do
-            expect(job.subcontractor_status_events).to eq [:subcon_marked_as_settled, :settle]
+            expect(job.subcontractor_status_events).to include :settle
+            expect(job.subcontractor_status_events).to include :subcon_marked_as_settled
           end
 
           it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
