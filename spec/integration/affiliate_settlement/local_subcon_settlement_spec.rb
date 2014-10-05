@@ -95,7 +95,7 @@ describe 'Local Subcon Settlement' do
           end
 
           it 'should be allowed to settle with the subcon' do
-            expect(job.subcontractor_status_events).to_not include :settle
+            expect(job.subcontractor_status_events).to include :settle
           end
 
           context 'when settling with the subcon' do
