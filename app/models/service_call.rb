@@ -65,8 +65,10 @@ class ServiceCall < Ticket
 
     if self.canceled?
       true
-    else
+    elsif self.work_done?
       total > 0 ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+    else
+      false
     end
 
   end

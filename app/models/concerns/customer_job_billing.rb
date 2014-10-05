@@ -44,6 +44,7 @@ module CustomerJobBilling
 
       event :collect do
         transition :partially_collected => :in_process, if: ->(sc) { sc.fully_paid? && sc.any_payment_deposited? }
+        transition :partially_collected => :paid, if: ->(sc) { sc.fully_paid? && sc.fully_cleared? }
 
         transition [:pending,
                     :rejected,

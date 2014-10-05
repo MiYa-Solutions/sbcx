@@ -193,6 +193,22 @@ def transfer_the_job(options = {})
                             status_event:     'transfer')
 end
 
+def mark_as_settled_subcon(ticket)
+  ticket.settle_subcontractor!
+end
+
+def confirm_settled_subcon(ticket)
+  ticket.confirm_settled_subcontractor!
+end
+
+def mark_as_settled_prov(ticket)
+  ticket.settle_provider!
+end
+
+def confirm_as_settled_prov(ticket)
+  ticket.confirm_settled_provider!
+end
+
 shared_context 'when canceling the job' do
   before do
     job_to_cancel.update_attributes(status_event: 'cancel') unless example.metadata[:skip_cancel]
