@@ -97,11 +97,11 @@ shared_context 'basic job testing' do
 end
 
 shared_context 'transferred job' do
-  let(:the_agr_factory) { defined?(agr_factory) ? agr_factory : :subcon_agreement}
+  let(:the_agr_factory) { defined?(agr_factory) ? agr_factory : :subcon_agreement }
   include_context 'basic job testing' unless example.metadata[:skip_basic_job]
   let(:subcon_agr) { FactoryGirl.build(the_agr_factory, organization: job.organization) }
   let(:subcon) {
-    s = subcon_agr.counterparty
+    s      = subcon_agr.counterparty
     s.name = "subcon-#{s.name}"
     s.save!
     s
@@ -120,15 +120,15 @@ shared_context 'brokered job' do
   include_context 'transferred job'
   let(:broker_prov_agr) { FactoryGirl.build(:subcon_agreement, organization: job.organization) }
   let(:broker_subcon_agr) { FactoryGirl.build(:subcon_agreement, organization: broker) }
-  let(:bom_reimb) {defined?(bom_reimbursement) ? bom_reimbursement : 'true'}
+  let(:bom_reimb) { defined?(bom_reimbursement) ? bom_reimbursement : 'true' }
   let(:broker) {
-    b = broker_prov_agr.counterparty
+    b      = broker_prov_agr.counterparty
     b.name = "broker-#{b.name}"
     b.save!
     b
   }
   let(:subcon) {
-    s = broker_subcon_agr.counterparty
+    s      = broker_subcon_agr.counterparty
     s.name = "subcon-#{s.name}"
     s.save!
     u = FactoryGirl.build(:user, organization: s, email: "subcon-#{s.name}@example.com")
@@ -193,16 +193,22 @@ def transfer_the_job(options = {})
                             status_event:     'transfer')
 end
 
-def mark_as_settled_subcon(ticket)
-  ticket.settle_subcontractor!
+def mark_as_settled_subcon(ticket, options = {})
+  the_payment_type = options[:payment_type] || 'cash'
+
+  ticket.update_attributes(subcon_payment:             the_payment_type,
+                           subcontractor_status_event: 'settle')
 end
 
 def confirm_settled_subcon(ticket)
-  ticket.confirm_settled_subcontractor!
+  ticket.confirm_settled_subcon!
 end
 
-def mark_as_settled_prov(ticket)
-  ticket.settle_provider!
+def mark_as_settled_prov(ticket, options = {})
+  the_payment_type = options[:payment_type] || 'cash'
+
+  ticket.update_attributes(provider_payment:      the_payment_type,
+                           provider_status_event: 'settle')
 end
 
 def confirm_as_settled_prov(ticket)
