@@ -34,6 +34,7 @@ class JobsCsvExport
         'type',
         'name',
         'ref_id',
+        'external_ref',
 
         'my_profit',
         'total_cost',
@@ -42,8 +43,15 @@ class JobsCsvExport
         'tax',
         'tax_amount',
         'total',
+        'customer_balance',
 
         'customer_name',
+        'address1',
+        'address2',
+        'city',
+        'state',
+        'country',
+        'zip',
 
         #dates
         'started_on',

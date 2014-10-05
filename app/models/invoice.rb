@@ -56,12 +56,7 @@ class Invoice < ActiveRecord::Base
       self.invoice_items << item
     end
 
-    ticket.entries.where(type: 'RejectedPayment').each do |e|
-      item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
-      self.invoice_items << item
-    end
-
-    ticket.entries.where(type: 'MyAdjEntry').each do |e|
+    ticket.customer_entries.where(type: [RejectedPayment.name,MyAdjEntry.name, ReceivedAdjEntry.name, CustomerReimbursement.name] ).order('id ASC').each do |e|
       item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
       self.invoice_items << item
     end
@@ -77,7 +72,7 @@ class Invoice < ActiveRecord::Base
       self.invoice_items << item
     end
 
-    ticket.entries.where(type: ['RejectedPayment', 'AdvancePayment']).each do |e|
+    ticket.customer_entries.where(type: ['RejectedPayment', 'AdvancePayment']).each do |e|
       item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
       self.invoice_items << item
     end

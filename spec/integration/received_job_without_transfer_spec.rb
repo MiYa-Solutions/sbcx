@@ -583,14 +583,6 @@ describe 'Received Job Without Transfer' do
 
       end
 
-      context 'when rejected'
-
-      context 'when canceled' do
-        include_context 'when canceling the job' do
-          let(:job_to_cancel) { job }
-        end
-        it_behaves_like 'provider job is canceled'
-      end
     end
 
   end

@@ -158,7 +158,8 @@ class Ticket < ActiveRecord::Base
 
     CSV::Row.new(
         [
-            :id, :type, :name, :ref_id, :my_profit, :total_cost, :total_price, :adjustment_amount, :tax, :tax_amount, :total, :customer_name, :started_on,
+            :id, :type, :name, :ref_id, :external_ref, :my_profit, :total_cost, :total_price, :adjustment_amount, :tax, :tax_amount, :total, :customer_balance, :customer_name,
+            :address1, :address2, :city, :state, :country, :zip, :started_on,
             :completed_on, :created_at, :updated_at, :status, :work_status, :billing_status, :provider_status, :subcontractor_status,
             :subcon_collection_status, :provider_collection_status, :technician_name, :provider_name, :subcontractor_name, :creator,
             :notes
@@ -168,6 +169,7 @@ class Ticket < ActiveRecord::Base
             type,
             name,
             ref_id,
+            external_ref,
             my_profit,
             total_cost,
             total_price,
@@ -175,7 +177,14 @@ class Ticket < ActiveRecord::Base
             tax,
             tax_amount,
             total,
+            customer_balance,
             customer.name,
+            address1,
+            address2,
+            city,
+            state,
+            country,
+            zip,
             started_on,
             completed_on,
             created_at,
@@ -253,7 +262,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def adj_amount
-    Money.new(AdjustmentEntry.where(ticket_id: self.id).sum(:amount_cents))
+    Money.new(AdjustmentEntry.where(account_id: customer.account.id, ticket_id: self.id).sum(:amount_cents))
   end
 
   def completed_on_text
@@ -317,6 +326,7 @@ class Ticket < ActiveRecord::Base
                                                   state:        state,
                                                   zip:          zip,
                                                   phone:        phone,
+                                                  email:        email,
                                                   mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
 
     else
@@ -328,6 +338,7 @@ class Ticket < ActiveRecord::Base
                                                       state:        state,
                                                       zip:          zip,
                                                       phone:        phone,
+                                                      email:        email,
                                                       mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
     end
   end
@@ -434,7 +445,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def active_subcon_entries
-    subcon_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED])
+    subcon_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
   end
 
 
@@ -448,7 +459,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def active_provider_entries
-    provider_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED])
+    provider_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
   end
 
   def customer_entries
@@ -461,7 +472,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def active_customer_entries
-    customer_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, CustomerPayment::STATUS_REJECTED])
+    customer_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, CustomerPayment::STATUS_REJECTED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
   end
 
 

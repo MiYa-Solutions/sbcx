@@ -5,7 +5,7 @@ module ServiceCallsHelper
   def invoice_allowed?
     @invoice_allowed ||=
         if @service_call.kind_of?(TransferredServiceCall)
-          @service_call.contractor_ticket && @service_call.work_done? && @service_call.allow_collection?
+          @service_call.contractor_ticket && @service_call.work_done? && !JobBillingFormsRenderer.new(@service_call, self).available_events.empty?
         else
           true
         end

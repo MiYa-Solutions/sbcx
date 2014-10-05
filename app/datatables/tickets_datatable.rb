@@ -41,7 +41,7 @@ class TicketsDatatable
       when 'job_search'
         tickets.map do |ticket|
           [
-              ticket.id,
+              ticket.ref_id,
               ticket.name,
               ticket.human_status_name,
               ticket.human_work_status_name,
