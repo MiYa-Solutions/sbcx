@@ -49,14 +49,13 @@ en:
     agreement:
       new_subcon_agreement:
         name: "New Agreement"
-        description: 'New Subcontracting Agreement agreement was created by %{creator}. The %{role} is  %{counterparty}'
+        description: 'New subcontracting agreement was created by %{creator}. The %{role} is  %{counterparty}'
       submitted:
         name: "Submitted For Approval"
-        description: '%{originator} created a new agreement with %{counterparty}'
+        description: '%{originator} submitted a new agreement'
       activated:
         name: "Agreement Activated"
-        description: '%{originator} activated the agreement with %{otherparty}'
-  notifications:
+        description: '%{originator} activated an agreement'
   agreement:
     payment_options:
       cod: Collect On Delivery
@@ -65,7 +64,6 @@ en:
       net_30: Net + 30
       net_60: Net + 60
       net_90: Net + 90
-
     status:
       tooltip:
         my_active: "The agreement is Active"
@@ -84,5 +82,3 @@ en:
         his_pending_org_approval: "The agreement is pending approval of your affiliate"
         my_draft: "The agreement has not been submitted yet"
         his_draft: "The agreement has not been submitted yet"
-
-

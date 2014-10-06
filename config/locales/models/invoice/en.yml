@@ -1,0 +1,9 @@
+en:
+  activerecord:
+    models:
+      invoice: Invoice
+    attributes:
+      invoice:
+        adv_payment_amount: Advanced Payment Amount
+        adv_payment_desc: Payment Description
+        notes: Notes

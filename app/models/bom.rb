@@ -22,19 +22,24 @@ class Bom < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :material, with_deleted: true
   belongs_to :buyer, :polymorphic => true
+  belongs_to :provider_bom, class_name: 'Bom'
+  belongs_to :subcon_bom, class_name: 'Bom'
+  has_many :invoice_items, as: :invoiceable
+  has_many :invoices, through: :invoice_items
 
   stampable
+  monetize :cost_cents, :numericality => { :greater_than => 0 }
+  monetize :price_cents, :numericality => { :greater_than => 0 }
 
   validates_presence_of :ticket, :cost_cents, :price_cents, :quantity, :material_id
-  validates_numericality_of :quantity, :cost_cents, :price_cents
+  validates_numericality_of :quantity
   validate :validate_buyer
   validate :check_ticket_status
 
-  monetize :cost_cents
-  monetize :price_cents
 
   before_validation :set_material
   before_validation :set_default_buyer
+  after_save :synch_with_affiliates
 
   # virtual attributes
   attr_accessor :material_name
@@ -46,6 +51,12 @@ class Bom < ActiveRecord::Base
 
   def total_price
     self.price * self.quantity unless self.quantity.nil?
+  end
+
+  alias_method :amount, :total_price
+
+  def description
+    material.description
   end
 
 
@@ -65,12 +76,17 @@ class Bom < ActiveRecord::Base
     @material_name ||= material.try(:name)
   end
 
+  def name
+    material_name
+  end
+
   def validate_buyer
 
     unless ticket.nil? || ticket.invalid? # if there is no ticket associated this bom is invalid anyway
       valid_values = [ticket.provider_id,
                       ticket.subcontractor_id,
-                      ticket.technician_id].compact
+                      ticket.organization_id,
+      ].compact + ticket.organization.user_ids
 
       errors.add(:buyer_id, I18n.t('activerecord.errors.models.bom.buyer')) unless valid_values.include? buyer_id
     end
@@ -86,8 +102,8 @@ class Bom < ActiveRecord::Base
 
   def check_ticket_status
     unless ticket.nil?
-      errors.add :ticket, "Can't add/update a bom for a ticket transferred to a member subcon" if ticket.transferred? && ticket.subcontractor.subcontrax_member? && creator.present?
-      errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done?
+      errors.add :ticket, "Can't add/update a bom for a completed job " if ticket.work_done? && (self.changed? || self.new_record?)
+      errors.add :ticket, "Can't add/update a bom before accepting the job " if ticket.kind_of?(TransferredServiceCall) && !(ticket.accepted? || ticket.transferred?) && self.creator
     end
   end
 
@@ -97,20 +113,34 @@ class Bom < ActiveRecord::Base
       raise ActiveRecord::RecordInvalid.new(self)
     end
     super
+    provider_bom.destroy if provider_bom
+    subcon_bom.destroy if subcon_bom
   end
 
   # determines if the bom was paid by the org that owns the ticket
   # the method addresses the use case where a User was the buyer of the part
   # in case the org that owns the ticket is a broker, then it is considered "mine" (will return true) if the subcontractor is the buyer
-  def mine?
+  # using the options by specifying really_mine then then subcon bom will not be considered mine for a broker ticket
+  def mine?(options = {})
+    really_mine = options[:really_mine] ? options[:really_mine] : false
     case buyer
       when Organization
-        self.buyer == self.ticket.organization || (self.ticket.my_role == :broker && self.buyer == self.ticket.subcontractor.becomes(Organization))
+        if really_mine
+          self.buyer == self.ticket.organization
+        else
+          self.buyer == self.ticket.organization || (self.ticket.my_role == :broker && self.buyer == self.ticket.subcontractor.becomes(Organization))
+        end
       when User
-        User.where(organization_id: self.organization.id).pluck(:id).include?(buyer.id)
+        User.where(organization_id: ticket.organization.id).pluck(:id).include?(buyer.id)
       else
         raise "Unexpected buyer type (not user nor Organization): #{buyer.class}"
     end
+  end
+
+  private
+
+  def synch_with_affiliates
+    BomSynchService.new(self).synch
   end
 end
 

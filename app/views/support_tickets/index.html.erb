@@ -1,0 +1,57 @@
+
+<div class="well well_height">
+  <div class="row-fluid">
+
+    <div class="smart_label">
+
+      <ul>
+        <li><h1><%= t('general.general.support_tickets') %></h1></li>
+        <li><%= link_to t('general.general.new_support_tickets'), new_support_ticket_path, class: "btn btn-large btn-primary" %></li>
+      </ul>
+
+    </div>
+  </div>
+
+
+<br>
+
+  <div class="row-fluid">
+
+    <table class="table table-striped table-condensed">
+      <thead>
+      <tr>
+        <th><%= SupportTicket.human_attribute_name(:subject) %></th>
+        <th><%= SupportTicket.human_attribute_name(:description) %></th>
+        <th><%= SupportTicket.human_attribute_name(:status) %></th>
+        <th><%= SupportTicket.human_attribute_name(:created_at) %></th>
+        <th><%= SupportTicket.human_attribute_name(:creator) %></th>
+        <th><%= SupportTicket.human_attribute_name(:updated_at) %></th>
+        <th><%= SupportTicket.human_attribute_name(:updater) %></th>
+        <th><%= I18n.t('general.general.actions') %></th>
+
+      </tr>
+      </thead>
+      <tbody>
+
+      <% @support_tickets.each do |support_ticket| %>
+          <tr>
+            <td><%= support_ticket.subject %></td>
+            <td><%= support_ticket.description %></td>
+            <td><%= support_ticket.status %></td>
+            <td><%= l support_ticket.created_at %></td>
+            <td><%= support_ticket.creator.name %></td>
+            <td><%= l support_ticket.updated_at %></td>
+            <td><%= support_ticket.updater.name %></td>
+            <td>
+              <%= link_to 'Show', support_ticket, class: "btn btn-mini btn-primary" %>
+              <!--<#%= link_to 'Edit', edit_support_ticket_path(support_ticket) %>-->
+            </td>
+          </tr>
+
+      <% end %>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>

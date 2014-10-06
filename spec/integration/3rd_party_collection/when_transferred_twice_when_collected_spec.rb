@@ -27,7 +27,7 @@ describe '3rd Party Collection' do
           expect(job.subcon_collection_status_name).to eq :collected
         end
 
-        it 'subcon collection status should be collected' do
+        it 'broker collection status should be collected' do
           expect(broker_job.subcon_collection_status_name).to eq :collected
         end
 
@@ -63,6 +63,10 @@ describe '3rd Party Collection' do
 
             it 'provider collection status should be is_deposited' do
               expect(subcon_job.prov_collection_status_name).to eq :is_deposited
+            end
+
+            it 'subcon should not be allowed to confirm the deposited payments' do
+              expect(subcon_job.deposit_entries.last.allowed_status_events).to be_empty
             end
 
             context 'when the broker confirms the deposit' do

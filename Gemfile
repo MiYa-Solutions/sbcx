@@ -33,15 +33,22 @@ gem 'unicorn', '~> 4.8.0', platform: :ruby
 gem 'figaro', '0.5.3' #for environment variable configuration
 gem 'rails3-jquery-autocomplete', git: 'git://github.com/MiYa-Solutions/rails3-jquery-autocomplete.git'
 
-gem 'monetize'
+gem 'monetize', '0.1.4'
 gem 'money-rails', '0.9.0'
 gem 'select2-rails', '3.3.1'
 gem 'bootstrap-editable-rails', '0.0.4'
 gem 'RedCloth', '~> 4.2.9', :require => 'redcloth'
 gem 'rails3_acts_as_paranoid', '~> 0.2.5'
-gem 'activeadmin'
+gem 'activeadmin', '0.6.3'
 gem 'meta_search', '>= 1.1.0.pre'
 gem 'prawn', '~> 0.13.1'
+gem 'validates_email_format_of'
+
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+gem 'acts_as_commentable_with_threading'
+
+gem 'roo'
 
 group :production do
   gem 'rails_12factor'
@@ -56,6 +63,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
+  gem 'heroku_san'
 end
 
 group :development, :test do
@@ -64,6 +72,7 @@ group :development, :test do
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
+  gem 'thin'
 
 end
 
@@ -91,7 +100,7 @@ group :test do
   gem 'mocha'
   gem 'capybara-screenshot', '0.3.4'
   gem 'poltergeist', '1.4.1'
-  gem 'shoulda'
+  gem 'shoulda-matchers', require: false
   gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.4.4'
   gem 'simplecov'

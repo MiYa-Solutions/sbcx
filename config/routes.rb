@@ -1,11 +1,19 @@
 Sbcx::Application.routes.draw do
 
+  resources :support_tickets
+  resources :comments, :only => [:create, :destroy]
+
+
+  resources :receipts, only: [:show]
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   root to: 'static_pages#index'
 
 
+  resource :job_imports, only: [:new, :create]
   resources :invites
-
+  resource :settings, only: [:show, :edit, :update]
+  resources :invoices, only: [:new, :create, :show, :index], controller: 'invoices'
 
                                                                                 # for rails4 unmark the 'via:' part
   match '(errors)/:status', to: 'errors#show', constraints: { status: /\d{3}/ } # via: :all

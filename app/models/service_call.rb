@@ -58,13 +58,17 @@
 
 class ServiceCall < Ticket
 
-  def fully_paid?(options = {})
+  after_create :init_tax
+
+  def fully_paid?
     current_payment = payment_amount || 0
 
-    if options[:work_in_progress].nil?
-      work_done? ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
-    else
+    if self.canceled?
+      true
+    elsif self.work_done?
       total > 0 ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+    else
+      false
     end
 
   end
@@ -102,6 +106,7 @@ class ServiceCall < Ticket
   WORK_STATUS_ACCEPTED    = 2003
   WORK_STATUS_REJECTED    = 2004
   WORK_STATUS_DONE        = 2005
+  WORK_STATUS_CANCELED    = 2006
 
   state_machine :work_status, initial: :pending, namespace: 'work' do
     state :pending, value: WORK_STATUS_PENDING
@@ -114,6 +119,7 @@ class ServiceCall < Ticket
     state :accepted, value: WORK_STATUS_ACCEPTED
     state :rejected, value: WORK_STATUS_REJECTED
     state :done, value: WORK_STATUS_DONE
+    state :canceled, value: WORK_STATUS_CANCELED
 
     after_transition any => :done do |sc, transition|
       if sc.payments.size > 0
@@ -128,7 +134,7 @@ class ServiceCall < Ticket
     end
 
     event :start do
-      transition [:pending] => :in_progress, if: lambda { |sc| !sc.canceled? && !sc.organization.multi_user? && !sc.transferred? }
+      transition :pending => :in_progress, if: ->(sc) { sc.work_start_allowed? && !sc.organization.multi_user? }
       transition [:accepted, :dispatched] => :in_progress, if: ->(sc) { !sc.canceled? }
     end
 
@@ -146,15 +152,21 @@ class ServiceCall < Ticket
     #end
 
     event :dispatch do
-      transition :pending => :dispatched, if: ->(sc) { !sc.canceled? && sc.organization.multi_user? && !sc.transferred? }
+      transition [:pending, :accepted] => :dispatched, if: ->(sc) { sc.organization.multi_user? && sc.work_start_allowed? }
     end
 
     event :reset do
-      transition :rejected => :pending, if: ->(sc) { !sc.canceled? }
+      #transition [:rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
+      transition [:in_progress, :accepted, :rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
+
     end
 
     event :complete do
       transition :in_progress => :done, if: ->(sc) { !sc.canceled? }
+    end
+
+    event :cancel do
+      transition [:accepted, :in_progress] => :canceled
     end
 
   end
@@ -216,6 +228,11 @@ class ServiceCall < Ticket
     event :clear do
       transition :settled => :cleared
     end
+
+    event :cancel do
+      transition :pending => :na
+    end
+
   end
 
 
@@ -237,7 +254,7 @@ class ServiceCall < Ticket
       sc = ServiceCall.new
     else
       params[:organization_id] = org.id
-      if params[:provider_id].empty? || params[:provider_id] == org.id
+      if params[:provider_id].nil? || params[:provider_id].empty? || params[:provider_id].to_i == org.id
         sc = MyServiceCall.new(params)
       else
         params[:subcontractor_id] = nil
@@ -259,27 +276,14 @@ class ServiceCall < Ticket
 
 
   def subcon_settlement_allowed?
-    subcontractor && subcon_collection_fully_deposited? && all_deposited_entries_confirmed? && work_done?(
-
-    (subcontractor.subcontrax_member? && !allow_collection?) ||
-        (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
-        (!subcontractor.subcontrax_member? && work_done?))
+    subcontractor && work_done? && subcon_collection_fully_deposited? && all_deposited_entries_confirmed?
   end
 
   def can_change_boms?
-
-    (self.work_status_was == WORK_STATUS_IN_PROGRESS || self.work_in_progress?)&& (!self.transferred? || self.transferred? && !self.subcontractor.subcontrax_member?)
+    !self.work_done? && !self.canceled? && !self.work_canceled?
   end
 
   alias_method :can_change_financial_data?, :can_change_boms?
-
-  def invoice
-    Invoice.new(self)
-  end
-
-  def already_invoiced?
-    invoice.date ? true : false
-  end
 
   def check_payment_amount
     errors.add :payment_amount, "Payment must be a number greater than zero" if self.payment_amount.nil? || self.payment_amount.try(:empty?) || self.payment_amount.to_f == 0.0
@@ -302,11 +306,25 @@ class ServiceCall < Ticket
   end
 
 
-
   private
 
   def all_deposited_entries_confirmed?
     deposited_entries.map(&:status).select { |status| status != ConfirmableEntry::STATUS_CONFIRMED }.empty?
+  end
+
+  def init_tax
+    if tax == 0.0
+      tax_number = default_tax
+      self.update_column(:tax, tax_number)
+    end
+  end
+
+  def default_tax
+    if self.customer.default_tax
+      self.customer.default_tax.to_f
+    else
+      organization.default_tax.to_f
+    end
   end
 
 

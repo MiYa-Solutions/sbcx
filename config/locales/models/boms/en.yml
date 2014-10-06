@@ -5,8 +5,7 @@ en:
     attributes:
       bom:
         material_name: "Item"
-
     errors:
       models:
         bom:
-          buyer: "The buyer must be either the Contractor, Subcontractor or the Technician"
+          buyer: "The buyer must be either the Contractor, Subcontractor, Broker organizations or the Technician"

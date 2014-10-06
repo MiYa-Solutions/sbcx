@@ -33,7 +33,9 @@ module CustomerJobBilling
       end
 
       event :reject do
-        transition [:partially_collected, :in_process] => :rejected
+        transition [:partially_collected, :in_process] => :rejected, if: ->(sc) { !sc.canceled? }
+        transition [:in_process, :collected] => :over_paid, if: ->(sc) { sc.canceled? && sc.outstanding_payments_cleared? }
+        transition [:in_process, :collected] => :paid, if: ->(sc) { sc.canceled? && !sc.outstanding_payments? }
       end
 
       event :late do
@@ -42,6 +44,7 @@ module CustomerJobBilling
 
       event :collect do
         transition :partially_collected => :in_process, if: ->(sc) { sc.fully_paid? && sc.any_payment_deposited? }
+        transition :partially_collected => :paid, if: ->(sc) { sc.fully_paid? && sc.fully_cleared? }
 
         transition [:pending,
                     :rejected,
@@ -58,26 +61,26 @@ module CustomerJobBilling
 
                    if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
 
-        transition :overdue => :overdue, if: ->(sc) { !sc.fully_paid? && !sc.canceled? }
+        transition :overdue => :partially_collected, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && (sc.customer_balance <= 0) }
+        transition :overdue => :overdue, if: ->(sc) { !sc.fully_paid? && !sc.canceled? && (sc.customer_balance > 0) }
       end
 
       event :deposited do
-        transition [:in_process, :collected] => :over_paid, if: ->(sc) { !sc.canceled? && sc.overpaid? }
-        transition [:in_process, :collected] => :paid, if: ->(sc) { !sc.canceled? && sc.fully_cleared? }
-        transition :collected => :in_process, if: ->(sc) { !sc.canceled? && sc.fully_paid? }
+        transition [:in_process, :collected] => :over_paid, if: ->(sc) { sc.overpaid? && !sc.payment_pending_process? }
+        transition [:in_process, :collected] => :paid, if: ->(sc) { sc.fully_cleared? && !sc.payment_pending_process? }
+        transition :collected => :in_process, if: ->(sc) { sc.fully_paid? }
       end
 
       event :reimburse do
         transition :over_paid => :paid
       end
 
-
-      event :mark_as_fully_paid do
-        transition :partially_collected => :paid, if: ->(sc) { sc.fully_paid? }
-      end
-
-      event :mark_as_overpaid do
-        transition :partially_collected => :overpaid, if: ->(sc) { sc.overpaid? }
+      event :cancel do
+        transition [:partially_collected, :overdue, :rejected] => :over_paid, if: ->(sc) { sc.outstanding_payments_cleared? }
+        transition [:partially_collected, :overdue, :rejected] => :in_process, if: ->(sc) { sc.outstanding_payments_deposited? }
+        transition [:partially_collected, :overdue, :rejected] => :collected, if: ->(sc) { sc.payment_pending_process? }
+        transition [:overdue, :rejected] => :paid, if: ->(sc) { !sc.outstanding_payments? }
+        transition :paid => :over_paid
       end
 
     end
@@ -87,14 +90,6 @@ module CustomerJobBilling
   def overpaid?
     current_payment = payment_amount || 0
     total.cents - (cleared_payment_cents.abs + current_payment.to_f * 100) < 0
-  end
-
-  def check_and_set_as_fully_paid
-    if overpaid?
-      mark_as_over_paid!
-    else
-      mark_as_fully_paid_payment if fully_paid?
-    end
   end
 
   def paid_amount
@@ -113,9 +108,30 @@ module CustomerJobBilling
     payments.with_status(:deposited).size > 0
   end
 
+  def any_payment_cleared?
+    payments.with_status(:cleared).size > 0
+  end
+
   def any_payment_rejected?
     payments.without_status(:rejected).size > 0
   end
+
+  def payment_pending_process?
+    payments.with_status([:pending, :deposited]).size > 0
+  end
+
+  def outstanding_payments_cleared?
+    !payment_pending_process? && any_payment_cleared?
+  end
+
+  def outstanding_payments_deposited?
+    any_payment_deposited? && !(payments.with_status(:pending).size > 0)
+  end
+
+  def outstanding_payments?
+    payments.with_status([:pending, :deposited, :cleared]).size > 0
+  end
+
 
   alias_method :payment_cleared?, :fully_cleared?
 

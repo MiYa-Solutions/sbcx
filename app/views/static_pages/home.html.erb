@@ -1,48 +1,82 @@
 <div class="row-fluid row_homepage">
 
   <div class="span6" id="home-notifications">
-    <%= render :partial => 'home_notifications' %>
+  <%= render :partial => 'home_notifications' %>
   </div>
 
-
-  <div class="span6" id="home-billing">
+  <div class="span3" id="home-customer-billing">
     <div class="well well-home">
 
       <div class="smart_label">
         <ul>
-          <li><h1><%= I18n.t('general.general.billing') %></h1></li>
+          <li><h1><%= I18n.t('general.general.customers_balance') %></h1></li>
           <li></li>
         </ul>
       </div>
 
-     <table class="table table-striped">
+      <table class="table table-striped">
         <thead>
         <tr>
-          <th><%= Affiliate.model_name.human %></th>
+          <th><%= Customer.model_name.human %></th>
           <th><%= AccountingEntry.human_attribute_name(:balance) %></th>
-          <th><%= I18n.t('general.general.actions') %></th>
 
         </tr>
         </thead>
         <tbody>
-        <% @affiliates.each do |affiliate| %>
-            <% unless current_user.organization.account_for(affiliate).balance == 0 %>
-                <tr>
-                  <td><%= link_to affiliate.name, affiliate_path(affiliate) %></td>
-                  <% if current_user.organization.account_for(affiliate).balance > 0 %>
-                      <td class="green_balance"><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></td>
-                  <% else %>
-                      <td class="red_balance"><%= humanized_money_with_symbol current_user.organization.account_for(affiliate).balance %></td>
-                  <% end %>
-                  <td>
-                    <%= link_to I18n.t('general.general.show'), affiliate_path(affiliate), :class => 'btn btn-mini btn-primary' %>
-                  </td>
-                </tr>
-            <% end %>
+        <% @customer_accounts.each do |acc| %>
+            <% customer = acc.accountable %>
+            <tr>
+              <td><%= link_to customer.name, customer_path(customer) %></td>
+              <% if acc.balance > 0 %>
+                  <td class="green_balance"><%= humanized_money_with_symbol acc.balance %></td>
+              <% else %>
+                  <td class="red_balance"><%= humanized_money_with_symbol acc.balance %></td>
+              <% end %>
+
+            </tr>
         <% end %>
         </tbody>
       </table>
 
+    </div>
+  </div>
+
+  <div class="span3" id="home-billing">
+    <div class="well well-home">
+
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= I18n.t('general.general.affiliates_balance') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th><%= Affiliate.model_name.human %></th>
+          <th><%= AccountingEntry.human_attribute_name(:balance) %></th>
+          <!--<th><#%= I18n.t('general.general.actions') %></th>-->
+
+        </tr>
+        </thead>
+        <tbody>
+        <% @aff_accounts.each do |acc| %>
+            <% affiliate = acc.accountable %>
+            <tr>
+              <td><%= link_to affiliate.name, affiliate_path(affiliate) %></td>
+              <% if acc.balance > 0 %>
+                  <td class="green_balance"><%= humanized_money_with_symbol acc.balance %></td>
+              <% else %>
+                  <td class="red_balance"><%= humanized_money_with_symbol acc.balance %></td>
+              <% end %>
+              <!--<td>-->
+                <!--<#%= link_to I18n.t('general.general.show'), affiliate_path(affiliate), :class => 'btn btn-mini btn-primary' %>-->
+              <!--</td>-->
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
 
     </div>
   </div>

@@ -19,4 +19,13 @@ module InitiatedConfirmableEntry
     end
   end
 
+  def allowed_status_events
+    if account.accountable.member?
+      []
+    else
+      self.status_events
+    end
+
+  end
+
 end

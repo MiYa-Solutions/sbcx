@@ -1,0 +1,82 @@
+<% provide(:title, I18n.t('general.general.invoices').html_safe) %>
+<!--<h1>Invoices Mobile</h1>-->
+<!--
+    <#% @invoices.each do |invoice| %>
+        <div>
+          <#%= invoice.id %>
+          <#%= invoice.total %>
+          <#%= invoice.notes %>
+        </div>
+    <#% end  %>
+-->
+
+<%= link_to I18n.t('general.general.new_invoice'), "#add_new_invoice", "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-rel" => "popup", "data-transition" => "pop" %>
+<br>
+
+<ul data-role="listview">
+
+  <% @invoices.each do |invoice| %>
+      <li class="job_billing">
+        <%= link_to invoice.id, invoice_path(invoice, format: :pdf), 'data-ajax' => 'false' %>
+        <p class= "billing_price_label"><%= humanized_money_with_symbol invoice.total %></p>
+      </li>
+  <% end %>
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+
+
+<%= link_to "Back", service_calls_path(@service_call), "data-rel" => "back", "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_service_call_btn' %>
+
+
+
+<div data-role="popup" id="add_new_invoice" data-overlay-theme="a" data-theme="c" data-dismissible="false" class="ui-corner-all close_btn_header">
+
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1 id="entries_header"><%= t('general.general.new_invoice') %></h1>
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+  </div>
+
+  <div data-role="content">
+
+    <!--<#% invoice = @service_call.invoices.build %>-->
+    <% invoice = Invoice.new(ticket_id: @service_call.id) %>
+    <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
+
+        <div class="transfer_job_form">
+          <br>
+          <% unless @service_call.work_done? %>
+              <%= f.input :adv_payment_amount %>
+              <%= f.input :adv_payment_desc %>
+          <% end %>
+          <%= f.input :email_customer, as: :boolean %>
+          <%= f.input :ticket_id, as: :hidden, input_html: { value: @service_call.id } %>
+          <%= f.input :notes %>
+         </div>
+
+          <%= f.submit I18n.t('general.general.Save'),
+                       id:    'invoice_btn',
+                       class: "ui-btn-up-b ui-btn-hidden",
+                       "data-theme" => "b",
+                       title: 'Click to create an invoice',
+                       rel:   'tooltip' %>
+
+
+        <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
+    <% end %>
+    <!--content-->
+  </div>
+  <!--popup-->
+</div>

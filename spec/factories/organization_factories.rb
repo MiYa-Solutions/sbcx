@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   factory :local_org, class: Organization do
-    sequence(:name) { |n| "Organization #{n}" }
+    sequence(:name) { |n| "Organization#{n}" }
     sequence(:email) { |n| "org_person_#{n}@example.com" }
     organization_roles [OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID), OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)]
     industry Organization.industries.first

@@ -1,0 +1,117 @@
+<div class="collapse" id="job_invoices">
+  <div class="collapse_frame">
+    <div class="row-fluid collapse_body">
+
+
+      <div class="row-fluid">
+        <a href="#" data-toggle="collapse" data-target="#job_invoices" class="close" id="job_invoices_close">×</a>
+      </div>
+
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= Invoice.model_name.human.pluralize %></h1></li>
+          <li>
+            <%= button_tag t('general.general.new_invoice'), :class => 'btn btn-primary',
+                           id:                                      'new-invoice-btn', data: { toggle: 'modal', target: '#new_invoice' } %>
+          </li>
+        </ul>
+      </div>
+
+      <% if @service_call.invoices.size > 0 %>
+          <table class="table table-striped" id="event_log_in_service_call">
+            <thead>
+            <tr>
+              <th><%= Invoice.human_attribute_name(:id) %> </th>
+              <th><%= Invoice.human_attribute_name(:total) %> </th>
+              <th><%= Invoice.human_attribute_name(:created_at) %></th>
+              <th><%= t('general.general.issued_by') %></th>
+              <th class="invoice_table_notes"><%= Invoice.human_attribute_name(:notes) %></th>
+              <th class="download_icon"><%= t('general.general.download') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @service_call.invoices.order('id desc').all.each do |invoice| %>
+                <% if permitted_to? :show, invoice %>
+                    <tr>
+                      <td><%= link_to invoice.id, invoice %></td>
+                      <td><%= humanized_money_with_symbol invoice.total %></td>
+                      <td><%= l invoice.try(:created_at) %></td>
+                      <td><%= invoice.creator.try(:name) %></td>
+                      <td class="invoice_table_notes"><%= textilize(invoice.notes).try(:html_safe) %></td>
+                      <td class="download_icon"><%= link_to invoice_path(invoice, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>
+                            <i class="icon-download-alt icon-white"></i>
+                        <% end %>
+                      </td>
+                    </tr>
+                <% end %>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+
+    </div>
+    <br>
+    <br>
+  </div>
+
+</div>
+
+
+<!--modal-->
+<div id='new_invoice' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.new_invoice') %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+
+    <% invoice = Invoice.new %>
+    <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
+
+
+        <div class="row-fluid">
+          <div class="span6">
+
+            <% unless @service_call.work_done? %>
+
+                <%= f.input :adv_payment_amount, required: true %>
+                <%= f.input :adv_payment_desc, required: true %>
+            <% end %>
+            <%= f.input :email_customer, as: :boolean %>
+            <%= f.input :ticket_id, as: :hidden, input_html: { value: @service_call.id } %>
+
+          </div>
+          <div class="span6">
+            <%= f.input :notes %>
+
+          </div>
+
+        </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <div class="transfer_btn_modal">
+            <%= f.submit I18n.t('general.general.Save'),
+                         id:    'invoice_btn',
+                         class: "btn btn-large btn-primary",
+                         title: 'Click to create an invoice',
+                         rel:   'tooltip' %>
+
+          </div>
+          <!--<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>-->
+        </div>
+
+    <% end %>
+    </div>
+<!--end of modal-->
+

@@ -67,19 +67,28 @@ class JobCharge < CustomerPostingRule
   end
 
   def cancellation_entries
-    [
+    amount       = ServiceCallCharge.where(ticket_id: @ticket.id).last
+    amount_cents = amount ? amount.amount_cents : 0
+    if amount_cents > 0
+      amount_ccy = amount ? amount.amount_currency : 'USD'
+      [
 
-        CanceledJobAdjustment.new(event:       @event,
-                                  status:      AccountingEntry::STATUS_CLEARED,
-                                  ticket:      @ticket,
-                                  amount:      -charge_amount,
-                                  agreement:   agreement,
-                                  description: 'Reimbursement for a canceled job')
-    ]
+          CanceledJobAdjustment.new(event:           @event,
+                                    status:          AccountingEntry::STATUS_CLEARED,
+                                    ticket:          @ticket,
+                                    amount_cents:    -amount_cents,
+                                    amount_currency: amount_ccy,
+                                    agreement:       agreement,
+                                    description:     'Reimbursement for a canceled job')
+      ]
+    else
+      []
+    end
   end
 
   def charge_amount
-    (@ticket.total_price - (@ticket.total_price * (rate / 100.0))) + @ticket.total_price * (@ticket.tax / 100.0)
+    (@ticket.total_price - (@ticket.total_price * (rate / 100.0))) + @ticket.total_price * (@ticket.tax / 100.0) -
+        Money.new(@ticket.entries.where(type: 'AdvancePayment').sum(:amount_cents))
   end
 
   def applicable?(event)
@@ -116,7 +125,7 @@ class JobCharge < CustomerPostingRule
     end
 
     # if the collector is the subcon update matching collection entry
-    if @ticket.subcontractor && (props[:collector].becomes(Organization) ==  @ticket.subcontractor.becomes(Organization))
+    if @ticket.subcontractor && (props[:collector].becomes(Organization) == @ticket.subcontractor.becomes(Organization))
       props[:matching_entry] = @event.accounting_entries.where(type: CollectedEntry.subclasses.map(&:name)).first
     end
 
@@ -143,6 +152,7 @@ class JobCharge < CustomerPostingRule
 
     props = { amount:      the_amount,
               ticket:      @ticket,
+              status:      AccountingEntry::STATUS_CLEARED,
               event:       @event,
               agreement:   agreement,
               description: I18n.t('accounting_entry.description.customer_reimbursement', amount: the_amount) }

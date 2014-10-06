@@ -103,13 +103,6 @@ describe 'Received Job Without Transfer' do
           expect(event_permitted_for_job?('work_status', 'start', org_admin, job)).to be_true
         end
 
-        context 'when canceled' do
-          include_context 'when canceling the job' do
-            let(:job_to_cancel) { job }
-          end
-          it_behaves_like 'provider job is canceled'
-        end
-
         context 'when started the work' do
 
           before do
@@ -152,13 +145,6 @@ describe 'Received Job Without Transfer' do
           it 'complete should be available as the only work status event' do
             expect(job.work_status_events).to eq [:complete]
             expect(event_permitted_for_job?('work_status', 'complete', org_admin, job)).to be_true
-          end
-
-          context 'when canceled' do
-            include_context 'when canceling the job' do
-              let(:job_to_cancel) { job }
-            end
-            it_behaves_like 'provider job is canceled'
           end
 
           context 'when completed the job' do
@@ -208,13 +194,6 @@ describe 'Received Job Without Transfer' do
               expect(job.work_status_events).to eq []
             end
 
-            context 'when canceled' do
-              include_context 'when canceling the job' do
-                let(:job_to_cancel) { job }
-              end
-              it_behaves_like 'provider job canceled after completion'
-            end
-
             context 'when I invoice' do
 
               before do
@@ -258,13 +237,6 @@ describe 'Received Job Without Transfer' do
 
               it 'there should be no available work status events' do
                 expect(job.work_status_events).to eq []
-              end
-
-              context 'when canceled' do
-                include_context 'when canceling the job' do
-                  let(:job_to_cancel) { job }
-                end
-                it_behaves_like 'provider job canceled after completion'
               end
 
               context 'when I collect' do
@@ -314,13 +286,6 @@ describe 'Received Job Without Transfer' do
                     expect(job.work_status_events).to eq []
                   end
 
-                  context 'when canceled' do
-                    include_context 'when canceling the job' do
-                      let(:job_to_cancel) { job }
-                    end
-                    it_behaves_like 'provider job canceled after completion'
-                  end
-
                   context 'when deposited to provider' do
                     before do
                       job.update_attributes(billing_status_event: 'deposit_to_prov')
@@ -364,13 +329,6 @@ describe 'Received Job Without Transfer' do
                       expect(job.work_status_events).to eq []
                     end
 
-                    context 'when canceled' do
-                      include_context 'when canceling the job' do
-                        let(:job_to_cancel) { job }
-                      end
-                      it_behaves_like 'provider job canceled after completion'
-                    end
-
                     context 'when provider confirms the deposit' do
                       before do
                         job.update_attributes(billing_status_event: 'prov_confirmed_deposit')
@@ -412,13 +370,6 @@ describe 'Received Job Without Transfer' do
 
                       it 'there should be no available work status events' do
                         expect(job.work_status_events).to eq []
-                      end
-
-                      context 'when canceled' do
-                        include_context 'when canceling the job' do
-                          let(:job_to_cancel) { job }
-                        end
-                        it_behaves_like 'provider job canceled after completion'
                       end
 
                       context 'when settling with the provider' do
@@ -467,12 +418,6 @@ describe 'Received Job Without Transfer' do
                             expect(job.work_status_events).to eq []
                           end
 
-                          context 'when canceled' do
-                            include_context 'when canceling the job' do
-                              let(:job_to_cancel) { job }
-                            end
-                            it_behaves_like 'provider job canceled after completion'
-                          end
                         end
 
                         context 'when using a cheque' do
@@ -519,13 +464,6 @@ describe 'Received Job Without Transfer' do
                             expect(job.work_status_events).to eq []
                           end
 
-                          context 'when canceled' do
-                            include_context 'when canceling the job' do
-                              let(:job_to_cancel) { job }
-                            end
-                            it_behaves_like 'provider job canceled after completion'
-                          end
-
                           context 'when provider clears the payment' do
 
                             before do
@@ -569,14 +507,6 @@ describe 'Received Job Without Transfer' do
                             it 'there should be no available work status events' do
                               expect(job.work_status_events).to eq []
                             end
-
-                            context 'when canceled' do
-                              include_context 'when canceling the job' do
-                                let(:job_to_cancel) { job }
-                              end
-                              it_behaves_like 'provider job canceled after completion'
-                            end
-
 
                             context 'when closing the job' do
                               before do
@@ -653,14 +583,6 @@ describe 'Received Job Without Transfer' do
 
       end
 
-      context 'when rejected'
-
-      context 'when canceled' do
-        include_context 'when canceling the job' do
-          let(:job_to_cancel) { job }
-        end
-        it_behaves_like 'provider job is canceled'
-      end
     end
 
   end

@@ -30,14 +30,14 @@
 
          <span class="subcon_label">
             <% if affiliate.subcontractor? %>
-                <%= image_tag("sub24.png", :title => I18n.t('general.messages.provider_icon').html_safe, :rel => 'tooltip') %>
+                <%= image_tag("sub24.png", :title => I18n.t('general.messages.subco_icon').html_safe, :rel => 'tooltip') %>
 
             <% end %>
          </span>
 
             <span class="provider_label">
                 <% if affiliate.provider? %>
-                <%= image_tag("prov24.png", "data-target" => "#popupInfo", "data-transition" => "pop", "data-rel" => "popup") %>
+                <%= image_tag("prov24.png", :title => I18n.t('general.messages.provider_icon').html_safe, :rel => 'tooltip') %>
                 <% end %>
             </span>
 
@@ -49,7 +49,7 @@
   <% end %>
 </ul>
 
-<div data-role="popup" id="popupInfo" class="ui-content" data-theme="e" style="max-width:350px;">
+<div data-role="popup" id="popupInfo" class="ui-content" data-theme="e" style="max-width:310px; right: 12px;">
   <p>Here is a <strong>tiny popup</strong> being used like a tooltip</p>
 </div>
 

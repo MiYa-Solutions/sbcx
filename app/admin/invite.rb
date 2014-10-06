@@ -1,6 +1,6 @@
 ActiveAdmin.register Invite do
 
-  filter :organization
+  filter :organization, as: :select, collection: proc { Organization.where(subcontrax_member: true).order('name asc') }
   filter :affiliate
   filter :message
   filter :status

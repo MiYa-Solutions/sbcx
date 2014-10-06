@@ -1,0 +1,18 @@
+<% if @comment.errors.any? %>
+
+<% if @bom.errors[:body].empty? %>
+$('#comment_body').parent().removeClass('control-group error')
+$('#comment_body').siblings('.error-msg').remove()
+<% else %>
+$('#comment_body').parent().addClass('control-group error')
+$('#comment_body').siblings('.error-msg').remove()
+
+<% end %>
+<% else %>
+$('#comment_body').removeClass('uneditable-input').removeAttr('disabled').val('')
+$('#comment_body').find('.error').removeClass('error');
+$('#comment_body').find('.error-msg').remove();
+$('#comment_body').val('');
+
+$('#comments').prepend('<%= j render(@comment) %>');
+<% end %>

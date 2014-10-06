@@ -30,6 +30,7 @@ FactoryGirl.define do
         prov.save!
         job.provider_agreement = FactoryGirl.build(:agreement_for_subcon, organization: prov.becomes(Organization), counterparty: job.organization)
         job.provider           = prov
+        job.properties         = { 'provider_fee' => '100', 'prov_bom_reimbursement' => 'true' }
       end
     end
   end
@@ -37,12 +38,11 @@ FactoryGirl.define do
   factory :member_customer, class: Customer do
     sequence(:name) { |n| "Customer #{n}" }
     association :organization, factory: :member_org, strategy: :build
-
   end
 
   factory :mem_material, class: Material do
     association :organization, factory: :member_org, strategy: :build
-    name Faker::Name.name
+    sequence(:name) { |n| "Test Material #{n}" }
     description Faker::Lorem.paragraph(1)
     cost Money.new_with_amount(123.4)
     price Money.new_with_amount(254.7)

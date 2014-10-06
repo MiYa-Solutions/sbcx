@@ -21,16 +21,22 @@
 #  creator_id      :integer
 #  updater_id      :integer
 #
-
+require 'hstore_setup_methods'
 class Customer < ActiveRecord::Base
+  extend HstoreSetupMethods
+  serialize :properties, ActiveRecord::Coders::Hstore
+  setup_hstore_attr 'default_tax'
+
   belongs_to :organization, inverse_of: :customers
   has_many :service_calls, :inverse_of => :customer
   has_many :agreements, as: :counterparty
   has_one :account, as: :accountable
   stampable
 
+
   validates_presence_of :organization
   validates_presence_of :name
+  validates_email_format_of :email, allow_nil: true, allow_blank: true
 
   after_create :set_default_agreement
 

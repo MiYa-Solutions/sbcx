@@ -43,17 +43,7 @@ class User < ActiveRecord::Base
   # *notification preferences*
   serialize :preferences, ActiveRecord::Coders::Hstore
 
-  %w[alert1 alert2].each do |key|
-    scope "has_#{key}", lambda { |org_id, value| colleagues(org_id).where("preferences @> (? => ?)", key, value) }
-
-    define_method(key) do
-      preferences && preferences[key]
-    end
-
-    define_method("#{key}=") do |value|
-      self.preferences = (preferences || {}).merge(key => value)
-    end
-  end
+  before_create :setup_default_notifications
 
   # end of notification preferences
 
@@ -62,7 +52,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  belongs_to :organization, inverse_of: :users
+  belongs_to :organization
   model_stamper
 
   # associations necessary for the Authorization functionality using declarative_authorization
@@ -100,5 +90,76 @@ class User < ActiveRecord::Base
     roles.map do |role|
       role.name.underscore.tr(' ', '_').to_sym
     end
+  end
+
+  def settings
+    @settings ||= Settings.new(self)
+  end
+
+  private
+
+  def setup_default_notifications
+    self.preferences = { 'sc_received_notification'                   => 'true',
+                         'sc_received_notification_email'             => 'true',
+                         'sc_accepted_notification'                   => 'true',
+                         'sc_cancel_notification'                     => 'true',
+                         'sc_cancel_notification_email'               => 'true',
+                         'sc_rejected_notification'                   => 'true',
+                         'sc_rejected_notification_email'             => 'true',
+                         'sc_canceled_notification'                   => 'true',
+                         'sc_canceled_notification_email'             => 'true',
+                         'sc_completed_notification'                  => 'true',
+                         'sc_completed_notification_email'            => 'true',
+                         'sc_complete_notification'                   => 'true',
+                         'sc_complete_notification_email'             => 'true',
+                         'sc_collected_notification'                  => 'true',
+                         'sc_deposit_confirmed_notification'          => 'true',
+                         'sc_dispatch_notification'                   => 'true',
+                         'sc_dispatched_notification'                 => 'true',
+                         'sc_dispatched_notification_email'           => 'true',
+                         'sc_paid_notification'                       => 'true',
+                         'sc_props_updated_notification'              => 'true',
+                         'sc_provider_canceled_notification'          => 'true',
+                         'sc_provider_canceled_notification_email'    => 'true',
+                         'sc_provider_collected_notification'         => 'true',
+                         'sc_provider_confirmed_settled_notification' => 'true',
+                         'sc_provider_settled_notification'           => 'true',
+                         'sc_provider_settled_notification'           => 'true',
+                         'sc_provider_settled_notification_email'     => 'true',
+                         'sc_start_notification'                      => 'true',
+                         'sc_started_notification'                    => 'true',
+                         'sc_subcon_cleared_notification'             => 'true',
+                         'sc_subcon_confirmed_settled_notification'   => 'true',
+                         'sc_subcon_deposited_notification'           => 'true',
+                         'sc_subcon_settled_notification'             => 'true',
+                         #invite
+                         'invite_accepted_notification'               => 'true',
+                         'invite_accepted_notification_email'         => 'true',
+                         'invite_declined_notification'               => 'true',
+                         'invite_declined_notification_email'         => 'true',
+                         'new_invite_notification'                    => 'true',
+                         'new_invite_notification_email'              => 'true',
+                         #agreement notifications
+                         'agr_new_subcon_notification'                => 'true',
+                         'agr_new_subcon_notification_email'          => 'true',
+                         'agr_change_rejected_notification'           => 'true',
+                         'agr_change_rejected_notification_email'     => 'true',
+                         'agr_change_submitted_notification'          => 'true',
+                         'agr_change_submitted_notification_email'    => 'true',
+                         'agr_subcon_accepted_notification'           => 'true',
+                         'agr_subcon_accepted_notification_email'     => 'true',
+                         #adj entry notifications
+                         'acc_adj_accepted_notification'              => 'true',
+                         'acc_adj_accepted_notification_email'        => 'true',
+                         'acc_adj_rejected_notification'              => 'true',
+                         'acc_adj_rejected_notification_email'        => 'true',
+                         'acc_adj_canceled_notification'              => 'true',
+                         'acc_adj_canceled_notification_email'        => 'true',
+                         'account_adjusted_notification'              => 'true',
+                         'account_adjusted_notification_email'        => 'true',
+                         #for 3rd party collection deposit
+                         'entry_disputed_notification'                => 'true',
+                         'entry_disputed_notification_email'          => 'true'
+    }
   end
 end

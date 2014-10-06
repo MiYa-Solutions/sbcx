@@ -71,6 +71,8 @@ class AffiliatePostingRule < PostingRule
         true
       when ServiceCallCanceledEvent.name
         true
+      when ScProviderCanceledEvent.name
+        true
       when ScCollectEvent.name
         true
       when ServiceCallPaidEvent.name
@@ -146,9 +148,9 @@ class AffiliatePostingRule < PostingRule
   def cparty_settlement_entries
     result = []
 
-    charge_amount = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
+    charge_amount    = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
     bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id).sum(:amount_cents)
-    payment_fee = AccountingEntry.where(type: ['CashPaymentFee', 'CreditPaymentFee', 'AmexPaymentFee', 'ChequePaymentFee'], ticket_id: @ticket.id).sum(:amount_cents)
+    payment_fee      = AccountingEntry.where(type: ['CashPaymentFee', 'CreditPaymentFee', 'AmexPaymentFee', 'ChequePaymentFee'], ticket_id: @ticket.id).sum(:amount_cents)
 
     total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
 
@@ -171,70 +173,36 @@ class AffiliatePostingRule < PostingRule
   end
 
   def cparty_cancellation_entries
-    original_entry = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
+    entry                = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
+    original_entry_cents = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
+    original_entry_ccy   = entry ? entry.amount_currency : Money.default_currency.to_s
 
-    case @ticket.payment_type
-      when 'cash'
-        payment_fee_entry = AccountingEntry.where(type: CashPaymentFee, ticket_id: @ticket.id).first
-        collection_entry  = AccountingEntry.where(type: CashCollectionForProvider, ticket_id: @ticket.id).first
-        deposit_entry     = AccountingEntry.where(type: CashDepositToProvider, ticket_id: @ticket.id).first
-      when 'credit_card'
-        payment_fee_entry = AccountingEntry.where(type: CreditPaymentFee, ticket_id: @ticket.id).first
-        collection_entry  = AccountingEntry.where(type: CreditCardCollectionForProvider, ticket_id: @ticket.id).first
-        deposit_entry     = AccountingEntry.where(type: CreditCardDepositToProvider, ticket_id: @ticket.id).first
-      when 'amex_credit_card'
-        payment_fee_entry = AccountingEntry.where(type: AmexPaymentFee, ticket_id: @ticket.id).first
-        collection_entry  = AccountingEntry.where(type: AmexCollectionForProvider, ticket_id: @ticket.id).first
-        deposit_entry     = AccountingEntry.where(type: AmexDepositToProvider, ticket_id: @ticket.id).first
-      when 'cheque'
-        payment_fee_entry = AccountingEntry.where(type: ChequePaymentFee, ticket_id: @ticket.id).first
-        collection_entry  = AccountingEntry.where(type: ChequeCollectionForProvider, ticket_id: @ticket.id).first
-        deposit_entry     = AccountingEntry.where(type: ChequeDepositToProvider, ticket_id: @ticket.id).first
-      when nil
-        # leave adjustment as zero
-      else
-        raise "unexpected payment type: '#{@ticket.payment_type}'"
-    end
+    fees = AccountingEntry.where(type:      ['CashPaymentFee',
+                                             'CreditPaymentFee',
+                                             'AmexPaymentFee',
+                                             'ChequePaymentFee',
+                                             'MaterialReimbursement'
+                                            ],
+                                 ticket_id: @ticket.id).sum(:amount_cents)
 
-    payment_fee    = payment_fee_entry ? payment_fee_entry.amount : Money.new_with_amount(0)
-    collection_fee = collection_entry ? collection_entry.amount : Money.new_with_amount(0)
-    deposit_fee    = deposit_entry ? deposit_entry.amount : Money.new_with_amount(0)
-    adjustment     = payment_fee + collection_fee + deposit_fee
-
-    [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount: -(original_entry.amount + adjustment), description: "Entry to provider owned account")]
+    [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount_cents: -(original_entry_cents + fees), amount_currency: original_entry_ccy, description: 'Adjustment due to a job being canceled')]
   end
 
   def org_cancellation_entries
-    original_entry = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
-    case @ticket.payment_type
-      when 'cash'
-        payment_fee_entry = AccountingEntry.where(type: ReimbursementForCashPayment, ticket_id: @ticket.id).first
-        collection_entry  = AccountingEntry.where(type: CashCollectionFromSubcon, ticket_id: @ticket.id).first
-        deposit_entry     = AccountingEntry.where(type: CashDepositFromSubcon, ticket_id: @ticket.id).first
-      when 'credit_card'
-        payment_fee_entry = AccountingEntry.where(type: ReimbursementForCreditPayment, ticket_id: @ticket.id).first
-        collection_entry  = AccountingEntry.where(type: CreditCardCollectionFromSubcon, ticket_id: @ticket.id).first
-        deposit_entry     = AccountingEntry.where(type: CreditCardDepositFromSubcon, ticket_id: @ticket.id).first
-      when 'credit_card'
-        payment_fee_entry = AccountingEntry.where(type: ReimbursementForAmexPayment, ticket_id: @ticket.id).first
-        collection_entry  = AccountingEntry.where(type: AmexCollectionFromSubcon, ticket_id: @ticket.id).first
-        deposit_entry     = AccountingEntry.where(type: AmexDepositFromSubcon, ticket_id: @ticket.id).first
-      when 'cheque'
-        payment_fee_entry = AccountingEntry.where(type: ReimbursementForChequePayment, ticket_id: @ticket.id).first
-        collection_entry  = AccountingEntry.where(type: ChequeCollectionFromSubcon, ticket_id: @ticket.id).first
-        deposit_entry     = AccountingEntry.where(type: ChequeDepositFromSubcon, ticket_id: @ticket.id).first
-      when nil
-        # leave adjustment as zero
-      else
-        raise "unexpected payment type"
-    end
+    entry                = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
+    original_entry_cents = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
+    original_entry_ccy   = entry ? entry.amount_currency : Money.default_currency.to_s
 
-    payment_fee    = payment_fee_entry ? payment_fee_entry.amount : Money.new_with_amount(0)
-    collection_fee = collection_entry ? collection_entry.amount : Money.new_with_amount(0)
-    deposit_fee    = deposit_entry ? deposit_entry.amount : Money.new_with_amount(0)
-    adjustment     = payment_fee + collection_fee + deposit_fee
+    fees = AccountingEntry.where(type:      ['ReimbursementForCashPayment',
+                                             'ReimbursementForCreditPayment',
+                                             'ReimbursementForAmexPayment',
+                                             'ReimbursementForChequePayment',
+                                             'MaterialReimbursementToCparty'
+                                            ],
+                                 ticket_id: @ticket.id).sum(:amount_cents)
 
-    [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount: -(original_entry.amount + adjustment), description: "Entry to provider owned account")]
+
+    [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount_cents: -(original_entry_cents + fees), amount_currency: original_entry_ccy, description: "Entry to provider owned account")]
   end
 
   def org_collection_entries
@@ -248,9 +216,9 @@ class AffiliatePostingRule < PostingRule
   def org_settlement_entries
     result = []
 
-    charge_amount = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
+    charge_amount    = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
     bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id).sum(:amount_cents)
-    payment_fee = AccountingEntry.where(type: ['ReimbursementForCashPayment', 'ReimbursementForCreditPayment', 'ReimbursementForAmexPayment', 'ReimbursementForChequePayment'], ticket_id: @ticket.id).sum(:amount_cents)
+    payment_fee      = AccountingEntry.where(type: ['ReimbursementForCashPayment', 'ReimbursementForCreditPayment', 'ReimbursementForAmexPayment', 'ReimbursementForChequePayment'], ticket_id: @ticket.id).sum(:amount_cents)
 
     total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
 
@@ -381,10 +349,10 @@ class AffiliatePostingRule < PostingRule
   end
 
   def cancellation_entries
-    case @ticket.my_role
-      when :prov
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
         org_cancellation_entries
-      when :subcon
+      when @ticket.provider.becomes(Organization)
         cparty_cancellation_entries
       else
         raise "Unrecognized role when creating profit split entries"

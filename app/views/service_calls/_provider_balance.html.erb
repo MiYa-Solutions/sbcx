@@ -1,37 +1,64 @@
-<tr>
-  <td><strong><%= I18n.t('general.general.provider_balance') %></strong></td>
-  <% if @service_call.try(:provider_balance) == 0 %>
-      <td class="balanced">
-        <%= humanized_money_with_symbol @service_call.provider_balance %>
-      </td>
-      <td></td>
+<tr class="col_entry_table">
+
+
+<td>
+    <%= image_tag("prov24.png", :title => I18n.t('general.messages.provider_icon'), :rel => 'tooltip') %>
+    <strong>
+  <%= link_to @service_call.provider.name, affiliate_path(@service_call.provider) if @service_call.provider.present? %>
+  </strong></td>
+
+  <% if @service_call.work_done? %>
+
+
+        <% if @service_call.try(:provider_balance) == 0 %>
+              <td class="balanced">
+                <%= humanized_money_with_symbol @service_call.provider_balance %>
+              </td>
+              <td></td>
+          <% else %>
+              <% if @service_call.try(:provider_balance) > 0 %>
+                  <td class="positive">
+                    <%= humanized_money_with_symbol @service_call.provider_balance %>
+                  </td>
+                   <td>
+                    <span class="help_icon">
+                    <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
+                  </span>
+                    <strong>
+                     <%= t('general.general.owed_to_me') %>
+                   </strong>
+                   <%= image_tag("question16.png", :title => I18n.t('general.messages.subcon_owe_to_me').html_safe, :rel => 'tooltip') %>
+
+
+                  </td>
+              <% else %>
+                  <td class="negative">
+                    <%= humanized_money_with_symbol @service_call.provider_balance %>
+                    </td>
+                      <td>
+
+                        <span class="help_icon">
+                            <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
+                        </span>
+                        <strong>
+                          <%= t('general.general_i_owe') %>
+                        </strong>
+                        <%= image_tag("question16.png", :title => I18n.t('general.messages.i_owe_action_subcon').html_safe, :rel => 'tooltip') %>
+                  </td>
+
+              <% end %>
+          <% end %>
+
   <% else %>
-      <% if @service_call.try(:provider_balance) > 0 %>
-          <td class="positive">
-            <%= humanized_money_with_symbol @service_call.provider_balance %>
 
-            <span class="help_icon">
-            <%= image_tag("balanceIn.png", :title => I18n.t('general.messages.balance_in').html_safe, :rel => 'tooltip') %>
-          </span>
-          </td>
-      <% else %>
-          <td class="negative">
-            <%= humanized_money_with_symbol @service_call.provider_balance %>
-
-            <span class="help_icon">
-        <%= image_tag("balanceOut.png", :title => I18n.t('general.messages.balance_out').html_safe, :rel => 'tooltip') %>
-      </span>
-          </td>
-
-      <% end %>
   <% end %>
 
   <td class="show_more_button">
-                            <span class="link_blue" id="show_provider_entries">
-                               <%= link_to t('general.general.get_entries'), "#prov_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
-                              <i class="icon-chevron-down"></i>
-                            </span>
+     <span class="link_blue" id="show_provider_entries">
+      <% if @service_call.active_provider_entries.size > 0 %>
+         <span class="label label_new_entry"><%= "#{@service_call.active_provider_entries.size} new"  %></span>
+      <% end %>
+         <%= link_to t('general.general.get_entries'), "#prov_billing_entries", class: "", data: { toggle: 'collapse' }, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+         <i class="icon-chevron-down"></i>
+      </span>
   </td>
-
-
-

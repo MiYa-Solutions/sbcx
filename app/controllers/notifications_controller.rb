@@ -3,7 +3,7 @@ class NotificationsController < ApplicationController
   # GET /notifications
   # GET /notifications.json
   def index
-    @notifications = Notification.my_notifications(current_user.id)
+    @notifications = Notification.my_notifications(current_user.id).order('id desc')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,6 +44,7 @@ class NotificationsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :back }
+      format.mobile { redirect_to notifications_path }
       format.json { head :no_content }
     end
   end

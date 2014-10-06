@@ -20,7 +20,6 @@
 //= require jquery.purr
 //= require best_in_place
 //= require best_in_place.purr
-//= require all/bootstrap-datepicker
 //= require dataTables/jquery.dataTables
 //= require all/jquery.dataTables.columnFilter
 //= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
@@ -32,4 +31,9 @@
 //= require select2
 //= require all/JQtextile
 //= require chosen-jquery
+//= require all/fullcalendar
+//= require all/gcal
+//= require all/jquery-ui-1.8.23.custom.min
+//= require all/jquery-ui-timepicker-addon
+//= require all/jquery.ezpz_hint
 //= require_tree ./all/.

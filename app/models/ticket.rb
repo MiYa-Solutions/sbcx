@@ -84,6 +84,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :collector, :polymorphic => true
   has_many :appointments, as: :appointable, finder_sql: proc { "SELECT appointments.* FROM appointments WHERE appointments.appointable_id = #{id} AND appointments.appointable_type = '#{self.class.name}'" }
   has_many :accounting_entries
+  has_many :invoices
 
   has_many :taggings, as: :taggable
   has_many :tags, through: :taggings
@@ -127,6 +128,7 @@ class Ticket < ActiveRecord::Base
   validates_presence_of :customer, if: "new_customer.nil? ||  new_customer.empty?"
   validate :check_subcon_agreement, :check_provider_agreement
   validates_numericality_of :tax
+  validates_email_format_of :email, allow_nil: true, allow_blank: true
 
   accepts_nested_attributes_for :customer
 
@@ -143,6 +145,65 @@ class Ticket < ActiveRecord::Base
   scope :transferred_status, -> { where("tickets.status = ?", STATUS_TRANSFERRED) }
   scope :closed_status, -> { where("tickets.status = ?", STATUS_CLOSED) }
   scope :canceled_status, -> { where("tickets.status = ?", STATUS_CANCELED) }
+
+  def self.find_in_batches(scope, batch_size=50, &block)
+    #find_each will batch the results instead of getting all in one go
+    scope.find_each(batch_size: batch_size) do |transaction|
+      yield transaction
+    end
+  end
+
+  def to_csv_row
+
+
+    CSV::Row.new(
+        [
+            :id, :type, :name, :ref_id, :external_ref, :my_profit, :total_cost, :total_price, :adjustment_amount, :tax, :tax_amount, :total, :customer_balance, :customer_name,
+            :address1, :address2, :city, :state, :country, :zip, :started_on,
+            :completed_on, :created_at, :updated_at, :status, :work_status, :billing_status, :provider_status, :subcontractor_status,
+            :subcon_collection_status, :provider_collection_status, :technician_name, :provider_name, :subcontractor_name, :creator,
+            :notes
+        ],
+        [
+            id,
+            type,
+            name,
+            ref_id,
+            external_ref,
+            my_profit,
+            total_cost,
+            total_price,
+            adj_amount,
+            tax,
+            tax_amount,
+            total,
+            customer_balance,
+            customer.name,
+            address1,
+            address2,
+            city,
+            state,
+            country,
+            zip,
+            started_on,
+            completed_on,
+            created_at,
+            updated_at,
+            human_status_name,
+            human_work_status_name,
+            defined?(billing_status_name) ? human_billing_status_name : '',
+            defined?(provider_status_name) ? human_provider_status_name : '',
+            defined?(subcontractor_status_name) ? human_subcontractor_status_name : '',
+            defined?(subcon_collection_status_name) ? human_subcon_collection_status_name : '',
+            defined?(prov_collection_status_name) ? human_prov_collection_status_name : '',
+            technician.try(:name),
+            provider.name,
+            subcontractor.try(:name),
+            creator.name,
+            notes]
+    )
+  end
+
 
   def subcon_balance
     if transferred? # this is an abstract class and so transferred is assumed to be implemented by the subclasses
@@ -188,11 +249,20 @@ class Ticket < ActiveRecord::Base
   end
 
   def tax_amount
-    total_price * (tax / 100.0)
+    the_tax = tax ? tax : 0.0
+    total_price * (the_tax / 100.0)
   end
 
   def total
-    total_price + tax_amount
+    if canceled?
+      Money.new(0)
+    else
+      total_price + tax_amount + adj_amount
+    end
+  end
+
+  def adj_amount
+    Money.new(AdjustmentEntry.where(account_id: customer.account.id, ticket_id: self.id).sum(:amount_cents))
   end
 
   def completed_on_text
@@ -256,6 +326,7 @@ class Ticket < ActiveRecord::Base
                                                   state:        state,
                                                   zip:          zip,
                                                   phone:        phone,
+                                                  email:        email,
                                                   mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
 
     else
@@ -267,6 +338,7 @@ class Ticket < ActiveRecord::Base
                                                       state:        state,
                                                       zip:          zip,
                                                       phone:        phone,
+                                                      email:        email,
                                                       mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
     end
   end
@@ -301,7 +373,7 @@ class Ticket < ActiveRecord::Base
 
   # this validator runs only for a specific state of a service call
   def validate_technician
-    if organization.multi_user? && !transferred? && !canceled?
+    if organization.multi_user? && !transferred? && !canceled? && !changed_from_transferred?
       self.errors.add :technician, "You must specify a technician" unless self.technician
     else
       self.technician = organization.users.first unless (transferred? || canceled?)
@@ -372,6 +444,11 @@ class Ticket < ActiveRecord::Base
     end
   end
 
+  def active_subcon_entries
+    subcon_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
+  end
+
+
   def provider_entries
     if provider
       acc = Account.for_affiliate(organization, provider).first
@@ -379,6 +456,10 @@ class Ticket < ActiveRecord::Base
     else
       []
     end
+  end
+
+  def active_provider_entries
+    provider_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
   end
 
   def customer_entries
@@ -389,6 +470,11 @@ class Ticket < ActiveRecord::Base
       []
     end
   end
+
+  def active_customer_entries
+    customer_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, CustomerPayment::STATUS_REJECTED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
+  end
+
 
   def counterparty
     case my_role
@@ -437,7 +523,31 @@ class Ticket < ActiveRecord::Base
 
   end
 
+  def subcon_ticket
+    Ticket.where(organization_id: subcontractor_id).where(ref_id: ref_id).first
+  end
 
+  def contractor_ticket
+    @contractor_ticket ||= MyServiceCall.where(id: ref_id).first
+  end
+
+  def subcon_chain_ids
+    res = []
+    unless subcontractor_id.nil? || subcontractor_id == organization_id
+      res << subcontractor_id
+      res = res + subcon_ticket.subcon_chain_ids
+    end
+    res
+  end
+
+  def provider_chain_ids
+    res = []
+    unless provider_id.nil? || provider_id == organization_id
+      res << provider_id
+      res = res + provider_ticket.provider_chain_ids
+    end
+    res
+  end
 
   protected
 
@@ -471,7 +581,7 @@ class Ticket < ActiveRecord::Base
 
   def set_name
     if self.name.nil?
-      self.name = "#{self.tags.map(&:name).join(", ")}: #{self.address1}"
+      self.name = "#{self.address1}: #{self.tags.map(&:name).join(", ")}"
     end
   end
 
@@ -490,6 +600,10 @@ class Ticket < ActiveRecord::Base
                                     ends_at:      self.scheduled_for + 3600,
                                     title:        I18n.t('appointment.auto_title', id: self.ref_id),
                                     description:  I18n.t('appointment.auto_description', id: self.ref_id)) if self.scheduled_for_changed?
+  end
+
+  def changed_from_transferred?
+    changes[:status] && changes[:status][0] == ServiceCall::STATUS_TRANSFERRED
   end
 
 end

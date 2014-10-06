@@ -13,7 +13,7 @@
                 <badge><%= @notification_count %></badge>
         </span>
     </li>
-    <% @notifications.sort_by { |t| -t.created_at.to_i }.first(5).reverse.each do |notification| %>
+    <% @notifications.each do |notification| %>
         <li class="inline_mobile"><%= link_to notification.subject, notification.becomes(Notification), "data-transition" => "slide", id: "jobs_welcome" %>
           <% if notification.human_status_name == 'unread' %>
             <span class="new_alert_label">

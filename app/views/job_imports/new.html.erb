@@ -1,0 +1,254 @@
+<div class="well well_height">
+
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= t('general.general.job_import') %></h1></li>
+      <li></li>
+      <li>
+    </ul>
+  </div>
+
+  <br>
+
+<div class="row-fluid get_entry_info">
+
+  <div class="span4">
+    <ul class="unstyled">
+      <li id="entry_details" class="list_account_entry">
+
+        <address>
+          <h4><%= t('general.general_select_file_import') %></h4>
+          <br>
+
+          <div class="row-fluid">
+
+
+            <%= form_for @job_import do |f| %>
+                <% if @job_import.errors.any? %>
+                    <div id="error_explanation">
+                      <h2><%= pluralize(@job_import.errors.count, "error") %> prohibited this import from completing:</h2>
+                      <ul>
+                        <% @job_import.errors.full_messages.each do |msg| %>
+                            <li><%= msg %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                <% end %>
+
+                  <%= f.file_field :file, :class => "", :id => "select_file_import" %>
+                    <br>
+
+                <%= f.submit "Import", :class => "btn btn-primary", :id => "import_btn" %>
+            <% end %>
+
+          </div>
+        </address>
+            </li>
+          </ul>
+
+    </div>
+
+</div>
+
+  <div class="row-fluid">
+    <label class="import_help">A <strong>'CSV'</strong> file can be used to import records. The first row should be the column name. The following columns are supported. </label>
+  </div>
+
+  <table class="table table-striped" id="import_schema">
+    <br>
+    <thead>
+    <tr>
+      <th><%= I18n.t('general.general.name') %></th>
+      <th><%= I18n.t('general.general.data_type') %></th>
+      <th><%= I18n.t('general.general.required') %></th>
+      <th><%= I18n.t('general.general.default_value') %></th>
+      <th><%= I18n.t('general.general.description') %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>external_ref</td>
+      <td>String type </td>
+      <td>Optional</td>
+      <td></td>
+      <td>Your system Id</td>
+    </tr>
+    <tr>
+      <td>customer_id</td>
+      <td>Integer type</td>
+      <td>Mandatory</td>
+      <td></td>
+      <td>SubConTraX's Customer Id. If you wish to upload a job for a new customer, please add the new customer to the system first.</td>
+    </tr>
+    <tr>
+      <td>notes</td>
+      <td>Text type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>notes or comments.</td>
+    </tr>
+    <tr>
+      <td>started_on</td>
+      <td>Datetime type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Date format: YYYY-MM-DD HH:MM <br> When using Excel, please make sure to set field type to Text.</td>
+    </tr>
+    <tr>
+      <td>technician_id</td>
+      <td>Integer type</td>
+      <td>Optional</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>provider_id</td>
+      <td>Integer type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>SubConTraX's Affiliate Id (the contractor).</td>
+    </tr>
+    <tr>
+      <td>provider_agreement_id</td>
+      <td>Integer type</td>
+      <td>Conditional</td>
+      <td></td>
+      <td>Only if there is a provider.</td>
+    </tr>
+    <tr>
+      <td>scheduled_for</td>
+      <td>Datetime type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Date format: YYYY-MM-DD HH:MM <br> When using Excel, please make sure to set field type to Text.</td>
+    </tr>
+    <tr>
+      <td>allow_collection</td>
+      <td>Boolean type</td>
+      <td>Optional</td>
+      <td>TRUE</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>tax</td>
+      <td>Double Precision type</td>
+      <td>Optional</td>
+      <td>0.0</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Job Name (if empty, the system concatenates job type & address).</td>
+    </tr>
+    <!--<tr>-->
+      <!--<td>prov_bom_reimbursement</td>-->
+      <!--<td>Boolean type</td>-->
+      <!--<td>Optional</td>-->
+      <!--<td>FALSE</td>-->
+      <!--<td>Allow profit split for Parts and Labor</td>-->
+    <!--</tr>-->
+    <tr>
+      <td>provider_fee_cents</td>
+      <td>Integer type</td>
+      <td>Optional</td>
+      <td>0</td>
+      <td>Will be available in the next release! <br>Important to get amount in cents (e.g. $20 = 2000).</td>
+    </tr>
+    <tr>
+      <td>provider_fee_currency</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td>USD</td>
+      <td>Will be available in the next release!</td>
+    </tr>
+    <tr>
+      <td>company</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Company name for the job only (will not overwrite the customer info).</td>
+    </tr>
+    <tr>
+      <td>address1</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    <tr>
+      <td>address2</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    <tr>
+      <td>city</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    <tr>
+      <td>state</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    <tr>
+      <td>zip</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    <tr>
+      <td>country</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td>US</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    <tr>
+      <td>phone</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    <tr>
+      <td>mobile_phone</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    </tr>
+    <tr>
+      <td>work_phone</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+    </tr>
+    <tr>
+      <td>email</td>
+      <td>String type</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
+    </tr>
+
+
+    </tbody>
+    </table>
+
+<!--end of well-->
+</div>
+
+

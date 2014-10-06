@@ -1,7 +1,5 @@
 en:
   activerecord:
-    models:
-
     attributes:
       customer:
         address1: "Address"

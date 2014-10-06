@@ -6,10 +6,6 @@ class ScProviderSettledEvent < ScSettlementEvent
     self.reference_id = 100029
   end
 
-  def notification_recipients
-    User.my_admins(service_call.organization_id)
-  end
-
   def notification_class
     ScProviderSettledNotification
   end
@@ -18,7 +14,7 @@ class ScProviderSettledEvent < ScSettlementEvent
     service_call.provider_payment = self.triggering_event.service_call.subcon_payment if self.triggering_event.present?
     service_call.payment_type = self.triggering_event.service_call.payment_type if self.triggering_event.present?
     service_call.provider_marked_as_settled_provider
-    update_affiliate_account
+    update_affiliate_account(service_call.provider)
     super
   end
 

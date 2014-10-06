@@ -5,6 +5,7 @@
 
   <%= stylesheet_link_tag "application", media: "all" %>
   <%= javascript_include_tag "application" %>
+  <%= favicon_link_tag 'favicon.ico' %>
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,41 +32,31 @@
     </div>
 <% end %>
 
-<% if user_signed_in? %>
     <div class="container-fluid">
-      <div class="row-fluid">
+      <div class="row-fluid full_page_layout">
 
-        <div class="span2">
-          <%= render 'layouts/sidebar' %>
-        </div>
+        <!--<div class="span2">-->
+          <!--<#%= render 'layouts/sidebar' %>-->
+        <!--</div>-->
 
-        <div class="span10">
+        <!--<div class="span10">-->
 
              <% flash.each do |key, value| %>
               <div class="smart_alert">
-                <a class="close" data-dismiss="alert" href="#">×</a>
-                <%= content_tag(:div, value, class: "alert alert-#{key}") %>
-              </div>
+                <%= content_tag(:div, class: "alert alert-#{key}") do %>
+                    <a class="close" data-dismiss="alert" href="#">×</a>
+                    <%= value %>
+                 <% end %>
+                    </div>
           <% end %>
 
              <%= yield %>
 
-        </div>
+        <!--</div>-->
 
       </div>
     </div>
 
-<% else %>
-    <div class="container-fluid">
-      <% flash.each do |key, value| %>
-          <div class="smart_alert">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            <%= content_tag(:div, value, class: "alert alert-#{key}") %>
-          </div>
-      <% end %>
-      <%= yield %>
-    </div>
-<% end %>
 
 
 <%= render 'layouts/footer' %>

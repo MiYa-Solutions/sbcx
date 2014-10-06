@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title><%= I18n.t('notification_mailer.invoice.subject').html_safe %></title>
+  <%= render 'styling' %>
+</head>
+
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+  <tr>
+    <td align="center" valign="top" style="padding-top:20px;">
+
+      <!--CSS change -->
+      <table border="1px solid #DDDDDD" cellpadding="0" cellspacing="0" width="600" id="templateContainer">
+        <tr>
+          <td align="center" valign="top">
+
+            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader">
+              <tr>
+                <!--CSS change -->
+                <td class="headerContent" style="background-color: #737373; height: 50px; vertical-align:middle; text-align:center; ">
+                 <h1> <%= t('general.general.invoice') %> <%= @invoice.id %></h1>
+                </td>
+              </tr>
+            </table>
+            <!-- // End Template Header \\ -->
+          </td>
+        </tr>
+        <tr>
+          <td align="center" valign="top">
+            <!-- // Begin Template Body \\ -->
+            <!--CSS change -->
+            <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody" style="font-family:Arial; font-size:14px;">
+              <tr>
+                <td valign="top">
+
+                  <!-- // Begin Module: Standard Content \\ -->
+                  <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                    <tr>
+                      <!--CSS change -->
+                      <td valign="top" class="bodyContent" width="50%" style="color:#505050; font-family:Arial; font-size:14px; line-height:150%;">
+                        <div>
+                          <!--CSS change -->
+                          <h4 class="h4" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                            <%= @invoice.ticket.organization.name %>
+                          </h4>
+                          <%= @invoice.ticket.organization.address1 %><br>
+                          <% if @invoice.ticket.organization.address2.present? %>
+                              <%= @invoice.ticket.organization.address2  %><br>
+                          <% end %>
+                          <%= @invoice.ticket.organization.city %>, <%= @invoice.ticket.organization.state %><%= @invoice.ticket.organization.zip %><br>
+                          <%= @invoice.ticket.organization.phone %><br>
+                      </div>
+                      </td>
+                      <td valign="top" width="50%" class="bodyContent" style="color:#505050; font-family:Arial; font-size:14px; line-height:150%;">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="50%" style="font-size:14px;">
+                        <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                          <%= t('general.general.bill_to') %>
+                        </h3>
+                          <%= @invoice.ticket.customer.name %><br>
+                          <% if @invoice.ticket.customer.company.present? %>
+                              <%= @invoice.ticket.customer.company %><br>
+                          <% end %>
+                          <%= @invoice.ticket.customer.address1 %><br>
+                          <% if @invoice.ticket.customer.address2.present? %>
+                              <%= @invoice.ticket.customer.address2  %><br>
+                          <% end %>
+                          <%= @invoice.ticket.customer.city %>, <%= @invoice.ticket.customer.state %><%= @invoice.ticket.customer.zip %><br>
+                          <%= @invoice.ticket.customer.phone %><br>
+                      </td>
+                      <td width="50%" style="font-size:14px;">
+                        <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                          <%= t('general.general.job_number') %><%= @invoice.ticket.id %>
+                        </h3>
+                        <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                          <%= t('general.general.invoice_date') %>:
+                        </h3>
+                          <%= l @invoice.created_at %><br><br>
+
+
+                        <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                          <%= t('general.general.job_name') %>:
+                        </h3>
+                        <%= link_to @invoice.ticket.name, service_call_url(@invoice.ticket) %><br>
+                      </td>
+                    </tr>
+
+                  </table>
+
+     <!--the table-->
+                  <table border="0" cellpadding="20" cellspacing="0" width="100%">
+
+                    <tr>
+                      <td valign="top" width="100%" style="padding-top:0; padding-bottom:0; width: 100%;">
+                        <!--CSS change -->
+                        <table cellpadding="10" cellspacing="0" width="100%" class="templateDataTable" style="border:2px solid #f5f5f5; margin-left: 1%; width: 100%;">
+                          <!--CSS change -->
+                          <tr style="background-color:#F5F5F5; color:#336699; font-family:Arial; font-size:14px; font-weight:bold; text-align:left; line-height:150%;">
+                            <th scope="col" valign="top" width="10%" class="dataTableHeading">
+                              <%= AccountingEntry.human_attribute_name(:id) %>
+                            </th>
+                            <th scope="col" valign="top" width="20%" class="dataTableHeading">
+                              <%= AccountingEntry.human_attribute_name(:name) %>
+                            </th>
+                            <th scope="col" valign="top" width="40%" class="dataTableHeading">
+                              <%= AccountingEntry.human_attribute_name(:description) %>
+                            </th>
+                            <th scope="col" valign="top" width="10%" class="dataTableHeading">
+                              <%= Bom.human_attribute_name(:quantity) %>
+                            </th>
+                            <th scope="col" valign="top" width="20%" class="dataTableHeading">
+                              <%= AccountingEntry.human_attribute_name(:amount) %>
+                            </th>
+
+                          </tr>
+                          <!--CSS change -->
+                          <% @invoice.invoice_items.each do |item| %>
+                          <tr border= "1px solid #f5f5f5;">
+                            <td valign="top" width="10%" class="dataTableContent">
+                              <%= item.invoiceable.id %>
+                            </td>
+                            <td valign="top" width="20%" class="dataTableContent">
+                              <%= item.invoiceable.name %>
+                            </td>
+                            <td valign="top" width="40%" class="dataTableContent">
+                              <%= item.invoiceable.description %>
+                            </td>
+                            <td valign="top" width="10%" class="dataTableContent">
+                              <%= defined?(item.invoiceable.quantity) ? item.invoiceable.quantity : '1.0' %>
+                            </td>
+                            <td valign="top" width="20%" class="dataTableContent">
+                              <%= humanized_money_with_symbol item.invoiceable.amount %>
+                            </td>
+                          </tr>
+                          <% end %>
+
+                          <% if @invoice.ticket.work_done? %>
+
+                          <tr border= "1px solid #f5f5f5;">
+                            <td valign="top" width="10%" class="dataTableContent"></td>
+                            <td valign="top" width="10%" class="dataTableContent"></td>
+                            <td valign="top" width="10%" class="dataTableContent"></td>
+                            <td valign="top" width="10%" class="dataTableContent">
+                              <strong><%= t('general.general.tax') %>:</strong>
+                            </td>
+                            <td valign="top" width="20%" class="dataTableContent">
+                              <strong><%= humanized_money_with_symbol @invoice.ticket.tax_amount %>&nbsp;(<%= @invoice.ticket.tax %>%)</strong>
+                            </td>
+                          </tr>
+                          <% end %>
+
+
+                          <tr border= "1px solid #f5f5f5;">
+                            <td valign="top" width="10%" class="dataTableContent"></td>
+                            <td valign="top" width="10%" class="dataTableContent"></td>
+                            <td valign="top" width="10%" class="dataTableContent"></td>
+                            <td valign="top" width="10%" class="dataTableContent">
+                             <strong> <%= Invoice.human_attribute_name(:total) %>:</strong>
+                            </td>
+                            <td valign="top" width="20%" class="dataTableContent">
+                              <strong><%= humanized_money_with_symbol @invoice.total %></strong>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <br>
+                    </tr>
+
+                    <tr>
+                      <td valign="top">
+                      <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                        <tr>
+                          <!--CSS change -->
+                          <td valign="top" class="bodyContent" style="color:#505050; font-family:Arial; font-size:14px; line-height:150%;">
+                            <div>
+                              <!--CSS change -->
+                              <h4 class="h4" style="font-family:Arial; font-size:18px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                                <%= Invoice.human_attribute_name(:notes) %>:
+                              </h4>
+                              <%= @invoice.notes %><br>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                        </td>
+                    </tr>
+
+
+                  </table>
+                  <!-- // End Module: Standard Content \\ -->
+                </td>
+              </tr>
+            </table>
+            <!-- // End Template Body \\ -->
+          </td>
+        </tr>
+        <!--footer-->
+        <tr>
+          <td align="center" valign="top">
+            <!-- // Begin Template Footer \\ -->
+            <table border="0" cellpadding="10" cellspacing="0" width="600" id="templateFooter" style="background-color: #737373;">
+              <tr>
+                <td valign="top" class="footerContent" style="font-family:Arial; font-size:12px; color: #ffffff">
+                  Powered by:
+                  <a href="http://www.subcontrax.com"><img src="http://www.subcontrax.com/assets/logo2.png" style="max-width:600px; height:auto; max-width:600px !important;" id="headerImage campaign-icon"/></a>
+                  </td>
+                <td valign="top" style="text-align:center; width: 50%;">
+                </td>
+               </tr>
+            </table>
+            <!-- // End Template Footer \\ -->
+          </td>
+        </tr>
+      </table>
+      <br>
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>

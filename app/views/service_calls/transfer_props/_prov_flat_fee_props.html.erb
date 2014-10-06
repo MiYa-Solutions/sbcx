@@ -1,6 +1,10 @@
 <div style="display: none" id="FlatFee">
   <%= f.fields_for :properties, FlatFee::TransferProperties.new do |props| %>
-      <%= props.input :prov_bom_reimbursement %>
       <%= props.input :provider_fee %>
+
+      <div class="parts_reimb_alert">
+          <%= image_tag("overdue.png", :title => I18n.t('general.messages.parts_reimbursement_prov'), :rel => 'tooltip', "data-placement" => "right") %>
+          <%= props.input :prov_bom_reimbursement %>
+      </div>
   <% end %>
 </div>

@@ -4,6 +4,7 @@
     <%= f.submit job.class.human_status_event_name(:cancel).titleize,
                  id:    'cancel_service_call_btn',
                  class: style('service_call.forms.status.cancel.button_classes'),
+                 "data-placement" => "right",
                  title: I18n.t('service_call.forms.status.cancel.tooltip'),
                  rel:   'tooltip',
                  confirm: 'Are you sure?'

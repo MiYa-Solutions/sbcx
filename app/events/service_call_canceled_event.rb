@@ -17,23 +17,19 @@
 class ServiceCallCanceledEvent < ServiceCallEvent
 
   def init
-    self.name = I18n.t('service_call_cancel_event.name') if name.nil?
-    self.description = I18n.t('service_call_canceled_event.description', subcontractor: service_call.subcontractor.name) if description.nil?
+    self.name = I18n.t('service_call_cancel_event.name')
+    self.description = I18n.t('service_call_canceled_event.description', subcontractor: service_call.subcontractor.name)
     self.reference_id = 100004
   end
 
-  def update_provider
-    prov_service_call.events << ServiceCallCanceledEvent.new(triggering_event: self)
-    prov_service_call
-  end
-
   def process_event
-    service_call.cancel(:state_only)
+    service_call.cancel_work! if service_call.can_cancel_work?
+    AffiliateBillingService.new(self, affiliate_mask: [service_call.subcontractor]).execute
     super
   end
 
   def notification_recipients
-    res = User.my_dispatchers(service_call.organization.id).all
+    res = super
     res << service_call.technician unless service_call.technician.nil? || res.map(&:id).include?(service_call.technician.id)
     res
   end

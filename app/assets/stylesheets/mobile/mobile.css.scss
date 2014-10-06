@@ -320,7 +320,7 @@ footer {
 }
 
 .job_status_list {
-  margin-top: 10px;
+  margin-top: 18px;
 
   .ui-bar-b {
     background: linear-gradient(#6FACD5, #497BAE) repeat scroll 0 0 #5E87B0;
@@ -333,6 +333,25 @@ footer {
 
   .status_grey {
     float: right;
+    margin-top: 2px;
+  }
+
+  .status_green {
+    float: right;
+    margin-top: 2px;
+    text-align: right;
+  }
+
+  .status_red {
+    float: right;
+    margin-top: 2px;
+    text-align: right;
+  }
+
+  .status_blue {
+    float: right;
+    margin-top: 2px;
+    text-align: right;
   }
 
 }
@@ -367,6 +386,11 @@ footer {
     line-height: 22px;
   }
 
+  .status_grey {
+    margin-top: 2px;
+    text-align: left;
+  }
+
 }
 
 .job_info_list, .ui-collapsible-content .ui-btn-up-d {
@@ -374,8 +398,10 @@ footer {
 }
 
 .service-call-actions {
+  margin-left: 10%;
+  margin-top: 0;
   width: 80%;
-  margin-top: -18px;
+  text-transform: uppercase;
 }
 
 #affiliate_status_fee {
@@ -695,6 +721,11 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+.aff_status_wLink {
+  margin-left: 55%;
+  position: absolute;
+  top: 8px;
+}
 
 
 
@@ -740,6 +771,26 @@ input.ui-input-text, textarea.ui-input-text {
 
 }
 
+.red_badge_collape {
+  background-color: #AB2525;
+  border-radius: 1em 1em 1em 1em;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  height: 9px;
+  //margin-left: 100px;
+  margin-top: -10px;
+  padding: 3px 6px;
+  text-align: center;
+  margin-left: 1%;
+
+  badge {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    text-shadow: 0 1px 1px #194B7E;
+  }
+}
+
 .blue_badge_collape {
   background-color: #396B9E;
   border-radius: 1em 1em 1em 1em;
@@ -747,9 +798,9 @@ input.ui-input-text, textarea.ui-input-text {
   height: 9px;
   //margin-left: 100px;
   margin-top: -10px;
-  padding: 2px 4px 3px;
+  padding: 3px 6px;
   text-align: center;
-  margin-left: 10%;
+  margin-left: 1%;
 
   badge {
     color: #FFFFFF;
@@ -769,7 +820,7 @@ input.ui-input-text, textarea.ui-input-text {
   margin-top: -10px;
   padding: 2px 4px 3px;
   text-align: center;
-  margin-left: 10%;
+  margin-left: 1%;
 
   badge {
     color: #3A87AD;
@@ -1058,7 +1109,7 @@ input.ui-input-text, textarea.ui-input-text {
     right: 11%;
     text-overflow: ellipsis;
     top: 50%;
-    width: 76px;
+    width: 100px;
   }
 
   .service_call_status_red {
@@ -1298,6 +1349,7 @@ input.ui-input-text, textarea.ui-input-text {
     margin-right: 15%;
     margin-top: -16px;
     text-align: left;
+    padding-top: 2px;
    }
 
   .billing_price_label {
@@ -1378,6 +1430,26 @@ input.ui-input-text, textarea.ui-input-text {
   }
 
 }
+
+.input-clear {
+  background: -moz-linear-gradient(center top , #c54e4e, #ab2525) repeat scroll 0 0 #ab2525;
+  border: 1px solid #721414;
+  border-radius: 5px;
+  color: #fff;
+  float: left;
+  font-weight: bold;
+  margin-right: 10%;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px #000;
+  width: 1%;
+}
+
+.mobi-datetime, .mobi-dateonly, .mobi-timeonly {
+  width: 85% !important;
+}
+
+
+
 
 .edit_appointment_details {
   .ui-grid-a .ui-block-a {
@@ -1933,7 +2005,7 @@ div.ui-slider {
   margin-top: -12px;
 
   h3{
-    margin-left: 10%;
+    margin-left: 12%;
     font-size: 16px;
   }
 }
@@ -2000,4 +2072,281 @@ div.ui-slider {
 
 #side_bar {
   margin-left: 35%;
+}
+
+.affiliate_statuses_main {
+  .ui-btn-text {
+    margin-bottom: -3px;
+    margin-left: -16px;
+    margin-top: -6px;
+  }
+}
+
+#subcon_statuses {
+  width: 100%;
+}
+
+.new_bom {
+ line-height: 20px;
+}
+
+.edit_bom_info {
+  line-height: 32px;
+}
+
+.bom_buyer {
+  line-height: 16px;
+}
+
+.edit_bom_back_btn {
+  line-height: 18px;
+  margin-left: -6px;
+}
+
+.bom_description {
+  margin-top: 10px;
+}
+
+.close_btn_header {
+
+  .ui-btn {
+    margin-top: -2px;
+  }
+
+}
+
+
+
+.service_call_entries_actions {
+  margin-left: -10%;
+  text-transform: uppercase;
+
+  form {
+    margin-bottom: 17px;
+  }
+}
+
+.aff_icon_job {
+  img {
+    margin-bottom: -8px;
+    margin-top: -5px;
+    float: right;
+  }
+}
+
+#aff_total_balance {
+  margin-left: -6px;
+  margin-top: -1px;
+
+}
+
+
+
+.affiliate_balance_billing_total {
+  margin-top: 11px;
+  padding-bottom: 22px;
+
+
+}
+
+.hide_lable {
+
+  label {
+    display: none;
+  }
+}
+
+.position_lable {
+  margin-top: 9px;
+}
+
+#service_call_payment_notes {
+  height: 50px;
+}
+
+.collect_payment_notes {
+  margin-bottom: 19px;
+}
+
+#service_call_customer_name_job {
+  text-transform: capitalize;
+}
+
+
+#affiliate_show_actions {
+  margin-bottom: 16px;
+  margin-top: -8px;
+}
+
+.show_bom_info {
+  margin-top: 19px;
+  margin-bottom: 20px;
+}
+
+.new_job_parts_remb {
+  margin-top: 12px;
+  .ui-checkbox {
+    margin-left: 40%;
+    margin-top: -28px;
+    width: 30%;
+  }
+
+  .control-label {
+    margin-top: 2px;
+  }
+}
+
+#service_call_properties_provider_fee {
+  margin-left: 7px;
+  width: 47%;
+}
+
+#job_done_index {
+  .ui-listview-filter {
+    border-width: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+  .new_job_button .ui-btn {
+    top: 8px;
+    padding-top: 7px;
+  }
+
+  .ui-input-search .ui-input-clear {
+    top: 15%;
+  }
+
+}
+
+#job_in_progress_index {
+  .ui-listview-filter {
+    border-width: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+  .new_job_button .ui-btn {
+    top: 8px;
+    padding-top: 7px;
+  }
+
+  .ui-input-search .ui-input-clear {
+    top: 15%;
+  }
+}
+
+.job_counter {
+  background: linear-gradient(#dddddd, #bbbbbb) repeat scroll 0 0 #bbbbbb;
+  border-radius: 10px;
+  margin-left: 6px;
+  padding: 4px 8px;
+}
+
+#job_done_index-popup {
+  left: 22px !important;
+  max-width: 900px !important;
+  width: 99% !important;
+}
+
+#job_in_progress_index-popup {
+  left: 22px !important;
+  max-width: 900px !important;
+  width: 99% !important;
+
+}
+
+#prov_statuses-popup {
+  width: 98% !important;
+  left: 1% !important;
+  right: 1% !important;
+  max-width: 900px !important;
+}
+
+#subcon_statuses-popup  {
+  width: 98% !important;
+  left: 1% !important;
+  right: 1% !important;
+  max-width: 900px !important;
+}
+
+#update_tax-popup {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#provider_show_all_entries-popup {
+  width: 98% !important;
+  left: 1% !important;
+  right: 1% !important;
+  max-width: 900px !important;
+}
+
+#subcon_show_all_entries-popup {
+  width: 98% !important;
+  left: 1% !important;
+  right: 1% !important;
+  max-width: 900px !important;
+}
+
+#payment_collect-popup {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#betaPopup-popup {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+
+#customer_show_all_entries-popup {
+  width: 98% !important;
+  left: 1% !important;
+  right: 1% !important;
+  max-width: 900px !important;
+}
+
+
+#customer_show_receipts-popup {
+  width: 98% !important;
+  left: 1% !important;
+  right: 1% !important;
+  max-width: 900px !important;
+}
+
+#add_new_invoice-popup {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#transfer_modal {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#settle_subcon {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#settle_provider {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+.customer_default_tax {
+
 }

@@ -39,10 +39,11 @@
             </div>
 
             <%= f.input :subcon_agreement_id, collection: [] %>
+            <%= render 'service_calls/transfer_props/flat_fee_props', f: f %>
+
             <%= f.input :allow_collection %>
             <%= f.input :re_transfer %>
 
-            <%= render 'service_calls/transfer_props/flat_fee_props', f: f %>
             <%= hidden_field_tag "service_call[status_event]", 'transfer' %>
 
           </div>

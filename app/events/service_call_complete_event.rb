@@ -7,10 +7,6 @@ class ServiceCallCompleteEvent < ScCompletionEvent
     self.description  = I18n.t('service_call_complete_event.description', user: creator.name.rstrip)
   end
 
-  def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
-  end
-
   def notification_class
     ScCompleteNotification
   end
@@ -21,7 +17,7 @@ class ServiceCallCompleteEvent < ScCompletionEvent
 
   def process_event
     if notify_provider?
-      copy_boms_to_provider
+      #copy_boms_to_provider
       ServiceCall.transaction do
         prov_service_call.system_update=true
         prov_service_call.tax          = service_call.tax

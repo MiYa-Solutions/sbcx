@@ -96,21 +96,22 @@ class MyServiceCall < ServiceCall
     end
 
     event :cancel do
-      transition [:new, :open, :transferred] => :canceled
+      transition [:new, :open, :transferred] => :canceled, unless: ->(sc) { sc.work_done? }
     end
 
     event :un_cancel do
+      transition :transferred => :new, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
       transition :canceled => :transferred, if: ->(sc) { sc.can_uncancel? && sc.subcontractor.present? }
       transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
     end
 
     event :close do
-      transition :transferred => :closed, if: ->(sc) { sc.subcon_cleared? && sc.payment_cleared? }
-      transition :open => :closed, if: ->(sc) { sc.payment_paid? }
+      transition :transferred => :closed, if: ->(sc) { sc.subcon_cleared? && sc.payment_cleared? && sc.work_done? }
+      transition :open => :closed, if: ->(sc) { sc.payment_paid? && sc.work_done?}
     end
 
     event :cancel_transfer do
-      transition :transferred => :new, if: ->(sc) { !sc.work_done? }
+      transition :transferred => :new, unless: ->(sc) { sc.work_done? || sc.work_canceled? }
     end
   end
 
@@ -124,13 +125,17 @@ class MyServiceCall < ServiceCall
   end
 
   def my_profit
-    if PaymentToSubcontractor.where(ticket_id: self.id).size >0
-      payment = Money.new(PaymentToSubcontractor.where(ticket_id: self.id).sum(:amount_cents), PaymentToSubcontractor.where(ticket_id: self.id).first.amount_currency)
-      total_profit + payment # payment is always a negative number
-    else
-      total_profit
-    end
+    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry'].include? e.type }.map { |e| e.amount_cents }.sum
+    cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum
+    customer_cents    = entries.select { |e| e.type == 'ServiceCallCharge' }.map { |b| b.amount_cents }.sum
+    adv_payment       = entries.select { |e| e.type == 'AdvancePayment' }.map { |b| b.amount_cents }.sum
+    subcon_payments   = entries.select { |e| e.type == 'PaymentToSubcontractor' }.map { |b| b.amount_cents }.sum
+    reimb_amount      = entries.select { |e| e.type == 'MaterialReimbursementToCparty' }.map { |b| b.amount_cents }.sum
+    my_bom_cents      = -boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents * b.quantity }.sum
+    payment_reimb     = entries.select { |e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |b| b.amount_cents }.sum
 
+
+    Money.new(customer_cents + reimb_amount + subcon_payments + my_bom_cents + payment_reimb + cancel_adjustment + adv_payment + adjustment) - tax_amount
 
   end
 
@@ -146,6 +151,10 @@ class MyServiceCall < ServiceCall
     res = [self.organization]
     res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
     res
+  end
+
+  def work_start_allowed?
+    !self.transferred? && !self.canceled?
   end
 
 end

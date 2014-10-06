@@ -31,16 +31,15 @@ class AccountingEntry < ActiveRecord::Base
   monetize :balance_cents
 
   validates_presence_of :account, :status, :type, :description
-  validates_presence_of :event, :ticket, unless: ->(entry) { entry.instance_of?(MyAdjEntry) }
-  validates_presence_of :agreement, unless: ->(entry) { entry.kind_of?(AdjustmentEntry) }
+  validates_presence_of :ticket, unless: ->(entry) { entry.instance_of?(MyAdjEntry) }
+  validates_presence_of :event, unless: ->(entry) { entry.instance_of?(MyAdjEntry) || entry.instance_of?(AdvancePayment) }
+  validates_presence_of :agreement, unless: ->(entry) { entry.kind_of?(AdjustmentEntry) || entry.instance_of?(AdvancePayment)  }
 
   belongs_to :account, autosave: true
   belongs_to :ticket
   belongs_to :event
   belongs_to :agreement
   belongs_to :matching_entry, class_name: 'AccountingEntry'
-
-  before_create :set_amount_direction
 
   scope :by_account_and_datetime_range, ->(acc, range) { where(account_id: acc.id).where(created_at: range) }
   scope :by_account_and_ticket, ->(acc, ticket) { where(account_id: acc.id).where(ticket_id: ticket.id) }
@@ -85,15 +84,12 @@ class AccountingEntry < ActiveRecord::Base
     self.id <=> other.id
   end
 
-
-
-  protected
-  def set_amount_direction
-    self.amount = self.amount * amount_direction
-  end
-
   def amount_direction
     raise "The amount direction is not defined - you need to define amount_direction method for #{self.class}"
+  end
+
+  def name
+    self.class.model_name.human
   end
 
 end

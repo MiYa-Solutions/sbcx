@@ -1,0 +1,26 @@
+<div class="affiliate_jobs customer_job_overdue">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.overdue_jobs') %></h1></li>
+      <li>
+      </li>
+    </ul>
+  </div>
+  <!--table of jobs-->
+  <table id="customer-overdue-jobs" class="table table-striped" data-customer-id="<%= @customer.id %>">
+    <thead>
+    <tr>
+      <th><%= Ticket.human_attribute_name(:ref_id) %></th>
+      <th><%= Ticket.human_attribute_name(:created_at) %></th>
+      <th><%= Ticket.human_attribute_name(:name) %></th>
+      <th><%= Ticket.human_attribute_name(:work_status) %></th>
+      <th><%= I18n.t('general.general.balance') %></th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+</div>
+
+

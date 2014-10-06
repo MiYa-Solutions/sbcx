@@ -43,11 +43,6 @@ describe 'My Service Call When I Do The Work' do
       expect(job.subcontractor_status_name).to eq :na
     end
 
-    context 'when canceled' do
-      include_context 'when the provider cancels the job'
-      it_should_behave_like 'provider job is canceled'
-    end
-
     context 'when I start the job' do
 
       context 'multi user organization' do
@@ -405,13 +400,6 @@ describe 'My Service Call When I Do The Work' do
               end
 
             end
-
-            context 'when prov cancels' do
-              include_context 'when the provider cancels the job'
-              it_should_behave_like 'provider job is canceled'
-              it_should_behave_like 'provider job canceled after completion'
-            end
-
 
           end
 

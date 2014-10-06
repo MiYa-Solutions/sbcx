@@ -8,7 +8,7 @@
       <th><%= I18n.t('general.general.balance') %> </th>
       </thead>
       <tbody>
-      <% account.accounting_entries.each do |entry| %>
+      <% account.accounting_entries.order('id desc').each do |entry| %>
           <%= render 'accounting_entries/accounting_entry', accounting_entry: entry %>
       <% end %>
       </tbody>

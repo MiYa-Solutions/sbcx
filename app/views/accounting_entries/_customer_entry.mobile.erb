@@ -1,0 +1,93 @@
+<li class="affiliate_balance_billing" id="entry_<%= accounting_entry.id %>_type">
+
+  <%= link_to accounting_entry.class.model_name.human, "#entry_customer_popup_#{accounting_entry.id}", "data-rel" => "popup", "data-transition" => "pop" %>
+  <p>
+    <% if accounting_entry.amount < 0 %>
+        <span class="red_badge"><%= humanized_money_with_symbol accounting_entry.amount %></span>
+    <% else %>
+        <span class="green_badge"><%= humanized_money_with_symbol accounting_entry.amount %></span>
+    <% end %>
+  </p>
+</li>
+
+
+
+<div data-role="popup" id="entry_customer_popup_<%= accounting_entry.id %>" data-overlay-theme="a" data-theme="c" data-dismissible="false" style="min-width:310px; width:98% !important; right:1% !important; left:1% !important;" class="ui-corner-all close_btn_header">
+
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1 id="entries_header"><%= t('general.general.billing_entries') %></h1>
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+  </div>
+
+  <div data-role="content">
+
+    <div class="subcon_entries_page">
+      <br>
+      <ul data-role="listview">
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"> <%= AccountingEntry.human_attribute_name(:id) %></div>
+            <div class="ui-block-b"> <%= accounting_entry.id %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"> <%= AccountingEntry.human_attribute_name(:type) %></div>
+            <div class="ui-block-b"> <%= accounting_entry.class.model_name.human %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"> <%= AccountingEntry.human_attribute_name(:status) %></div>
+            <div class="ui-block-b"> <%= accounting_entry.human_status_name.humanize %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"> <%= AccountingEntry.human_attribute_name(:collector) %></div>
+            <div class="ui-block-b"> <%= accounting_entry.collector.name if defined? accounting_entry.collector %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"> <%= AccountingEntry.human_attribute_name(:amount) %></div>
+            <div class="ui-block-b"> <%= humanized_money_with_symbol accounting_entry.amount %></div>
+          </div>
+        </li>
+        <li class="ui-li ui-li-static">
+          <div class="ui-grid-a">
+            <div class="ui-block-a"> <%= AccountingEntry.human_attribute_name(:notes) %></div>
+            <div class="ui-block-b"> <%= accounting_entry.notes %></div>
+          </div>
+        </li>
+
+      </ul>
+
+      <br><br>
+
+
+      <div class="service_call_entries_actions">
+
+        <%= adjustment_entry_actions(accounting_entry, "customer_entry_small_btn") %>
+        <!--<a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>-->
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

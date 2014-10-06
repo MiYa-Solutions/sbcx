@@ -22,7 +22,6 @@ en:
   errors:
     messages:
       one_system_owner: "There can be only one system owner"
-
   organization:
     industries:
       locksmith: Locksmith
@@ -37,3 +36,4 @@ en:
       towing: Towing
       auto_repair: Auto Repair
       glass_repair: Glass Repair
+      photography: Photography

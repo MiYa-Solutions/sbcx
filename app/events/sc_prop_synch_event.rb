@@ -1,7 +1,7 @@
 class ScPropSynchEvent < ServiceCallEvent
 
   def self.ticket_string_attributes
-    %w[company address1 address2 city state zip country phone mobile_phone work_phone email]
+    %w[company address1 address2 city state zip country phone mobile_phone work_phone email tax]
   end
 
   def self.ticket_date_attributes

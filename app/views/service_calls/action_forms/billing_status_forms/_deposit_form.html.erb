@@ -1,4 +1,4 @@
-<div class="span6">
+<!--<div class="span6">-->
 <%= simple_form_for job.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
     <% if deposit_events(job).size > 1 %>
         <%= f.input :billing_status,
@@ -19,4 +19,4 @@
     %>
 <% end %>
 
-</div>
+<!--</div>-->

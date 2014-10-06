@@ -2,6 +2,7 @@ require File.expand_path('../boot', __FILE__)
 require File.expand_path('../boot', __FILE__)
 
 # Pick the frameworks you want:
+require 'csv'
 require "active_record/railtie"
 require "action_controller/railtie"
 require "action_mailer/railtie"
@@ -87,12 +88,24 @@ module Sbcx
 
     config.assets.initialize_on_precompile = false
 
+    config.assets.precompile += ['all/bootstrap_and_overrides.css']
+    config.assets.paths.unshift Rails.root.join('vendor', 'assets', 'images', 'all').to_s
+
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version                  = '1.0'
 
     config.exceptions_app = self.routes
 
     I18n.config.enforce_available_locales = true
+
+    # this is to fix the issue where some of the translations are not working on heroku
+    config.before_configuration do
+      I18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
+      I18n.reload!
+    end
+
+    config.log_level = ENV['LOG_LEVEL'].present? ? ENV['LOG_LEVEL'].to_sym : :warn
 
   end
 end

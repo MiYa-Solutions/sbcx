@@ -81,7 +81,18 @@ class AdjustmentEntry < AccountingEntry
   end
 
   def ticket_belongs_to_org?
-    the_ticket && the_ticket.organization == account.organization
+    the_ticket && the_ticket.organization == account.organization && ticket_and_account_correlate?
+  end
+
+  def ticket_and_account_correlate?
+    case account.accountable_type
+      when 'Customer'
+        the_ticket.customer_id == account.accountable_id
+      when 'Organization'
+        (the_ticket.provider_id == account.accountable_id) || (the_ticket.subcontractor_id == account.accountable_id)
+      else
+        false
+    end
   end
 
 end

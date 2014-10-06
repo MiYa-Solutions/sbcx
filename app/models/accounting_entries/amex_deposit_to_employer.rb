@@ -17,7 +17,7 @@
 #  balance_currency :string(255)      default("USD"), not null
 #
 
-class CreditCardDepositToEmployer < AccountingEntry
+class AmexDepositToEmployer < AccountingEntry
   def amount_direction
     1
   end

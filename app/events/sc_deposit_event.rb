@@ -3,6 +3,7 @@ class ScDepositEvent < ServiceCallEvent
   include HstoreAmount
 
   setup_hstore_attr 'entry_id'
+  setup_hstore_attr 'deposit_entry_id'
 
   def init
     self.name         = I18n.t('service_call_deposit_event.name')
@@ -27,6 +28,11 @@ class ScDepositEvent < ServiceCallEvent
     update_statuses
     super
   end
+
+  def entry
+    @entry ||= AccountingEntry.find entry_id
+  end
+
 
   private
 
@@ -53,11 +59,8 @@ class ScDepositEvent < ServiceCallEvent
     end
 
     account.entries << deposit_entry
-
-  end
-
-  def entry
-    @entry ||= AccountingEntry.find entry_id
+    self.deposit_entry_id = deposit_entry.id
+    self.save!
   end
 
   def update_statuses

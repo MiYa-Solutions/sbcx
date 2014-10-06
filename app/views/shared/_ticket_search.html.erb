@@ -1,5 +1,3 @@
-<% affiliate ||= nil %>
-<% customer ||= nil %>
 <% account ||= nil %>
 <div id="ticket_search" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
@@ -8,26 +6,19 @@
   </div>
   <div class="modal-body" id="ticket_search_body">
     <div>
-      <%= hidden_field_tag :affiliate_id, affiliate.id if affiliate.present? %>
-      <%= hidden_field_tag :customer_id, customer.id  if customer.present? %>
-      <%= hidden_field_tag :account_id, account.try(:id) %>
-      <%= form_tag service_calls_url, id: "ticket_search_form", method: :get, remote: true, 'data-type' => 'json' do %>
-          <label class="search_job_help">Enter the person's name and click the <strong>'Search'</strong> button to get get a list of all Jobs.</label>
-          <%= text_field_tag :search, params[:search] %>
-          <%= submit_tag t('affiliates.buttons.search'), :name => nil, class: 'btn btn-primary', :id => 'ticket-search-button' %>
-          <br><label class="search_job_help">Double-click the Job you wish to add a new entry to.</label>
-      <% end %>
+          <label class="search_job_help">You can search for the job's name by typing in the search tex box</label>
+          <%= hidden_field_tag :account_id, account.try(:id) %>
+          <br><label class="search_job_help">Click the Job you wish to add a new entry to.</label>
     </div>
     <div id="search-results">
-      <table class="table table-striped display table-bordered" hidden="true" id="search-results-table">
+      <table class="table table-striped display table-bordered" id="search-results-table">
         <thead>
         <tr>
           <th><%= Ticket.human_attribute_name(:id) %></th>
-          <th><%= Ticket.human_attribute_name(:created_at) %></th>
-          <th><%= Ticket.human_attribute_name(:customer) %></th>
+          <th><%= Ticket.human_attribute_name(:name) %></th>
           <th><%= Ticket.human_attribute_name(:status) %></th>
-          <th><%= Ticket.human_attribute_name(:total_price) %></th>
-          <th><%= Ticket.human_attribute_name(:total_cost) %></th>
+          <th><%= Ticket.human_attribute_name(:work_status) %></th>
+          <th><%= Ticket.human_attribute_name(:billing_status) %></th>
         </tr>
         </thead>
         <tbody>

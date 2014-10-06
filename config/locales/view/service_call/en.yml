@@ -54,10 +54,9 @@ en:
           tooltip: "Click in case you made a mistake and this job should not be canceled"
         re_transfer:
           tooltip: "Click to transfer the job to another subcontractor"
-
       work_status:
         start:
-          tooltip: "Click to indicate the service has started"
+          tooltip: "Click to indicate the job has started"
         accept:
           tooltip: "Click to indicate the subcontractor accepted the job"
         reject:
@@ -69,9 +68,9 @@ en:
         reset:
           tooltip: "Click to reset the job after rejected in order to dispatch or outsource to another subcontractor"
         complete:
-          tooltip: "Click to indicate the service has completed"
-
-
+          tooltip: "Click to indicate the job has completed"
+        cancel:
+          tooltip: "Click to indicate the subcontractor has canceled the job"
       billing_status:
         invoice:
           tooltip: "Click to indicate an invoice has been submitted to the customer"
@@ -92,13 +91,13 @@ en:
         provider_collected:
           tooltip: "Click to indicate that the Contractor has collected the payment from the customer"
         overdue:
-          tooltip: "Click to indicate that the payment for the service is overdue"
+          tooltip: "Click to indicate that the payment for the job is overdue"
         collect:
-          tooltip: "Click if the payment for the service has been collected by an employee"
+          tooltip: "Click if the payment for the job has been collected by an employee"
         deposited:
           tooltip: "Click to indicate that the collected payment has been deposited and can be marked as Paid"
         paid:
-          tooltip: "Click to indicate that the customer has paid for the service"
+          tooltip: "Click to indicate that the customer has paid for the job"
         subcon_collected:
           tooltip: "Click to indicate that the subcontractor has collected the payment from the customer"
         subcon_deposited:
@@ -115,5 +114,3 @@ en:
           tooltip: "Click to indicate that the customer was reimbursed overpayment"
         reject:
           tooltip: "Click to indicate that customer payment has been rejected"
-
-

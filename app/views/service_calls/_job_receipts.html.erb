@@ -1,0 +1,55 @@
+<div class="collapse" id="job_receipts">
+  <div class="collapse_frame">
+    <div class="row-fluid collapse_body">
+
+
+      <div class="row-fluid">
+        <a href="#" data-toggle="collapse" data-target="#job_receipts" class="close" id="job_receipts_close">×</a>
+      </div>
+
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.receipts') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+
+
+      <table class="table table-striped" id="receipts_log_in_service_call">
+        <thead>
+        <tr>
+          <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+          <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
+          <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
+          <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:payment_notes) %></th>
+          <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
+          <th class="download_icon"><%= t('general.general.download') %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @service_call.payments.each do |entry| %>
+            <tr>
+              <td><%= entry.id %></td>
+              <td><%= entry.account.accountable.name %></td>
+              <td><%= l entry.created_at %></td>
+              <td><%= entry.type.constantize.model_name.human %></td>
+              <td><%= entry.notes %></td>
+              <td><%= humanized_money_with_symbol entry.amount %></td>
+              <td class="download_icon">
+                <%= link_to receipt_path(entry, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>
+                    <i class="icon-download-alt icon-white"></i>
+                <% end %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+    <br>
+    <br>
+  </div>
+
+</div>
+

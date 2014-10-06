@@ -1,8 +1,8 @@
 class ScSettlementEvent < ServiceCallEvent
   protected
 
-  def update_affiliate_account
-    billing_service = AffiliateBillingService.new(self)
+  def update_affiliate_account(affiliate)
+    billing_service = AffiliateBillingService.new(self, affiliate_mask: [affiliate])
     billing_service.execute
 
     # there can be multiple affiliate accounts in case this is a ticket for a broker

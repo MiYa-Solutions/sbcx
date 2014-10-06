@@ -11,8 +11,8 @@ class ServiceCallStartedEvent < ServiceCallEvent
     prov_service_call.events << ServiceCallStartedEvent.new(triggering_event: self)
   end
 
-  def notification_recipients
-    User.my_dispatchers(service_call.organization.id)
+  def update_subcontractor
+    subcon_service_call.events << ServiceCallStartedEvent.new(triggering_event: self) unless triggering_event.service_call == subcon_service_call
   end
 
   def notification_class

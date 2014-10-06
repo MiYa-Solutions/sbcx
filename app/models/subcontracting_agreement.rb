@@ -22,6 +22,7 @@
 class SubcontractingAgreement < OrganizationAgreement
 
   after_initialize :set_cparty_type
+  #validates_presence_of :payment_terms, if: ->(agr) { agr.active? }
 
   private
   def set_cparty_type

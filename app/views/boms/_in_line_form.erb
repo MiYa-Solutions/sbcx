@@ -15,87 +15,72 @@
               <span class="add-on"><%= I18n.t('general.general.part') %></span>
             </div>
 
-            <div class="span4">
-                <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" } %>
-                <!--<#%= f.text_field :material_name, placeholder: 'Part Name', data: { autocomplete_source: materials_path } %>-->
-                <%= f.hidden_field :material_id %>
-                <%= f.hidden_field :ticket_id, value: @service_call.id %>
+            <div class="span5">
+              <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" } %>
+              <%= f.hidden_field :material_id %>
+              <%= f.hidden_field :ticket_id, value: @service_call.id %>
+            </div>
+
+            <div class="span5">
+              <span type="text" id="bom_description"/>
+            </div>
+
+
+      </div>
+
+      <div class="row-fluid add_part_service_call parts_2nd">
+
+            <div class="span1 bom_label_frame">
+              <span class="add-on"><%= I18n.t('general.general.price') %></span>
+            </div>
+            <div class="span3">
+              <%= f.text_field :price %>
+            </div>
+
+            <div class="span1 bom_label_frame">
+              <span class="add-on"><%= I18n.t('general.general.cost') %></span>
+            </div>
+            <div class="span3">
+              <%= f.text_field :cost %>
             </div>
 
             <div class="span1 bom_label_frame qty_frame">
               <span class="add-on"><%= I18n.t('general.general.qty') %></span>
             </div>
-
-            <div class="span6">
+            <div class="span2">
               <%= f.text_field :quantity %>
             </div>
 
       </div>
 
-
-
-
       <div class="row-fluid add_part_service_call parts_2nd">
 
-                <div class="span1 bom_label_frame">
-                  <span class="add-on"><%= I18n.t('general.general.price') %></span>
-                </div>
-                <div class="span2">
-                          <!--<span class="add-on"><#%= I18n.t('general.general.price') %></span>-->
-                    <%= f.text_field :price %>
-                </div>
+            <div class="span1 bom_label_frame">
+              <span class="add-on"><%= Bom.human_attribute_name(:buyer) %></span>
+            </div>
+            <div class="span6">
+              <%= f.select :buyer_id, options_for_select(buyer_options(ticket)), include_blank: true %>
+              <%= f.hidden_field :buyer_type %>
+            </div>
 
-              <div class="span1 bom_label_frame">
-                <span class="add-on"><%= I18n.t('general.general.cost') %></span>
+            <div class="span1">
+              <div id="ajax-msg"></div>
+              <%= image_tag 'ajax-loader.gif', id: "spinner" %>
+            </div>
+
+             <div class="span3">
+                <div class="add_button">
+                    <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary", id: 'add_part' %>
+                 </div>
               </div>
-                <div class="span2">
-                    <!--<span class="add-on"><#%= I18n.t('general.general.cost') %></span>-->
-                    <%= f.text_field :cost %>
-                </div>
 
-                <div class="span1 bom_label_frame">
-                  <span class="add-on"><%= Bom.human_attribute_name(:buyer) %></span>
-                </div>
-
-
-                <div class="span5">
-                  <%= f.select :buyer_id, options_for_select(buyer_options(ticket)), include_blank: true %>
-                  <%= f.hidden_field :buyer_type %>
-                </div>
 
 
       </div>
 
-        <div class="row-fluid add_part_service_call parts_2nd">
-
-                <div class="span1 bom_label_frame">
-                  <span class="add-on"><%= I18n.t('general.general.description') %></span>
-                </div>
-
-                <div class="span7">
-                    <input type="text" id="bom_desc" value="">
-
-                </div>
-
-                <div class="span2">
-                  <div class="add_button">
-                    <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary", id: 'add_part' %>
-                  </div>
-
-                </div>
-
-                <div class="span1">
-                  <div id="ajax-msg"></div>
-                  <%= image_tag 'ajax-loader.gif', id: "spinner" %>
-                </div>
-
-       </div>
 
 
-
-
-    </div>
-
-
+<!--end of part frame-->
+   </div>
 <% end %>
 

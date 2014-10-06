@@ -1,8 +1,70 @@
 en:
   activerecord:
     models:
-      accounting_entry: "Balance"
-      adjustment_entry: Account Adjustment
+      accounting_entry: "Balance entry"
+      payment_entry: "Payment Collection Entry"
+      reimbursement_for_cash_payment: "Reimbursement For Cash Payment"
+      affiliate_settlement_entry: "Affiliate Settlement Entry"
+      advance_payment: "Advance Payment"
+      reimbursement_for_cheque_payment: "Reimbursement For Check Payment"
+      reimbursement_for_amex_payment: "Reimbursement For Amex Payment"
+      material_reimbursement: "Material Reimbursement"
+      service_call_charge: "Job Charge"
+      canceled_job_adjustment: "Canceled Job Adjustment"
+      payment_to_subcontractor: "Payment To Subcontractor"
+      customer_reimbursement: "Customer Reimbursement"
+      subcontracting_job: "Subcontracting Job"
+      rejected_payment: "Rejected Payment"
+      deposit_entry: "Deposit Entry"
+      income_from_provider: "Income From Provider"
+      customer_payment: "Customer Payment"
+      material_reimbursement_to_cparty: "Material Reimbursement To Affiliate"
+      reimbursement_for_credit_payment: "Reimbursement For Credit Payment"
+      employee_commission: "Employee Commission"
+      cash: "Cash"
+      cash_payment: "Cash Payment"
+      cash_payment_from_affiliate: "Cash Payment from Affiliate"
+      cash_payment_to_affiliate: "Cash Payment to Affiliate"
+      cash_payment_fee: "Cash Payment Fee"
+      cash_collection_for_employer: "Cash Collection for Employer"
+      cash_collection_from_subcon: "Subcontractor Collected Cash Payment"
+      cash_collection_for_provider: "Cash payment collection"
+      cash_deposit_from_subcon: "Subcontractor Cash Payment Deposit"
+      cash_deposit_to_provider: "Cash Collection Deposit"
+      cash_deposit_to_employer: "Employer Deposited Cash Payment"
+      amex_credit_card: "Amex"
+      amex_payment: "Amex Payment"
+      amex_payment_from_affiliate: "Amex Payment from Affiliate "
+      amex_payment_to_affiliate: "Amex Payment to Affiliate"
+      amex_payment_fee: "Amex Payment Fee"
+      amex_collection_for_employer: "Amex Collection for Employer"
+      amex_collection_from_subcon: "Subcontractor Collected Amex Payment"
+      amex_collection_for_provider: "Customer AMEX payment collection"
+      amex_deposit_from_subcon: "Subcontractor Deposited Amex Payment"
+      amex_deposit_to_provider: "Amex Payment Deposit"
+      amex_deposit_to_employer: "Employer Deposited Amex Payment"
+      cheque: "Check"
+      cheque_rate: "Check Rate"
+      cheque_payment: "Check Payment"
+      cheque_payment_from_affiliate: "Check Payment from Affiliate "
+      cheque_payment_to_affiliate: "Check Payment to Affiliate"
+      cheque_payment_fee: "Check Payment Fee"
+      cheque_collection_for_employer: "Check Collection for Employer"
+      cheque_collection_from_subcon: "Subcontractor Collected Check Payment"
+      cheque_collection_for_provider: "Customer check payment collection"
+      cheque_deposit_from_subcon: "Subcontractor Deposited Check Payment"
+      cheque_deposit_to_employer: "Employer Deposited Check Payment"
+      credit_card: "Credit Card"
+      credit_payment: "Credit Card Payment"
+      credit_payment_from_affiliate: "Credit Card Payment from Affiliate "
+      credit_payment_to_affiliate: "Credit Card Payment to Affiliate"
+      credit_payment_fee: "Credit Card Payment Fee"
+      credit_card_collection_for_employer: "Credit Card Collection for Employer"
+      credit_card_collection_from_subcon: "Subcontractor Collected Credit Card Payment"
+      credit_card_collection_for_provider: "Contractor Collected Credit Card payment"
+      credit_card_deposit_from_subcon: "Subcontractor Deposited Credit Card Payment"
+      credit_card_deposit_to_employer: "Employer Deposited Credit Card Payment"
+      adjustment_entry: "Account Adjustment"
     attributes:
       accounting_entry:
         ticket: "Job"
@@ -36,10 +98,28 @@ en:
   accounting_entry:
     description:
       customer_reimbursement: 'Reimbursement submitted for the amount of: %{amount}'
-
   payment_cleared_event:
     name: 'Cleared Payment'
-    description: 'payment has been cleared successfully'
+    description: 'Payment has been cleared successfully'
   payment_deposited_event:
     name: 'Deposited Payment'
-    description: 'payment has been deposited successfully'
+    description: 'A payment has been deposited successfully'
+  payment_rejected_event:
+    name: 'Rejected Payment'
+    description: 'A %{payment_type} (id: %{payment_id}) has been rejected'
+    entry:
+      description: '%{payment_type} (id: %{payment_id}) was rejected'
+  entry_confirmed_event:
+    name: "Payment Confirmed"
+    description: 'A payment was confirmed by Contractor'
+  entry_confirm_event:
+      name: "Payment Confirmed"
+      description: 'You have confirmed receiving a payment'
+  Cash_collection_from_subcon:
+    name: "Cash collection from subcontractor"
+  entry_dispute_event:
+    name: "Payment Disputed"
+    description: 'You have disputed a payment'
+  entry_disputed_event:
+    name: "Payment Disputed"
+    description: 'A customer payment has been disputed by Contractor'

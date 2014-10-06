@@ -49,7 +49,7 @@
                             </h4>
                             <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>,<br>
                             <%= I18n.t('notification_mailer.invite_accepted.content').html_safe %>
-                            &nbsp;<strong><%= @invite.organization.name.html_safe %></strong>.
+                            &nbsp;<strong><%= @invite.affiliate.name.html_safe %></strong>.
                             <br>
                           </div>
                         </td>
@@ -62,18 +62,13 @@
                             <!--CSS change -->
                             <tr style="background-color:#F5F5F5; color:#336699; font-family:Arial; font-size:14px; font-weight:bold; text-align:left; line-height:150%;">
                               <th scope="col" valign="top" width="95%" class="dataTableHeading">
-                                <%= I18n.t('general.general.message').html_safe %>
+                                <%= I18n.t('general.general.messageCongrats1').html_safe %>&nbsp;
+                                <%= @invite.affiliate.name.html_safe %>&nbsp;
+                                <%= I18n.t('general.general.messageCongrats2').html_safe %>
                               </th>
 
                             </tr>
-                            <tr border= "1px solid #f5f5f5;">
-                              <td valign="top" class="dataTableContent">
-                                <strong><%= @invite.message %></strong>
-                              </td>
-
-                            </tr>
-
-                            <!--CSS change -->
+                          <!--CSS change -->
                           </table>
                         </td>
                       </tr>
@@ -92,7 +87,7 @@
                           <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
                             <tr>
                               <td valign="middle" class="templateButtonContent">
-                                <%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, invite_url(@invite) %>
+                                <%= link_to '<input class="btn btm-primary" type="button" value="More Details">'.html_safe, affiliate_url(@invite) %>
                                 </div>
                               </td>
                             </tr>

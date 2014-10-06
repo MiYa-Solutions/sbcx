@@ -1,0 +1,91 @@
+<!--show all pending actions-->
+<%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries.order('id desc') %>
+
+
+<br>
+<!--show all entries-->
+<%= link_to I18n.t('general.general.show_all'), "#customer_show_all_entries", "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-rel" => "popup", "data-transition" => "pop" %>
+
+
+
+<!--show all entries-->
+<div data-role="popup" id="customer_show_all_entries" data-overlay-theme="a" data-theme="c" data-dismissible="false" class="ui-corner-all close_btn_header">
+
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1 id="entries_header"><%= t('general.general.subcon_entries') %></h1>
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+  </div>
+
+  <div data-role="content">
+
+
+    <div data-role="collapsible-set" data-inset="false">
+
+      <% @service_call.customer_entries.order('id desc').all.each do |entry| %>
+
+          <div data-role="collapsible" data-collapsed="true" data-theme="d">
+            <h3><%= entry.type.constantize.model_name.human %>
+              (<%= humanized_money_with_symbol entry.amount %>)
+            </h3>
+            <br>
+            <ul data-role="listview">
+
+              <li>
+                <div class="ui-grid-a">
+                  <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:id) %></div>
+                  <div class="ui-block-b"><%= entry.id %></div>
+                </div>
+              </li>
+              <li>
+                <div class="ui-grid-a">
+                  <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:account) %></div>
+                  <div class="ui-block-b"><%= entry.account.accountable.name %></div>
+                </div>
+              </li>
+              </li>
+              <li>
+                <div class="ui-grid-a">
+                  <div class="ui-block-a"><%= Account.human_attribute_name(:accountable_type).titleize %></div>
+                  <div class="ui-block-b"><%= entry.account.accountable.class.model_name.human %></div>
+                </div>
+              </li>
+              </li>
+              <li>
+                <div class="ui-grid-a">
+                  <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:created_at) %></div>
+                  <div class="ui-block-b"><%= l entry.created_at %></div>
+                </div>
+              </li>
+              </li>
+              <li>
+                <div class="ui-grid-a">
+                  <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:type) %></div>
+                  <div class="ui-block-b"><%= entry.type.constantize.model_name.human %></div>
+                </div>
+              </li>
+              </li>
+              <li>
+                <div class="ui-grid-a">
+                  <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:payment_notes) %></div>
+                  <div class="ui-block-b"><%= entry.notes %></div>
+                </div>
+              </li>
+              </li>
+              <li>
+                <div class="ui-grid-a">
+                  <div class="ui-block-a"><%= AccountingEntry.human_attribute_name(:amount) %></div>
+                  <div class="ui-block-b"><%= humanized_money_with_symbol entry.amount %></div>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+      <% end %>
+
+      <!--collapses-->
+    </div>
+    <!--content-->
+  </div>
+  <!--popup-->
+</div>

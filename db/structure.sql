@@ -348,7 +348,9 @@ CREATE TABLE boms (
     buyer_id integer,
     buyer_type character varying(255),
     creator_id integer,
-    updater_id integer
+    updater_id integer,
+    provider_bom_id integer,
+    subcon_bom_id integer
 );
 
 
@@ -369,6 +371,46 @@ CREATE SEQUENCE boms_id_seq
 --
 
 ALTER SEQUENCE boms_id_seq OWNED BY boms.id;
+
+
+--
+-- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    commentable_id integer DEFAULT 0,
+    commentable_type character varying(255),
+    title character varying(255),
+    body text,
+    subject character varying(255),
+    user_id integer DEFAULT 0 NOT NULL,
+    parent_id integer,
+    lft integer,
+    rgt integer,
+    public boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
 --
@@ -394,7 +436,8 @@ CREATE TABLE customers (
     updated_at timestamp without time zone NOT NULL,
     creator_id integer,
     updater_id integer,
-    status integer
+    status integer,
+    properties hstore
 );
 
 
@@ -492,6 +535,75 @@ CREATE SEQUENCE invites_id_seq
 --
 
 ALTER SEQUENCE invites_id_seq OWNED BY invites.id;
+
+
+--
+-- Name: invoice_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE invoice_items (
+    id integer NOT NULL,
+    invoice_id integer,
+    invoiceable_id integer,
+    invoiceable_type character varying(255)
+);
+
+
+--
+-- Name: invoice_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE invoice_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoice_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE invoice_items_id_seq OWNED BY invoice_items.id;
+
+
+--
+-- Name: invoices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE invoices (
+    id integer NOT NULL,
+    account_id integer,
+    ticket_id integer,
+    organization_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    creator_id integer,
+    updater_id integer,
+    notes text,
+    total_cents integer,
+    total_currency character varying(255)
+);
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE invoices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE invoices_id_seq OWNED BY invoices.id;
 
 
 --
@@ -643,7 +755,8 @@ CREATE TABLE organizations (
     updated_at timestamp without time zone NOT NULL,
     parent_org_id integer,
     industry character varying(255),
-    other_industry character varying(255)
+    other_industry character varying(255),
+    properties hstore
 );
 
 
@@ -795,6 +908,42 @@ ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
 CREATE TABLE schema_migrations (
     version character varying(255) NOT NULL
 );
+
+
+--
+-- Name: support_tickets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE support_tickets (
+    id integer NOT NULL,
+    subject character varying(255),
+    description text,
+    status integer,
+    organization_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    creator_id integer,
+    updater_id integer
+);
+
+
+--
+-- Name: support_tickets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE support_tickets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: support_tickets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE support_tickets_id_seq OWNED BY support_tickets.id;
 
 
 --
@@ -1094,6 +1243,13 @@ ALTER TABLE ONLY boms ALTER COLUMN id SET DEFAULT nextval('boms_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY customers ALTER COLUMN id SET DEFAULT nextval('customers_id_seq'::regclass);
 
 
@@ -1109,6 +1265,20 @@ ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::reg
 --
 
 ALTER TABLE ONLY invites ALTER COLUMN id SET DEFAULT nextval('invites_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invoice_items ALTER COLUMN id SET DEFAULT nextval('invoice_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY invoices ALTER COLUMN id SET DEFAULT nextval('invoices_id_seq'::regclass);
 
 
 --
@@ -1158,6 +1328,13 @@ ALTER TABLE ONLY posting_rules ALTER COLUMN id SET DEFAULT nextval('posting_rule
 --
 
 ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY support_tickets ALTER COLUMN id SET DEFAULT nextval('support_tickets_id_seq'::regclass);
 
 
 --
@@ -1260,6 +1437,14 @@ ALTER TABLE ONLY appointments
 
 
 --
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: customers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1281,6 +1466,22 @@ ALTER TABLE ONLY events
 
 ALTER TABLE ONLY invites
     ADD CONSTRAINT invites_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoice_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY invoice_items
+    ADD CONSTRAINT invoice_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY invoices
+    ADD CONSTRAINT invoices_pkey PRIMARY KEY (id);
 
 
 --
@@ -1356,6 +1557,14 @@ ALTER TABLE ONLY tickets
 
 
 --
+-- Name: support_tickets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY support_tickets
+    ADD CONSTRAINT support_tickets_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1385,6 +1594,13 @@ ALTER TABLE ONLY users
 
 ALTER TABLE ONLY versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customer_properties; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX customer_properties ON customers USING gin (properties);
 
 
 --
@@ -1451,10 +1667,45 @@ CREATE INDEX index_boms_on_material_id ON boms USING btree (material_id);
 
 
 --
+-- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON comments USING btree (commentable_id, commentable_type);
+
+
+--
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
+
+
+--
+-- Name: index_customers_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_customers_on_organization_id ON customers USING btree (organization_id);
+
+
+--
 -- Name: index_events_on_eventable_id_and_eventable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_events_on_eventable_id_and_eventable_type ON events USING btree (eventable_id, eventable_type);
+
+
+--
+-- Name: index_invoice_items_on_invoice_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoice_items_on_invoice_id ON invoice_items USING btree (invoice_id);
+
+
+--
+-- Name: index_invoices_on_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoices_on_ticket_id ON invoices USING btree (ticket_id);
 
 
 --
@@ -1490,6 +1741,20 @@ CREATE INDEX index_org_to_roles_on_organization_id_and_organization_role_id ON o
 --
 
 CREATE INDEX index_service_calls_on_ref_id ON tickets USING btree (ref_id);
+
+
+--
+-- Name: index_support_tickets_on_creator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_support_tickets_on_creator_id ON support_tickets USING btree (creator_id);
+
+
+--
+-- Name: index_support_tickets_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_support_tickets_on_organization_id ON support_tickets USING btree (organization_id);
 
 
 --
@@ -1546,6 +1811,27 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (re
 --
 
 CREATE INDEX index_versions_on_item_type_and_item_id ON versions USING btree (item_type, item_id);
+
+
+--
+-- Name: org_preferences; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX org_preferences ON organizations USING gin (properties);
+
+
+--
+-- Name: organization_company; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX organization_company ON organizations USING gin (to_tsvector('english'::regconfig, (company)::text));
+
+
+--
+-- Name: organization_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX organization_name ON organizations USING gin (to_tsvector('english'::regconfig, (name)::text));
 
 
 --
@@ -1827,3 +2113,35 @@ INSERT INTO schema_migrations (version) VALUES ('20140702162338');
 INSERT INTO schema_migrations (version) VALUES ('20140707225143');
 
 INSERT INTO schema_migrations (version) VALUES ('20140711005442');
+
+INSERT INTO schema_migrations (version) VALUES ('20140721221038');
+
+INSERT INTO schema_migrations (version) VALUES ('20140727214318');
+
+INSERT INTO schema_migrations (version) VALUES ('20140814011609');
+
+INSERT INTO schema_migrations (version) VALUES ('20140816182238');
+
+INSERT INTO schema_migrations (version) VALUES ('20140821173348');
+
+INSERT INTO schema_migrations (version) VALUES ('20140821181139');
+
+INSERT INTO schema_migrations (version) VALUES ('20140821182012');
+
+INSERT INTO schema_migrations (version) VALUES ('20140829015934');
+
+INSERT INTO schema_migrations (version) VALUES ('20140909193308');
+
+INSERT INTO schema_migrations (version) VALUES ('20140915221955');
+
+INSERT INTO schema_migrations (version) VALUES ('20140917174836');
+
+INSERT INTO schema_migrations (version) VALUES ('20140917202020');
+
+INSERT INTO schema_migrations (version) VALUES ('20140919160011');
+
+INSERT INTO schema_migrations (version) VALUES ('20140927170153');
+
+INSERT INTO schema_migrations (version) VALUES ('20140929121116');
+
+INSERT INTO schema_migrations (version) VALUES ('20141003173847');

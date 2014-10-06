@@ -3,7 +3,6 @@ en:
     attributes:
       agreement:
         name: "Agreement"
-
   general:
     agreement_id: "Agreement Id"
     general:

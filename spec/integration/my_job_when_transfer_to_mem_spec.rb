@@ -431,18 +431,6 @@ describe 'My Job When Transferred To a Member' do
 
   end
 
-  context 'when prov cancels' do
-    include_context 'when the provider cancels the job'
-    it_should_behave_like 'provider job is canceled'
-    it_should_behave_like 'subcon job is canceled'
-  end
-
-  context 'when the subcon cancels' do
-    include_context 'when the subcon cancels the job'
-    it_should_behave_like 'provider job is canceled'
-    it_should_behave_like 'subcon job is canceled'
-  end
-
   context 'when subcon accepts the job' do
 
     before do
@@ -634,6 +622,9 @@ describe 'My Job When Transferred To a Member' do
                 expect(deposited_entry.account.reload.balance).to eq Money.new(1000*0.01)
               end
 
+              it 'subcon should not be allowed to confirm the deposited payments' do
+                expect(subcon_job.deposit_entries.last.allowed_status_events).to be_empty
+              end
 
               context 'when deposit confirmed' do
 
@@ -666,7 +657,12 @@ describe 'My Job When Transferred To a Member' do
 
               context 'when the deposit is disputed' do
                 before do
+                  subcon_admin
                   deposited_entry.dispute!
+                end
+
+                it 'subcon should not be allowed to confirm the deposited payments' do
+                  expect(subcon_job.deposit_entries.last.allowed_status_events).to be_empty
                 end
 
                 it 'deposit entry status should be confirmed' do
@@ -675,6 +671,10 @@ describe 'My Job When Transferred To a Member' do
 
                 it 'the last event should be DepositEntryDisputeEvent' do
                   expect(job.events.order('ID DESC').first).to be_instance_of(DepositEntryDisputeEvent)
+                end
+
+                it 'subcon should have a notification associated' do
+                  expect(subcon_job.notifications.last).to be_instance_of(EntryDisputedNotification)
                 end
 
                 it 'payment status should be subcon_claim_deposited' do
@@ -1648,66 +1648,14 @@ describe 'My Job When Transferred To a Member' do
             expect(event_permitted_for_job?('billing_status', 'provider_collected', subcon_admin, subcon_job)).to be_false
           end
 
-          context 'when prov cancels' do
-            include_context 'when the provider cancels the job'
-            it_should_behave_like 'provider job is canceled'
-            it_should_behave_like 'subcon job is canceled'
-          end
-
-          context 'when the subcon cancels' do
-            include_context 'when the subcon cancels the job'
-            it_should_behave_like 'provider job is canceled'
-            it_should_behave_like 'subcon job is canceled'
-          end
-
 
         end
 
-        context 'when prov cancels' do
-          include_context 'when the provider cancels the job'
-          it_should_behave_like 'provider job is canceled'
-          it_should_behave_like 'subcon job is canceled'
-        end
-
-        context 'when the subcon cancels' do
-          include_context 'when the subcon cancels the job'
-          it_should_behave_like 'provider job is canceled'
-          it_should_behave_like 'subcon job is canceled'
-        end
-
-
       end
 
-      context 'when prov cancels' do
-        include_context 'when the provider cancels the job'
-        it_should_behave_like 'provider job is canceled'
-        it_should_behave_like 'subcon job is canceled'
-      end
-
-      context 'when the subcon cancels' do
-        include_context 'when the subcon cancels the job'
-        it_should_behave_like 'provider job is canceled'
-        it_should_behave_like 'subcon job is canceled'
-      end
 
     end
 
-    context 'when prov cancels' do
-      include_context 'when the provider cancels the job'
-      it_should_behave_like 'provider job is canceled'
-      it_should_behave_like 'subcon job is canceled'
-    end
-
-    context 'when the subcon cancels' do
-      include_context 'when the subcon cancels the job'
-      it_should_behave_like 'provider job is canceled'
-      it_should_behave_like 'subcon job is canceled'
-    end
-
-  end
-
-  context 'when subcon rejects the job' do
-    pending
   end
 
 end

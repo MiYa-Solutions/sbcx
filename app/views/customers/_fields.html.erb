@@ -1,22 +1,3 @@
-<!--# Table name: customers-->
-<!--#-->
-<!--#  id              :integer         not null, primary key-->
-<!--#  name            :string(255)-->
-<!--#  organization_id :integer-->
-<!--#  company         :string(255)-->
-<!--#  address1        :string(255)-->
-<!--#  address2        :string(255)-->
-<!--#  city            :string(255)-->
-<!--#  state           :string(255)-->
-<!--#  zip             :string(255)-->
-<!--#  country         :string(255)-->
-<!--#  phone           :string(255)-->
-<!--#  mobile_phone    :string(255)-->
-<!--#  work_phone      :string(255)-->
-<!--#  email           :string(255)-->
-<!--#  created_at      :datetime        not null-->
-<!--#  updated_at      :datetime        not null-->
-
 <%= f.input :name, autofocus: true %>
 <%= f.input :company %>
 
@@ -50,4 +31,15 @@
 <%= f.input :zip %>
 <%= f.input :phone %>
 <%= f.input :mobile_phone %>
-<%= f.input :email, as: :email %>
+
+<div class="default_tax_signup">
+  <%= image_tag("question24.png", :title => I18n.t('general.messages.customer_email'), :rel => 'tooltip', "data-placement" => "right") %>
+
+  <%= f.input :email, as: :email %>
+</div>
+
+<div class="default_tax_signup">
+  <%= image_tag("question24.png", :title => I18n.t('general.messages.default_tax_signup'), :rel => 'tooltip', "data-placement" => "right") %>
+
+  <%= f.input :default_tax, as: :decimal %>
+</div>

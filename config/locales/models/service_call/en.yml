@@ -10,7 +10,6 @@ en:
       my_service_call: "My Job"
       service_call: "Job"
       transferred_service_call: "Incoming Job"
-
     attributes:
       my_service_call:
         customer: "Customer"
@@ -19,7 +18,6 @@ en:
         address1: "Address"
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
-
       transferred_service_call:
         customer: "Customer"
         provider: "Contractor"
@@ -27,9 +25,6 @@ en:
         address1: "Address"
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
-
-
-
       service_call:
         provider: "Contractor"
         tag_list: "Job Type(s)"
@@ -44,8 +39,6 @@ en:
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
         provider_agreement: "Contractor Agreement"
-
-
     state_machines:
       service_call:
         work_status:
@@ -61,27 +54,20 @@ en:
         provider_status:
           evnets:
             provider_marked_as_settled: "Marked as Settled"
-
         subcontractor_status:
           events:
             subcon_marked_as_settled: "Marked as Settled"
           states:
             pending: "Pending"
-            claimed_as_settled: "Claimed As Settled"
+            claimed_as_settled: "Claimed Settled"
             settled: "Settled"
             claim_settled: "Settled?"
             cleared: "Cleared"
         billing_status:
           states:
-            invoiced_by_subcon: "Invoiced (Subcontractor)"
-            invoiced: "Invoiced"
             paid: "Paid"
             pending: "Pending"
-            invoiced_by_prov: "Invoiced (Contractor)"
           events:
-            invoice: I Invoiced
-            provider_invoiced: Contractor
-            subcon_invoiced: Subcontractor
             collect: I Collceted
             provider_collected: Contractor
             subcon_collected: Subcontractor
@@ -96,11 +82,9 @@ en:
             transferred: "Transferred"
             closed: "Closed"
             canceled: "Canceled"
-
         billing_status:
           events:
             clear: 'Clear'
-            subcon_invoiced: LILI
           states:
             paid: "Paid"
             overdue: "Overdue"
@@ -110,15 +94,14 @@ en:
             deposited_to_prov: "Deposited to Contractor"
             deposited_to_subcon: "Deposited to Subcontractor"
             collected_by_provider: "Contractor Collected"
-            invoiced_by_subcon: "Subcontractor Invoiced"
-            invoiced_by_provider: "Contractor Invoiced"
             provider_claim_deposited: "Contractor Deposited?"
             collected_by_employee: "Employee Collected"
             collected_by_subcon: "Subcontractor Collected"
             subcon_claim_deposited: "Subcontractor Deposited?"
         work_status:
           events:
-            dispach: Lulu
+            dispach: Disptach
+            cancel: Subcon Canceled
       transferred_service_call:
         status:
           events:
@@ -126,7 +109,6 @@ en:
             accept: "Accept"
             dispatch: "Dispatch"
             work_done: "Complete"
-
           states:
             transferred: "Passed On"
             new: "Received New"
@@ -140,8 +122,6 @@ en:
             pending: "Pending"
             transferred: "Transferred"
             canceled: "Canceled"
-
-
         billing_status:
           states:
             collected: "Collected"
@@ -149,8 +129,6 @@ en:
             deposited_to_subcon: "Deposited to Subcontractor"
             deposited: "Deposit Confirmed"
             collected_by_provider: "Contractor Collected"
-            invoiced_by_subcon: "Subcontractor Invoiced"
-            invoiced_by_provider: "Contractor Invoiced"
             provider_claim_deposited: "Contractor Deposited?"
             collected_by_employee: "Employee Collected"
             collected_by_subcon: "Subcontractor Collected"
@@ -159,7 +137,7 @@ en:
           states:
             settled: "Settled"
             claim_settled: "Settled?"
-            claimed_as_settled: "Claimed As Settled"
+            claimed_as_settled: "Claimed Settled"
             cleared: "Cleared"
   messages:
     service_call:
@@ -169,7 +147,6 @@ en:
       cant_create_for_member: "You can't create a transferred Job when the Contractor is a member. Please contact the Contractor and ask him to create the job"
       missing_provider: "Please specify a Contractor for this transferred Job"
       customer_does_not_belong_to_provider: "The customer must be the Contractor's customer"
-
     crud_messages:
       success: "The Job was created successfully"
       update:
@@ -178,11 +155,18 @@ en:
   service_call_cancel_event:
     name: "Job has been Canceled"
     description: 'The Job has been canceled by %{user}'
+  service_call_provider_canceled_event:
+    name: "Job canceled by contractor"
+    description: 'The job was canceled by the contractor (%{contractor})'
   service_call_un_cancel_event:
-    name: "Job has been Un-Canceled"
-    description: 'The Job has been un canceled by %{user}'
+    name: "Job Reset"
+    description: 'The Job has been un canceled(reset) by %{user} after a subcontractor canceled it'
   service_call_canceled_event:
+    name: 'Subcontractor canceled the job'
     description: 'The Job has been canceled by %{subcontractor}'
+  service_call_cancel_transfer_event:
+    name: 'Transfer Canceled'
+    description: 'Job transfer to %{subcontractor} was canceled'
   service_call_received_event:
     name: "Received New Job"
     description: 'Received a new Job from %{name}'
@@ -203,16 +187,10 @@ en:
     description: '%{subcontractor} has dispatched the Job'
   service_call_paid_event:
     name: "Customer has Paid"
-    description: "Customer has paid for the service"
+    description: "Customer has paid for the job"
   service_call_invoice_event:
     name: "Customer has been Invoiced"
     description: "The customer has received the Job invoice"
-  service_call_invoiced_event:
-    name: "Job has been Invoiced"
-    description: '%{subcontractor} has submitted the Job invoice to the customer'
-  service_call_provider_invoiced_event:
-    name: "Invoiced by Contractor"
-    description: 'Please note that the Contractor &nbsp; (%{provider}) has submitted the Job invoice to the customer. You are no longer expected to collect the payment from the customer.'
   service_call_deposit_event:
     name: "Deposited Payment to Contractor"
     description: 'The payment has been deposited to Contractor Name: &nbsp; %{provider}'
@@ -233,7 +211,7 @@ en:
     description: 'The payment for this Job has been cleared by the subcontractor (%{subcon})'
   service_call_collected_event:
     name: "Payment Collection"
-    description: 'Name: &nbsp; (%{collector}) collected the payment from the customer'
+    description: '%{collector} collected payment from the customer'
   service_call_deposit_confirmed_event:
     name: "Contractor has Confirmed Deposit"
     description: 'Contractor Name: &nbsp; (%{provider}) has confirmed receiving payment for this Job'
@@ -254,10 +232,16 @@ en:
     description: "You have indicated that the commission fees have been settled with the Contractor"
   service_call_provider_confirmed_settled_event:
     name: "Contractor has Confirmed Settlement"
-    description: 'Contractor Name: &nbsp; (%{provider}) has confirmed that commission fees for this Job have been settled'
+    description: 'Contractor: &nbsp; (%{provider}) has confirmed that commission fees for this Job have been settled'
+  service_call_provider_confirm_settled_event:
+    name: "Settlement Confirmed with Contractor"
+    description: 'Settlement confirmed with Contractor Name: &nbsp; (%{provider}). Commission fees for this Job have been settled'
   service_call_subcon_confirmed_settled_event:
     name: "Subcontractor has Confirmed Settlement"
-    description: 'Subcontractor Name: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
+    description: 'Subcontractor: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
+  service_call_subcon_confirm_settled_event:
+    name: "Settlement Confirmed with Subcontractor"
+    description: 'Subcontractor: &nbsp; (%{subcontractor}) has confirmed that commission fees for this Job have been settled'
   service_call_clear_customer_payment_event:
     name: "The total payment(s) for this job are marked as cleared"
     description: "The payment for this job has been cleared, which means the check was cleared by the bank etc."
@@ -265,15 +249,14 @@ en:
     name: "The job is closed"
     description: "The job was marked as closed - no more actions are expected to happen in regards to this job"
   service_call_provider_clear_event:
-    name: "The payment from Contractor is cleared"
-    description: 'It was indicated that the payment from %{prov} for job %{job_ref} was cleared'
+    name: "Contractor payment is cleared"
+    description: 'A payment from %{prov} for job %{job_ref} was cleared'
   service_call_subcon_cleared_event:
     name: "Subcontractor Cleared Payment"
     description: '%{subcon} has cleared the %{payment_type} payment for job %{ref}'
   service_call_properties_update_event:
     name: "Properties Update"
     description: 'The following properties were updated by %{user}'
-
   service_call_properties_updated_event:
     name: "Properties Got Updated"
     description: "The following job properties were updated by: %{updating_org}"

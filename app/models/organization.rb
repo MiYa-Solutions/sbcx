@@ -25,7 +25,15 @@
 #  other_industry    :string(255)
 #
 
+require 'hstore_setup_methods'
 class Organization < ActiveRecord::Base
+  extend HstoreSetupMethods
+  serialize :properties, ActiveRecord::Coders::Hstore
+  setup_hstore_attr 'default_tax'
+
+  def default_tax
+    (properties['default_tax'].nil? || properties['default_tax'].empty?) ? '0' : properties['default_tax']
+  end
 
   def self.industries
     [
@@ -40,6 +48,7 @@ class Organization < ActiveRecord::Base
         :towing,
         :auto_repair,
         :glass_repair,
+        :photography,
         :other
     ]
   end
@@ -51,7 +60,7 @@ class Organization < ActiveRecord::Base
   ### ASSOCIATIONS:
   has_many :invites
   has_many :invite_req, class_name: 'Invite', foreign_key: 'affiliate_id'
-  has_many :users, inverse_of: :organization
+  has_many :users
   has_many :customers, inverse_of: :organization do
     #def << (customer)
     #  customer.build_account(organization: proxy_association.owner)
@@ -63,6 +72,7 @@ class Organization < ActiveRecord::Base
   has_many :org_to_roles
   has_many :organization_roles, :through => :org_to_roles
   has_many :service_calls, :inverse_of => :organization
+  has_many :tickets, :inverse_of => :organization
   has_many :events, as: :eventable
   has_many :materials
   has_many :accounts
@@ -96,7 +106,7 @@ class Organization < ActiveRecord::Base
 
       unless subcontractor.reverse_agreements.where(:organization_id => proxy_association.owner.id).first
         subcon_creator = subcontractor.creator ? subcontractor.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-        Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator, name: FlatFee.model_name.titleize }) { self.concat subcontractor }
+        Agreement.with_scope(:create => { type: "SubcontractingAgreement", creator: subcon_creator, name: FlatFee.model_name.titleize, payment_terms: Agreement.payment_options[:net_15] }) { self.concat subcontractor }
         agr = subcontractor.reverse_agreements.where(:organization_id => proxy_association.owner.id).first
         agr.rules << FlatFee.new
         agr.status = Agreement::STATUS_ACTIVE
@@ -117,7 +127,7 @@ class Organization < ActiveRecord::Base
 
       unless provider.agreements.where(:counterparty_id => proxy_association.owner.id, counterparty_type: 'Organization').first
         prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator, name: FlatFee.model_name.titleize }) { self.concat provider }
+        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator, name: FlatFee.model_name.titleize, payment_terms: Agreement.payment_options[:net_15] }) { self.concat provider }
         agr = provider.agreements.where(:counterparty_id => proxy_association.owner.id, counterparty_type: "Organization").first
         agr.rules << FlatFee.new
         agr.status = Agreement::STATUS_ACTIVE
@@ -143,10 +153,12 @@ class Organization < ActiveRecord::Base
   validate :has_at_least_one_role
   validates_presence_of :organization_roles
   validates_presence_of :industry, unless: ->(org) { org.kind_of?(Affiliate) }
+  validates_presence_of :email, if: ->(org) { org.member? }
 
   validates_with OneOwnerValidator
   validates_uniqueness_of :name, scope: [:subcontrax_member], if: Proc.new { |org| org.subcontrax_member }
   validate :check_industry, unless: ->(org) { org.kind_of?(Affiliate) }
+  validates_email_format_of :email, allow_nil: true, allow_blank: true
 
   ### EAGER LOADS:
   includes :organization_roles
@@ -163,7 +175,7 @@ class Organization < ActiveRecord::Base
   scope :my_providers, ->(org_id) { associated_providers.where('agreements.counterparty_id = ?', org_id) - where(id: org_id) }
   scope :my_subcontractors, ->(org_id) { associated_subcontractors.where('agreements.organization_id = ?', org_id) - where(id: org_id) }
   scope :my_affiliates, ->(org_id) { (associated_providers | associated_subcontractors).where('agreements.counterparty_id = ? OR agreements.organization_id = ?', org_id, org_id) - where(id: org_id) }
-  scope :search, ->(query) { where(arel_table[:name].matches("%#{query}%")) }
+  scope :search, ->(query) { where('organizations.name @@ :q OR organizations.company @@ :q', q: query) }
   scope :provider_search, ->(org_id, query) { (search(query).provider_members - where(id: org_id)| search(query).my_providers(org_id)).order('organizations.name') }
   scope :subcontractor_search, ->(org_id, query) { ((search(query).subcontractor_members - where(id: org_id)| search(query).my_subcontractors(org_id)).order('organizations.name')) }
   scope :affiliate_search, ->(org_id, query) { (my_affiliates(org_id).search(query) | members.search(query) - where(id: org_id)).order('organizations.name ASC') }
@@ -314,6 +326,10 @@ class Organization < ActiveRecord::Base
 
   def active_jobs
     ServiceCall.active_jobs(self).order('id desc')
+  end
+
+  def my_affiliate?(aff)
+    affiliate_ids.include? aff.id
   end
 
   private

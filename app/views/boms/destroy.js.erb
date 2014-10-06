@@ -1,12 +1,16 @@
 <% if @bom.errors.any? %>
-    var msg = "";
+var msg = "";
 
-    <% @bom.errors[:ticket].each do |err| %>
-        msg = msg + '<span class="error-msg alert-error help-inline"><%= err %> </span>';
+<% @bom.errors[:ticket].each do |err| %>
+msg = msg + '<span class="error-msg alert-error help-inline"><%= err %> </span>';
 
-    <% end%>
-    $(msg).purr();
+<% end%>
+$(msg).purr();
 
 <% else %>
-    $('#bom_<%= @bom.id %>').remove();
- <% end %>
+$('#bom_<%= @bom.id %>').remove();
+$('#job_total_cost').text('<%= j(humanized_money_with_symbol @bom.ticket.total_cost) %>');
+$('#job_total_price').text('<%= j(humanized_money_with_symbol @bom.ticket.total_price) %>');
+$('#job_total').text('<%= j(humanized_money_with_symbol @bom.ticket.total) %>');
+
+<% end %>

@@ -49,7 +49,7 @@
                             </h4>
                             <%= I18n.t('general.emails.dear').html_safe %>&nbsp;<%= "#{@user.first_name} #{@user.last_name}" %>,<br>
                             <%= I18n.t('notification_mailer.invite_declined.content').html_safe %>
-                            &nbsp;<strong><%= @invite.organization.name.html_safe %></strong>.
+                            &nbsp;<strong><%= @invite.affiliate.name.html_safe %></strong>.
                             <br>
                           </div>
                         </td>

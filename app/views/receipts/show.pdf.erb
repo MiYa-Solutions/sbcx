@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="invoice-title">
+        <br>
+        <br>
+        <h4><%= @receipt.ticket.organization.name %></h4>
+        <h3 class="pull-right"><%= t('general.general.receipt') %> <%= @receipt.id %></h3><br>
+        <%= @receipt.ticket.organization.address1 %><br>
+        <% if @receipt.ticket.organization.address2.present? %>
+            <%= @receipt.ticket.organization.address2  %><br>
+        <% end %>
+        <%= @receipt.ticket.organization.city %>, <%= @receipt.ticket.organization.state %><%= @receipt.ticket.organization.zip %><br>
+        <%= @receipt.ticket.organization.phone %><br>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-6 invoice-text-left">
+          <address>
+            <strong><%= t('general.general.bill_to') %></strong><br>
+            <%= @receipt.ticket.customer.name %><br>
+            <% if @receipt.ticket.customer.company.present? %>
+                <%= @receipt.ticket.customer.company %><br>
+            <% end %>
+
+            <%= @receipt.ticket.customer.address1 %><br>
+            <% if @receipt.ticket.customer.address2.present? %>
+                <%= @receipt.ticket.customer.address2  %><br>
+            <% end %>
+            <%= @receipt.ticket.customer.city %>, <%= @receipt.ticket.customer.state %><%= @receipt.ticket.customer.zip %><br>
+            <%= @receipt.ticket.customer.phone %><br>
+          </address>
+        </div>
+        <div class="col-xs-6 invoice-text-right">
+          <address>
+            <strong><%= t('general.general.receipt_date') %>:</strong><br>
+            <%= l @receipt.created_at %><br><br>
+
+            <strong><%= t('general.general.job_number') %></strong><%= @receipt.ticket.id %> <br>
+            <br>
+
+            <strong><%= t('general.general.job_name') %>:</strong><br>
+            <%= @receipt.ticket.name %><br>
+            <!-- <#%= link_to @receipt.ticket.name, service_call_url(@receipt.ticket) %><br>-->
+          </address>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row-fluid invoice_table">
+    <div class="col-xs-6">
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.payment_summary') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+  <table class="table table-striped" id="receipt">
+    <thead>
+    <tr>
+      <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+      <th><%= AccountingEntry.human_attribute_name(:type) %> </th>
+      <th><%= AccountingEntry.human_attribute_name(:notes) %> </th>
+      <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><%= @receipt.id %></td>
+          <td><%= @receipt.type.constantize.model_name.human %></td>
+          <td>  <%= @receipt.notes %></td>
+          <td><%= humanized_money_with_symbol @receipt.amount.abs %></td>
+
+        </tr>
+   </tbody>
+    </table>
+  <!--end -->
+</div>

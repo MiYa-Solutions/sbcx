@@ -1,51 +1,23 @@
 <div class="affiliate_jobs">
   <div class="smart_label">
     <ul>
-      <li><h1><%= I18n.t('general.general.jobs') %></h1></li>
+      <li><h1><%= I18n.t('general.general.open_jobs') %></h1></li>
       <li>
       </li>
     </ul>
   </div>
-  <!--Filter Jobs-->
-  <div class="row-fluid filter_affiliate_jobs">
-    <form>
-      <ul>
-        <li class="label_filter"><strong>Filter by Date:</strong></li>
-        <li>
-          <div class="input-prepend input-append">
-            <span class="add-on">From</span>
-            <input class= "datepicker">
-            <span class="add-on">To</span>
-            <input class= "datepicker">
-            <button type="submit" class="btn btn-mini btn-primary">Filter</button>
-
-          </div>
-        </li>
-        <li class="button_filter"></li>
-      </ul>
-    </form>
-  </div>
   <!--table of jobs-->
-  <table class="table table-striped">
+  <table id="customer-jobs" class="table table-striped" data-customer-id="<%= @customer.id %>">
     <thead>
     <tr>
-      <th><%= I18n.t('general.general.jon_number') %></th>
-      <th><%= I18n.t('general.general.description') %></th>
-      <th><%= I18n.t('general.general.status') %></th>
-      <th><%= Ticket.human_attribute_name(:notes) %></th>
-      <th><%= Bom.human_attribute_name(:total_cost) %></th>
+      <th><%= Ticket.human_attribute_name(:ref_id) %></th>
+      <th><%= Ticket.human_attribute_name(:created_at) %></th>
+      <th><%= Ticket.human_attribute_name(:name) %></th>
+      <th><%= Ticket.human_attribute_name(:work_status) %></th>
+      <th><%= Bom.human_attribute_name(:total_price) %></th>
     </tr>
     </thead>
     <tbody>
-    <% @jobs.each do |sc| %>
-        <tr>
-          <td><%= link_to sc.ref_id, service_call_path(sc), title: sc.notifications.last.try(:content), rel: 'tooltip' %></td>
-          <td><%= link_to sc.type.tableize.humanize , service_call_path(sc) %></td>
-          <td><%= link_to sc.human_status_name, service_call_path(sc) %></td>
-          <td><%= sc.notes.try(:truncate, 20) %></td>
-          <td><%= humanized_money_with_symbol sc.total_price %></td>
-        </tr>
-    <% end %>
     </tbody>
   </table>
 

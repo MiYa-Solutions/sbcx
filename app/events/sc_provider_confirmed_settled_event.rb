@@ -2,12 +2,8 @@ class ScProviderConfirmedSettledEvent < ScSettlementEvent
 
   def init
     self.name         = I18n.t('service_call_provider_confirmed_settled_event.name')
-    self.description  = I18n.t('service_call_provider_confirmed_settled_event.description')
+    self.description  = I18n.t('service_call_provider_confirmed_settled_event.description', provider: service_call.provider.name)
     self.reference_id = 100031
-  end
-
-  def notification_recipients
-    User.my_admins(service_call.organization_id)
   end
 
   def notification_class

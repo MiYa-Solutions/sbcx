@@ -6,10 +6,6 @@ class ScCollectedEvent < CollectionEvent
     self.reference_id = 100024
   end
 
-  def notification_recipients
-    User.my_admins(service_call.organization_id)
-  end
-
   def notification_class
     ScCollectedNotification
   end

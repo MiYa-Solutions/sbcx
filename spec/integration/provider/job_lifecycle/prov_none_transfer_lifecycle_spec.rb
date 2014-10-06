@@ -64,6 +64,8 @@ describe 'Provider Job Lifecycle When Not Transferring' do
       complete_the_work job
       invoice job
       collect_a_payment job, event: 'paid', amount: '1000', type: 'cash', collector: job.organization
+      job.payments.last.deposit!
+      job.reload
     end
 
     it 'status should be :open' do
@@ -71,23 +73,9 @@ describe 'Provider Job Lifecycle When Not Transferring' do
     end
 
     it 'status event should be :close and :cancel' do
-      expect(job.status_events.sort).to eq [:cancel, :close]
+      expect(job.status_events.sort).to eq [:close]
     end
 
-    context 'when canceling' do
-      include_context 'when the provider cancels the job'
-    end
-  end
-
-  describe 'when canceling after payment collection' do
-    before do
-      start_the_job job
-      add_bom_to_job job, cost: '100', price: '1000', quantity: '1'
-      complete_the_work job
-      invoice job
-      collect_a_payment job, event: 'paid', amount: '1000', type: 'cash', collector: job.organization
-    end
-    include_context 'when the provider cancels the job'
   end
 
 

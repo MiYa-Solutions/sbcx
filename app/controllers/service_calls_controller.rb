@@ -7,12 +7,23 @@ class ServiceCallsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html {
-        @service_calls    = ServiceCall.jobs_to_work_on(current_user.organization).all(order: 'id DESC')
-        @transferred_jobs = ServiceCall.my_transferred_jobs(current_user.organization).all(order: 'id DESC')
+      format.any(:html, :mobile) {
+        all_my_jobs           = ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).all(order: 'id DESC')
+        all_transferred_job   = ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).all(order: 'id DESC')
+        # a set of data for each tab
+        @new_jobs             = all_my_jobs.select { |j| [:pending, :canceled, :rejected].include? j.work_status_name }
+        @new_transferred_jobs = all_transferred_job.select { |j| [:accepted, :pending, :canceled, :rejected].include? j.work_status_name }
+
+        @active_jobs             = all_my_jobs.select { |j| [:in_progress, :accepted, :dispatched].include? j.work_status_name }
+        @active_transferred_jobs = all_transferred_job.select { |j| [:in_progress, :dispatched].include? j.work_status_name }
+
+        @done_jobs             = all_my_jobs.select { |j| j.work_status_name == :done }
+        @done_transferred_jobs = all_transferred_job.select { |j| j.work_status_name == :done }
       }
 
       format.json { render json: TicketsDatatable.new(view_context) }
+      format.csv { render_csv }
+      format.xls { send_data JobsCsvExport.new(view_context).get_csv(col_sep: "\t"), as: 'application/xls' }
     end
 
   end
@@ -24,12 +35,6 @@ class ServiceCallsController < ApplicationController
         @customer = Customer.new
         @bom      = Bom.new
       end
-      format.pdf do
-        send_data @service_call.invoice.generate_pdf(view_context),
-                  filename:    "invoice_#{@service_call.ref_id}.pdf",
-                  type:        "application/pdf",
-                  disposition: "inline"
-      end
     end
 
   end
@@ -40,12 +45,18 @@ class ServiceCallsController < ApplicationController
     store_location
   end
 
-  def create
-    if @service_call.save
-      flash[:success] = t('service_call.crud_messages.success')
-      redirect_to service_call_path @service_call
-    else
-      render :action => 'new'
+  def
+  create
+
+    respond_to do |format|
+      sanitize_mobile_tag_list if request.format == 'mobile'
+      if @service_call.save
+        flash[:success] = t('service_call.crud_messages.success')
+        format.any(:html, :mobile) { redirect_to service_call_path @service_call }
+      else
+        render :action => 'new'
+      end
+
     end
   end
 
@@ -71,7 +82,10 @@ class ServiceCallsController < ApplicationController
           redirect_to service_call_path @service_call
         end
 
-        format.json { respond_with_bip @service_call }
+        format.json do
+          update_params_for_bip
+          respond_with_bip @service_call
+        end
 
       else
         format.js { respond_bip_error @service_call }
@@ -79,6 +93,12 @@ class ServiceCallsController < ApplicationController
           flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
           render :action => 'show'
         end
+
+        format.mobile do
+          flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
+          redirect_to service_call_path @service_call
+        end
+
         format.json { respond_bip_error @service_call.becomes(ServiceCall) }
       end
     end
@@ -92,7 +112,8 @@ class ServiceCallsController < ApplicationController
   end
 
   def load_service_call
-    @service_call = Ticket.find(params[:id])
+    #@service_call = Ticket.find(params[:id])
+    @service_call = Ticket.includes(boms: [:material], events: [:creator]).find(params[:id])
   end
 
   # TODO move autocomplete to CustomerController
@@ -113,6 +134,51 @@ class ServiceCallsController < ApplicationController
     end
 
   end
+
+  def update_params_for_bip
+    params[:my_service_call]     = params[:service_call]
+    params[:subcon_service_call] = params[:service_call]
+    params[:broker_service_call] = params[:service_call]
+  end
+
+  private
+
+  def render_csv
+    set_file_headers
+    set_streaming_headers
+
+    response.status    = 200
+
+    #setting the body to an enumerator, rails will iterate this enumerator
+    self.response_body = csv_lines
+  end
+
+
+  def set_file_headers
+    file_name                      = "jobs.csv"
+    headers["Content-Type"]        = "text/csv"
+    headers["Content-disposition"] = "attachment; filename=\"#{file_name}\""
+  end
+
+
+  def set_streaming_headers
+    #nginx doc: Setting this to "no" will allow unbuffered responses suitable for Comet and HTTP streaming applications
+    headers['X-Accel-Buffering'] = 'no'
+
+    headers["Cache-Control"] ||= "no-cache"
+    headers.delete("Content-Length")
+  end
+
+  def csv_lines
+    JobsCsvExport.new(view_context).get_csv_enumerator
+  end
+
+  def sanitize_mobile_tag_list
+    unless params[:service_call].nil? || params[:service_call][:tag_list].nil?
+      @service_call.tag_list = params[:service_call][:tag_list].reject! { |t| t.empty? }.join(",")
+    end
+  end
+
 
 end
 

@@ -1,0 +1,13 @@
+<div class="job_billing_info">
+  <% unless entries.empty?  %>
+
+      <ul data-role="listview">
+
+        <% entries.each do |entry| %>
+            <%= render 'accounting_entries/customer_entry', accounting_entry: entry %>
+        <% end %>
+
+      </ul>
+  <% end %>
+</div>
+

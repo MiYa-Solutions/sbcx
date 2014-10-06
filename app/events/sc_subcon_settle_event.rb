@@ -18,7 +18,7 @@ class ScSubconSettleEvent < ScSettlementEvent
   end
 
   def process_event
-    update_affiliate_account
+    update_affiliate_account(service_call.subcontractor)
     super
   end
 

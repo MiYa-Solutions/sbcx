@@ -4,12 +4,15 @@ authorization do
     has_permission_on :authorization_rules, :to => :read
   end
   role :admin do
-    has_permission_on [:affiliates, :organizations, :users, :providers, :subcontractors, :service_calls, :customers],
+    has_permission_on [:invites, :support_tickets, :affiliates, :organizations, :users, :providers, :subcontractors, :service_calls, :customers],
                       :to => [:index, :show, :new, :create, :edit, :update, :destroy, :read]
 
   end
 
   role :technician do
+
+    has_permission_on :support_tickets, :to => [:index, :show, :new, :create, :edit, :update]
+    has_permission_on :comments, :to => [:index, :show, :new, :create]
 
     has_permission_on :static_pages, to: [:index, :read]
     has_permission_on :appointments, :to => [:index, :show, :new, :create, :edit, :update, :destroy, :read]
@@ -19,6 +22,16 @@ authorization do
     has_permission_on :boms, to: [:new, :create, :index, :show, :read, :update, :destroy, :edit] do
       if_attribute :ticket => { :organization => is { user.organization } }
     end
+    has_permission_on :invoices, to: [:index, :show, :read] do
+      if_attribute :organization_id => is { user.organization_id }
+      if_attribute :creator => { :organization_id => is { user.organization_id } }
+    end
+
+    has_permission_on :invoices, to: [:new, :create] do
+      if_attribute :organization_id => is { user.organization_id }
+      if_attribute :ticket => { :subcon_chain_ids => contains { user.organization_id } }, :ticket => { :allow_collection => is { true } }
+    end
+
     has_permission_on :materials, to: [:new, :index]
     has_permission_on :materials, to: [:create, :show, :read, :update, :edit] do
       if_attribute :organization_id => is { user.organization_id }
@@ -47,11 +60,17 @@ authorization do
     has_permission_on :service_calls, :to => [:new, :create] do
     end
 
+    has_permission_on :receipts, to: :show do
+      if_attribute :account => { organization_id: is { user.organization_id } }
+    end
+
   end
   role :org_admin do
     includes :dispatcher
 
+    has_permission_on :job_imports, to: [:new, :create]
     has_permission_on :invites, to: :new
+    has_permission_on :settings, to: [:show, :update]
 
     has_permission_on :invites, to: [:show, :index] do
       if_attribute organization_id: is { user.organization_id }

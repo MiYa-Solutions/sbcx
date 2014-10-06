@@ -7,10 +7,6 @@ class ScSubconClearedEvent < ScSettlementEvent
     self.reference_id = 100040
   end
 
-  def notification_recipients
-    User.my_admins(service_call.organization.id)
-  end
-
   def notification_class
     ScSubconClearedNotification
   end

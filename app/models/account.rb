@@ -24,7 +24,8 @@ class Account < ActiveRecord::Base
 
   has_many :accounting_entries do
     def << (entry)
-      proxy_association.owner.balance += (entry.amount * entry.amount_direction)
+      entry.amount = (entry.amount_direction < 0 && entry.amount > 0) ? entry.amount * entry.amount_direction : entry.amount
+      proxy_association.owner.balance += entry.amount
       entry.account                   = proxy_association.owner
       entry.balance                   = proxy_association.owner.balance
       entry.save
@@ -36,6 +37,10 @@ class Account < ActiveRecord::Base
 
   scope :for, ->(org, accountable) { where("organization_id = ? AND accountable_id = ? AND accountable_type = ?", org.id, accountable.id, accountable.class.name) }
   scope :for_affiliate, ->(org, affiliate) { where("organization_id = ? AND accountable_id = ? AND accountable_type = 'Organization'", org.id, affiliate.id) }
+  scope :for_affiliates, ->(org) { where("organization_id = ? AND accountable_type = 'Organization'", org.id) }
+  scope :for_customers, ->(org) { where("organization_id = ? AND accountable_type = 'Customer'", org.id) }
+  scope :for_affiliates_with_balance, ->(org) { for_affiliates(org).where('balance_cents <> 0') }
+  scope :for_customers_with_balance, ->(org) { for_customers(org).where('balance_cents <> 0') }
   scope :for_customer, ->(customer) { where("accountable_id = ? AND accountable_type = 'Customer'", customer.id) }
 
   ##

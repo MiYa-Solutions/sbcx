@@ -4,6 +4,9 @@
     <ul>
       <li><h1><%= I18n.t('general.general.agreement_id').html_safe + "&nbsp;".html_safe %><%= @agreement.id %></h1></li>
       <li>
+        <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#showChanges">
+          <%= I18n.t('general.general.agreement_changes') %>
+        </button>
         <button type="button" class="btn btn-primary btn-medium" data-toggle="modal" data-target="#showHistory">
           <%= I18n.t('general.general.agreement_history') %>
         </button>
@@ -29,11 +32,6 @@
 
       </td>
     </tr>
-
-
-
-
-
     <tr>
       <td><%= I18n.t('general.general.name') %></td>
       <td>

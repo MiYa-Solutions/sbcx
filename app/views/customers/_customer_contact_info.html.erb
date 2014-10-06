@@ -8,7 +8,7 @@
           <!--<#%= I18n.t('general.general.show_appointments') %>-->
         <!--</button>-->
       <!--</li>-->
-      <li></li>
+      <li><%= customer_events %></li>
     </ul>
   </div>
 
@@ -41,8 +41,8 @@
     <tr>
       <td><strong><%= Customer.human_attribute_name(:country) %></strong></td>
       <td><%= @customer.country %></td>
-      <td></td>
-      <td></td>
+      <td><strong><%= Customer.human_attribute_name(:default_tax) %></strong></td>
+      <td><%= @customer.default_tax %> (%)</td>
     </tr>
     <tr>
       <td><strong><%= Customer.human_attribute_name(:zip) %></strong></td>
@@ -50,6 +50,7 @@
       <td></td>
       <td></td>
     </tr>
+
     </tbody>
   </table>
 

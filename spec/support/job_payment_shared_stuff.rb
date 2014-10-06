@@ -131,12 +131,6 @@ shared_examples 'successful customer payment collection' do
 
   end
 
-  context 'when prov cancels' do
-    include_context 'when the provider cancels the job'
-    it_should_behave_like 'provider job is canceled'
-    it_should_behave_like 'provider job canceled after completion'
-  end
-
 end
 
 shared_examples 'correct provider billing statuses' do

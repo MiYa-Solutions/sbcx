@@ -55,9 +55,20 @@ end
 Rails.logger.formatter = Formatter.new
 
 if Rails.env == "development" || Rails.env == "test"
+  require_dependency "#{Rails.root}/app/notifications/adjustment_entry_notification.rb"
   Dir.glob("#{Rails.root}/app/notifications/*.rb").sort.each { |file| require_dependency file }
   Dir.glob("#{Rails.root}/app/events/*.rb").sort.each { |file| require_dependency file }
   Dir.glob("#{Rails.root}/app/models/payments/*.rb").sort.each { |file| require_dependency file }
   Dir.glob("#{Rails.root}/app/models/accounting_entries/*.rb").sort.each { |file| require_dependency file }
+end
+
+
+# to overcome a state_machine:draw task bug
+unless defined? StateMachine::Machine::Constants::RGV_VERSION || Rail.env == 'test'
+  warn "StateMachine::Machine::Constants overriden in #{__FILE__}"
+
+  class StateMachine::Machine::Constants
+    RGV_VERSION = /^[ ]*ruby-graphviz \(([0-9.]+)\)/.match(`cat #{Rails.root.join 'Gemfile.lock'}`)[1]
+  end
 end
 

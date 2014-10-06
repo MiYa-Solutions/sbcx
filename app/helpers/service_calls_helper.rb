@@ -2,8 +2,29 @@ require 'abstract'
 module ServiceCallsHelper
   include PaymentHelper
 
+  def invoice_allowed?
+    @invoice_allowed ||=
+        if @service_call.kind_of?(TransferredServiceCall)
+          @service_call.contractor_ticket && @service_call.work_done? && !JobBillingFormsRenderer.new(@service_call, self).available_events.empty?
+        else
+          true
+        end
+  end
+
   def style(path)
     StylingService.instance.get_style(path)
+  end
+
+  def work_status_options
+    ServiceCall.state_machines[:work_status].states.collect do |state|
+      [state.human_name, state.value]
+    end
+  end
+
+  def billing_status_options
+    MyServiceCall.state_machines[:billing_status].states.collect do |state|
+      [state.human_name, state.value]
+    end
   end
 
 
@@ -24,10 +45,8 @@ module ServiceCallsHelper
   end
 
   def work_status_forms(service_call)
-    if permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event)
-      #concat(content_tag :h3, t('headers.work_actions')) unless service_call.work_status_events.empty?
-      service_call.work_status_events.collect do |event|
-        #concat(content_tag :li, send("work_#{event}_form".to_sym, service_call))
+    service_call.work_status_events.collect do |event|
+      if permitted_params(service_call).permitted_attribute?(:service_call, :work_status_event, event.to_s)
         concat(render "service_calls/action_forms/work_status_forms/#{event}_form", job: service_call)
       end
     end
@@ -129,6 +148,8 @@ module ServiceCallsHelper
     current_user.organization.providers.each do |prov|
       res << [prov.name, prov.id, { "data-agreements" => agreement_data_tags(prov, current_user.organization) }]
     end
+
+    res << [current_user.organization.name, current_user.organization_id]
 
     res
   end
@@ -239,7 +260,7 @@ module ServiceCallsHelper
 
     protected
     def available_events
-      @obj.status_events
+      @obj.status_events.map { |event| event if @view.permitted_params(@obj).permitted_attribute?('service_call', :status_event, event.to_s) }.compact
     end
 
   end
@@ -251,6 +272,10 @@ module ServiceCallsHelper
         #(@view.concat(@view.content_tag :h3, I18n.t('headers.billing_actions')))
         super
       end
+    end
+
+    def available_events
+      @obj.billing_status_events.map { |event| event if @view.permitted_params(@obj).permitted_attribute?('service_call', :billing_status_event, event.to_s) }.compact
     end
 
     protected
@@ -283,14 +308,9 @@ module ServiceCallsHelper
           paid:                   'paid_form',
           reject:                 'reject_form',
           overdue:                'overdue_form',
-          reimburse:              'reimburse_form',
-          mark_as_overpaid:       'overdue_form'
+          reimburse:              'reimburse_form'
 
       }
-    end
-
-    def available_events
-      @obj.billing_status_events.map { |event| event if @view.permitted_params(@obj).permitted_attribute?('service_call', :billing_status_event, event.to_s) }.compact
     end
 
   end

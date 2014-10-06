@@ -6,10 +6,6 @@ class ScPropertiesUpdatedEvent < ScPropSynchEvent
     self.reference_id = 100043
   end
 
-  def notification_recipients
-    User.my_admins(service_call.organization.id)
-  end
-
   def notification_class
     ScPropsUpdatedNotification
   end

@@ -1,6 +1,5 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
   date:
     formats:
@@ -9,7 +8,7 @@ en:
       long:   "%B %d, %Y"
   time:
       formats:
-        default: "%a, %d %b %Y %H:%M %Z"
+        default: "%a, %d %b %Y %H:%M"
         no_tz: "%a, %d %b %Y %H:%M"
         short: "%d %b %H:%M"
         short_with_day: "%a, %b %d %H:%M"
@@ -29,11 +28,9 @@ en:
         date_only: "%B %d, %Y"
       am: "am"
       pm: "pm"
-
   activerecord:
     models:
       material: "Part"
-
     attributes:
       customer:
         phone: "Phone"
@@ -47,7 +44,6 @@ en:
   messages:
     subcontractor:
       subcontractor_created: "Subcontractor creates successfully!"
-
   general:
     job:
       errors:
@@ -61,7 +57,7 @@ en:
       send_invite: "Send your recommendation of SubConTraX."
       add_member_invite: "Send invite to join your SubConTraX network. <br> Accepted invitation enables transferring and receiving of jobs."
       no_records: "No records, click 'New Affiliate' or search for affiliates to add new members to your network"
-      no_job_records: "No records, click 'New Job' to add new contact"
+      no_job_records: "No records, click 'New Job' to open a new job"
       show_job: "Click to open Job ticket"
       no_bom: "You can't edit Billing due to one of the following reasons: \n(1) Job is pending your 'Start' action \n(2) Pending your 'Accept' action (you transferred to local subcontractor) \n(3) In progress by subcontractor (you transferred to a SubConTraX member), or \n(4) Job has been completed"
       add_note: "To add headings use the following format: h1.your text (h1,h2,h3,h4,h5)  \nTo add bullets use the following format: *your text"
@@ -84,8 +80,19 @@ en:
       agr_no_add_rule_pending: "You can't add rules in case the agreement is pending approval. \nTo edit the agreement, please delete the posting rules below and then add new rules."
       agr_select_rule: "Select 'Profit Split' from the dropdown and click on the Add button. \nPlease note you can enter more than one rule in the next following fields"
       agr_no_add_rule_no_active: "You can add rules only in case the agreement is not Pending or a Draft."
-
-
+      overdue: "Overdue payment"
+      done_jobs: "Completed jobs that are pending settlement"
+      parts_reimbursement: "By leaving this unchecked - you will NOT pay back your subcontractor for the cost of parts included in this job."
+      parts_reimbursement_prov: "By leaving this unchecked - you will NOT get paid for the cost of parts included in this job."
+      default_tax_signup: "You can set your default tax for all of your jobs. \nYou will be able to override the default tax for every job in the customer billing section"
+      default_tax_overide: "You can change the tax rate for this job by clicking the number on the right."
+      i_owe_action: "Click the Settle button in Subcontractor Actions. \nIf The Settle button is not available, check to see if you have pending Billing Entries."
+      owed_to_me: "Click the Settle button to collect payment from your Subcontractor. \nIf The Settle button is not available, check to see if you have pending Billing Entries."
+      subcon_owe_to_me: "Click the Settle button to collect payment from your Contractor. \nIf The Settle button is not available, check to see if you have pending Billing Entries. \nYour contractor might need to confirm your payment first."
+      i_owe_action_subcon: "Click the Settle button in Contractor Actions. \nIf The Settle button is not available, check to see if you have pending Billing Entries. \nYour contractor might need to confirm your payment first."
+      owed_to_me_cus: "Click the Collect Payment button above to collect payment"
+      i_owe_action_cus: "Click the Collect Payment button above to refund payment "
+      customer_email: "Enter a valid email address if you wish to send emails/notifications to your customer (i.e. invoices)"
     errors:
       error: "Error"
       403_title: "Forbidden. (403)"
@@ -96,7 +103,6 @@ en:
       422_content: "Maybe you tried to change something you don't have access to."
       500_title: "Server Error (500)"
       500_content: "Maybe you tried to change something you don't have access to."
-
       overdue: "This Job is overdue"
     emails:
       dear: "Dear"
@@ -114,7 +120,8 @@ en:
       delete: "Delete"
       Save: "Save"
       jobs: "Jobs"
-      alerts: "alerts"
+      open_jobs: "Open Jobs"
+      alerts: "Alerts"
       contact_us: "Contact Us"
       help: "Help"
       profile: "Profile"
@@ -139,8 +146,8 @@ en:
       phone: "Phone"
       email: "Email"
       actions: "Actions"
-      search_affiliate: "Search for private affiliates and SubConTraX members"
-      search_del_customers: "Search in deleted customers"
+      search_affiliate: "Search for local affiliates or SubConTraX members. Please use complete words."
+      search_del_customers: "Search in disabled customers"
       provider: "Contractor"
       subcontractor: "Subcontractor"
       member: "SubConTraX member"
@@ -148,7 +155,7 @@ en:
       my_jobs: "Jobs To Work On"
       scheduled_for: "Scheduled for"
       transferred_jobs: "Jobs that I Transferred"
-      job_number: "Job Number"
+      job_number: "Job Number: "
       job_history: "Job History"
       job_billing: "Job Billing"
       job_type: "Job Type"
@@ -156,8 +163,10 @@ en:
       save_changes: "Save Changes"
       appointments: "Appointments"
       total_price: 'Total Price: &nbsp;'
+      total_adjustment: 'Total Adjustment: &nbsp;'
       total: 'Total: &nbsp;'
       total_cost: 'Total Cost: &nbsp;'
+      tax_amount: 'Tax Amount: &nbsp;'
       billing: "Billing"
       no_address: "No Address"
       more_details: "More Details"
@@ -184,6 +193,57 @@ en:
       invite_status: "Invitation Status: "
       note: "Note: "
       cancel_transfer: "Un-Transfer"
+      filter_all_jobs_l1: "Use the following drop-downs to filter your results."
+      filter_all_jobs_l2: "To cancel selected filter, simply click on its 'X' link on the right."
+      in_progress: "In Progress"
+      done: "Done"
+      billing_summary_for: "Billing Summary for:"
+      customer_billing_for: "Customer Billing for:"
+      external_ref: "External Number"
+      customers_balance: "Customers Balance"
+      affiliates_balance: "Affiliates Balance"
+      customer_balance: "Customer Balance"
+      show_all: "Show All"
+      customer_payments: "Customer Payments"
+      collect_payments_mobile: "Collect Payment"
+      subcon_payment: "Subcontractor Payment"
+      my_network: "My Network"
+      invoice: "Invoice #"
+      bill_to: "Billed To:"
+      invoice_date: "Invoice Date"
+      tax: "Tax"
+      order_summary: "Order Summary"
+      download: "Download"
+      issued_by: "Issued by"
+      receipts: "Receipts"
+      receipt: "Receipt"
+      receipt_date: "Receipt Date"
+      payment_summary: "Payment Summary"
+      setting_job_notifications: "Setting Job Notifications"
+      setting_account_notifications: "Account Adjustment Notifications"
+      job_import: "Job Import"
+      data_type: "Data Type"
+      required: "Required?"
+      default_value: "Default Value"
+      completed_at: "Completed on"
+      notes: "Notes"
+      invoices: "Invoices"
+      overdue_jobs: "Payment Jobs Overdue"
+      receipt_num: "Receipt Number:"
+      messageCongrats1: "Congratulations!"
+      messageCongrats2: "and you are now connected."
+      support_tickets: "Support Tickets"
+      new_support_tickets: "New Ticket"
+      comments: "Comments"
+      edit_support_tickets: "Edit Support Ticket"
+      entry_id: "Entry Number"
+      collector: "Collected By"
+      agreements_notifications: "Agreement Notifications"
+      owed_to_me: "Collect Payment"
+      check: "Check"
+      check_rate: "Check Rate"
+      agreement_changes: "Changes"
+      agreement_changes_submitted: "Agreement Changes"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
@@ -193,3 +253,5 @@ en:
     message:
       invite_member: "I'd like to add you to my professional network on SubConTraX. \n \n"
       send_referral: "Hi, I'm using SubConTraX and would like to invite you to try it. \n \n"
+    general_select_file_import: "Import File"
+    general_i_owe: "Submit payment"

@@ -1,0 +1,54 @@
+<div id="comment-<%= comment.id %>">
+
+  <% if comment.user.roles.map(&:name).include? Role::ADMIN_ROLE_NAME %>
+      <div class="comments_frame_admin">
+
+          <div class="alert add_comment_user_frame">
+            <div class="row-fluid added_comments_user ">
+
+              <div class="span1 bom_label_frame part_frame">
+                <span class="add-on"><%= I18n.t('general.general.created_by') %></span>
+              </div>
+
+              <div class="span5">
+                <%= comment.user.name %><br>
+                <%= l comment.created_at %><br>
+                <%= comment.body %><br>
+                <%= link_to t('general.general.delete'), comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, :class => 'btn btn-mini btn-danger' %>
+
+
+              </div>
+            </div>
+         </div>
+      </div>
+
+
+    <% else %>
+     <div class="comments_frame">
+
+      <div class="alert add_comment_user_frame">
+        <div class="row-fluid added_comments_user ">
+
+          <div class="span1 bom_label_frame part_frame">
+            <span class="add-on"> <%= comment.user.name %></span>
+          </div>
+
+          <div class="span5">
+            <%= l comment.created_at %><br>
+            <%= comment.body %><br>
+            <%= link_to t('general.general.delete'), comment_path(comment), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, :class => 'btn btn-mini btn-danger' %>
+
+
+          </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+    <% end %>
+
+ </div>
+
+ <!--<#%= link_to "×", comment_path(comment), :method => :delete, :remote => true, :confirm => "Are you sure you want to remove this comment?", :disable_with => "×" %>-->
