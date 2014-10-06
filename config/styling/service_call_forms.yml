@@ -150,6 +150,7 @@ service_call:
       accepted: "status_blue"
       rejected: "status_red"
       done: "status_green"
+      na: "status_grey"
     subcontractor_status:
       na: "status_grey"
       pending: "status_grey"
@@ -163,6 +164,7 @@ service_call:
       claimed_as_settled: "status_blue"
       settled: "status_green"
       cleared: "status_green"
+      na: "status_grey"
     billing_status:
       na:  "status_grey"
       pending:  "status_grey"
@@ -190,3 +192,4 @@ service_call:
       is_deposited: "status_green"
       disputed: "status_red"
       partially_collected: "status_blue"
+      na: "status_grey"
