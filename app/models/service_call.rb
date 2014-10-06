@@ -65,8 +65,10 @@ class ServiceCall < Ticket
 
     if self.canceled?
       true
-    else
+    elsif self.work_done?
       total > 0 ? total - (paid_amount.abs + Money.new(current_payment.to_f * 100, total.currency)) <= 0 : false
+    else
+      false
     end
 
   end
@@ -274,11 +276,7 @@ class ServiceCall < Ticket
 
 
   def subcon_settlement_allowed?
-    subcontractor && subcon_collection_fully_deposited? && all_deposited_entries_confirmed? && work_done?(
-
-        (subcontractor.subcontrax_member? && !allow_collection?) ||
-            (subcontractor.subcontrax_member? && allow_collection? && (payment_paid?) || payment_cleared?)||
-            (!subcontractor.subcontrax_member? && work_done?))
+    subcontractor && work_done? && subcon_collection_fully_deposited? && all_deposited_entries_confirmed?
   end
 
   def can_change_boms?

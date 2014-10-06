@@ -14,7 +14,7 @@ class ScSubconSettledEvent < ScSettlementEvent
     service_call.subcon_payment = self.triggering_event.service_call.provider_payment if self.triggering_event.present?
     service_call.payment_type = self.triggering_event.service_call.payment_type if self.triggering_event.present?
     service_call.subcon_marked_as_settled_subcon
-    update_affiliate_account
+    update_affiliate_account(service_call.subcontractor)
     super
   end
 

@@ -274,21 +274,17 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
         context 'when I complete the job' do
 
-          context 'when a preliminary payment was made before the completion' do
-            context 'when the preliminary payment was for the full amount' do
+          context 'when a preliminary cash payment was made before the completion' do
+            before do
+              collect_a_payment job, type: 'cash', amount: '100', collector: org
+            end
+
+
+            context 'when the preliminary cash payment was for the full amount' do
               before do
-                collect_a_payment job, type: 'cash', amount: '100', collector: org
                 add_bom_to_job job, price: 100, cost: 10, quantity: 1
-                job.update_attributes(work_status_event: 'complete')
               end
 
-              it 'work status should be done' do
-                expect(job).to be_work_done
-              end
-
-              it 'payment status should be collected' do
-                expect(job.billing_status_name).to eq :collected
-              end
 
               context 'when payment is deposited' do
                 before do
@@ -296,16 +292,193 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                 end
 
                 it 'payment status should be paid' do
-                  expect(job.reload.billing_status_name).to eq :paid
+                  expect(job.reload.billing_status_name).to eq :partially_collected
+                end
+
+                context 'when completing the work' do
+                  before do
+                    complete_the_work job
+                  end
+
+                  it 'payment status should be paid' do
+                    expect(job.reload.billing_status_name).to eq :paid
+                  end
+
                 end
 
               end
 
+              context 'when completing the work' do
+                before do
+                  complete_the_work job
+                end
+
+                it 'work status should be done' do
+                  expect(job).to be_work_done
+                end
+
+                it 'payment status should be collected' do
+                  expect(job.billing_status_name).to eq :collected
+                end
+
+                context 'when payment is deposited' do
+                  before do
+                    job.payments.sort.last.deposit!
+                  end
+
+                  it 'payment status should be paid' do
+                    expect(job.reload.billing_status_name).to eq :paid
+                  end
+
+                end
+
+              end
             end
+
             context 'when the preliminary payment was for a partial amount' do
               before do
-                collect_a_payment job, type: 'cash', amount: '10', collector: org
+                add_bom_to_job job, price: 1000, cost: 10, quantity: 1
+                complete_the_work job
+              end
+
+              it 'work status should be done' do
+                expect(job).to be_work_done
+              end
+
+              it 'payment status should be partially_paid' do
+                expect(job.billing_status_name).to eq :partially_collected
+              end
+
+              context 'when payment is overdue' do
+                before do
+                  job.late_payment!
+                end
+
+                it 'billing status should be :overdue' do
+                  expect(job.billing_status_name).to eq :overdue
+                end
+
+                it 'available payment events are only collect' do
+                  expect(job.billing_status_events.sort).to eq [:cancel, :collect]
+                end
+
+                context 'when collecting another partial payment' do
+                  before do
+                    collect_a_payment job, type: 'cash', amount: '100', collector: org
+                    job.reload
+                  end
+
+                  it 'billing status should be :partially_collected' do
+                    expect(job.billing_status_name).to eq :overdue
+                  end
+
+                  context 'when collecting the full amount' do
+                    before do
+                      collect_a_payment job, type: 'cheque', amount: '800', collector: org
+                    end
+
+                    it 'billing status should be :collected' do
+                      expect(job.billing_status_name).to eq :collected
+                    end
+
+                  end
+
+
+                end
+
+
+              end
+
+            end
+          end
+
+          context 'when a preliminary cheque payment was made before the completion' do
+            before do
+              collect_a_payment job, type: 'cheque', amount: '100', collector: org
+            end
+
+
+            context 'when the preliminary cash payment was for the full amount' do
+              before do
                 add_bom_to_job job, price: 100, cost: 10, quantity: 1
+              end
+
+
+              context 'when payment is deposited' do
+                before do
+                  job.payments.sort.last.deposit!
+                end
+
+                it 'payment status should be paid' do
+                  expect(job.reload.billing_status_name).to eq :partially_collected
+                end
+
+                context 'when completing the work' do
+                  before do
+                    complete_the_work job
+                  end
+
+                  it 'payment status should be paid' do
+                    expect(job.reload.billing_status_name).to eq :in_process
+                  end
+
+                end
+
+                context 'when clearing the cheque' do
+                  before do
+                    job.payments.sort.last.clear!
+                  end
+
+                  it 'payment status should be paid' do
+                    expect(job.reload.billing_status_name).to eq :partially_collected
+                  end
+
+                  context 'when completing the work' do
+                    before do
+                      complete_the_work job
+                    end
+
+                    it 'payment status should be paid' do
+                      expect(job.reload.billing_status_name).to eq :paid
+                    end
+
+                  end
+
+
+                end
+
+              end
+
+              context 'when completing the work' do
+                before do
+                  complete_the_work job
+                end
+
+                it 'work status should be done' do
+                  expect(job).to be_work_done
+                end
+
+                it 'payment status should be collected' do
+                  expect(job.billing_status_name).to eq :collected
+                end
+
+                context 'when payment is deposited' do
+                  before do
+                    job.payments.sort.last.deposit!
+                  end
+
+                  it 'payment status should be in_process' do
+                    expect(job.reload.billing_status_name).to eq :in_process
+                  end
+
+                end
+
+              end
+            end
+
+            context 'when the preliminary payment was for a partial amount' do
+              before do
+                add_bom_to_job job, price: 1000, cost: 10, quantity: 1
                 job.update_attributes(work_status_event: 'complete')
               end
 
@@ -332,7 +505,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
                 context 'when collecting another partial payment' do
                   before do
-                    collect_a_payment job, type: 'cash', amount: '10', collector: org
+                    collect_a_payment job, type: 'cash', amount: '100', collector: org
                     job.reload
                   end
 
@@ -342,7 +515,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
 
                   context 'when collecting the full amount' do
                     before do
-                      collect_a_payment job, type: 'cheque', amount: '80', collector: org
+                      collect_a_payment job, type: 'cheque', amount: '800', collector: org
                     end
 
                     it 'billing status should be :collected' do

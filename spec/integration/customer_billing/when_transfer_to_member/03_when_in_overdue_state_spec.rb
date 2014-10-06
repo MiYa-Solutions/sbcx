@@ -17,8 +17,8 @@ describe 'Billing when in overdue state' do
   context 'when collecting partial amount' do
     let(:collection_job) { job }
     let(:collector) { org }
-    let(:billing_status) { :overdue }        # since the job is not done it is set to partial
-    let(:billing_status_4_cash) { :overdue } # since the job is not done it is set to partial
+    let(:billing_status) { :partially_collected }        # since the job is not done it is set to partial
+    let(:billing_status_4_cash) { :partially_collected } # since the job is not done it is set to partial
     let(:subcon_collection_status) { :pending }
     let(:subcon_collection_status_4_cash) { :pending }
     let(:prov_collection_status) { nil }
@@ -32,27 +32,6 @@ describe 'Billing when in overdue state' do
     let(:the_subcon_collection_status) { nil }
 
     include_examples 'successful customer payment collection'
-
-    context 'when collecting the full amount' do
-      let(:collection_job) { job }
-      let(:collector) { org }
-      let(:billing_status) { :overdue }        # since the job is not done it is set to partial
-      let(:billing_status_4_cash) { :overdue } # since the job is not done it is set to partial
-      let(:subcon_collection_status) { :pending }
-      let(:subcon_collection_status_4_cash) { :pending }
-      let(:prov_collection_status) { nil }
-      let(:prov_collection_status_4_cash) { nil }
-
-      let(:customer_balance_before_payment) { 0 }
-      let(:payment_amount) { 10 }
-      let(:job_events) { [ScCollectEvent, ScPaymentOverdueEvent, ServiceCallTransferEvent] }
-      let(:the_prov_job) { nil }
-      let(:the_billing_status) { nil }
-      let(:the_subcon_collection_status) { nil }
-
-      include_examples 'successful customer payment collection'
-
-    end
   end
 
   context 'when collecting the full amount' do

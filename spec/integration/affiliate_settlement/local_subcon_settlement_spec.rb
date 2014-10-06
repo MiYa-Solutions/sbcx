@@ -17,7 +17,7 @@ describe 'Local Subcon Settlement' do
       expect(job.subcontractor_status_name).to eq :pending
     end
     it 'subcon status events should be settle' do
-      expect(job.subcontractor_status_events).to eq [:settle]
+      expect(job.subcontractor_status_events).to include :settle
     end
 
     it 'subcon account balance for prov should be -110.00 (-subcon fee -  bom reimbursement)' do
@@ -75,7 +75,7 @@ describe 'Local Subcon Settlement' do
       end
 
       it 'should not be allowed to settle with the subcon' do
-        expect(job.subcontractor_status_events).to eq []
+        expect(job.subcontractor_status_events).to_not include :settle
       end
 
       context 'when subcon deposits the payment' do
@@ -86,7 +86,7 @@ describe 'Local Subcon Settlement' do
         end
 
         it 'should not be allowed to settle with the subcon' do
-          expect(job.subcontractor_status_events).to eq []
+          expect(job.subcontractor_status_events).to_not include :settle
         end
 
         context 'when confirming the deposit' do
@@ -95,7 +95,7 @@ describe 'Local Subcon Settlement' do
           end
 
           it 'should be allowed to settle with the subcon' do
-            expect(job.subcontractor_status_events).to eq [:settle]
+            expect(job.subcontractor_status_events).to include :settle
           end
 
           context 'when settling with the subcon' do

@@ -12,7 +12,7 @@
 
         <% unless @service_call.my_role == :subcon || @service_call.my_role == :broker %>
             <%= button_tag t('general.general.receipts'), :class => 'btn btn-primary',
-                           id:                                   'show_receipt_button', data: { toggle: "collapse", target: "#job_receipts" } unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
+                           id:                                   'show_receipt_button', data: { toggle: "collapse", target: "#job_receipts" } if invoice_allowed? %>
         <% end %>
       </li>
     </ul>
