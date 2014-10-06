@@ -1545,6 +1545,11 @@ a:hover {
 .notification_content {
   a {
     text-decoration: underline;
+    background-color: #f89406;
+    font-weight: bold;
+    padding-right: 2px;
+    padding-left: 2px;
+    color: white;
   }
 
 }
@@ -3354,7 +3359,7 @@ hr {
 
   .close {
 //    margin-top: 2px;
-    display: none;
+//    display: none;
   }
 
 }
@@ -3362,7 +3367,7 @@ hr {
 .alert-success {
   .close {
     //    margin-top: 2px;
-    display: none;
+//    display: none;
   }
 }
 

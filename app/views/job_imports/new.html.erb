@@ -51,7 +51,7 @@
 </div>
 
   <div class="row-fluid">
-    <label class="import_help">A <strong>'CSV'</strong> or <strong>Excel</strong> file can be used to import records. The first row should be the column name. The following columns are allowed. </label>
+    <label class="import_help">A <strong>'CSV'</strong> file can be used to import records. The first row should be the column name. The following columns are supported. </label>
   </div>
 
   <table class="table table-striped" id="import_schema">
@@ -76,30 +76,23 @@
     <tr>
       <td>customer_id</td>
       <td>Integer type</td>
-      <td>Conditional</td>
+      <td>Mandatory</td>
       <td></td>
-      <td>SubConTraX's Customer Id. Either this field is used or the new_customer one. If both populated, the id takes precedence.</td>
-    </tr>
-    <tr>
-      <td>new_customer</td>
-      <td>String type</td>
-      <td>Conditional</td>
-      <td></td>
-      <td>Either this field is used or the new_customer one. If both populated, the id takes precedence.</td>
+      <td>SubConTraX's Customer Id. If you wish to upload a job for a new customer, please add the new customer to the system first.</td>
     </tr>
     <tr>
       <td>notes</td>
       <td>Text type</td>
       <td>Optional</td>
       <td></td>
-      <td>Enter Parts and Labor info/price. For transferred jobs: Subcontractor fee should be included in this field.</td>
+      <td>notes or comments.</td>
     </tr>
     <tr>
       <td>started_on</td>
       <td>Datetime type</td>
       <td>Optional</td>
       <td></td>
-      <td>We save in EST.</td>
+      <td>Date format: YYYY-MM-DD HH:MM <br> When using Excel, please make sure to set field type to Text.</td>
     </tr>
     <tr>
       <td>technician_id</td>
@@ -127,7 +120,7 @@
       <td>Datetime type</td>
       <td>Optional</td>
       <td></td>
-      <td>We save in EST.</td>
+      <td>Date format: YYYY-MM-DD HH:MM <br> When using Excel, please make sure to set field type to Text.</td>
     </tr>
     <tr>
       <td>allow_collection</td>
@@ -150,89 +143,89 @@
       <td></td>
       <td>Job Name (if empty, the system concatenates job type & address).</td>
     </tr>
-    <tr>
-      <td>prov_bom_reimbursement</td>
-      <td>Boolean type</td>
-      <td>Optional</td>
-      <td>FALSE</td>
-      <td>Allow profit split for Parts and Labor</td>
-    </tr>
+    <!--<tr>-->
+      <!--<td>prov_bom_reimbursement</td>-->
+      <!--<td>Boolean type</td>-->
+      <!--<td>Optional</td>-->
+      <!--<td>FALSE</td>-->
+      <!--<td>Allow profit split for Parts and Labor</td>-->
+    <!--</tr>-->
     <tr>
       <td>provider_fee_cents</td>
       <td>Integer type</td>
       <td>Optional</td>
       <td>0</td>
-      <td>Important to get amount in cents (e.g. $20 = 2000).</td>
+      <td>Will be available in the next release! <br>Important to get amount in cents (e.g. $20 = 2000).</td>
     </tr>
     <tr>
       <td>provider_fee_currency</td>
       <td>String type</td>
       <td>Optional</td>
       <td>USD</td>
-      <td></td>
+      <td>Will be available in the next release!</td>
     </tr>
     <tr>
       <td>company</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Company name for the job only (will not overwrite the customer info).</td>
     </tr>
     <tr>
       <td>address1</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     <tr>
       <td>address2</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     <tr>
       <td>city</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     <tr>
       <td>state</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     <tr>
       <td>zip</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     <tr>
       <td>country</td>
       <td>String type</td>
       <td>Optional</td>
       <td>US</td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     <tr>
       <td>phone</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     <tr>
       <td>mobile_phone</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     </tr>
     <tr>
@@ -240,7 +233,7 @@
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
     </tr>
     <tr>
@@ -248,7 +241,7 @@
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info (in case this is not your customer and you get this job from one of your contractors.</td>
+      <td>Location Info for the job only (will not overwrite the customer info).</td>
     </tr>
 
 

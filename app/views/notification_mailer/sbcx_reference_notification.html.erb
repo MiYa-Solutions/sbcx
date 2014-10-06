@@ -47,7 +47,7 @@
                             <h4 class="h4" style="font-family:Arial; font-size:18px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
                               <%= I18n.t('notification_mailer.sbcx_reference_notification.title').html_safe %>
                             </h4>
-                             <% @invite.organization.name %><%= I18n.t('notification_mailer.sbcx_reference_notification.content').html_safe %>
+                             <%= @invite.organization.name %><%= I18n.t('notification_mailer.sbcx_reference_notification.content').html_safe %>
                             <br>
                           </div>
                         </td>
