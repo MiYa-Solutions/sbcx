@@ -93,6 +93,12 @@ shared_context 'basic job testing' do
     ticket.un_cancel!
   end
 
+  def add_technician(the_org, options = {})
+    subcon_job.save
+    subcon.users << FactoryGirl.build(:my_technician)
+  end
+
+
   alias_method :un_cancel_the_job, :reset_the_job
 end
 
@@ -102,7 +108,7 @@ shared_context 'transferred job' do
   let(:subcon_agr) { FactoryGirl.build(the_agr_factory, organization: job.organization) }
   let(:subcon) {
     s      = subcon_agr.counterparty
-    s.name = "subcon-#{s.name}"
+    s.name = "subcon-#{s.name}".squish
     s.save!
     s
   }

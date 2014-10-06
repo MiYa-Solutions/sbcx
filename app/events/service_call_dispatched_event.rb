@@ -15,7 +15,7 @@ class ServiceCallDispatchedEvent < ServiceCallEvent
   end
 
   def update_provider
-    prov_service_call.events << ServiceCallDispatchedEvent.new
+    prov_service_call.events << ServiceCallDispatchedEvent.new(triggering_event: self)
   end
 
   def notification_class
