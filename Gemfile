@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '1.9.3'
+ruby '2.1.3'
 
 gem 'rails', '3.2.18'
 gem 'jquery-rails', '2.1.4'
@@ -64,6 +64,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'heroku_san'
+  gem 'metric_fu'
 end
 
 group :development, :test do
@@ -72,9 +73,10 @@ group :development, :test do
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
-  gem 'thin'
-  gem 'ruby-debug-ide', '~> 0.4.22'
-  gem 'ruby-debug-base19x'
+  gem 'thin', '1.6.3'
+  gem 'debase' , '0.0.9'
+  gem 'ruby-debug-ide' , '0.4.23.beta10'
+
 end
 
 # Gems used only for assets and not required
@@ -92,7 +94,8 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara', '2.1.0'
+  gem 'capybara', '2.4.3'
+  gem 'site_prism'
   gem 'factory_girl_rails', '4.1.0', require: false
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner', '~> 0.9.1'
