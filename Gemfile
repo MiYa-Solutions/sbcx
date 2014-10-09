@@ -103,7 +103,7 @@ group :test do
   gem 'launchy', '2.1.0'
   gem 'mocha'
   gem 'capybara-screenshot', '0.3.4'
-  gem 'poltergeist', '1.4.1'
+  gem 'poltergeist', '1.5.1'
   gem 'shoulda-matchers', require: false
   gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.4.4'
