@@ -22,8 +22,8 @@ class SignUpPage < SitePrism::Page
 
   def sign_up(options = {})
     user_email    = options[:email] || 'signup_test@test.com'
-    user_fname    = options[:first_name] || 'signup_test@test.com'
-    user_lname    = options[:last_name] || 'signup_test@test.com'
+    user_fname    = options[:first_name] || 'Test'
+    user_lname    = options[:last_name] || 'User'
     user_pwd      = options[:password] || '123456'
     user_pwd_conf = options[:password_conf] || '123456'
     org           = options[:org_name] || 'Sign Up Test Org'

@@ -42,6 +42,7 @@ Spork.prefork do
 
 
   Capybara.ignore_hidden_elements = false
+  Capybara.save_and_open_page_path = "./tmp/capybara"
 
   ENV["RAILS_ENV"] ||= 'test'
 
@@ -69,6 +70,10 @@ Spork.prefork do
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+  full_names = Dir["#{Rails.root}/app/helpers/*.rb"]
+  full_names.collect do |full_name|
+    include Object.const_get(File.basename(full_name,'.rb').camelize)
+  end
   RSpec.configure do |config|
 
     #config.filter_run :focus => true
