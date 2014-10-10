@@ -191,7 +191,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def collection_allowed?
-    (accepted? || transferred?) && !payment_collected?
+    (accepted? || transferred?) && !payment_collected? && provider_pending?
   end
 
   def payments
@@ -283,11 +283,12 @@ class TransferredServiceCall < ServiceCall
   end
 
   def available_payment_collectors
-    res = [self.organization]
-    res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
+    res = []
+    if collection_allowed?
+      res << self.organization
+      res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
+    end
     res
-
-    #provider_pending? ? [self.organization] : []
   end
 
   def work_start_allowed?
