@@ -537,6 +537,7 @@ DEPENDENCIES
   rails3_acts_as_paranoid (~> 0.2.5)
   rails_12factor
   rb-fsevent (= 0.9.1)
+  rest-client (~> 1.7.2)
   roo
   rspec-rails (= 2.13.0)
   ruby-debug-ide (= 0.4.23.beta10)

@@ -44,8 +44,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
     expect(job.subcontractor_status_name).to eq :pending
   end
 
-  it 'should have no job available subcon events' do
-    expect(job.subcontractor_status_events).to eq []
+  it 'subcontractor status should have only the cancel event' do
+    expect(job.subcontractor_status_events).to eq [:cancel]
   end
 
   describe 'partial collection' do
@@ -74,8 +74,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
       job.status_events.should =~ [:cancel, :cancel_transfer]
     end
 
-    it 'job available work events are start' do
-      expect(job.reload.work_status_events).to eq [:start]
+    it 'job available work events are start reset and cancel' do
+      expect(job.reload.work_status_events).to eq [:start, :reset, :cancel]
       expect(event_permitted_for_job?('work_status', 'start', org_admin, job)).to be_true
     end
 
@@ -88,8 +88,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
       expect(job.subcontractor_status_name).to eq :pending
     end
 
-    it 'should have no job available subcon events' do
-      expect(job.subcontractor_status_events).to eq []
+    it 'subcontractor should have only the cancel event' do
+      expect(job.subcontractor_status_events).to eq [:cancel]
     end
 
 
@@ -103,7 +103,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
         job.events.map(&:class).should =~ [ServiceCallStartedEvent, ServiceCallTransferEvent]
       end
 
-      it 'the job should have'
+      # it 'the job should have'
 
       it 'the job status should be transferred' do
         expect(job).to be_transferred
@@ -121,8 +121,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
         job.status_events.should =~ [:cancel, :cancel_transfer]
       end
 
-      it 'job available work events are complete' do
-        expect(job.reload.work_status_events).to eq [:complete]
+      it 'job available work events are complete cancel and reset' do
+        expect(job.reload.work_status_events.sort).to eq [:cancel, :complete, :reset]
         expect(event_permitted_for_job?('work_status', 'complete', org_admin, job)).to be_true
       end
 
@@ -134,8 +134,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
         expect(job.subcontractor_status_name).to eq :pending
       end
 
-      it 'should have no job available subcon events' do
-        expect(job.subcontractor_status_events).to eq []
+      it 'should have only cancel as the job available subcon events' do
+        expect(job.subcontractor_status_events).to eq [:cancel]
       end
 
       context 'when the job is completed' do
@@ -157,8 +157,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
           expect(job).to be_payment_pending
         end
 
-        it 'job available status events should be cancel abd cancel_transfer' do
-          job.status_events.should =~ [:cancel]
+        it 'there should be no job available status events ' do
+          job.status_events.should eq []
         end
 
         it 'there are no available work status events for job' do
@@ -175,8 +175,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
           expect(job.subcontractor_status_name).to eq :pending
         end
 
-        it 'job subcon events should be: settle' do
-          expect(job.subcontractor_status_events).to eq [:settle]
+        it 'job subcon events should be: settle and cancel' do
+          expect(job.subcontractor_status_events.sort).to eq [:cancel, :settle]
           expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
         end
 
@@ -208,8 +208,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
           expect(job.subcontractor_status_name).to eq :pending
         end
 
-        it 'should have no job available subcon events' do
-          expect(job.subcontractor_status_events).to eq [:settle]
+        it 'should have settle and cancel as available subcon events' do
+          expect(job.subcontractor_status_events.sort).to eq [:cancel, :settle]
         end
 
         context 'when prov collects' do
@@ -256,8 +256,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     expect(job.subcontractor_status_name).to eq :pending
                   end
 
-                  it 'job available subcon events are settle' do
-                    expect(job.subcontractor_status_events).to eq [:settle]
+                  it 'job available subcon events are cancel and settle' do
+                    expect(job.subcontractor_status_events.sort).to eq [:cacnel, :settle]
                     expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                   end
                 end
@@ -301,8 +301,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     expect(job.subcontractor_status_name).to eq :pending
                   end
 
-                  it 'job available subcon events are settle' do
-                    expect(job.subcontractor_status_events).to eq [:settle]
+                  it 'job available subcon events are cancel and settle' do
+                    expect(job.subcontractor_status_events.sort).to eq [:cancel, :settle]
                     expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                   end
 
@@ -355,8 +355,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     job.reload
                   end
 
-                  it 'job available subcon events are settle' do
-                    expect(job.subcontractor_status_events).to eq [:settle]
+                  it 'job available subcon events are cancel and settle' do
+                    expect(job.subcontractor_status_events.sort).to eq [:cancel, :settle]
                     expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                   end
 
@@ -373,8 +373,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                       expect(job).to be_transferred
                     end
 
-                    it 'the available status events for job are cancel and close' do
-                      expect(job.status_events).to eq [:cancel, :close]
+                    it 'the available status events for job are: close' do
+                      expect(job.status_events).to eq [:close]
                       expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
                       expect(event_permitted_for_job?('status', 'close', org_admin, job)).to be_true
                     end
@@ -387,9 +387,9 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                       expect(job.work_status_events).to be_empty
                     end
 
-                    it 'job available payment events are deposited' do
-                      expect(job.billing_status_events).to eq []
-                    end
+                    # it 'job available payment events are deposited' do
+                    #   expect(job.billing_status_events).to eq []
+                    # end
 
                     it 'subcon status should be cleared' do
                       expect(job.subcontractor_status_name).to eq :cleared
@@ -418,9 +418,9 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                       expect(job.work_status_events).to eq []
                     end
 
-                    it 'job available payment events are deposited' do
-                      expect(job.billing_status_events).to eq []
-                    end
+                    # it 'job available payment events are deposited' do
+                    #   expect(job.billing_status_events).to eq []
+                    # end
 
                     it 'subcon status should be settled' do
                       expect(job.subcontractor_status_name).to eq :settled
@@ -449,9 +449,9 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                         expect(job.work_status_events).to eq []
                       end
 
-                      it 'job available payment events are deposited' do
-                        expect(job.billing_status_events).to eq []
-                      end
+                      # it 'job available payment events are deposited' do
+                      #   expect(job.billing_status_events).to eq []
+                      # end
 
                       it 'subcon status should be cleared' do
                         expect(job.subcontractor_status_name).to eq :cleared
@@ -462,7 +462,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                       end
                     end
 
-                    pending 'implement subcon settlement rejection and overdue'
+                    # pending 'implement subcon settlement rejection and overdue'
 
                   end
 
@@ -501,8 +501,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
                   end
 
-                  it 'job available subcon events are settle' do
-                    expect(job.subcontractor_status_events).to eq [:settle]
+                  it 'job available subcon events are settle and cancel' do
+                    expect(job.subcontractor_status_events).to eq [:settle, :cancel]
                     expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                   end
 
@@ -522,8 +522,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
               expect(job.subcontractor_status_name).to eq :pending
             end
 
-            it 'job available subcon events are settle' do
-              expect(job.subcontractor_status_events).to eq [:settle]
+            it 'job available subcon events are cancel and settle' do
+              expect(job.subcontractor_status_events.sort).to eq [:cancel, :settle]
               expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
             end
 
@@ -544,8 +544,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
               end
             end
 
-            it 'the available status events for job are: cancel' do
-              expect(job.status_events).to eq [:cancel]
+            it 'no available status events ' do
+              expect(job.status_events).to eq []
               expect(event_permitted_for_job?('status', 'cancel', org_admin, job)).to be_true
             end
 
@@ -574,8 +574,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
               expect(job.subcontractor_status_name).to eq :pending
             end
 
-            it 'job available subcon events are settle' do
-              expect(job.subcontractor_status_events).to eq [:settle]
+            it 'job available subcon events are cancel and settle' do
+              expect(job.subcontractor_status_events.sort).to eq [:cancel, :settle]
               expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
             end
 
@@ -637,7 +637,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                 end
 
                 it 'job available subcon events are settle' do
-                  expect(job.subcontractor_status_events).to eq [:settle]
+                  expect(job.subcontractor_status_events).to eq [:cancel]
                   expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                 end
 
@@ -747,8 +747,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                   collect_a_payment job, type: 'cash', collector: collector, type: 'amex_credit_card', amount: payment_amount
                 end
 
-                it 'job available subcon events are settle' do
-                  expect(job.subcontractor_status_events).to eq [:settle]
+                it 'job available subcon events are cancel (need to deposit before settle is available)' do
+                  expect(job.subcontractor_status_events).to eq [:cancel]
                   expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                 end
 
@@ -867,8 +867,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                     job.reload
                   end
 
-                  it 'job available subcon events are settle' do
-                    expect(job.subcontractor_status_events).to eq [:settle]
+                  it 'job available subcon events are cancel' do
+                    expect(job.subcontractor_status_events).to eq [:cancel]
                     expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                   end
 
@@ -998,8 +998,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                         expect(job.billing_status_name).to eq :partially_collected
                       end
 
-                      it 'available payment events should be subcon deposited and subcon collected' do
-                        expect(job.billing_status_events).to eq [:late, :collect]
+                      it 'available payment events should be :cancel, :collect, :late, :reject' do
+                        expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject]
                       end
 
                       context 'when the depositing the amount to the provider' do
@@ -1123,8 +1123,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                         expect(job.billing_status_name).to eq :partially_collected
                       end
 
-                      it 'available payment events should be subcon deposited and subcon collected' do
-                        expect(job.billing_status_events).to eq [:late, :collect]
+                      it 'available payment events should be [:cancel, :collect, :late, :reject]' do
+                        expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject]
                       end
 
                       context 'when the depositing the amount to the provider' do
@@ -1161,8 +1161,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                         expect(job.billing_status_name).to eq :partially_collected
                       end
 
-                      it 'available payment events should be subcon deposited and subcon collected' do
-                        expect(job.billing_status_events).to eq [ :late, :collect]
+                      it 'available payment events should be [:cancel, :collect, :late, :reject]' do
+                        expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject]
                       end
 
                       context 'when the depositing the amount to the provider' do
@@ -1201,8 +1201,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                         expect(job.billing_status_name).to eq :partially_collected
                       end
 
-                      it 'available payment events should be late and collect' do
-                        expect(job.billing_status_events).to eq [:late, :collect]
+                      it 'available payment events should be [:cancel, :collect, :late, :reject]' do
+                        expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject]
                       end
 
                       context 'when the depositing the amount to the provider' do

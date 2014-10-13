@@ -16,6 +16,7 @@ require 'capybara/rspec'
 require 'capybara-screenshot/rspec'
 require 'capybara/poltergeist'
 require 'site_prism'
+require 'devise'
 
 
 
@@ -105,7 +106,7 @@ Spork.prefork do
     config.include(AccountingEntryMatchers)
     config.include Capybara::DSL
     #config.include Capybara::RSpecMatchers
-
+    config.include Devise::TestHelpers, type: :controller
 
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation

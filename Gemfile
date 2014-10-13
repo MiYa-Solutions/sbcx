@@ -108,4 +108,5 @@ group :test do
   gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.4.4'
   gem 'simplecov'
+  gem 'rest-client', '~> 1.7.2'
 end

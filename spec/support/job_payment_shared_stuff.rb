@@ -193,6 +193,12 @@ def deposit_all_entries(entries)
   end
 end
 
+def clear_all_entries(entries)
+  entries.each do |entry|
+    entry.clear! if entry.can_clear?
+  end
+end
+
 def confirm_all_deposits(entries)
   entries.each do |entry|
     entry.confirm! if entry.can_confirm?
