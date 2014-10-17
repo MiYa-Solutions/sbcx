@@ -8,26 +8,17 @@
     </div>
     <br>
 
-    <table class="table table-striped" id="event_log_in_service_call">
+    <table class="table table-striped events" id="event_log_in_service_call">
       <thead>
       <tr>
+        <th><%= Event.human_attribute_name(:created_at) %></th>
         <th><%= Event.human_attribute_name(:reference_id) %> </th>
         <th><%= Event.human_attribute_name(:name) %> </th>
         <th><%= Event.human_attribute_name(:description) %></th>
-        <th><%= Event.human_attribute_name(:created_at) %></th>
         <th><%= Event.human_attribute_name(:creator) %></th>
       </tr>
       </thead>
       <tbody>
-      <% @service_call.events.each do |event| %>
-          <tr>
-            <td><%= event.reference_id %></td>
-            <td><%= event.name %></td>
-            <td><%= textilize(event.description).try(:html_safe) %></td>
-            <td><%= l event.created_at, :format => :default %></td>
-            <td><%= event.creator.name %></td>
-          </tr>
-      <% end %>
       </tbody>
     </table>
  </div>

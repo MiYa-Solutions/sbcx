@@ -257,7 +257,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                   end
 
                   it 'job available subcon events are cancel and settle' do
-                    expect(job.subcontractor_status_events.sort).to eq [:cacnel, :settle]
+                    expect(job.subcontractor_status_events.sort).to eq [:cancel, :settle]
                     expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                   end
                 end

@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   def index
 
     respond_to do |format|
-      format.json { render json: @events }
+      format.json { render json: EventsDatatable.new(self).as_json }
     end
   end
 

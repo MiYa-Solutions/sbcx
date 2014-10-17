@@ -1,3 +1,7 @@
+sanitize_actions = (row) ->
+  row.actions.replace(/[{}]/g, "")
+#  row.actions.substring(1,row.actions.length-1)
+
 jQuery ->
   $('#account').select2()
   $('#entries_table').dataTable
@@ -36,15 +40,44 @@ jQuery ->
       { data: "balance" }
       { data: "actions" }
     ]
+    createdRow: (row, data, dataIndex) ->
+      forms = $(row).find('.entry_form')
+      $(forms).on 'ajax:success', {rowIndex: dataIndex}, (e, data, status, xhr) ->
+        table = $('#entries_table').dataTable().api()
+        row_to_update = table.row(e.data.rowIndex)
+        row_to_update.data(data)
+        table.draw()
+
+      $(forms).on 'ajax:complete', {row: dataIndex},  (e, xhr) ->
+        table = $('#entries_table').dataTable().api()
+        row_to_update = table.row(e.data.rowIndex)
+        $(row_to_update.node()).find('input[type=submit]').removeAttr("disabled")
+
+
+      $(forms).on 'ajax:beforeSend',{rowIndex: dataIndex} ,(e, xhr, settings) ->
+#        $(this).find('input[type=submit]').attr('disabled', 'disabled')
+        table = $('#entries_table').dataTable().api()
+        row_to_update = table.row(e.data.rowIndex)
+        $(row_to_update.node()).find('input[type=submit]').attr('disabled', 'disabled')
+
+
+      $(forms).on 'ajax:error', (e, xhr, error) ->
+
+
     fnRowCallback: (nRow, aData, iDisplayIndex) ->
       # Append the row id to allow automated testing
       $(nRow).attr('id', 'accounting_entry_' + aData[0])
       $('td:eq(3)', nRow).attr('id', 'entry_' + aData[0] + '_type')
       $('td:eq(4)', nRow).attr('id', 'entry_' + aData[0] + '_status')
       $('td:eq(5)', nRow).attr('id', 'entry_' + aData[0] + '_amount')
+#      $('td:eq(7)', nRow).html(sanitize_actions(aData))
 
   $.extend $.fn.dataTableExt.oStdClasses,
     sWrapper: "dataTables_wrapper form-inline"
+
+#  $('.entry_form').on 'ajax:success', (data, status, xhr) ->
+#    alert('finished ajax for '+'entry '+ data.id)
+
 
   #      $(nRow).click ->
   #        alert ('clicked row' + $(nRow).attr('id'))
@@ -95,6 +128,12 @@ jQuery ->
   else if $('#get-entries-btn').data('account-id') != undefined
     oTable = $('#entries_table').dataTable()
     oTable.fnDraw()
+
+  $('#entries_table').on 'xhr.dt', (e, settings, json) ->
+    alert('finished ajax for table')
+  $(document).on( 'ajax:success', '.entry_btn', (data, status, xhr) ->
+    alert('finished ajax for '+'entry '+ data.id))
+
 
 
 

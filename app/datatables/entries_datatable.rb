@@ -1,5 +1,5 @@
 class EntriesDatatable
-  delegate :humanized_money_with_symbol, :current_user, :params, :h, :adjustment_entry_actions, :link_to, :number_to_currency, to: :@view
+  delegate :render_to_string, :humanized_money_with_symbol, :current_user, :params, :h, :adjustment_entry_actions, :link_to, :number_to_currency, to: :@view
 
   def initialize(view, account)
     @view    = view
@@ -26,30 +26,24 @@ class EntriesDatatable
 
   end
 
+  def table_row(entry)
+    {
+        id: entry.id,
+        created_at: h(entry.created_at.strftime("%B %e, %Y, %H:%m")),
+        ref_id: link_to(entry.ticket.ref_id, entry.ticket),
+        type: entry.type,
+        status: entry.status_name,
+        amount: humanized_money_with_symbol(entry.amount),
+        balance: humanized_money_with_symbol(entry.balance),
+        actions: adjustment_entry_actions(entry, 'customer_entry_small_btn'),
+    }
+
+  end
   private
 
   def data
     entries.map do |entry|
-      #[
-      #    h(entry.id),
-      #    h(entry.created_at.strftime("%B %e, %Y, %H:%m")),
-      #    link_to(entry.ticket.ref_id, entry.ticket),
-      #    h(entry.type.constantize.model_name.human),
-      #    h(entry.human_status_name),
-      #
-      #    humanized_money_with_symbol(entry.amount),
-      #    humanized_money_with_symbol(entry.balance)
-      #]
-      {
-          id: entry.id,
-          created_at: h(entry.created_at.strftime("%B %e, %Y, %H:%m")),
-          ref_id: link_to(entry.ticket.ref_id, entry.ticket),
-          type: entry.type,
-          status: entry.status_name,
-          amount: humanized_money_with_symbol(entry.amount),
-          balance: humanized_money_with_symbol(entry.balance),
-          actions: adjustment_entry_actions(entry, 'customer_entry_small_btn'),
-      }
+      table_row(entry)
     end
   end
 

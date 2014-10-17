@@ -1,4 +1,4 @@
-<%= simple_form_for entry.becomes(AccountingEntry), remote: true, html: { class: 'adj_entry_deposit_form' } do |f| %>
+<%= simple_form_for entry.becomes(AccountingEntry), remote: true, html: { 'data-type' => 'json', id: "adj_entry_deposit_form_#{entry.id}", class: 'adj_entry_deposit_form entry_form ajax-form' } do |f| %>
     <%= f.hidden_field :status_event, value: 'deposit' %>
-    <%= f.submit entry.class.human_status_event_name(:deposit).titleize, id: 'adjustment_entry_deposit_btn', class: "customer_entry_small_btn btn btn-mini btn-primary" %>
+    <%= f.submit entry.class.human_status_event_name(:deposit).titleize, id: 'adjustment_entry_deposit_btn', class: 'customer_entry_small_btn btn btn-mini btn-primary ajax-btn' %>
 <% end %>

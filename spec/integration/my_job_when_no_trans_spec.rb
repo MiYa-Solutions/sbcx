@@ -379,8 +379,8 @@ describe 'My Service Call When I Do The Work' do
                 end
 
                 it 'available payment events are deposited but they are not permitted for the user' do
-                  expect(job.billing_status_events).to eq [:deposited]
-                  expect(event_permitted_for_job?('billing_status', 'deposited', org_admin, job)).to be_false
+                  expect(job.billing_status_events).to eq [:reject]
+                  expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
                 end
 
                 context 'when clearing the payment' do
@@ -441,7 +441,7 @@ describe 'My Service Call When I Do The Work' do
         end
 
         it 'available work events should be complete' do
-          job.work_status_events.should.sort == [:cancel, :complete, :reset]
+          job.work_status_events.sort.should == [:cancel, :complete, :reset]
         end
 
         it '[:late, :collect] are the available payment events' do
@@ -513,8 +513,7 @@ describe 'My Service Call When I Do The Work' do
             end
             context 'when the preliminary payment was for a partial amount' do
               before do
-                job.update_attributes(billing_status_event: 'paid', payment_amount: '10', payment_type: 'cash')
-                job.payment_amount = nil # to simulate a separate request (payment amount is a virtual attribute )
+                collect_a_payment job, amount: 10, type: 'cash'
                 add_bom_to_job job, price: 100, cost: 10, quantity: 1
                 job.update_attributes(work_status_event: 'complete')
               end
@@ -523,8 +522,8 @@ describe 'My Service Call When I Do The Work' do
                 expect(job).to be_work_done
               end
 
-              it 'payment status should be partially_paid' do
-                expect(job.billing_status_name).to eq :partially_paid
+              it 'payment status should be partially_collected' do
+                expect(job.billing_status_name).to eq :partially_collected
               end
 
             end

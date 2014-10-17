@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby '2.1.3'
 
-gem 'rails', '3.2.18'
+gem 'rails', '3.2.19'
 gem 'jquery-rails', '2.1.4'
 gem 'jquery_mobile_rails', '1.2.0'
 gem 'bcrypt-ruby', '3.0.1'
@@ -21,7 +21,7 @@ gem 'activerecord-postgres-hstore', '0.7.5'
 
 gem 'devise', '2.0.5'
 gem 'simple_form', '2.0.2'
-gem 'declarative_authorization', '0.5.5'
+gem 'declarative_authorization', '0.5.7'
 
 gem 'state_machine', '1.1.2'
 gem 'magiclabs-userstamp', '2.0.2'
@@ -109,4 +109,5 @@ group :test do
   gem 'faye-websocket', '0.4.4'
   gem 'simplecov'
   gem 'rest-client', '~> 1.7.2'
+  gem 'method_source'
 end
