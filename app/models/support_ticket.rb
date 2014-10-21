@@ -20,4 +20,11 @@ class SupportTicket < ActiveRecord::Base
   scope :the_new, -> { where(status: STATUS_NEW) }
   scope :the_open, -> { where(status: STATUS_OPEN) }
   scope :the_closed, -> { where(status: STATUS_CLOSED) }
+
+  after_create :notify_sbcx_admins
+
+  private
+  def notify_sbcx_admins
+    AdminMailer.new_support_ticket(self).deliver
+  end
 end

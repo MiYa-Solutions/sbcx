@@ -17,4 +17,9 @@ class AdminMailer < ActionMailer::Base
     @message = message
     mail to: ENV["NEW_MEMBER_EVENT_EMAILS"], subject: "#{ENV["APP_NAME"]}: New Message From a Web Visitor"
   end
+
+  def new_support_ticket(support_ticket)
+    @support_ticket = support_ticket
+    mail to: ENV["NEW_MEMBER_EVENT_EMAILS"], subject: "#{ENV["APP_NAME"]}: New Support Ticket From #{@support_ticket.organization.name}"
+  end
 end
