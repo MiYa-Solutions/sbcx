@@ -13,6 +13,8 @@ class Comment < ActiveRecord::Base
   # NOTE: Comments belong to a user
   belongs_to :user
 
+  after_create :notify_sbcx_support, if: ->(c){c.commentable.instance_of?(SupportTicket) && !c.user.role_symbols.include?(:admin)}
+
   # Helper class method that allows you to build a comment
   # by passing a commentable object, a user_id, and comment text
   # example in readme
@@ -46,4 +48,10 @@ class Comment < ActiveRecord::Base
   def self.find_commentable(commentable_str, commentable_id)
     commentable_str.constantize.find(commentable_id)
   end
+
+  private
+  def notify_sbcx_support
+    AdminMailer.new_support_comment(self).deliver
+  end
+
 end
