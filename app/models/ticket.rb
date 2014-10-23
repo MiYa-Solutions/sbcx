@@ -452,9 +452,9 @@ class Ticket < ActiveRecord::Base
   def provider_entries
     if provider
       acc = Account.for_affiliate(organization, provider).first
-      acc ? entries.by_acc(acc) : []
+      acc ? entries.by_acc(acc) : AccountingEntry.none
     else
-      []
+      AccountingEntry.none
     end
   end
 
