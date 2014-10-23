@@ -1,5 +1,5 @@
 class SupportTicketsController < ApplicationController
-
+  before_filter :authenticate_user!
   filter_resource_access
 
   # GET /support_tickets
