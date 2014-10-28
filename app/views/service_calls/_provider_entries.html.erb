@@ -73,7 +73,7 @@
             <tr>
               <td><%= entry.id %></td>
               <td><%= entry.account.accountable.name %></td>
-              <td class="entry_status_<%= entry.human_status_name %>"><%= entry.human_status_name.humanize %></td>
+              <td class="entry_status_<%= entry.status_name %>"><%= entry.human_status_name.humanize %></td>
               <td><%= entry.account.accountable.class.model_name.human %></td>
               <td><%= l entry.created_at %></td>
               <td><%= entry.type.constantize.model_name.human %></td>

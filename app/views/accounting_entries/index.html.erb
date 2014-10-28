@@ -60,7 +60,7 @@
 
   <br>
   <div class="row-fluid table_of_entries">
-        <table class="table table-striped display table-bordered" id="entries_table" data-source="<%= accounting_entries_url(format: "json") %>">
+        <table class="table table-striped display table-bordered entry_table" id="entries_table" data-source="<%= accounting_entries_url(format: "json") %>">
           <thead class="entry_table_head">
           <tr>
             <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
@@ -69,7 +69,8 @@
             <th class="data_entry_type"><%= AccountingEntry.human_attribute_name(:type) %></th>
             <th><%= AccountingEntry.human_attribute_name(:status) %></th>
             <th><%= AccountingEntry.human_attribute_name(:amount) %></th>
-            <th><%= AccountingEntry.human_attribute_name(:balance) %></th>
+            <th><%= AccountingEntry.human_attribute_name(:collector) %></th>
+            <th><%= AccountingEntry.human_attribute_name(:notes) %></th>
             <th><%= I18n.t('general.general.actions') %></th>
           </tr>
           </thead>

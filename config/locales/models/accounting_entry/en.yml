@@ -78,6 +78,9 @@ en:
         status:
           states:
             cleared: Cleared
+            deposited: Deposited
+            rejected: Rejected
+            pending: Pending
       my_adj_entry:
         status:
           states:

@@ -32,10 +32,14 @@ class EntriesDatatable
         created_at: h(entry.created_at.strftime("%B %e, %Y, %H:%m")),
         ref_id: link_to(entry.ticket.ref_id, entry.ticket),
         type: entry.type,
+        human_type: entry.type.constantize.model_name.human,
         status: entry.status_name,
+        human_status: entry.human_status_name,
         amount: humanized_money_with_symbol(entry.amount),
         balance: humanized_money_with_symbol(entry.balance),
         actions: adjustment_entry_actions(entry, 'customer_entry_small_btn'),
+        notes: entry.notes,
+        collector_name: entry.respond_to?(:collector) ? entry.collector.name : ''
     }
 
   end
