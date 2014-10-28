@@ -141,7 +141,7 @@ describe '3rd Party Collection' do
     context 'when broker collects partially' do
       before do
         broker_job.reload
-        collect_a_payment broker_job, amount: 10, type: 'cash', collector: broker
+        collect_a_payment broker_job, amount: 10, type: 'credit_card', collector: broker
         broker_job.reload
         subcon_job.reload
         job.reload
@@ -211,7 +211,7 @@ describe '3rd Party Collection' do
     context 'when subcon collects partially' do
       before do
         broker_job.reload
-        collect_a_payment subcon_job, amount: 10, type: 'cash', collector: subcon
+        collect_a_payment subcon_job, amount: 10, type: 'amex_credit_card', collector: subcon
         broker_job.reload
         subcon_job.reload
         job.reload
@@ -243,5 +243,7 @@ describe '3rd Party Collection' do
 
     end
   end
+
+  pending 'when using profit split'
 
 end

@@ -44,8 +44,6 @@ class ProfitSplit < AffiliatePostingRule
   end
 
 
-  protected
-
   def counterparty_cut
     @ticket.total_profit * (rate / 100.0)
   end
