@@ -244,6 +244,8 @@ en:
       check_rate: "Check Rate"
       agreement_changes: "Changes"
       agreement_changes_submitted: "Agreement Changes"
+      new_invite: "New Invite"
+      sent_by: "Sent by"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

@@ -35,29 +35,30 @@
 
 <div class="edit_job_details">
 
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:allow_collection) %></div>
-    <div class="ui-block-b collection"><%= f.input :allow_collection %></div>
-  </div>
+  <!--<div class="ui-grid-a">-->
+    <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:allow_collection) %></div>-->
+    <!--<div class="ui-block-b collection"><#%= f.input :allow_collection %></div>-->
+  <!--</div>-->
 
-  <div class="ui-grid-a">
-    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:transferable) %></div>
-    <div class="ui-block-b collection"><%= f.input :transferable %></div>
-  </div>
+  <!--<div class="ui-grid-a">-->
+    <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:transferable) %></div>-->
+    <!--<div class="ui-block-b collection"><#%= f.input :transferable %></div>-->
+  <!--</div>-->
 
-  <% if current_user.organization.multi_user? %>
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:technician) %></div>
-        <div class="ui-block-b"><%= f.association :technician, collection: current_user.organization.users, value: f.object.technician.try(:name) %></div>
-      </div>
-  <% end %>
-
+  <!--<#% if current_user.organization.multi_user? %>-->
+      <!--<div class="ui-grid-a">-->
+        <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:technician) %></div>-->
+        <!--<div class="ui-block-b"><#%= f.association :technician, collection: current_user.organization.users, value: f.object.technician.try(:name) %></div>-->
+      <!--</div>-->
+  <!--<#% end %>-->
 
   <div class="ui-grid-a">
     <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:scheduled_for) %></div>
     <div class="ui-block-b"><%= f.text_field :scheduled_for, class: "mobi-datetime", value: (Time.now), format: :short %></div>
   </div>
+
 </div>
+
 
 <div class="ui-grid-a">
   <div class="ui-block-a position_lable"><%= @service_call.class.human_attribute_name(:external_ref) %></div>

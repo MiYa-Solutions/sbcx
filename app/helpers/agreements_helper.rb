@@ -65,8 +65,10 @@ module AgreementsHelper
               concat (content_tag :li, agr_change_submission_form(agreement),
                                   class: "cancel_agreement")
             when :accept
-              concat (content_tag :li, agr_accept_form(agreement))
+              concat (content_tag :li, agr_accept_form(agreement), class: 'agr_accept_btn')
+
             when :reject
+              concat (label_tag 'agr_reject_form', 'Enter comments, if any, and click the Reject Change button', class: "title")
               concat (content_tag :li, agr_reject_form(agreement))
             when :cancel
               concat (label_tag 'agr_cancel_form', 'Cancel Agreement', class: "title")
@@ -144,9 +146,10 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'accept')
       concat (f.submit agreement.class.human_status_event_name(:accept).titleize,
                        id:    'agreement_accept_btn',
-                       class: "btn btn-primary",
+                       class: "btn btn-primary ui-btn-up-b",
                        title: 'Click to accept the agreement as defined by the other party',
-                       rel:   'tooltip'
+                       rel:   'tooltip',
+                       "data-theme" => "b"
              )
 
     end
@@ -159,9 +162,10 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'reject')
       concat (f.submit agreement.class.human_status_event_name(:reject).titleize,
                        id:    'agreement_rejection_btn',
-                       class: "btn btn-danger",
+                       class: "btn btn-danger ui-btn-up-r",
                        title: 'Click to reject the changes made by the other party',
-                       rel:   'tooltip'
+                       rel:   'tooltip',
+                       "data-theme" => "r"
              )
 
     end
@@ -173,10 +177,11 @@ module AgreementsHelper
       concat (hidden_field_tag 'agreement[status_event]', 'cancel')
       concat (f.submit agreement.class.human_status_event_name(:cancel).titleize,
                        id:      'agreement_rejection_btn',
-                       class:   "btn btn-danger",
+                       class:   "btn btn-danger ui-btn-up-r",
                        title:   'Click to cancel this agreement',
                        confirm: 'Are you sure?' + "\n" + 'Please note that this operation is irreversible, and this agreement will no longer be available',
-                       rel:     'tooltip'
+                       rel:     'tooltip',
+                       "data-theme" => "r"
              )
 
     end
