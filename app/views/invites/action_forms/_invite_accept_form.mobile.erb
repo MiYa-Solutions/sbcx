@@ -1,0 +1,8 @@
+<%= simple_form_for invite, html: { class: 'invite_accept_form green-button' } do |f| %>
+    <%= f.hidden_field :status_event, value: 'accept' %>
+    <%= f.submit invite.class.human_status_event_name(:accept).titleize,
+                 id: 'invite_accept_btn',
+                 class: "ui-btn-up-b",
+                 "data-theme" => "b"
+    %>
+<% end %>

@@ -1,19 +1,15 @@
-<% if account.present? %>
-    <table class="table table-striped" id="accounting_entries_table">
-      <thead>
-      <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
-      <th><%= AccountingEntry.human_attribute_name(:address) %>       </th>
-      <th><%= AccountingEntry.human_attribute_name(:status) %>        </th>
-      <th><%= AccountingEntry.human_attribute_name(:amount) %>          </th>
-      <th><%= I18n.t('general.general.balance') %> </th>
-      </thead>
-      <tbody>
-      <% account.accounting_entries.order('id desc').each do |entry| %>
-          <%= render 'accounting_entries/accounting_entry', accounting_entry: entry %>
-      <% end %>
-      </tbody>
+<ul data-role="listview">
+        <% account.accounting_entries.order('id desc').each do |entry| %>
+          <li class=" inline_mobile service_calls_index">
+            <p class="ui-li-aside-blue ui-li-desc-blue">
+              <badge><%= entry.ticket.id %></badge>
+            </p>
 
-    </table>
-<% else %>
-    No Account Present
-<% end %>
+            <%= link_to entry.type.tableize.humanize, accounting_entry_path(entry) %>
+            <p class="customer_open_jobs"><%= humanized_money_with_symbol entry.amount %></p>
+          </li>
+      <% end %>
+
+</ul>
+
+

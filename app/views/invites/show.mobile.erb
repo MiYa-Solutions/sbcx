@@ -1,0 +1,68 @@
+<% provide(:title, t('general.general.new_invite')) %>
+
+
+<div class="show_invite_info">
+<br>
+
+  <ul data-role="listview">
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= t('general.general.sent_by') %></div>
+        <div class="ui-block-b"><%= @invite.organization.name %></div>
+      </div>
+    </li>
+
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Invite.human_attribute_name :status %></div>
+        <div class="ui-block-b"><%= @invite.human_status_name.titleize %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Invite.human_attribute_name :message %></div>
+        <div class="ui-block-b"><%= @invite.message %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= t('general.general.received') %></div>
+        <div class="ui-block-b"><%= l @invite.created_at, format: :short %></div>
+      </div>
+    </li>
+    <li class="ui-li ui-li-static">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Invite.human_attribute_name :affiliate %></div>
+        <div class="ui-block-b"><%= @invite.affiliate.name %></div>
+      </div>
+    </li>
+
+   </ul>
+
+
+  <br/>
+  <%= invite_event_buttons(@invite) if permitted_to? :update, @invite %>
+
+
+  <br/>
+  <br/><br/>
+
+  <div class="edit_bom_back_btn">
+    <div class="ui-grid-solo">
+      <%= link_to I18n.t('general.general.back'), user_root_path, "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
