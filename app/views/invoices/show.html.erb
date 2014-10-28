@@ -10,7 +10,7 @@
         <h4><%= @invoice.ticket.organization.name %></h4>
         <h3 class="pull-right"><%= t('general.general.invoice') %> <%= @invoice.id %></h3><br>
         <%= @invoice.ticket.organization.address1 %><br>
-        <% unless @invoice.ticket.organization.address2.empty? %>
+        <% if @invoice.ticket.organization.address2.present? %>
             <%= @invoice.ticket.organization.address2  %><br>
         <% end %>
         <%= @invoice.ticket.organization.city %>, <%= @invoice.ticket.organization.state %><%= @invoice.ticket.organization.zip %><br>

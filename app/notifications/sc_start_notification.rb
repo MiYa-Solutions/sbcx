@@ -4,7 +4,7 @@ class ScStartNotification < ServiceCallNotification
   end
 
   def default_subject
-    I18n.t('notifications.sc_start_notification.subject')
+    I18n.t('notifications.sc_start_notification.subject', ref: service_call.ref_id)
   end
 
   def default_content
