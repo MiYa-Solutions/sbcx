@@ -29,7 +29,7 @@ jQuery ->
     bStateSave: true
     bServerSide: true
     sAjaxSource: $('#entries_table').data('source')
-    fnServerData: (sSource, aoData, fnCallback, settings) ->
+    fnServerData: (sSource, aoData, fnCallback) ->
       aoData.push
         name: "accounting_entry[account_id]"
         value: $('#account').find(":selected").val()
