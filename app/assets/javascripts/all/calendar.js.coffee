@@ -37,22 +37,39 @@ jQuery ->
     timeFormat: "h:mm t{ - h:mm t} "
     dragOpacity: "0.5"
     select: (start, end, allDay) ->
+      endtime = start.toDateString()
+      starttime = end.toDateString()
+      alert(starttime + ' - ' + endtime)
 
 
-
-      #http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
-      eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
-        updateEvent event
-
-
-      # http://arshaw.com/fullcalendar/docs/event_ui/eventResize/
-      eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
-        updateEvent event
+  #http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
+    eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
+      updateEvent event
 
 
-      # http://arshaw.com/fullcalendar/docs/mouse/eventClick/
-      eventClick: (event, jsEvent, view) ->
-        window.location.replace "/appointments/" + event.id + "/edit"
+  # http://arshaw.com/fullcalendar/docs/event_ui/eventResize/
+    eventResize: (event, dayDelta, minuteDelta, revertFunc) ->
+      updateEvent event
+
+
+  # http://arshaw.com/fullcalendar/docs/mouse/eventClick/
+    eventClick: (event, jsEvent, view) ->
+      window.location.replace "/appointments/" + event.id + "/edit"
+
+    eventRender: (event, element) ->
+
+
+    eventMouseover: (event, jsEvent, view) ->
+      p = $(this).popover(
+        content: "<small>" + event.start.toDateString() + " " + event.start.toLocaleTimeString() + " - " + event.end.toDateString() + " " + event.end.toLocaleTimeString()+ "</small><br><br>" + event.description
+        placement: 'bottom'
+        title: event.title
+      )
+
+      p.popover('show')
+
+    eventMouseout: (event, jsEvent, view) ->
+      $(this).popover('hide')
 
 
   updateEvent = (the_event) ->
