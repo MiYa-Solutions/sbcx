@@ -73,7 +73,7 @@ group :development, :test do
   gem 'quiet_assets'
   gem 'ruby_parser'
   gem 'thin'
-  gem 'ruby-debug-ide', '~> 0.4.22'
+  gem 'ruby-debug-ide', '~> 0.4.23.beta11'
   gem 'ruby-debug-base19x'
 end
 
@@ -84,7 +84,7 @@ group :assets do
   gem 'uglifier', '1.2.3'
   gem 'jquery-datatables-rails', '2.1.10.0.2'
   gem 'jquery-ui-rails', '4.1.1'
-  gem 'fullcalendar-rails', '1.5.4.0'
+  gem 'fullcalendar-rails', '2.0.2.0'
   gem 'sass-rails', '3.2.4'
   gem 'bootstrap-sass', '2.0.4'
   gem 'chosen-rails', '1.1.0'

@@ -1,3 +1,35 @@
+#originalLeave = $.fn.popover.Constructor::leave
+#$.fn.popover.Constructor::leave = (obj) ->
+#  self = (if obj instanceof @constructor then obj else $(obj.currentTarget)[@type](@getDelegateOptions()).data("bs." + @type))
+#  container = undefined
+#  timeout = undefined
+#  originalLeave.call this, obj
+#  if obj.currentTarget
+#    container = $(obj.currentTarget).siblings(".popover")
+#    timeout = self.timeout
+#    container.one "mouseenter", ->
+#
+#      #We entered the actual popover – call off the dogs
+#      clearTimeout timeout
+#
+#      #Let's monitor popover content instead
+#      container.one "mouseleave", ->
+#        $.fn.popover.Constructor::leave.call self, self
+
+class EventView
+  constructor: (@event) ->
+
+  title: ->
+    "<span class='text-info'><strong>#{this.event.title}</strong></span>"+
+    "<a class='close'>x</a>"
+
+  content: ->
+    "<small>" + @event.start.toDateString() + " " + @event.start.toLocaleTimeString() + " - " +
+    @event.end.toDateString() + " " +
+    @event.end.toLocaleTimeString() + "</small><br><br>" +
+    @event.description + "<br>"
+
+
 jQuery ->
   $('#job_appointments').on 'shown.bs.tab', ->
     $("#calendar").fullCalendar('render')
@@ -53,24 +85,29 @@ jQuery ->
 
 
   # http://arshaw.com/fullcalendar/docs/mouse/eventClick/
-    eventClick: (event, jsEvent, view) ->
-      window.location.replace "/appointments/" + event.id + "/edit"
-
-    eventRender: (event, element) ->
-
-
     eventMouseover: (event, jsEvent, view) ->
+      event_view = new EventView(event)
       p = $(this).popover(
-        content: "<small>" + event.start.toDateString() + " " + event.start.toLocaleTimeString() + " - " + event.end.toDateString() + " " + event.end.toLocaleTimeString()+ "</small><br><br>" + event.description
+        selector: this.selector
+        delay: {show: 50, hide: 500}
+        content: event_view.content()
         placement: 'bottom'
-        title: event.title
-      )
+        title: event_view.title()
+        trigger: 'hover'
+      ).on "shown.bs.popover", (e) ->
+        popover = $(this)
+        $(this).parent().find("div.popover .close").on "click", (e) ->
+          popover.popover('toggle')
 
-      p.popover('show')
+      p.popover('toggle')
+
+
+    eventClick: (event, jsEvent, view) ->
+      window.location.replace '/appointments/' + event.id + '/edit'
 
     eventMouseout: (event, jsEvent, view) ->
-      $(this).popover('hide')
 
+    eventRender: (event, element) ->
 
   updateEvent = (the_event) ->
     $.ajax
@@ -101,5 +138,9 @@ jQuery ->
 
       complete: (response) ->
 
+  appointment_link = (app) ->
+    url = "/appointments/" + app.id + "/edit"
+
+    "<a href=#{url}>Click Here</a>"
 
 
