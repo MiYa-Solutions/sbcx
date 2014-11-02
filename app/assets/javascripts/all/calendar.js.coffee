@@ -20,8 +20,7 @@ class EventView
   constructor: (@event) ->
 
   title: ->
-    "<span class='text-info'><strong>#{this.event.title}</strong></span>"+
-    "<a class='close'>x</a>"
+    "<span class='text-info'><strong>#{this.event.title}</strong></span>"
 
   content: ->
     "<small>" + @event.start.toDateString() + " " + @event.start.toLocaleTimeString() + " - " +
@@ -69,9 +68,9 @@ jQuery ->
     timeFormat: "h:mm t{ - h:mm t} "
     dragOpacity: "0.5"
     select: (start, end, allDay) ->
-      endtime = start.toDateString()
-      starttime = end.toDateString()
-      alert(starttime + ' - ' + endtime)
+#      endtime = start.toDateString()
+#      starttime = end.toDateString()
+
 
 
   #http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
