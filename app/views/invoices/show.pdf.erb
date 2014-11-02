@@ -33,16 +33,26 @@
         </div>
         <div class="col-xs-6 invoice-text-right">
           <address>
-            <strong><%= t('general.general.invoice_date') %>:</strong><br>
+            <strong><%= t('general.general.invoice_date') %></strong>:<br>
             <%= l @invoice.created_at %><br><br>
 
             <strong><%= t('general.general.job_number') %></strong><%= @invoice.ticket.id %> <br>
             <br>
 
-            <strong><%= t('general.general.job_name') %>:</strong><br>
+            <strong><%= t('general.general.job_name') %></strong>:<br>
     <!--        <#%= link_to @invoice.ticket.name, service_call_url(@invoice.ticket) %><br> -->
             <%= @invoice.ticket.name %><br>
-           </address>
+            <br>
+
+            <% if @invoice.ticket.work_done? %>
+                <strong><%= t('general.general.completed_at') %></strong>:<br>
+                <%= l @invoice.ticket.completed_on  %>
+            <% else %>
+                <strong><%= t('general.general.scheduled_for') %></strong>:<br>
+                <%= I18n.l @invoice.ticket.scheduled_for, format: :default if @invoice.ticket.scheduled_for %>
+            <% end %>
+
+            </address>
 
         </div>
       </div>

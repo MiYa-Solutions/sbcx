@@ -87,6 +87,23 @@
                           <%= t('general.general.job_name') %>:
                         </h3>
                         <%= link_to @invoice.ticket.name, service_call_url(@invoice.ticket) %><br>
+
+                        <br>
+
+                        <% if @invoice.ticket.work_done? %>
+                            <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                              <%= t('general.general.completed_at') %>:
+                            </h3>
+                            <%= l @invoice.ticket.completed_on  %><br><br>
+
+                        <% else %>
+                            <h3 class="h3" style="font-family:Arial; font-size:14px; font-weight:bold; text-align:left; margin-bottom:10px; color:#202020;">
+                              <%= t('general.general.scheduled_for') %>:
+                            </h3>
+                            <%= I18n.l @invoice.ticket.scheduled_for, format: :default if @invoice.ticket.scheduled_for %><br><br>
+
+                      <% end %>
+
                       </td>
                     </tr>
 
