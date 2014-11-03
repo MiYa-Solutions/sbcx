@@ -36,4 +36,8 @@ class OrganizationRole < ActiveRecord::Base
   SUPPLIER_ROLE_ID   = 3
   SUPPLIER_ROLE_NAME = 'Supplier'
 
+  def name
+    I18n.t("organization_roles.#{self.id}")
+  end
+
 end
