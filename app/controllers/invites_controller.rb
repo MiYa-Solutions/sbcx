@@ -55,10 +55,10 @@ class InvitesController < ApplicationController
   def update
     respond_to do |format|
       if @invite.update_attributes(invite_params)
-        format.html { redirect_to @invite, notice: 'Invite was successfully updated.' }
+        format.any(:html, :mobile) { redirect_to affiliate_path(@invite.organization_id), notice: 'Invite was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.any(:html, :mobile) { render action: "edit" }
         format.json { render json: @invite.errors, status: :unprocessable_entity }
       end
     end

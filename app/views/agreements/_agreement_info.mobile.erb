@@ -19,7 +19,7 @@
     <li class="ui-li ui-li-static">
       <div class="ui-grid-a">
         <div class="ui-block-a"><%= Agreement.human_attribute_name(:payment_terms) %></div>
-        <div class="ui-block-b"><%= @agreement.payment_terms %></div>
+        <div class="ui-block-b"><%= t("agreement.payment_options.#{@agreement.payment_terms}") %></div>
       </div>
     </li>
 

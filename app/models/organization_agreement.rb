@@ -62,12 +62,7 @@ class OrganizationAgreement < Agreement
 
     # create the accounts after activating the agreement
     after_transition any => :active do |agreement, transition|
-      unless Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'", agreement.organization_id, agreement.counterparty_id).present?
-        Account.create!(organization: agreement.organization, accountable: agreement.counterparty) if agreement.organization.subcontrax_member?
-      end
-      unless Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'", agreement.counterparty_id, agreement.organization_id).present?
-        Account.create!(organization: agreement.counterparty, accountable: agreement.organization) if agreement.counterparty.subcontrax_member?
-      end
+      agreement.finalize_activation
     end
 
 
@@ -77,8 +72,8 @@ class OrganizationAgreement < Agreement
     end
 
     event :activate do
-      transition :draft => :active, if: ->(agreement) { !agreement.organization.subcontrax_member? }
-      transition :draft => :active, if: ->(agreement) { !agreement.counterparty.subcontrax_member? }
+      transition :draft => :active, unless: ->(agreement) { agreement.organization.subcontrax_member? }
+      transition :draft => :active, unless: ->(agreement) { agreement.counterparty.subcontrax_member? }
     end
 
     event :submit_change do
@@ -105,8 +100,33 @@ class OrganizationAgreement < Agreement
     AgrVersionDiffService.new(self, self.previous_version).different? || self.rules_changed_from_prev_ver?
   end
 
+  def finalize_activation
+    create_account_for_org unless org_account_exists?
+    create_account_for_cparty unless cparty_account_exists?
+  end
+
 
   private
+
+  def create_account_for_org
+    Account.create!(organization: organization, accountable: counterparty) if organization.subcontrax_member?
+  end
+
+  def create_account_for_cparty
+    Account.create!(organization: counterparty, accountable: organization) if counterparty.subcontrax_member?
+  end
+
+  def org_account_exists?
+    Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'",
+                  organization_id, counterparty_id).present?
+  end
+
+  def cparty_account_exists?
+    Account.where("organization_id = ? and accountable_id = ? and accountable_type = 'Organization'",
+                  counterparty_id, organization_id).present?
+  end
+
+
   def end_date_validation
     if self.ends_at && (subcon_tickets.size > 0 || prov_tickets.size > 0) && Ticket.created_after(self.organization, self.counterparty, self.ends_at).size > 0
       errors.add :ends_at, I18n.t('activerecord.errors.agreement.ends_at_invalid', date: ends_at.strftime('%b, %d, %Y'))
