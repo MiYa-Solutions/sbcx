@@ -15,6 +15,9 @@
 #      #Let's monitor popover content instead
 #      container.one "mouseleave", ->
 #        $.fn.popover.Constructor::leave.call self, self
+Date::addHours = (h) ->
+  @setHours @getHours() + h
+  this
 
 class EventView
   constructor: (@event) ->
@@ -32,11 +35,6 @@ class EventView
 jQuery ->
   $('#job_appointments').on 'shown.bs.tab', ->
     $("#calendar").fullCalendar('render')
-
-  date = new Date()
-  d = date.getDate()
-  m = date.getMonth()
-  y = date.getFullYear()
 
   $("#calendar").fullCalendar
     editable: true
@@ -68,8 +66,15 @@ jQuery ->
     timeFormat: "h:mm t{ - h:mm t} "
     dragOpacity: "0.5"
     select: (start, end, allDay) ->
-#      endtime = start.toDateString()
-#      starttime = end.toDateString()
+      $('#appointment_starts_at_date_text').val(($.format.date(start, "E MMM, dd yyyy")))
+      $('#appointment_starts_at_time_text').val($.format.date(start, "H:mm"))
+#      $('#appointment_starts_at_time_text').timepicker
+#        hour: start.getHours()
+#        minute: start.getMinutes()
+
+      $('#appointment_ends_at_date_text').val(($.format.date(end, "E MMM, dd yyyy")))
+      $('#appointment_ends_at_time_text').val(($.format.date(end, "H:mm")))
+
 
 
 
@@ -113,6 +118,7 @@ jQuery ->
       type: "put"
       dataType: "script"
       url: "/appointments/" + the_event.id
+      context: this
 
       data:
         appointment:
@@ -122,6 +128,9 @@ jQuery ->
           description: the_event.description
 
       complete: (response) ->
+
+      success: (response) ->
+        $(this).append("<span class='green'>Saved!</span>").show().fadeOut(2000)
 
   addEvent = (the_event) ->
     $.ajax
@@ -141,5 +150,23 @@ jQuery ->
     url = "/appointments/" + app.id + "/edit"
 
     "<a href=#{url}>Click Here</a>"
+
+
+  $('#appointment_starts_at_date_text').on 'change', (e) ->
+    date = new Date($(this).val())
+    $('#appointment_ends_at_date_text').val($.format.date(date, "E MMM, dd yyyy"))
+
+  $('#appointment_starts_at_time_text').on 'change', (e) ->
+    time = new Date($('#appointment_starts_at_date_text').val() + " " + $(this).val())
+    $('#appointment_ends_at_time_text').val($.format.date(time.addHours(1), "H:mm"))
+
+  if $('#appointment_starts_at_date_text').val() == ''
+    $('#appointment_starts_at_date_text').val(($.format.date(new Date(), "E MMM, dd yyyy")))
+    $('#appointment_starts_at_time_text').val(($.format.date(new Date(), "H:mm")))
+
+  if $('#appointment_ends_at_date_text').val() == ''
+    $('#appointment_ends_at_date_text').val(($.format.date(new Date(), "E MMM, dd yyyy")))
+    $('#appointment_ends_at_time_text').val(($.format.date(new Date().addHours(1), "H:mm")))
+
 
 

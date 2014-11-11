@@ -1,9 +1,9 @@
-<!--<td><#%= appointment.title %></td>-->
-<td><%= link_to appointment.title, edit_appointment_path(appointment) %></td>
-<td><%= link_to appointment.description, edit_appointment_path(appointment) %></td>
-<!--<td><#%= appointment.description %></td>-->
-<td><%= l appointment.starts_at, format: :no_tz %></td>
-<td><%= l appointment.ends_at %></td>
+<tr id="appointment_<%= appointment.id %>">
+  <td><%= link_to appointment.title, edit_appointment_path(appointment) %></td>
+  <td><%= link_to appointment.description, edit_appointment_path(appointment) %></td>
+  <td><%= l appointment.starts_at, format: :no_tz %></td>
+  <td><%= l appointment.ends_at %></td>
+</tr>
 
 
 

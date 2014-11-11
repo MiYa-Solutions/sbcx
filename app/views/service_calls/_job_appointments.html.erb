@@ -1,40 +1,39 @@
 <div class="well well_job_show well_job_history">
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= I18n.t('general.general.appointments').html_safe %></h1></li>
-          <li>
-            <button class="btn btn-primary btn-medium" data-toggle="collapse" data-target="#new_meeting" id="new_meeting_in_Job_show">
-              <%= I18n.t('general.general.add_new_appointment') %></button>
-          </li>
-        </ul>
-      </div>
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.appointments').html_safe %></h1></li>
+      <li>
+        <button class="btn btn-primary btn-medium" data-toggle="collapse" data-target="#new_meeting" id="new_meeting_in_Job_show">
+          <%= I18n.t('general.general.add_new_appointment') %></button>
+      </li>
+    </ul>
+  </div>
 
-      <div id="new_meeting" class="collapse">
-        <%= render 'appointments/in_line_form_job', appointment: @service_call.appointments.build %>
-      </div>
-      <br>
-      <table class="table table-striped" id="event_log_in_service_call">
-        <thead>
-        <tr>
-          <th><%= I18n.t('general.general.title') %> </th>
-          <th><%= I18n.t('general.general.description') %></th>
-          <th><%= I18n.t('general.general.started_at') %></th>
-          <th><%= I18n.t('general.general.ends_at') %></th>
-        </tr>
-        </thead>
-        <tbody id="appointments">
-        <% unless @service_call.appointments.empty? %>
-            <% @service_call.appointments.each do |appointment| %>
+  <div id="new_meeting" class="collapse">
+    <%= render 'appointments/in_line_form_job', appointment: @service_call.appointments.build %>
+  </div>
+  <div class="row-fluid calendar_job" id="calendar"></div>
 
-                <tr id="appointment_<%= appointment.id %>">
-                  <%= render 'appointments/appointment', appointment: appointment unless appointment.new_record? %>
-                </tr>
-            <% end %>
+  <br>
+  <table class="table table-striped" id="event_log_in_service_call">
+    <thead>
+    <tr>
+      <th><%= I18n.t('general.general.title') %> </th>
+      <th><%= I18n.t('general.general.description') %></th>
+      <th><%= I18n.t('general.general.started_at') %></th>
+      <th><%= I18n.t('general.general.ends_at') %></th>
+    </tr>
+    </thead>
+    <tbody id="appointments">
+    <% unless @service_call.appointments.empty? %>
+        <% @service_call.appointments.each do |appointment| %>
+
+            <%= render 'appointments/appointment', appointment: appointment unless appointment.new_record? %>
         <% end %>
-        </tbody>
-      </table>
+    <% end %>
+    </tbody>
+  </table>
 
-      <br>
+  <br>
 
-      <div class="row-fluid calendar_job" id="calendar"></div>
- </div>
+</div>

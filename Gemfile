@@ -73,8 +73,8 @@ group :development, :test do
   gem 'quiet_assets'
   gem 'ruby_parser'
   gem 'thin'
-  gem 'ruby-debug-ide', '~> 0.4.23.beta11'
-  gem 'ruby-debug-base19x'
+  # gem 'ruby-debug-ide', '~> 0.4.23.beta11'
+  # gem 'ruby-debug-base19x'
 end
 
 # Gems used only for assets and not required
