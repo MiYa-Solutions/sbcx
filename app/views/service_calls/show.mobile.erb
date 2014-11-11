@@ -85,8 +85,10 @@
 
 <!-- Billing-->
   <% case @service_call.my_role when :subcon %>
+      <%= render :partial => 'customer_collection' %>
       <%= render :partial => 'provider_balance' %>
   <% when :broker %>
+      <%= render :partial => 'customer_collection' %>
       <%= render :partial => 'provider_balance' %>
       <%= render :partial => 'subcon_balance' %>
   <% else %>
