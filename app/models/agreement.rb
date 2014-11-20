@@ -133,6 +133,9 @@ class Agreement < ActiveRecord::Base
   def self.payment_options
     { cod: 0, net_10: 10, net_15: 15, net_30: 30, net_60: 60, net_90: 90 }
   end
+  def self.default_payment_term
+    :net_15
+  end
 
   def get_transfer_props
     rules.map(&:get_transfer_props)

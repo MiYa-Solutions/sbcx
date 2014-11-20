@@ -36,4 +36,5 @@
 //= require all/jquery-ui-1.8.23.custom.min
 //= require all/jquery-ui-timepicker-addon
 //= require all/jquery.ezpz_hint
+//= require all/jquery-dateFormat
 //= require_tree ./all/.

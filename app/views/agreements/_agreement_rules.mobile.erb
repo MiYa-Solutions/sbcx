@@ -1,103 +1,100 @@
 <% unless @agreement.posting_rules.empty? %>
-    <%  @agreement.posting_rules.each do |rule| %>
-<div class="agreemnt_info">
-  <ul data-role="listview">
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= PostingRule.human_attribute_name(:id) %></div>
-        <div class="ui-block-b"><%= rule.id %></div>
-      </div>
-    </li>
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= PostingRule.human_attribute_name(:type) %> </div>
-        <div class="ui-block-b"><%= rule.type %></div>
-      </div>
-    </li>
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= PostingRule.human_attribute_name(:rate) %> </div>
-        <div class="ui-block-b">
-          <% if rule.rate_type == "percentage" %>
-              <%= rule.rate %> %
-          <% else %>
-              $ <%= rule.rate %>
-          <% end %>
+    <% @agreement.posting_rules.each do |rule| %>
+        <div class="agreemnt_info">
+          <ul data-role="listview">
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= PostingRule.human_attribute_name(:id) %></div>
+                <div class="ui-block-b"><%= rule.id %></div>
+              </div>
+            </li>
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= PostingRule.human_attribute_name(:type) %> </div>
+                <div class="ui-block-b"><%= rule.type %></div>
+              </div>
+            </li>
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= PostingRule.human_attribute_name(:rate) %> </div>
+                <div class="ui-block-b">
+                  <% if rule.rate_type == "percentage" %>
+                      <%= rule.rate %> %
+                  <% else %>
+                      $ <%= rule.rate %>
+                  <% end %>
+                </div>
+              </div>
+            </li>
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= t('general.general.check_rate') %> </div>
+                <div class="ui-block-b">
+                  <% if rule.cheque_rate.present? %>
+                      <% if rule.cheque_rate_type == "percentage" %>
+                          <%= rule.cheque_rate %>%
+                      <% else %>
+                          $ <%= rule.cheque_rate %>
+                      <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </li>
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= PostingRule.human_attribute_name(:credit_rate) %> </div>
+                <div class="ui-block-b">
+                  <% if rule.credit_rate.present? %>
+                      <% if rule.credit_rate_type == "percentage" %>
+                          <%= rule.credit_rate %> %
+                      <% else %>
+                          $ <%= rule.credit_rate %>
+                      <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </li>
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= PostingRule.human_attribute_name(:amex_rate) %> </div>
+                <div class="ui-block-b">
+                  <% if rule.amex_rate.present? %>
+
+                      <% if rule.amex_rate_type == "percentage" %>
+                          <%= rule.amex_rate %> %
+                      <% else %>
+                          $ <%= rule.amex_rate %>
+                      <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </li>
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= PostingRule.human_attribute_name(:cash_rate) %> </div>
+                <div class="ui-block-b">
+                  <% if rule.cash_rate.present? %>
+
+                      <% if rule.cash_rate_type == "percentage" %>
+                          <%= rule.cash_rate %>   %
+                      <% else %>
+                          $ <%= rule.cash_rate %>
+                      <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </li>
+
+
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= PostingRule.human_attribute_name(:created_at) %> </div>
+                <div class="ui-block-b"><%= l rule.created_at, format: :short %></div>
+              </div>
+            </li>
+
+
+          </ul>
         </div>
-      </div>
-    </li>
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= t('general.general.check_rate') %> </div>
-        <div class="ui-block-b">
-          <% unless rule.cheque_rate.empty?  %>
-              <% if rule.cheque_rate_type == "percentage" %>
-                  <%= rule.cheque_rate %>%
-              <% else %>
-                  $ <%= rule.cheque_rate %>
-              <% end %>
-          <% end %>
-        </div>
-      </div>
-    </li>
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= PostingRule.human_attribute_name(:credit_rate) %> </div>
-        <div class="ui-block-b">
-          <% unless rule.credit_rate.empty? %>
-              <% if rule.credit_rate_type == "percentage" %>
-                  <%= rule.credit_rate %> %
-              <% else %>
-                  $ <%= rule.credit_rate %>
-              <% end %>
-          <% end %>
-        </div>
-      </div>
-    </li>
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= PostingRule.human_attribute_name(:amex_rate) %> </div>
-        <div class="ui-block-b">
-          <% unless rule.amex_rate.empty? %>
-
-              <% if rule.amex_rate_type == "percentage" %>
-                  <%= rule.amex_rate %> %
-              <% else %>
-                  $ <%= rule.amex_rate %>
-              <% end %>
-          <% end %>
-        </div>
-      </div>
-    </li>
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= PostingRule.human_attribute_name(:cash_rate) %> </div>
-        <div class="ui-block-b">
-          <% unless rule.cash_rate.empty? %>
-
-              <% if rule.cash_rate_type == "percentage" %>
-                  <%= rule.cash_rate %>   %
-              <% else %>
-                  $ <%= rule.cash_rate %>
-              <% end %>
-          <% end %>
-        </div>
-      </div>
-    </li>
-
-
-
-
-
-    <li class="ui-li ui-li-static">
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= PostingRule.human_attribute_name(:created_at) %> </div>
-        <div class="ui-block-b"><%= l rule.created_at, format: :short %></div>
-      </div>
-    </li>
-
-
-  </ul>
-  </div>
+    <% end %>
 <% end %>
- <% end %>

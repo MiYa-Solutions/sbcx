@@ -10,10 +10,34 @@
 
   <%= csrf_meta_tag %>
   <%= render 'layouts/google_analytics' %>
+  <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+
+  <!-- For the iPad mini and the first- and second-generation iPad on iOS ≤ 6: -->
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png">
+
+  <!-- For the iPad mini and the first- and second-generation iPad on iOS ≥ 7: -->
+  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="apple-touch-icon-76x76-precomposed.png">
+
+  <!-- For iPhone with high-resolution Retina display running iOS ≤ 6: -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png">
+
+  <!-- For iPhone with high-resolution Retina display running iOS ≥ 7: -->
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120-precomposed.png">
+
+  <!-- For iPad with high-resolution Retina display running iOS ≤ 6: -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144-precomposed.png">
+
+  <!-- For iPad with high-resolution Retina display running iOS ≥ 7: -->
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon-180x180-precomposed.png">
+
+  <!-- Chrome v31+ for Android -->
+  <link rel="icon" sizes="192x192" href="apple-touch-icon.png">
 
 </head>
 <body>
-<div data-role="page" data-theme="d" data-content-theme="d">
+<div data-role="page" data-theme="d" data-content-theme="d" data-url="<%= request.path %>">
 
   <!--<div data-role="panel" id="panel_page" data-position="right" data-display="overlay">-->
   <!--&lt;!&ndash; panel content goes here &ndash;&gt;-->

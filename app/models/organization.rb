@@ -127,7 +127,7 @@ class Organization < ActiveRecord::Base
 
       unless provider.agreements.where(:counterparty_id => proxy_association.owner.id, counterparty_type: 'Organization').first
         prov_creator = provider.creator ? provider.creator : User.find_by_email(User::SYSTEM_USER_EMAIL)
-        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator, name: FlatFee.model_name.titleize, payment_terms: Agreement.payment_options[:net_15] }) { self.concat provider }
+        Agreement.with_scope(:create => { type: "SubcontractingAgreement", counterparty_type: "Organization", creator: prov_creator, name: FlatFee.model_name.titleize, payment_terms: Agreement.default_payment_term }) { self.concat provider }
         agr = provider.agreements.where(:counterparty_id => proxy_association.owner.id, counterparty_type: "Organization").first
         agr.rules << FlatFee.new
         agr.status = Agreement::STATUS_ACTIVE

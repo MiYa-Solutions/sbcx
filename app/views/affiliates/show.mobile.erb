@@ -2,97 +2,97 @@
 <% provide(:title, @affiliate.name) %>
 
 <div class="service_call_show_buttons">
-<% if @affiliate.subcontrax_member? %>
-   <% if  @affiliate.id.in? current_user.organization.provider_ids %>
+  <% if @affiliate.subcontrax_member? %>
+      <% if  @affiliate.id.in? current_user.organization.provider_ids %>
 
-         <fieldset class="ui-grid-b ui-btn-inner-small">
-              <div class="ui-block-a">
-                <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
-              </div>
-              <div class="ui-block-b">
-              </div>
-              <div class="ui-block-c">
-              </div>
-         </fieldset>
-    <% else %>
-        <fieldset class="ui-grid-a ui-btn-inner-small">
-          <div class="ui-block-a">
-            <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
-          </div>
-          <div class="ui-block-b">
-            <!--<div class="miya_blue_button">-->
-            <%= form_for(current_user.organization.agreements.build(organization_id: @affiliate.id)) do |f| %>
-                <div><%= f.hidden_field :organization_id %></div>
-                <%= f.submit I18n.t('general.general.add_member'), "data-theme" => "b", "data-mini" => "true" %>
-            <% end %>
-          <!--</div>-->
-          </div>
-        </fieldset>
+          <fieldset class="ui-grid-b ui-btn-inner-small">
+            <div class="ui-block-a">
+              <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+            </div>
+            <div class="ui-block-b">
+            </div>
+            <div class="ui-block-c">
+            </div>
+          </fieldset>
+      <% else %>
+          <fieldset class="ui-grid-a ui-btn-inner-small">
+            <div class="ui-block-a">
+              <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+            </div>
+            <div class="ui-block-b">
+              <!--<div class="miya_blue_button">-->
+              <%= form_for(current_user.organization.agreements.build(organization_id: @affiliate.id)) do |f| %>
+                  <div><%= f.hidden_field :organization_id %></div>
+                  <%= f.submit I18n.t('general.general.add_member'), "data-theme" => "b", "data-mini" => "true" %>
+              <% end %>
+              <!--</div>-->
+            </div>
+          </fieldset>
 
-    <% end %>
+      <% end %>
 
-<% else %>
-    <fieldset class="ui-grid-a ui-btn-inner-small">
-      <div class="ui-block-a">
-        <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
-      </div>
-      <div class="ui-block-b">
+  <% else %>
+      <fieldset class="ui-grid-a ui-btn-inner-small">
+        <div class="ui-block-a">
+          <%= link_to I18n.t('general.general.back'), affiliates_path, "data-role" => "button", "data-theme" => "d", "data-mini" => "true", "data-icon" => "arrow-l" %>
+        </div>
+        <div class="ui-block-b">
 
-      </div>
-    </fieldset>
+        </div>
+      </fieldset>
 
-<% end %>
+  <% end %>
 
 </div>
 
 <br>
 <!--Balance Info-->
 <ul data-role="listview" id="affiliate_show_balance">
-    <li data-role="list-divider" data-theme="d" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.balance')%>
+  <li data-role="list-divider" data-theme="d" class="ui-li ui-li-divider ui-bar-d"><%= I18n.t('general.general.balance') %>
+    <% unless @agreements.empty? %>
 
-    <% if @account.balance < 0 %>
+        <% if @account.balance < 0 %>
         <span class="red_badge_collape">
                                  <badge><%= humanized_money_with_symbol @account.balance %></badge>
                              </span>
-    <% else %>
+        <% else %>
         <span class="blue_badge_collape">
                                 <badge><%= humanized_money_with_symbol @account.balance %></badge>
                             </span>
+        <% end %>
     <% end %>
 
-    </li>
+  </li>
 </ul>
 
 <!--agreements Info-->
-<div data-role="collapsible-set" data-inset="false" >
-
-
+<div data-role="collapsible-set" data-inset="false">
 
 
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_agreements">
     <%= render :partial => 'affiliate_agreements' %>
   </div>
 
-<!--Billing Info-->
+  <!--Billing Info-->
   <!--<div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_balance">-->
 
-    <!--<#%= render 'affiliate_balance' %>-->
+  <!--<#%= render 'affiliate_balance' %>-->
   <!--</div>-->
 
 
-<!--Open Jobs-->
+  <!--Open Jobs-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d" class="affiliate_open_jobs">
 
     <h3><%= I18n.t('general.general.open_jobs') %></h3>
 
-    <% if current_user.organization.affiliate_jobs_for( @affiliate).empty? %>
+    <% if current_user.organization.affiliate_jobs_for(@affiliate).empty? %>
         <!--<div class="miya_blue_button">-->
-          <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
-       <!--</div>-->
+        <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
+        <!--</div>-->
 
     <% else %>
         <ul data-role="listview">
-          <% current_user.organization.affiliate_jobs_for( @affiliate).each do |sc| %>
+          <% current_user.organization.affiliate_jobs_for(@affiliate).each do |sc| %>
               <li class="inline_mobile service_calls_index">
                 <p class="ui-li-aside-blue ui-li-desc-blue">
                   <badge><%= sc.ref_id %></badge>
@@ -113,7 +113,7 @@
         </ul>
 
         <!--<div class="miya_blue_button">-->
-          <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
+        <%= link_to t('general.general.new_job'), new_service_call_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn-up-b", "data-theme" => "b", id: 'save_affiliate_btn', "data-icon" => "check", "data-iconpos" => "right" %>
         <!--</div>-->
 
     <% end %>
@@ -121,22 +121,21 @@
   </div>
 
 
-
-
-<!--Contact Info-->
+  <!--Contact Info-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <%= render :partial => 'affiliates_contact_mobile' %>
   </div>
 
 
-<!--More-->
+  <!--More-->
   <div data-role="collapsible" data-collapsed="true" data-theme="d">
     <h3>More ...</h3>
 
     <p>
+
     <div class="ui-grid-solo">
 
-      <%= link_to I18n.t('general.general.delete'),"#popupDialog", "data-rel" => "popup", "data-transition" => "pop", "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete" %>
+      <%= link_to I18n.t('general.general.delete'), "#popupDialog", "data-rel" => "popup", "data-transition" => "pop", "data-role" => "button", "data-theme" => "r", "data-mini" => "true", "data-icon" => "delete" %>
     </div>
     </p>
   </div>
