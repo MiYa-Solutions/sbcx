@@ -174,8 +174,8 @@ describe 'My Service Call When I Do The Work' do
                   expect(job).to be_payment_collected
                 end
 
-                it 'available status events should be cancel' do
-                  job.status_events.should =~ [:cancel]
+                it 'available status events should be empty' do
+                  job.status_events.should be_empty
                 end
 
                 it 'there should be no available work events' do
@@ -232,7 +232,7 @@ describe 'My Service Call When I Do The Work' do
                   end
 
                   it 'available status events should be cancel and close' do
-                    job.status_events.should =~ [:cancel, :close]
+                    job.status_events.should eq [:close]
                   end
 
                   it 'there should be no available work events' do
@@ -240,7 +240,7 @@ describe 'My Service Call When I Do The Work' do
                   end
 
                   it 'there should be no available payment events as this is a cash payment (no clearing)' do
-                    job.billing_status_events.should eq []
+                    job.billing_status_events.should eq [:cancel]
                   end
 
                   it 'employee deposited event is associated with the job' do

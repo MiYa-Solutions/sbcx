@@ -73,6 +73,7 @@ group :development, :test do
   gem 'quiet_assets'
   gem 'ruby_parser'
   gem 'thin'
+  gem 'zeus', '0.13.4.pre2'
   # gem 'ruby-debug-ide', '~> 0.4.23.beta11'
   # gem 'ruby-debug-base19x'
 end
