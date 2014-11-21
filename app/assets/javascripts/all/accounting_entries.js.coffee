@@ -1,6 +1,19 @@
+class EntryStyler
+#  constructor: ->
+
+  sanitize_actions: (row) ->
+    row.actions.replace(/[{}]/g, "")
+
+  color_cells: (row, entry)->
+    $('td:eq(4)', row).addClass("entry_status_#{entry.status}")
+
+  style: (row, entry) ->
+    this.color_cells(row, entry)
+
+
 jQuery ->
   $('#account').select2()
-  $('#entries_table').dataTable
+  $('table.entry_table').dataTable
     sDom: "<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
 #    sDom: "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
     sPaginationType: "bootstrap"
@@ -17,8 +30,6 @@ jQuery ->
     bServerSide: true
     sAjaxSource: $('#entries_table').data('source')
     fnServerData: (sSource, aoData, fnCallback) ->
-
-      # Add some extra data to the sender
       aoData.push
         name: "accounting_entry[account_id]"
         value: $('#account').find(":selected").val()
@@ -26,18 +37,54 @@ jQuery ->
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
 
-    fnRowCallback: (nRow, aData, iDisplayIndex) ->
+    columns: [
+      { data: "id" },
+      { data: "created_at" },
+      { data: "ref_id" },
+      { data: 'human_type' },
+      { data: "human_status" },
+      { data: "amount" },
+      { data: "collector_name" },
+      { data: "notes" },
+      { data: "actions" }
+    ]
+    createdRow: (row, data, dataIndex) ->
+      forms = $(row).find('.entry_form')
+      $(forms).on 'ajax:success', {rowIndex: dataIndex}, (e, data, status, xhr) ->
+        table = $(this).closest('table').dataTable().api()
+        row_to_update = table.row(e.data.rowIndex)
+        row_to_update.data(data)
+        table.draw()
+
+      $(forms).on 'ajax:complete', {row: dataIndex},  (e, xhr) ->
+        table = $(this).closest('table').dataTable().api()
+        row_to_update = table.row(e.data.rowIndex)
+        $(row_to_update.node()).find('input[type=submit]').removeAttr("disabled")
+
+
+      $(forms).on 'ajax:beforeSend',{rowIndex: dataIndex} ,(e, xhr, settings) ->
+#        $(this).find('input[type=submit]').attr('disabled', 'disabled')
+        table = $(this).closest('table').dataTable().api()
+        row_to_update = table.row(e.data.rowIndex)
+        $(row_to_update.node()).find('input[type=submit]').attr('disabled', 'disabled')
+
+      $(forms).on 'ajax:error', (e, xhr, error) ->
+
+
+    fnRowCallback: (nRow, entry, iDisplayIndex) ->
       # Append the row id to allow automated testing
-      $(nRow).attr('id', 'accounting_entry_' + aData[0])
-      $('td:eq(3)', nRow).attr('id', 'entry_' + aData[0] + '_type')
-      $('td:eq(4)', nRow).attr('id', 'entry_' + aData[0] + '_status')
-      $('td:eq(5)', nRow).attr('id', 'entry_' + aData[0] + '_amount')
+      e = new EntryStyler
+      $(nRow).attr('id', 'accounting_entry_' +  entry.id)
+      $('td:eq(3)', nRow).attr('id', 'entry_' + entry.id + '_type')
+      $('td:eq(4)', nRow).attr('id', 'entry_' + entry.id + '_status')
+      $('td:eq(5)', nRow).attr('id', 'entry_' + entry.id + '_amount')
+      e.style(nRow, entry)
+
+  #      $('td:eq(7)', nRow).html(sanitize_actions(aData))
 
   $.extend $.fn.dataTableExt.oStdClasses,
     sWrapper: "dataTables_wrapper form-inline"
 
-  #      $(nRow).click ->
-  #        alert ('clicked row' + $(nRow).attr('id'))
   $('#entries_table').dataTable().columnFilter()
   $('#get-entries-btn').live 'click', (e) ->
     oTable = $('#entries_table').dataTable()
@@ -85,6 +132,12 @@ jQuery ->
   else if $('#get-entries-btn').data('account-id') != undefined
     oTable = $('#entries_table').dataTable()
     oTable.fnDraw()
+
+  $('#entries_table').on 'xhr.dt', (e, settings, json) ->
+    alert('finished ajax for table')
+  $(document).on( 'ajax:success', '.entry_btn', (data, status, xhr) ->
+    alert('finished ajax for '+'entry '+ data.id))
+
 
 
 

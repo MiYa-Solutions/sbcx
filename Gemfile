@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
-ruby '1.9.3'
+ruby '2.1.3'
 
-gem 'rails', '3.2.18'
+gem 'rails', '3.2.21'
 gem 'jquery-rails', '2.1.4'
 gem 'jquery_mobile_rails', '1.2.0'
 gem 'bcrypt-ruby', '3.0.1'
@@ -21,11 +21,11 @@ gem 'activerecord-postgres-hstore', '0.7.5'
 
 gem 'devise', '2.0.5'
 gem 'simple_form', '2.0.2'
-gem 'declarative_authorization', '0.5.5'
+gem 'declarative_authorization', '0.5.7'
 
 gem 'state_machine', '1.1.2'
 gem 'magiclabs-userstamp', '2.0.2'
-gem 'strong_parameters', '0.2.0'
+gem 'strong_parameters', '0.2.3'
 gem 'paper_trail', '3.0.0'
 
 gem 'best_in_place', git: 'git://github.com/MiYa-Solutions/best_in_place.git'
@@ -64,6 +64,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'heroku_san'
+  gem 'metric_fu'
 end
 
 group :development, :test do
@@ -72,10 +73,10 @@ group :development, :test do
   gem 'nifty-generators'
   gem 'quiet_assets'
   gem 'ruby_parser'
-  gem 'thin'
-  gem 'zeus', '0.13.4.pre2'
-  # gem 'ruby-debug-ide', '~> 0.4.23.beta11'
-  # gem 'ruby-debug-base19x'
+  gem 'thin', '1.6.3'
+  gem 'debase'
+  gem 'ruby-debug-ide'
+
 end
 
 # Gems used only for assets and not required
@@ -85,7 +86,7 @@ group :assets do
   gem 'uglifier', '1.2.3'
   gem 'jquery-datatables-rails', '2.1.10.0.2'
   gem 'jquery-ui-rails', '4.1.1'
-  gem 'fullcalendar-rails', '2.0.2.0'
+  gem 'fullcalendar-rails', '1.5.4.0'
   gem 'sass-rails', '3.2.4'
   gem 'bootstrap-sass', '2.0.4'
   gem 'chosen-rails', '1.1.0'
@@ -93,7 +94,8 @@ group :assets do
 end
 
 group :test do
-  gem 'capybara', '2.1.0'
+  gem 'capybara', '2.4.3'
+  gem 'site_prism'
   gem 'factory_girl_rails', '4.1.0', require: false
   gem 'cucumber-rails', '1.2.1', require: false
   gem 'database_cleaner', '~> 0.9.1'
@@ -101,9 +103,11 @@ group :test do
   gem 'launchy', '2.1.0'
   gem 'mocha'
   gem 'capybara-screenshot', '0.3.4'
-  gem 'poltergeist', '1.4.1'
+  gem 'poltergeist', '1.5.1'
   gem 'shoulda-matchers', require: false
   gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.4.4'
   gem 'simplecov'
+  gem 'rest-client', '~> 1.7.2'
+  gem 'method_source'
 end

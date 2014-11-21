@@ -104,7 +104,9 @@ end
 
 shared_context 'transferred job' do
   let(:the_agr_factory) { defined?(agr_factory) ? agr_factory : :subcon_agreement }
-  include_context 'basic job testing' unless example.metadata[:skip_basic_job]
+  unless example.metadata[:skip_basic_job]
+    include_context 'basic job testing'
+  end
   let(:subcon_agr) { FactoryGirl.build(the_agr_factory, organization: job.organization) }
   let(:subcon) {
     s      = subcon_agr.counterparty

@@ -1,5 +1,13 @@
 Sbcx::Application.routes.draw do
 
+  namespace :api do
+    namespace :v1 do
+      resources :events, only: [:show, :index]
+    end
+  end
+
+  resources :events, only: [:show, :index]
+
   resources :support_tickets
   resources :comments, :only => [:create, :destroy]
 

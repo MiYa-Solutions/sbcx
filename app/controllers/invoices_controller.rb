@@ -1,7 +1,5 @@
 class InvoicesController < ApplicationController
 
-  filter_resource_access :attribute_check => true
-
   # GET /invoices
   # GET /invoices.json
   def index
@@ -102,8 +100,6 @@ class InvoicesController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  protected
 
   def new_invoice_from_params
     @invoice              = Invoice.new(invoice_params)

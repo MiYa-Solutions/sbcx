@@ -67,10 +67,12 @@ class AccountingEntriesController < ApplicationController
           flash[:success] ='Accounting entry was successfully updated.'
           redirect_back_or_to @accounting_entry.becomes(AccountingEntry)
         }
-        format.json { head :no_content }
+        format.json { render json: EntriesDatatable.new(view_context, @accounting_entry.account).table_row(@accounting_entry), status: 200 }
+        format.js { render json: EntriesDatatable.new(view_context, @accounting_entry.account).table_row(@accounting_entry), status: 200, head: :no_content }
       else
         format.html { render action: "edit" }
         format.json { render json: @accounting_entry.errors, status: :unprocessable_entity }
+        format.js { render json: @accounting_entry.errors, status: :unprocessable_entity }
       end
     end
   end

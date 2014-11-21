@@ -107,5 +107,9 @@ module Sbcx
 
     config.log_level = ENV['LOG_LEVEL'].present? ? ENV['LOG_LEVEL'].to_sym : :warn
 
+    config.to_prepare do
+      DeviseController.respond_to :html, :json
+    end
+
   end
 end
