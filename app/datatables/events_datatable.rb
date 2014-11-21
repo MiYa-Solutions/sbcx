@@ -19,7 +19,7 @@ class EventsDatatable
   def data
     events.map do |event|
       [
-          h(event.created_at.strftime("%b %d, %Y")),
+          h(event.created_at.strftime("%b %d, %Y %H:%M")),
           event.reference_id,
           event.name,
           event.description,

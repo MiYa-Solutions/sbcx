@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby '2.1.3'
 
-gem 'rails', '3.2.19'
+gem 'rails', '3.2.21'
 gem 'jquery-rails', '2.1.4'
 gem 'jquery_mobile_rails', '1.2.0'
 gem 'bcrypt-ruby', '3.0.1'
@@ -74,8 +74,8 @@ group :development, :test do
   gem 'quiet_assets'
   gem 'ruby_parser'
   gem 'thin', '1.6.3'
-  gem 'debase' , '0.0.9'
-  gem 'ruby-debug-ide' , '0.4.23.beta10'
+  gem 'debase'
+  gem 'ruby-debug-ide'
 
 end
 
