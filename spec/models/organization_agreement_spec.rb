@@ -34,20 +34,17 @@ describe OrganizationAgreement do
   end
 
   describe 'payment terms' do
-
     it 'the available payment terms' do
       new_agreement.class.payment_options.should == { cod: 0, net_10: 10, net_15: 15, net_30: 30, net_60: 60, net_90: 90 }
     end
-
-
   end
 
-  describe "created by org lifecycle", :versioning => true do
+  describe 'created by org lifecycle', :versioning => true do
     let!(:agreement_by_org) { FactoryGirl.create(:organization_agreement) }
     let!(:org_user) { agreement_by_org.organization.org_admins.first }
     let!(:cparty_user) { agreement_by_org.counterparty.org_admins.first }
 
-    it "org user should be the only one allowed to update" do
+    it 'org user should be the only one allowed to update' do
       with_user org_user do
         should_be_allowed_to :update, object: agreement_by_org, context: :agreements
       end
@@ -55,8 +52,6 @@ describe OrganizationAgreement do
       with_user cparty_user do
         should_not_be_allowed_to :update, object: agreement_by_org, context: :agreements
       end
-
-
     end
 
     context 'ensure AgrSubmittedEvent is created' do
@@ -68,7 +63,7 @@ describe OrganizationAgreement do
     end
 
 
-    describe "after submission validation" do
+    describe 'after submission validation' do
       before do
         with_user org_user do
           agreement_by_org.updater       = org_user
@@ -87,7 +82,7 @@ describe OrganizationAgreement do
         end
       end
 
-      it "status should be pending cparty approval" do
+      it 'status should be pending cparty approval' do
         agreement_by_org.status.should be { OrganizationAgreement::STATUS_PENDING_CPARTY_APPROVAL }
       end
 
@@ -320,10 +315,10 @@ describe OrganizationAgreement do
           end
         end
 
-        it 'name should be allowed to change (no validation on rule existence)' do
+        it 'name should not be allowed to change a rule must be defined first' do
           with_user org_user do
             agreement_by_org.name = 'a new name'
-            expect(agreement_by_org).to be_valid
+            expect(agreement_by_org).to_not be_valid
           end
 
         end

@@ -117,7 +117,7 @@ describe Ticket do
     service_call.tag_list = "Test Tag, Test Tag2"
     service_call.address1 = "Test Address"
     service_call.save
-    service_call.reload.name.should == "Test Tag, Test Tag2: Test Address"
+    service_call.reload.name.should == "Test Address: Test Tag, Test Tag2"
 
   end
 

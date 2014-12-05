@@ -48,22 +48,12 @@ describe DepositFromEntry do
     end
 
     it 'available status events should be confirm and canceled' do
-      expect(entry.status_events).to eq [:confirm, :canceled]
+      expect(entry.status_events).to eq [:confirm]
     end
 
     it 'should create an EntryDisputeEvent', skip_dispute: true do
       DepositEntryDisputeEvent.should_receive(:new)
       entry.dispute(false)
-    end
-
-    describe '#canceled' do
-      before do
-        entry.canceled(false)
-      end
-
-      it 'should change the status to canceled' do
-        expect(entry.status_name).to eq :canceled
-      end
     end
 
   end

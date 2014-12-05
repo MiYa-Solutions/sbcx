@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '2.1.3'
+ruby '2.1.2'
 
 gem 'rails', '3.2.21'
 gem 'jquery-rails', '2.1.4'
@@ -75,7 +75,7 @@ group :development, :test do
   gem 'ruby_parser'
   gem 'thin', '1.6.3'
   gem 'debase'
-  gem 'ruby-debug-ide'
+  gem 'ruby-debug-ide', github: "ruby-debug/ruby-debug-ide", branch: "no-compact-name"
 
 end
 
@@ -110,4 +110,5 @@ group :test do
   gem 'simplecov'
   gem 'rest-client', '~> 1.7.2'
   gem 'method_source'
+  gem 'rspec_candy'
 end

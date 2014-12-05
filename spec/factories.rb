@@ -280,6 +280,7 @@ FactoryGirl.define do
     description Faker::Lorem.paragraph(1)
     association :organization, factory: :member
     association :counterparty, factory: :member
+    payment_terms 'cod'
 
     starts_at Time.zone.now
     ends_at 1.year.from_now
@@ -305,6 +306,7 @@ FactoryGirl.define do
     starts_at Time.zone.now
     ends_at 1.year.from_now
 
+
     after(:build) do |agr|
       agr.organization = FactoryGirl.create(:member)
       agr.counterparty = FactoryGirl.create(:member)
@@ -320,6 +322,7 @@ FactoryGirl.define do
     factory :organization_agreement_by_cparty, class: OrganizationAgreement do
       after(:build) do |agr|
         agr.creator = FactoryGirl.create(:org_admin, organization: agr.counterparty)
+        agr.payment_terms = 'cod'
       end
     end
 

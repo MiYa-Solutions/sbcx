@@ -23,6 +23,11 @@
 #
 
 class AdjustmentEntry < AccountingEntry
+
+  def self.exclude_agreement?
+    true
+  end
+
   before_save :convert_ticket_ref_id
   validate :check_ticket_ref_id
   validates_numericality_of :ticket_ref_id
@@ -68,7 +73,7 @@ class AdjustmentEntry < AccountingEntry
   end
 
   def find_the_ticket
-    Ticket.where("organization_id = ? AND ref_id = ?", account.organization.id, ticket_ref_id).first if ticket_ref_id.to_i > 0
+    Ticket.where("organization_id = ? AND ref_id = ?", account.organization_id, ticket_ref_id).first if ticket_ref_id.to_i > 0
   end
 
   def convert_ticket_ref_id

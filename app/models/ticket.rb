@@ -153,6 +153,10 @@ class Ticket < ActiveRecord::Base
     end
   end
 
+  def customer_account
+    Account.where(accountable_id: customer_id, accountable_type: 'Customer').first
+  end
+
   def to_csv_row
 
 
@@ -203,7 +207,6 @@ class Ticket < ActiveRecord::Base
             notes]
     )
   end
-
 
   def subcon_balance
     if transferred? # this is an abstract class and so transferred is assumed to be implemented by the subclasses

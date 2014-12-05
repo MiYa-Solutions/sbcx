@@ -26,7 +26,8 @@ class ApplicationController < ActionController::Base
 
   def permission_denied
     #flash[:error] = t('authorization.permission_denied')
-    redirect_to "/403"
+    # env["action_dispatch.excption"] = t('authorization.permission_denied')
+    redirect_to "/403?message=#{t('authorization.permission_denied')}"
   end
 
   private

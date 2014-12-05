@@ -124,15 +124,15 @@ describe ServiceCall do
     service_call.should_not be_valid
   end
 
-  it 'should not allow to change the tax if transferred' do
-    transfer_the_job
-    subcon_job.status        = ServiceCall::STATUS_TRANSFERRED
-    subcon_job.subcontractor = FactoryGirl.create(:local_subcon)
-    subcon_job.name          = "lklklk"
-    subcon_job.should be_valid
-    subcon_job.tax = 5.0
-    subcon_job.should_not be_valid
-  end
+  # it 'should not allow to change the tax if transferred' do
+  #   transfer_the_job
+  #   subcon_job.status        = ServiceCall::STATUS_TRANSFERRED
+  #   subcon_job.subcontractor = FactoryGirl.create(:local_subcon)
+  #   subcon_job.name          = "lklklk"
+  #   subcon_job.should be_valid
+  #   subcon_job.tax = 5.0
+  #   subcon_job.should_not be_valid
+  # end
 
   it 'should allow to change the tax when the work is in progress' do
     service_call.work_status = ServiceCall::WORK_STATUS_IN_PROGRESS
