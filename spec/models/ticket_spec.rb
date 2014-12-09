@@ -100,6 +100,8 @@ describe Ticket do
     it { should respond_to attr }
   end
 
+  include_context 'Invoiceable'
+
   describe 'verify money attributes' do
     before do
       service_call.save!

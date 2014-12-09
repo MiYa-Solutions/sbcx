@@ -57,6 +57,8 @@
 #
 
 class Ticket < ActiveRecord::Base
+  include InvoiceableTicket
+
   serialize :properties, ActiveRecord::Coders::Hstore
   monetize :subcon_fee_cents
   belongs_to :customer, :inverse_of => :service_calls
@@ -84,7 +86,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :collector, :polymorphic => true
   has_many :appointments, as: :appointable, finder_sql: proc { "SELECT appointments.* FROM appointments WHERE appointments.appointable_id = #{id} AND appointments.appointable_type = '#{self.class.name}'" }
   has_many :accounting_entries
-  has_many :invoices
 
   has_many :taggings, as: :taggable
   has_many :tags, through: :taggings

@@ -6,14 +6,14 @@ describe Invoice do
   let(:org) { ticket.organization }
   let(:account) { ticket.customer.account }
 
-  subject { Invoice.new(ticket: ticket, organization: org, account: account) }
+  subject { Invoice.new(invoiceable: ticket, organization: org, account: account) }
 
   it 'should have a generate_pdf method' do
     should respond_to(:generate_pdf)
   end
 
   it { should belong_to(:organization) }
-  it { should belong_to(:ticket) }
+  it { should belong_to(:invoiceable) }
   it { should belong_to(:account) }
   it { should have_many(:invoice_items) }
   it { should have_db_column(:notes) }

@@ -87,7 +87,10 @@
                 <%= f.input :adv_payment_desc, required: true %>
             <% end %>
             <%= f.input :email_customer, as: :boolean %>
-            <%= f.input :ticket_id, as: :hidden, input_html: { value: @service_call.id } %>
+            <%= f.input :invoiceable_id, as: :hidden, input_html: { value: @service_call.id } %>
+            <%= f.input :invoiceable_type, as: :hidden, input_html: { value: 'Ticket' } %>
+            <%= f.input :accountable_id, as: :hidden, input_html: { value: @service_call.customer_id } %>
+            <%= f.input :accountable_type, as: :hidden, input_html: { value: 'Customer' } %>
 
           </div>
           <div class="span6">

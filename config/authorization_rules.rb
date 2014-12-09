@@ -29,7 +29,7 @@ authorization do
 
     has_permission_on :invoices, to: [:new, :create] do
       if_attribute :organization_id => is { user.organization_id }
-      if_attribute :ticket => { :subcon_chain_ids => contains { user.organization_id } }, :ticket => { :allow_collection => is { true } }
+      if_attribute :invoiceable => { :subcon_chain_ids => contains { user.organization_id } }, :invoiceable => { :allow_collection => is { true } }
     end
 
     has_permission_on :materials, to: [:new, :index]

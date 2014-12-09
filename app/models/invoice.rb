@@ -2,7 +2,7 @@ class Invoice < ActiveRecord::Base
   include Forms::InvoiceForm
 
   belongs_to :organization
-  belongs_to :ticket
+  belongs_to :invoiceable, polymorphic: true
   belongs_to :account
   has_many :notifications, as: :notifiable
 
@@ -16,24 +16,30 @@ class Invoice < ActiveRecord::Base
 
   after_create :finalize
 
-  validates_presence_of :organization, :ticket, :account
+  validates_presence_of :organization, :invoiceable, :account
 
   def generate_pdf(view)
     InvoicePdf.new(self, view).render
   end
 
+  def accountable
+    account.accountable
+  end
+
+  # for backwards compatibility when moving to invoiceable
+  alias_method :ticket, :invoiceable
+
   private
 
   def finalize
-    if ticket.work_done?
-      generate_final_invoice
-    else
-      generate_active_invoice
+    invoiceable.invoiceable_items.each do |item|
+      item = InvoiceItem.new(invoiceable_id: item.id, invoiceable_type: item.class.name)
+      self.invoice_items << item
     end
-
+    self.total = invoiceable.invoice_total
     self.save!
 
-    ticket.events << ScInvoiceEvent.new(invoice: self, notify_customer?: email_customer)
+    invoiceable.events << ScInvoiceEvent.new(invoice: self, notify_customer?: email_customer)
   end
 
   def final_total
