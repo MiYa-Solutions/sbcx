@@ -57,6 +57,9 @@ authorization do
       if_attribute :organization => is { user.organization }
       if_attribute :organization => { :subcontrax_member => is_not { true } }, :organization_id => is_in { user.organization.providers.pluck('organizations.id') }
     end
+    has_permission_on :projects, :to => [:index, :show, :new, :create, :edit, :update, :destroy] do
+      if_attribute :organization => is { user.organization }
+    end
     has_permission_on :service_calls, :to => [:new, :create] do
     end
 

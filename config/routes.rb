@@ -1,5 +1,9 @@
 Sbcx::Application.routes.draw do
 
+  resources :projects do
+    resources :invoices
+  end
+
   namespace :api do
     namespace :v1 do
       resources :events, only: [:show, :index]
@@ -39,6 +43,7 @@ Sbcx::Application.routes.draw do
   resources :service_calls, only: [:new, :create, :edit, :show, :index, :update] do
     get :autocomplete_customer_name, :on => :collection
     get :autocomplete_material_name, :on => :collection
+    resources :invoices
     resources :boms do
       get :autocomplete_material_name, :on => :collection
     end

@@ -61,6 +61,7 @@ class Ticket < ActiveRecord::Base
 
   serialize :properties, ActiveRecord::Coders::Hstore
   monetize :subcon_fee_cents
+  belongs_to :project
   belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor

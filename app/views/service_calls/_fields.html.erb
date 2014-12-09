@@ -10,7 +10,11 @@
           <%= f.select :provider_id, provider_options, { prompt: "Me" } %>
 
         </div>
+        <div>
+          <%= f.association :project, collection: @org.projects %>
+        </div>
       </div>
+
 
       <div class="control-group string mandatory">
         <label class="string optional control-label" for="service_call_provider_agreement_id"> <%= @service_call.class.human_attribute_name(:provider_agreement) %></label>

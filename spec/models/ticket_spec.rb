@@ -171,6 +171,7 @@ describe Ticket do
 
   describe "associations" do
     it { should belong_to :organization }
+    it { should belong_to :project }
     it { should have_many :boms }
     it { should have_many(:tags).through(:taggings) }
     it { should belong_to :customer }

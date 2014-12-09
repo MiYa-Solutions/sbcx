@@ -122,6 +122,7 @@ describe Organization do
     it { should have_many(:affiliates).through(:accounts) }
     it { should have_many(:invites) }
     it { should have_many(:invite_req) }
+    it { should have_many(:projects) }
   end
 
   it "saved successfully" do
