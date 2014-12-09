@@ -75,8 +75,7 @@ group :development, :test do
   gem 'ruby_parser'
   gem 'thin', '1.6.3'
   gem 'debase'
-  gem 'ruby-debug-ide', github: "ruby-debug/ruby-debug-ide", branch: "no-compact-name"
-
+  gem 'ruby-debug-ide', github: 'ruby-debug/ruby-debug-ide', branch: 'no-compact-name'
 end
 
 # Gems used only for assets and not required
