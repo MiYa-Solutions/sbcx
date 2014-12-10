@@ -37,4 +37,5 @@
 //= require all/jquery-ui-timepicker-addon
 //= require all/jquery.ezpz_hint
 //= require all/jquery-dateFormat
+//= require all/projects
 //= require_tree ./all/.

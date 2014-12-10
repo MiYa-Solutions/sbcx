@@ -1,10 +1,10 @@
 <p id="notice"><%= notice %></p>
 
-<%= @project.name %>
+<<%= @project.name %>
 <%= @project.description %>
 
 <h2>Linked Jobs</h2>
-<%= render 'shared/open_jobs', jobs: @project.tickets %>
+<%= render 'shared/job_list', model: @project, title: 'Project Jobs', table_id: 'project-jobs' %>
 
 
 <%= link_to 'Edit', edit_project_path(@project) %> |

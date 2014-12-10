@@ -1,0 +1,29 @@
+<% title = title || 'CHANGE ME (in the view that calls this partial' %>
+<% table_id = table_id || 'change_me' %>
+<% model = model || NilClass.new %>
+<div class="">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= title %></h1></li>
+      <li>
+      </li>
+    </ul>
+  </div>
+  <!--table of jobs-->
+  <table id="<%= table_id %>" class="table table-striped" data-project-id="<%= model.id %>">
+    <thead>
+    <tr>
+      <th><%= Ticket.human_attribute_name(:ref_id) %></th>
+      <th><%= Ticket.human_attribute_name(:name) %></th>
+      <th><%= Ticket.human_attribute_name(:status) %></th>
+      <th><%= Ticket.human_attribute_name(:work_status) %></th>
+      <th><%= Ticket.human_attribute_name(:billing_status) %></th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+</div>
+
+

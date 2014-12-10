@@ -48,6 +48,16 @@ class TicketsDatatable
               ticket.human_billing_status_name
           ]
         end
+      when 'project_jobs'
+        tickets.map do |ticket|
+          [
+              ticket.ref_id,
+              link_to(ticket.name, ticket),
+              ticket.human_status_name,
+              ticket.human_work_status_name,
+              ticket.human_billing_status_name
+          ]
+        end
       else
         tickets.map do |ticket|
           [
@@ -133,6 +143,10 @@ class TicketsDatatable
 
     if params[:work_status].present?
       tickets = tickets.where(work_status: params[:work_status])
+    end
+
+    if params[:project_id].present?
+      tickets = tickets.where(project_id: params[:project_id])
     end
 
 
