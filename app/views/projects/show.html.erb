@@ -1,11 +1,21 @@
 <p id="notice"><%= notice %></p>
 
-<<%= @project.name %>
+<h1><%=  Project.human_attribute_name(:name)%></h1>
+<%= @project.name %>
+<h2><%= Project.human_attribute_name(:description) %></h2>
 <%= @project.description %>
+<h2><%= Project.human_attribute_name(:customer) %></h2>
+<%= link_to @project.customer_name, @project.customer if @project.customer %>
+<h2><%= Project.human_attribute_name(:status) %></h2>
+<%= @project.status_name %>
 
-<h2>Linked Jobs</h2>
+<h2><%= Project.human_attribute_name(:tickets) %></h2>
 <%= render 'shared/job_list', model: @project, title: 'Project Jobs', table_id: 'project-jobs' %>
 
+<br>
+<%= render 'invoices/invoice_list', invoiceable: @project, account: @project.customer.account %>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', projects_path %>
+
+

@@ -7,4 +7,6 @@ shared_context 'Invoiceable' do
   it { should respond_to :invoices }
   it { should respond_to :invoiceable_items }
   it { should have_many :invoices }
+  it { should respond_to :tax_amount }
+  it { should respond_to :tax }
 end

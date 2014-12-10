@@ -17,8 +17,6 @@ class InvoicesController < ApplicationController
   # GET /invoices/1
   # GET /invoices/1.json
   def show
-    @invoice = Invoice.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xls
@@ -31,8 +29,13 @@ class InvoicesController < ApplicationController
       #            type:        "application/pdf",
       #            disposition: "inline"
       #end
-      format.pdf { render pdf:                    "invoice_#{@invoice.id}",
+
+
+      format.pdf {
+        partial = params[:template].present? ? params[:template] : 'show'
+        render pdf:                    "invoice_#{@invoice.id}",
                           layout:                 'receipts',
+                          template:               "invoices/#{partial}.pdf",
                           footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
                           header:                 { html: { template: 'layouts/_header.pdf.erb' } },
                           disable_internal_links: false }
@@ -44,8 +47,6 @@ class InvoicesController < ApplicationController
   # GET /invoices/new
   # GET /invoices/new.json
   def new
-    @invoice = Invoice.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @invoice }
@@ -54,7 +55,6 @@ class InvoicesController < ApplicationController
 
   # GET /invoices/1/edit
   def edit
-    @invoice = Invoice.find(params[:id])
   end
 
   # POST /invoices
@@ -96,6 +96,7 @@ class InvoicesController < ApplicationController
                                     :adv_payment_amount,
                                     :adv_payment_desc,
                                     :email_customer,
+                                    :template,
                                     :notes)
   end
 

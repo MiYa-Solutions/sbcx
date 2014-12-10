@@ -18,6 +18,7 @@ describe Project do
   it { should respond_to(:contractors) }
   it { should respond_to(:customers) }
   it { should respond_to(:subcontractors) }
+  it { should respond_to(:work_done?) }
 
   describe 'validation' do
     it { should validate_uniqueness_of :name }

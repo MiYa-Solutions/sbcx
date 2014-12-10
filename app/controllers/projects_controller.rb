@@ -91,6 +91,6 @@ class ProjectsController < ApplicationController
   # params.require(:person).permit(:name, :age)
   # Also, you can specialize this method with per-user checking of permissible attributes.
   def project_params
-    params.require(:project).permit(:name, :description)
+    params.require(:project).permit(:name, :description, :customer_id)
   end
 end
