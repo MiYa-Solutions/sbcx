@@ -1,6 +1,8 @@
 module Invoiceable
   extend ActiveSupport::Concern
   included do
+    has_many :invoices, as: :invoiceable
+
     def allow_collection
       true
     end
@@ -16,5 +18,8 @@ module Invoiceable
     def invoice_total
       raise NotImplemented.new('You must implement invoice_total for the invoiceable')
     end
+
+
+
   end
 end

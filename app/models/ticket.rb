@@ -443,9 +443,9 @@ class Ticket < ActiveRecord::Base
   def subcon_entries
     if subcontractor
       acc = Account.for_affiliate(organization, subcontractor).first
-      acc ? entries.by_acc(acc) : []
+      acc ? entries.by_acc(acc) : AccountingEntry.none
     else
-      []
+      AccountingEntry.none
     end
   end
 
@@ -470,9 +470,9 @@ class Ticket < ActiveRecord::Base
   def customer_entries
     if customer
       acc = Account.for_customer(customer).first
-      acc ? entries.by_acc(acc) : []
+      acc ? entries.by_acc(acc) : AccountingEntry.none
     else
-      []
+      AccountingEntry.none
     end
   end
 

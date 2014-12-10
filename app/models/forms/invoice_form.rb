@@ -4,7 +4,7 @@ module Forms::InvoiceForm
   attr_accessor :email_customer
 
   def self.included(base)
-    base.before_create :generate_adv_payment, unless: -> { adv_payment_amount.blank? || invoiceable.work_done? }
+    base.before_validation :generate_adv_payment, unless: -> { adv_payment_amount.blank? || invoiceable.work_done? }
     base.validates_numericality_of :adv_payment_amount, allow_blank: true
     base.validates_presence_of :adv_payment_desc, unless: -> { adv_payment_amount.blank? }
     base.validate :email_presence, unless: -> { email_customer.blank? || email_customer == '0' }

@@ -14,9 +14,12 @@ class Invoice < ActiveRecord::Base
   has_many :adv_payment_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AdvancePayment')"
   has_many :charge_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('ServiceCallCharge')"
 
-  after_create :finalize
+  before_validation :generate_invoice_items
+  after_create :trigger_event
 
   validates_presence_of :organization, :invoiceable, :account
+  validate :check_empty_invoice
+
 
   def generate_pdf(view)
     InvoicePdf.new(self, view).render
@@ -31,15 +34,20 @@ class Invoice < ActiveRecord::Base
 
   private
 
-  def finalize
+  def check_empty_invoice
+    errors.add :invoice_items, 'Invice is empty and therefore invalid' if invoice_items.size == 0
+  end
+
+
+  def trigger_event
+    invoiceable.events << ScInvoiceEvent.new(invoice: self, notify_customer?: email_customer)
+  end
+
+  def generate_invoice_items
     invoiceable.invoiceable_items.each do |item|
-      item = InvoiceItem.new(invoiceable_id: item.id, invoiceable_type: item.class.name)
-      self.invoice_items << item
+      self.invoice_items.build(invoiceable_id: item.id, invoiceable_type: item.class.name)
     end
     self.total = invoiceable.invoice_total
-    self.save!
-
-    invoiceable.events << ScInvoiceEvent.new(invoice: self, notify_customer?: email_customer)
   end
 
   def final_total

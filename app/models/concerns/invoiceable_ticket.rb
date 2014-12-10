@@ -3,7 +3,6 @@ module InvoiceableTicket
   include Invoiceable
 
   included do
-    has_many :invoices, as: :invoiceable
 
     def invoiceable_items
       if work_done?
@@ -16,9 +15,9 @@ module InvoiceableTicket
 
     def invoice_total
       if work_done?
-        invoiceable_items.collect { |item| item.amount }.sum + tax_amount
+        invoiceable_items.collect { |item| item.amount }.sum(Money.new(0)) + tax_amount
       else
-        invoiceable_items.collect { |item| item.amount }.sum
+        invoiceable_items.collect { |item| item.amount }.sum(Money.new(0))
       end
     end
 
