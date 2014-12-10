@@ -30,7 +30,7 @@ describe NewMemberEvent do
     it "should process successfully" do
       expect {
         event.process_event
-      }.should_not raise_error
+      }.to_not raise_error
     end
 
   end
