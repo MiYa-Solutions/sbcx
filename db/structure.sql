@@ -887,8 +887,8 @@ CREATE TABLE projects (
     updated_at timestamp without time zone NOT NULL,
     organization_id integer,
     customer_id integer,
-    contractor_id integer,
-    subcontractor_id integer
+    provider_id integer,
+    provider_agreement_id integer
 );
 
 
@@ -2240,3 +2240,5 @@ INSERT INTO schema_migrations (version) VALUES ('20141205173122');
 INSERT INTO schema_migrations (version) VALUES ('20141209225427');
 
 INSERT INTO schema_migrations (version) VALUES ('20141210173610');
+
+INSERT INTO schema_migrations (version) VALUES ('20141211165059');

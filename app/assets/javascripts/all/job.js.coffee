@@ -1,5 +1,5 @@
-agr_props = null
-show_agr_props = (obj) ->
+@agr_props = null
+@show_agr_props = (obj) ->
   if obj.data('props')
     $(agr_props).hide(400)
     agr_props = "#" + obj.data('props')
@@ -7,14 +7,14 @@ show_agr_props = (obj) ->
   else
     $(agr_props).hide(400)
 
-update_agreement_select = (affilaite_select, agreement_select) ->
+@update_agreement_select = (affilaite_select, agreement_select) ->
   options = affilaite_select.find(":selected").data("agreements")
   if options
     build_agreement_select(agreement_select, options)
   else
     hide_agreement_select(agreement_select)
 
-build_agreement_select = (obj, options) ->
+@build_agreement_select = (obj, options) ->
   $(agr_props).hide() if agr_props != null
   $.each options, (key, value) ->
     opt = $('<option></option>')
@@ -26,7 +26,7 @@ build_agreement_select = (obj, options) ->
   obj.show(400)
   show_agr_props(obj.find(":selected"))
 
-hide_agreement_select = (obj) ->
+@hide_agreement_select = (obj) ->
   obj.empty()
   obj.hide(400)
   $("label[for='" + obj.attr('id') + "']").hide(400)

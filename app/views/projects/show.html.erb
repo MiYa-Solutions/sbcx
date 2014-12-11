@@ -9,11 +9,17 @@
 <h2><%= Project.human_attribute_name(:status) %></h2>
 <%= @project.status_name %>
 
+<h2><%= Project.human_attribute_name(:provider) %></h2>
+<%= @project.provider.name if @project.provider %>
+
+<h2><%= Project.human_attribute_name(:provider_agreement) %></h2>
+<%= @project.provider_agreement.name if @project.provider_agreement %>
+
 <h2><%= Project.human_attribute_name(:tickets) %></h2>
 <%= render 'shared/job_list', model: @project, title: 'Project Jobs', table_id: 'project-jobs' %>
 
 <br>
-<%= render 'invoices/invoice_list', invoiceable: @project, account: @project.customer.account %>
+<%= render 'invoices/invoice_list', invoiceable: @project, account: @project.customer.account if @project.customer %>
 
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', projects_path %>

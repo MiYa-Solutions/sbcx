@@ -1,0 +1,8 @@
+en:
+  activerecord:
+    models:
+      project: Project
+    attributes:
+      project:
+        provider: Contractor
+        provider_agreement: Contractor Agreement

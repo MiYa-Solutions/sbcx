@@ -23,3 +23,14 @@ jQuery ->
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
 
+
+  $('#project_provider_id').on 'change', ->
+    $('#project_customer_name').attr("data-ref-id", $(this).val())
+    $('#project_customer_name').val('')
+    $('#project_customer_id').val('')
+
+  update_agreement_select($('#project_provider_id'), $('#project_provider_agreement_id'))
+
+  $('#project_provider_id').change ->
+    $(agr_props).hide(400)
+    update_agreement_select($('#project_provider_id'), $('#project_provider_agreement_id'))

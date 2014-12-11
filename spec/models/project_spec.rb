@@ -12,8 +12,8 @@ describe Project do
   it { should have_many(:invoices) }
   it { should have_many(:events) }
   it { should belong_to(:organization) }
-  it { should belong_to(:contractor) }
-  it { should belong_to(:subcontractor) }
+  it { should belong_to(:provider) }
+  it { should belong_to(:provider_agreement) }
   it { should belong_to(:customer) }
   it { should respond_to(:contractors) }
   it { should respond_to(:customers) }

@@ -2,8 +2,8 @@ class Project < ActiveRecord::Base
   include InvoiceableProject
 
   belongs_to :organization
-  belongs_to :contractor, class_name: 'Affiliate'
-  belongs_to :subcontractor, class_name: 'Affiliate'
+  belongs_to :provider
+  belongs_to :provider_agreement, class_name: 'Agreement'
   belongs_to :customer
   has_many :tickets
   has_many :events, as: :eventable
