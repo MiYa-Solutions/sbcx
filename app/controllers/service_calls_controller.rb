@@ -40,7 +40,7 @@ class ServiceCallsController < ApplicationController
   end
 
   def new
-    @service_call = ServiceCall.new
+    # @service_call = ServiceCall.new
     @customer     = Customer.new
     store_location
   end

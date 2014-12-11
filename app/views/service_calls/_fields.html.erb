@@ -7,7 +7,7 @@
         <label class="string optional control-label" for="customer_state"> <%= @service_call.class.human_attribute_name(:provider) %></label>
 
         <div class="controls">
-          <%= f.select :provider_id, provider_options, { prompt: "Me" } %>
+          <%= f.select :provider_id, local_provider_options, { prompt: "Me" } %>
 
         </div>
         <div>
