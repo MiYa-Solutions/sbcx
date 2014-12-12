@@ -109,15 +109,15 @@ class TicketsDatatable
     end
 
     if params[:from_date].present? && !params[:to_date].present?
-      tickets = tickets.where('tickets.created_at >= ?', params[:from_date])
+      tickets = tickets.where('tickets.created_at >= ?', Time.zone.parse(params[:from_date]))
     end
 
     if params[:to_date].present? && !params[:from_date].present?
-      tickets = tickets.where('tickets.created_at <= ?', params[:to_date])
+      tickets = tickets.where('tickets.created_at <= ?', Time.zone.parse(params[:to_date]))
     end
 
     if params[:to_date].present? && params[:from_date].present?
-      tickets = tickets.where('tickets.created_at between ? and ?', params[:from_date], params[:to_date])
+      tickets = tickets.where('tickets.created_at between ? and ?', Time.zone.parse(params[:from_date]), Time.zone.parse(params[:to_date]))
     end
 
     if params[:affiliate_id].present?

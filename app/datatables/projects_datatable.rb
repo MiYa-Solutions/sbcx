@@ -65,16 +65,17 @@ class ProjectsDatatable
     end
 
     if params[:from_date].present? && !params[:to_date].present?
-      result_set = result_set.where('projects.created_at >= ?', params[:from_date])
+      result_set = result_set.where('projects.created_at >= ?', Time.zone.parse(params[:from_date]))
     end
 
     if params[:to_date].present? && !params[:from_date].present?
-      result_set = result_set.where('projects.created_at < ?', params[:to_date])
+      result_set = result_set.where('projects.created_at < ?', Time.zone.parse(params[:to_date]))
     end
 
     if params[:to_date].present? && params[:from_date].present?
-      result_set = result_set.where('projects.created_at >= ?', params[:from_date] ).where('projects.created_at <= ?', params[:to_date])
-      # result_set = result_set.where(create_at: Date.new()'projects.created_at >= ? AND projects.created_at <= ?', params[:from_date], params[:to_date])
+      result_set = result_set.where('projects.created_at between ? and ?',Time.zone.parse(params[:from_date]) , Time.zone.parse(params[:to_date]))
+      # result_set = result_set.where('projects.created_at >= ?', params[:from_date] ).where('projects.created_at =< ?', params[:to_date])
+      # result_set = result_set.where(create_at: Date.parse(params[:from_date]..Date.parse(params[:to_date])))
     end
 
     result_set.order("projects.#{sort_column} #{sort_direction}").page(page).per_page(per_page)
