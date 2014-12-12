@@ -5,10 +5,15 @@ module ProjectsHelper
       res << [prov.name, prov.id, { "data-agreements" => agreement_data_tags(prov, current_user.organization) }]
     end
 
-    # res << [current_user.organization.name, current_user.organization_id]
+    # res << [I18n.t('general.general.empty'), -1]
 
     res
 
+  end
+
+  def provider_filter_options
+    options_from_collection_for_select(current_user.organization.providers, 'id', 'name') +
+        "<option style='strong' value='-1'>#{I18n.t('general.general.empty')}<option>".html_safe
   end
 
   def new_project_job_path(proj)
@@ -19,4 +24,9 @@ module ProjectsHelper
     job_params[:service_call].merge!(customer_id: proj.customer_id) if proj.customer_id
     new_service_call_path(job_params)
   end
+
+  def project_statuses
+    Project.state_machines[:status].states.map &:human_name
+  end
+
 end

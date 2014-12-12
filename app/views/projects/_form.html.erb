@@ -3,8 +3,10 @@
 
     <div class="form-inputs">
       <%= f.input :name %>
+      <%= f.input :status, label: Project.human_attribute_name(:status), collection: Project.state_machines[:status].states, label_method: :human_name, value_method: :value, :include_blank => f.object.human_status_name %>
+
       <%= f.input :description %>
-      <%= f.select :provider_id, local_provider_options, prompt: t('activerecord.models.provider') %>
+      <%= f.select :provider_id, local_provider_options, prompt: t('activerecord.models.provider'), include_blank: true %>
       <div class="controls">
         <%= select_tag 'project[provider_agreement_id]', collection: [] %>
       </div>

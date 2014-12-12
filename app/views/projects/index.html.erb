@@ -1,21 +1,50 @@
-<h1>Listing projects</h1>
+<div class="">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= Project.model_name.human %></h1></li>
+      <li>
+      </li>
+    </ul>
+  </div>
+  <div id="table-filters" class="all_jobs_filter" data-statuses="<%= project_statuses %>" data-tags="<%= current_user.organization.tags.map(&:name) %>">
+    <div id="status_filter" class="input_field"></div>
+    <div id="provider_filter" class="input_field">
+      <%= select_tag :provider, provider_filter_options, class: 'chosen-select', id: 'project_provider_filter', include_blank: true %>
+      <%= button_tag 'x', type: 'button', id: 'clear-provider', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+    </div>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
-<% @projects.each do |project| %>
-  <tr>
-    <td><%= link_to 'Show', project %></td>
-    <td><%= link_to 'Edit', edit_project_path(project) %></td>
-    <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+    <div class="input_field">
+      <div id="customer_filter" class="chosen-container-multi chosen-choices customer_field yadcf-filter-wrapper">
+        <%= text_field_tag :customer_search, nil,
+                           placeholder:           'Customer',
+                           'data-autocomplete'    => '/service_calls/autocomplete_customer_name',
+                           'data-update-elements' => { id: '#customer_filter_id' }.to_json,
+                           'data-ref-id'          => ''
+        %>
+        <%= button_tag 'x', type: 'button', id: 'clear-customer', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+      </div>
+      <%= hidden_field_tag :customer_filter_id %>
+    </div>
+    <div id="created_range_filter" class="input_field"></div>
 
-<br />
+  </div>
+  <table class="projects table table-striped">
+    <thead>
+    <tr>
+      <th><%= Project.human_attribute_name(:id) %></th>
+      <th><%= Project.human_attribute_name(:created_at) %></th>
+      <th><%= Project.human_attribute_name(:name) %></th>
+      <th><%= Project.human_attribute_name(:status) %></th>
+      <th><%= Project.human_attribute_name(:customer) %></th>
+      <th><%= Project.human_attribute_name(:provider) %></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+</div>
+<br/>
 
 <%= link_to 'New Project', new_project_path %>

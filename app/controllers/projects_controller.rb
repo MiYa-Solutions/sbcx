@@ -5,11 +5,9 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = current_user.organization.projects
-
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @projects }
+      format.html
+      format.json { render json: ProjectsDatatable.new(view_context).as_json }
     end
   end
 
@@ -91,6 +89,6 @@ class ProjectsController < ApplicationController
   # params.require(:person).permit(:name, :age)
   # Also, you can specialize this method with per-user checking of permissible attributes.
   def project_params
-    params.require(:project).permit(:name, :description, :customer_id, :provider_id, :provider_agreement_id)
+    params.require(:project).permit(:name, :description, :customer_id, :provider_id, :provider_agreement_id, :status)
   end
 end

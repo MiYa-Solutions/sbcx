@@ -36,6 +36,10 @@ class Project < ActiveRecord::Base
     state :completed, value: STATUS_COMPLETED
     state :closed, value: STATUS_CLOSED
     state :canceled, value: STATUS_CANCELED
+
+    event :change do
+      transition any => any
+    end
   end
 
   def work_done?
@@ -43,7 +47,11 @@ class Project < ActiveRecord::Base
   end
 
   def customer_name
-    customer ? customer.name : ''
+    customer_id ? customer.name : ''
+  end
+
+  def provider_name
+    provider_id ? provider.name : ''
   end
 
 

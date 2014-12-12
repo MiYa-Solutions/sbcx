@@ -20,12 +20,6 @@ $ ->
       aoData.push
         name: "eventable_type"
         value: 'Ticket'
-      #      aoData.push
-      #        name: "from_date"
-      #        value: $('#from-date').val()
-      #      aoData.push
-      #        name: "to_date"
-      #        value: $('#to-date').val()
 
       $.getJSON sSource, aoData, (json) ->
         fnCallback json

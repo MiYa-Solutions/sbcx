@@ -121,7 +121,7 @@ class ServiceCallsController < ApplicationController
     Rails.logger.debug { "Invoked #{self.class.name}#autocomplete_customer_name_where" }
     default = "organization_id = #{current_user.organization.id} AND status = #{Customer::STATUS_ACTIVE}"
 
-    if params[:ref_id].nil? || params[:ref_id].blank?
+    if params[:ref_id].nil? || params[:ref_id].blank? || params[:ref_id] == '-1'
       return default
     else
       org = Organization.find(params[:ref_id])
