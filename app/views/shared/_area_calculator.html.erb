@@ -1,0 +1,33 @@
+<div id='area_calculator' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="areaCalculator" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.calculate_area') %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+    <form id="area-calc-form" data-parsley-validate>
+      <label for="area-calc-fwidth">Width(Ft.)</label><input type="text" id="area-calc-fwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+      <label for="area-calc-iwidth">Width(Inch)</label><input type="text" id="area-calc-iwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+      <label for="area-calc-flength">Length(Ft.)</label><input type="text" id="area-calc-flength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+      <label for="area-calc-ilength">Length(Inch)</label><input type="text" id="area-calc-ilength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+    </form>
+    <button id="area-calc-btn" class="btn"><%= I18n.t('general.general.calculate_area') %></button>
+
+
+  </div>
+
+  <div class="modal-footer">
+    <div class="transfer_btn_modal">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+
+  </div>
+</div>

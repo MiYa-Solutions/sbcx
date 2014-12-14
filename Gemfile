@@ -90,6 +90,8 @@ group :assets do
   gem 'bootstrap-sass', '2.0.4'
   gem 'chosen-rails', '1.1.0'
   gem 'compass', '0.12.6'
+  # gem 'handlebars_assets'
+  gem 'parsley-rails'
 end
 
 group :test do
