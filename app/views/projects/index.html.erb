@@ -2,7 +2,7 @@
   <div class="row-fluid">
 
 
-  <div class="">
+  <div class="row-fluid">
   <div class="smart_label">
     <ul>
       <li><h1><%= Project.model_name.human %></h1></li>
@@ -14,7 +14,7 @@
   </div>
 
 
-    <div class="row-fluid">
+ <div class="row-fluid">
 
   <div id="table-filters" class="all_jobs_filter" data-statuses="<%= project_statuses %>" data-tags="<%= current_user.organization.tags.map(&:name) %>">
 
@@ -57,9 +57,11 @@
 
           </div>
     </div>
+
   </div>
-      <br>
-      <div class="row-fluid">
+
+  <br>
+  <div class="row-fluid projects_table">
           <table class="projects table table-striped display table-bordered">
             <thead>
             <tr>
@@ -77,6 +79,10 @@
           </table>
       </div>
 </div>
+
+
+
+
 <br/>
 
     </div>

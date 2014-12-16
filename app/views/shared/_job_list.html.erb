@@ -6,6 +6,7 @@
     <ul>
       <li><h1><%= title %></h1></li>
       <li>
+       <%= link_to(t('general.general.new_job'), new_project_job_path(@project), class: "btn btn-primary", id: "new_job_fromProj_btn") %>
       </li>
     </ul>
   </div>

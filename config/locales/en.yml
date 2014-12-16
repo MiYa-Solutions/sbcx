@@ -253,6 +253,8 @@ en:
       select_contractor: "Contractor"
       optional: "optional"
       edit_project: "Edit Project"
+      project_Info: "Project Information"
+      projects: "Projects"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
