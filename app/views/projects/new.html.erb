@@ -12,10 +12,22 @@
 
   <div class="row-fluid">
 
-    <%= render 'form' %>
+
+    <%= simple_form_for(@project, :html => { :class => 'form-horizontal' }) do |f| %>
+        <%= f.error_notification %>
+
+        <%= render 'form', f: f %>
 
 
+        <div class="form-actions">
 
+
+          <%= link_to I18n.t('general.general.back'), projects_path, :class => 'btn btn-medium' %>
+          <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary", id: 'service_call_create_proj_btn' %>
+
+        </div>
+
+    <% end %>
 
   </div>
     <!--end of well-->
