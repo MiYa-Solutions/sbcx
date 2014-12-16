@@ -57,6 +57,7 @@
 #
 
 class ServiceCall < Ticket
+  include SubcontractorSettlement
 
   after_create :init_tax
 

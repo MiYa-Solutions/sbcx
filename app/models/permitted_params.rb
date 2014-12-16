@@ -533,7 +533,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_subcon_status_attrs
-    subcontractor_status_allowed? ? [:subcontractor_status_event, :subcon_payment] : []
+    subcontractor_status_allowed? ? [:subcontractor_status_event, :subcon_settle_amount, :subcon_settle_type] : []
   end
 
   def sc_provider_status_attrs

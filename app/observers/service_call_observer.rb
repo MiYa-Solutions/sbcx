@@ -49,7 +49,7 @@ class ServiceCallObserver < ActiveRecord::Observer
   # the reason is because with background processing the service call will be saved with the new subcontractor
   def after_transfer(service_call, transition)
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.subcontractor_status     = ServiceCall::SUBCON_STATUS_PENDING
+    service_call.subcontractor_status     = AffiliateSettlement::STATUS_PENDING
     service_call.subcon_collection_status = CollectionStateMachine::STATUS_PENDING if service_call.allow_collection?
     service_call.events << ServiceCallTransferEvent.new
     service_call.save
@@ -100,11 +100,13 @@ class ServiceCallObserver < ActiveRecord::Observer
     Rails.logger.debug { "invoked observer BEFORE settle_subcon \n #{service_call.inspect} \n #{transition.args.inspect}" }
 
     service_call.settled_on = Time.zone.now
+    service_call.events << ScSubconSettleEvent.new(amount:       service_call.subcon_settle_money,
+                                                   payment_type: service_call.subcon_settle_type)
+
   end
 
   def after_settle_subcon(service_call, transition)
     Rails.logger.debug { "invoked observer AFTER settle_subcon \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ScSubconSettleEvent.new
   end
 
   def before_confirm_settled_subcon(service_call, transition)

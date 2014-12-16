@@ -125,6 +125,13 @@ shared_context 'basic job testing' do
   let(:org_admin) { org.users.admins.first }
 
   include_context 'job methods'
+
+  def settle_with_subcon(ticket, type: 'cash', amount: '100')
+
+    ticket.subcon_settle_type = type
+    ticket.subcon_settle_amount = amount
+    ticket.settle_subcon!
+  end
 end
 
 shared_context 'transferred job' do

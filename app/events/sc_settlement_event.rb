@@ -1,4 +1,5 @@
 class ScSettlementEvent < ServiceCallEvent
+  include HstoreAmount
   protected
 
   def update_affiliate_account(affiliate)
