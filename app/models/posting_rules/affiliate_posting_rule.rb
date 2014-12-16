@@ -148,14 +148,14 @@ class AffiliatePostingRule < PostingRule
   def cparty_settlement_entries
     result = []
 
-    charge_amount    = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
-    bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id).sum(:amount_cents)
-    payment_fee      = AccountingEntry.where(type: ['CashPaymentFee', 'CreditPaymentFee', 'AmexPaymentFee', 'ChequePaymentFee'], ticket_id: @ticket.id).sum(:amount_cents)
+    # charge_amount    = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
+    # bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id).sum(:amount_cents)
+    # payment_fee      = AccountingEntry.where(type: ['CashPaymentFee', 'CreditPaymentFee', 'AmexPaymentFee', 'ChequePaymentFee'], ticket_id: @ticket.id).sum(:amount_cents)
 
-    total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
+    total = @event.amount
 
 
-    case @ticket.provider_payment
+    case @event.payment_type
       when 'cash'
         result << CashPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       when 'credit_card'
@@ -216,14 +216,14 @@ class AffiliatePostingRule < PostingRule
   def org_settlement_entries
     result = []
 
-    charge_amount    = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
-    bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id).sum(:amount_cents)
-    payment_fee      = AccountingEntry.where(type: ['ReimbursementForCashPayment', 'ReimbursementForCreditPayment', 'ReimbursementForAmexPayment', 'ReimbursementForChequePayment'], ticket_id: @ticket.id).sum(:amount_cents)
+    # charge_amount    = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
+    # bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id).sum(:amount_cents)
+    # payment_fee      = AccountingEntry.where(type: ['ReimbursementForCashPayment', 'ReimbursementForCreditPayment', 'ReimbursementForAmexPayment', 'ReimbursementForChequePayment'], ticket_id: @ticket.id).sum(:amount_cents)
 
-    total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
+    total = @event.amount
 
 
-    case @ticket.subcon_payment
+    case @event.payment_type
       when 'cash'
         result << CashPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
       when 'credit_card'
