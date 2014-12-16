@@ -1,21 +1,65 @@
 <%= simple_form_for(@project, :html => { :class => 'form-horizontal' }) do |f| %>
     <%= f.error_notification %>
 
-    <div class="form-inputs">
+
+<fieldset>
+  <div class="row-fluid">
+
+    <div class="span5 job_new_fields">
       <%= f.input :name %>
       <%= f.input :status, label: Project.human_attribute_name(:status), collection: Project.state_machines[:status].states, label_method: :human_name, value_method: :value, :include_blank => f.object.human_status_name %>
 
-      <%= f.input :description %>
-      <%= f.select :provider_id, local_provider_options, prompt: t('activerecord.models.provider'), include_blank: true %>
-      <div class="controls">
-        <%= select_tag 'project[provider_agreement_id]', collection: [] %>
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="service_call_project_provider_id"> <%= t('general.general.select_contractor') %></label>
+
+        <div class="controls">
+          <!--<#%= f.select :provider_id, local_provider_options, prompt: t('activerecord.models.provider'), include_blank: true %>-->
+          <%= f.select :provider_id, local_provider_options, include_blank: true %>
+        </div>
       </div>
-      <%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: '#project_customer_id', address1: '#service_call_address1', address2: '#service_call_address2', company: '#service_call_company', phone: '#service_call_phone', mobile_phone: '#service_call_mobile_phone', work_phone: '#service_call_work_phone', country: '#country', state: '#service_call_state', email: '#service_call_email', zip: '#service_call_zip', city: '#service_call_city' }, data: { ref_id: '#project_contractor_id' } %>
-      <%= f.hidden_field :customer_id %> <br>
+
+      <div class="control-group string optional">
+        <label class="string optional control-label" for="service_call_project_provider_id"></label>
+
+        <div class="controls">
+          <%= select_tag 'project[provider_agreement_id]', collection: [] %>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="service_call_project_provider_id"> <%= t('general.general.customer') %> <div class="italic">(<%= t('general.general.optional') %>)</div></label>
+
+        <div class="controls">
+
+          <%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: '#project_customer_id', address1: '#service_call_address1', address2: '#service_call_address2', company: '#service_call_company', phone: '#service_call_phone', mobile_phone: '#service_call_mobile_phone', work_phone: '#service_call_work_phone', country: '#country', state: '#service_call_state', email: '#service_call_email', zip: '#service_call_zip', city: '#service_call_city' }, data: { ref_id: '#project_contractor_id' } %>
+          <%= f.hidden_field :customer_id %>
+
+        </div>
+      </div>
+
+<br>
 
     </div>
 
-    <div class="form-actions">
-      <%= f.button :submit %>
+    <div class="span7">
+      <%= f.input :description %>
     </div>
+
+  </div>
+
+  <div class="form-actions">
+
+
+    <%= link_to I18n.t('general.general.back'), projects_path, :class => 'btn btn-medium' %>
+    <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary", id: 'service_call_create_proj_btn' %>
+
+  </div>
+
+
+</fieldset>
+
 <% end %>

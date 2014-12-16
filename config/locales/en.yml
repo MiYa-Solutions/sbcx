@@ -119,6 +119,7 @@ en:
       see_all: "Show All"
       dismiss: "Dismiss"
       delete: "Delete"
+      save: "Save"
       Save: "Save"
       jobs: "Jobs"
       open_jobs: "Open Jobs"
@@ -247,6 +248,10 @@ en:
       agreement_changes_submitted: "Agreement Changes"
       new_invite: "New Invite"
       sent_by: "Sent by"
+      new_project: "New Project"
+      link_to_project: "Link to project"
+      select_contractor: "Contractor"
+      optional: "optional"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

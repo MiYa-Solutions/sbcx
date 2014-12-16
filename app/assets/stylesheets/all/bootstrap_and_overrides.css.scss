@@ -5273,3 +5273,25 @@ table.dataTable thead th, table.dataTable thead td {
 .agreement_changes_td1 {
   width: 15%;
 }
+
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    padding-top: 0;
+    text-align: right;
+}
+
+.job_projects_link {
+  .control-label {
+    display: none;
+  }
+  .control-group select {
+    margin-left: -140px;
+  }
+
+}
+
+.italic {
+ font-style: italic;
+ }
+

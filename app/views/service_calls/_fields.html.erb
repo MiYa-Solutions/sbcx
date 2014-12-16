@@ -10,9 +10,9 @@
           <%= f.select :provider_id, local_provider_options, { prompt: "Me" } %>
 
         </div>
-        <div>
-          <%= f.association :project, collection: @org.projects %>
-        </div>
+        <!--<div>-->
+          <!--<#%= f.association :project, collection: @org.projects %>-->
+        <!--</div>-->
       </div>
 
 
@@ -24,7 +24,8 @@
         </div>
       </div>
 
-      <%= render 'service_calls/transfer_props/prov_flat_fee_props', f: f %>
+
+       <%= render 'service_calls/transfer_props/prov_flat_fee_props', f: f %>
 
       <div class="control-group string mandatory">
         <label class="string optional control-label" for="customer_state"> <%= @service_call.class.human_attribute_name(:tag_list) %></label>
@@ -33,6 +34,12 @@
           <%= f.text_field :tag_list, data: { tags: current_user.organization.tags.map(&:name) } %>
         </div>
       </div>
+
+
+
+
+      <%= f.association :project, collection: @org.projects, label: t('general.general.link_to_project') %>
+
 
       <div id="customer_wrapper" class="control-group select optional">
         <label class="string  control-label" for="service_call_customer"> <%= @service_call.class.human_attribute_name(:customer) %></label>
