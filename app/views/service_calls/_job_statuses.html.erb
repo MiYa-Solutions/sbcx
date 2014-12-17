@@ -1,3 +1,30 @@
+<table class="table table-striped table-condensed table-sbcx project_line_table">
+  <tbody>
+  <tr>
+    <td><strong> <%= Project.model_name %></strong></td>
+    <td>
+      <% if @service_call.project %>
+          <span class="<%= style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
+
+
+                <h3 id="job_project_show"><%= link_to @service_call.project.name, @service_call.project if @service_call.project  %></h3>
+           </span>
+            <% else %>
+                  <%= link_to(t('general.general.link_to_project'), '#link_to_project',
+                              class: "link_to_project_btn btn btn-primary btn-mini",
+                              data: { toggle: 'modal' },
+                              title: I18n.t('general.general.project_tooltip'),
+                              rel:   'tooltip',
+                              role: "button",
+                              id: "link_to_project_btn") %>
+
+            <% end %>
+
+    </td>
+  </tr>
+ </tbody>
+</table>
+
 <ul class="unstyled" id="block_job_statuses_actions">
 
   <li>
@@ -235,3 +262,40 @@
   <% end %>
 
 </ul>
+
+
+<div id='link_to_project' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.transfer_job') %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+    <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' } do |f| %>
+        <% if f.object.errors.any? %>
+            <div class="alert alert-block alert-error">
+              <a class="close" data-dismiss="alert" href="#">√ó</a>
+              <%= render 'shared/error_messages', object: f.object %>
+            </div>
+        <% end %>
+
+        <%= f.association :project, collection: @org.projects, label: t('general.general.link_to_project') %>
+
+          <div class="form-actions">
+            <%= f.submit "Save Changes", class: "btn btn-medium btn-primary", id: 'service_call_save_btn' %>
+          </div>
+    <% end %>
+    </div>
+
+</div>
+
+
+

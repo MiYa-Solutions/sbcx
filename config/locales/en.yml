@@ -255,6 +255,7 @@ en:
       edit_project: "Edit Project"
       project_Info: "Project Information"
       projects: "Projects"
+      project_tooltip: "Click to link this job to an active project"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

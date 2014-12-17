@@ -5,9 +5,7 @@
     <li>
       <h1 id="job_name_show"><%= best_in_place @service_call.becomes(ServiceCall), :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1>
     </li>
-    <li>
-      <h1 id="job_project_show"><%= link_to @service_call.project.name, @service_call.project if @service_call.project  %></h1>
-    </li>
+
     <li id="external_job_id">
       <% if  @service_call.external_ref.present? %>
          <h1><%= Ticket.human_attribute_name(:external_ref) + ": ".html_safe + "#{@service_call.external_ref}" %></h1>

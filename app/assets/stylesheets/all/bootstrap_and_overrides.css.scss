@@ -5298,3 +5298,15 @@ table.dataTable thead th, table.dataTable thead td {
 .projects_table {
   margin-left: 0.5%;
 }
+
+
+.project_line_table {
+  margin-top: -7px;
+
+  td {
+    font-size: 13px;
+    line-height: 12px;
+    padding: 5px 4px 0;
+    vertical-align: middle;
+  }
+}
