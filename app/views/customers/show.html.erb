@@ -14,7 +14,7 @@
   <div class="row-fluid">
     <div class="no_margins">
 
-      <div class="span6">
+      <div class="span6 customer_show_right_column">
         <!--Contact Info-->
         <%= render :partial => 'customer_contact_info' %>
         <!--Agreements-->
@@ -36,6 +36,8 @@
         <!--<#% else %>-->
             <!--<#%= render :partial => 'customer_agreements' %>-->
         <%= render :partial => 'customer_jobs' %>
+        <br>
+        <%= render 'customer_projects' %>
 
         <!--<#% end %>-->
       </div>
@@ -54,7 +56,7 @@
         <!--End row-->
   </div>
 </div>
-  <%= render 'customer_projects' %>
+
 <!--End of Well-->
 </div>
 
