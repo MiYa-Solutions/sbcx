@@ -22,9 +22,6 @@
 #  matching_entry_id :integer
 #
 
-class ChequePaymentToAffiliate < AffiliateSettlementEntry
-  def amount_direction
-    1
-  end
+class ChequePaymentToAffiliate < PaymentToAffiliate
 
 end
