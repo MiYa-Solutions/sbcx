@@ -285,7 +285,7 @@ class ServiceCall < Ticket
 
 
   def subcon_settlement_allowed?
-    subcontractor && work_done? && subcon_collection_fully_deposited? && all_deposited_entries_confirmed?
+    !canceled? && subcontractor && work_done? && subcon_collection_fully_deposited? && all_deposited_entries_confirmed?
   end
 
   def can_change_boms?

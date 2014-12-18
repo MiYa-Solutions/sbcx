@@ -52,6 +52,7 @@ module Sbcx
         :received_adj_entry_observer,
         :my_adj_entry_observer,
         :customer_payment_observer,
+        :affiliate_payment_observer,
         :collection_entry_observer,
         :deposit_entry_observer
 
