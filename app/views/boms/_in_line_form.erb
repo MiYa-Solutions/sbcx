@@ -50,9 +50,16 @@
           <span class="add-on"><%= I18n.t('general.general.qty') %></span>
         </div>
         <div class="span2">
-          <i id="area-calc" class="icon-cog" data-toggle="modal" data-target="#area_calculator"></i>
+          <!--<i id="area-calc" class="icon-cog" data-toggle="modal" data-target="#area_calculator"></i>-->
 
           <%= f.text_field :quantity %>
+          <%= link_to (image_tag'cacl_24.png',
+                      class: "",
+                      data: { toggle: 'modal', target: "#area_calculator" },
+                      title: I18n.t('general.general.bom_calc_tooltip'),
+                      rel:   'tooltip',
+                      id: "link_to_bom_calc_btn") %>
+
         </div>
 
       </div>
@@ -62,20 +69,22 @@
         <div class="span1 bom_label_frame">
           <span class="add-on"><%= Bom.human_attribute_name(:buyer) %></span>
         </div>
-        <div class="span6">
+        <div class="span4">
           <%= f.select :buyer_id, options_for_select(buyer_options(ticket)), include_blank: true %>
           <%= f.hidden_field :buyer_type %>
+        </div>
+
+
+
+        <div class="span2">
+          <div class="add_button">
+            <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary", id: 'add_part' %>
+          </div>
         </div>
 
         <div class="span1">
           <div id="ajax-msg"></div>
           <%= image_tag 'ajax-loader.gif', id: "spinner" %>
-        </div>
-
-        <div class="span3">
-          <div class="add_button">
-            <%= f.submit I18n.t('general.general.add'), class: "btn btn-medium btn-primary", id: 'add_part' %>
-          </div>
         </div>
 
 

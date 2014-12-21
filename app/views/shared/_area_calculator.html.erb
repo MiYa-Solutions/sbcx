@@ -13,21 +13,37 @@
   </div>
 
   <div class="modal-body">
+
     <form id="area-calc-form" data-parsley-validate>
-      <label for="area-calc-fwidth">Width(Ft.)</label><input type="text" id="area-calc-fwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
-      <label for="area-calc-iwidth">Width(Inch)</label><input type="text" id="area-calc-iwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
-      <label for="area-calc-flength">Length(Ft.)</label><input type="text" id="area-calc-flength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
-      <label for="area-calc-ilength">Length(Inch)</label><input type="text" id="area-calc-ilength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
-    </form>
-    <button id="area-calc-btn" class="btn"><%= I18n.t('general.general.calculate_area') %></button>
+    <div class="row-fluid bom_calc_modal">
 
 
-  </div>
+          <div class="span4">
+            <label for="area-calc-fwidth">Width (Ft.)</label><input type="text" id="area-calc-fwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+            <label for="area-calc-flength">Length (Ft.)</label><input type="text" id="area-calc-flength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+          </div>
 
-  <div class="modal-footer">
-    <div class="transfer_btn_modal">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          <div class="span2 area_option"><h4>- Or - </h4></div>
+
+          <div class="span4">
+            <label for="area-calc-iwidth">Width (Inch)</label><input type="text" id="area-calc-iwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+            <label for="area-calc-ilength">Length (Inch)</label><input type="text" id="area-calc-ilength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+          </div>
+
+          <div class="span2"></div>
+
     </div>
 
-  </div>
+      <div class="modal-footer">
+          <button id="area-calc-btn" class="btn btn-medium btn-primary" %><%= t('general.general.calculate_area')%></button>
+    </div>
+
+
+  </form>
 </div>
+</div>
+
+
+
+
+

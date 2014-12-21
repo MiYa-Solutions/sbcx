@@ -5316,3 +5316,18 @@ table.dataTable thead th, table.dataTable thead td {
   float: left;
   margin-top: 10px;
 }
+
+.bom_calc_modal {
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 90%;
+
+  .area_option {
+    margin-top: 5%;
+  }
+}
+
+#area-calc-btn {
+  float: left;
+  margin-left: 5%;
+}
