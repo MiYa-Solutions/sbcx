@@ -57,6 +57,8 @@
 #
 
 class TransferredServiceCall < ServiceCall
+  include ProviderSettlement
+
   validates_presence_of :provider, :provider_agreement
   validate :provider_is_not_a_member
   before_validation do
@@ -130,57 +132,6 @@ class TransferredServiceCall < ServiceCall
 
   end
 
-  state_machine :provider_status, :initial => :pending, namespace: 'provider' do
-    state :pending, value: SUBCON_STATUS_PENDING
-    state :cleared, value: SUBCON_STATUS_CLEARED
-    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED do
-      validates_presence_of :provider_payment
-    end
-    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED do
-      validates_presence_of :provider_payment
-    end
-    state :settled, value: SUBCON_STATUS_SETTLED do
-      validates_presence_of :provider_payment
-    end
-    state :na, value: SUBCON_STATUS_NA
-
-    after_failure do |service_call, transition|
-      Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
-    end
-
-    # for cash payment, paid means cleared
-    after_transition any => :settled do |sc, transition|
-      sc.provider_status = SUBCON_STATUS_CLEARED if sc.provider_payment == 'cash'
-      sc.save!
-    end
-
-
-    event :provider_confirmed do
-      transition :claim_settled => :settled, if: lambda { |sc| sc.provider_settlement_allowed? }
-    end
-
-    event :provider_marked_as_settled do
-      transition :pending => :claimed_as_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? }
-    end
-
-    event :confirm_settled do
-      transition :claimed_as_settled => :settled, if: lambda { |sc| sc.provider_settlement_allowed? }
-    end
-
-    event :settle do
-      transition :pending => :settled, if: lambda { |sc| sc.provider_settlement_allowed? && !sc.provider.subcontrax_member? }
-      transition :pending => :claim_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? }
-    end
-
-    event :clear do
-      transition :settled => :cleared
-    end
-
-    event :cancel do
-      transition :pending => :na, if: ->(sc) { sc.canceled? }
-    end
-
-  end
 
   state_machine :billing_status, initial: :na, namespace: 'payment' do
     state :na, value: 0

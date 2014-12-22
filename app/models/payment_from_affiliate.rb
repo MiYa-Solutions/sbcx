@@ -5,5 +5,4 @@ class PaymentFromAffiliate < AffiliateSettlementEntry
     -1
   end
 
-
 end

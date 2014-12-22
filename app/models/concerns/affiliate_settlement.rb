@@ -1,0 +1,13 @@
+module AffiliateSettlement
+  STATUS_NA                 = 3000
+  STATUS_PENDING            = 3001
+  STATUS_CLAIM_SETTLED      = 3002
+  STATUS_CLAIMED_AS_SETTLED = 3003
+  STATUS_SETTLED            = 3004
+  STATUS_CLEARED            = 3005
+  STATUS_CLAIMED_P_SETTLED  = 3006
+  STATUS_P_SETTLED          = 3007
+  STATUS_CLAIM_P_SETTLED    = 3008
+  STATUS_REJECTED           = 3009
+
+end

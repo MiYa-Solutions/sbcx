@@ -49,7 +49,7 @@ class ServiceCallObserver < ActiveRecord::Observer
   # the reason is because with background processing the service call will be saved with the new subcontractor
   def after_transfer(service_call, transition)
     Rails.logger.debug { "invoked observer after transfer \n #{service_call.inspect} \n #{transition.inspect}" }
-    service_call.subcontractor_status     = ServiceCall::SUBCON_STATUS_PENDING
+    service_call.subcontractor_status     = AffiliateSettlement::STATUS_PENDING
     service_call.subcon_collection_status = CollectionStateMachine::STATUS_PENDING if service_call.allow_collection?
     service_call.events << ServiceCallTransferEvent.new
     service_call.save

@@ -1,19 +1,6 @@
 module SubcontractorSettlement
   extend ActiveSupport::Concern
 
-  # State machine for ServiceCall subcontractor_status
-  # status constant list:
-  SUBCON_STATUS_NA                 = 3000
-  SUBCON_STATUS_PENDING            = 3001
-  SUBCON_STATUS_CLAIM_SETTLED      = 3002
-  SUBCON_STATUS_CLAIMED_AS_SETTLED = 3003
-  SUBCON_STATUS_SETTLED            = 3004
-  SUBCON_STATUS_CLEARED            = 3005
-  SUBCON_STATUS_CLAIMED_P_SETTLED  = 3006
-  SUBCON_STATUS_P_SETTLED          = 3007
-  SUBCON_STATUS_CLAIM_P_SETTLED    = 3008
-  SUBCON_STATUS_REJECTED           = 3009
-
   # todo validate that the payment string is valid
 
   included do
@@ -22,17 +9,17 @@ module SubcontractorSettlement
     attr_accessor :subcon_settle_amount
 
     state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
-      state :na, value: SUBCON_STATUS_NA
-      state :pending, value: SUBCON_STATUS_PENDING
-      state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED
-      state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED
-      state :settled, value: SUBCON_STATUS_SETTLED
-      state :cleared, value: SUBCON_STATUS_CLEARED
-      state :cleared, value: SUBCON_STATUS_CLEARED
-      state :claim_p_settled, value: SUBCON_STATUS_CLAIM_P_SETTLED
-      state :claimed_p_settled, value: SUBCON_STATUS_CLAIMED_P_SETTLED
-      state :partially_settled, value: SUBCON_STATUS_P_SETTLED
-      state :rejected, value: SUBCON_STATUS_REJECTED
+      state :na, value: AffiliateSettlement::STATUS_NA
+      state :pending, value: AffiliateSettlement::STATUS_PENDING
+      state :claim_settled, value: AffiliateSettlement::STATUS_CLAIM_SETTLED
+      state :claimed_as_settled, value: AffiliateSettlement::STATUS_CLAIMED_AS_SETTLED
+      state :settled, value: AffiliateSettlement::STATUS_SETTLED
+      state :cleared, value: AffiliateSettlement::STATUS_CLEARED
+      state :cleared, value: AffiliateSettlement::STATUS_CLEARED
+      state :claim_p_settled, value: AffiliateSettlement::STATUS_CLAIM_P_SETTLED
+      state :claimed_p_settled, value: AffiliateSettlement::STATUS_CLAIMED_P_SETTLED
+      state :partially_settled, value: AffiliateSettlement::STATUS_P_SETTLED
+      state :rejected, value: AffiliateSettlement::STATUS_REJECTED
 
       after_failure do |service_call, transition|
         Rails.logger.debug { "SubcontractorSettlement subcon status state machine failure. Errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -40,7 +27,7 @@ module SubcontractorSettlement
 
       after_transition any => :settled do |service_call, transition|
         if service_call.subcon_fully_paid?
-          service_call.subcontractor_status = SUBCON_STATUS_CLEARED
+          service_call.subcontractor_status = AffiliateSettlement::STATUS_CLEARED
           service_call.save
         end
       end
@@ -61,25 +48,25 @@ module SubcontractorSettlement
 
       event :settle do
         transition [:rejected, :partially_settled, :pending] => :settled, if: ->(sc) {
-                                                               sc.subcon_settlement_allowed? &&
-                                                                   !sc.subcontractor.subcontrax_member? &&
-                                                                       sc.subcon_fully_settled?
-                                                             }
+                                                                          sc.subcon_settlement_allowed? &&
+                                                                              !sc.subcontractor.subcontrax_member? &&
+                                                                                  sc.subcon_fully_settled?
+                                                                        }
         transition [:rejected, :partially_settled, :pending] => :partially_settled, if: ->(sc) {
-                                                                         sc.subcon_settlement_allowed? &&
-                                                                             !sc.subcontractor.subcontrax_member? &&
-                                                                                 !sc.subcon_fully_settled?
-                                                                       }
+                                                                                    sc.subcon_settlement_allowed? &&
+                                                                                        !sc.subcontractor.subcontrax_member? &&
+                                                                                            !sc.subcon_fully_settled?
+                                                                                  }
         transition [:rejected, :claim_p_settled, :pending] => :claim_settled, if: ->(sc) {
-                                                                   sc.subcon_settlement_allowed? &&
-                                                                       sc.subcontractor.subcontrax_member? &&
-                                                                       sc.subcon_fully_settled?
-                                                                 }
+                                                                              sc.subcon_settlement_allowed? &&
+                                                                                  sc.subcontractor.subcontrax_member? &&
+                                                                                  sc.subcon_fully_settled?
+                                                                            }
         transition [:rejected, :claim_p_settled, :pending] => :claim_p_settled, if: ->(sc) {
-                                                                     sc.subcon_settlement_allowed? &&
-                                                                         sc.subcontractor.subcontrax_member? &&
-                                                                         !sc.subcon_fully_settled?
-                                                                   }
+                                                                                sc.subcon_settlement_allowed? &&
+                                                                                    sc.subcontractor.subcontrax_member? &&
+                                                                                    !sc.subcon_fully_settled?
+                                                                              }
       end
 
       event :clear do

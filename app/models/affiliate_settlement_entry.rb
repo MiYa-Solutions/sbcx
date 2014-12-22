@@ -26,4 +26,27 @@ class AffiliateSettlementEntry < AccountingEntry
 
   has_many :events, as: :eventable
 
+
+
+  STATUS_REJECTED = 9001
+
+  state_machine :status do
+
+    state :rejected, value: STATUS_REJECTED
+
+    event :reject do
+      transition :deposited => :rejected
+    end
+
+    event :clear do
+      transition :deposited => :cleared
+    end
+
+    event :deposit do
+      transition :confirmed => :deposited
+    end
+
+  end
+
+
 end
