@@ -1,4 +1,4 @@
-class PaymentEvent < Event
+class PaymentEvent < EntryEvent
 
   protected
 
