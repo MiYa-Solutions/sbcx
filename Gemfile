@@ -19,7 +19,7 @@ gem 'american_date', '1.0.0'
 gem 'pg', '0.17.1'
 gem 'activerecord-postgres-hstore', '0.7.5'
 
-gem 'devise', '2.0.5'
+gem 'devise', '~> 3.4.1'
 gem 'simple_form', '2.0.2'
 gem 'declarative_authorization', '0.5.7'
 
@@ -49,6 +49,7 @@ gem 'wkhtmltopdf-binary'
 gem 'acts_as_commentable_with_threading'
 
 gem 'roo'
+gem 'simple_token_authentication', '~> 1.0'
 
 group :production do
   gem 'rails_12factor'
@@ -74,8 +75,8 @@ group :development, :test do
   gem 'quiet_assets'
   gem 'ruby_parser'
   gem 'thin', '1.6.3'
-  gem 'debase'
-  gem 'ruby-debug-ide', github: 'ruby-debug/ruby-debug-ide', branch: 'no-compact-name'
+  gem 'debase', '~> 0.1.1'
+  gem 'ruby-debug-ide'
 end
 
 # Gems used only for assets and not required

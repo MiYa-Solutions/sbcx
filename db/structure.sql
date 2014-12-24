@@ -1167,7 +1167,8 @@ CREATE TABLE users (
     confirmation_token character varying(255),
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
-    unconfirmed_email character varying(255)
+    unconfirmed_email character varying(255),
+    authentication_token character varying(255)
 );
 
 
@@ -1871,6 +1872,13 @@ CREATE INDEX index_tickets_on_project_id ON tickets USING btree (project_id);
 
 
 --
+-- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_authentication_token ON users USING btree (authentication_token);
+
+
+--
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2242,3 +2250,5 @@ INSERT INTO schema_migrations (version) VALUES ('20141209225427');
 INSERT INTO schema_migrations (version) VALUES ('20141210173610');
 
 INSERT INTO schema_migrations (version) VALUES ('20141211165059');
+
+INSERT INTO schema_migrations (version) VALUES ('20141222222707');

@@ -7,6 +7,11 @@ Sbcx::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :events, only: [:show, :index]
+      devise_scope :user do
+        match '/sign_in' => 'sessions#create', :via => :post
+        match '/sign_out' => 'sessions#destroy', :via => :delete
+      end
+      resources :jobs
     end
   end
 
