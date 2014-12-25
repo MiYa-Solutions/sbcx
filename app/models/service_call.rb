@@ -266,13 +266,13 @@ class ServiceCall < Ticket
     sc
   end
 
-  def as_json(options = {})
-    {
-        tag_list:      tag_list,
-        provider:      [provider],
-        subcontractor: [subcontractor]
-    }
-  end
+  # def as_json(options = {})
+  #   {
+  #       tag_list:      tag_list,
+  #       provider:      [provider],
+  #       subcontractor: [subcontractor]
+  #   }
+  # end
 
 
   def subcon_settlement_allowed?
