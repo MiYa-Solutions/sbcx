@@ -1865,6 +1865,13 @@ CREATE INDEX index_tickets_on_organization_id ON tickets USING btree (organizati
 
 
 --
+-- Name: index_tickets_on_organization_id_and_external_ref; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_organization_id_and_external_ref ON tickets USING btree (organization_id, external_ref);
+
+
+--
 -- Name: index_tickets_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2252,3 +2259,5 @@ INSERT INTO schema_migrations (version) VALUES ('20141210173610');
 INSERT INTO schema_migrations (version) VALUES ('20141211165059');
 
 INSERT INTO schema_migrations (version) VALUES ('20141222222707');
+
+INSERT INTO schema_migrations (version) VALUES ('20141226160730');

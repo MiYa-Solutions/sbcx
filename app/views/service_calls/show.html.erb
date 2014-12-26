@@ -8,7 +8,11 @@
 
     <li id="external_job_id">
       <% if  @service_call.external_ref.present? %>
-         <h1><%= Ticket.human_attribute_name(:external_ref) + ": ".html_safe + "#{@service_call.external_ref}" %></h1>
+         <h1>
+           <%= Ticket.human_attribute_name(:external_ref) + ": ".html_safe %>
+           <%= best_in_place @service_call.becomes(ServiceCall), :external_ref %>
+           &nbsp;<i class="icon-pencil icon-white"></i>
+         </h1>
       <% end %>
     </li>
     <li></li>

@@ -11,7 +11,7 @@ Sbcx::Application.routes.draw do
         match '/sign_in' => 'sessions#create', :via => :post
         match '/sign_out' => 'sessions#destroy', :via => :delete
       end
-      resources :service_calls
+      resources :service_calls, only: [:show, :index, :update]
     end
   end
 

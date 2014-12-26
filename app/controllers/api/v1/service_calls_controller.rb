@@ -20,27 +20,29 @@ class Api::V1::ServiceCallsController < Api::V1::ApiController
   end
 
   def update
-    if @service_call.update_attributes(service_call_params)
-      respond_with @service_call
-    else
-      respond_with json: {}, status: :unprocessable_entity
+    respond_to do |format|
+
+      if @service_call.update_attributes(service_call_params)
+        format.json { render json: @service_call, status: :ok }
+      else
+        format.json { render json: { errors: @service_call.errors }, status: :unprocessable_entity }
+      end
     end
   end
 
   protected
   def load_service_call
-    #@service_call = Ticket.find(params[:id])
     if params[:use_external_ref]
-      @service_call = ServiceCall.find_by_external_ref(params[:id])
+      @service_call = ServiceCall.where(organization_id: current_user.organization_id, external_ref: params[:id]).first
     else
-      @service_call = ServiceCall.find(params[:id])
+      @service_call = ServiceCall.where(organization_id: current_user.organization_id, id: params[:id]).first
     end
   end
 
   private
 
   def service_call_params
-    params.require(:service_call).permit(:tag_list)
+    params.require(:service_call).permit(:tag_list, :started_on_text)
   end
 
 end
