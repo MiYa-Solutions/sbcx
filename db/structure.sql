@@ -888,7 +888,10 @@ CREATE TABLE projects (
     organization_id integer,
     customer_id integer,
     provider_id integer,
-    provider_agreement_id integer
+    provider_agreement_id integer,
+    start_date date,
+    end_date date,
+    external_ref character varying(255)
 );
 
 
@@ -2261,3 +2264,5 @@ INSERT INTO schema_migrations (version) VALUES ('20141211165059');
 INSERT INTO schema_migrations (version) VALUES ('20141222222707');
 
 INSERT INTO schema_migrations (version) VALUES ('20141226160730');
+
+INSERT INTO schema_migrations (version) VALUES ('20141226202747');

@@ -40,6 +40,18 @@
                   <td><strong><%= Project.human_attribute_name(:status) %></strong></td>
                   <td><%= @project.status_name %></td>
                 </tr>
+                <tr>
+                  <td><strong><%= Project.human_attribute_name(:start_date) %></strong></td>
+                  <td><%= l @project.start_date %></td>
+                </tr>
+                <tr>
+                  <td><strong><%= Project.human_attribute_name(:end_date) %></strong></td>
+                  <td><%= l @project.end_date %></td>
+                </tr>
+                <tr>
+                  <td><strong><%= Project.human_attribute_name(:external_ref) %></strong></td>
+                  <td><%= @project.external_ref %></td>
+                </tr>
                   <% if @project.provider %>
 
 

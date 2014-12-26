@@ -1,6 +1,3 @@
-
-
-
 <fieldset>
   <div class="row-fluid">
 
@@ -26,11 +23,10 @@
       </div>
 
 
-
-
-
       <div class="control-group string mandatory">
-        <label class="string optional control-label" for="service_call_project_provider_id"> <%= t('general.general.customer') %> <div class="italic">(<%= t('general.general.optional') %>)</div></label>
+        <label class="string optional control-label" for="service_call_project_provider_id"> <%= t('general.general.customer') %>
+          <div class="italic">(<%= t('general.general.optional') %>)</div>
+        </label>
 
         <div class="controls">
 
@@ -40,7 +36,26 @@
         </div>
       </div>
 
-<br>
+      <div class="control-group string">
+        <label class="string  control-label" for="project_start_date"><%= @project.class.human_attribute_name(:start_date) %></label>
+
+        <div class="controls">
+          <%= f.text_field :start_date, class: "datetimepicker", 'data-datepicker' => "{ 'dateFormat' => 'mm-dd-yy'}" %>
+          <span class="help-inline"><%= I18n.t('general.emails.set_date') %></span>
+        </div>
+
+      </div>
+      <div class="control-group string">
+        <label class="string  control-label" for="project_end_date"><%= @project.class.human_attribute_name(:end_date) %></label>
+
+        <div class="controls">
+          <%= f.text_field :end_date, class: "datetimepicker", 'data-datepicker' => "{ 'dateFormat' => 'mm-dd-yy'}" %>
+          <span class="help-inline"><%= I18n.t('general.emails.set_date') %></span>
+        </div>
+      </div>
+      <%= f.input :external_ref %>
+
+      <br>
 
     </div>
 
@@ -49,8 +64,6 @@
     </div>
 
   </div>
-
-
 
 
 </fieldset>

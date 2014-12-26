@@ -8,6 +8,9 @@ describe Project do
   it { should have_db_column :name }
   it { should have_db_column :description }
   it { should have_db_column :status }
+  it { should have_db_column :start_date }
+  it { should have_db_column :end_date }
+  it { should have_db_column :external_ref }
   it { should have_many :tickets }
   it { should have_many(:invoices) }
   it { should have_many(:events) }

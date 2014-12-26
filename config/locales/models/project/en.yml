@@ -6,3 +6,5 @@ en:
       project:
         provider: Contractor
         provider_agreement: Contractor Agreement
+        start_date: Start Date
+        end_date: End Date
