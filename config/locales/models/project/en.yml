@@ -8,3 +8,14 @@ en:
         provider_agreement: Contractor Agreement
         start_date: Start Date
         end_date: End Date
+    state_machines:
+      project:
+        status:
+          states:
+            new: New
+            in_progress: In Progress
+            on_hold: On Hold
+            completed: Completed
+            closed: Closed
+            canceled: Canceled
+

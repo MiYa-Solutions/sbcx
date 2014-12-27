@@ -1,3 +1,12 @@
+class ProjectRowStyler
+  #  constructor: ->
+
+  color_cells: (row, project)->
+    $('td:eq(3)', row).addClass("project_status_#{project.status}")
+
+  style: (row, project) ->
+    this.color_cells(row, project)
+
 jQuery ->
   $('table.projects').dataTable(
     sDom: "<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
@@ -47,11 +56,17 @@ jQuery ->
       $('#customer_filter_id').val(oData.customer_id)
       $('#customer_search').val(oData.customer_name)
 
+    fnRowCallback: (nRow, entry, iDisplayIndex) ->
+      # Append the row id to allow automated testing
+      e = new ProjectRowStyler
+      e.style(nRow, entry)
+
+
     columns: [
         { data: "id" },
         { data: "created_at" },
         { data: "name" },
-        { data: "status" },
+        { data: "human_status" },
         { data: 'customer' },
         { data: "provider" }
       ]

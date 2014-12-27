@@ -16,7 +16,7 @@ module InvoiceableProject
     end
 
     def tax
-      tax_amount / invoice_total
+      ((tax_amount / invoice_total) * 100).round(3)
     end
   end
 
