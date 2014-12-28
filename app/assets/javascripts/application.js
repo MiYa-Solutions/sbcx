@@ -39,5 +39,6 @@
 //= require all/jquery-dateFormat
 //= require all/projects
 //= require parsley
+//= require handlebars.runtime
 //= require_tree ./templates
 //= require_tree ./all/.

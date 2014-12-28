@@ -37,9 +37,7 @@
 
 
 
-
-      <%= f.association :project, collection: @org.projects, label: t('general.general.link_to_project') %>
-
+      <%= f.hidden_field :project_id, class: 'project-autocomplete' %>
 
       <div id="customer_wrapper" class="control-group select optional">
         <label class="string  control-label" for="service_call_customer"> <%= @service_call.class.human_attribute_name(:customer) %></label>

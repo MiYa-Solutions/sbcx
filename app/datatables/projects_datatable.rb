@@ -19,6 +19,7 @@ class ProjectsDatatable
         id:            project.id,
         created_at:    h(project.created_at.strftime("%b %d, %Y")),
         name:          link_to(project.name, project),
+        text:          project.name,
         status:        project.status_name,
         human_status:  project.human_status_name,
         customer:      project.customer ? link_to(project.customer_name, project.customer) : '',
