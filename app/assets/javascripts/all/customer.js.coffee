@@ -4,7 +4,7 @@ jQuery ->
     pagingType: 'simple'
     iDisplayLength: 5
     aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4 ] }]
-    order: [0, 'desc']
+    order: [[0, 'desc']]
 #   aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     processing: true
@@ -38,7 +38,7 @@ jQuery ->
     pagingType: 'simple'
     iDisplayLength: 5
     aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4 ] }]
-    order: [0, 'desc']
+    order: [[0, 'desc']]
 #   aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     processing: true
@@ -73,7 +73,7 @@ jQuery ->
     pagingType: 'simple'
     iDisplayLength: 5
     aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4 ] }]
-    order: [0, 'desc']
+    order: [[0, 'desc']]
 #   aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     processing: true

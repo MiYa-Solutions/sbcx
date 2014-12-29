@@ -85,7 +85,7 @@ class TicketsDatatable
   def fetch_tickets
     tickets = current_user.organization.service_calls.scoped
     if params[:sSearch].present?
-      tickets = tickets.where("tickets.name ilike ?", "%#{params[:sSearch]}%")
+      tickets = tickets.where("tickets.name ilike ? OR tickets.external_ref ilike ?", "%#{params[:sSearch]}%", "%#{params[:sSearch]}%")
     end
 
     if params[:sSearch_5].present?

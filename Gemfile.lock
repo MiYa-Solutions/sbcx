@@ -224,8 +224,10 @@ GEM
       has_scope (~> 0.6.0.rc)
       responders (~> 1.0)
     journey (1.0.4)
-    jquery-datatables-rails (2.1.10.0.2)
+    jquery-datatables-rails (3.1.1)
+      actionpack (>= 3.1)
       jquery-rails
+      railties (>= 3.1)
       sass-rails
     jquery-rails (2.1.4)
       railties (>= 3.0, < 5.0)
@@ -534,7 +536,7 @@ DEPENDENCIES
   fullcalendar-rails (= 1.5.4.0)
   handlebars_assets
   heroku_san
-  jquery-datatables-rails (= 2.1.10.0.2)
+  jquery-datatables-rails (= 3.1.1)
   jquery-rails (= 2.1.4)
   jquery-ui-rails (= 4.1.1)
   jquery_mobile_rails (= 1.2.0)

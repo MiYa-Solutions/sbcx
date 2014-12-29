@@ -84,7 +84,7 @@ end
 group :assets do
   gem 'coffee-rails', '3.2.2'
   gem 'uglifier', '1.2.3'
-  gem 'jquery-datatables-rails', '2.1.10.0.2'
+  gem 'jquery-datatables-rails', '3.1.1'
   gem 'jquery-ui-rails', '4.1.1'
   gem 'fullcalendar-rails', '1.5.4.0'
   gem 'sass-rails', '3.2.4'

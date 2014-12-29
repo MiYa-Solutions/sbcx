@@ -15,7 +15,6 @@ jQuery ->
   $('#account').select2()
   $('table.entry_table').dataTable
     sDom: "<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
-#    sDom: "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
     sPaginationType: "bootstrap"
     iDisplayLength: 25
     oTableTools:
@@ -85,7 +84,7 @@ jQuery ->
   $.extend $.fn.dataTableExt.oStdClasses,
     sWrapper: "dataTables_wrapper form-inline"
 
-  $('#entries_table').dataTable().columnFilter()
+#  $('#entries_table').dataTable().columnFilter()
   $('#get-entries-btn').live 'click', (e) ->
     oTable = $('#entries_table').dataTable()
     oTable.fnDraw()

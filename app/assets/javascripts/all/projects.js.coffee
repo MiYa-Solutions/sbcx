@@ -9,11 +9,12 @@ class ProjectRowStyler
 
 jQuery ->
   $('table.projects').dataTable(
-    sDom: "<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+    responsive: true
+    sDom: "C<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
     pagingType: 'simple'
     iDisplayLength: 5
     aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4 ] }]
-    order: [0, 'desc']
+    order: [[0, 'desc']]
   #   aLengthMenu: [10, 25, 50, 100, 200, 300]
     sPaginationType: "bootstrap"
     processing: true
@@ -90,6 +91,16 @@ jQuery ->
         }
     }
   ])
+
+#  $('table.projects').each ->
+#    table = $(this).DataTable()
+#    colvis = new $.fn.dataTable.ColVis( table, {
+#      buttonText: 'Select columns'
+#    } )
+#
+#    $( colvis.button() ).insertAfter('div.all_jobs_filter')
+
+
 
   $('#clear-customer').live 'click', ->
     $('#customer_filter_id').val('')

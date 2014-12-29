@@ -45,7 +45,7 @@ class ProjectsDatatable
   def fetch_projects
     result_set = current_user.organization.projects.scoped
     if params[:sSearch].present?
-      result_set = result_set.where("projects.name ilike ?", "%#{params[:sSearch]}%")
+      result_set = result_set.where("projects.name ilike ? OR projects.external_ref ilike ?", "%#{params[:sSearch]}%", "%#{params[:sSearch]}%")
     end
 
     if params[:sSearch_4].present?

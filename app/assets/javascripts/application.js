@@ -13,6 +13,12 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+//= require dataTables/jquery.dataTables
+//= require dataTables/extras/dataTables.responsive
+//= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
+//= require dataTables/extras/dataTables.tableTools
+//= require dataTables/extras/dataTables.colVis
+//= require dataTables/extras/jquery.dataTables.yadcf
 //= require autocomplete-rails
 //= require bootstrap
 //= require bootstrap-editable
@@ -20,14 +26,6 @@
 //= require jquery.purr
 //= require best_in_place
 //= require best_in_place.purr
-//= require dataTables/jquery.dataTables
-//= require all/jquery.dataTables.columnFilter
-//= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
-//= require dataTables/extras/ZeroClipboard.js
-//= require dataTables/jquery.dataTables.api.fnFilterOnReturn
-//= require dataTables/extras/dataTables.tableTools
-//= require dataTables/extras/jquery.dataTables.yadcf
-//= require dataTables/extras/dataTables.colVis
 //= require select2
 //= require all/JQtextile
 //= require chosen-jquery
