@@ -42,11 +42,11 @@
                 </tr>
                 <tr>
                   <td><strong><%= Project.human_attribute_name(:start_date) %></strong></td>
-                  <td><%= l @project.start_date %></td>
+                  <td><%= l @project.start_date if @project.start_date %></td>
                 </tr>
                 <tr>
                   <td><strong><%= Project.human_attribute_name(:end_date) %></strong></td>
-                  <td><%= l @project.end_date %></td>
+                  <td><%= l @project.end_date if @project.end_date %></td>
                 </tr>
                 <tr>
                   <td><strong><%= Project.human_attribute_name(:external_ref) %></strong></td>
