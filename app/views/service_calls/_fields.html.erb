@@ -35,9 +35,16 @@
         </div>
       </div>
 
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="service_call_project_select"> <%= t('general.general.select_project') %>
+        </label>
 
+        <div class="controls">
+          <%= f.hidden_field :project_id, class: 'project-autocomplete' %>
 
-      <%= f.hidden_field :project_id, class: 'project-autocomplete' %>
+        </div>
+      </div>
+
 
       <div id="customer_wrapper" class="control-group select optional">
         <label class="string  control-label" for="service_call_customer"> <%= @service_call.class.human_attribute_name(:customer) %></label>
