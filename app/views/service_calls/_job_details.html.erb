@@ -49,6 +49,17 @@
     </div>
 
 
+
+    <ul class="unstyled list_service_calls">
+      <li><label><%= t('general.general.external_ref') %></label></li>
+      <li>
+        <i class="icon-pencil"></i>&nbsp;<%= best_in_place @service_call.becomes(ServiceCall), :external_ref %>
+      </li>
+      <li></li>
+    </ul>
+
+    <br>
+
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:started_on_text) %></label></li>
       <li>

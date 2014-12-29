@@ -6,15 +6,9 @@
       <h1 id="job_name_show"><%= best_in_place @service_call.becomes(ServiceCall), :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1>
     </li>
 
-    <li id="external_job_id">
-      <% if  @service_call.external_ref.present? %>
-         <h1>
-           <%= Ticket.human_attribute_name(:external_ref) + ": ".html_safe %>
-           <%= best_in_place @service_call.becomes(ServiceCall), :external_ref %>
-           &nbsp;<i class="icon-pencil icon-white"></i>
-         </h1>
-      <% end %>
-    </li>
+    <!--<li id="external_job_id">-->
+
+    <!--</li>-->
     <li></li>
     <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1></li>
   </ul>
