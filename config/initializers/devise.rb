@@ -217,3 +217,8 @@ Devise.setup do |config|
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
 end
+
+# necessary for the reset password to work sbcx github issue #702
+ActionController::Responder.class_eval do
+  alias :to_mobile :to_html
+end
