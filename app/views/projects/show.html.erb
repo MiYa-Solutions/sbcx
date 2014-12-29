@@ -82,7 +82,7 @@
                 </tr>
                 <tr>
                   <td>
-                  <%= @project.description %>
+                  <%= textilize(@project.description).html_safe %>
                   </td>
                 </tr>
                 </tbody>

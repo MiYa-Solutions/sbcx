@@ -30,7 +30,7 @@
 
         <div class="controls">
 
-          <%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: '#project_customer_id', address1: '#service_call_address1', address2: '#service_call_address2', company: '#service_call_company', phone: '#service_call_phone', mobile_phone: '#service_call_mobile_phone', work_phone: '#service_call_work_phone', country: '#country', state: '#service_call_state', email: '#service_call_email', zip: '#service_call_zip', city: '#service_call_city' }, data: { ref_id: '#project_contractor_id' } %>
+          <%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: '#project_customer_id', address1: '#service_call_address1', address2: '#service_call_address2', company: '#service_call_company', phone: '#service_call_phone', mobile_phone: '#service_call_mobile_phone', work_phone: '#service_call_work_phone', country: '#country', state: '#service_call_state', email: '#service_call_email', zip: '#service_call_zip', city: '#service_call_city' }, data: { ref_id: '' } %>
           <%= f.hidden_field :customer_id %>
 
         </div>
