@@ -24,5 +24,14 @@
 
 
 <p>Forgot your password?</p>
-  <a href="/users/sign_in" data-role="button" data-inline="true" data-icon="gear" rel="external" data-corners="true" data-shadow="true"  data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-shadow ui-btn-right ui-btn-corner-all ui-btn-icon-left ui-btn-up-c">
-    <span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Reset Password</span><span class="ui-icon ui-icon-alert ui-icon-shadow">&nbsp;</span></span></a>
+
+
+<div class="ui-grid-b">
+  <div class="ui-block-a">
+    <%= link_to "Reset", new_password_path(resource_name), "class" => "ui-btn-up btn-signup", "data-role" => "button", "data-theme" => "d", "data-icon" => "alert" %>
+
+  </div>
+  <div class="ui-block-b"> </div>
+  <div class="ui-block-c"> </div>
+</div>
+
