@@ -5274,6 +5274,35 @@ table.dataTable thead th, table.dataTable thead td {
   width: 15%;
 }
 
+.project_status_new {
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.project_status_in_progress {
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.project_status_on_hold {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
+.project_status_completed {
+  color: #44AD3F;
+  font-weight: bold;
+}
+
+.project_status_closed {
+  color: #44AD3F;
+  font-weight: bold;
+}
+
+.project_status_canceled {
+  color: #DA4E49;
+  font-weight: bold;
+}
 
 .dataTables_wrapper .dataTables_paginate {
     float: right;
