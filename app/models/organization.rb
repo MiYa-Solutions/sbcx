@@ -333,6 +333,10 @@ class Organization < ActiveRecord::Base
     affiliate_ids.include? aff.id
   end
 
+  def settings
+    @settings ||= OrgSettings.new(self)
+  end
+
   private
   def has_at_least_one_role
     errors.add(:organization_roles, "You must select at least one organization role") unless organization_roles.length > 0
