@@ -1,2 +1,16 @@
-<%=  @org_settings.default_tax %>
-<%=  @org_settings.validate_job_ext_ref %>
+<div>
+<%= OrgSettings.human_attribute_name(:validate_job_ext_ref) %> =>
+<%= best_in_place @org_settings,
+                  :validate_job_ext_ref,
+                  type:       :checkbox,
+                  path:       org_settings_path,
+                  collection: [raw("<div class='btn btn-mini btn-danger'><i class='icon-remove icon-white'></i></div>"),
+                               raw("<div class='btn btn-mini btn-success'><i class='icon-ok icon-white'></i></div>")] %>
+</div>
+<br>
+<br>
+<br>
+<div>
+<%= OrgSettings.human_attribute_name(:default_tax) %> =>
+<%= best_in_place @org_settings, :default_tax, path: org_settings_path %>
+</div>

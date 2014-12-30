@@ -25,7 +25,7 @@ class OrgSettingsController < ApplicationController
     respond_to do |format|
       if @org_settings.save(settings_params)
         format.html { redirect_to org_settings_path(@org_settings), notice: 'Setting was successfully updated.' }
-        format.json { head :no_content }
+        format.json { head :no_content, status: :ok }
       else
         format.html { render action: "edit" }
         format.json { render :json => @org_settings.errors.full_messages, :status => :unprocessable_entity }
