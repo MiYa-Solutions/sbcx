@@ -30,6 +30,7 @@ Sbcx::Application.routes.draw do
   resource :job_imports, only: [:new, :create]
   resources :invites
   resource :settings, only: [:show, :edit, :update]
+  resource :org_settings, only: [:show, :edit, :update]
   resources :invoices, only: [:new, :create, :show, :index], controller: 'invoices'
 
                                                                                 # for rails4 unmark the 'via:' part

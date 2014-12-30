@@ -132,6 +132,8 @@ class Ticket < ActiveRecord::Base
   validates_numericality_of :tax
   validates_email_format_of :email, allow_nil: true, allow_blank: true
 
+  validates_uniqueness_of :external_ref, scope: :organization_id, allow_blank: false, if: :validate_external_ref?
+
   accepts_nested_attributes_for :customer
 
   ### state machine states constants
@@ -609,6 +611,10 @@ class Ticket < ActiveRecord::Base
 
   def changed_from_transferred?
     changes[:status] && changes[:status][0] == ServiceCall::STATUS_TRANSFERRED
+  end
+
+  def validate_external_ref?
+    self.organization.settings.validate_job_ext_ref?
   end
 
 end
