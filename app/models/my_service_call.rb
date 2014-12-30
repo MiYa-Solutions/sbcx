@@ -92,7 +92,7 @@ class MyServiceCall < ServiceCall
     end
 
     event :transfer do
-      transition :new => :transferred
+      transition [:open, :new] => :transferred
     end
 
     event :cancel do

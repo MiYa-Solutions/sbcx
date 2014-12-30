@@ -100,7 +100,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :transfer do
-      transition :accepted => :transferred, if: lambda { |sc| sc.work_pending? && sc.transferable? }
+      transition :accepted => :transferred, if: ->(sc) { !sc.work_done? && sc.transferable? }
     end
 
     event :cancel_transfer do
