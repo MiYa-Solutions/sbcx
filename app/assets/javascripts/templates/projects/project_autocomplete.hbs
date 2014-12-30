@@ -1,28 +1,14 @@
 <div class="row-fluid">
-    <div class="span2">
-        <img src='/assets/myJobLarge.png'/>
+    <div class="span1">
+        <label>Name</label>
     </div>
-    <div class="span10">
-        <div class="row-fluid">
-            <div class="span4">
-                <label>Name</label>
-                {{text}}
-            </div>
-            <div class="span2">
-                <label>Status</label>
-                {{human_status}}
-            </div>
-            <div class="span2">
-                <label>Customer</label>
-                {{customer_name}}
-            </div>
-            <div class="span2">
-                <label>Contractor</label>
-                {{{provider}}}
-            </div>
-        </div>
-        {{#if description}}
-            <div> {{description}} </div>
-        {{/if}}
+    <div class="span3">
+        {{text}}
+    </div>
+    <div class="span2">
+        <label>Customer</label>
+    </div>
+    <div class="span3">
+        {{customer_name}}
     </div>
 </div>

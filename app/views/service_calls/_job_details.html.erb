@@ -80,7 +80,7 @@
     <br>
 
     <ul class="unstyled list_service_calls">
-      <li><label><%= @service_call.class.human_attribute_name(:scheduled_for_text) %></label></li>
+      <li><label><%= t('general.general.scheduled_for') %></label></li>
       <li>
         <i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
       </li>
