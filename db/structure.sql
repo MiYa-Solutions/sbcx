@@ -350,7 +350,8 @@ CREATE TABLE boms (
     creator_id integer,
     updater_id integer,
     provider_bom_id integer,
-    subcon_bom_id integer
+    subcon_bom_id integer,
+    description character varying(255)
 );
 
 
@@ -2266,3 +2267,5 @@ INSERT INTO schema_migrations (version) VALUES ('20141222222707');
 INSERT INTO schema_migrations (version) VALUES ('20141226160730');
 
 INSERT INTO schema_migrations (version) VALUES ('20141226202747');
+
+INSERT INTO schema_migrations (version) VALUES ('20141230235139');

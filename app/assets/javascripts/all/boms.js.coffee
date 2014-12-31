@@ -22,7 +22,7 @@ jQuery ->
     $('#bom_cost').val(data["item"]["cost_cents"] / 100.0)
     $('#bom_price').val(data["item"]["price_cents"] / 100.0)
     desc = if data["item"]["description"] == null then "" else data["item"]["description"]
-    $('#bom_description').text(desc)
+    $('#bom_description').val(desc)
   )
 
   $('#bom_material_name').on 'autocompletechange', (event, ui) ->

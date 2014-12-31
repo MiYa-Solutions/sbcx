@@ -80,7 +80,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def bom_attributes
-    [:material_name, :material_id, :cost, :price, :quantity, :buyer_type, :buyer_id]
+    [:material_name, :material_id, :cost, :price, :quantity, :buyer_type, :buyer_id, :description]
 
   end
 
