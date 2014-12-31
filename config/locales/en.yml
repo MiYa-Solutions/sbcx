@@ -258,6 +258,8 @@ en:
       project_tooltip: "Click to link this job to an active project"
       bom_calc_tooltip: "Click to calculate bom based on product size"
       select_project: "Project"
+      org_settings: "Organization Settings"
+      default_tax: "Default Tax"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

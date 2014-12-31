@@ -5,7 +5,12 @@
       <div class="smart_label">
         <ul>
           <li><h1><%= t('general.general.setting_job_notifications') %></h1></li>
-          <li></li>
+          <li>
+            <%= link_to(t('general.general.org_settings'), org_settings_path,
+                        class: "btn btn btn-primary",
+                        role:  "button",
+                        id:    "link_to_org_settings_btn") %>
+          </li>
         </ul>
       </div>
 
