@@ -5,7 +5,7 @@
   <div class="row-fluid">
   <div class="smart_label">
     <ul>
-      <li><h1><%= Project.model_name.human %></h1></li>
+      <li><h1><%= Project.model_name.human.pluralize %></h1></li>
       <li>
         <%= link_to I18n.t('general.general.new_project'), new_project_path, :class => 'btn btn-primary' %></li>
 

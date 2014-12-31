@@ -157,7 +157,7 @@ en:
       my_jobs: "Jobs To Work On"
       scheduled_for: "Scheduled for"
       transferred_jobs: "Jobs that I Transferred"
-      job_number: "Job Number: "
+      job_number: "Job Number "
       job_history: "Job History"
       job_billing: "Job Billing"
       job_type: "Job Type"
