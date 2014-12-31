@@ -71,7 +71,8 @@ class TicketsDatatable
               ticket.my_profit.to_s,
               ticket.total_price.to_s,
               ticket.total_cost.to_s,
-              ticket.tags.map(&:name).join(', ')
+              ticket.tags.map(&:name).join(', '),
+              ticket.external_ref
           ]
         end
 
