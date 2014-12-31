@@ -556,6 +556,10 @@ class Ticket < ActiveRecord::Base
     res
   end
 
+  def customer_name
+    customer_id ? customer.name : @customer_name
+  end
+
   protected
 
   def check_subcon_agreement

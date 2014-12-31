@@ -72,9 +72,10 @@ jQuery ->
       # using its formatResult renderer - that way the repository name is shown preselected
       id = $(element).val()
       if id isnt ""
-        $.ajax("projects/" + id,
+        $.ajax("/projects/" + id,
           dataType: "json"
         ).done (data) ->
+          data.text = data.name
           callback data
 
     formatResult: formater.formatResult
