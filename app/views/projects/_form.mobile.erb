@@ -1,0 +1,71 @@
+<fieldset>
+  <div class="row-fluid">
+
+    <div class="span5 job_new_fields">
+      <%= f.input :name %>
+      <%= f.input :status, label: Project.human_attribute_name(:status), collection: Project.state_machines[:status].states, label_method: :human_name, value_method: :value, :include_blank => f.object.human_status_name %>
+
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="service_call_project_provider_id"> <%= t('general.general.select_contractor') %></label>
+
+        <div class="controls">
+          <!--<#%= f.select :provider_id, local_provider_options, prompt: t('activerecord.models.provider'), include_blank: true %>-->
+          <%= f.select :provider_id, local_provider_options, include_blank: true %>
+        </div>
+      </div>
+
+      <div class="control-group string optional">
+        <label class="string optional control-label" for="service_call_project_provider_id"></label>
+
+        <div class="controls">
+          <%= select_tag 'project[provider_agreement_id]', collection: [] %>
+        </div>
+      </div>
+
+
+      <div class="control-group string mandatory">
+        <label class="string optional control-label" for="service_call_project_provider_id"> <%= t('general.general.customer') %>
+          <div class="italic">(<%= t('general.general.optional') %>)</div>
+        </label>
+
+        <div class="controls">
+
+          <%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: '#project_customer_id', address1: '#service_call_address1', address2: '#service_call_address2', company: '#service_call_company', phone: '#service_call_phone', mobile_phone: '#service_call_mobile_phone', work_phone: '#service_call_work_phone', country: '#country', state: '#service_call_state', email: '#service_call_email', zip: '#service_call_zip', city: '#service_call_city' }, data: { ref_id: '' } %>
+          <%= f.hidden_field :customer_id %>
+
+        </div>
+      </div>
+
+      <div class="control-group string">
+        <label class="string  control-label" for="project_start_date"><%= @project.class.human_attribute_name(:start_date) %></label>
+
+        <div class="controls">
+          <%= f.text_field :start_date, class: "datetimepicker", 'data-datepicker' => "{ 'dateFormat' => 'mm-dd-yy'}" %>
+          <span class="help-inline"><%= I18n.t('general.emails.set_date') %></span>
+        </div>
+
+      </div>
+      <div class="control-group string">
+        <label class="string  control-label" for="project_end_date"><%= @project.class.human_attribute_name(:end_date) %></label>
+
+        <div class="controls">
+          <%= f.text_field :end_date, class: "datetimepicker", 'data-datepicker' => "{ 'dateFormat' => 'mm-dd-yy'}" %>
+          <span class="help-inline"><%= I18n.t('general.emails.set_date') %></span>
+        </div>
+      </div>
+      <%= f.input :external_ref %>
+
+      <br>
+
+    </div>
+
+    <div class="span7">
+      <%= f.input :description %>
+    </div>
+
+  </div>
+
+
+</fieldset>
+
+

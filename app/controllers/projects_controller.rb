@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
   def index
     respond_to do |format|
       format.html
+      format.mobile
       format.json { render json: ProjectsDatatable.new(view_context).as_json }
     end
   end
@@ -16,6 +17,7 @@ class ProjectsController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
+      format.mobile # show.html.erb
       format.json { render json: @project }
     end
   end
@@ -25,6 +27,7 @@ class ProjectsController < ApplicationController
   def new
     respond_to do |format|
       format.html # new.html.erb
+      format.mobile # new.html.erb
       format.json { render json: @project }
     end
   end
@@ -39,10 +42,10 @@ class ProjectsController < ApplicationController
   def create
     respond_to do |format|
       if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
+        format.any(:html, :mobile) { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render json: @project, status: :created, location: @project }
       else
-        format.html { render action: "new" }
+        format.any(:html, :mobile) { render action: "new" }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
@@ -53,25 +56,16 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update_attributes(project_params)
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
+        format.any(:html, :mobile) { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.any(:html, :mobile) { render action: "edit" }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /projects/1
-  # DELETE /projects/1.json
-  def destroy
-    @project.destroy
-
-    respond_to do |format|
-      format.html { redirect_to projects_url }
-      format.json { head :no_content }
-    end
-  end
+  protected
 
   def new_project_from_params
     if params[:project]
