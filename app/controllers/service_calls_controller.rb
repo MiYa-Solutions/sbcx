@@ -41,7 +41,7 @@ class ServiceCallsController < ApplicationController
 
   def new
     # @service_call = ServiceCall.new
-    @customer     = Customer.new
+    @customer = Customer.new
     store_location
   end
 
@@ -54,7 +54,7 @@ class ServiceCallsController < ApplicationController
         flash[:success] = t('service_call.crud_messages.success')
         format.any(:html, :mobile) { redirect_to service_call_path @service_call }
       else
-        render :action => 'new'
+        format.any(:html, :mobile) { render 'new' }
       end
 
     end
@@ -106,7 +106,7 @@ class ServiceCallsController < ApplicationController
 
 
   def new_service_call_from_params
-    @service_call ||= ServiceCall.new_from_params(current_user.organization, permitted_params(nil).service_call)
+    @service_call       ||= ServiceCall.new_from_params(current_user.organization, permitted_params(nil).service_call)
     # this is to work around a textile best_in_place issue which causes html tags to dislay when editing for the first time
     @service_call.notes = "**" if @service_call.notes.nil? || @service_call.notes.empty?
   end
