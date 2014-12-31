@@ -21,6 +21,17 @@ describe 'Service Call Transfer' do
       expect(job.status_events).to include(:transfer)
     end
 
+    context 'when job is completed' do
+
+      before do
+        complete_the_work job
+      end
+
+      it 'you can no longer transfer the job' do
+        expect(job.status_events).to_not include(:transfer)
+      end
+    end
+
     context 'after transfer' do
       before do
         transfer_the_job
@@ -55,6 +66,17 @@ describe 'Service Call Transfer' do
 
         before do
           accept_the_job subcon_job
+        end
+
+        context 'when the subcon completes the job' do
+          before do
+            start_the_job subcon_job
+            complete_the_work subcon_job
+          end
+
+          it 'should not be able to transfer the work' do
+            expect(subcon_job.status_events).to_not include(:transfer)
+          end
         end
 
         context 'when the subcon transfers the job before starting' do
