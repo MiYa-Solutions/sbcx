@@ -20,7 +20,7 @@
           <li><h1><%= Invoice.model_name.human.pluralize %></h1></li>
           <li>
             <%= button_tag t('general.general.new_invoice'), :class => 'btn btn-primary',
-                           id:                                      'new-invoice-btn', data: { toggle: 'modal', target: '#new_invoice' } %>
+                           id: 'new-invoice-btn', data: { toggle: 'modal', target: '#new_invoice' } %>
           </li>
         </ul>
       </div>
@@ -93,10 +93,10 @@
         <div class="row-fluid">
           <div class="span6">
 
-            <% unless invoiceable.work_done? %>
-                <%= f.input :adv_payment_amount, required: true %>
-                <%= f.input :adv_payment_desc, required: true %>
-            <% end %>
+            <!--<#% unless invoiceable.work_done? %>-->
+                <!--<#%= f.input :adv_payment_amount, required: true %>-->
+                <!--<#%= f.input :adv_payment_desc, required: true %>-->
+            <!--<#% end %>-->
             <%= f.input :email_customer, as: :boolean %>
             <%= f.input :invoiceable_id, as: :hidden, input_html: { value: invoiceable.id } %>
             <%= f.input :invoiceable_type, as: :hidden, input_html: { value: invoiceable.class.name } %>
