@@ -5,7 +5,7 @@
   <ul>
     <li><h1><%= Project.model_name %>:</h1></li>
     <li><h1><%= @project.name %></h1></li>
-    <li></li>
+    <li><h1><%= I18n.t('general.general.project_number').html_safe + ": ".html_safe + "#{@project.id}" %></h1></li>
   </ul>
 </div>
 
@@ -32,6 +32,7 @@
             <div class="span6">
               <table class="table table-striped table-condensed">
                 <tbody>
+                <tr>
                   <tr>
                     <td><strong><%= Project.human_attribute_name(:customer) %></strong></td>
                     <td><%= link_to @project.customer_name, @project.customer if @project.customer %></td>
