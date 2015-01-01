@@ -9,6 +9,12 @@
 
           <span class="<%= style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
                 <h3 id="job_project_show">
+                  <%= link_to("", '#link_to_project',
+                              class: "icon-pencil",
+                              data:  { toggle: 'modal' },
+                              title: I18n.t('general.general.project_tooltip'),
+                              rel:   'tooltip',
+                              id:    "link_to_project_btn") %>
 
                   <%= link_to @service_call.project.name, @service_call.project if @service_call.project %>
 
