@@ -4,14 +4,12 @@
     <td><strong> <%= Project.model_name %></strong></td>
     <td>
       <% if @service_call.project %>
-               <span class="<%= style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
+
+
+
+          <span class="<%= style("service_call.states.status.#{@service_call.status_name}") %>" id="service_call_status">
                 <h3 id="job_project_show">
-                  <%= link_to("", '#link_to_project',
-                              class: "icon-pencil",
-                              data:  { toggle: 'modal' },
-                              title: I18n.t('general.general.project_tooltip'),
-                              rel:   'tooltip',
-                              id:    "link_to_project_btn") %>
+
                   <%= link_to @service_call.project.name, @service_call.project if @service_call.project %>
 
                 </h3>
@@ -292,7 +290,7 @@
     <%= simple_form_for @service_call, as: :service_call, url: service_call_url(@service_call), :html => { :class => 'form-horizontal' } do |f| %>
         <% if f.object.errors.any? %>
             <div class="alert alert-block alert-error">
-              <a class="close" data-dismiss="alert" href="#">√ó</a>
+              <a class="close" data-dismiss="alert" href="#">x</a>
               <%= render 'shared/error_messages', object: f.object %>
             </div>
         <% end %>

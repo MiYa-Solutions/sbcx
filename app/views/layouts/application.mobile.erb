@@ -111,16 +111,16 @@
     <div class="icon_grid">
       <div class="ui-grid-b">
         <div class="ui-block-a white icon_frame">
+          <%= link_to image_tag("/assets/projects.png", :border => 0), projects_path %>
+          <div><%= I18n.t('general.general.projects') %></div>
+        </div>
+        <div class="ui-block-b white icon_frame">
           <%= link_to image_tag("/assets/customer.png", :border => 0), customers_path %>
           <div><%= I18n.t('general.general.customers') %></div>
         </div>
         <div class="ui-block-b white icon_frame">
           <%= link_to image_tag("/assets/employees.png", :border => 0), my_users_path %>
           <div><%= I18n.t('general.general.employees') %></div>
-        </div>
-        <div class="ui-block-c white icon_frame">
-          <%= link_to image_tag("/assets/parts.png", :border => 0), materials_path %>
-          <div><%= I18n.t('general.general.manage_parts') %></div>
         </div>
       </div>
     </div>
@@ -138,15 +138,15 @@
           <div><%= I18n.t('general.general.alerts') %></div>
         </div>
         <div class="ui-block-c white icon_frame">
-          <!--<#%= link_to image_tag("/assets/profile.png", :border => 0), edit_user_registration_path %>-->
-          <%= link_to image_tag("/assets/profile.png", :border => 0),  "#betaPopup", "data-rel" => "popup", "data-transition" => "pop" %>
-
-          <div><%= I18n.t('general.general.my_profile') %></div>
+          <%= link_to image_tag("/assets/parts.png", :border => 0), materials_path %>
+          <div><%= I18n.t('general.general.manage_parts') %></div>
         </div>
+        <!--<div class="ui-block-c white icon_frame">-->
+          <!--&lt;!&ndash;<#%= link_to image_tag("/assets/profile.png", :border => 0), edit_user_registration_path %>&ndash;&gt;-->
+          <!--<#%= link_to image_tag("/assets/profile.png", :border => 0),  "#betaPopup", "data-rel" => "popup", "data-transition" => "pop" %>-->
 
-
-
-
+          <!--<div><#%= I18n.t('general.general.my_profile') %></div>-->
+        <!--</div>-->
 
       </div>
     </div>

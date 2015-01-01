@@ -1,0 +1,64 @@
+<% invoiceable %>
+<% account %>
+
+
+<%= link_to I18n.t('general.general.new_invoice'), "#add_new_pro_invoice", "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-rel" => "popup", "data-transition" => "pop" %>
+<br>
+
+<ul data-role="listview">
+
+  <% invoiceable.invoices.order('id desc').all.each do |invoice| %>
+      <% if permitted_to? :show, invoice %>
+          <li class="job_billing">
+            <%= link_to invoice.id, invoice_path(invoice, format: :pdf, template: "#{invoiceable.class.name.underscore}_invoice"), 'data-ajax' => 'false' %>
+            <p class= "billing_price_label"><%= humanized_money_with_symbol invoice.total %></p>
+          </li>
+      <% end %>
+  <% end %>
+
+
+
+</ul>
+<br>
+
+
+<div data-role="popup" id="add_new_pro_invoice" data-overlay-theme="a" data-theme="c" data-dismissible="false" class="ui-corner-all close_btn_header">
+
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1 id="entries_header"><%= t('general.general.new_invoice') %></h1>
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+  </div>
+
+  <div data-role="content">
+
+    <% invoice = invoiceable.invoices.build(account: account) %>
+    <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
+
+        <div class="transfer_job_form">
+          <br>
+
+          <%= f.input :email_customer, as: :boolean %>
+          <%= f.input :invoiceable_id, as: :hidden, input_html: { value: invoiceable.id } %>
+          <%= f.input :invoiceable_type, as: :hidden, input_html: { value: invoiceable.class.name } %>
+          <%= f.input :accountable_id, as: :hidden, input_html: { value: account.accountable_id } %>
+          <%= f.input :accountable_type, as: :hidden, input_html: { value: account.accountable_type } %>
+          <%= f.input :notes %>
+        </div>
+
+        <%= f.submit I18n.t('general.general.Save'),
+                     id:    'invoice_btn',
+                     class: "ui-btn-up-b ui-btn-hidden",
+                     "data-theme" => "b",
+                     title: 'Click to create an invoice',
+                     rel:   'tooltip' %>
+            <br>
+        <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
+
+
+  <% end %>
+    <!--content-->
+  </div>
+  <!--popup-->
+</div>
+

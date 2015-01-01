@@ -261,6 +261,8 @@ en:
       org_settings: "Organization Settings"
       default_tax: "Default Tax"
       project_number: "Project Number"
+      create_project: "Create Project"
+      link: "Link"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

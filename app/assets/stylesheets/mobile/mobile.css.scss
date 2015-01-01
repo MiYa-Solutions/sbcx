@@ -2327,6 +2327,20 @@ div.ui-slider {
   max-width: 900px !important;
 }
 
+#link_to_project-popup {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
+#add_new_pro_invoice-popup {
+  width: 80% !important;
+  left: 10% !important;
+  right: 10% !important;
+  max-width: 900px !important;
+}
+
 #transfer_modal {
   width: 80% !important;
   left: 10% !important;
@@ -2385,4 +2399,73 @@ div.ui-slider {
   text-overflow: ellipsis;
   top: 50%;
   width: 100px;
+}
+
+.project_status {
+  font-size: 12px;
+  margin-top: -10px;
+  position: absolute;
+  right: 11%;
+  text-overflow: ellipsis;
+  top: 50%;
+  width: 100px;
+}
+
+.project_status_new {
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.project_status_in_progress {
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.project_status_on_hold {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
+.project_status_completed {
+  color: #44AD3F;
+  font-weight: bold;
+}
+
+.project_status_closed {
+  color: #44AD3F;
+  font-weight: bold;
+}
+
+.project_status_canceled {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
+.project_show_info {
+  font-size: 14px;
+  padding-right: 10px;
+  text-transform: uppercase;
+  line-height: 12px;
+}
+
+.project_ext_ref_label {
+  label {
+    display: none;
+  }
+}
+
+#link_to_proj {
+  background: -moz-linear-gradient(center top , #c54e4e, #ab2525) repeat scroll 0 0 #ab2525;
+  border: 1px solid #721414;
+  border-radius: 5px;
+  color: #fff;
+  float: right;
+  font-size: 12px;
+  font-weight: normal;
+  margin-right: 2%;
+  margin-top: 0;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px #000;
+  text-transform: none;
+
 }

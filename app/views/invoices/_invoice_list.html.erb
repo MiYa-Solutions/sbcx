@@ -84,36 +84,34 @@
 
   </div>
 
+  <% invoice = invoiceable.invoices.build(account: account) %>
+  <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
   <div class="modal-body">
-
-    <% invoice = invoiceable.invoices.build(account: account) %>
-    <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
-
 
         <div class="row-fluid">
           <div class="span6">
 
-            <% unless invoiceable.work_done? %>
-                <%= f.input :adv_payment_amount, required: true %>
-                <%= f.input :adv_payment_desc, required: true %>
-            <% end %>
-            <%= f.input :email_customer, as: :boolean %>
-            <%= f.input :invoiceable_id, as: :hidden, input_html: { value: invoiceable.id } %>
-            <%= f.input :invoiceable_type, as: :hidden, input_html: { value: invoiceable.class.name } %>
-            <%= f.input :accountable_id, as: :hidden, input_html: { value: account.accountable_id } %>
-            <%= f.input :accountable_type, as: :hidden, input_html: { value: account.accountable_type } %>
+                    <!--<#% unless invoiceable.work_done? %>-->
+                        <!--<#%= f.input :adv_payment_amount, required: true %>-->
+                        <!--<#%= f.input :adv_payment_desc, required: true %>-->
+                    <!--<#% end %>-->
+                    <%= f.input :email_customer, as: :boolean %>
+                    <%= f.input :invoiceable_id, as: :hidden, input_html: { value: invoiceable.id } %>
+                    <%= f.input :invoiceable_type, as: :hidden, input_html: { value: invoiceable.class.name } %>
+                    <%= f.input :accountable_id, as: :hidden, input_html: { value: account.accountable_id } %>
+                    <%= f.input :accountable_type, as: :hidden, input_html: { value: account.accountable_type } %>
 
           </div>
           <div class="span6">
-            <%= f.input :notes %>
+                <%= f.input :notes %>
+             </div>
 
-          </div>
-
+          <!--end of row-->
         </div>
 
-        </div>
+       </div>
 
-        <div class="modal-footer">
+  <div class="modal-footer">
           <div class="transfer_btn_modal">
             <%= f.submit I18n.t('general.general.Save'),
                          id:    'invoice_btn',
@@ -125,7 +123,7 @@
           <!--<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>-->
         </div>
 
-    <% end %>
-    </div>
+  <% end %>
+</div>
 <!--end of modal-->
 
