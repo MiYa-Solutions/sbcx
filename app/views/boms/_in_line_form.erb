@@ -17,12 +17,12 @@
 
         </div>
 
-        <div class="span5">
+        <div class="span4">
           <%= f.autocomplete_field :material_name, autocomplete_material_name_materials_url, update_elements: { id: "#bom_material_id" } %>
           <%= f.hidden_field :material_id %>
           <%= f.hidden_field :ticket_id, value: @service_call.id %>
         </div>
-
+        <div class="span2 bom_label_frame part_frame"><%= t('general.general.description') %></div>
         <div class="span5">
           <%= f.text_field :description %>
         </div>
@@ -49,7 +49,7 @@
         <div class="span1 bom_label_frame qty_frame">
           <span class="add-on"><%= I18n.t('general.general.qty') %></span>
         </div>
-        <div class="span2">
+        <div class="span3">
           <!--<i id="area-calc" class="icon-cog" data-toggle="modal" data-target="#area_calculator"></i>-->
 
           <%= f.text_field :quantity %>

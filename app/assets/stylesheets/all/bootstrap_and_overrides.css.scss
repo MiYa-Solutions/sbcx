@@ -603,7 +603,7 @@ footer {
 }
 
 #bom_quantity {
-  width: 60%;
+  width: 30%;
 }
 
 #bom_buyer_id {
@@ -2840,11 +2840,18 @@ div.DTTT_collection {
   color: #3A87AD;
   //padding-top: 18px;
   margin-top: -15px;
-  height: 105px;
+  min-height: 120px;
 
   .parts_2nd {
-    margin-top: 3px;
+    margin-top: 8px;
   }
+
+  .control-group.error > label, .control-group.error .help-block, .control-group.error .help-inline {
+    color: #b94a48;
+    float: right;
+  }
+
+
 }
 
 .add_entry_frame {
@@ -5386,4 +5393,8 @@ table.dataTable thead th, table.dataTable thead td {
 
 .bom_description_table {
   width: 150px;
+}
+
+#bom_description {
+  width: 100%;
 }
