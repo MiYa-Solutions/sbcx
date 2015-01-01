@@ -2,8 +2,8 @@
   <td><%= bom.material.name %>
     <!--<i class="icon-search" title="hello" rel='tooltip'></i>-->
   </td>
-  <td title="<%= bom.description %>">
-    <%= truncate(bom.description, length: 15) %>
+  <td title="<%= bom.description %>" class="bom_description_table">
+    <%= truncate(bom.description, length: 25) %>
   </td>
   <td><%= bom.quantity %></td>
   <!--<td><#%= best_in_place bom, :quantity ,path: service_call_bom_path(bom.ticket, bom) %></td>-->

@@ -3146,12 +3146,12 @@ hr {
 
 #job_show_tab {
   margin-left: 12px;
-  width: 66.6%;
+//  width: 66.6%;
 }
 
-#job_statuses_tab {
-  width: 31.5%;
-}
+//#job_statuses_tab {
+//  width: 31.5%;
+//}
 
 
 .navbar .nav .active > a, .navbar .nav .active > a:hover {
@@ -5382,4 +5382,8 @@ table.dataTable thead th, table.dataTable thead td {
   left: 70%;
   top: 60%;
   width: 50%;
+}
+
+.bom_description_table {
+  width: 150px;
 }
