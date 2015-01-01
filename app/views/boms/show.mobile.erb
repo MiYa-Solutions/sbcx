@@ -12,7 +12,7 @@
       <li class="ui-li ui-li-static">
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= Material.human_attribute_name(:description) %></div>
-          <div class="ui-block-b"><%= truncate(@bom.material.description, length: 15) %></div>
+          <div class="ui-block-b"><%= @bom.description %></div>
         </div>
       </li>
       <li class="ui-li ui-li-static">

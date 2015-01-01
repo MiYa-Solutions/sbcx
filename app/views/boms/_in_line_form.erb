@@ -53,12 +53,12 @@
           <!--<i id="area-calc" class="icon-cog" data-toggle="modal" data-target="#area_calculator"></i>-->
 
           <%= f.text_field :quantity %>
-          <%= link_to (image_tag'cacl_24.png',
-                      class: "",
-                      data: { toggle: 'modal', target: "#area_calculator" },
-                      title: I18n.t('general.general.bom_calc_tooltip'),
-                      rel:   'tooltip',
-                      id: "link_to_bom_calc_btn") %>
+              <%= link_to (image_tag'cacl_24.png',
+                          class: "",
+                          data: { toggle: 'modal', target: "#area_calculator" },
+                          title: I18n.t('general.general.bom_calc_tooltip'),
+                          rel:   'tooltip',
+                          id: "link_to_bom_calc_btn") %>
 
         </div>
 
