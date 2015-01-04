@@ -4,32 +4,20 @@
 
 
 <div class="search_job">
+    <%= link_to I18n.t('general.general.new'), new_project_path, "data-role" => "button", id: 'new-project', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+    <%= link_to I18n.t('general.general.see_all'), '#', "data-role" => "button", id: 'project-search-btn', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+    <%= link_to 'Next', '#', "data-role" => "button", id: 'project-next-btn', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+    <%= link_to 'Prev', '#', "data-role" => "button", id: 'project-prev-btn', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
 
-  <ul data-role="listview"  data-filter="true" data-divider-theme="d" data-filter-placeholder="Search Contacts">
-    <div class= "new_job_button">
-      <%= link_to I18n.t('general.general.new'), new_project_path, "data-role" => "button", id: 'new-service-call-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
-    </div>
+  <div class= "new_job_button">
+    <label for="project-search">Search</label>
+    <input id="project-search" type="text"/>
+    <input id="project-search-page" type="hidden" value="1"/>
+  </div>
+
+  <ul id="projects-list"  data-role="listview"   data-divider-theme="d" >
 
 
-    <% unless @projects.nil? %>
-        <% unless @projects.empty? %>
-            <% @projects.each do |sc| %>
-                <li class="inline_mobile service_calls_index">
-                  <p class="ui-li-aside-blue ui-li-desc-blue">
-                    <badge><%= sc.id %></badge>
-                  </p>
-
-                      <%= link_to sc.try(:name), project_path(sc), "data-transition" => "slide", id: "jobs_index_no_address" %>
-
-                  <span class="project_status project_status_<%= sc.status_name %>">
-                                  <%= sc.human_status_name %>
-                </span>
-
-                </li>
-            <% end %>
-        <% end %>
-
-    <% end %>
   </ul>
 
 

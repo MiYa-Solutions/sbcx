@@ -4,5 +4,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.mobile
+//= require handlebars.runtime
+//= require_tree ./mobile/templates
 //= require_tree ./mobile
 

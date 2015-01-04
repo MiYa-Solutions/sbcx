@@ -1,0 +1,11 @@
+{{#each projects}}
+    <li class="inline_mobile service_calls_index">
+        <p class="ui-li-aside-blue ui-li-desc-blue">
+            <badge>{{id}}</badge>
+        </p>
+        <a href="/projects/{{id}}" data-transition="slide">{{text}} </a>
+                  <span class="project_status project_status_<%= sc.status_name %>">
+                      {{human_status}}
+                  </span>
+    </li>
+{{/each}}
