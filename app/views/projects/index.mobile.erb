@@ -5,21 +5,11 @@
 
 <div class="search_job">
     <%= link_to I18n.t('general.general.new'), new_project_path, "data-role" => "button", id: 'new-project', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
-    <%= link_to I18n.t('general.general.see_all'), '#', "data-role" => "button", id: 'list-search-btn', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
-    <%= link_to 'Next', '#', "data-role" => "button", id: 'list-next-btn', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
-    <%= link_to 'Prev', '#', "data-role" => "button", id: 'list-prev-btn', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
-
-  <div class= "new_job_button">
-    <label for="project-search">Search</label>
-    <input id="project-search" type="text"/>
-    <input id="project-search-page" type="hidden" value="1"/>
-  </div>
-
-  <ul id="searchable-list"  data-role="listview"   data-divider-theme="d" >
 
 
-  </ul>
+</div>
 
+<div id="projects-list">
 
 </div>
 
