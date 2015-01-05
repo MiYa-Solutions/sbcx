@@ -4,7 +4,7 @@
             <badge>{{id}}</badge>
         </p>
         <a href="/projects/{{id}}" data-transition="slide">{{text}} </a>
-                  <span class="project_status project_status_<%= sc.status_name %>">
+                  <span class="project_status project_status_{{status}} %>">
                       {{human_status}}
                   </span>
     </li>

@@ -12,6 +12,7 @@ class SearchableList
     $(@search_results).listview()
 
     $('#list-search-btn').click =>
+      @reset_page_data()
       @fetch_data()
     $('#list-next-btn').click =>
       @next_page()
@@ -44,9 +45,14 @@ class SearchableList
   prev_page_location: =>
     @current_page - @page_size
 
+  reset_page_data: =>
+    @total_records = 0
+    @current_page = 0
+
 
 
   fetch_data: =>
+
     $.ajax
       url: @url
       dataType: "json"
