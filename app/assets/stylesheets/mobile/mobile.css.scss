@@ -2482,3 +2482,47 @@ div.ui-slider {
   right: 1% !important;
   max-width: 900px !important;
 }
+
+#list-search-btn {
+  margin-top: 8px;
+}
+
+#searchable-list-search {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  border: medium none;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  width: 100%;
+}
+
+#list-prev-btn{
+  cursor: pointer;
+  font-size: 14px;
+  height: 22px;
+  margin-top: 5px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 4px;
+  right: 0;
+  text-align: center;
+  width: 18%;
+}
+
+
+#list-next-btn{
+  cursor: pointer;
+  font-size: 14px;
+  height: 22px;
+  margin-top: 5px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 4px;
+  right: 0;
+  text-align: center;
+  width: 18%;
+}
+
+.prev-next-btns {
+  margin-top: -19px;
+}
+
