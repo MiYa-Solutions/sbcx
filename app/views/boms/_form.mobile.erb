@@ -23,7 +23,7 @@
 
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:quantity) %></div>
-          <div class="ui-block-b"> <%= f.text_field :quantity, "type" => "range", "name" => "bom[quantity]", id: "slider-1", "value" => "1", "min" => "0", "max" => "100" %>
+          <div class="ui-block-b"> <%= f.text_field :quantity, "type" => "range", "name" => "bom[quantity]", id: "bom_quantity", "value" => "1", "min" => "0", "max" => "100" %>
                    <%= link_to image_tag("/assets/clacl_48.png", :border => 0),  "#area_calculator", "data-rel" => "popup", "data-transition" => "pop", id: "link_to_bom_calc_btn" %>
 
           </div>
@@ -67,7 +67,7 @@
   <div data-role="content">
     <br>
 
-
+    <form id="area-calc-form" data-parsley-validate>
 
 
         <div class="ui-grid-a">
@@ -91,10 +91,10 @@
           <div class="ui-block-b"><input type="text" id="area-calc-ilength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/></div>
         </div>
 
-
+        </form>
 
         <br>
-        <a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
+        <a href="#" id="area-calc-btn" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
 
 
 

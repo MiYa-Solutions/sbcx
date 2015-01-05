@@ -18,7 +18,7 @@ class AreaCalculator
         res = @calculate_area(@fwidth, @iwidth, @flength, @ilength)
         $(@output).val(Math.round(res * 1000 ) / 1000)
         $(@desc_element).val($(@desc_element).val() + @size_sting())
-        $('#area_calculator').modal('toggle')
+        $('#area_calculator').popup('close')
 
 
   calculate_area: (fwidth = 0, iwidth = 0, flength = 0, ilength = 0) ->
