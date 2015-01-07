@@ -579,9 +579,9 @@ class Ticket < ActiveRecord::Base
 # Assigns tags from a comma separated tag list
   def assign_tags
     if @tag_list
-      #self.taggings.each { |tagging| tagging.destroy }
+      self.taggings.each { |tagging| tagging.destroy }
       self.tags = @tag_list.split(/,/).uniq.map do |name|
-        Tag.where(name: name, organization_id: organization_id).first || Tag.create(:name => name.strip, organization_id: organization_id)
+        Tag.where(name: name.strip, organization_id: organization_id).first || Tag.create(:name => name.strip, organization_id: organization_id)
       end
     end
   end

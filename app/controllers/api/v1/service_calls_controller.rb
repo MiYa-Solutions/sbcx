@@ -20,7 +20,7 @@ class Api::V1::ServiceCallsController < Api::V1::ApiController
   def update
     respond_to do |format|
 
-      if @service_call.update_attributes(service_call_params)
+      if @service_call.update_attributes!(service_call_params)
         format.json { render json: @service_call, status: :ok }
       else
         format.json { render json: { errors: @service_call.errors }, status: :unprocessable_entity }

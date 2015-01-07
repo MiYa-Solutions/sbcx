@@ -84,7 +84,7 @@ class ServiceCallsController < ApplicationController
 
         format.json do
           update_params_for_bip
-          respond_with_bip @service_call
+          render json: @service_call, status: :ok
         end
 
       else
