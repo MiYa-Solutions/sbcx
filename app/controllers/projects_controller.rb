@@ -1,7 +1,10 @@
 class ProjectsController < ApplicationController
-
   before_filter :authenticate_user!
+  filter_access_to :autocomplete_project_name, :require => :index
   filter_resource_access
+
+  autocomplete :project, :name, limit: 50
+
   # GET /projects
   # GET /projects.json
   def index
@@ -67,6 +70,11 @@ class ProjectsController < ApplicationController
 
   protected
 
+  def autocomplete_project_name_where
+    "organization_id = #{current_user.organization.id}"
+  end
+
+
   def new_project_from_params
     if params[:project]
       @project = Project.new(project_params)
@@ -93,4 +101,5 @@ class ProjectsController < ApplicationController
                                     :start_date,
                                     :external_ref)
   end
+
 end

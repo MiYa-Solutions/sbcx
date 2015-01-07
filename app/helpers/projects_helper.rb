@@ -23,6 +23,7 @@ module ProjectsHelper
     job_params[:service_call].merge!(provider_agreement_id: proj.provider_agreement_id) if proj.provider_agreement_id
     job_params[:service_call].merge!(customer_id: proj.customer_id) if proj.customer_id
     job_params[:service_call].merge!(external_ref: proj.external_ref) if proj.external_ref
+    job_params[:service_call].merge!(project_name: proj.name) if proj.name
     new_service_call_path(job_params)
   end
 

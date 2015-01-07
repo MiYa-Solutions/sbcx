@@ -1,6 +1,6 @@
 class SearchableList
   constructor: (element, options) ->
-    @page_size = 2
+    @page_size = 10
     @element = element
     @current_page = 0
     @total_records = 0

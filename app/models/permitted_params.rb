@@ -447,7 +447,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                   :collector_id,
                   :name,
                   :collector_type,
-                  :external_ref, :project_id]
+                  :external_ref, :project_id, :project_name]
 
     basic_attr = basic_attr | sc_technician_attr if user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
     basic_attr = basic_attr | sc_dispatcher_attr if user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME

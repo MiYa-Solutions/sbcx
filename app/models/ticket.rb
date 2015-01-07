@@ -58,6 +58,7 @@
 
 class Ticket < ActiveRecord::Base
   include InvoiceableTicket
+  include Forms::TicketProjectForm
 
   serialize :properties, ActiveRecord::Coders::Hstore
   monetize :subcon_fee_cents

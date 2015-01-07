@@ -23,6 +23,7 @@ $(document).bind "pageshow", (e) ->
       $a = $(e.currentTarget)
       $('#customer-autocomplete').val($a.text())
       $('#service_call_customer_id').val($a.data('autocomplete').id)
+      $('#project_customer_id').val($a.data('autocomplete').id)
       $('#service_call_address1').val($a.data('autocomplete').address1)
       $('#service_call_address2').val($a.data('autocomplete').address2)
       $('#service_call_company').val($a.data('autocomplete').company)

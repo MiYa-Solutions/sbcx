@@ -2,6 +2,7 @@ Sbcx::Application.routes.draw do
 
   resources :projects do
     resources :invoices
+    get :autocomplete_project_name, :on => :collection
   end
 
   namespace :api do

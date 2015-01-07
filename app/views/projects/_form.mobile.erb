@@ -31,11 +31,14 @@
  <div class="ui-grid-a">
     <div class="ui-block-a"><%= t('general.general.customer') %></div>
     <div class="ui-block-b">
-      <%= f.input :customer_name, input_html: { id: "customer-autocomplete", data: { ref_id: "" } }, :label => "Select Customer" %>
-      <!--<#%= f.autocomplete_field :customer_name, autocomplete_customer_name_service_calls_path, update_elements: { id: '#project_customer_id', address1: '#service_call_address1', address2: '#service_call_address2', company: '#service_call_company', phone: '#service_call_phone', mobile_phone: '#service_call_mobile_phone', work_phone: '#service_call_work_phone', country: '#country', state: '#service_call_state', email: '#service_call_email', zip: '#service_call_zip', city: '#service_call_city' }, data: { ref_id: '' } %>-->
-      <!--<#%= f.hidden_field :customer_id %>-->
+      <%= f.input :customer_name, input_html: { id: "customer-autocomplete", data: { ref_id: "" } }, :label => "Customer Search" %>
+      <%= f.hidden_field :customer_id %>
     </div>
-  </div>
+
+ </div>
+</div>
+<div>
+  <ul id='customer-suggestions' data-role="listview" data-inset="true"></ul>
 </div>
 <div class="ui-grid-a">
   <div class="ui-block-a"><%= @project.class.human_attribute_name(:start_date) %></div>

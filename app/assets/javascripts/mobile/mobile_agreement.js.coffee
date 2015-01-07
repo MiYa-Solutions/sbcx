@@ -61,3 +61,14 @@ $(document).live "pageinit", ->
   # dynamic provider agreement properties
   $('#service_call_provider_agreement_id').change ->
     show_agr_props($('#service_call_provider_agreement_id :selected'))
+
+  # dynamic provider agreement selection for project
+  update_agreement_select($('#project_provider_id'), $('#project_provider_agreement_id'))
+
+  $('#project_provider_id').change ->
+    $(agr_props).hide(400)
+    update_agreement_select($('#project_provider_id'), $('#project_provider_agreement_id'))
+
+  # dynamic provider agreement properties
+  $('#project_provider_agreement_id').change ->
+    show_agr_props($('#project_provider_agreement_id :selected'))

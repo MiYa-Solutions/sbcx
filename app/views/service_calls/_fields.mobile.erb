@@ -5,7 +5,7 @@
   <div class="ui-grid-a">
     <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
     <div class="ui-block-b"><%= f.select :provider_id, provider_options, { prompt: "Me" } %></div>
-   </div>
+  </div>
 
   <div class="ui-grid-a">
     <!--<div class="ui-block-a"><@%= @service_call.class.human_attribute_name(:provider_agreement) %></div>-->
@@ -13,22 +13,23 @@
     <div class="ui-block-b"><%= select_tag 'service_call[provider_agreement_id]', collection: [], select: "none" %></div>
   </div>
 
-    <%= render 'service_calls/transfer_props/prov_flat_fee_props', f: f %>
+  <%= render 'service_calls/transfer_props/prov_flat_fee_props', f: f %>
 
 
 
-      <div class="ui-grid-a">
-        <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:tag_list) %></div>
-        <div class="ui-block-b"><%= f.input :tag_list, collection: current_user.organization.tags.map(&:name), input_html: { multiple: '1', 'data-native-menu' => 'false', placeholder: 'choose category' } %></div>
-      </div>
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:tag_list) %></div>
+    <div class="ui-block-b"><%= f.input :tag_list, collection: current_user.organization.tags.map(&:name), input_html: { multiple: '1', 'data-native-menu' => 'false', placeholder: 'choose category' } %></div>
+  </div>
 
 
+  <div class="ui-grid-a">
+    <div class="ui-block-a"><%= Project.model_name.human %></div>
+    <%= f.input :project_name, input_html: { id: 'project-autocomplete', data: { ref_id: "" } }, :label => "Select Customer" %>
+    <%= f.hidden_field :project_id %> <br>
 
-    <div class="ui-grid-a">
-      <div class="ui-block-a"><%= t('general.general.select_project') %></div>
-      <div class="ui-block-b"><%= select_tag 'service_call[project_id]', collection: [], select: "none" %></div>
-    </div>
-
+  </div>
+  <ul id="project-suggestions" data-role="listview" data-inset="true"></ul>
 
 
 </div>
@@ -48,20 +49,20 @@
 <div class="edit_job_details">
 
   <!--<div class="ui-grid-a">-->
-    <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:allow_collection) %></div>-->
-    <!--<div class="ui-block-b collection"><#%= f.input :allow_collection %></div>-->
+  <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:allow_collection) %></div>-->
+  <!--<div class="ui-block-b collection"><#%= f.input :allow_collection %></div>-->
   <!--</div>-->
 
   <!--<div class="ui-grid-a">-->
-    <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:transferable) %></div>-->
-    <!--<div class="ui-block-b collection"><#%= f.input :transferable %></div>-->
+  <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:transferable) %></div>-->
+  <!--<div class="ui-block-b collection"><#%= f.input :transferable %></div>-->
   <!--</div>-->
 
   <!--<#% if current_user.organization.multi_user? %>-->
-      <!--<div class="ui-grid-a">-->
-        <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:technician) %></div>-->
-        <!--<div class="ui-block-b"><#%= f.association :technician, collection: current_user.organization.users, value: f.object.technician.try(:name) %></div>-->
-      <!--</div>-->
+  <!--<div class="ui-grid-a">-->
+  <!--<div class="ui-block-a"><#%= @service_call.class.human_attribute_name(:technician) %></div>-->
+  <!--<div class="ui-block-b"><#%= f.association :technician, collection: current_user.organization.users, value: f.object.technician.try(:name) %></div>-->
+  <!--</div>-->
   <!--<#% end %>-->
 
   <div class="ui-grid-a">
@@ -74,7 +75,7 @@
 
 <div class="ui-grid-a">
   <div class="ui-block-a position_lable"><%= @service_call.class.human_attribute_name(:external_ref) %></div>
-  <div class="ui-block-b hide_lable" ><%= f.input :external_ref %></div>
+  <div class="ui-block-b hide_lable"><%= f.input :external_ref %></div>
 </div>
 
 <%= f.input :notes %>
