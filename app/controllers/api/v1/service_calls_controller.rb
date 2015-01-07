@@ -40,7 +40,7 @@ class Api::V1::ServiceCallsController < Api::V1::ApiController
   private
 
   def service_call_params
-    params.require(:service_call).permit(:tag_list, :started_on_text)
+    params.require(:service_call).permit(:tag_list, custom_events_attributes: [:name, :description, :reference_id])
   end
 
 end

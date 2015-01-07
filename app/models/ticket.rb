@@ -69,6 +69,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :payment
   belongs_to :technician, class_name: User
   has_many :events, as: :eventable, :order => 'id DESC'
+  has_many :custom_events, as: :eventable, :order => 'id DESC', class_name: 'CustomEvent', table_name: 'events'
   has_many :notifications, as: :notifiable
   has_many :boms do
     def build(params)
@@ -135,6 +136,7 @@ class Ticket < ActiveRecord::Base
   validates_uniqueness_of :external_ref, scope: :organization_id, allow_blank: false, if: :validate_external_ref?
 
   accepts_nested_attributes_for :customer
+  accepts_nested_attributes_for :custom_events
 
   ### state machine states constants
 

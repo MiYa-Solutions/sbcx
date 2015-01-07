@@ -106,6 +106,34 @@ describe 'Service Call V1 API' do
         expect(job.reload.tag_list).to eq 'TEST2, TEST1'
       end
     end
+
+    describe 'create a custom event and assign it to the job' do
+      before do
+        put "api/v1/service_calls/#{job.external_ref}",
+            {
+                format:           :json,
+                use_external_ref: '',
+                service_call:     { tag_list: 'TEST1, TEST2',
+                                    custom_events_attributes: [   { name: 'Event Custom Name', description: 'TEST Description', reference_id: '123' } ]}
+            },
+            { 'Content-Type' => 'application/json',
+              'X-User-Token' => user_token,
+              'X-User-Email' => user.email,
+              'Accept'       => 'application/json' }
+      end
+
+      it 'should return HTTP 200' do
+        expect(response.status).to eq 200
+      end
+
+      it 'should create and link a custom event to the job' do
+        expect(job.reload.events.map(&:name)).to include('Event Custom Name')
+        expect(job.reload.events.map(&:description)).to include('TEST Description')
+        expect(job.reload.events.map(&:reference_id)).to include(123)
+      end
+
+
+    end
   end
 
 end
