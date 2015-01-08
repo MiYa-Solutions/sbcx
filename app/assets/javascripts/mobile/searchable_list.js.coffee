@@ -77,13 +77,15 @@ class SearchableList
         $('#list-prev-btn').removeClass('ui-disabled') if @is_prev_page()
 
 
-
 $.fn.searchable_list = (options) ->
-  settings = $.extend
-    url: '/projects.json'
-    list_template: 'projects/project-list'
+
+  settings = $.extend {}, $.fn.searchable_list.defaults, options
   this.each ->
     list = new SearchableList(this, settings)
+
+$.fn.searchable_list.defaults =
+  url: '/projects.json'
+  list_template: 'projects/project-list'
 
 
 

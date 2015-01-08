@@ -41,7 +41,7 @@ $(document).bind "pageshow", (e) ->
     transition: 'fade', #// page transition, default is fade
     matchFromStart: false, #// search from start, or anywhere in the string
     loadingHtml: '<li data-icon="none"><a href="#">Searching...</a></li>', #// HTML to display when searching remotely
-    interval: 3000, #// The minimum delay between server calls when using a remote "source"
+    interval: 1000, #// The minimum delay between server calls when using a remote "source"
     builder: null, #// optional callback to build HTML for autocomplete
 #labelHTML: fn(){}, // optioanl callback function when formatting the display value of list items
 #onNoResults: fn(), // optional callback function when no results were matched

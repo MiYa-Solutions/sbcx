@@ -3,20 +3,10 @@
 <% model = model || NilClass.new %>
 <div class="">
 
-  <!--table of jobs-->
-  <table id="<%= table_id %>" class="table table-striped" data-project-id="<%= model.id %>">
-    <thead>
-    <tr>
-      <th><%= Ticket.human_attribute_name(:ref_id) %></th>
-      <th><%= Ticket.human_attribute_name(:name) %></th>
-      <th><%= Ticket.human_attribute_name(:status) %></th>
-      <th><%= Ticket.human_attribute_name(:work_status) %></th>
-      <th><%= Ticket.human_attribute_name(:billing_status) %></th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+  <div id="job-list" <%= "data-#{model.class.model_name.underscore}-id=#{model.id}" %>>
+
+  </div>
+
 
 </div>
 

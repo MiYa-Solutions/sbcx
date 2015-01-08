@@ -1,0 +1,11 @@
+{{#each list}}
+    <li class="inline_mobile service_calls_index">
+        <p class="ui-li-aside-blue ui-li-desc-blue">
+            <badge>{{id}}</badge>
+        </p>
+        <a href="/service_calls/{{id}}" data-transition="slide">{{text}} </a>
+                  <span class="project_status service_call_status_{{status}} %>">
+                      {{human_status}}
+                  </span>
+    </li>
+{{/each}}

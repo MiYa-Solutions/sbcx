@@ -5,7 +5,7 @@ class Api::V1::ServiceCallsController < Api::V1::ApiController
   # GET /api/v1/jobs.json
   def index
     respond_to do |format|
-      format.json { render json: TicketsDatatable.new(self.view_context) }
+      format.json { render json: Api::V1::TicketsDatatable.new(self.view_context) }
     end
   end
 

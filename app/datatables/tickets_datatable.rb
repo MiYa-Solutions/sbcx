@@ -14,7 +14,7 @@ class TicketsDatatable
     }
   end
 
-  private
+  protected
 
   def data
     case params[:table_type]
@@ -78,6 +78,8 @@ class TicketsDatatable
 
     end
   end
+
+  private
 
   def tickets
     @tickets ||= fetch_tickets
