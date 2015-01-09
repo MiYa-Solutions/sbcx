@@ -7,8 +7,14 @@
       <div class="smart_label">
         <ul>
           <li><h1><%= @my_user.first_name %> <%= @my_user.last_name %></h1></li>
-          <!--<li><#%= link_to 'Reset', my_users_path, :class => 'btn btn-large btn-info' %></li>-->
-          <li></li>
+          <li>
+            <%= simple_form_for @my_user, url: my_user_reset_password_path(@my_user), :html => { :class => 'form-horizontal' } do |f| %>
+                <%= f.submit I18n.t('general.security.reset_password'),
+                             class:   'btn btn-large btn-info',
+                             confirm: I18n.t('general.security.reset_password_conf') %>
+            <% end %>
+          </li>
+
         </ul>
       </div>
     </div>
@@ -87,9 +93,9 @@
   <div class="form-actions">
     <%= link_to 'Back', my_users_path, :class => 'btn btn-medium' %>
     <%= link_to 'Edit', edit_my_user_path(@my_user), :class => 'btn btn-medium btn-primary' %>
-    <%= link_to 'Archive', :back, :method  => :delete,
-                :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
-                :class   => 'btn btn-medium btn-danger' %>
+    <%= link_to 'Archive', :back, :method => :delete,
+                :confirm                  => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
+                :class                    => 'btn btn-medium btn-danger' %>
   </div>
 
 
