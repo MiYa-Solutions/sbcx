@@ -1,13 +1,14 @@
 <%= f.error_notification %>
 
 <div class="span6">
-    <%= f.input :first_name, :autofocus => true, :required => true  %>
-    <%= f.input :last_name %>
-    <%= f.input :email, :required => true %>
-    <%= f.input :password, :required => true %>
-    <%= f.input :password_confirmation%>
-    <%= f.input :company %>
-  <div class="new_user_roles" >
+  <%= f.input :first_name, :autofocus => true, :required => true %>
+  <%= f.input :last_name %>
+  <%= f.input :email, :required => true %>
+  <% unless current_user == f.object %>
+      <%= f.input :status, collection: User.state_machines[:status].states, label_method: :human_name, value_method: :value, :include_blank => f.object.human_status_name %>
+  <% end %>
+  <%= f.input :company %>
+  <div class="new_user_roles">
     <%= f.association :roles, collection: applicable_user_roles, as: :check_boxes %>
   </div>
 
@@ -16,29 +17,31 @@
 
 <div class="span6">
 
-    <%= f.input :address1 %>
-    <%= f.input :address2 %>
+  <%= f.input :address1 %>
+  <%= f.input :address2 %>
 
-    <%= f.input :city %>
-    <%= f.input :zip %>
-    <div class="control-group string mandatory">
-          <label class="string optional control-label" for="customer_country">Country</label>
-              <div class="controls">
-            <%= f.country_select :country, { priority: %w[US] }, id: 'country' %>
-          </div>
+  <%= f.input :city %>
+  <%= f.input :zip %>
+  <div class="control-group string mandatory">
+    <label class="string optional control-label" for="customer_country">Country</label>
 
+    <div class="controls">
+      <%= f.country_select :country, { priority: %w[US] }, id: 'country' %>
     </div>
 
-    <div class="control-group string mandatory">
-          <label class="string optional control-label" for="customer_state">State</label>
-            <div class="controls">
-              <%= render 'subregion_select', f: f %>
-            </div>
-    </div>
+  </div>
 
-    <%= f.input :phone %>
-    <%= f.input :mobile_phone %>
-    <%= f.input :work_phone %>
+  <div class="control-group string mandatory">
+    <label class="string optional control-label" for="customer_state">State</label>
+
+    <div class="controls">
+      <%= render 'subregion_select', f: f %>
+    </div>
+  </div>
+
+  <%= f.input :phone %>
+  <%= f.input :mobile_phone %>
+  <%= f.input :work_phone %>
 
 </div>
 
