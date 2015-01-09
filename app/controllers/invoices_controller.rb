@@ -9,7 +9,10 @@ class InvoicesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.mobile { @service_call = Ticket.find(invoice_params[:ticket_id]) } # index.mobile.erb
+      format.mobile {
+        @invoiceable = find_invoiceable
+        @account = find_account
+      } # index.mobile.erb
       format.json { render json: @invoices }
     end
   end
@@ -34,11 +37,11 @@ class InvoicesController < ApplicationController
       format.pdf {
         partial = params[:template].present? ? params[:template] : 'show'
         render pdf:                    "invoice_#{@invoice.id}",
-                          layout:                 'receipts',
-                          template:               "invoices/#{partial}.pdf",
-                          footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
-                          header:                 { html: { template: 'layouts/_header.pdf.erb' } },
-                          disable_internal_links: false }
+               layout:                 'receipts',
+               template:               "invoices/#{partial}.pdf",
+               footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
+               header:                 { html: { template: 'layouts/_header.pdf.erb' } },
+               disable_internal_links: false }
 
 
     end
@@ -113,7 +116,7 @@ class InvoicesController < ApplicationController
   end
 
   def find_account
-    Account.where(accountable_id: invoice_params[:accountable_id], accountable_type: invoice_params[:accountable_type]).first
+    Account.where(organization_id: current_user.organization_id, accountable_id: invoice_params[:accountable_id], accountable_type: invoice_params[:accountable_type]).first
   end
 
   def humanized_errors
