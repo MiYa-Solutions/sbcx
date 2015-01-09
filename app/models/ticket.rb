@@ -57,13 +57,13 @@
 #
 
 class Ticket < ActiveRecord::Base
+  include CustomerCreator
   include InvoiceableTicket
   include Forms::TicketProjectForm
 
   serialize :properties, ActiveRecord::Coders::Hstore
   monetize :subcon_fee_cents
   belongs_to :project
-  belongs_to :customer, :inverse_of => :service_calls
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
   belongs_to :provider
@@ -106,7 +106,6 @@ class Ticket < ActiveRecord::Base
 
   ### VIRTUAL ATTRIBUTES
   attr_writer :started_on_text, :completed_on_text, :scheduled_for_text
-  attr_accessor :new_customer, :customer_name
   attr_accessor :system_update
   attr_accessor :payment_type
   attr_accessor :payment_notes
@@ -124,7 +123,6 @@ class Ticket < ActiveRecord::Base
   after_save :create_appointment
 
                                                                                        # create a new customer in case one was asked for
-  before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
   before_create :set_name
 
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
@@ -223,6 +221,23 @@ class Ticket < ActiveRecord::Base
     end
 
   end
+
+  def customer_attributes
+    {
+        name:         customer_name,
+        address1:     address1,
+        address2:     address2,
+        country:      country,
+        city:         city,
+        state:        state,
+        zip:          zip,
+        phone:        phone,
+        email:        email,
+        mobile_phone: mobile_phone
+    }
+
+  end
+
 
   def customer_balance
     account = Account.for_customer(customer).first
@@ -326,32 +341,6 @@ class Ticket < ActiveRecord::Base
     errors.add :scheduled_for_text, "is out of range"
   end
 
-  def create_customer
-    if provider
-      self.customer = self.provider.customers.new(name:         customer_name,
-                                                  address1:     address1,
-                                                  address2:     address2,
-                                                  country:      country,
-                                                  city:         city,
-                                                  state:        state,
-                                                  zip:          zip,
-                                                  phone:        phone,
-                                                  email:        email,
-                                                  mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
-
-    else
-      self.customer = self.organization.customers.new(name:         customer_name,
-                                                      address1:     address1,
-                                                      address2:     address2,
-                                                      country:      country,
-                                                      city:         city,
-                                                      state:        state,
-                                                      zip:          zip,
-                                                      phone:        phone,
-                                                      email:        email,
-                                                      mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
-    end
-  end
 
   def validate_payment
     self.errors.add :payment_type, "You must indicate the type of payment" unless self.payment_type
@@ -559,9 +548,6 @@ class Ticket < ActiveRecord::Base
     res
   end
 
-  def customer_name
-    customer_id ? customer.name : @customer_name
-  end
 
   protected
 

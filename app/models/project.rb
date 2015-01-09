@@ -1,10 +1,10 @@
 class Project < ActiveRecord::Base
+  include CustomerCreator
   include InvoiceableProject
 
   belongs_to :organization
   belongs_to :provider
   belongs_to :provider_agreement, class_name: 'Agreement'
-  belongs_to :customer
   has_many :tickets
   has_many :events, as: :eventable
 
@@ -44,10 +44,6 @@ class Project < ActiveRecord::Base
 
   def work_done?
     completed? || closed? || canceled?
-  end
-
-  def customer_name
-    customer_id ? customer.name : ''
   end
 
   def provider_name

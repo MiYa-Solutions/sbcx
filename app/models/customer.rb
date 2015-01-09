@@ -29,6 +29,8 @@ class Customer < ActiveRecord::Base
 
   belongs_to :organization, inverse_of: :customers
   has_many :service_calls, :inverse_of => :customer
+  has_many :tickets, :inverse_of => :customer
+  has_many :projects, :inverse_of => :customer
   has_many :agreements, as: :counterparty
   has_one :account, as: :accountable
   stampable

@@ -94,6 +94,7 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(:name,
                                     :description,
                                     :customer_id,
+                                    :customer_name,
                                     :provider_id,
                                     :provider_agreement_id,
                                     :status,
