@@ -145,6 +145,9 @@ Spork.each_run do
   Dir["#{Rails.root}/app/models/concerns/*.rb"].each do |model|
     require model
   end
+  Dir["#{Rails.root}/app/exceptions/**/*.rb"].each do |model|
+    require model
+  end
   Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
     load model unless model.include? 'permitted_params'
   end
