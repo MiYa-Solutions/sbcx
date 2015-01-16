@@ -107,7 +107,7 @@ class ServiceCallTransferEvent < ServiceCallEvent
   end
 
   def set_subcon_statuses_for_prov
-    service_call.subcontractor_status     = ServiceCall::SUBCON_STATUS_PENDING
+    service_call.subcontractor_status     = AffiliateSettlement::STATUS_PENDING
     service_call.subcon_collection_status = CollectionStateMachine::STATUS_PENDING
     service_call.save!
   end

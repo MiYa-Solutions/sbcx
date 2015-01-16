@@ -258,3 +258,9 @@ en:
     agr_new_subcon_notification:
       name: "New Agreement"
       description: "New agreement has been submitted"
+    aff_payment_confirmed_notification:
+      html_message: "%{affiliate} has confirmed your payment for %{job_link}"
+      subject: '%{affiliate} has confirmed your payment'
+      content: '%{affiliate} has confirmed your payment for %{job_ref}'
+      description: "An affiliate has confirmed your payment for a job"
+

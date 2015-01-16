@@ -104,20 +104,37 @@ en:
   payment_cleared_event:
     name: 'Cleared Payment'
     description: 'Payment has been cleared successfully'
+  aff_payment_cleared_event:
+    name: 'Cleared Affiliate Payment'
+    description: 'Affiliate payment has been cleared successfully'
   payment_deposited_event:
     name: 'Deposited Payment'
     description: 'A payment has been deposited successfully'
+  aff_payment_deposited_event:
+    name: 'Affiliate Payment Deposited'
+    description: 'An affiliate payment has been deposited successfully'
   payment_rejected_event:
     name: 'Rejected Payment'
+    description: 'A %{payment_type} (id: %{payment_id}) has been rejected'
+    entry:
+      description: '%{payment_type} (id: %{payment_id}) was rejected'
+  aff_payment_rejected_event:
+    name: 'Affiliate Payment Rejected'
     description: 'A %{payment_type} (id: %{payment_id}) has been rejected'
     entry:
       description: '%{payment_type} (id: %{payment_id}) was rejected'
   entry_confirmed_event:
     name: "Payment Confirmed"
     description: 'A payment was confirmed by Contractor'
+  aff_entry_confirmed_event:
+    name: "Affiliate Payment Confirmed"
+    description: 'A payment to an affiliate was confirmed to be received'
   entry_confirm_event:
       name: "Payment Confirmed"
       description: 'You have confirmed receiving a payment'
+  aff_entry_confirm_event:
+      name: "Affiliate Payment Confirmed"
+      description: 'You have confirmed an affiliate payment'
   Cash_collection_from_subcon:
     name: "Cash collection from subcontractor"
   entry_dispute_event:

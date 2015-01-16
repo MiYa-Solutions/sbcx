@@ -100,6 +100,13 @@ shared_context 'basic job testing' do
 
 
   alias_method :un_cancel_the_job, :reset_the_job
+
+  def settle_with_subcon(ticket, type: 'cash', amount: '100')
+
+    ticket.subcon_settle_type = type
+    ticket.subcon_settle_amount = amount
+    ticket.settle_subcon!
+  end
 end
 
 shared_context 'transferred job' do

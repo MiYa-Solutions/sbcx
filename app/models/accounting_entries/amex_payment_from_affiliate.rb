@@ -22,8 +22,5 @@
 #  matching_entry_id :integer
 #
 
-class AmexPaymentFromAffiliate < AffiliateSettlementEntry
-  def amount_direction
-    -1
-  end
+class AmexPaymentFromAffiliate < PaymentFromAffiliate
 end
