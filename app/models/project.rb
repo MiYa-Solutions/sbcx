@@ -10,6 +10,14 @@ class Project < ActiveRecord::Base
 
   validates_uniqueness_of :name, scope: :organization_id
 
+  def ref_id
+    id
+  end
+
+  def scheduled_for
+    start_date
+  end
+
   def contractors
     tickets.collect(&:provider)
   end
