@@ -8,6 +8,7 @@ class AffPaymentDepositedEvent < PaymentEvent
 
   def process_event
     ticket.deposited_subcon! if ticket.can_deposited_subcon?
+    payment.matching_entry.deposited!
   end
 
 end
