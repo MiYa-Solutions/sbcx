@@ -4,7 +4,10 @@ class ScInvoiceNotification < CustomerNotification
   end
 
   def default_subject
-    I18n.t('notifications.sc_invoiced_notification.subject', ref: invoice.ticket.ref_id, org: invoice.organization.name)
+    I18n.t('notifications.sc_invoiced_notification.subject',
+           ref:              invoice.invoiceable.ref_id,
+           org:              invoice.organization.name,
+           invoiceable_type: invoice.invoiceable.class.model_name.human)
   end
 
   def default_content

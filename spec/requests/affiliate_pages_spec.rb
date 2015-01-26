@@ -167,7 +167,7 @@ describe "Affiliate Pages" do
           click_button 'save_affiliate_btn'
         end
 
-        it { should have_selector('div.alert-notice') }
+        it { should have_selector('div.alert-success') }
         it { should have_content('new company') }
       end
 

@@ -1172,7 +1172,8 @@ CREATE TABLE users (
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
     unconfirmed_email character varying(255),
-    authentication_token character varying(255)
+    authentication_token character varying(255),
+    status integer
 );
 
 
@@ -2269,3 +2270,7 @@ INSERT INTO schema_migrations (version) VALUES ('20141226160730');
 INSERT INTO schema_migrations (version) VALUES ('20141226202747');
 
 INSERT INTO schema_migrations (version) VALUES ('20141230235139');
+
+INSERT INTO schema_migrations (version) VALUES ('20150109042406');
+
+INSERT INTO schema_migrations (version) VALUES ('20150109140256');
