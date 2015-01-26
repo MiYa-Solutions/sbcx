@@ -133,6 +133,7 @@ class Ticket < ActiveRecord::Base
   validates_email_format_of :email, allow_nil: true, allow_blank: true
 
   validates_uniqueness_of :external_ref, scope: :organization_id, allow_blank: false, if: :validate_external_ref?
+  validates_presence_of :external_ref, if: :validate_external_ref?
 
   validate :check_project_owner, if: ->(t) { t.project_id }
 

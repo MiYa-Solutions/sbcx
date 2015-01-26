@@ -124,7 +124,7 @@ describe 'My Service Call When I Do The Work' do
           end
 
           it 'available status events should be cancel' do
-            job.status_events.should =~ [:cancel]
+            job.status_events.should =~ [:cancel, :transfer]
           end
 
           it 'available work events should be start' do
@@ -437,7 +437,7 @@ describe 'My Service Call When I Do The Work' do
         end
 
         it 'available status events should be cancel' do
-          job.status_events.should =~ [:cancel]
+          job.status_events.should =~ [:cancel, :transfer]
         end
 
         it 'available work events should be complete' do
