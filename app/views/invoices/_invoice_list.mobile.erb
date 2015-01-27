@@ -34,9 +34,6 @@
 
     <% invoice = invoiceable.invoices.build(account: account) %>
     <%= simple_form_for invoice, html: { class: style("service_call.forms.status.transfer.form_classes") } do |f| %>
-        <% if f.object.errors.any? %>
-            <%= render 'shared/error_messages', object: f.object %>
-        <% end %>
 
         <div class="transfer_job_form">
           <br>

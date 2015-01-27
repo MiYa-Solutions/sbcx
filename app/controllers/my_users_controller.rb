@@ -4,7 +4,6 @@ class MyUsersController < ApplicationController
   respond_to :html, :json, :js
 
   filter_access_to :update, attribute_check: true, model: User
-  filter_access_to :reset_password, attribute_check: true, model: User
   filter_access_to :show
   filter_access_to :edit, attribute_check: true, model: User
   filter_access_to :new
@@ -80,12 +79,5 @@ class MyUsersController < ApplicationController
 
   def new_my_user_from_params
     @my_user ||= current_user.organization.users.new(permitted_params(nil).my_user)
-  end
-
-  def reset_password
-    @my_user = current_user.organization.users.find(params[:id])
-    @my_user.send_reset_password_instructions
-    flash[:notice] = "Reset password instructions have been sent to #{@my_user.email}."
-    redirect_to my_user_path(@my_user)
   end
 end

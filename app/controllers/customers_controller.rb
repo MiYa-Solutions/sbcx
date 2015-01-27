@@ -37,7 +37,7 @@ class CustomersController < ApplicationController
   end
 
   def edit
-    # @customer = current_user.organization.customers.find(params[:id])
+    @customer = current_user.organization.customers.find(params[:id])
   end
 
   def update

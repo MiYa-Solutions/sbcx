@@ -171,8 +171,8 @@ class ServiceCall < Ticket
 
   end
 
-# State machine for ServiceCall subcontractor_status
-# status constant list:
+  # State machine for ServiceCall subcontractor_status
+  # status constant list:
   SUBCON_STATUS_NA                 = 3000
   SUBCON_STATUS_PENDING            = 3001
   SUBCON_STATUS_CLAIM_SETTLED      = 3002
@@ -253,7 +253,7 @@ class ServiceCall < Ticket
     if params.empty?
       sc = ServiceCall.new
     else
-      add_default_params(org, params)
+      params[:organization_id] = org.id
       if params[:provider_id].nil? || params[:provider_id].empty? || params[:provider_id].to_i == org.id
         sc = MyServiceCall.new(params)
       else
@@ -266,13 +266,13 @@ class ServiceCall < Ticket
     sc
   end
 
-# def as_json(options = {})
-#   {
-#       tag_list:      tag_list,
-#       provider:      [provider],
-#       subcontractor: [subcontractor]
-#   }
-# end
+  # def as_json(options = {})
+  #   {
+  #       tag_list:      tag_list,
+  #       provider:      [provider],
+  #       subcontractor: [subcontractor]
+  #   }
+  # end
 
 
   def subcon_settlement_allowed?
@@ -307,23 +307,6 @@ class ServiceCall < Ticket
 
 
   private
-  def self.add_default_params(org, params)
-    params[:organization_id] = org.id
-    if params[:customer_id]
-      customer              = Customer.permitted_customer(org, params[:customer_id])
-      params[:address1]     = customer.address1
-      params[:address2]     = customer.address2
-      params[:company]      = customer.company
-      params[:city]         = customer.city
-      params[:zip]          = customer.zip
-      params[:state]        = customer.state
-      params[:phone]        = customer.phone
-      params[:mobile_phone] = customer.mobile_phone
-      params[:work_phone]   = customer.work_phone
-      params[:email]        = customer.email
-    end
-
-  end
 
   def all_deposited_entries_confirmed?
     deposited_entries.map(&:status).select { |status| status != ConfirmableEntry::STATUS_CONFIRMED }.empty?

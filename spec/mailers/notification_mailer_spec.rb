@@ -7,6 +7,7 @@ describe NotificationMailer do
        :sc_rejected_notification,
        :sc_received_notification,
        :sc_complete_notification,
+       :sc_settled_notification,
        :sc_settle_notification,
        :sc_accepted_notification,
        :sc_canceled_notification,

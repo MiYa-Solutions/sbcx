@@ -94,7 +94,7 @@ authorization do
       if_attribute :organization_id => is { user.organization_id }
     end
 
-    has_permission_on :my_users, :to => [:new, :create, :edit, :update, :show, :reset_password]
+    has_permission_on :my_users, :to => [:new, :create, :edit, :update, :show]
     has_permission_on :subcontractors, :to => [:new, :create]
     has_permission_on :providers, :to => [:new, :create]
     has_permission_on :affiliates, :to => [:new, :create]

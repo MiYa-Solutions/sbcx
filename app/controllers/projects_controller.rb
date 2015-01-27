@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   filter_access_to :autocomplete_project_name, :require => :index
   filter_resource_access
 
-  autocomplete :project, :name, limit: 50, full: true
+  autocomplete :project, :name, limit: 50
 
   # GET /projects
   # GET /projects.json

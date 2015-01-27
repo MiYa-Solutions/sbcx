@@ -107,7 +107,7 @@ en:
       description: "The subcontractor has dispatched the job."
     sc_invoiced_notification:
       html_message: '%{link} was invoiced'
-      subject: '%{org} Invoice For %{invoiceable_type} %{ref}'
+      subject: '%{org} Invoice For Job %{ref}'
       content: 'An invoice was sent to the customer'
     sc_paid_notification:
       html_message: '%{customer} has paid for the %{link}'

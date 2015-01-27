@@ -13,7 +13,7 @@ describe BomsController do
 
   describe 'POST #create' do
 
-    it 'should create two boms when the job is transferred' do
+    it 'should not create a bom when the job is transferred' do
       transfer_the_job
       expect do
         post_with(org_admin, :create, service_call_id: job.id, bom: {
@@ -25,7 +25,7 @@ describe BomsController do
             buyer_type:    "" }
         )
 
-      end.to change(Bom, :count).by(2)
+      end.to_not change(Bom, :count)
     end
   end
 end
