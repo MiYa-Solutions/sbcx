@@ -122,7 +122,7 @@ class Ticket < ActiveRecord::Base
   before_save :assign_tags
   after_save :create_appointment
 
-                                                                                       # create a new customer in case one was asked for
+  # create a new customer in case one was asked for
   before_create :set_name
 
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
@@ -133,6 +133,9 @@ class Ticket < ActiveRecord::Base
   validates_email_format_of :email, allow_nil: true, allow_blank: true
 
   validates_uniqueness_of :external_ref, scope: :organization_id, allow_blank: false, if: :validate_external_ref?
+  validates_presence_of :external_ref, if: :validate_external_ref?
+
+  validate :check_project_owner, if: ->(t) { t.project_id }
 
   accepts_nested_attributes_for :customer
   accepts_nested_attributes_for :custom_events
@@ -551,6 +554,15 @@ class Ticket < ActiveRecord::Base
 
   protected
 
+  def check_project_owner
+    if project.organization_id != self.organization_id
+      raise TicketExceptions::InvalidAssociation.new(I18n.t('exceptions.ticket.invalid_project',
+                                                              org_name:   organization.name,
+                                                              ticket_id:   self.id,
+                                                              project_id: project_id))
+    end
+  end
+
   def check_subcon_agreement
     unless self.subcon_agreement.nil?
       errors.add :subcon_agreement, "Invalid Subcontracting Agreement: the agreement must specify the subcontractor as the counterparty" if subcon_agreement.counterparty.becomes(Organization) != self.subcontractor.becomes(Organization)
@@ -563,7 +575,7 @@ class Ticket < ActiveRecord::Base
     end
   end
 
-# Assigns tags from a comma separated tag list
+  # Assigns tags from a comma separated tag list
   def assign_tags
     if @tag_list
       self.taggings.each { |tagging| tagging.destroy }
@@ -607,7 +619,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def validate_external_ref?
-    self.organization.settings.validate_job_ext_ref?
+    self.organization && self.organization.settings.validate_job_ext_ref?
   end
 
 end

@@ -45,6 +45,9 @@ en:
     subcontractor:
       subcontractor_created: "Subcontractor creates successfully!"
   general:
+    security:
+      reset_password: Reset Password
+      reset_password_conf: Are you sure you want to email reset password instructions?
     job:
       errors:
         can_add_bom: You are not allowed to add boms to this job

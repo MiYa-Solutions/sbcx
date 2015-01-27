@@ -166,7 +166,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                 end
 
                 it 'available status events should be cancel' do
-                  job.status_events.should =~ [:cancel]
+                  job.status_events.should =~ [:cancel, :transfer]
                 end
 
                 it 'available payment events are collect and late' do

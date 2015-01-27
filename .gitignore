@@ -15,7 +15,7 @@
 /db/postgres/
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
+/log
 /tmp
 
 bundler_stubs/
