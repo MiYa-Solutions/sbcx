@@ -1,0 +1,2 @@
+class SbcxException < StandardError
+end

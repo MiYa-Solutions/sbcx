@@ -69,6 +69,8 @@ class Event < ActiveRecord::Base
 
   before_validation :set_default_creator, :init
 
+  scope :none, ->{where(id: nil).where('id IS NOT ?', nil)}
+
   def self.event_chain(e = nil)
 
     res = []

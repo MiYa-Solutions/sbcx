@@ -50,7 +50,6 @@ describe 'Transferred Job', js: true do
 
       it 'should show buttons: canceled, un-accept, start, transfer' do
         should have_button(JOB_BTN_CANCEL)
-        should have_button(JOB_BTN_UN_ACCEPT)
         should have_button(JOB_BTN_START)
         should have_button(JOB_BTN_TRANSFER)
       end
@@ -93,7 +92,6 @@ describe 'Transferred Job', js: true do
 
         it 'should show buttons: canceled, un-accept, complete' do
           should have_button(JOB_BTN_CANCEL)
-          should have_button(JOB_BTN_UN_ACCEPT)
           should have_button(JOB_BTN_COMPLETE)
         end
 

@@ -324,8 +324,7 @@ class TransferredServiceCall < ServiceCall
 
   def set_ref_id
     unless self.read_attribute(:ref_id)
-      self.ref_id = id
-      self.save!
+      update_column :ref_id, id
     end
   end
 

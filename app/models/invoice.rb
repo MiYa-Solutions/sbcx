@@ -35,7 +35,7 @@ class Invoice < ActiveRecord::Base
   private
 
   def check_empty_invoice
-    errors.add :invoice_items, 'Invice is empty and therefore invalid' if invoice_items.size == 0
+    errors.add :invoice_items, I18n.t('errors.invoice.empty_invoice') if invoice_items.size == 0
   end
 
 
