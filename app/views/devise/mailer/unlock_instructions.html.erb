@@ -63,7 +63,7 @@
                           <tr>
                             <td valign="middle" class="templateButtonContent">
                               <div>
-                                <%= link_to '<input class="btn btm-primary" type="button" value="Unlock my account">'.html_safe, unlock_url(@resource, :unlock_token => @token) %>
+                                <%= link_to '<input class="btn btm-primary" type="button" value="Unlock my account">'.html_safe, unlock_url(@resource, :unlock_token => @resource.unlock_token) %>
                               </div>
                             </td>
                           </tr>

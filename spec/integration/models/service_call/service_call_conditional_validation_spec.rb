@@ -42,7 +42,7 @@ describe 'Service Call Conditional Validation' do
         job.external_ref = nil
       end
 
-      it 'it should validate presence of external_ref' do
+      it 'it should  not validate uniqueness of external_ref' do
         expect(job).to_not be_valid
       end
     end

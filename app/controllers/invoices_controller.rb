@@ -74,7 +74,6 @@ class InvoicesController < ApplicationController
       else
         flash[:error] = "Failed to create the invoice. #{humanized_errors}".html_safe
         format.html { redirect_to @orig_invoiceable }
-        format.mobile { redirect_to invoices_path(params) }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end

@@ -45,19 +45,6 @@ class Customer < ActiveRecord::Base
 
   scope :search, ->(query, org_id) { fellow_customers(org_id).where(arel_table[:name].matches("%#{query}%")) }
   scope :fellow_customers, ->(org_id) { where(:organization_id => org_id) }
-
-  def self.permitted_customer(org, id)
-    cus = Customer.find id
-    if cus.organization == org
-      return cus
-    else
-      if  org.affiliate_ids.include? cus.organization_id
-        return cus
-      else
-        return nil
-      end
-    end
-  end
   private
   def set_default_agreement
     agr_name                    = JobCharge.model_name.human

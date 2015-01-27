@@ -7,6 +7,3 @@ en:
         adv_payment_amount: Advanced Payment Amount
         adv_payment_desc: Payment Description
         notes: Notes
-  errors:
-    invoice:
-      empty_invoice: There is no billing acitivity to record in an invoice, either issue an advance payment or complete the job

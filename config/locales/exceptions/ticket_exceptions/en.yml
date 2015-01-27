@@ -1,6 +1,0 @@
-en:
-  exceptions:
-    ticket:
-      invalid_project: 'Invalid project (%{project_id}) associated with ticket %{ticket_id} for (%{org_name})'
-
-

@@ -66,7 +66,7 @@
                           <tr>
                             <td valign="middle" class="templateButtonContent">
                               <div>
-                                <%= link_to '<input class="btn btm-primary" type="button" value="Confirm my account">'.html_safe, confirmation_url(@resource, :confirmation_token => @token) %>
+                                <%= link_to '<input class="btn btm-primary" type="button" value="Confirm my account">'.html_safe, confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %>
                                                        </div>
                             </td>
                           </tr>

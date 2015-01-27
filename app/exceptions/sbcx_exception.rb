@@ -1,2 +1,0 @@
-class SbcxException < StandardError
-end
