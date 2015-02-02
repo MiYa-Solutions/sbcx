@@ -1,7 +1,7 @@
 shared_context 'basic job testing' do
 
-  let(:user) { FactoryGirl.build(:user) }
-  let(:org) { user.organization }
+  let(:org) { FactoryGirl.create(:member_org) }
+  let(:user) { org.users.first }
   let(:job) { FactoryGirl.build(:my_job, organization: org) }
   let(:org_admin) { org.users.admins.first }
 
@@ -66,8 +66,8 @@ shared_context 'basic job testing' do
 
   def event_permitted_for_job?(state_machine_name, event_name, user, job)
     params = ActionController::Parameters.new({ service_call: {
-        "#{state_machine_name}_event".to_sym => event_name
-    } })
+                                                  "#{state_machine_name}_event".to_sym => event_name
+                                              } })
     p      = PermittedParams.new(params, user, job)
     p.service_call.include?("#{state_machine_name}_event")
   end
@@ -115,9 +115,7 @@ shared_context 'transferred job' do
     s
   }
   let(:subcon_admin) do
-    u = FactoryGirl.build(:user, organization: subcon)
-    subcon.users << u
-    u
+    subcon.users.first
   end
   let(:subcon_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon.id, job.ref_id) }
 
@@ -139,14 +137,10 @@ shared_context 'brokered job' do
     s      = broker_subcon_agr.counterparty
     s.name = "subcon-#{s.name}"
     s.save!
-    u = FactoryGirl.build(:user, organization: s, email: "subcon-#{s.name}@example.com")
-    s.users << u
     s
   }
   let(:broker_admin) do
-    u = FactoryGirl.build(:user, organization: broker)
-    subcon.users << u
-    u
+    broker.users.first
   end
 
   let(:subcon_admin) do
@@ -157,9 +151,13 @@ shared_context 'brokered job' do
   let(:broker_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
   let(:broker_b4_transfer_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(broker.id, job.ref_id) }
   before do
-    transfer_the_job job: job, subcon: broker, agreement: broker_prov_agr, bom_reimbursement: bom_reimb
-    accept_the_job broker_b4_transfer_job
-    transfer_the_job job: broker_b4_transfer_job, subcon: subcon, agreement: broker_subcon_agr, bom_reimbursement: bom_reimb
+    with_user(org_admin) do
+      transfer_the_job job: job, subcon: broker, agreement: broker_prov_agr, bom_reimbursement: bom_reimb
+    end
+    with_user(broker_admin) do
+      accept_the_job broker_b4_transfer_job
+      transfer_the_job job: broker_b4_transfer_job, subcon: subcon, agreement: broker_subcon_agr, bom_reimbursement: bom_reimb
+    end
   end
 
 

@@ -5,12 +5,7 @@ describe 'My Service Call When I Do The Work' do
   include_context 'basic job testing'
 
   context 'when I create the job' do
-    before do
-      with_user(user) do
-        org.save!
-        job.save!
-      end
-    end
+
     it 'should be created successfully' do
       expect(job).to be_valid
     end

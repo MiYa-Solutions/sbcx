@@ -8,9 +8,17 @@ FactoryGirl.define do
 
     factory :member_org, class: Organization do
       subcontrax_member true
-      #after(:build) do |org|
-      #  org.users << FactoryGirl.build(:user, organization: org)
-      #end
+      after(:build) do |org|
+        org.organization_roles = [OrganizationRole.find_by_id(OrganizationRole::PROVIDER_ROLE_ID), OrganizationRole.find_by_id(OrganizationRole::SUBCONTRACTOR_ROLE_ID)]
+        org.users.build(
+            email:                 "u_#{org.email}",
+            organization:          org,
+            first_name:            Faker::Name.name,
+            password:              "foobar",
+            password_confirmation: "foobar",
+            roles:                 [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME)]
+        )
+      end
     end
 
     factory :affiliate, class: Affiliate do

@@ -517,8 +517,8 @@ describe 'Canceling Job With A Broker' do
       end
 
 
-      it 'prov should have the :dispatch as work status' do
-        expect(job.work_status_events.sort).to eq [:dispatch]
+      it 'prov should have the :start as work status' do
+        expect(job.work_status_events.sort).to eq [:start]
       end
 
 
