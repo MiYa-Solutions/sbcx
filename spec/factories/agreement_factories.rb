@@ -9,8 +9,16 @@ FactoryGirl.define do
 
     after(:build) do |agr|
       agr.posting_rules << FactoryGirl.build(:flat_fee_rule, agreement: agr)
-      agr.organization.users << FactoryGirl.build(:user, organization: agr.organization)
-      agr.creator = agr.organization.users.first
+      # todo adding a user to an organization that has users creates a stack overflow - need to ensure that a user is created at the org factory level
+      # agr.organization.users << FactoryGirl.build(:user, organization: agr.organization) if agr.organization.users.empty? && agr.organization.member?
+      # agr.counterparty.users << FactoryGirl.build(:user, organization: agr.counterparty) if agr.counterparty.users.empty? && agr.counterparty.member?
+      agr.organization.save! if agr.organization.id.nil?
+      agr.counterparty.save! if agr.counterparty.id.nil?
+      if agr.organization.member?
+        agr.creator = agr.organization.users.first
+      else
+        agr.creator = agr.counterparty.users.first
+      end
       agr.save!
       agr.organization.subcontractors << agr.counterparty unless agr.organization.subcontractors.include?(agr.counterparty)
       agr.counterparty.providers << agr.organization unless agr.organization.providers.include?(agr.organization)
@@ -26,7 +34,7 @@ FactoryGirl.define do
 
     after(:build) do |agr|
       agr.posting_rules << FactoryGirl.build(:profit_split_rule, agreement: agr)
-      agr.organization.users << FactoryGirl.build(:user, organization: agr.organization)
+      # agr.organization.users << FactoryGirl.build(:user, organization: agr.organization)
       agr.creator = agr.organization.users.first
       agr.save!
       agr.organization.subcontractors << agr.counterparty unless agr.organization.subcontractors.include?(agr.counterparty)

@@ -603,7 +603,7 @@ footer {
 }
 
 #bom_quantity {
-  width: 60%;
+  width: 30%;
 }
 
 #bom_buyer_id {
@@ -1956,6 +1956,84 @@ a:hover {
 
 .customer_payment_job {
   margin-top: -15px;
+  margin-left: 5%;
+  padding-bottom: 3px;
+  padding-top: 15px;
+  width: 80%;
+
+  #collect_job {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .span6 {
+    float: left;
+    margin-left: 0.1%;
+  }
+
+  .transfer_btn {
+    margin-right: 24px;
+  }
+
+  h3 {
+    background-color: #999999;
+    border-radius: 4px;
+    color: #FFFFFF;
+    font-family: helvetica;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 0.01em;
+    line-height: 18px;
+    margin-bottom: 10px;
+    margin-left: -5px;
+    margin-right: 0;
+    padding: 4px 5px;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    width: 93%;
+
+  }
+
+  a {
+    width: auto;
+  }
+
+  .btn-large {
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: normal;
+    height: 30px;
+    min-width: 90%;
+    padding-top: 7px;
+//    text-transform: uppercase;
+  }
+
+  select {
+    width: 90%;
+  }
+
+  .checkbox input[type="checkbox"] {
+    float: right;
+    margin-right: 50%;
+    margin-top: -1.499em;
+  }
+
+  .radio input[type="radio"] {
+    float: left;
+    margin-right: 5%;
+    margin-top: 3px;
+  }
+
+  .btn_collapse {
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: normal;
+    height: 19px;
+    min-width: 75%;
+    padding-top: 6px;
+//    text-transform: uppercase;
+  }
+
 }
 
 .service_call_events {
@@ -2003,7 +2081,7 @@ a:hover {
     height: 30px;
     min-width: 90%;
     padding-top: 7px;
-    text-transform: uppercase;
+//    text-transform: uppercase;
   }
 
   #transfer_btn {
@@ -2016,7 +2094,7 @@ a:hover {
     min-width: 90%;
     padding-bottom: 0;
     padding-top: 11px;
-    text-transform: uppercase;
+//    text-transform: uppercase;
   }
 
   .transfer_btn_modal {
@@ -2046,7 +2124,7 @@ a:hover {
     height: 19px;
     min-width: 75%;
     padding-top: 6px;
-    text-transform: uppercase;
+//    text-transform: uppercase;
   }
 
   #dispatch-button {
@@ -2112,7 +2190,7 @@ a:hover {
 
 .Miya_image {
 
-  imp {
+  img {
     border: 0;
     float: left;
     display: inline;
@@ -2840,11 +2918,18 @@ div.DTTT_collection {
   color: #3A87AD;
   //padding-top: 18px;
   margin-top: -15px;
-  height: 105px;
+  min-height: 120px;
 
   .parts_2nd {
-    margin-top: 3px;
+    margin-top: 8px;
   }
+
+  .control-group.error > label, .control-group.error .help-block, .control-group.error .help-inline {
+    color: #b94a48;
+    float: right;
+  }
+
+
 }
 
 .add_entry_frame {
@@ -3146,12 +3231,12 @@ hr {
 
 #job_show_tab {
   margin-left: 12px;
-  width: 66.6%;
+//  width: 66.6%;
 }
 
-#job_statuses_tab {
-  width: 31.5%;
-}
+//#job_statuses_tab {
+//  width: 31.5%;
+//}
 
 
 .navbar .nav .active > a, .navbar .nav .active > a:hover {
@@ -3505,6 +3590,19 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
     font-size: 12px;
     font-weight: normal;
   }
+}
+
+div.DTTT_container {
+  float: left;
+ 
+}
+
+#job-search-results_filter {
+  float: left;
+}
+
+#DataTables_Table_0_filter {
+  float: left;
 }
 
 .DTTT_container, a {
@@ -5240,7 +5338,7 @@ table.dataTable thead th, table.dataTable thead td {
   }
 }
 
-.entry_status_Cleared {
+.entry_status_cleared {
   color: #44AD3F;
   font-weight: bold;
 }
@@ -5272,4 +5370,109 @@ table.dataTable thead th, table.dataTable thead td {
 
 .agreement_changes_td1 {
   width: 15%;
+}
+
+.project_status_new {
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.project_status_in_progress {
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.project_status_on_hold {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
+.project_status_completed {
+  color: #44AD3F;
+  font-weight: bold;
+}
+
+.project_status_closed {
+  color: #44AD3F;
+  font-weight: bold;
+}
+
+.project_status_canceled {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    padding-top: 0;
+    text-align: right;
+}
+
+.job_projects_link {
+  .control-label {
+    display: none;
+  }
+  .control-group select {
+    margin-left: -140px;
+  }
+
+}
+
+.italic {
+ font-style: italic;
+ }
+
+.projects_table {
+  margin-left: 0.5%;
+}
+
+
+.project_line_table {
+  margin-top: -7px;
+
+  td {
+    font-size: 13px;
+    line-height: 12px;
+    padding: 6px 4px 5px;
+    vertical-align: middle;
+  }
+}
+
+
+#customer-projects_filter {
+  float: left;
+  margin-top: 10px;
+}
+
+.bom_calc_modal {
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 90%;
+
+  .area_option {
+    margin-top: 5%;
+  }
+}
+
+#area-calc-btn {
+  float: left;
+  margin-left: 5%;
+}
+
+#s2id_service_call_project_id {
+  width: 83%;
+}
+
+#area_calculator {
+  left: 70%;
+  top: 60%;
+  width: 50%;
+}
+
+.bom_description_table {
+  width: 150px;
+}
+
+#bom_description {
+  width: 100%;
 }

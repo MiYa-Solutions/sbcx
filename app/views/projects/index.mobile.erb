@@ -1,0 +1,16 @@
+<% provide(:title, I18n.t('general.general.projects').html_safe) %>
+
+<br>
+<br>
+<br>
+<div class="search_job ui-listview-filter ui-bar-c">
+  <div class="new_job_button">
+        <%= link_to I18n.t('general.general.new'), new_project_path, "data-role" => "button", id: 'new-project', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+   </div>
+
+</div>
+
+<div id="projects-list">
+
+</div>
+

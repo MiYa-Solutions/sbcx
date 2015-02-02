@@ -1,0 +1,65 @@
+<div class="well well_height">
+  <div class="row-fluid">
+
+
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.org_settings') %></h1></li>
+          <li>
+
+          </li>
+        </ul>
+      </div>
+
+
+      <div class="row-fluid">
+
+        <div class="span4">
+          <table class="table table-striped">
+                <tbody>
+                    <tr>
+                      <td>
+                        <strong><%= OrgSettings.human_attribute_name(:validate_job_ext_ref) %></strong>
+                      </td>
+                      <td>
+                        <%= best_in_place @org_settings,
+                                          :validate_job_ext_ref,
+                                          type:       :checkbox,
+                                          path:       org_settings_path,
+                                          collection: [raw("<div class='btn btn-mini btn-danger'><i class='icon-remove icon-white'></i></div>"),
+                                                       raw("<div class='btn btn-mini btn-success'><i class='icon-ok icon-white'></i></div>")] %>
+
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <%= image_tag("overdue.png", :title => I18n.t('general.messages.default_tax_signup'), :rel => 'tooltip', "data-placement" => "right") %>
+                        <strong><%= OrgSettings.human_attribute_name(:default_tax) %></strong>
+                      </td>
+                      <td>
+                        <i class="icon-pencil"></i>&nbsp;
+                        <%= best_in_place @org_settings, :default_tax, path: org_settings_path %>
+
+                      </td>
+                    </tr>
+
+                </tbody>
+           </table>
+        </div>
+
+
+    </div>
+
+
+    <br>
+    <div class="form-actions">
+
+
+      <%= link_to 'Back', settings_path, :class => 'btn btn-medium' %>
+
+    </div>
+
+
+    <!--end of well-->
+  </div>
+</div>

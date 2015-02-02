@@ -1,21 +1,21 @@
-agr_props = null
-show_agr_props = (obj) ->
+window.agr_props = null
+@show_agr_props = (obj) ->
   if obj.data('props')
-    $(agr_props).hide(400)
-    agr_props = "#" + obj.data('props')
-    $(agr_props).show(400)
+    $(window.agr_props).hide(400)
+    window.agr_props = "#" + obj.data('props')
+    $(window.agr_props).show(400)
   else
-    $(agr_props).hide(400)
+    $(window.agr_props).hide(400)
 
-update_agreement_select = (affilaite_select, agreement_select) ->
+@update_agreement_select = (affilaite_select, agreement_select) ->
   options = affilaite_select.find(":selected").data("agreements")
   if options
     build_agreement_select(agreement_select, options)
   else
     hide_agreement_select(agreement_select)
 
-build_agreement_select = (obj, options) ->
-  $(agr_props).hide() if agr_props != null
+@build_agreement_select = (obj, options) ->
+  $(window.agr_props).hide() if window.agr_props != null
   $.each options, (key, value) ->
     opt = $('<option></option>')
     opt.attr("value", value[1])
@@ -26,7 +26,7 @@ build_agreement_select = (obj, options) ->
   obj.show(400)
   show_agr_props(obj.find(":selected"))
 
-hide_agreement_select = (obj) ->
+@hide_agreement_select = (obj) ->
   obj.empty()
   obj.hide(400)
   $("label[for='" + obj.attr('id') + "']").hide(400)
@@ -97,13 +97,13 @@ jQuery ->
   # dynamic subcon agreement selection
   update_agreement_select($('#service_call_subcontractor_id'), $('#service_call_subcon_agreement_id'))
   $('#service_call_subcontractor_id').change ->
-    $(agr_props).hide(400)
+    $(window.agr_props).hide(400)
     update_agreement_select($('#service_call_subcontractor_id'), $('#service_call_subcon_agreement_id'))
 
   # dynamic provider agreement selection
   update_agreement_select($('#service_call_provider_id'), $('#service_call_provider_agreement_id'))
   $('#service_call_provider_id').change ->
-    $(agr_props).hide(400)
+    $(window.agr_props).hide(400)
     update_agreement_select($('#service_call_provider_id'), $('#service_call_provider_agreement_id'))
 
   # dynamic subcon agreement properties

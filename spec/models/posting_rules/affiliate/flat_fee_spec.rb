@@ -37,6 +37,7 @@
 require 'spec_helper'
 
 describe FlatFee do
+  include_context 'basic job testing'
 
   let(:rule) { FlatFee.new }
   subject { rule }
@@ -137,48 +138,32 @@ describe FlatFee do
     end
 
     describe '#org_collection_entries' do
+
       before do
-        job.complete_work
-        job.subcon_invoiced_payment
-        job.payment_type = 'cheque'
-        job.collector    = job.subcontractor.becomes(Organization)
-        job.subcon_collected_payment
+        complete_the_work job
+        collect_full_amount job, type: 'cheque', collector: job.subcontractor
       end
 
       it 'the event associated should be ScProviderCollectedEvent' do
-        event.should be_instance_of(ScCollectedEvent)
+        event.should be_instance_of(ScCollectEvent)
       end
-
-      it 'entries should be [ChequeCollectionFromSubcon] and sum to the job total price' do
-        the_rule.get_entries(event, account).map(&:class).should =~ [ChequeCollectionFromSubcon]
-        the_rule.get_entries(event, account).sum(&:amount).should == job.total_price
-        account.balance.should == -subcon_flat_fee + job.total_price
-      end
-
 
     end
 
     describe '#org_settlement_entries' do
 
       before do
-        job.complete_work
-        job.subcon_invoiced_payment
-        job.payment_type = 'cheque'
-        job.collector    = job.subcontractor.becomes(Organization)
-        job.subcon_collected_payment
+        complete_the_work job
+        collect_full_amount job, type: 'cheque', collector: job.subcontractor.becomes(Organization)
+        job.entries.last.deposit!
         job.subcon_payment = 'cheque'
         job.settle_subcon
       end
 
-      it 'the event associated should be ScProviderCollectedEvent' do
-        event.should be_instance_of(ScSubconSettleEvent)
+      it 'the event associated should be ScCollectEvent' do
+        event.should be_instance_of(ScCollectEvent)
       end
 
-      it 'entries should be [ChequeCollectionFromSubcon] and sum to the job total price' do
-        the_rule.get_entries(event, account).map(&:class).should =~ [ChequePaymentToAffiliate]
-        the_rule.get_entries(event, account).sum(&:amount).should == subcon_flat_fee
-        account.balance.should == job.total_price
-      end
 
     end
 
@@ -255,23 +240,6 @@ describe FlatFee do
           the_rule.get_entries(event, account).sum(&:amount).should == subcon_flat_fee
         end
       end
-      describe 'entries for ScCollectEvent' do
-
-        before do
-          job.subcon_invoiced_payment
-          job.payment_type = 'cash'
-          job.collector    = job.subcontractor
-          job.subcon_collected_payment
-        end
-
-        it 'should create collection entries' do
-          the_rule.get_entries(event, account).map(&:class).should =~ [CashCollectionFromSubcon]
-          the_rule.get_entries(event, account).sum(&:amount).should == total_price
-        end
-
-      end
-
-
     end
 
     pending 'for provider account' do

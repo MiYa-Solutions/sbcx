@@ -91,7 +91,7 @@ describe 'Local Prov Settlement' do
         end
 
 
-        context 'when settling with the subcon' do
+        context 'when settling with the provider' do
 
           before do
             job.provider_payment = 'cash'
@@ -106,8 +106,12 @@ describe 'Local Prov Settlement' do
             expect(job.provider_status_name).to eq :cleared
           end
 
-          it 'the available collectors should not include the subcon anymore' do
+          it 'the available collectors should be empty' do
             expect(job.available_payment_collectors).to eq []
+          end
+
+          it 'the collection should not be allowed anymore' do
+            expect(job.collection_allowed?).to be false
           end
 
         end

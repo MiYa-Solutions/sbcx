@@ -71,6 +71,11 @@ def in_browser(name)
   yield
 end
 
+def with_user (user, &block)
+  User.stamper = user
+  Authorization::Maintenance.with_user(user, &block)
+end
+
 def sign_in(user)
   visit new_user_session_path
   fill_in 'user_email', with: user.email

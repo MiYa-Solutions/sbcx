@@ -56,19 +56,19 @@ describe AffiliatePostingRule do
     end
   end
 
-  it ' ServiceCallCompleteEvent is only applicable when the job is transferred' do
-    job   = FactoryGirl.build(:my_service_call)
-    event = ServiceCallCompleteEvent.new(eventable: job)
-    rule.applicable?(event).should be_false
-
-    job.status = MyServiceCall::STATUS_TRANSFERRED
-    rule.applicable?(event).should be_true
-
-    job        = FactoryGirl.build(:transferred_sc_with_new_customer)
-    job.status = MyServiceCall::STATUS_TRANSFERRED
-    event      = ServiceCallCompleteEvent.new(eventable: job)
-    rule.applicable?(event).should be_true
-  end
+  # it ' ServiceCallCompleteEvent is only applicable when the job is transferred' do
+  #   job   = FactoryGirl.build(:my_service_call)
+  #   event = ServiceCallCompleteEvent.new(eventable: job)
+  #   rule.applicable?(event).should be_false
+  #
+  #   job.status = MyServiceCall::STATUS_TRANSFERRED
+  #   rule.applicable?(event).should be_true
+  #
+  #   job        = FactoryGirl.build(:transferred_sc_with_new_customer)
+  #   job.status = MyServiceCall::STATUS_TRANSFERRED
+  #   event      = ServiceCallCompleteEvent.new(eventable: job)
+  #   rule.applicable?(event).should be_true
+  # end
 
   it 'should have a get_entries method' do
     should respond_to :get_entries

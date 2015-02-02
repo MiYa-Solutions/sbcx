@@ -50,6 +50,16 @@
 
 
     <ul class="unstyled list_service_calls">
+      <li><label><%= t('general.general.external_ref') %></label></li>
+      <li>
+        <i class="icon-pencil"></i>&nbsp;<%= best_in_place @service_call.becomes(ServiceCall), :external_ref %>
+      </li>
+      <li></li>
+    </ul>
+
+    <br>
+
+    <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:started_on_text) %></label></li>
       <li>
         <i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :started_on_text), @service_call, :started_on_text, type: :datetime, :nil => I18n.t('general.click_to_edit'), classes: 'service_call_started_on' %>
@@ -70,7 +80,7 @@
     <br>
 
     <ul class="unstyled list_service_calls">
-      <li><label><%= @service_call.class.human_attribute_name(:scheduled_for_text) %></label></li>
+      <li><label><%= t('general.general.scheduled_for') %></label></li>
       <li>
         <i class="icon-pencil"></i>&nbsp;<%= best_in_place_if (permitted_attribute? @service_call, :scheduled_for_text), @service_call, :scheduled_for_text, type: :datetime, :nil => I18n.t('general.click_to_edit') %>
       </li>
@@ -82,14 +92,18 @@
     <ul class="unstyled list_service_calls">
       <li><label><%= @service_call.class.human_attribute_name(:customer) %></label></li>
       <li>
-        <% if permitted_attribute? @service_call, :customer_id %>
+
+      <% if permitted_to? :show, @service_call.customer %>
             <i class="icon-pencil"></i>&nbsp;
               <span id="customer-name" class="customer-autocomplete" data-job-id="<%= @service_call.id %>" data-obj-type="<%= @service_call.class.name.underscore %>">
                 <%= @service_call.customer.name %>
               </span>
-        <% else %>
-            <span><%= link_to @service_call.customer.name, @service_call.customer %></span>
-        <% end %>
+
+      <% else %>
+            <span><%= @service_call.customer.name %></span>
+       <% end %>
+
+             <!--<span><#%= link_to @service_call.customer.name, @service_call.customer %></span>-->
       </li>
       <li></li>
     </ul>

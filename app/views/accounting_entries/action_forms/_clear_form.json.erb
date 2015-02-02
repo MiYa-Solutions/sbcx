@@ -1,0 +1,4 @@
+<%= simple_form_for entry.becomes(AccountingEntry), remote: true, html: {'data-type' => 'json', id: "adj_clear_reject_form_#{entry.id}", class: 'adj_entry_clear_form entry_form ajax-form' } do |f| %>
+    <%= f.hidden_field :status_event, value: 'clear' %>
+    <%= f.submit entry.class.human_status_event_name(:clear).titleize, class: 'customer_entry_small_btn btn btn-mini btn-primary ajax-btn' %>
+<% end %>

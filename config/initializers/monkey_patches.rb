@@ -1,8 +1,8 @@
-class ActiveSupport::BufferedLogger
-  def formatter=(formatter)
-    @log.formatter = formatter
-  end
-end
+# class ActiveSupport::BufferedLogger
+#   def formatter=(formatter)
+#     @log.formatter = formatter
+#   end
+# end
 
 class Formatter
   SEVERITY_TO_TAG_MAP     = { 'DEBUG' => 'DEBUG', 'INFO' => 'FYI', 'WARN' => 'WARNING', 'ERROR' => 'WTF', 'FATAL' => 'FATAL', 'UNKNOWN' => 'UNKNOWN' }
@@ -52,7 +52,7 @@ class Formatter
 
 end
 
-Rails.logger.formatter = Formatter.new
+# Rails.logger.formatter = Formatter.new
 
 if Rails.env == "development" || Rails.env == "test"
   require_dependency "#{Rails.root}/app/notifications/adjustment_entry_notification.rb"

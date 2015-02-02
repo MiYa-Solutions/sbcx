@@ -100,7 +100,7 @@ class TransferredServiceCall < ServiceCall
     end
 
     event :transfer do
-      transition :accepted => :transferred, if: lambda { |sc| sc.work_pending? && sc.transferable? }
+      transition :accepted => :transferred, if: ->(sc) { !sc.work_done? && sc.transferable? }
     end
 
     event :cancel_transfer do
@@ -191,7 +191,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def collection_allowed?
-    (accepted? || transferred?) && !payment_collected?
+    (accepted? || transferred?) && !payment_collected? && provider_pending?
   end
 
   def payments
@@ -283,11 +283,12 @@ class TransferredServiceCall < ServiceCall
   end
 
   def available_payment_collectors
-    res = [self.organization]
-    res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
+    res = []
+    if collection_allowed?
+      res << self.organization
+      res << self.subcontractor if subcontractor && !subcontractor.member? && subcon_pending?
+    end
     res
-
-    #provider_pending? ? [self.organization] : []
   end
 
   def work_start_allowed?
@@ -323,8 +324,7 @@ class TransferredServiceCall < ServiceCall
 
   def set_ref_id
     unless self.read_attribute(:ref_id)
-      self.ref_id = id
-      self.save!
+      update_column :ref_id, id
     end
   end
 

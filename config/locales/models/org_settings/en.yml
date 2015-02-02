@@ -1,0 +1,6 @@
+en:
+  activemodel:
+    attributes:
+      org_settings:
+        default_tax: Default Tax
+        validate_job_ext_ref: Validate Job External Reference

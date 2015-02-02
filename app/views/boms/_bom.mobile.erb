@@ -18,7 +18,9 @@
 
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= Bom.human_attribute_name(:description) %></div>
-          <div class="ui-block-b bom_description"><%= truncate(@bom.material.description, length: 15) %></div>
+          <div class="ui-block-b bom_description">
+            <%= f.text_field :description %>
+          </div>
         </div>
 
         <div class="ui-grid-a">

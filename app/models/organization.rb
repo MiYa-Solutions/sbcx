@@ -73,6 +73,7 @@ class Organization < ActiveRecord::Base
   has_many :organization_roles, :through => :org_to_roles
   has_many :service_calls, :inverse_of => :organization
   has_many :tickets, :inverse_of => :organization
+  has_many :projects, :inverse_of => :organization
   has_many :events, as: :eventable
   has_many :materials
   has_many :accounts
@@ -330,6 +331,10 @@ class Organization < ActiveRecord::Base
 
   def my_affiliate?(aff)
     affiliate_ids.include? aff.id
+  end
+
+  def settings
+    @settings ||= OrgSettings.new(self)
   end
 
   private

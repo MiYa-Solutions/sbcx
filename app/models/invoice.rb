@@ -2,7 +2,7 @@ class Invoice < ActiveRecord::Base
   include Forms::InvoiceForm
 
   belongs_to :organization
-  belongs_to :ticket
+  belongs_to :invoiceable, polymorphic: true
   belongs_to :account
   has_many :notifications, as: :notifiable
 
@@ -14,26 +14,40 @@ class Invoice < ActiveRecord::Base
   has_many :adv_payment_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AdvancePayment')"
   has_many :charge_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('ServiceCallCharge')"
 
-  after_create :finalize
+  before_validation :generate_invoice_items
+  after_create :trigger_event
 
-  validates_presence_of :organization, :ticket, :account
+  validates_presence_of :organization, :invoiceable, :account
+  validate :check_empty_invoice
+
 
   def generate_pdf(view)
     InvoicePdf.new(self, view).render
   end
 
+  def accountable
+    account.accountable
+  end
+
+  # for backwards compatibility when moving to invoiceable
+  alias_method :ticket, :invoiceable
+
   private
 
-  def finalize
-    if ticket.work_done?
-      generate_final_invoice
-    else
-      generate_active_invoice
+  def check_empty_invoice
+    errors.add :invoice_items, I18n.t('errors.invoice.empty_invoice') if invoice_items.size == 0
+  end
+
+
+  def trigger_event
+    invoiceable.events << ScInvoiceEvent.new(invoice: self, notify_customer?: email_customer)
+  end
+
+  def generate_invoice_items
+    invoiceable.invoiceable_items.each do |item|
+      self.invoice_items.build(invoiceable_id: item.id, invoiceable_type: item.class.name)
     end
-
-    self.save!
-
-    ticket.events << ScInvoiceEvent.new(invoice: self, notify_customer?: email_customer)
+    self.total = invoiceable.invoice_total
   end
 
   def final_total

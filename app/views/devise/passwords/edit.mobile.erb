@@ -1,0 +1,38 @@
+<%= provide(:title, 'Reset Password') %>
+
+<div class="miya_logo_large">
+  <img src="/assets/mobileLarge.png" alt="MiYa"/>
+  <br>
+</div>
+
+
+<p><%= I18n.t('general.message.reset_pass') %></p>
+
+
+<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { method: :put, :class => 'form-horizontal' }) do |f| %>
+    <%= f.error_notification %>
+    <%= f.input :reset_password_token, :as => :hidden %>
+    <%= f.full_error :reset_password_token %>
+
+    <%= f.input :password, :label => "New password", :required => true %>
+    <%= f.input :password_confirmation, :label => "Confirm your new password", :required => true %>
+
+
+    <%= f.button :submit, I18n.t('general.general.reset_pass'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'sign_in_mobile_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+
+
+<% end %>
+
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+

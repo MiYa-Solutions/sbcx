@@ -1,0 +1,13 @@
+<% title = title || 'CHANGE ME (in the view that calls this partial' %>
+<% table_id = table_id || 'change_me' %>
+<% model = model || NilClass.new %>
+<div class="">
+
+  <div id="job-list" <%= "data-#{model.class.model_name.underscore}-id=#{model.id}" %>>
+
+  </div>
+
+
+</div>
+
+

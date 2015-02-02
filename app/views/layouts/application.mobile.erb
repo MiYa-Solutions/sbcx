@@ -11,33 +11,33 @@
   <%= csrf_meta_tag %>
   <%= render 'layouts/google_analytics' %>
   <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+  <link rel="/apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png">
 
   <!-- For the iPad mini and the first- and second-generation iPad on iOS ≤ 6: -->
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72-precomposed.png">
+  <link rel="/apple-touch-icon-precomposed" sizes="72x72" href="/apple-touch-icon-72x72-precomposed.png">
 
   <!-- For the iPad mini and the first- and second-generation iPad on iOS ≥ 7: -->
-  <link rel="apple-touch-icon-precomposed" sizes="76x76" href="apple-touch-icon-76x76-precomposed.png">
+  <link rel="/apple-touch-icon-precomposed" sizes="76x76" href="/apple-touch-icon-76x76-precomposed.png">
 
   <!-- For iPhone with high-resolution Retina display running iOS ≤ 6: -->
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114-precomposed.png">
+  <link rel="/apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-114x114-precomposed.png">
 
   <!-- For iPhone with high-resolution Retina display running iOS ≥ 7: -->
-  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120-precomposed.png">
+  <link rel="/apple-touch-icon-precomposed" sizes="120x120" href="/apple-touch-icon-120x120-precomposed.png">
 
   <!-- For iPad with high-resolution Retina display running iOS ≤ 6: -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144-precomposed.png">
+  <link rel="/apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144x144-precomposed.png">
 
   <!-- For iPad with high-resolution Retina display running iOS ≥ 7: -->
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152-precomposed.png">
-  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon-180x180-precomposed.png">
+  <link rel="/apple-touch-icon-precomposed" sizes="152x152" href="/apple-touch-icon-152x152-precomposed.png">
+  <link rel="/apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-180x180-precomposed.png">
 
   <!-- Chrome v31+ for Android -->
-  <link rel="icon" sizes="192x192" href="apple-touch-icon.png">
+  <link rel="icon" sizes="192x192" href="/apple-touch-icon.png">
 
 </head>
 <body>
-<div data-role="page" data-theme="d" data-content-theme="d" data-url="<%= request.path %>">
+<div data-role="page" data-theme="d" data-content-theme="d" data-url="<%= request.path %>" id="<%= request.path.gsub(/\d/, '_').gsub('/','')%>">
 
   <!--<div data-role="panel" id="panel_page" data-position="right" data-display="overlay">-->
   <!--&lt;!&ndash; panel content goes here &ndash;&gt;-->
@@ -112,16 +112,16 @@
     <div class="icon_grid">
       <div class="ui-grid-b">
         <div class="ui-block-a white icon_frame">
+          <%= link_to image_tag("/assets/projects.png", :border => 0), projects_path %>
+          <div><%= I18n.t('general.general.projects') %></div>
+        </div>
+        <div class="ui-block-b white icon_frame">
           <%= link_to image_tag("/assets/customer.png", :border => 0), customers_path %>
           <div><%= I18n.t('general.general.customers') %></div>
         </div>
         <div class="ui-block-b white icon_frame">
           <%= link_to image_tag("/assets/employees.png", :border => 0), my_users_path %>
           <div><%= I18n.t('general.general.employees') %></div>
-        </div>
-        <div class="ui-block-c white icon_frame">
-          <%= link_to image_tag("/assets/parts.png", :border => 0), materials_path %>
-          <div><%= I18n.t('general.general.manage_parts') %></div>
         </div>
       </div>
     </div>
@@ -139,15 +139,15 @@
           <div><%= I18n.t('general.general.alerts') %></div>
         </div>
         <div class="ui-block-c white icon_frame">
-          <!--<#%= link_to image_tag("/assets/profile.png", :border => 0), edit_user_registration_path %>-->
-          <%= link_to image_tag("/assets/profile.png", :border => 0),  "#betaPopup", "data-rel" => "popup", "data-transition" => "pop" %>
-
-          <div><%= I18n.t('general.general.my_profile') %></div>
+          <%= link_to image_tag("/assets/parts.png", :border => 0), materials_path %>
+          <div><%= I18n.t('general.general.manage_parts') %></div>
         </div>
+        <!--<div class="ui-block-c white icon_frame">-->
+          <!--&lt;!&ndash;<#%= link_to image_tag("/assets/profile.png", :border => 0), edit_user_registration_path %>&ndash;&gt;-->
+          <!--<#%= link_to image_tag("/assets/profile.png", :border => 0),  "#betaPopup", "data-rel" => "popup", "data-transition" => "pop" %>-->
 
-
-
-
+          <!--<div><#%= I18n.t('general.general.my_profile') %></div>-->
+        <!--</div>-->
 
       </div>
     </div>

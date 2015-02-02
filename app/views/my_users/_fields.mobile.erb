@@ -7,6 +7,10 @@
     <div class="ui-block-b"><%= f.text_field :name %></div>
   </div>
   <div class="ui-grid-a">
+    <div class="ui-block-a"><%= User.human_attribute_name(:status) %></div>
+    <div class="ui-block-b"><%= f.input :status, collection: User.state_machines[:status].states, label_method: :human_name, value_method: :value, :include_blank => f.object.human_status_name %></div>
+  </div>
+  <div class="ui-grid-a">
     <div class="ui-block-a"><%= User.human_attribute_name(:company) %></div>
     <div class="ui-block-b"><%= f.text_field :company %></div>
   </div>

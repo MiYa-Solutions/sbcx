@@ -23,6 +23,7 @@ $(document).bind "pageshow", (e) ->
       $a = $(e.currentTarget)
       $('#customer-autocomplete').val($a.text())
       $('#service_call_customer_id').val($a.data('autocomplete').id)
+      $('#project_customer_id').val($a.data('autocomplete').id)
       $('#service_call_address1').val($a.data('autocomplete').address1)
       $('#service_call_address2').val($a.data('autocomplete').address2)
       $('#service_call_company').val($a.data('autocomplete').company)
@@ -40,7 +41,7 @@ $(document).bind "pageshow", (e) ->
     transition: 'fade', #// page transition, default is fade
     matchFromStart: false, #// search from start, or anywhere in the string
     loadingHtml: '<li data-icon="none"><a href="#">Searching...</a></li>', #// HTML to display when searching remotely
-    interval: 3000, #// The minimum delay between server calls when using a remote "source"
+    interval: 1000, #// The minimum delay between server calls when using a remote "source"
     builder: null, #// optional callback to build HTML for autocomplete
 #labelHTML: fn(){}, // optioanl callback function when formatting the display value of list items
 #onNoResults: fn(), // optional callback function when no results were matched

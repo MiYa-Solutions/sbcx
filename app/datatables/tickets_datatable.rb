@@ -14,7 +14,7 @@ class TicketsDatatable
     }
   end
 
-  private
+  protected
 
   def data
     case params[:table_type]
@@ -48,6 +48,16 @@ class TicketsDatatable
               ticket.human_billing_status_name
           ]
         end
+      when 'project_jobs'
+        tickets.map do |ticket|
+          [
+              ticket.ref_id,
+              link_to(ticket.name, ticket),
+              ticket.human_status_name,
+              ticket.human_work_status_name,
+              ticket.human_billing_status_name
+          ]
+        end
       else
         tickets.map do |ticket|
           [
@@ -61,12 +71,15 @@ class TicketsDatatable
               ticket.my_profit.to_s,
               ticket.total_price.to_s,
               ticket.total_cost.to_s,
-              ticket.tags.map(&:name).join(', ')
+              ticket.tags.map(&:name).join(', '),
+              ticket.external_ref
           ]
         end
 
     end
   end
+
+  private
 
   def tickets
     @tickets ||= fetch_tickets
@@ -75,7 +88,7 @@ class TicketsDatatable
   def fetch_tickets
     tickets = current_user.organization.service_calls.scoped
     if params[:sSearch].present?
-      tickets = tickets.where("tickets.name ilike ?", "%#{params[:sSearch]}%")
+      tickets = tickets.where("tickets.name ilike ? OR tickets.external_ref ilike ?", "%#{params[:sSearch]}%", "%#{params[:sSearch]}%")
     end
 
     if params[:sSearch_5].present?
@@ -99,15 +112,15 @@ class TicketsDatatable
     end
 
     if params[:from_date].present? && !params[:to_date].present?
-      tickets = tickets.where('tickets.created_at >= ?', params[:from_date])
+      tickets = tickets.where('tickets.created_at >= ?', Time.zone.parse(params[:from_date]))
     end
 
     if params[:to_date].present? && !params[:from_date].present?
-      tickets = tickets.where('tickets.created_at <= ?', params[:to_date])
+      tickets = tickets.where('tickets.created_at <= ?', Time.zone.parse(params[:to_date]))
     end
 
     if params[:to_date].present? && params[:from_date].present?
-      tickets = tickets.where('tickets.created_at between ? and ?', params[:from_date], params[:to_date])
+      tickets = tickets.where('tickets.created_at between ? and ?', Time.zone.parse(params[:from_date]), Time.zone.parse(params[:to_date]))
     end
 
     if params[:affiliate_id].present?
@@ -133,6 +146,10 @@ class TicketsDatatable
 
     if params[:work_status].present?
       tickets = tickets.where(work_status: params[:work_status])
+    end
+
+    if params[:project_id].present?
+      tickets = tickets.where(project_id: params[:project_id])
     end
 
 

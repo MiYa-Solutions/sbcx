@@ -29,7 +29,7 @@ authorization do
 
     has_permission_on :invoices, to: [:new, :create] do
       if_attribute :organization_id => is { user.organization_id }
-      if_attribute :ticket => { :subcon_chain_ids => contains { user.organization_id } }, :ticket => { :allow_collection => is { true } }
+      if_attribute :invoiceable => { :subcon_chain_ids => contains { user.organization_id } }, :invoiceable => { :allow_collection => is { true } }
     end
 
     has_permission_on :materials, to: [:new, :index]
@@ -57,6 +57,9 @@ authorization do
       if_attribute :organization => is { user.organization }
       if_attribute :organization => { :subcontrax_member => is_not { true } }, :organization_id => is_in { user.organization.providers.pluck('organizations.id') }
     end
+    has_permission_on :projects, :to => [:index, :show, :new, :create, :edit, :update, :destroy] do
+      if_attribute :organization => is { user.organization }
+    end
     has_permission_on :service_calls, :to => [:new, :create] do
     end
 
@@ -71,6 +74,7 @@ authorization do
     has_permission_on :job_imports, to: [:new, :create]
     has_permission_on :invites, to: :new
     has_permission_on :settings, to: [:show, :update]
+    has_permission_on :org_settings, to: [:show, :edit, :update]
 
     has_permission_on :invites, to: [:show, :index] do
       if_attribute organization_id: is { user.organization_id }
@@ -90,7 +94,7 @@ authorization do
       if_attribute :organization_id => is { user.organization_id }
     end
 
-    has_permission_on :my_users, :to => [:new, :create, :edit, :update, :show]
+    has_permission_on :my_users, :to => [:new, :create, :edit, :update, :show, :reset_password]
     has_permission_on :subcontractors, :to => [:new, :create]
     has_permission_on :providers, :to => [:new, :create]
     has_permission_on :affiliates, :to => [:new, :create]

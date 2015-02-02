@@ -18,6 +18,7 @@ en:
         address1: "Address"
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
+        external_ref: "External id"
       transferred_service_call:
         customer: "Customer"
         provider: "Contractor"
@@ -25,6 +26,7 @@ en:
         address1: "Address"
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
+        external_ref: "External id"
       service_call:
         provider: "Contractor"
         tag_list: "Job Type(s)"
@@ -39,6 +41,7 @@ en:
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
         provider_agreement: "Contractor Agreement"
+        external_ref: "External id"
     state_machines:
       service_call:
         work_status:

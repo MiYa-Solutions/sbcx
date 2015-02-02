@@ -1,15 +1,18 @@
 class InvoicesController < ApplicationController
-
-  filter_resource_access :attribute_check => true
+  before_filter :authenticate_user!
+  filter_resource_access
 
   # GET /invoices
   # GET /invoices.json
   def index
-    @invoices = Invoice.where(ticket_id: invoice_params[:ticket_id])
+    @invoices = Invoice.where(invoiceable_id: invoice_params[:invoiceable_id], invoiceable_type: invoice_params[:invoiceable_type])
 
     respond_to do |format|
-      format.html                                                               # index.html.erb
-      format.mobile { @service_call = Ticket.find(invoice_params[:ticket_id]) } # index.mobile.erb
+      format.html # index.html.erb
+      format.mobile {
+        @invoiceable = find_invoiceable
+        @account = find_account
+      } # index.mobile.erb
       format.json { render json: @invoices }
     end
   end
@@ -17,8 +20,6 @@ class InvoicesController < ApplicationController
   # GET /invoices/1
   # GET /invoices/1.json
   def show
-    @invoice = Invoice.find(params[:id])
-
     respond_to do |format|
       format.html
       format.xls
@@ -31,11 +32,16 @@ class InvoicesController < ApplicationController
       #            type:        "application/pdf",
       #            disposition: "inline"
       #end
-      format.pdf { render pdf:                    "invoice_#{@invoice.id}",
-                          layout:                 'receipts',
-                          footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
-                          header:                 { html: { template: 'layouts/_header.pdf.erb' } },
-                          disable_internal_links: false }
+
+
+      format.pdf {
+        partial = params[:template].present? ? params[:template] : 'show'
+        render pdf:                    "invoice_#{@invoice.id}",
+               layout:                 'receipts',
+               template:               "invoices/#{partial}.pdf",
+               footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
+               header:                 { html: { template: 'layouts/_header.pdf.erb' } },
+               disable_internal_links: false }
 
 
     end
@@ -44,8 +50,6 @@ class InvoicesController < ApplicationController
   # GET /invoices/new
   # GET /invoices/new.json
   def new
-    @invoice = Invoice.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @invoice }
@@ -54,61 +58,33 @@ class InvoicesController < ApplicationController
 
   # GET /invoices/1/edit
   def edit
-    @invoice = Invoice.find(params[:id])
   end
 
   # POST /invoices
   # POST /invoices.json
   def create
-    ticket_id = @orig_ticket_id ? @orig_ticket_id : params[:invoice][:ticket_id]
+    # @orig_invoicable -  in case the subcon issuing the invoice, the created invoice should be associated with the contractor ticket,
+    # so @orig_invoiceable holds the subcon ticket used for the redirection
     respond_to do |format|
       if @invoice.save
         format.any(:html, :mobile) {
-          redirect_to service_call_path(ticket_id), notice: 'Invoice was successfully created.'
+          redirect_to @orig_invoiceable, notice: 'Invoice was successfully created.'
         }
         format.json { render json: @invoice, status: :created, location: @invoice }
       else
         flash[:error] = "Failed to create the invoice. #{humanized_errors}".html_safe
-        format.html { redirect_to service_call_path(ticket_id) }
+        format.html { redirect_to @orig_invoiceable }
+        format.mobile { redirect_to invoices_path(params) }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end
   end
-
-  # PATCH/PUT /invoices/1
-  # PATCH/PUT /invoices/1.json
-  def update
-    @invoice = Invoice.find(params[:id])
-
-    respond_to do |format|
-      if @invoice.update_attributes(invoice_params)
-        format.html { redirect_to @invoice, notice: 'Invoice was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @invoice.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /invoices/1
-  # DELETE /invoices/1.json
-  def destroy
-    @invoice = Invoice.find(params[:id])
-    @invoice.destroy
-
-    respond_to do |format|
-      format.html { redirect_to invoices_url }
-      format.json { head :no_content }
-    end
-  end
-
-  protected
 
   def new_invoice_from_params
-    @invoice              = Invoice.new(invoice_params)
-    @invoice.organization = @invoice.ticket.organization
-    @invoice.account      = @invoice.ticket.customer.account
+    @invoiceable          = find_invoiceable
+    @invoice              = @invoiceable.invoices.build(invoice_params.except(:accountable_id, :accountable_type))
+    @invoice.organization = @invoice.invoiceable.organization
+    @invoice.account      = find_account
   end
 
   private
@@ -117,16 +93,31 @@ class InvoicesController < ApplicationController
   # params.require(:person).permit(:name, :age)
   # Also, you can specialize this method with per-user checking of permissible attributes.
   def invoice_params
-    set_provider_ticket_id # in case the subcon issuing the invoice, it should be associated with the provider ticket
-    params.require(:invoice).permit!
+    params.require(:invoice).permit(:invoiceable_id,
+                                    :invoiceable_type,
+                                    :accountable_id,
+                                    :accountable_type,
+                                    :adv_payment_amount,
+                                    :adv_payment_desc,
+                                    :email_customer,
+                                    :template,
+                                    :notes)
   end
 
-  def set_provider_ticket_id
-    ticket = Ticket.find(params[:invoice][:ticket_id])
-    if ticket.kind_of?(TransferredServiceCall)
-      @orig_ticket_id = params[:invoice][:ticket_id]
-      params[:invoice][:ticket_id] = ticket.contractor_ticket.id
+
+  def find_invoiceable
+    invoiceable       = invoice_params[:invoiceable_type].classify.constantize.find(invoice_params[:invoiceable_id])
+    @orig_invoiceable = invoiceable
+    # in case the subcon issuing the invoice, it should be associated with the provider ticket
+    if invoiceable.kind_of?(TransferredServiceCall)
+      invoiceable = invoiceable.contractor_ticket
     end
+
+    invoiceable
+  end
+
+  def find_account
+    Account.where(organization_id: current_user.organization_id, accountable_id: invoice_params[:accountable_id], accountable_type: invoice_params[:accountable_type]).first
   end
 
   def humanized_errors

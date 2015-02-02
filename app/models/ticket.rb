@@ -57,15 +57,20 @@
 #
 
 class Ticket < ActiveRecord::Base
+  include CustomerCreator
+  include InvoiceableTicket
+  include Forms::TicketProjectForm
+
   serialize :properties, ActiveRecord::Coders::Hstore
   monetize :subcon_fee_cents
-  belongs_to :customer, :inverse_of => :service_calls
+  belongs_to :project
   belongs_to :organization, :inverse_of => :service_calls
   belongs_to :subcontractor
   belongs_to :provider
   belongs_to :payment
   belongs_to :technician, class_name: User
   has_many :events, as: :eventable, :order => 'id DESC'
+  has_many :custom_events, as: :eventable, :order => 'id DESC', class_name: 'CustomEvent', table_name: 'events'
   has_many :notifications, as: :notifiable
   has_many :boms do
     def build(params)
@@ -84,7 +89,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :collector, :polymorphic => true
   has_many :appointments, as: :appointable, finder_sql: proc { "SELECT appointments.* FROM appointments WHERE appointments.appointable_id = #{id} AND appointments.appointable_type = '#{self.class.name}'" }
   has_many :accounting_entries
-  has_many :invoices
 
   has_many :taggings, as: :taggable
   has_many :tags, through: :taggings
@@ -102,7 +106,6 @@ class Ticket < ActiveRecord::Base
 
   ### VIRTUAL ATTRIBUTES
   attr_writer :started_on_text, :completed_on_text, :scheduled_for_text
-  attr_accessor :new_customer, :customer_name
   attr_accessor :system_update
   attr_accessor :payment_type
   attr_accessor :payment_notes
@@ -119,8 +122,7 @@ class Ticket < ActiveRecord::Base
   before_save :assign_tags
   after_save :create_appointment
 
-                                                                                       # create a new customer in case one was asked for
-  before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
+  # create a new customer in case one was asked for
   before_create :set_name
 
   validate :check_completed_on_text, :check_started_on_text, :check_scheduled_for_text #, :customer_belongs_to_provider
@@ -130,7 +132,13 @@ class Ticket < ActiveRecord::Base
   validates_numericality_of :tax
   validates_email_format_of :email, allow_nil: true, allow_blank: true
 
+  validates_uniqueness_of :external_ref, scope: :organization_id, allow_blank: false, if: :validate_external_ref?
+  validates_presence_of :external_ref, if: :validate_external_ref?
+
+  validate :check_project_owner, if: ->(t) { t.project_id }
+
   accepts_nested_attributes_for :customer
+  accepts_nested_attributes_for :custom_events
 
   ### state machine states constants
 
@@ -151,6 +159,10 @@ class Ticket < ActiveRecord::Base
     scope.find_each(batch_size: batch_size) do |transaction|
       yield transaction
     end
+  end
+
+  def customer_account
+    Account.where(accountable_id: customer_id, accountable_type: 'Customer').first
   end
 
   def to_csv_row
@@ -204,7 +216,6 @@ class Ticket < ActiveRecord::Base
     )
   end
 
-
   def subcon_balance
     if transferred? # this is an abstract class and so transferred is assumed to be implemented by the subclasses
       affiliate_balance(subcontractor)
@@ -213,6 +224,23 @@ class Ticket < ActiveRecord::Base
     end
 
   end
+
+  def customer_attributes
+    {
+        name:         customer_name,
+        address1:     address1,
+        address2:     address2,
+        country:      country,
+        city:         city,
+        state:        state,
+        zip:          zip,
+        phone:        phone,
+        email:        email,
+        mobile_phone: mobile_phone
+    }
+
+  end
+
 
   def customer_balance
     account = Account.for_customer(customer).first
@@ -316,32 +344,6 @@ class Ticket < ActiveRecord::Base
     errors.add :scheduled_for_text, "is out of range"
   end
 
-  def create_customer
-    if provider
-      self.customer = self.provider.customers.new(name:         customer_name,
-                                                  address1:     address1,
-                                                  address2:     address2,
-                                                  country:      country,
-                                                  city:         city,
-                                                  state:        state,
-                                                  zip:          zip,
-                                                  phone:        phone,
-                                                  email:        email,
-                                                  mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
-
-    else
-      self.customer = self.organization.customers.new(name:         customer_name,
-                                                      address1:     address1,
-                                                      address2:     address2,
-                                                      country:      country,
-                                                      city:         city,
-                                                      state:        state,
-                                                      zip:          zip,
-                                                      phone:        phone,
-                                                      email:        email,
-                                                      mobile_phone: mobile_phone) if customer_name.present? && customer.nil?
-    end
-  end
 
   def validate_payment
     self.errors.add :payment_type, "You must indicate the type of payment" unless self.payment_type
@@ -438,9 +440,9 @@ class Ticket < ActiveRecord::Base
   def subcon_entries
     if subcontractor
       acc = Account.for_affiliate(organization, subcontractor).first
-      acc ? entries.by_acc(acc) : []
+      acc ? entries.by_acc(acc) : AccountingEntry.none
     else
-      []
+      AccountingEntry.none
     end
   end
 
@@ -465,9 +467,9 @@ class Ticket < ActiveRecord::Base
   def customer_entries
     if customer
       acc = Account.for_customer(customer).first
-      acc ? entries.by_acc(acc) : []
+      acc ? entries.by_acc(acc) : AccountingEntry.none
     else
-      []
+      AccountingEntry.none
     end
   end
 
@@ -549,7 +551,17 @@ class Ticket < ActiveRecord::Base
     res
   end
 
+
   protected
+
+  def check_project_owner
+    if project.organization_id != self.organization_id
+      raise TicketExceptions::InvalidAssociation.new(I18n.t('exceptions.ticket.invalid_project',
+                                                              org_name:   organization.name,
+                                                              ticket_id:   self.id,
+                                                              project_id: project_id))
+    end
+  end
 
   def check_subcon_agreement
     unless self.subcon_agreement.nil?
@@ -563,12 +575,12 @@ class Ticket < ActiveRecord::Base
     end
   end
 
-# Assigns tags from a comma separated tag list
+  # Assigns tags from a comma separated tag list
   def assign_tags
     if @tag_list
-      #self.taggings.each { |tagging| tagging.destroy }
+      self.taggings.each { |tagging| tagging.destroy }
       self.tags = @tag_list.split(/,/).uniq.map do |name|
-        Tag.where(name: name, organization_id: organization_id).first || Tag.create(:name => name.strip, organization_id: organization_id)
+        Tag.where(name: name.strip, organization_id: organization_id).first || Tag.create(:name => name.strip, organization_id: organization_id)
       end
     end
   end
@@ -604,6 +616,10 @@ class Ticket < ActiveRecord::Base
 
   def changed_from_transferred?
     changes[:status] && changes[:status][0] == ServiceCall::STATUS_TRANSFERRED
+  end
+
+  def validate_external_ref?
+    self.organization && self.organization.settings.validate_job_ext_ref?
   end
 
 end

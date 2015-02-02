@@ -1,0 +1,63 @@
+<div id='area_calculator' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="areaCalculator" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= I18n.t('general.general.calculate_area') %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+
+    <form id="area-calc-form" data-parsley-validate>
+    <div class="row-fluid bom_calc_modal">
+
+
+          <div class="span2">
+            <label for="area-calc-fwidth">Width (Ft.)</label><input type="text" id="area-calc-fwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+          </div>
+
+
+          <div class="span2">
+            <label for="area-calc-iwidth">(Inch)</label><input type="text" id="area-calc-iwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+          </div>
+
+
+    </div>
+
+<br>
+    <div class="row-fluid bom_calc_modal">
+
+
+        <div class="span2">
+          <label for="area-calc-flength">Length (Ft.)</label><input type="text" id="area-calc-flength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+        </div>
+
+
+        <div class="span2">
+          <label for="area-calc-ilength">(Inch)</label><input type="text" id="area-calc-ilength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/>
+        </div>
+
+
+      </div>
+
+
+    </form>
+      <div class="modal-footer">
+          <button id="area-calc-btn" class="btn btn-medium btn-primary" %><%= t('general.general.calculate_area')%></button>
+    </div>
+
+
+
+</div>
+</div>
+
+
+
+
+

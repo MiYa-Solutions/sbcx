@@ -58,6 +58,7 @@
 #                               end
 class Event < ActiveRecord::Base
   serialize :properties, ActiveRecord::Coders::Hstore
+  # attr_accessible :type, :name
 
   belongs_to :eventable, polymorphic: true
   # todo - seems like the user is not needed instead a creator can be used
@@ -67,6 +68,8 @@ class Event < ActiveRecord::Base
   stampable
 
   before_validation :set_default_creator, :init
+
+  scope :none, ->{where(id: nil).where('id IS NOT ?', nil)}
 
   def self.event_chain(e = nil)
 

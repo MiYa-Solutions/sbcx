@@ -1,0 +1,149 @@
+<% provide(:title, @project.name) %>
+
+
+<div data-role="collapsible-set" data-inset="false">
+
+  <div data-role="list-divider" data-collapsed="true" data-theme="d" class="job_header">
+    <h3><%= @project.name %></h3>
+    <span class="job_source_label">
+      <badge><%= @project.id %></badge>
+    </span>
+
+    <div class= "new_job_button">
+      <%= link_to I18n.t('general.general.new_job'), new_project_job_path(@project), "data-role" => "button", id: 'new-affiliate-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+    </div>
+
+  </div>
+
+  <br>
+
+  <div class="job_show_status">
+
+    <ul data-role="listview">
+
+      <li class="ui-li ui-li-static">
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Project.human_attribute_name(:customer) %></div>
+          <div class="ui-block-b">
+           <span class="status_grey" id="service_call_customer_name_job">
+                <%= link_to @project.customer_name, @project.customer if @project.customer %>
+          </span>
+          </div>
+        </div>
+      </li>
+      <li class="ui-li ui-li-static">
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Project.human_attribute_name(:status) %></div>
+          <div class="ui-block-b">
+           <span class="project_show_info project_status_<%= @project.status_name %>")>
+                <%= @project.status_name %>
+          </span>
+          </div>
+        </div>
+      </li>
+      <li class="ui-li ui-li-static">
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Project.human_attribute_name(:start_date) %></div>
+          <div class="ui-block-b">
+           <span class="status_grey">
+              <%= l @project.start_date if @project.start_date %>
+          </span>
+          </div>
+        </div>
+      </li>
+      <li class="ui-li ui-li-static">
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Project.human_attribute_name(:end_date) %></div>
+          <div class="ui-block-b">
+           <span class="status_grey">
+              <%= l @project.end_date if @project.end_date %>
+          </span>
+          </div>
+        </div>
+      </li>
+      <li class="ui-li ui-li-static">
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= Project.human_attribute_name(:external_ref) %></div>
+          <div class="ui-block-b">
+           <span class="status_grey">
+              <%= @project.external_ref %>
+          </span>
+          </div>
+        </div>
+      </li>
+      <% if @project.provider %>
+
+            <li class="ui-li ui-li-static">
+              <div class="ui-grid-a">
+                <div class="ui-block-a"><%= Project.human_attribute_name(:provider) %></div>
+                <div class="ui-block-b">
+                           <span class="status_grey">
+                              <%= @project.provider.name if @project.provider %>
+                          </span>
+                </div>
+              </div>
+            </li>
+            <li class="ui-li ui-li-static">
+                <div class="ui-grid-a">
+                <div class="ui-block-a"><%= Project.human_attribute_name(:provider_agreement) %></div>
+                <div class="ui-block-b">
+                           <span class="status_grey">
+                              <%= @project.provider_agreement.name if @project.provider_agreement %>
+                          </span>
+                </div>
+                </div>
+            </li>
+
+      <% end %>
+
+
+    </ul>
+
+  </div>
+
+</div>
+
+
+
+<div data-role="collapsible-set" data-inset="false">
+  <!--Invoices-->
+  <div data-role="collapsible" data-collapsed="true" data-theme="d">
+    <h3><%= I18n.t('general.general.invoices') %></h3>
+    <%= render 'invoices/invoice_list', invoiceable: @project, account: @project.customer.account if @project.customer %>
+  </div>
+
+  <!--project jobs-->
+  <div data-role="collapsible" data-collapsed="false" data-theme="d">
+    <h3><%= I18n.t('general.general.jobs') %></h3>
+    <%= render 'shared/job_list', model: @project, title: 'Project Jobs', table_id: 'project-jobs' %>
+  </div>
+</div>
+
+
+<br>
+
+<%= simple_form_for(@project, :html => { :class => 'form-horizontal' }) do |f| %>
+
+
+    <div class="customer_contacts">
+
+      <div class="ui-grid-a">
+        <div class="ui-block-a"><%= Project.human_attribute_name(:description) %></div>
+        <div class="ui-block-b collection">  <%= f.input :description %></div>
+      </div>
+    </div>
+
+    <fieldset class="ui-grid-a ui-btn-inner-small">
+      <div class="ui-block-a">
+        <%= link_to "Back", projects_path, "data-rel" => "back", "data-role" => "button", "data-iconpos" => "left", :class => "ui-btn-up-d", "data-icon" => "arrow-l", id: 'back_service_call_btn' %>
+      </div>
+      <div class="ui-block-b">
+        <%= f.submit "Save", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "right", id: 'service_call_save_btn' %>
+      </div>
+    </fieldset>
+<% end %>
+
+
+
+
+

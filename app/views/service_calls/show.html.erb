@@ -5,11 +5,10 @@
     <li>
       <h1 id="job_name_show"><%= best_in_place @service_call.becomes(ServiceCall), :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1>
     </li>
-    <li id="external_job_id">
-      <% unless  @service_call.external_ref.nil? %>
-         <h1><%= Ticket.human_attribute_name(:external_ref) + ": ".html_safe + "#{@service_call.external_ref}" %></h1>
-      <% end %>
-    </li>
+
+    <!--<li id="external_job_id">-->
+
+    <!--</li>-->
     <li></li>
     <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1></li>
   </ul>
@@ -18,11 +17,11 @@
 <div class="row-fluid">
   <div class="well_height job_show_well">
 
-    <div class="span4" id="job_statuses_tab">
+    <div class="span3" id="job_statuses_tab">
       <%= render :partial => 'job_actions_statuses' %>
     </div>
 
-    <div class="span8" id="job_show_tab">
+    <div class="span9" id="job_show_tab">
 
       <ul class="nav nav-tabs" id="myJobShowTab">
         <li class="active"><a href="#jobBilling" data-toggle="tab"><%= I18n.t('general.general.job_billing') %></a></li>

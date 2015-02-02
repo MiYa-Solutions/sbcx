@@ -62,9 +62,6 @@ describe Material do
       material.status.should == Material::STATUS_AVAILABLE
     end
 
-    it "name has to be unique withing the organization and supplier scope" do
-      should validate_uniqueness_of(:name).scoped_to(:organization_id, :supplier_id)
-    end
   end
 
 end

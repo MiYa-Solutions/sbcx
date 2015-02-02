@@ -6,11 +6,10 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
   config.mailer_sender = "support@subcontrax.com"
 
+  config.secret_key = ENV['SECRET_TOKEN']
+
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
-
-  # Automatically apply schema changes in tableless databases
-  config.apply_schema  = false
 
   # ==> ORM configuration
   # Load and configure the ORM. Supports :active_record (default) and
@@ -111,9 +110,6 @@ Devise.setup do |config|
   # If true, extends the user's remember period when remembered via cookie.
   # config.extend_remember_period = false
 
-  # If true, uses the password salt as remember token. This should be turned
-  # to false if you are not using database authenticatable.
-  config.use_salt_as_remember_token   = true
 
   # Options to be passed to the created cookie. For instance, you can set
   # :secure => true in order to force SSL only cookies.
@@ -202,7 +198,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  config.navigational_formats         = ["*/*", :html, :mobile]
+  config.navigational_formats         = ["*/*", :html, :mobile, :json]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via                 = :delete
@@ -220,4 +216,9 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
+end
+
+# necessary for the reset password to work sbcx github issue #702
+ActionController::Responder.class_eval do
+  alias :to_mobile :to_html
 end

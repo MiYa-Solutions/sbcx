@@ -15,9 +15,18 @@
           </div>
           <br><br>
         </div>
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a"><%= @bom.class.human_attribute_name(:description) %></div>
+          <div class="ui-block-b"><%= f.text_field :description %></div>
+        </div>
+
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:quantity) %></div>
-          <div class="ui-block-b"> <%= f.text_field :quantity, "type" => "range", "name" => "bom[quantity]", id: "slider-1", "value" => "1", "min" => "0", "max" => "100" %></div>
+          <div class="ui-block-b"> <%= f.text_field :quantity, "type" => "range", "name" => "bom[quantity]", id: "bom_quantity", "value" => "1", "min" => "0", "max" => "100" %>
+                   <%= link_to image_tag("/assets/clacl_48.png", :border => 0),  "#area_calculator", "data-rel" => "popup", "data-transition" => "pop", id: "link_to_bom_calc_btn" %>
+
+          </div>
         </div>
         <div class="ui-grid-a">
           <div class="ui-block-a"><%= @bom.class.human_attribute_name(:price) %></div>
@@ -42,3 +51,58 @@
 
     <%= f.button :submit, I18n.t('general.general.add_part'), "data-role" => "button", "data-theme" => "b", :class => "ui-btn-up-b", "data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
 <% end %>
+
+
+
+
+
+
+<div data-role="popup" id="area_calculator" data-overlay-theme="a" data-theme="c" data-dismissible="false" class="ui-corner-all">
+
+
+  <div data-role="header" data-theme="a" class="ui-corner-top">
+    <h1 id="link_to_proj_header"><%= t('general.general.calculate_area') %></h1>
+  </div>
+
+  <div data-role="content">
+    <br>
+
+    <form id="area-calc-form" data-parsley-validate>
+
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Width (Ft.)</div>
+          <div class="ui-block-b"><input type="text" id="area-calc-fwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/></div>
+        </div>
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Width (Inch)</div>
+          <div class="ui-block-b"><input type="text" id="area-calc-iwidth" value="0" data-parsley-trigger="change" required data-parsley-type="number"/></div>
+        </div>
+
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Length (Ft.)</div>
+          <div class="ui-block-b"><input type="text" id="area-calc-flength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/></div>
+        </div>
+
+        <div class="ui-grid-a">
+          <div class="ui-block-a">Length (Inch.)</div>
+          <div class="ui-block-b"><input type="text" id="area-calc-ilength" value="0" data-parsley-trigger="change" required data-parsley-type="number"/></div>
+        </div>
+
+        </form>
+
+        <br>
+        <a href="#" id="area-calc-btn" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="d">Close</a>
+
+
+
+
+
+
+  </div>
+
+
+
+</div>

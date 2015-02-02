@@ -56,7 +56,7 @@ class Bom < ActiveRecord::Base
   alias_method :amount, :total_price
 
   def description
-    material.description
+    attribute(:description) ||  material.description
   end
 
 

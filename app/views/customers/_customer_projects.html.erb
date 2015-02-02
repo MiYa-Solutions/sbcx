@@ -1,0 +1,27 @@
+<div class="affiliate_jobs">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= Project.model_name.human.pluralize %></h1></li>
+      <li>
+      </li>
+    </ul>
+  </div>
+  <!--table of jobs-->
+  <table id="customer-projects" class="table table-striped" data-customer-id="<%= @customer.id %>">
+    <thead>
+    <tr>
+      <th><%= Project.human_attribute_name(:id) %></th>
+      <th><%= Project.human_attribute_name(:created_at) %></th>
+      <th><%= Project.human_attribute_name(:name) %></th>
+      <th><%= Project.human_attribute_name(:status) %></th>
+      <th><%= Project.human_attribute_name(:customer) %></th>
+      <th><%= Project.human_attribute_name(:provider) %></th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+</div>
+
+

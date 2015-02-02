@@ -46,29 +46,9 @@ describe DepositToEntry do
     end
 
     it 'should allow to confirm or cancel after disputed' do
-      expect(entry.status_events).to eq [:confirmed, :cancel]
+      expect(entry.status_events).to eq [:confirmed]
     end
 
-    describe '#cancel' do
-      before do
-        EntryCancelEvent.stub(new: event)
-        entry.cancel(false) unless example.metadata[:skip_cancel]
-      end
-
-      it 'status should change to canceled' do
-        expect(entry.status_name).to eq :canceled
-      end
-
-      it 'there should be no available status events' do
-        expect(entry.status_events).to eq []
-      end
-
-      it 'should create an EntryCancelEvent', skip_cancel: true do
-        EntryCancelEvent.should_receive(:new)
-        entry.cancel(false)
-      end
-
-    end
   end
 
   describe '#confirmed' do

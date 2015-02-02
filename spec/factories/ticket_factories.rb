@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :my_job, class: MyServiceCall do
     association :organization, factory: :member_org, strategy: :build
     scheduled_for 1.day.from_now
+    sequence(:external_ref) { |n| "JOB_EXTERNAL_REF_#{n}" }
 
 
     after(:build) do |job|

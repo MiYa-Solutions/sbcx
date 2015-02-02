@@ -350,7 +350,8 @@ CREATE TABLE boms (
     creator_id integer,
     updater_id integer,
     provider_bom_id integer,
-    subcon_bom_id integer
+    subcon_bom_id integer,
+    description character varying(255)
 );
 
 
@@ -575,7 +576,7 @@ ALTER SEQUENCE invoice_items_id_seq OWNED BY invoice_items.id;
 CREATE TABLE invoices (
     id integer NOT NULL,
     account_id integer,
-    ticket_id integer,
+    invoiceable_id integer,
     organization_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -583,7 +584,8 @@ CREATE TABLE invoices (
     updater_id integer,
     notes text,
     total_cents integer,
-    total_currency character varying(255)
+    total_currency character varying(255),
+    invoiceable_type character varying(255)
 );
 
 
@@ -871,6 +873,49 @@ ALTER SEQUENCE posting_rules_id_seq OWNED BY posting_rules.id;
 
 
 --
+-- Name: projects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE projects (
+    id integer NOT NULL,
+    name character varying(255),
+    status integer,
+    description text,
+    creator_id integer,
+    updater_id integer,
+    deleter_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    organization_id integer,
+    customer_id integer,
+    provider_id integer,
+    provider_agreement_id integer,
+    start_date date,
+    end_date date,
+    external_ref character varying(255)
+);
+
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE projects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+
+
+--
 -- Name: roles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1066,7 +1111,8 @@ CREATE TABLE tickets (
     properties hstore,
     external_ref character varying(255),
     subcon_collection_status integer,
-    prov_collection_status integer
+    prov_collection_status integer,
+    project_id integer
 );
 
 
@@ -1125,7 +1171,9 @@ CREATE TABLE users (
     confirmation_token character varying(255),
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
-    unconfirmed_email character varying(255)
+    unconfirmed_email character varying(255),
+    authentication_token character varying(255),
+    status integer
 );
 
 
@@ -1321,6 +1369,13 @@ ALTER TABLE ONLY payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq':
 --
 
 ALTER TABLE ONLY posting_rules ALTER COLUMN id SET DEFAULT nextval('posting_rules_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
 
 
 --
@@ -1541,6 +1596,14 @@ ALTER TABLE ONLY posting_rules
 
 
 --
+-- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1702,10 +1765,17 @@ CREATE INDEX index_invoice_items_on_invoice_id ON invoice_items USING btree (inv
 
 
 --
+-- Name: index_invoices_on_invoiceable_id_and_invoiceable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_invoices_on_invoiceable_id_and_invoiceable_type ON invoices USING btree (invoiceable_id, invoiceable_type);
+
+
+--
 -- Name: index_invoices_on_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_invoices_on_ticket_id ON invoices USING btree (ticket_id);
+CREATE INDEX index_invoices_on_ticket_id ON invoices USING btree (invoiceable_id);
 
 
 --
@@ -1734,6 +1804,20 @@ CREATE INDEX index_materials_on_supplier_id ON materials USING btree (supplier_i
 --
 
 CREATE INDEX index_org_to_roles_on_organization_id_and_organization_role_id ON org_to_roles USING btree (organization_id, organization_role_id);
+
+
+--
+-- Name: index_projects_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_projects_on_name ON projects USING btree (name);
+
+
+--
+-- Name: index_projects_on_organization_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_projects_on_organization_id ON projects USING btree (organization_id);
 
 
 --
@@ -1783,6 +1867,27 @@ CREATE INDEX index_tags_on_organization_id ON tags USING btree (organization_id)
 --
 
 CREATE INDEX index_tickets_on_organization_id ON tickets USING btree (organization_id);
+
+
+--
+-- Name: index_tickets_on_organization_id_and_external_ref; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_organization_id_and_external_ref ON tickets USING btree (organization_id, external_ref);
+
+
+--
+-- Name: index_tickets_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_project_id ON tickets USING btree (project_id);
+
+
+--
+-- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_authentication_token ON users USING btree (authentication_token);
 
 
 --
@@ -2147,3 +2252,25 @@ INSERT INTO schema_migrations (version) VALUES ('20140929121116');
 INSERT INTO schema_migrations (version) VALUES ('20141003173847');
 
 INSERT INTO schema_migrations (version) VALUES ('20141103223042');
+
+INSERT INTO schema_migrations (version) VALUES ('20141205152411');
+
+INSERT INTO schema_migrations (version) VALUES ('20141205173122');
+
+INSERT INTO schema_migrations (version) VALUES ('20141209225427');
+
+INSERT INTO schema_migrations (version) VALUES ('20141210173610');
+
+INSERT INTO schema_migrations (version) VALUES ('20141211165059');
+
+INSERT INTO schema_migrations (version) VALUES ('20141222222707');
+
+INSERT INTO schema_migrations (version) VALUES ('20141226160730');
+
+INSERT INTO schema_migrations (version) VALUES ('20141226202747');
+
+INSERT INTO schema_migrations (version) VALUES ('20141230235139');
+
+INSERT INTO schema_migrations (version) VALUES ('20150109042406');
+
+INSERT INTO schema_migrations (version) VALUES ('20150109140256');

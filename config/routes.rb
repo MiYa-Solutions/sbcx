@@ -1,5 +1,23 @@
 Sbcx::Application.routes.draw do
 
+  resources :projects do
+    resources :invoices
+    get :autocomplete_project_name, :on => :collection
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :events, only: [:show, :index]
+      devise_scope :user do
+        match '/sign_in' => 'sessions#create', :via => :post
+        match '/sign_out' => 'sessions#destroy', :via => :delete
+      end
+      resources :service_calls, only: [:show, :index, :update]
+    end
+  end
+
+  resources :events, only: [:show, :index]
+
   resources :support_tickets
   resources :comments, :only => [:create, :destroy]
 
@@ -13,6 +31,7 @@ Sbcx::Application.routes.draw do
   resource :job_imports, only: [:new, :create]
   resources :invites
   resource :settings, only: [:show, :edit, :update]
+  resource :org_settings, only: [:show, :edit, :update]
   resources :invoices, only: [:new, :create, :show, :index], controller: 'invoices'
 
                                                                                 # for rails4 unmark the 'via:' part
@@ -27,10 +46,13 @@ Sbcx::Application.routes.draw do
 
   resources :my_users, only: [:new, :create, :edit, :show, :index, :update], controller: 'my_users'
 
+  match 'my_users/:id/reset_password' => 'my_users#reset_password', via: :put, as: :my_user_reset_password
+
 
   resources :service_calls, only: [:new, :create, :edit, :show, :index, :update] do
     get :autocomplete_customer_name, :on => :collection
     get :autocomplete_material_name, :on => :collection
+    resources :invoices
     resources :boms do
       get :autocomplete_material_name, :on => :collection
     end

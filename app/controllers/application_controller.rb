@@ -26,7 +26,8 @@ class ApplicationController < ActionController::Base
 
   def permission_denied
     #flash[:error] = t('authorization.permission_denied')
-    redirect_to "/403"
+    # env["action_dispatch.excption"] = t('authorization.permission_denied')
+    redirect_to "/403?message=#{t('authorization.permission_denied')}"
   end
 
   private
@@ -55,7 +56,7 @@ class ApplicationController < ActionController::Base
 
   def prepare_for_mobile
     session[:mobile_param] = params[:mobile] if params[:mobile]
-    request.format = :mobile if mobile_device? && !(request.format == :pdf)
+    request.format = :mobile if mobile_device? && !(request.format == :pdf || request.format == :json)
   end
 
   def user_time_zone(&block)

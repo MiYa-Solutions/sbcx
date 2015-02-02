@@ -1,0 +1,132 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="invoice-title">
+        <br>
+        <br>
+        <h4><%= @invoice.invoiceable.organization.name %></h4>
+        <h3 class="pull-right"><%= t('general.general.invoice') %> <%= @invoice.id %></h3><br>
+        <%= @invoice.invoiceable.organization.address1 %><br>
+        <% unless @invoice.invoiceable.organization.address2.empty? %>
+            <%= @invoice.invoiceable.organization.address2  %><br>
+        <% end %>
+        <%= @invoice.invoiceable.organization.city %>, <%= @invoice.invoiceable.organization.state %><%= @invoice.invoiceable.organization.zip %><br>
+        <%= @invoice.invoiceable.organization.phone %><br>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-6 invoice-text-left">
+          <address>
+            <strong><%= t('general.general.bill_to') %></strong><br>
+            <%= @invoice.invoiceable.customer.name %><br>
+            <% unless @invoice.invoiceable.customer.company.nil? %>
+                <%= @invoice.invoiceable.customer.company %><br>
+            <% end %>
+
+            <%= @invoice.invoiceable.customer.address1 %><br>
+            <% unless @invoice.invoiceable.customer.address2.empty? %>
+                <%= @invoice.invoiceable.customer.address2  %><br>
+            <% end %>
+            <%= @invoice.invoiceable.customer.city %>, <%= @invoice.invoiceable.customer.state %><%= @invoice.invoiceable.customer.zip %><br>
+            <%= @invoice.invoiceable.customer.phone %><br>
+          </address>
+        </div>
+        <div class="col-xs-6 invoice-text-right">
+          <address>
+            <strong><%= t('general.general.invoice_date') %></strong>:<br>
+            <%= l @invoice.created_at %><br><br>
+
+            <strong><%= t('general.general.job_number') %></strong><%= @invoice.invoiceable.id %> <br>
+            <br>
+
+            <strong><%= t('general.general.job_name') %></strong>:<br>
+    <!--        <#%= link_to @invoice.invoiceable.name, service_call_url(@invoice.invoiceable) %><br> -->
+            <%= @invoice.invoiceable.name %><br>
+            <br>
+
+            </address>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="row-fluid invoice_table">
+  <div class="col-xs-6">
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= t('general.general.order_summary') %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<table class="table table-striped" id="invoice">
+  <thead>
+  <tr>
+    <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+    <th><%= AccountingEntry.human_attribute_name(:ticket) %> </th>
+    <th><%= t('general.general.job_number') %> </th>
+    <th><%= AccountingEntry.human_attribute_name(:name) %> </th>
+    <th><%= AccountingEntry.human_attribute_name(:description) %> </th>
+    <th><%= Bom.human_attribute_name(:quantity) %> </th>
+    <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @invoice.invoice_items.each do |item| %>
+      <tr>
+        <td><%= item.invoiceable.id %></td>
+        <td><%= item.invoiceable.ticket.name %></td>
+        <td><%= item.invoiceable.ticket.id %></td>
+        <td><%= item.invoiceable.name %></td>
+        <td><%= item.invoiceable.description %></td>
+        <td><%= defined?(item.invoiceable.quantity) ? item.invoiceable.quantity : '1.0' %></td>
+        <td><%= humanized_money_with_symbol item.invoiceable.amount %></td>
+
+      </tr>
+  <% end %>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><br></td>
+  </tr>
+  <tr>
+    <td class="thick-line"></td>
+    <td class="thick-line"></td>
+    <td class="thick-line"></td>
+    <td class="thick-line"></td>
+    <td class="thick-line"></td>
+    <td class="thick-line"><%= t('general.general.tax') %>:</td>
+    <td class="thick-line"><%= humanized_money_with_symbol @invoice.invoiceable.tax_amount %>&nbsp;(<%= @invoice.invoiceable.tax %>%)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td class="thick-line-bottom"><strong><%= Invoice.human_attribute_name(:total) %>:</strong> </td>
+    <td class="thick-line-bottom"><strong><%= humanized_money_with_symbol @invoice.total %></strong></td>
+  </tr>
+
+  </tbody>
+</table>
+
+<p>
+  <%= %>
+<p>
+  <strong><%= Invoice.human_attribute_name(:notes) %>:</strong><br>
+  <%= @invoice.notes %>
+</p>
+
+
+
+  <!--end -->
+</div>

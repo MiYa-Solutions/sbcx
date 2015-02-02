@@ -37,6 +37,7 @@
 #
 
 class User < ActiveRecord::Base
+  acts_as_token_authenticatable
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
 
@@ -94,6 +95,26 @@ class User < ActiveRecord::Base
 
   def settings
     @settings ||= Settings.new(self)
+  end
+
+  STATUS_ACTIVE   = 0
+  STATUS_DISABLED = 1
+
+  state_machine :status, initial: :active do
+    state :active, value: STATUS_ACTIVE
+    state :disabled, value: STATUS_DISABLED
+
+    event :disable do
+      transition :active => :disabled
+    end
+
+    event :activate do
+      transition :disabled => :active
+    end
+  end
+
+  def active_for_authentication?
+    super && active?
   end
 
   private

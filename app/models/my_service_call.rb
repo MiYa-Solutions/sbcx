@@ -93,6 +93,7 @@ class MyServiceCall < ServiceCall
 
     event :transfer do
       transition :new => :transferred
+      transition :open => :transferred, unless: ->(sc) { sc.work_done? }
     end
 
     event :cancel do
@@ -107,7 +108,7 @@ class MyServiceCall < ServiceCall
 
     event :close do
       transition :transferred => :closed, if: ->(sc) { sc.subcon_cleared? && sc.payment_cleared? && sc.work_done? }
-      transition :open => :closed, if: ->(sc) { sc.payment_paid? && sc.work_done?}
+      transition :open => :closed, if: ->(sc) { sc.payment_paid? && sc.work_done? }
     end
 
     event :cancel_transfer do

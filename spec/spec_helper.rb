@@ -7,14 +7,17 @@ require 'spork'
 require 'rspec/rails'
 require 'shoulda/matchers'
 require 'rspec/autorun'
-require 'capybara/rails'
-require 'capybara/rspec'
-require 'capybara-screenshot/rspec'
-require 'capybara/poltergeist'
 require 'declarative_authorization/maintenance'
 require 'money-rails/test_helpers'
 require 'active_attr/rspec'
 require 'factory_girl_rails'
+require 'capybara/rails'
+require 'capybara/rspec'
+require 'capybara-screenshot/rspec'
+require 'capybara/poltergeist'
+require 'site_prism'
+require 'devise'
+require 'rspec_candy/all'
 
 
 
@@ -41,6 +44,7 @@ Spork.prefork do
 
 
   Capybara.ignore_hidden_elements = false
+  Capybara.save_and_open_page_path = "./tmp/capybara"
 
   ENV["RAILS_ENV"] ||= 'test'
 
@@ -68,6 +72,10 @@ Spork.prefork do
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+  full_names = Dir["#{Rails.root}/app/helpers/*.rb"]
+  full_names.collect do |full_name|
+    include Object.const_get(File.basename(full_name,'.rb').camelize)
+  end
   RSpec.configure do |config|
 
     #config.filter_run :focus => true
@@ -99,7 +107,7 @@ Spork.prefork do
     config.include(AccountingEntryMatchers)
     config.include Capybara::DSL
     #config.include Capybara::RSpecMatchers
-
+    config.include Devise::TestHelpers, type: :controller
 
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation
@@ -135,6 +143,9 @@ Spork.each_run do
   #FactoryGirl.factories.clear
   # reload all the models
   Dir["#{Rails.root}/app/models/concerns/*.rb"].each do |model|
+    require model
+  end
+  Dir["#{Rails.root}/app/exceptions/**/*.rb"].each do |model|
     require model
   end
   Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|

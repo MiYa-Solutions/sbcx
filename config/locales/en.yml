@@ -45,6 +45,9 @@ en:
     subcontractor:
       subcontractor_created: "Subcontractor creates successfully!"
   general:
+    security:
+      reset_password: Reset Password
+      reset_password_conf: Are you sure you want to email reset password instructions?
     job:
       errors:
         can_add_bom: You are not allowed to add boms to this job
@@ -111,6 +114,7 @@ en:
       jobs: "Jobs"
     click_to_edit: "Click to edit"
     general:
+      empty: EMPTY
       my_profile: "My Profile"
       account_settings: "Account Settings"
       miya_billing: "MiYa's Billing"
@@ -118,6 +122,7 @@ en:
       see_all: "Show All"
       dismiss: "Dismiss"
       delete: "Delete"
+      save: "Save"
       Save: "Save"
       jobs: "Jobs"
       open_jobs: "Open Jobs"
@@ -155,7 +160,7 @@ en:
       my_jobs: "Jobs To Work On"
       scheduled_for: "Scheduled for"
       transferred_jobs: "Jobs that I Transferred"
-      job_number: "Job Number: "
+      job_number: "Job Number "
       job_history: "Job History"
       job_billing: "Job Billing"
       job_type: "Job Type"
@@ -199,7 +204,7 @@ en:
       done: "Done"
       billing_summary_for: "Billing Summary for:"
       customer_billing_for: "Customer Billing for:"
-      external_ref: "External Number"
+      external_ref: "External id"
       customers_balance: "Customers Balance"
       affiliates_balance: "Affiliates Balance"
       customer_balance: "Customer Balance"
@@ -246,6 +251,21 @@ en:
       agreement_changes_submitted: "Agreement Changes"
       new_invite: "New Invite"
       sent_by: "Sent by"
+      new_project: "New Project"
+      link_to_project: "Link to project"
+      select_contractor: "Contractor"
+      optional: "optional"
+      edit_project: "Edit Project"
+      project_Info: "Project Information"
+      projects: "Projects"
+      project_tooltip: "Click to link this job to an active project"
+      bom_calc_tooltip: "Click to calculate bom based on product size"
+      select_project: "Project"
+      org_settings: "Organization Settings"
+      default_tax: "Default Tax"
+      project_number: "Project Number"
+      create_project: "Create Project"
+      link: "Link"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

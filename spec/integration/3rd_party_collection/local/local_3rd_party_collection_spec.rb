@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'My behaviour', skip_basic_job: true do
+describe 'Local 3rd Party Collection', skip_basic_job: true do
 
   let(:broker_job) { BrokerServiceCall.find(job.id) }
 
@@ -20,7 +20,7 @@ describe 'My behaviour', skip_basic_job: true do
     start_the_job broker_job
     add_bom_to_job broker_job, cost: '100', price: '1000', quantity: '1', buyer: job.subcontractor
 
-    user.destroy # a workaround for the factory to ensure a single user org
+    # user.destroy # a workaround for the factory to ensure a single user org
   end
 
   it 'there should be only one ticket created' do

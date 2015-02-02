@@ -29,10 +29,10 @@ jQuery ->
   $('#job-search-results').dataTable(
     dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
     aoColumnDefs: [
-      { 'bSortable': false, 'aTargets': [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] }
+      { 'bSortable': false, 'aTargets': [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ] }
     ]
-    order: [0, 'desc']
-    aLengthMenu: [10, 25, 50, 100, 200, 300]
+    order: [[0, 'desc']]
+    aLengthMenu: [10, 25, 50, 100]
     sPaginationType: "bootstrap"
     oTableTools:
       aButtons: ["print"]

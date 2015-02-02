@@ -40,8 +40,8 @@ class ServiceCallsController < ApplicationController
   end
 
   def new
-    @service_call = ServiceCall.new
-    @customer     = Customer.new
+    # @service_call = ServiceCall.new
+    @customer = Customer.new
     store_location
   end
 
@@ -54,7 +54,7 @@ class ServiceCallsController < ApplicationController
         flash[:success] = t('service_call.crud_messages.success')
         format.any(:html, :mobile) { redirect_to service_call_path @service_call }
       else
-        render :action => 'new'
+        format.any(:html, :mobile) { render 'new' }
       end
 
     end
@@ -84,7 +84,7 @@ class ServiceCallsController < ApplicationController
 
         format.json do
           update_params_for_bip
-          respond_with_bip @service_call
+          render json: @service_call, status: :ok
         end
 
       else
@@ -106,7 +106,7 @@ class ServiceCallsController < ApplicationController
 
 
   def new_service_call_from_params
-    @service_call ||= ServiceCall.new_from_params(current_user.organization, permitted_params(nil).service_call)
+    @service_call       ||= ServiceCall.new_from_params(current_user.organization, permitted_params(nil).service_call)
     # this is to work around a textile best_in_place issue which causes html tags to dislay when editing for the first time
     @service_call.notes = "**" if @service_call.notes.nil? || @service_call.notes.empty?
   end
@@ -121,7 +121,7 @@ class ServiceCallsController < ApplicationController
     Rails.logger.debug { "Invoked #{self.class.name}#autocomplete_customer_name_where" }
     default = "organization_id = #{current_user.organization.id} AND status = #{Customer::STATUS_ACTIVE}"
 
-    if params[:ref_id].nil? || params[:ref_id].blank?
+    if params[:ref_id].nil? || params[:ref_id].blank? || params[:ref_id] == '-1'
       return default
     else
       org = Organization.find(params[:ref_id])

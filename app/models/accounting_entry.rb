@@ -33,7 +33,11 @@ class AccountingEntry < ActiveRecord::Base
   validates_presence_of :account, :status, :type, :description
   validates_presence_of :ticket, unless: ->(entry) { entry.instance_of?(MyAdjEntry) }
   validates_presence_of :event, unless: ->(entry) { entry.instance_of?(MyAdjEntry) || entry.instance_of?(AdvancePayment) }
-  validates_presence_of :agreement, unless: ->(entry) { entry.kind_of?(AdjustmentEntry) || entry.instance_of?(AdvancePayment)  }
+  validates_presence_of :agreement, unless: ->(entry) { entry.class.exclude_agreement?  }
+
+  def self.exclude_agreement?
+    false
+  end
 
   belongs_to :account, autosave: true
   belongs_to :ticket

@@ -1,0 +1,38 @@
+<%= provide(:title, 'Reset Password') %>
+
+<div class="miya_logo_large">
+  <img src="/assets/mobileLarge.png" alt="MiYa"/>
+  <br>
+</div>
+
+<p><%= I18n.t('general.message.forgot_pass') %></p>
+<p class="p_align">Enter you email address and click on the button below to receive instructions on how to reset your password. </p>
+
+
+<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }, :html => { :class => 'form-horizontal' }) do |f| %>
+    <%= f.error_notification %>
+    <%= f.input :email, "type" => "email", :required => true %>
+
+
+
+    <%= f.button :submit, I18n.t('general.general.send_inst'), "class" => "ui-btn-up-b", "data-role" => "button", "data-theme" => "b", id: 'sign_in_mobile_btn', "data-icon" => "check", "data-iconpos" => "left" %>
+
+
+
+<% end %>
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+<div class="ui-grid-b">
+  <div class="ui-block-a">
+    <%= link_to I18n.t('general.general.back'), '/users/sign_in', "class" => "ui-btn-up btn-signup", "data-role" => "button", "data-theme" => "d", "data-icon" => "arrow-l", "data-iconpos" => "left" %>
+
+  </div>
+  <div class="ui-block-b"> </div>
+  <div class="ui-block-c"> </div>
+</div>

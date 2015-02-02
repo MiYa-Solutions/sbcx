@@ -122,6 +122,7 @@ describe Organization do
     it { should have_many(:affiliates).through(:accounts) }
     it { should have_many(:invites) }
     it { should have_many(:invite_req) }
+    it { should have_many(:projects) }
   end
 
   it "saved successfully" do
@@ -161,7 +162,9 @@ describe Organization do
                                              :landscaping,
                                              :towing,
                                              :auto_repair,
-                                             :glass_repair, :other])
+                                             :glass_repair,
+                                             :photography,
+                                             :other])
     end
     it 'should respond to #intrustry and #industry=' do
       expect(org).to respond_to(:industry)
