@@ -309,18 +309,18 @@ class ServiceCall < Ticket
   private
   def self.add_default_params(org, params)
     params[:organization_id] = org.id
-    if params[:customer_id]
+    if params[:customer_id].present?
       customer              = Customer.permitted_customer(org, params[:customer_id])
-      params[:address1]     = customer.address1
-      params[:address2]     = customer.address2
-      params[:company]      = customer.company
-      params[:city]         = customer.city
-      params[:zip]          = customer.zip
-      params[:state]        = customer.state
-      params[:phone]        = customer.phone
-      params[:mobile_phone] = customer.mobile_phone
-      params[:work_phone]   = customer.work_phone
-      params[:email]        = customer.email
+      params[:address1]     ||= customer.address1
+      params[:address2]     ||= customer.address2
+      params[:company]      ||= customer.company
+      params[:city]         ||= customer.city
+      params[:zip]          ||= customer.zip
+      params[:state]        ||= customer.state
+      params[:phone]        ||= customer.phone
+      params[:mobile_phone] ||= customer.mobile_phone
+      params[:work_phone]   ||= customer.work_phone
+      params[:email]        ||= customer.email
     end
 
   end
