@@ -1,4 +1,4 @@
-class NewAffiliatePage < SitePrism::Page
+class NewAffiliatePage < SbcxPage
   set_url '/affiliates/new'
   set_url_matcher /.\/affiliates\/new/
 
