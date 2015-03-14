@@ -156,6 +156,8 @@ describe Ticket do
     end
 
     it 'subcon agreement must be one that matches the roles on the ticket' do
+      service_call.organization.save!
+      service_call.save!
       mem                           = FactoryGirl.create(:member_org)
       service_call.subcontractor    = mem.becomes(Subcontractor)
       agr                           = FactoryGirl.create(:subcon_agreement, organization: mem,
@@ -165,6 +167,19 @@ describe Ticket do
       service_call.subcon_agreement = agr
 
       service_call.should_not be_valid
+    end
+
+    it 'should not require a project' do
+      service_call.project = nil
+      service_call.project_id = nil
+      expect(service_call).to be_valid
+    end
+
+    it 'should validate that the project is owned by the same organization' do
+      service_call.project = FactoryGirl.create(:project)
+      expect {
+        service_call.valid?
+      }.to raise_error TicketExceptions::InvalidAssociation
     end
 
   end

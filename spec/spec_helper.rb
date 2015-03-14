@@ -71,6 +71,7 @@ Spork.prefork do
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
+  require "#{Rails.root}/spec/support/pages/sbcx_page.rb"
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
   full_names = Dir["#{Rails.root}/app/helpers/*.rb"]
   full_names.collect do |full_name|
@@ -143,6 +144,9 @@ Spork.each_run do
   #FactoryGirl.factories.clear
   # reload all the models
   Dir["#{Rails.root}/app/models/concerns/*.rb"].each do |model|
+    require model
+  end
+  Dir["#{Rails.root}/app/exceptions/**/*.rb"].each do |model|
     require model
   end
   Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|

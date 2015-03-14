@@ -1,4 +1,4 @@
-class NewAffiliatePage < SitePrism::Page
+class NewAffiliatePage < SbcxPage
   set_url '/affiliates/new'
   set_url_matcher /.\/affiliates\/new/
 
@@ -7,7 +7,7 @@ class NewAffiliatePage < SitePrism::Page
   element :provider_role, 'input#affiliate_organization_role_ids_1'
   element :subcon_role, 'input#affiliate_organization_role_ids_2'
   element :success_flash, 'div.alert-success'
-  element :notice_flash, 'div.alert-notices'
+  element :notice_flash, 'div.alert-notice'
   element :error_flash, 'div.alert-error'
   element :create_btn, 'input#create_affiliate_btn'
 

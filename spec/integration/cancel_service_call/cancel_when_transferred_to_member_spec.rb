@@ -6,7 +6,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
   before do
     subcon_admin # ensure the subcon has a user
-    transfer_the_job
+    with_user(org_admin) do #User.stamper = org.users.first
+      transfer_the_job
+    end
   end
 
   it 'subcon should not be able to cancel the job' do
@@ -20,8 +22,10 @@ describe 'Cancel Job When Transferred To a Member' do
   describe 'subcon cancels after accepting' do
 
     before do
-      accept_the_job subcon_job
-      cancel_the_job subcon_job
+      with_user(subcon_admin) do
+        accept_the_job subcon_job
+        cancel_the_job subcon_job
+      end
       job.reload
       subcon_job.reload
     end
@@ -67,14 +71,18 @@ describe 'Cancel Job When Transferred To a Member' do
   describe 'after starting the work' do
 
     before do
-      accept_the_job subcon_job
-      start_the_job subcon_job
-      add_bom_to_job subcon_job, price: 100, quantity: 1, cost: 10, buyer: subcon
+      with_user(subcon_admin) do
+        accept_the_job subcon_job
+        start_the_job subcon_job
+        add_bom_to_job subcon_job, price: 100, quantity: 1, cost: 10, buyer: subcon
+      end
     end
 
     context 'when the subcon canceled the work' do
       before do
-        cancel_the_job subcon_job
+        with_user(subcon_admin) do
+          cancel_the_job subcon_job
+        end
         job.reload
         subcon_job.reload
       end
@@ -91,8 +99,10 @@ describe 'Cancel Job When Transferred To a Member' do
 
     context 'when the subcon collects a payment and then cancels' do
       before do
-        collect_a_payment subcon_job, amount: 50, type: 'cash'
-        cancel_the_job subcon_job
+        with_user(subcon_admin) do
+          collect_a_payment subcon_job, amount: 50, type: 'cash'
+          cancel_the_job subcon_job
+        end
         job.reload
         subcon_job.reload
       end
@@ -124,7 +134,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
       context 'when subcon deposits the payment' do
         before do
-          deposit_all_entries subcon_job.collection_entries
+          with_user(subcon_admin) do
+            deposit_all_entries subcon_job.collection_entries
+          end
           subcon_job.reload
           job.reload
         end
@@ -141,7 +153,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
       context 'when prov resets the job' do
         before do
-          reset_the_job job
+          with_user(org_admin) do
+            reset_the_job job
+          end
           job.reload
           subcon_job.reload
         end
@@ -165,7 +179,9 @@ describe 'Cancel Job When Transferred To a Member' do
         context 'when the subcon deposits the collected payment' do
 
           before do
-            deposit_all_entries subcon_job.collection_entries
+            with_user(subcon_admin) do
+              deposit_all_entries subcon_job.collection_entries
+            end
             job.reload
             subcon_job.reload
           end
@@ -188,14 +204,14 @@ describe 'Cancel Job When Transferred To a Member' do
             }
 
             let(:subcon_admin3) {
-              u = FactoryGirl.build(:user, organization: subcon3)
-              subcon3.users << u
-              u
+              subcon3.users.admins.first
             }
             let(:subcon3_job) { TransferredServiceCall.find_by_organization_id_and_ref_id(subcon3.id, job.ref_id) }
 
             before do
-              transfer_the_job job: job, subcon: subcon3, agreement: agr3
+              with_user(org_admin) do
+                transfer_the_job job: job, subcon: subcon3, agreement: agr3
+              end
             end
 
             it 'should transfer successfuly' do
@@ -204,8 +220,10 @@ describe 'Cancel Job When Transferred To a Member' do
 
             context 'when subcon3 collects a payment' do
               before do
-                accept_the_job subcon3_job
-                collect_a_payment subcon3_job, amount: 100, type: 'cash'
+                with_user(subcon_admin3) do
+                  accept_the_job subcon3_job
+                  collect_a_payment subcon3_job, amount: 100, type: 'cash'
+                end
                 job.reload
                 subcon_job.reload
                 subcon3_job.reload
@@ -229,7 +247,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
               context 'when confirming the deposit of the first subcon' do
                 before do
-                  confirm_all_deposits job.deposited_entries
+                  with_user(org_admin) do
+                    confirm_all_deposits job.deposited_entries
+                  end
                   job.reload
                   subcon_job.reload
                   subcon3_job.reload
@@ -256,7 +276,6 @@ describe 'Cancel Job When Transferred To a Member' do
                 end
 
 
-
               end
 
             end
@@ -271,7 +290,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
       context 'when prov cancels the job' do
         before do
-          cancel_the_job job
+          with_user(org_admin) do
+            cancel_the_job job
+          end
           job.reload
           subcon_job.reload
         end
@@ -310,10 +331,12 @@ describe 'Cancel Job When Transferred To a Member' do
 
   describe 'after subcon cancels' do
     before do
-      accept_the_job subcon_job
-      start_the_job subcon_job
-      add_bom_to_job subcon_job, price: 100, quantity: 1, cost: 10, buyer: subcon
-      cancel_the_job subcon_job
+      with_user(subcon_admin) do
+        accept_the_job subcon_job
+        start_the_job subcon_job
+        add_bom_to_job subcon_job, price: 100, quantity: 1, cost: 10, buyer: subcon
+        cancel_the_job subcon_job
+      end
       job.reload
     end
 
@@ -327,7 +350,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
     context 'when prov cancels' do
       before do
-        cancel_the_job job
+        with_user(org_admin) do
+          cancel_the_job job
+        end
       end
 
       it 'job status should be :canceled' do
@@ -342,7 +367,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
     context 'when prov un-cancels (reset)' do
       before do
-        reset_the_job job
+        with_user(org_admin) do
+          reset_the_job job
+        end
         job.reload
       end
 
@@ -357,7 +384,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
       context 'when transferring again' do
         before do
-          transfer_the_job job
+          with_user(org_admin) do
+            transfer_the_job job
+          end
         end
 
         it 'subcon should have two tickets, one canceled and one new' do
@@ -372,10 +401,12 @@ describe 'Cancel Job When Transferred To a Member' do
 
   describe 'after job is completed' do
     before do
-      accept_the_job subcon_job
-      start_the_job subcon_job
-      add_bom_to_job subcon_job, price: 100, quantity: 1, cost: 10, buyer: subcon
-      complete_the_work subcon_job
+      with_user(subcon_admin) do
+        accept_the_job subcon_job
+        start_the_job subcon_job
+        add_bom_to_job subcon_job, price: 100, quantity: 1, cost: 10, buyer: subcon
+        complete_the_work subcon_job
+      end
       job.reload
     end
 
@@ -391,7 +422,9 @@ describe 'Cancel Job When Transferred To a Member' do
 
   describe 'when the prov cancels' do
     before do
-      cancel_the_job job
+      with_user(org_admin) do
+        cancel_the_job job
+      end
       job.reload
       subcon_job.reload
     end
@@ -442,10 +475,14 @@ describe 'Cancel Job When Transferred To a Member' do
 
   describe 'when the prov cancels after the subcon started the job' do
     before do
-      accept_the_job subcon_job
-      start_the_job subcon_job
-      add_bom_to_job subcon_job, cost: 100, price: 1000, quantity: 1
-      cancel_the_job job
+      with_user(subcon_admin) do
+        accept_the_job subcon_job
+        start_the_job subcon_job
+        add_bom_to_job subcon_job, cost: 100, price: 1000, quantity: 1
+      end
+      with_user(org_admin) do
+        cancel_the_job job
+      end
       job.reload
       subcon_job.reload
     end

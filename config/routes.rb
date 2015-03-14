@@ -46,6 +46,8 @@ Sbcx::Application.routes.draw do
 
   resources :my_users, only: [:new, :create, :edit, :show, :index, :update], controller: 'my_users'
 
+  match 'my_users/:id/reset_password' => 'my_users#reset_password', via: :put, as: :my_user_reset_password
+
 
   resources :service_calls, only: [:new, :create, :edit, :show, :index, :update] do
     get :autocomplete_customer_name, :on => :collection

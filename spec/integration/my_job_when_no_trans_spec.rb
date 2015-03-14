@@ -5,12 +5,7 @@ describe 'My Service Call When I Do The Work' do
   include_context 'basic job testing'
 
   context 'when I create the job' do
-    before do
-      with_user(user) do
-        org.save!
-        job.save!
-      end
-    end
+
     it 'should be created successfully' do
       expect(job).to be_valid
     end
@@ -124,7 +119,7 @@ describe 'My Service Call When I Do The Work' do
           end
 
           it 'available status events should be cancel' do
-            job.status_events.should =~ [:cancel]
+            job.status_events.should =~ [:cancel, :transfer]
           end
 
           it 'available work events should be start' do
@@ -437,7 +432,7 @@ describe 'My Service Call When I Do The Work' do
         end
 
         it 'available status events should be cancel' do
-          job.status_events.should =~ [:cancel]
+          job.status_events.should =~ [:cancel, :transfer]
         end
 
         it 'available work events should be complete' do

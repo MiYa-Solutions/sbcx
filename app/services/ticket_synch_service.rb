@@ -4,7 +4,7 @@ class TicketSynchService
     @ticket        = ticket
     @changed_attrs = @ticket.changes
     clean_attributes
-    unless (@changed_attrs.keys & ScPropSynchEvent.ticket_attributes).empty?
+    unless new_record? || (@changed_attrs.keys & ScPropSynchEvent.ticket_attributes).empty?
       @event = ScPropertiesUpdateEvent.new
       create_props
       ticket.events << @event
@@ -14,6 +14,11 @@ class TicketSynchService
 
 
   private
+
+  # checks if this update is a result of multiple chained events and infact this is a new record
+  def new_record?
+    @changed_attrs[:id] ? true : false
+  end
 
   # remove the attributes that are being updated as part of a state machine event
   def clean_attributes

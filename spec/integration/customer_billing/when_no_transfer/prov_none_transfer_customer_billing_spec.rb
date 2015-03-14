@@ -1,16 +1,10 @@
 require 'spec_helper'
 
-describe 'Customer Billing When Provider Didn\'t Transfer' do
+describe 'Customer Billing When No Provider Transfer' do
 
   include_context 'basic job testing'
 
   context 'when I create the job' do
-    before do
-      with_user(user) do
-        org.save!
-        job.save!
-      end
-    end
 
     it 'payment status should be pending' do
       expect(job.billing_status_name).to eq :pending
@@ -166,7 +160,7 @@ describe 'Customer Billing When Provider Didn\'t Transfer' do
                 end
 
                 it 'available status events should be cancel' do
-                  job.status_events.should =~ [:cancel]
+                  job.status_events.should =~ [:cancel, :transfer]
                 end
 
                 it 'available payment events are collect and late' do

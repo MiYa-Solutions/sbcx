@@ -17,7 +17,7 @@
           <%= render 'fields', f: f %>
           <div class="form-actions">
             <%= link_to I18n.t('general.general.back'), customers_path, :class => 'btn btn-medium' %>
-            <%= f.submit I18n.t('general.general.Save'), class: "btn btn-medium btn-primary" %>
+            <%= f.submit I18n.t('general.general.Save'), id: 'create-customer', class: "btn btn-medium btn-primary" %>
           </div>
 
       <% end %>

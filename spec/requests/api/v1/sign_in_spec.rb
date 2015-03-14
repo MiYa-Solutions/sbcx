@@ -10,8 +10,8 @@ describe 'Sign In V1' do
   let(:token) {user.reload.authentication_token}
 
   before do
-    org.save!
-    user.save!
+    # org.save!
+    # user.save!
     api_sign_in user
   end
 

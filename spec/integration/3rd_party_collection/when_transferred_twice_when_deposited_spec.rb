@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe '3rd Party Collection' do
+describe 'Brokered Job when Collection Deposited' do
 
   include_context 'brokered job'
 

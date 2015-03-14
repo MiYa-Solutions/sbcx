@@ -180,7 +180,7 @@ FactoryGirl.define do
     address1 Faker::Address.street_address
     address2 Faker::Address.street_address(true)
     city Faker::Address.city
-    state Faker::Address.us_state_abbr
+    state Faker::Address.state_abbr
     zip Faker::Address.zip_code
     country "US"
 
