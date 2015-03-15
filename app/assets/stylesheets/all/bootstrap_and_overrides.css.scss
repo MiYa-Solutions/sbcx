@@ -1530,8 +1530,20 @@ a:hover {
 }
 
 .welcome_jobs {
-  height: 575px;
+  height: 282px;
   overflow: auto;
+  .smart_label {
+    margin: -8px -6px 5px;
+    padding: 0;
+
+    .btn {
+      margin-top: 4px;
+    }
+  }
+}
+
+
+.calendar_homepage {
   .smart_label {
     margin: -8px -6px 5px;
     padding: 0;
