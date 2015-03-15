@@ -42,13 +42,14 @@
 
           <li><%= link_to I18n.t('general.general.home'), user_root_path, id: "home_btn_header" %></li>
           <li><a href="#"><%= link_to I18n.t('general.general.alerts'), notifications_path, id: "alert_btn_header" %>
-              <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
-            </a>
+            <span class="label label-warning" id="notification-counter"><%= @notification_count %></span>
+          </a>
 
           </li>
 
           <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.jobs') %> <b class="caret"></b></a>
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.jobs') %>
+              <b class="caret"></b></a>
             <ul class="dropdown-menu" id="menu1">
               <li><%= link_to I18n.t('general.general.jobs'), service_calls_path %></li>
               <li><%= link_to I18n.t('general.general.new_job'), new_service_call_path %></li>
@@ -57,28 +58,37 @@
               <li><%= link_to I18n.t('general.general.new_project'), new_project_path %></li>
               <li class="divider"></li>
               <li><%= link_to JobImport.model_name.human, new_job_imports_path %></a></li>
-             </ul>
+            </ul>
           </li>
-          <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.my_network') %> <b class="caret"></b></a>
-            <ul class="dropdown-menu" id="menu2">
-              <li><%= link_to I18n.t('general.general.my_affiliates'), affiliates_path %></a></li>
-              <li><%= link_to I18n.t('general.general.new_affiliate'), new_affiliate_path %></a></li>
-              <li class="divider"></li>
-              <li><%= link_to I18n.t('general.general.my_employees'), my_users_path %></a></li>
-              <li><%= link_to I18n.t('general.general.new_employee'), new_my_user_path %></a></li>
+          <% if permitted_to? :show, :affiliates %>
+              <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= I18n.t('general.general.my_network') %>
+                  <b class="caret"></b></a>
+                <ul class="dropdown-menu" id="menu2">
+                  <li><%= link_to I18n.t('general.general.my_affiliates'), affiliates_path %></a></li>
+                  <li><%= link_to I18n.t('general.general.new_affiliate'), new_affiliate_path %></a></li>
+                  <li class="divider"></li>
+                  <li><%= link_to I18n.t('general.general.my_employees'), my_users_path %></a></li>
+                  <li><%= link_to I18n.t('general.general.new_employee'), new_my_user_path %></a></li>
 
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= Customer.model_name.pluralize %><b class="caret"></b></a>
-            <ul class="dropdown-menu" id="menu3">
-              <li><%= link_to I18n.t('general.general.my_customers'), customers_path %></a></li>
-              <li><%= link_to I18n.t('general.general.new_customer'), new_customer_path %></a></li>
-            </ul>
-          </li>
-          <li><%= link_to I18n.t('general.general.billing'), accounting_entries_path %></li>
-          <li><%= link_to I18n.t('general.general.parts'), materials_path %></li>
+                </ul>
+              </li>
+          <% end %>
+          <% if permitted_to? :show, :customers %>
+
+              <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><%= Customer.model_name.pluralize %>
+                  <b class="caret"></b></a>
+                <ul class="dropdown-menu" id="menu3">
+                  <li><%= link_to I18n.t('general.general.my_customers'), customers_path %></a></li>
+                  <li><%= link_to I18n.t('general.general.new_customer'), new_customer_path %></a></li>
+                </ul>
+              </li>
+          <% end %>
+          <% if permitted_to? :show, :accounting_entries %>
+              <li><%= link_to I18n.t('general.general.billing'), accounting_entries_path %></li>
+              <li><%= link_to I18n.t('general.general.parts'), materials_path %></li>
+          <% end %>
           <% permitted_to? :index, :organizations do %>
               <li><%= link_to Organization.model_name.pluralize, organizations_path %></li>
           <% end %>

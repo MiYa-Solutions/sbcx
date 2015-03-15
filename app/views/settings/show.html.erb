@@ -2,25 +2,29 @@
 
   <div class="row-fluid">
 
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= t('general.general.setting_job_notifications') %></h1></li>
-          <li>
-            <%= link_to(t('general.general.org_settings'), org_settings_path,
-                        class: "btn btn btn-primary",
-                        role:  "button",
-                        id:    "link_to_org_settings_btn") %>
-          </li>
-        </ul>
-      </div>
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= t('general.general.setting_job_notifications') %></h1></li>
+        <% if permitted_to? :show, :org_settings %>
+            <li>
+              <%= link_to(t('general.general.org_settings'), org_settings_path,
+                          class: "btn btn btn-primary",
+                          role:  "button",
+                          id:    "link_to_org_settings_btn") %>
+            </li>
+        <% else %>
+           <li></li>
+        <% end %>
+      </ul>
+    </div>
 
     <div class="setting_table">
-        <%= render 'notifications_table', notif_names: Settings.job_notification_settings %>
+      <%= render 'notifications_table', notif_names: Settings.job_notification_settings %>
     </div>
   </div>
 
-    <br>
-    <br>
+  <br>
+  <br>
 
   <div class="row-fluid">
 
@@ -32,7 +36,7 @@
     </div>
 
     <div class="setting_table">
-        <%= render 'notifications_table_disabled', notif_names: Settings.adj_notification_settings %>
+      <%= render 'notifications_table_disabled', notif_names: Settings.adj_notification_settings %>
     </div>
 
   </div>
@@ -50,7 +54,7 @@
     </div>
 
     <div class="setting_table">
-        <%= render 'notifications_table_disabled', notif_names: Settings.invite_notification_settings %>
+      <%= render 'notifications_table_disabled', notif_names: Settings.invite_notification_settings %>
     </div>
 
   </div>
@@ -64,7 +68,7 @@
     </div>
 
     <div class="setting_table">
-        <%= render 'notifications_table_disabled', notif_names: Settings.agr_notification_settings %>
+      <%= render 'notifications_table_disabled', notif_names: Settings.agr_notification_settings %>
     </div>
 
   </div>
