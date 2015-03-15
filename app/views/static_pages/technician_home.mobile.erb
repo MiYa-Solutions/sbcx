@@ -1,0 +1,52 @@
+<% provide(:title, "Welcome") %>
+
+<br>
+<div class="homepage">
+
+  <ul data-role="listview">
+
+    <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= Notification.model_name.human %>
+      <div class="show_all_notifications">
+        <%= link_to I18n.t('general.general.see_all'), notifications_path, "data-role" => "button", id: 'show-all-notifications-button', "class" => "ui-btn ui-shadow ui-btn-corner-all ui-mini ui-btn-inline ui-btn-up-b" %>
+      </div>
+        <span class="alert_label_mobile">
+                <badge><%= @notification_count %></badge>
+        </span>
+    </li>
+    <% @notifications.each do |notification| %>
+        <li class="inline_mobile"><%= link_to notification.subject, notification.becomes(Notification), "data-transition" => "slide", id: "jobs_welcome" %>
+          <% if notification.human_status_name == 'unread' %>
+            <span class="new_alert_label">
+                <img src="/assets/emails.png">
+            </span>
+          <% end %>
+        </li>
+    <% end %>
+
+
+    <li data-role="list-divider" role="heading" class="ui-li ui-li-divider ui-bar-d"><%= Appointment.model_name.human.pluralize %></li>
+    <% @appointments.each do |appointment| %>
+        <li class="inline_mobile service_calls_index">
+          <p class="ui-li-aside-blue ui-li-desc-blue">
+            <badge><%= appointment.appointable.id %></badge>
+          </p>
+          <%= link_to appointment.title, appointment_path(appointment), "data-transition" => "slide", id: "affiliate_balance", class: "appointment_name" %>
+
+          <span class="appointment_date_label">
+                <%= appointment.starts_at_date_text %>, <%= appointment.starts_at_time_text %>
+          </span>
+        </li>
+    <% end %>
+
+  </ul>
+
+  <div id="calendar"></div>
+
+</div>
+
+
+
+
+
+
+
