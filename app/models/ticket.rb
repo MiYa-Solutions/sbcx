@@ -596,7 +596,7 @@ class Ticket < ActiveRecord::Base
   alias_method :affiliate, :counterparty
 
   def set_name
-    if self.name.nil?
+    if self.name.empty?
       self.name = "#{self.address1}: #{self.tags.map(&:name).join(", ")}"
     end
   end

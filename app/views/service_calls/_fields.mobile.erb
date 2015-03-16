@@ -3,6 +3,11 @@
 <br>
 <div class="edit_job_details">
   <div class="ui-grid-a">
+    <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:name) %></div>
+    <div class="ui-block-b"><%= f.input :name %></div>
+  </div>
+
+  <div class="ui-grid-a">
     <div class="ui-block-a"><%= @service_call.class.human_attribute_name(:provider) %></div>
     <div class="ui-block-b"><%= f.select :provider_id, provider_options, { prompt: "Me" } %></div>
   </div>
