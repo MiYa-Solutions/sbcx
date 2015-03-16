@@ -14,6 +14,8 @@ authorization do
     has_permission_on :support_tickets, :to => [:index, :show, :new, :create, :edit, :update]
     has_permission_on :comments, :to => [:index, :show, :new, :create]
 
+
+    has_permission_on :settings, to: [:show, :update]
     has_permission_on :static_pages, to: [:index, :read]
     has_permission_on :appointments, :to => [:index, :show, :new, :create, :edit, :update, :destroy, :read]
     has_permission_on :notifications, to: [:index, :show, :read, :update, :destroy] do
@@ -37,10 +39,6 @@ authorization do
       if_attribute :organization_id => is { user.organization_id }
     end
 
-    has_permission_on :my_users, to: [:index, :read]
-    has_permission_on :providers, :to => :index
-    has_permission_on :subcontractors, :to => :index
-    has_permission_on :affiliates, :to => :index
     has_permission_on :service_calls, :to => :index
     has_permission_on :service_calls, :to => [:show, :edit, :update] do
       if_attribute :organization_id => is { user.organization_id }

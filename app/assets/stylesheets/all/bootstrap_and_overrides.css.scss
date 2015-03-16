@@ -1530,8 +1530,20 @@ a:hover {
 }
 
 .welcome_jobs {
-  height: 575px;
+  height: 282px;
   overflow: auto;
+  .smart_label {
+    margin: -8px -6px 5px;
+    padding: 0;
+
+    .btn {
+      margin-top: 4px;
+    }
+  }
+}
+
+
+.calendar_homepage {
   .smart_label {
     margin: -8px -6px 5px;
     padding: 0;
@@ -3215,7 +3227,7 @@ hr {
 }
 
 .well_signin {
-  min-height: 575px;
+  min-height: 500px;
   margin-left: -0.5%;
 
   .p_align {
@@ -4025,12 +4037,20 @@ div.DTTT_container {
 
 .background_welcome {
 
+  background-repeat: repeat-x;
+  background-image: asset-url('gb7_light.jpg', image);
+  z-index: -100;
+
+
+
   img {
     position: fixed;
     top: 0px;
     left: 0px;
     z-index: -100;
-    width: 100%;
+//    width: 100%;
+    background-repeat: repeat-x;
+
     //min-height: 100%;
     //min-height: 917px;
     //min-height: 1000px;
@@ -4040,11 +4060,21 @@ div.DTTT_container {
 
 .welcomepage_frame {
 
+  margin-bottom: -4px;
+  margin-left: -8.4%;
+  margin-top: -20px;
+  margin-right: -0.5%;
+
+
+  background-repeat: repeat-x;
+  background-image: asset-url('gb7_light.jpg', image);
+  z-index: -100;
+
   //background-image: asset-url('welcome_bg7.png', image);
   //margin-left: -20px;
   //margin-top: -19px;
-  min-height: 1000px;
-  margin-bottom: 200px;
+//  min-height: 1000px;
+//  margin-bottom: 200px;
   //padding-right: 40px;
   //width: 102%;
   //z-index: 1;
@@ -5336,6 +5366,11 @@ table.dataTable thead th, table.dataTable thead td {
     float: right;
     margin-right: 5px;
   }
+}
+
+.job_status_open {
+  color: #3A87AD;
+  font-weight: bold;
 }
 
 .entry_status_cleared {

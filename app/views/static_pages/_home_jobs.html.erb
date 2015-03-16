@@ -10,16 +10,7 @@
     </ul>
   </div>
 
-  <% if !@service_calls.empty? %>
 
-      <%= render 'shared/open_jobs', jobs: @service_calls %>
-
-  <% else %>
-      <br>
-      <span class="alert alert-info" id="empty_search_result_notice">No Service Calls</span>
-      <br>
-      <br>
-  <% end %>
-
+      <%= render 'static_pages/open_job_list', jobs: @service_calls %>
 
 </div>

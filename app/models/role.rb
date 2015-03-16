@@ -17,6 +17,11 @@ class Role < ActiveRecord::Base
   DISPATCHER_ROLE_NAME = "Dispatcher"
   TECHNICIAN_ROLE_NAME = "Technician"
 
+  ADMIN_ROLE_ID      = 1
+  ORG_ADMIN_ROLE_ID  = 2
+  DISPATCHER_ROLE_ID = 3
+  TECHNICIAN_ROLE_ID = 4
+
   def to_i
     self.id
   end

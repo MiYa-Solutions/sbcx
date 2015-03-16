@@ -161,6 +161,10 @@ class Ticket < ActiveRecord::Base
     end
   end
 
+  def technician_name
+    technician.try(:name)
+  end
+
   def customer_account
     Account.where(accountable_id: customer_id, accountable_type: 'Customer').first
   end
@@ -592,7 +596,7 @@ class Ticket < ActiveRecord::Base
   alias_method :affiliate, :counterparty
 
   def set_name
-    if self.name.nil?
+    if self.name.empty?
       self.name = "#{self.address1}: #{self.tags.map(&:name).join(", ")}"
     end
   end
