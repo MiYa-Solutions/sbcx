@@ -11,6 +11,8 @@ authorization do
 
   role :technician do
 
+    has_permission_on :customers, :to => [:new, :create]
+
     has_permission_on :support_tickets, :to => [:index, :show, :new, :create, :edit, :update]
     has_permission_on :comments, :to => [:index, :show, :new, :create]
 
@@ -50,7 +52,13 @@ authorization do
 
     includes :technician
     has_permission_on :authorization_rules, :to => :read
-    has_permission_on :customers, :to => [:new, :create]
+
+    has_permission_on :my_users, to: [:index, :read]
+    has_permission_on :providers, :to => :index
+    has_permission_on :subcontractors, :to => :index
+    has_permission_on :affiliates, :to => :index
+
+
     has_permission_on :customers, :to => [:index, :show, :edit, :update] do
       if_attribute :organization => is { user.organization }
       if_attribute :organization => { :subcontrax_member => is_not { true } }, :organization_id => is_in { user.organization.providers.pluck('organizations.id') }
