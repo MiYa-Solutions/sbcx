@@ -1,4 +1,3 @@
-App = {}
 class App.OpenJobsFormater
   constractor: ->
 

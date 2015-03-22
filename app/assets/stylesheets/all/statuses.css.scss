@@ -1,0 +1,32 @@
+.blue_status {
+  color: #3A87AD;
+  font-weight: bold;
+}
+
+.gray_status {
+  color: #696969;
+  font-weight: bold;
+}
+
+.job_work_status_pending {
+  @extend .gray_status
+}
+
+.job_work_status_in_progress {
+  @extend .blue_status
+}
+
+.job_status_open  {
+  @extend .blue_status
+
+}
+
+.job_status_transferred  {
+  @extend .blue_status
+}
+
+.job_status_new {
+  @extend .gray_status
+}
+
+

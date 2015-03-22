@@ -11,10 +11,9 @@
 
     <br>
 
-        <table class="table table-striped">
+        <table id="in-progress-jobs" class="table table-striped">
           <thead>
           <tr>
-            <th></th>
             <th><%= ServiceCall.human_attribute_name(:id) %></th>
             <th><%= ServiceCall.human_attribute_name(:status) %></th>
             <th><%= ServiceCall.human_attribute_name(:name) %></th>
@@ -22,9 +21,6 @@
             <th><%= ServiceCall.human_attribute_name(:work_status) %></th>
             <th><%= ServiceCall.human_attribute_name(:scheduled_for) %></th>
             <th><%= I18n.t('general.general.provider') %></th>
-            <!--<th><#%= I18n.t('general.general.notes') %></th>-->
-            <th><%= I18n.t('general.general.actions') %></th>
-            <th class="job_source"><%= I18n.t('general.general.source') %></th>
           </tr>
           </thead>
         </table>
@@ -44,10 +40,9 @@
         </div>
 
         <br>
-        <table id="in-progress-jobs" class="table display responsive no-wrap table-striped">
+        <table id="transferred-in-progress-jobs" class="table display responsive no-wrap table-striped">
           <thead>
           <tr>
-            <th></th>
             <th><%= ServiceCall.human_attribute_name(:id) %></th>
             <th><%= ServiceCall.human_attribute_name(:status) %></th>
             <th><%= ServiceCall.human_attribute_name(:name) %></th>

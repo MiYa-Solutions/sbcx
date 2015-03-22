@@ -25,7 +25,22 @@ class Api::V1::TicketsDatatable < TicketsDatatable
           open_jobs_row(ticket)
         end
 
+      when 'new_jobs'
+        tickets.map do |ticket|
+          new_jobs_row(ticket)
+        end
+
+      when 'new_transferred_jobs'
+        tickets.map do |ticket|
+          new_jobs_row(ticket)
+        end
+
       when 'in_progress_jobs'
+        tickets.map do |ticket|
+          in_progress_jobs_row(ticket)
+        end
+
+      when 'transferred_in_progress_jobs'
         tickets.map do |ticket|
           in_progress_jobs_row(ticket)
         end
@@ -45,7 +60,7 @@ class Api::V1::TicketsDatatable < TicketsDatatable
     {
         ref_id:            ticket.ref_id,
         text:              ticket.name,
-        name:              link_to(ticket.name, ticket),
+        human_name:        link_to(ticket.name, ticket),
         status:            ticket.status_name,
         human_status:      ticket.human_status_name,
         human_work_status: ticket.human_work_status_name,
@@ -54,18 +69,40 @@ class Api::V1::TicketsDatatable < TicketsDatatable
 
   end
 
-  def in_progress_jobs(ticket)
+  def new_jobs_row(ticket)
 
     {
         ref_id:            ticket.ref_id,
         text:              ticket.name,
-        name:              link_to(ticket.name, ticket),
+        human_name:        link_to(ticket.name, ticket),
+        customer:          ticket.customer_name,
+        status:            ticket.status_name,
+        human_status:      ticket.human_status_name,
+        human_work_status: ticket.human_work_status_name,
+        work_status:       ticket.work_status_name,
+        scheduled_for:     ticket.scheduled_for ? l(ticket.scheduled_for) : '',
+        contractor:        ticket.provider_name,
+        subcontractor:     ticket.subcontractor_name
+
+    }
+
+  end
+
+
+
+  def in_progress_jobs_row(ticket)
+
+    {
+        ref_id:            ticket.ref_id,
+        text:              ticket.name,
+        name:              ticket.name,
+        human_name:        link_to(ticket.name, ticket),
         status:            ticket.status_name,
         customer:          ticket.customer.name,
         human_status:      ticket.human_status_name,
-        scheduled_for:     l(ticket.scheduled_for),
-        contractor:        ticket.provider.name,
-        subcontractor:     ticket.subcontractor.name,
+        scheduled_for:     ticket.scheduled_for ? l(ticket.scheduled_for) : '',
+        contractor:        ticket.provider_name,
+        subcontractor:     ticket.subcontractor_name,
         human_work_status: ticket.human_work_status_name,
         work_status:       ticket.work_status_name,
     }

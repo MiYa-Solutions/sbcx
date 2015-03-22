@@ -1,5 +1,5 @@
 class TicketsDatatable
-  delegate :humanized_money_with_symbol, :current_user, :params, :h, :link_to, :number_to_currency, to: :@view
+  delegate :humanized_money_with_symbol, :current_user, :params, :h, :l, :link_to, :number_to_currency, to: :@view
 
   def initialize(view)
     @view = view
@@ -153,12 +153,23 @@ class TicketsDatatable
     end
 
     if params[:table_type].present? && params[:table_type] == 'new_jobs'
-      tickets =ticket.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
+      tickets =tickets.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
                                  where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED ]))
     end
 
+    if params[:table_type].present? && params[:table_type] == 'new_transferred_jobs'
+      tickets =tickets.merge( ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED, ServiceCall::WORK_STATUS_ACCEPTED ]))
+    end
+
     if params[:table_type].present? && params[:table_type] == 'in_progress_jobs'
-      tickets =ticket.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer))
+      tickets =tickets.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
+                                  where(work_status: [ServiceCall::WORK_STATUS_IN_PROGRESS, ServiceCall::WORK_STATUS_ACCEPTED, ServiceCall::WORK_STATUS_DISPATCHED ]))
+    end
+
+    if params[:table_type].present? && params[:table_type] == 'transferred_in_progress_jobs'
+      tickets =tickets.merge( ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                  where(work_status: [ServiceCall::WORK_STATUS_IN_PROGRESS, ServiceCall::WORK_STATUS_DISPATCHED ]))
     end
 
 
