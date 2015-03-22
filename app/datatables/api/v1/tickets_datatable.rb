@@ -25,6 +25,11 @@ class Api::V1::TicketsDatatable < TicketsDatatable
           open_jobs_row(ticket)
         end
 
+      when 'in_progress_jobs'
+        tickets.map do |ticket|
+          in_progress_jobs_row(ticket)
+        end
+
       else
 
         tickets.map do |ticket|
@@ -43,6 +48,24 @@ class Api::V1::TicketsDatatable < TicketsDatatable
         name:              link_to(ticket.name, ticket),
         status:            ticket.status_name,
         human_status:      ticket.human_status_name,
+        human_work_status: ticket.human_work_status_name,
+        work_status:       ticket.work_status_name,
+    }
+
+  end
+
+  def in_progress_jobs(ticket)
+
+    {
+        ref_id:            ticket.ref_id,
+        text:              ticket.name,
+        name:              link_to(ticket.name, ticket),
+        status:            ticket.status_name,
+        customer:          ticket.customer.name,
+        human_status:      ticket.human_status_name,
+        scheduled_for:     l(ticket.scheduled_for),
+        contractor:        ticket.provider.name,
+        subcontractor:     ticket.subcontractor.name,
         human_work_status: ticket.human_work_status_name,
         work_status:       ticket.work_status_name,
     }

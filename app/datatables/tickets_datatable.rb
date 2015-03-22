@@ -133,7 +133,7 @@ class TicketsDatatable
         when 'Organization'
           tickets = tickets.where("provider_id = #{account.accountable_id} OR subcontractor_id = #{account.accountable_id} ")
         when
-          tickets = tickets.where(customer_id: account.accountable_id)
+        tickets = tickets.where(customer_id: account.accountable_id)
         else
 
       end
@@ -152,6 +152,14 @@ class TicketsDatatable
       tickets = tickets.where(project_id: params[:project_id])
     end
 
+    if params[:table_type].present? && params[:table_type] == 'new_jobs'
+      tickets =ticket.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED ]))
+    end
+
+    if params[:table_type].present? && params[:table_type] == 'in_progress_jobs'
+      tickets =ticket.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer))
+    end
 
 
     tickets.order("tickets.#{sort_column} #{sort_direction}").page(page).per_page(per_page)
@@ -176,7 +184,7 @@ class TicketsDatatable
 
   def status_scope
     term = params[:sSearch_5].split('|').map { |t| status_map[t] }
-    Ticket.where('tickets.status in (?)', term)
+    Ticket.where(' tickets.status in (?) ', term)
   end
 
   def tags_scope
@@ -186,15 +194,15 @@ class TicketsDatatable
 
   def status_map
     {
-        'Closed'       => Ticket::STATUS_CLOSED,
-        'New'          => Ticket::STATUS_NEW,
-        'Received New' => Ticket::STATUS_NEW,
-        'Open'         => Ticket::STATUS_OPEN,
-        'Transferred'  => Ticket::STATUS_TRANSFERRED,
-        'Passed On'    => Ticket::STATUS_TRANSFERRED,
-        'Accepted'     => TransferredServiceCall::STATUS_ACCEPTED,
-        'Rejcted'      => TransferredServiceCall::STATUS_REJECTED,
-        'Canceled'     => Ticket::STATUS_CANCELED
+        ' Closed '       => Ticket::STATUS_CLOSED,
+        ' New '          => Ticket::STATUS_NEW,
+        ' Received New ' => Ticket::STATUS_NEW,
+        ' Open '         => Ticket::STATUS_OPEN,
+        ' Transferred '  => Ticket::STATUS_TRANSFERRED,
+        ' Passed On '    => Ticket::STATUS_TRANSFERRED,
+        ' Accepted '     => TransferredServiceCall::STATUS_ACCEPTED,
+        ' Rejcted '      => TransferredServiceCall::STATUS_REJECTED,
+        ' Canceled '     => Ticket::STATUS_CANCELED
     }
   end
 
