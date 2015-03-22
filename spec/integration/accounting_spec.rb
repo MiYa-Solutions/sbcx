@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 
-describe "Account Pages", js: true do
+describe 'Job Accounting', js: true do
   self.use_transactional_fixtures = false
+  include_context 'job methods'
 
   setup_standard_orgs
 
-  let(:job) { create_my_job(org_admin_user, customer, :org) }
+  let(:job) { FactoryGirl.create(:my_service_call, organization: org) }
   let(:profit_split) { Agreement.our_agreements(org, org2).first.rules.first }
 
   let(:bom1) {
@@ -94,38 +95,17 @@ describe "Account Pages", js: true do
   let(:org2_org1_acc) { Account.for_affiliate(org2, org).first }
   let(:customer_acc) { Account.for_customer(job.customer).first }
 
-  before do
-    in_browser(:org) do
-      sign_in org_admin_user
-    end
-
-    in_browser(:org2) do
-      sign_in org_admin_user2
-    end
-  end
-
-  subject { page }
-
-  # todo create correction ability using account entries controller
-  # todo add collected_by to the payment event
-  # todo add a proposal ticket type
-  # todo add beneficiary for cheque payment upon completion
-  # todo create the fixed price rule
-
 
   describe 'none transferred service call' do
     before do
-      in_browser(:org) do
-        visit service_call_path(job)
-        click_button JOB_BTN_START
-        add_bom bom1[:name], bom1[:cost], bom1[:price], bom1[:quantity]
-        add_bom bom2[:name], bom2[:cost], bom2[:price], bom2[:quantity]
-      end
+      start_the_job job
+      add_bom_to_job job, cost: bom1[:cost], price: bom1[:price], quantity: bom1[:quantity]
+      add_bom_to_job job, cost: bom2[:cost], price: bom2[:price], quantity: bom2[:quantity]
     end
 
     describe 'cancel' do
       before do
-        click_button JOB_BTN_CANCEL
+        cancel_the_job job
       end
 
       it 'should not create any accounting entries' do
@@ -137,17 +117,16 @@ describe "Account Pages", js: true do
 
     describe 'when completed' do
       before do
-        click_button JOB_BTN_COMPLETE
-        visit customer_path customer
+        complete_the_work job
       end
       it 'the customer account should be updated with the amount' do
-
-        should have_customer_balance(expected_price)
+        expect(customer.account.reload.balance).to eq expected_price
       end
 
       it 'the customer account should show accounting entry' do
         entries = job.reload.entries.where(type: ServiceCallCharge)
-        entries.should have(1).entry
+        expect(entries.size).to eq 1
+        expect(entries.first).to eq 1
         should have_entry(entries.first, amount: expected_price, type: ServiceCallCharge.model_name.human)
         should have_customer_balance(expected_price)
       end

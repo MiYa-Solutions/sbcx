@@ -31,7 +31,7 @@ class ServiceCallUnCancelEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.cancel_subcon!
+    service_call.cancel_subcon! if service_call.can_cancel_subcon?
     service_call.reset_work!
     service_call.cancel_subcon_collection! if defined?(service_call.can_cancel_subcon_collection?) && service_call.can_cancel_subcon_collection?
     super

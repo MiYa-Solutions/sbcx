@@ -26,6 +26,9 @@ require 'rspec_candy/all'
 
 
 Spork.prefork do
+
+  include Warden::Test::Helpers
+  Warden.test_mode!
   # Loading more in this block will cause your tests to run faster. However,
   # if you change any configuration or code from libraries loaded here, you'll
   # need to restart spork for it take effect.
@@ -135,6 +138,7 @@ Spork.each_run do
   #Dir["#{Rails.root}/app/models/**/*.rb"].each do |model|
   #  load model unless model == "/Users/mark/RubymineProjects/sbcx/app/models/permitted_params.rb"
   #end
+  Warden.test_reset!
 
   if ENV['DRB']
     require 'simplecov'

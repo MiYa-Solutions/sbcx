@@ -133,5 +133,71 @@ describe 'Service Call Transfer' do
     end
   end
 
+  describe 'job transfer rejection' do
+    before do
+      transfer_the_job job
+      reject_the_job subcon_job
+      job.reload
+    end
+
+    it 'the job can be transferred again' do
+      expect(job.status_events).to include(:transfer)
+    end
+
+    it 'work status should be rejected' do
+      expect(job.work_status_name).to eq :rejected
+    end
+
+    context 'when transferring the job again to the same subcon' do
+      let(:subcon_job2) { TransferredServiceCall.where(ref_id: job.ref_id).last }
+
+      before do
+        transfer_the_job job
+        job.reload
+      end
+
+      it 'job status should be transferred' do
+        expect(job.status_name).to eq :transferred
+      end
+
+      it 'the work status should be reset to pending' do
+        expect(job.work_status_name).to eq :pending
+      end
+      it 'another job is created' do
+        expect(subcon_job2.id).to_not eq subcon_job.id
+      end
+
+    end
+    context 'when transferring the job to another member subcon' do
+      let(:subcon2_agr) { FactoryGirl.create(:subcon_agreement, organization: job.organization) }
+      let(:subcon2) { subcon2_agr.counterparty }
+      let(:subcon_job2) { TransferredServiceCall.where(ref_id: job.ref_id).last }
+
+      before do
+        transfer_the_job job: job, subcon: subcon2, agreement: subcon2_agr
+      end
+
+      it 'another job is created' do
+        expect(subcon_job2.id).to_not eq subcon_job.id
+        expect(subcon_job2.subcontractor_id).to_not eq subcon.id
+      end
+
+    end
+    context 'when transferring the job to another local subcon' do
+      let(:subcon2) { FactoryGirl.build(:local_org) }
+      let(:subcon2_agr) { FactoryGirl.create(:subcon_agreement, organization: job.organization, counterparty: subcon2) }
+
+      before do
+        transfer_the_job job: job, subcon: subcon2, agreement: subcon2_agr
+      end
+
+      it 'transfer is successful' do
+        expect(job.subcontractor_id).to eq subcon2.id
+        expect(job.status_name).to eq :transferred
+      end
+
+    end
+  end
+
 
 end
