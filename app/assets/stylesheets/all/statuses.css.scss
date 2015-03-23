@@ -1,3 +1,11 @@
+.green_amount {
+  color: green;
+}
+
+.red_amount {
+  color: red;
+}
+
 .blue_status {
   color: #3A87AD;
   font-weight: bold;
@@ -22,6 +30,10 @@
 }
 
 .job_status_transferred  {
+  @extend .blue_status
+}
+
+.job_status_accepted  {
   @extend .blue_status
 }
 

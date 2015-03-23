@@ -1,5 +1,3 @@
-class App.NewJobsFormater extends App.DataTableJobsFormater
-
 $ ->
   $('#new-jobs').dataTable
     dom: "t<'row-fluid'<'span7'i><'span5'p>>"
@@ -16,6 +14,7 @@ $ ->
     stateSave: true
     sAjaxSource: 'api/v1/service_calls.json'
     serverSide: true
+    deferLoading: 0
 
 
     fnServerData: (sSource, aoData, fnCallback) ->
@@ -41,7 +40,7 @@ $ ->
     ]
 
     fnRowCallback: (nRow, job, iDisplayIndex) ->
-      e = new App.NewJobsFormater
+      e = new App.DataTableJobsFormater
       e.style(nRow, job)
 
   $('#new-transferred-jobs').dataTable
@@ -59,6 +58,7 @@ $ ->
     stateSave: true
     sAjaxSource: 'api/v1/service_calls.json'
     serverSide: true
+    deferLoading: 0
 
 
     fnServerData: (sSource, aoData, fnCallback) ->
@@ -84,6 +84,16 @@ $ ->
     ]
 
     fnRowCallback: (nRow, job, iDisplayIndex) ->
-      e = new App.NewJobsFormater
+      e = new App.DataTableJobsFormater
       e.style(nRow, job)
+
+  $("a[href='#newJobs']").one 'shown.bs.tab', ->
+    $('#new-jobs').dataTable().api().ajax.reload()
+    $('#new-transferred-jobs').dataTable().api().ajax.reload()
+
+  if $('#newJobs').is(':visible')
+    $('#new-jobs').dataTable().api().ajax.reload()
+    $('#new-transferred-jobs').dataTable().api().ajax.reload()
+
+
 

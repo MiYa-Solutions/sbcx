@@ -39,7 +39,7 @@ $ ->
 
     columns: [
       {data: "ref_id"},
-      {data: "name"},
+      {data: "human_name"},
       {data: "human_status"},
       {data: "human_work_status"}
     ]

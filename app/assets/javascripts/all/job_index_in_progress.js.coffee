@@ -1,20 +1,3 @@
-class App.DataTableJobsFormater
-  constractor: ->
-
-  color_cells: (row, job)->
-    @color_status_cell(row, job)
-    @color_work_status_cell(row, job)
-
-
-  style: (row, job) ->
-    @color_cells(row, job)
-
-  color_status_cell: (row, job)->
-    $('.status', row).addClass("job_status_#{job.status}")
-
-  color_work_status_cell: (row, job)->
-    $('.work_status', row).addClass("job_work_status_#{job.work_status}")
-
 $ ->
   $('#in-progress-jobs').dataTable
     dom: "t<'row-fluid'<'span7'i><'span5'p>>"
@@ -31,6 +14,7 @@ $ ->
     stateSave: true
     sAjaxSource: 'api/v1/service_calls.json'
     serverSide: true
+    deferLoading: 0
 
 
     fnServerData: (sSource, aoData, fnCallback) ->
@@ -73,6 +57,7 @@ $ ->
     stateSave: true
     sAjaxSource: 'api/v1/service_calls.json'
     serverSide: true
+    deferLoading: 0
 
 
     fnServerData: (sSource, aoData, fnCallback) ->
@@ -97,5 +82,16 @@ $ ->
     ]
 
     fnRowCallback: (nRow, job, iDisplayIndex) ->
-      e = new App.NewJobsFormater
+      e = new App.DataTableJobsFormater
       e.style(nRow, job)
+
+  $("a[href='#activeJobs']").one 'shown.bs.tab', ->
+    $('#in-progress-jobs').dataTable().api().ajax.reload()
+    $('#transferred-in-progress-jobs').dataTable().api().ajax.reload()
+
+  if $('#activeJobs').is(':visible')
+    $('#in-progress-jobs').dataTable().api().ajax.reload()
+    $('#transferred-in-progress-jobs').dataTable().api().ajax.reload()
+
+
+

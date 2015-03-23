@@ -173,10 +173,6 @@ class Ticket < ActiveRecord::Base
     provider.try(:name)
   end
 
-  def customer_name
-    customer.try(:name)
-  end
-
   def customer_account
     Account.where(accountable_id: customer_id, accountable_type: 'Customer').first
   end

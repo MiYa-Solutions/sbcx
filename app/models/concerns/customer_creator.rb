@@ -5,7 +5,7 @@ module CustomerCreator
     belongs_to :customer, :inverse_of => base.name.underscore.pluralize.to_sym
     attr_accessor :new_customer
     attr_writer :customer_name
-    before_validation :create_customer, if: ->(tkt) { tkt.customer_id.nil? }
+    before_validation :create_customer, if: ->(tkt) { tkt.customer_id.blank? }
 
   end
 
