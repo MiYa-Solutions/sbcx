@@ -1,7 +1,13 @@
 $ ->
   $('#new-jobs').dataTable
-    dom: "t<'row-fluid'<'span7'i><'span5'p>>"
-    pagingType: 'simple'
+#    dom: "t<'row-fluid'<'span7'i><'span5'p>>"
+    dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+    pagingType: "bootstrap"
+    oTableTools:
+      aButtons: ["print"]
+      sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
+
+
     iDisplayLength: 5
     columnDefs: [
       'targets': [ 1,2,3, 4, 5,6 ]
@@ -44,8 +50,11 @@ $ ->
       e.style(nRow, job)
 
   $('#new-transferred-jobs').dataTable
-    dom: "t<'row-fluid'<'span7'i><'span5'p>>"
-    pagingType: 'simple'
+    dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+    pagingType: "bootstrap"
+    oTableTools:
+      aButtons: ["print"]
+      sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     iDisplayLength: 5
     columnDefs: [
       'targets': [ 1,2,3, 4, 5,6,7 ]

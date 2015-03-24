@@ -8,20 +8,26 @@ class ServiceCallsController < ApplicationController
   def index
     respond_to do |format|
       format.any(:html, :mobile) {
-        all_my_jobs           = ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).all(order: 'id DESC')
-        all_transferred_job   = ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).all(order: 'id DESC')
-        # a set of data for each tab
-        @new_jobs             = all_my_jobs.select { |j| [:pending, :canceled, :rejected].include? j.work_status_name }
-        @new_transferred_jobs = all_transferred_job.select { |j| [:accepted, :pending, :canceled, :rejected].include? j.work_status_name }
-
-        @active_jobs             = all_my_jobs.select { |j| [:in_progress, :accepted, :dispatched].include? j.work_status_name }
-        @active_transferred_jobs = all_transferred_job.select { |j| [:in_progress, :dispatched].include? j.work_status_name }
-
-        @done_jobs             = all_my_jobs.select { |j| j.work_status_name == :done }
-        @done_transferred_jobs = all_transferred_job.select { |j| j.work_status_name == :done }
+        # all_my_jobs           = ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).all(order: 'id DESC')
+        # all_transferred_job   = ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).all(order: 'id DESC')
+        # # a set of data for each tab
+        # @new_jobs             = all_my_jobs.select { |j| [:pending, :canceled, :rejected].include? j.work_status_name }
+        # @new_transferred_jobs = all_transferred_job.select { |j| [:accepted, :pending, :canceled, :rejected].include? j.work_status_name }
+        #
+        # @active_jobs             = all_my_jobs.select { |j| [:in_progress, :accepted, :dispatched].include? j.work_status_name }
+        # @active_transferred_jobs = all_transferred_job.select { |j| [:in_progress, :dispatched].include? j.work_status_name }
+        #
+        # @done_jobs             = all_my_jobs.select { |j| j.work_status_name == :done }
+        # @done_transferred_jobs = all_transferred_job.select { |j| j.work_status_name == :done }
       }
 
-      format.json { render json: TicketsDatatable.new(view_context) }
+      format.json {
+        if params[:counter].present?
+          render json: TicketCounter.new(view_context)
+        else
+          render json: TicketsDatatable.new(view_context)
+        end
+      }
       format.csv { render_csv }
       format.xls { send_data JobsCsvExport.new(view_context).get_csv(col_sep: "\t"), as: 'application/xls' }
     end

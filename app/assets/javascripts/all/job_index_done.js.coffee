@@ -52,8 +52,11 @@ class App.DoneJobsFormatter
 
 $ ->
   $('#done-jobs').dataTable
-    dom: "t<'row-fluid'<'span7'i><'span5'p>>"
-    pagingType: 'simple'
+    dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+    pagingType: "bootstrap"
+    oTableTools:
+      aButtons: ["print"]
+      sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     iDisplayLength: 5
     order: [[0, 'desc']]
     aLengthMenu: [10, 25, 50]
@@ -89,8 +92,11 @@ $ ->
       e.style(nRow, job)
 
   $('#done-transferred-jobs').dataTable
-    dom: "t<'row-fluid'<'span7'i><'span5'p>>"
-    pagingType: 'simple'
+    dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+    pagingType: "bootstrap"
+    oTableTools:
+      aButtons: ["print"]
+      sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     iDisplayLength: 5
     order: [[0, 'desc']]
     sPaginationType: "bootstrap"
