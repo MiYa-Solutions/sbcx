@@ -7,12 +7,12 @@
 }
 
 .blue_status {
-  color: #3A87AD;
+  color: #3A87AD !important;
   font-weight: bold;
 }
 
 .gray_status {
-  color: #696969;
+  color: #696969 !important;
   font-weight: bold;
 }
 
@@ -35,19 +35,19 @@
 }
 
 .job_work_status_dispatched {
-  @extend .gray_blue
+  @extend .blue_status
 }
 
 .job_work_status_accepted {
-  @extend .gray_blue
+  @extend .blue_status
 }
 
 .job_work_status_rejected {
-  @extend .gray_red
+  @extend .red_status
 }
 
 .job_work_status_done {
-  @extend .gray_green
+  @extend .green_status
 }
 
 .job_work_status_in_progress {

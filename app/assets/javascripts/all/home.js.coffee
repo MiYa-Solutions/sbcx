@@ -38,12 +38,12 @@ $ ->
         fnCallback json
 
     columns: [
-      {data: "ref_id"},
-      {data: "human_name"},
-      {data: "human_status"},
-      {data: "human_work_status"}
+      {data: "ref_id", name: 'ref_id', className: 'ref_id'},
+      {data: "human_name", name: 'name', className: 'name'},
+      {data: "human_status", name: 'status', className: 'status'},
+      {data: "human_work_status", name: 'work_status', className: 'work_status' }
     ]
 
     fnRowCallback: (nRow, job, iDisplayIndex) ->
-      e = new App.OpenJobsFormater
+      e = new App.DataTableJobsFormater
       e.style(nRow, job)
