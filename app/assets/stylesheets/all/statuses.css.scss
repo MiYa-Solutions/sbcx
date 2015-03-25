@@ -16,8 +16,38 @@
   font-weight: bold;
 }
 
+.green_status {
+  color: #44AD3F !important;
+  font-weight: bold;
+}
+
+.red_status {
+  color: #DA4E49 !important;
+  font-weight: bold;
+}
+
 .job_work_status_pending {
   @extend .gray_status
+}
+
+.job_work_status_canceled {
+  @extend .gray_status
+}
+
+.job_work_status_dispatched {
+  @extend .gray_blue
+}
+
+.job_work_status_accepted {
+  @extend .gray_blue
+}
+
+.job_work_status_rejected {
+  @extend .gray_red
+}
+
+.job_work_status_done {
+  @extend .gray_green
 }
 
 .job_work_status_in_progress {

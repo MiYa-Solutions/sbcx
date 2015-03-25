@@ -85,14 +85,14 @@ class Api::V1::TicketsDatatable < TicketsDatatable
         ref_id:            ticket.ref_id,
         text:              ticket.name,
         human_name:        link_to(ticket.name, ticket),
-        customer:          ticket.customer_name,
+        customer:          permitted_to?(:show, ticket.customer) ? link_to(ticket.customer_name, ticket.customer) : ticket.customer_name,
         status:            ticket.status_name,
         human_status:      ticket.human_status_name,
         human_work_status: ticket.human_work_status_name,
         work_status:       ticket.work_status_name,
         scheduled_for:     ticket.scheduled_for ? l(ticket.scheduled_for) : '',
-        contractor:        ticket.provider_name,
-        subcontractor:     ticket.subcontractor_name
+        contractor:        permitted_to?(:show, ticket.provider) ? link_to(ticket.provider_name, ticket.provider) : ticket.provider_name,
+        subcontractor:     permitted_to?(:show, ticket.subcontractor) ? link_to(ticket.subcontractor_name, ticket.subcontractor) : ticket.subcontractor_name,
 
     }
 
@@ -107,11 +107,11 @@ class Api::V1::TicketsDatatable < TicketsDatatable
         name:              ticket.name,
         human_name:        link_to(ticket.name, ticket),
         status:            ticket.status_name,
-        customer:          ticket.customer.name,
+        customer:          permitted_to?(:show, ticket.customer) ? link_to(ticket.customer_name, ticket.customer) : ticket.customer_name,
         human_status:      ticket.human_status_name,
         scheduled_for:     ticket.scheduled_for ? l(ticket.scheduled_for) : '',
-        contractor:        ticket.provider_name,
-        subcontractor:     ticket.subcontractor_name,
+        contractor:        permitted_to?(:show, ticket.provider) ? link_to(ticket.provider_name, ticket.provider) : ticket.provider_name,
+        subcontractor:     permitted_to?(:show, ticket.subcontractor) ? link_to(ticket.subcontractor_name, ticket.subcontractor) : ticket.subcontractor_name,
         human_work_status: ticket.human_work_status_name,
         work_status:       ticket.work_status_name,
     }

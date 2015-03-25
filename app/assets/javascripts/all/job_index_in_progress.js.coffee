@@ -1,6 +1,6 @@
 $ ->
   $('#in-progress-jobs').dataTable
-    dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+    dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
     pagingType: "bootstrap"
     oTableTools:
       aButtons: ["print"]
@@ -46,7 +46,7 @@ $ ->
       e.style(nRow, job)
 
   $('#transferred-in-progress-jobs').dataTable
-    dom: "CW<'row-fluid'<'span6'T><'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+    dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
     pagingType: "bootstrap"
     oTableTools:
       aButtons: ["print"]
