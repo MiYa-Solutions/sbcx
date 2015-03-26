@@ -1,5 +1,5 @@
 class TicketsDatatable
-  delegate :humanized_money_with_symbol, :current_user, :params, :h, :link_to, :number_to_currency, to: :@view
+  delegate :humanized_money_with_symbol, :current_user, :params, :h, :l, :link_to, :number_to_currency, :permitted_to?, to: :@view
 
   def initialize(view)
     @view = view
@@ -133,7 +133,7 @@ class TicketsDatatable
         when 'Organization'
           tickets = tickets.where("provider_id = #{account.accountable_id} OR subcontractor_id = #{account.accountable_id} ")
         when
-          tickets = tickets.where(customer_id: account.accountable_id)
+        tickets = tickets.where(customer_id: account.accountable_id)
         else
 
       end
@@ -152,6 +152,35 @@ class TicketsDatatable
       tickets = tickets.where(project_id: params[:project_id])
     end
 
+    if params[:table_type].present? && params[:table_type] == 'new_jobs'
+      tickets =tickets.merge(ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED]))
+    end
+
+    if params[:table_type].present? && params[:table_type] == 'new_transferred_jobs'
+      tickets =tickets.merge(ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED, ServiceCall::WORK_STATUS_ACCEPTED]))
+    end
+
+    if params[:table_type].present? && params[:table_type] == 'in_progress_jobs'
+      tickets =tickets.merge(ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_IN_PROGRESS, ServiceCall::WORK_STATUS_ACCEPTED, ServiceCall::WORK_STATUS_DISPATCHED]))
+    end
+
+    if params[:table_type].present? && params[:table_type] == 'transferred_in_progress_jobs'
+      tickets =tickets.merge(ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_IN_PROGRESS, ServiceCall::WORK_STATUS_DISPATCHED]))
+    end
+
+    if params[:table_type].present? && params[:table_type] == 'done_jobs'
+      tickets =tickets.merge(ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: ServiceCall::WORK_STATUS_DONE))
+    end
+
+    if params[:table_type].present? && params[:table_type] == 'done_transferred_jobs'
+      tickets =tickets.merge(ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: ServiceCall::WORK_STATUS_DONE))
+    end
 
 
     tickets.order("tickets.#{sort_column} #{sort_direction}").page(page).per_page(per_page)
@@ -176,7 +205,7 @@ class TicketsDatatable
 
   def status_scope
     term = params[:sSearch_5].split('|').map { |t| status_map[t] }
-    Ticket.where('tickets.status in (?)', term)
+    Ticket.where(' tickets.status in (?) ', term)
   end
 
   def tags_scope
@@ -193,7 +222,7 @@ class TicketsDatatable
         'Transferred'  => Ticket::STATUS_TRANSFERRED,
         'Passed On'    => Ticket::STATUS_TRANSFERRED,
         'Accepted'     => TransferredServiceCall::STATUS_ACCEPTED,
-        'Rejcted'      => TransferredServiceCall::STATUS_REJECTED,
+        'Rejected'     => TransferredServiceCall::STATUS_REJECTED,
         'Canceled'     => Ticket::STATUS_CANCELED
     }
   end

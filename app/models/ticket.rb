@@ -165,6 +165,14 @@ class Ticket < ActiveRecord::Base
     technician.try(:name)
   end
 
+  def subcontractor_name
+    subcontractor.try(:name)
+  end
+
+  def provider_name
+    provider.try(:name)
+  end
+
   def customer_account
     Account.where(accountable_id: customer_id, accountable_type: 'Customer').first
   end

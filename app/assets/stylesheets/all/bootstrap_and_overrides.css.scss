@@ -5511,3 +5511,13 @@ table.dataTable thead th, table.dataTable thead td {
 #bom_description {
   width: 100%;
 }
+
+
+
+.dataTables_filter {
+  margin-right: 60%;
+
+  input, textarea {
+    width: 67%;
+  }
+}

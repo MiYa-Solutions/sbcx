@@ -1,0 +1,79 @@
+.green_amount {
+  color: green;
+}
+
+.red_amount {
+  color: red;
+}
+
+.blue_status {
+  color: #3A87AD !important;
+  font-weight: bold;
+}
+
+.gray_status {
+  color: #696969 !important;
+  font-weight: bold;
+}
+
+.green_status {
+  color: #44AD3F !important;
+  font-weight: bold;
+}
+
+.red_status {
+  color: #DA4E49 !important;
+  font-weight: bold;
+}
+
+.job_work_status_pending {
+  @extend .gray_status
+}
+
+.job_work_status_canceled {
+  @extend .gray_status
+}
+
+.job_work_status_dispatched {
+  @extend .blue_status
+}
+
+.job_work_status_accepted {
+  @extend .blue_status
+}
+
+.job_work_status_rejected {
+  @extend .red_status
+}
+
+.job_work_status_done {
+  @extend .green_status
+}
+
+.job_work_status_in_progress {
+  @extend .blue_status
+}
+
+.job_status_open  {
+  @extend .blue_status
+
+}
+
+.job_status_closed  {
+  @extend .green_status
+
+}
+
+.job_status_transferred  {
+  @extend .blue_status
+}
+
+.job_status_accepted  {
+  @extend .blue_status
+}
+
+.job_status_new {
+  @extend .gray_status
+}
+
+

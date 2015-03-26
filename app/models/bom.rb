@@ -65,7 +65,7 @@ class Bom < ActiveRecord::Base
     unless !self.material.nil? || @material_name.nil?
       existing_material = Material.find_by_organization_id_and_name(self.ticket.organization.id, @material_name)
       if existing_material.nil?
-        existing_material = Material.create(organization: self.ticket.organization, name: @material_name, price: self.price, cost: self.cost, supplier: self.ticket.organization.becomes(Supplier))
+        existing_material = Material.create(organization: self.ticket.organization, name: @material_name, price: self.price, cost: self.cost, supplier: self.ticket.organization.becomes(Supplier), description: description)
       end
       self.material = existing_material
     end

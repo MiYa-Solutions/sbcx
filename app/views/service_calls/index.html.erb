@@ -4,15 +4,12 @@
 
      <ul class="nav nav-tabs" id="myJobTab">
       <li class="active"><a href="#newJobs" data-toggle="tab"><%= "#{I18n.t('general.general.new')}" %>
-        <span class="label label-warning" id="job-counter"><%= @new_jobs.length + @new_transferred_jobs.length %></span>
       </a></li>
 
        <li><a href="#activeJobs" data-toggle="tab"><%= "#{I18n.t('general.general.in_progress')}" %>
-         <span class="label label-warning" id="job-counter2"><%= @active_jobs.length + @active_transferred_jobs.length %></span>
        </a></li>
 
        <li><a href="#doneJobs" data-toggle="tab"><%= "#{I18n.t('general.general.done')}" %>
-         <span class="label label-warning" id="job-counter3"><%= @done_jobs.length + @done_transferred_jobs.length %></span>
          <%= image_tag("question24.png", :title => I18n.t('general.messages.done_jobs'), :rel => 'tooltip', "data-placement" => "right", id: "adj_entry_img") %>
        </a></li>
 
@@ -20,8 +17,8 @@
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane active" id="newJobs"><%= render 'active_jobs', service_calls: @new_jobs, transferred_jobs: @new_transferred_jobs %></div>
-      <div class="tab-pane" id="activeJobs"><%= render 'in_progress_jobs', service_calls: @active_jobs, transferred_jobs: @active_transferred_jobs %></div>
+      <div class="tab-pane active" id="newJobs"><%= render 'active_jobs' %></div>
+      <div class="tab-pane" id="activeJobs"><%= render 'in_progress_jobs' %></div>
       <div class="tab-pane" id="doneJobs"><%= render 'done_jobs', service_calls: @done_jobs, transferred_jobs: @done_transferred_jobs %></div>
       <div class="tab-pane" id="allJobs"><%= render 'all_jobs' %></div>
 

@@ -1,4 +1,3 @@
-App = {}
 class App.OpenJobsFormater
   constractor: ->
 
@@ -29,7 +28,7 @@ $ ->
 
     fnServerData: (sSource, aoData, fnCallback) ->
       aoData.push
-        name: ":sSearch_5"
+        name: "sSearch_5"
         value: "New|Open|Received New|Transferred|Passed On|Accepted|Rejcted"
       aoData.push
         name: "table_type"
@@ -39,12 +38,12 @@ $ ->
         fnCallback json
 
     columns: [
-      {data: "ref_id"},
-      {data: "name"},
-      {data: "human_status"},
-      {data: "human_work_status"}
+      {data: "ref_id", name: 'ref_id', className: 'ref_id'},
+      {data: "human_name", name: 'name', className: 'name'},
+      {data: "human_status", name: 'status', className: 'status'},
+      {data: "human_work_status", name: 'work_status', className: 'work_status' }
     ]
 
     fnRowCallback: (nRow, job, iDisplayIndex) ->
-      e = new App.OpenJobsFormater
+      e = new App.DataTableJobsFormater
       e.style(nRow, job)
