@@ -153,33 +153,33 @@ class TicketsDatatable
     end
 
     if params[:table_type].present? && params[:table_type] == 'new_jobs'
-      tickets =tickets.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
-                                 where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED ]))
+      tickets =tickets.merge(ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED]))
     end
 
     if params[:table_type].present? && params[:table_type] == 'new_transferred_jobs'
-      tickets =tickets.merge( ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
-                                 where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED, ServiceCall::WORK_STATUS_ACCEPTED ]))
+      tickets =tickets.merge(ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_PENDING, ServiceCall::WORK_STATUS_CANCELED, ServiceCall::WORK_STATUS_REJECTED, ServiceCall::WORK_STATUS_ACCEPTED]))
     end
 
     if params[:table_type].present? && params[:table_type] == 'in_progress_jobs'
-      tickets =tickets.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
-                                  where(work_status: [ServiceCall::WORK_STATUS_IN_PROGRESS, ServiceCall::WORK_STATUS_ACCEPTED, ServiceCall::WORK_STATUS_DISPATCHED ]))
+      tickets =tickets.merge(ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_IN_PROGRESS, ServiceCall::WORK_STATUS_ACCEPTED, ServiceCall::WORK_STATUS_DISPATCHED]))
     end
 
     if params[:table_type].present? && params[:table_type] == 'transferred_in_progress_jobs'
-      tickets =tickets.merge( ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
-                                  where(work_status: [ServiceCall::WORK_STATUS_IN_PROGRESS, ServiceCall::WORK_STATUS_DISPATCHED ]))
+      tickets =tickets.merge(ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: [ServiceCall::WORK_STATUS_IN_PROGRESS, ServiceCall::WORK_STATUS_DISPATCHED]))
     end
 
     if params[:table_type].present? && params[:table_type] == 'done_jobs'
-      tickets =tickets.merge( ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
-                                  where(work_status: ServiceCall::WORK_STATUS_DONE))
+      tickets =tickets.merge(ServiceCall.jobs_to_work_on(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: ServiceCall::WORK_STATUS_DONE))
     end
 
     if params[:table_type].present? && params[:table_type] == 'done_transferred_jobs'
-      tickets =tickets.merge( ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
-                                  where(work_status: ServiceCall::WORK_STATUS_DONE))
+      tickets =tickets.merge(ServiceCall.my_transferred_jobs(current_user.organization).includes(:provider, :subcontractor, :organization, :customer).
+                                 where(work_status: ServiceCall::WORK_STATUS_DONE))
     end
 
 
@@ -215,15 +215,15 @@ class TicketsDatatable
 
   def status_map
     {
-        ' Closed '       => Ticket::STATUS_CLOSED,
-        ' New '          => Ticket::STATUS_NEW,
-        ' Received New ' => Ticket::STATUS_NEW,
-        ' Open '         => Ticket::STATUS_OPEN,
-        ' Transferred '  => Ticket::STATUS_TRANSFERRED,
-        ' Passed On '    => Ticket::STATUS_TRANSFERRED,
-        ' Accepted '     => TransferredServiceCall::STATUS_ACCEPTED,
-        ' Rejcted '      => TransferredServiceCall::STATUS_REJECTED,
-        ' Canceled '     => Ticket::STATUS_CANCELED
+        'Closed'       => Ticket::STATUS_CLOSED,
+        'New'          => Ticket::STATUS_NEW,
+        'Received New' => Ticket::STATUS_NEW,
+        'Open'         => Ticket::STATUS_OPEN,
+        'Transferred'  => Ticket::STATUS_TRANSFERRED,
+        'Passed On'    => Ticket::STATUS_TRANSFERRED,
+        'Accepted'     => TransferredServiceCall::STATUS_ACCEPTED,
+        'Rejected'     => TransferredServiceCall::STATUS_REJECTED,
+        'Canceled'     => Ticket::STATUS_CANCELED
     }
   end
 

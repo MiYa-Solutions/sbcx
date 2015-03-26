@@ -59,6 +59,11 @@
 
 }
 
+.job_status_closed  {
+  @extend .green_status
+
+}
+
 .job_status_transferred  {
   @extend .blue_status
 }

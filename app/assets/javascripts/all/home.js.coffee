@@ -28,7 +28,7 @@ $ ->
 
     fnServerData: (sSource, aoData, fnCallback) ->
       aoData.push
-        name: ":sSearch_5"
+        name: "sSearch_5"
         value: "New|Open|Received New|Transferred|Passed On|Accepted|Rejcted"
       aoData.push
         name: "table_type"

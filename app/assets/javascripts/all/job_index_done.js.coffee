@@ -23,9 +23,9 @@ class App.DoneJobsFormatter
 
     formated_amount = accounting.formatMoney(amount)
     $('.customer_balance', row).text(formated_amount)
-    if amount >= 0.0
+    if amount > 0.0
       $('.customer_balance', row).addClass('green_amount')
-    else
+    else if amount < 0.0
       $('.customer_balance', row).addClass('red_amount')
 
   format_subcontractor_balance: (row, job) ->
@@ -34,9 +34,9 @@ class App.DoneJobsFormatter
 
     formated_amount = accounting.formatMoney(amount)
     $('.subcontractor_balance', row).text(formated_amount)
-    if amount >= 0.0
+    if amount > 0.0
       $('.subcontractor_balance', row).addClass('green_amount')
-    else
+    else if amount < 0
       $('.subcontractor_balance', row).addClass('red_amount')
 
   format_contractor_balance: (row, job) ->
@@ -45,9 +45,9 @@ class App.DoneJobsFormatter
 
     formated_amount = accounting.formatMoney(amount)
     $('.contractor_balance', row).text(formated_amount)
-    if amount >= 0.0
+    if amount > 0.0
       $('.contractor_balance', row).addClass('green_amount')
-    else
+    else if amount < 0
       $('.contractor_balance', row).addClass('red_amount')
 
 $ ->
