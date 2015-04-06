@@ -84,7 +84,7 @@ shared_context 'job methods' do
   end
 
   def reset_the_job(ticket)
-    ticket.un_cancel!
+    ticket.reset_work!
   end
 
   def add_technician(the_org, options = {})
@@ -92,9 +92,9 @@ shared_context 'job methods' do
     subcon.users << FactoryGirl.build(:my_technician)
   end
 
-
-  alias_method :un_cancel_the_job, :reset_the_job
-
+  def un_cancel_the_job(ticket)
+    ticket.un_cancel!
+  end
 
 end
 
