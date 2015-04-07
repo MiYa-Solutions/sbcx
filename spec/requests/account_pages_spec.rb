@@ -11,15 +11,15 @@ describe "Account Pages", js: true do
 
   let(:bom1) {
     params                = { name: "material1", price: 100.00, cost: 10.00, quantity: 1 }
-    params[:total_cost]   = params[:cost] * params[:quantity]          # expected to be 13.67
-    params[:total_price]  = params[:price] * params[:quantity]         # expeceted to be 119.98
+    params[:total_cost]   = params[:cost] * params[:quantity] # expected to be 13.67
+    params[:total_price]  = params[:price] * params[:quantity] # expeceted to be 119.98
     params[:total_profit] = params[:total_price] - params[:total_cost] # expected to be 106.31
     params
   }
   let(:bom2) {
     params                = { name: "material2", price: 100, cost: 10, quantity: 2 }
-    params[:total_cost]   = params[:cost] * params[:quantity]          # expected to be 20
-    params[:total_price]  = params[:price] * params[:quantity]         # expected to be 200
+    params[:total_cost]   = params[:cost] * params[:quantity] # expected to be 20
+    params[:total_price]  = params[:price] * params[:quantity] # expected to be 200
     params[:total_profit] = params[:total_price] - params[:total_cost] # expected to be 180
     params
 
@@ -177,303 +177,294 @@ describe "Account Pages", js: true do
       end
 
 
-      describe 'when invoiced' do
+      describe 'cancel the job' do
         before do
           visit service_call_path(job)
-          click_button JOB_BTN_INVOICE
+          click_button JOB_BTN_CANCEL
         end
 
-        it "should send an invoice to the customer"
-
-        describe 'cancel the job' do
+        describe 'customer account' do
           before do
-            visit service_call_path(job)
-            click_button JOB_BTN_CANCEL
+            visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
+            click_button ACC_BTN_GET_ENTRIES
           end
 
-          describe 'customer account' do
-            before do
-              visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
-              click_button ACC_BTN_GET_ENTRIES
-            end
-
-            it 'should show canceled job entry with a zero balance' do
-              entries = job.reload.entries.where(type: CanceledJobAdjustment)
-              entries.should have(1).entry
-              should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
-              should have_customer_balance(0)
-
-            end
+          it 'should show canceled job entry with a zero balance' do
+            entries = job.reload.entries.where(type: CanceledJobAdjustment)
+            entries.should have(1).entry
+            should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
+            should have_customer_balance(0)
 
           end
 
         end
 
+      end
 
-        describe 'when paid' do
 
-          describe 'with cash payment' do
+      describe 'when paid' do
+
+        describe 'with cash payment' do
+          before do
+            select Cash.model_name.human, from: JOB_SELECT_PAYMENT
+            click_button JOB_BTN_PAID
+          end
+
+          it 'clear button is NOT shown' do
+            should_not have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+          end
+
+
+          it 'customer account should show the payment and zero balance' do
+            entries = customer_acc.entries.where(type: CashPayment, ticket_id: job.id)
+            entries.all.should have(1).entry
+
+            visit customer_path customer
+            should have_entry(entries.first, amount: -job.total_price, type: CashPayment.model_name.human, status: 'cleared')
+            should have_customer_balance(0)
+          end
+
+          describe 'cancel the job: ' do
             before do
-              select Cash.model_name.human, from: JOB_SELECT_PAYMENT
-              click_button JOB_BTN_PAID
+              visit service_call_path(job)
+              click_button JOB_BTN_CANCEL
             end
 
-            it 'clear button is NOT shown' do
-              should_not have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
-            end
-
-
-            it 'customer account should show the payment and zero balance' do
-              entries = customer_acc.entries.where(type: CashPayment, ticket_id: job.id)
-              entries.all.should have(1).entry
-
-              visit customer_path customer
-              should have_entry(entries.first, amount: -job.total_price, type: CashPayment.model_name.human, status: 'cleared')
-              should have_customer_balance(0)
-            end
-
-            describe 'cancel the job: ' do
+            describe 'customer account: ' do
               before do
-                visit service_call_path(job)
-                click_button JOB_BTN_CANCEL
-              end
-
-              describe 'customer account: ' do
-                before do
-                  visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
-                  click_button ACC_BTN_GET_ENTRIES
-                end
-
-                it 'should show canceled job entry with a zero balance' do
-                  entries = job.reload.entries.where(type: CanceledJobAdjustment)
-                  entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
-                  should have_customer_balance(-expected_price)
-
-                end
-
-              end
-
-            end
-
-
-            describe 'adding adjustment entry to customer' do
-              before do
-                visit accounting_entries_path
-                select customer.name, from: ACC_SELECT
+                visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
                 click_button ACC_BTN_GET_ENTRIES
               end
 
-              it 'accounting entries index should show two entries for the customer and zero balance ' do
-                payment_entry = customer_acc.entries.where(type: CashPayment, ticket_id: job.id)
-                payment_entry.all.should have(1).entry
-
-                service_entry = job.reload.entries.where(type: ServiceCallCharge)
-                service_entry.should have(1).entry
-
-                should have_entry(payment_entry.first, amount: -job.total_price, type: CashPayment.model_name.human, status: 'cleared')
-                should have_entry(service_entry.first, amount: job.total_price, type: ServiceCallCharge.model_name.human, status: 'cleared')
-                should have_customer_balance(0)
-              end
-
-
-              describe 'add positive adjustment customer account' do
-
-                before do
-                  click_button ENTRY_BTN_NEW
-
-                end
-
+              it 'should show canceled job entry with a zero balance' do
+                entries = job.reload.entries.where(type: CanceledJobAdjustment)
+                entries.should have(1).entry
+                should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
+                should have_customer_balance(-expected_price)
 
               end
 
             end
-
 
           end
 
-          describe 'with credit card payment' do
+
+          describe 'adding adjustment entry to customer' do
             before do
-              select CreditCard.model_name.human, from: JOB_SELECT_PAYMENT
-              click_button JOB_BTN_PAID
+              visit accounting_entries_path
+              select customer.name, from: ACC_SELECT
+              click_button ACC_BTN_GET_ENTRIES
             end
 
-            it 'clear button is shown' do
-              should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+            it 'accounting entries index should show two entries for the customer and zero balance ' do
+              payment_entry = customer_acc.entries.where(type: CashPayment, ticket_id: job.id)
+              payment_entry.all.should have(1).entry
+
+              service_entry = job.reload.entries.where(type: ServiceCallCharge)
+              service_entry.should have(1).entry
+
+              should have_entry(payment_entry.first, amount: -job.total_price, type: CashPayment.model_name.human, status: 'cleared')
+              should have_entry(service_entry.first, amount: job.total_price, type: ServiceCallCharge.model_name.human, status: 'cleared')
+              should have_customer_balance(0)
             end
 
-            it 'customer account should show the payment and zero balance' do
+
+            describe 'add positive adjustment customer account' do
+
+              before do
+                click_button ENTRY_BTN_NEW
+
+              end
+
+
+            end
+
+          end
+
+
+        end
+
+        describe 'with credit card payment' do
+          before do
+            select CreditCard.model_name.human, from: JOB_SELECT_PAYMENT
+w            click_button JOB_BTN_PAID
+          end
+
+          it 'clear button is shown' do
+            should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+          end
+
+          it 'customer account should show the payment and zero balance' do
+            entries = customer_acc.entries.where(type: CreditPayment, ticket_id: job.id)
+            entries.all.should have(1).entry
+
+            visit customer_path customer
+            should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'pending')
+            should have_customer_balance(0)
+          end
+
+          describe 'cancel the job: ' do
+            before do
+              visit service_call_path(job)
+              click_button JOB_BTN_CANCEL
+            end
+
+            describe 'customer account: ' do
+              before do
+                visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
+                click_button ACC_BTN_GET_ENTRIES
+              end
+
+              it 'should show canceled job entry with a zero balance' do
+                entries = job.reload.entries.where(type: CanceledJobAdjustment)
+                entries.should have(1).entry
+                should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
+                should have_customer_balance(-expected_price)
+
+              end
+
+            end
+
+          end
+
+
+          describe 'clearing payment' do
+            before do
+              click_button JOB_BTN_CLEAR
+            end
+
+            it 'job billing and accounting entries statuses should change to cleared' do
+              should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
+
               entries = customer_acc.entries.where(type: CreditPayment, ticket_id: job.id)
               entries.all.should have(1).entry
 
               visit customer_path customer
-              should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'pending')
-              should have_customer_balance(0)
+              should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'cleared')
+            end
+          end
+
+        end
+
+        describe 'with amex payment' do
+          before do
+            select AmexCreditCard.model_name.human, from: JOB_SELECT_PAYMENT
+            click_button JOB_BTN_PAID
+          end
+
+          it 'clear button is shown' do
+            should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+          end
+
+          it 'customer account should show the payment and zero balance' do
+            entries = customer_acc.entries.where(type: AmexPayment, ticket_id: job.id)
+            entries.all.should have(1).entry
+
+            visit customer_path customer
+            should have_entry(entries.first, amount: -job.total_price, type: AmexPayment.model_name.human, status: 'pending')
+            should have_customer_balance(0)
+          end
+
+          describe 'cancel the job: ' do
+            before do
+              visit service_call_path(job)
+              click_button JOB_BTN_CANCEL
             end
 
-            describe 'cancel the job: ' do
+            describe 'customer account: ' do
               before do
-                visit service_call_path(job)
-                click_button JOB_BTN_CANCEL
+                visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
+                click_button ACC_BTN_GET_ENTRIES
               end
 
-              describe 'customer account: ' do
-                before do
-                  visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
-                  click_button ACC_BTN_GET_ENTRIES
-                end
-
-                it 'should show canceled job entry with a zero balance' do
-                  entries = job.reload.entries.where(type: CanceledJobAdjustment)
-                  entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
-                  should have_customer_balance(-expected_price)
-
-                end
+              it 'should show canceled job entry with a zero balance' do
+                entries = job.reload.entries.where(type: CanceledJobAdjustment)
+                entries.should have(1).entry
+                should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
+                should have_customer_balance(-expected_price)
 
               end
 
-            end
-
-
-            describe 'clearing payment' do
-              before do
-                click_button JOB_BTN_CLEAR
-              end
-
-              it 'job billing and accounting entries statuses should change to cleared' do
-                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
-
-                entries = customer_acc.entries.where(type: CreditPayment, ticket_id: job.id)
-                entries.all.should have(1).entry
-
-                visit customer_path customer
-                should have_entry(entries.first, amount: -job.total_price, type: CreditPayment.model_name.human, status: 'cleared')
-              end
             end
 
           end
 
-          describe 'with amex payment' do
+
+          describe 'clearing payment' do
             before do
-              select AmexCreditCard.model_name.human, from: JOB_SELECT_PAYMENT
-              click_button JOB_BTN_PAID
+              click_button JOB_BTN_CLEAR
             end
 
-            it 'clear button is shown' do
-              should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
-            end
+            it 'job billing and accounting entries statuses should change to cleared' do
+              should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
 
-            it 'customer account should show the payment and zero balance' do
               entries = customer_acc.entries.where(type: AmexPayment, ticket_id: job.id)
               entries.all.should have(1).entry
 
               visit customer_path customer
-              should have_entry(entries.first, amount: -job.total_price, type: AmexPayment.model_name.human, status: 'pending')
-              should have_customer_balance(0)
+              should have_entry(entries.first, amount: -job.total_price, type: AmexPayment.model_name.human, status: 'cleared')
+            end
+          end
+
+        end
+
+        describe 'with cheque payment' do
+          before do
+            select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
+            click_button JOB_BTN_PAID
+          end
+
+          it 'clear button is shown' do
+            should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
+          end
+
+          it 'customer account should show the payment and zero balance' do
+            entries = customer_acc.entries.where(type: ChequePayment, ticket_id: job.id)
+            entries.all.should have(1).entry
+
+            visit customer_path customer
+            should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'pending')
+            should have_customer_balance(0)
+          end
+
+          describe 'cancel the job: ' do
+            before do
+              visit service_call_path(job)
+              click_button JOB_BTN_CANCEL
             end
 
-            describe 'cancel the job: ' do
+            describe 'customer account: ' do
               before do
-                visit service_call_path(job)
-                click_button JOB_BTN_CANCEL
+                visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
+                click_button ACC_BTN_GET_ENTRIES
               end
 
-              describe 'customer account: ' do
-                before do
-                  visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
-                  click_button ACC_BTN_GET_ENTRIES
-                end
-
-                it 'should show canceled job entry with a zero balance' do
-                  entries = job.reload.entries.where(type: CanceledJobAdjustment)
-                  entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
-                  should have_customer_balance(-expected_price)
-
-                end
+              it 'should show canceled job entry with a zero balance' do
+                entries = job.reload.entries.where(type: CanceledJobAdjustment)
+                entries.should have(1).entry
+                should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
+                should have_customer_balance(-expected_price)
 
               end
 
-            end
-
-
-            describe 'clearing payment' do
-              before do
-                click_button JOB_BTN_CLEAR
-              end
-
-              it 'job billing and accounting entries statuses should change to cleared' do
-                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
-
-                entries = customer_acc.entries.where(type: AmexPayment, ticket_id: job.id)
-                entries.all.should have(1).entry
-
-                visit customer_path customer
-                should have_entry(entries.first, amount: -job.total_price, type: AmexPayment.model_name.human, status: 'cleared')
-              end
             end
 
           end
 
-          describe 'with cheque payment' do
+
+          describe 'clearing payment' do
             before do
-              select Cheque.model_name.human, from: JOB_SELECT_PAYMENT
-              click_button JOB_BTN_PAID
+              click_button JOB_BTN_CLEAR
             end
 
-            it 'clear button is shown' do
-              should have_button(I18n.t('activerecord.state_machines.my_service_call.billing_status.events.clear'))
-            end
+            it 'billing and accounting entries statuses should change to cleared' do
+              should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
 
-            it 'customer account should show the payment and zero balance' do
               entries = customer_acc.entries.where(type: ChequePayment, ticket_id: job.id)
               entries.all.should have(1).entry
 
               visit customer_path customer
-              should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'pending')
-              should have_customer_balance(0)
-            end
-
-            describe 'cancel the job: ' do
-              before do
-                visit service_call_path(job)
-                click_button JOB_BTN_CANCEL
-              end
-
-              describe 'customer account: ' do
-                before do
-                  visit accounting_entries_path('accounting_entry[account_id]' => customer.account)
-                  click_button ACC_BTN_GET_ENTRIES
-                end
-
-                it 'should show canceled job entry with a zero balance' do
-                  entries = job.reload.entries.where(type: CanceledJobAdjustment)
-                  entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_price, type: CanceledJobAdjustment.model_name.human)
-                  should have_customer_balance(-expected_price)
-
-                end
-
-              end
-
-            end
-
-
-            describe 'clearing payment' do
-              before do
-                click_button JOB_BTN_CLEAR
-              end
-
-              it 'billing and accounting entries statuses should change to cleared' do
-                should have_billing_status(I18n.t('activerecord.state_machines.my_service_call.billing_status.states.cleared'))
-
-                entries = customer_acc.entries.where(type: ChequePayment, ticket_id: job.id)
-                entries.all.should have(1).entry
-
-                visit customer_path customer
-                should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'cleared')
-              end
+              should have_entry(entries.first, amount: -job.total_price, type: ChequePayment.model_name.human, status: 'cleared')
             end
           end
         end
@@ -1013,7 +1004,7 @@ describe "Account Pages", js: true do
             it 'provider view: account balance should be set to the difference between the total price and cost' do
               in_browser(:org) do
                 visit affiliate_path(job.reload.subcontractor)
-                should have_affiliate_balance((subcon_job.total_price - subcon_job.total_cost - cheque_fee)*(1 - profit_split.rate/100.0) +  cheque_fee)
+                should have_affiliate_balance((subcon_job.total_price - subcon_job.total_cost - cheque_fee)*(1 - profit_split.rate/100.0) + cheque_fee)
               end
             end
 
@@ -1394,7 +1385,7 @@ describe "Account Pages", js: true do
 
                   entries = org2_org1_acc.entries.where(type: CashPaymentFromAffiliate, ticket_id: subcon_job.id)
                   entries.should have(1).entry
-                  should have_entry(entries.first, amount: -expected_subcon_cut_cheque , type: CashPaymentFromAffiliate.model_name.human, status: 'deposited')
+                  should have_entry(entries.first, amount: -expected_subcon_cut_cheque, type: CashPaymentFromAffiliate.model_name.human, status: 'deposited')
                   should have_affiliate_balance(0)
 
                 end
@@ -2003,7 +1994,7 @@ describe "Account Pages", js: true do
 
                     entries = job.entries.where(type: ChequePaymentToAffiliate)
                     entries.should have(1).entry
-                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut_cheque )
+                    should have_entry(entries.first, status: 'cleared', amount: expected_subcon_cut_cheque)
                     should have_affiliate_balance(0)
 
                   end
@@ -2713,9 +2704,9 @@ describe "Account Pages", js: true do
                   it 'subcon view: should show entry and a balance of the job subcon cut amount' do
                     transferred_job.reload
                     accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                    expected_amount  = expected_subcon_cut_cheque -  transferred_job.total_cost
+                    expected_amount  = expected_subcon_cut_cheque - transferred_job.total_cost
 
-                    should have_entry(accounting_entry, amount: - expected_amount)
+                    should have_entry(accounting_entry, amount: -expected_amount)
                     should have_affiliate_balance(-expected_amount)
 
                   end
@@ -2769,10 +2760,10 @@ describe "Account Pages", js: true do
                   it 'subcon view: should show entry and a balance of the job subcon cut amount' do
                     transferred_job.reload
                     accounting_entry = provider_org_acc.entries.scoped.where(type: 'CanceledJobAdjustment', ticket_id: transferred_job.id).first
-                    expected_amount  = - (expected_subcon_cut_cheque - transferred_job.total_cost)
+                    expected_amount  = -(expected_subcon_cut_cheque - transferred_job.total_cost)
 
                     should have_entry(accounting_entry, amount: expected_amount)
-                    should have_affiliate_balance( expected_amount)
+                    should have_affiliate_balance(expected_amount)
 
                   end
 

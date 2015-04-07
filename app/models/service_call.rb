@@ -156,9 +156,7 @@ class ServiceCall < Ticket
     end
 
     event :reset do
-      #transition [:rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
-      transition [:in_progress, :accepted, :rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
-
+      transition [:in_progress, :accepted, :rejected, :canceled] => :pending, unless: ->(sc) { sc.canceled? }
     end
 
     event :complete do

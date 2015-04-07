@@ -279,7 +279,7 @@ describe 'Canceling Job With A Broker' do
       end
 
       it 'prov should have the cancel and un_cancel buttons available' do
-        expect(job.status_events.sort).to eq [:cancel, :un_cancel]
+        expect(job.status_events.sort).to eq [:cancel, :transfer]
       end
 
       it 'broker should not have the un_cancel button available' do
@@ -436,8 +436,8 @@ describe 'Canceling Job With A Broker' do
       expect(subcon_job.status_name).to eq :canceled
     end
 
-    it 'prov should have the un cancel button available' do
-      expect(job.status_events).to include :un_cancel
+    it 'prov should have the transfer button available' do
+      expect(job.status_events).to include :transfer
     end
 
     it 'broker should not have the un cancel button available' do
@@ -448,80 +448,105 @@ describe 'Canceling Job With A Broker' do
       expect(subcon_job.status_events).to_not include :un_cancel
     end
 
-    context 'when the prov resets the job' do
-      before do
-        un_cancel_the_job job
-        job.reload
-        subcon_job.reload
-        broker_job.reload
+    it 'prov should be able to either cancel the job, cancel the transfer or transfer to someone else' do
+      expect(job.status_events).to include :cancel
+      expect(job.status_events).to include :cancel_transfer
+      expect(job.status_events).to include :transfer
+    end
+
+
+    describe 'when the prov would like to execute the job himself' do
+
+
+      context 'when the prov cancels the transfer' do
+
+        before do
+          cancel_the_transfer job
+          job.reload
+        end
+
+        it 'status should be set to new' do
+          expect(job.status_name).to eq :new
+        end
+
+        context 'when prov starts the job' do
+
+          before do
+
+            start_the_job job
+            job.reload
+            subcon_job.reload
+            broker_job.reload
+          end
+
+          it 'prov job billing status should be :pending' do
+            expect(job.billing_status_name).to eq :pending
+          end
+
+          it 'prov job status should be :open' do
+            expect(job.status_name).to eq :open
+          end
+
+          it 'broker job status should be :canceled' do
+            expect(broker_job.status_name).to eq :canceled
+          end
+
+          it 'prov job subcon status should be :na' do
+            expect(job.subcontractor_status_name).to eq :na
+          end
+
+          it 'broker job subcon status should be :na' do
+            expect(broker_job.subcontractor_status_name).to eq :na
+          end
+
+          it 'subcon job prov status should be :na' do
+            expect(subcon_job.provider_status_name).to eq :na
+          end
+
+          it 'broker job prov status should be :na' do
+            expect(broker_job.provider_status_name).to eq :na
+          end
+
+          it 'prov job subcon collection status is :na' do
+            expect(job.subcon_collection_status_name).to eq :na
+          end
+
+          it 'broker job subcon collection status is :na' do
+            expect(broker_job.subcon_collection_status_name).to eq :na
+          end
+
+          it 'subcon job prov collection status is :na' do
+            expect(subcon_job.prov_collection_status_name).to eq :na
+          end
+
+          it 'prov work status should be :in_progress' do
+            expect(job.work_status_name).to eq :in_progress
+          end
+
+          it 'broker work status should be :in_progress' do
+            expect(broker_job.work_status_name).to eq :in_progress
+          end
+
+          it 'subcon job work status should be :in_progress' do
+            expect(subcon_job.work_status_name).to eq :in_progress
+          end
+
+          it 'subcon_job status should be :canceled' do
+            expect(subcon_job.status_name).to eq :canceled
+          end
+
+          it 'prov should have the :cancel and transfer buttons available' do
+            expect(job.status_events.sort).to eq [:cancel, :transfer]
+          end
+
+
+          it 'prov should have the :complete as work status' do
+            expect(job.work_status_events).to include :complete
+          end
+        end
+
+
       end
-
-      it 'prov job billing status should be :pending' do
-        expect(job.billing_status_name).to eq :pending
-      end
-
-      it 'prov job status should be :transferred' do
-        expect(job.status_name).to eq :new
-      end
-
-      it 'broker job status should be :canceled' do
-        expect(broker_job.status_name).to eq :canceled
-      end
-
-      it 'prov job subcon status should be :na' do
-        expect(job.subcontractor_status_name).to eq :na
-      end
-
-      it 'broker job subcon status should be :na' do
-        expect(broker_job.subcontractor_status_name).to eq :na
-      end
-
-      it 'subcon job prov status should be :na' do
-        expect(subcon_job.provider_status_name).to eq :na
-      end
-
-      it 'broker job prov status should be :na' do
-        expect(broker_job.provider_status_name).to eq :na
-      end
-
-      it 'prov job subcon collection status is :na' do
-        expect(job.subcon_collection_status_name).to eq :na
-      end
-
-      it 'broker job subcon collection status is :na' do
-        expect(broker_job.subcon_collection_status_name).to eq :na
-      end
-
-      it 'subcon job prov collection status is :na' do
-        expect(subcon_job.prov_collection_status_name).to eq :na
-      end
-
-      it 'prov work status should be :canceled' do
-        expect(job.work_status_name).to eq :pending
-      end
-
-      it 'broker work status should be :canceled' do
-        expect(broker_job.work_status_name).to eq :in_progress
-      end
-
-      it 'subcon job work status should be :in_progress' do
-        expect(subcon_job.work_status_name).to eq :in_progress
-      end
-
-      it 'subcon_job status should be :canceled' do
-        expect(subcon_job.status_name).to eq :canceled
-      end
-
-      it 'prov should have the :cancel, :transfer buttons available' do
-        expect(job.status_events.sort).to eq [:cancel, :transfer]
-      end
-
-
-      it 'prov should have the :start as work status' do
-        expect(job.work_status_events.sort).to eq [:start]
-      end
-
-
     end
 
     context 'when the prov cancels the job' do

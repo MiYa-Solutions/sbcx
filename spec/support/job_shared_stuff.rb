@@ -1,10 +1,4 @@
-shared_context 'basic job testing' do
-
-  let(:org) { FactoryGirl.create(:member_org) }
-  let(:user) { org.users.first }
-  let(:job) { FactoryGirl.build(:my_job, organization: org) }
-  let(:org_admin) { org.users.admins.first }
-
+shared_context 'job methods' do
   def add_bom_to_job(ticket, options = {})
 
     cost     = options[:cost] || 10
@@ -90,7 +84,7 @@ shared_context 'basic job testing' do
   end
 
   def reset_the_job(ticket)
-    ticket.un_cancel!
+    ticket.reset_work!
   end
 
   def add_technician(the_org, options = {})
@@ -98,8 +92,20 @@ shared_context 'basic job testing' do
     subcon.users << FactoryGirl.build(:my_technician)
   end
 
+  def un_cancel_the_job(ticket)
+    ticket.un_cancel!
+  end
 
-  alias_method :un_cancel_the_job, :reset_the_job
+end
+
+shared_context 'basic job testing' do
+
+  let(:org) { FactoryGirl.create(:member_org) }
+  let(:user) { org.users.first }
+  let(:job) { FactoryGirl.build(:my_job, organization: org) }
+  let(:org_admin) { org.users.admins.first }
+
+  include_context 'job methods'
 end
 
 shared_context 'transferred job' do
@@ -219,6 +225,10 @@ end
 
 def confirm_settled_prov(ticket)
   ticket.confirm_settled_provider!
+end
+
+def reject_the_job(ticket)
+  ticket.reject!
 end
 
 shared_context 'when canceling the job' do

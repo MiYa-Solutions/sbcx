@@ -169,7 +169,6 @@ FactoryGirl.define do
   factory :my_service_call do
     association :organization, factory: :member
 
-    association :subcontractor
 
     email Faker::Internet.email
     name Faker::Name.name
