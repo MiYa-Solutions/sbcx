@@ -88,7 +88,7 @@ $ ->
     ]
 
     fnRowCallback: (nRow, job, iDisplayIndex) ->
-      e = new App.DoneJobsFormatter
+      e = new App.DataTableJobsFormater
       e.style(nRow, job)
 
   $('#done-transferred-jobs').dataTable
