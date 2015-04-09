@@ -72,8 +72,10 @@ def in_browser(name)
 end
 
 def with_user (user, &block)
+  prev_user = User.stamper
   User.stamper = user
   Authorization::Maintenance.with_user(user, &block)
+  User.stamper = prev_user
 end
 
 def sign_in(user)
