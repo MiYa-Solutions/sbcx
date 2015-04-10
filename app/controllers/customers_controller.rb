@@ -42,11 +42,14 @@ class CustomersController < ApplicationController
 
   def update
     #@customer = current_user.organization.customers.find(params[:id])
-
+    result = @customer.update_attributes(permitted_params(nil).customer)
     respond_to do |format|
       format.js {}
+      format.json {
+        respond_with_bip(@customer)
+      }
       format.any(:html, :mobile) do
-        if @customer.update_attributes(permitted_params(nil).customer)
+        if result
           flash[:success] = "Profile updated"
           redirect_to customer_path @customer
         else
@@ -65,16 +68,16 @@ class CustomersController < ApplicationController
           if params[:search].nil?
             @customers = Customer.with_status(:active).fellow_customers(current_user.organization.id)
           else
-            scope = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
+            scope      = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
             @customers = scope.search(params[:search], current_user.organization.id)
           end
           render 'customers/index'
         else
-          unless  Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
+          unless Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
             if params[:search].nil?
               @customers = Customer.with_status(:active).fellow_customers(params[:organization_id])
             else
-              scope = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
+              scope      = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
               @customers = scope.search(params[:search], params[:organization_id])
             end
             render 'customers/customer_select'
@@ -88,15 +91,15 @@ class CustomersController < ApplicationController
           if params[:search].nil?
             @customers = Customer.with_status(:active).fellow_customers(current_user.organization.id).paginate(page: params[:page], per_page: 10)
           else
-            scope = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
+            scope      = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
             @customers = scope.search(params[:search], current_user.organization.id).paginate(page: params[:page], per_page: 10)
           end
         else
-          unless  Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
+          unless Organization.find(params[:organization_id]).subcontrax_member? && !Organization.find(params[:organization_id]) == current_user.organization
             if params[:search].nil?
               @customers = Customer.with_status(:active).fellow_customers(params[:organization_id]).paginate(page: params[:page], per_page: 10)
             else
-              scope = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
+              scope      = params[:include_disabled] == 'on' ? Customer.scoped : Customer.with_status(:active)
               @customers = scope.search(params[:search], params[:organization_id]).paginate(page: params[:page], per_page: 10)
             end
           end

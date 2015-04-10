@@ -142,6 +142,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :work_phone,
      :zip,
      :status_event,
+     :notes,
      :default_tax
     ]
   end

@@ -424,7 +424,8 @@ CREATE TABLE customers (
     creator_id integer,
     updater_id integer,
     status integer,
-    properties hstore
+    properties hstore,
+    notes text
 );
 
 
@@ -2260,3 +2261,5 @@ INSERT INTO schema_migrations (version) VALUES ('20141230235139');
 INSERT INTO schema_migrations (version) VALUES ('20150109042406');
 
 INSERT INTO schema_migrations (version) VALUES ('20150109140256');
+
+INSERT INTO schema_migrations (version) VALUES ('20150410222501');

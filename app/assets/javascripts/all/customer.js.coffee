@@ -94,7 +94,7 @@ jQuery ->
 
   $('#customer-projects').dataTable
     dom: "t<'row-fluid'<'span7'i><'span5'p>>"
-    dom: "<'row-fluid'<'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+#    dom: "<'row-fluid'<'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
     pagingType: 'simple'
     iDisplayLength: 5
     aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4 ] }]
