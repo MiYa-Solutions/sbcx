@@ -32,6 +32,8 @@ class App.DataTableJobsFormater
     @format_subcontractor_balance(row, job) if $('.subcontractor_balance', row).length > 0
     @format_contractor_balance(row, job) if $('.contractor_balance', row).length > 0
     @format_total_price(row, job) if $('.total_price', row).length > 0
+    @format_my_profit(row, job) if $('.my_profit', row).length > 0
+    @format_total_cost(row, job) if $('.total_cost', row).length > 0
 
   format_customer_balance: (row, job) ->
     @format_ccy(row, job, 'customer_balance')
@@ -44,6 +46,12 @@ class App.DataTableJobsFormater
 
   format_total_price: (row, job) ->
     @format_ccy(row, job, 'total_price')
+
+  format_total_cost: (row, job) ->
+    @format_ccy(row, job, 'total_cost')
+
+  format_my_profit: (row, job) ->
+    @format_ccy(row, job, 'my_profit')
 
   format_ccy: (row, job, field_name) ->
     amount = parseInt(job[field_name]) / 100

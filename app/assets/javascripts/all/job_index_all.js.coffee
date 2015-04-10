@@ -28,9 +28,6 @@ jQuery ->
 
   $('#job-search-results').dataTable(
     dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
-    aoColumnDefs: [
-      { 'bSortable': false, 'aTargets': [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ] }
-    ]
     order: [[0, 'desc']]
     aLengthMenu: [10, 25, 50, 100]
     sPaginationType: "bootstrap"
@@ -40,7 +37,7 @@ jQuery ->
     processing: true
     stateSave: true
     serverSide: true
-    sAjaxSource: '/service_calls/'
+    sAjaxSource: '/api/v1/service_calls.json'
     deferLoading: 0
 
     fnServerData: (sSource, aoData, fnCallback) ->
@@ -68,6 +65,9 @@ jQuery ->
       aoData.push
         name: "work_status"
         value: $('#work_status').val()
+      aoData.push
+        name: "table_type"
+        value: 'all_jobs'
 
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
@@ -90,6 +90,26 @@ jQuery ->
       $('#billing_status').val(oData.billing_status)
       $('#work_status').val(oData.work_status)
 
+    columns: [
+      {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true},
+      {data: "started_on", className: 'started_on', name: 'started_on', orderable: false},
+      {data: "human_customer", className: 'customer', name: 'human_customer', orderable: false},
+      {data: "human_name", className: 'name', name: 'name', orderable: false},
+      {data: "human_provider", className: 'provider', name: 'human_provider', orderable: false},
+      {data: "human_subcontractor", className: 'subcontractor', name: 'human_subcontractor', orderable: false},
+      {data: "human_status", className: 'status', name: 'human_status', orderable: false},
+      {data: "my_profit", className: 'my_profit', name: 'my_profit', orderable: false},
+      {data: "total_price", className: 'total_price', name: 'total_price', orderable: false},
+      {data: "total_cost", className: 'total_cost', name: 'total_cost', orderable: false},
+      {data: "tags", className: 'tags', name: 'tags', orderable: false, width: '13%'},
+      {data: "external_ref", className: 'external_ref', name: 'external_ref', orderable: false}
+    ]
+
+    fnRowCallback: (nRow, job, iDisplayIndex) ->
+      e = new App.DataTableJobsFormater
+      e.style(nRow, job)
+
+
   ).yadcf([
     {
       column_number: 1
@@ -109,7 +129,7 @@ jQuery ->
           width: '200px'
         }
 
-  }
+    }
     {
       column_number: 10
       select_type: 'chosen'
