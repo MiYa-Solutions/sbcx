@@ -37,6 +37,8 @@ jQuery ->
     processing: true
     stateSave: true
     serverSide: true
+    autoWidth: false
+    responsive: true
     sAjaxSource: '/api/v1/service_calls.json'
     deferLoading: 0
 
@@ -91,18 +93,18 @@ jQuery ->
       $('#work_status').val(oData.work_status)
 
     columns: [
-      {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true},
-      {data: "started_on", className: 'started_on', name: 'started_on', orderable: false},
-      {data: "human_customer", className: 'customer', name: 'human_customer', orderable: false},
-      {data: "human_name", className: 'name', name: 'name', orderable: false},
-      {data: "human_provider", className: 'provider', name: 'human_provider', orderable: false},
-      {data: "human_subcontractor", className: 'subcontractor', name: 'human_subcontractor', orderable: false},
-      {data: "human_status", className: 'status', name: 'human_status', orderable: false},
-      {data: "my_profit", className: 'my_profit', name: 'my_profit', orderable: false},
-      {data: "total_price", className: 'total_price', name: 'total_price', orderable: false},
-      {data: "total_cost", className: 'total_cost', name: 'total_cost', orderable: false},
-      {data: "tags", className: 'tags', name: 'tags', orderable: false, width: '13%'},
-      {data: "external_ref", className: 'external_ref', name: 'external_ref', orderable: false}
+      {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true, sWidth: '1%'},
+      {data: "started_on", className: 'started_on', name: 'started_on', orderable: false, width: '20%'},
+      {data: "human_customer", className: 'customer', name: 'human_customer', orderable: false, width: '20%'},
+      {data: "human_name", className: 'name', name: 'name', orderable: false, sWidth: '25%'},
+      {data: "human_provider", className: 'provider', name: 'human_provider', orderable: false, width: '1%'},
+      {data: "human_subcontractor", className: 'subcontractor', name: 'human_subcontractor', orderable: false, width: '1%'},
+      {data: "human_status", className: 'status', name: 'human_status', orderable: false, width: '1%'},
+      {data: "my_profit", className: 'my_profit', name: 'my_profit', orderable: false, width: '3%'},
+      {data: "total_price", className: 'total_price', name: 'total_price', orderable: false, width: '3%'},
+      {data: "total_cost", className: 'total_cost', name: 'total_cost', orderable: false, width: '3%'},
+      {data: "tags", className: 'tags', name: 'tags', orderable: false, width: '30%'},
+      {data: "external_ref", className: 'external_ref', name: 'external_ref', orderable: false, width: '10%'}
     ]
 
     fnRowCallback: (nRow, job, iDisplayIndex) ->
