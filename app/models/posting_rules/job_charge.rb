@@ -44,6 +44,8 @@ class JobCharge < CustomerPostingRule
         customer_entries
       when ScCollectEvent.name, ScCollectedEvent.name
         collection_entries
+      when ScWorkReopenEvent.name
+        work_reopen_entries
       when ServiceCallCancelEvent.name, ServiceCallCanceledEvent.name
         cancellation_entries
       when ScCustomerReimbursementEvent.name
@@ -66,8 +68,30 @@ class JobCharge < CustomerPostingRule
     ]
   end
 
+  def work_reopen_entries
+    amount       = ServiceCallCharge.where(ticket_id: @ticket.id).order('id asc').last
+    amount_cents = amount ? amount.amount_cents : 0
+    if amount_cents > 0
+      amount_ccy = amount ? amount.amount_currency : 'USD'
+      [
+
+          MyAdjEntry.new(event:           @event,
+                         status:          AccountingEntry::STATUS_CLEARED,
+                         ticket:          @ticket,
+                         amount_cents:    -amount_cents,
+                         amount_currency: amount_ccy,
+                         matching_entry:  amount,
+                         agreement:       agreement,
+                         description:     'Adjustment due to reopening the job')
+      ]
+    else
+      []
+    end
+
+  end
+
   def cancellation_entries
-    amount       = ServiceCallCharge.where(ticket_id: @ticket.id).last
+    amount       = ServiceCallCharge.where(ticket_id: @ticket.id).order('id asc').last
     amount_cents = amount ? amount.amount_cents : 0
     if amount_cents > 0
       amount_ccy = amount ? amount.amount_currency : 'USD'
@@ -94,6 +118,8 @@ class JobCharge < CustomerPostingRule
   def applicable?(event)
     case event.class.name
       when ServiceCallCompletedEvent.name, ServiceCallCompleteEvent.name
+        true
+      when ScWorkReopenEvent.name
         true
       when ScCollectEvent.name, ScCollectedEvent.name
         true

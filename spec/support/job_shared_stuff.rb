@@ -38,6 +38,10 @@ shared_context 'job methods' do
     job.complete_work!
   end
 
+  def reopen_the_job(job)
+    job.reopen_work!
+  end
+
   def collect_a_payment(job, options = {})
     job.payment_type   = options[:type] || 'cash'
     job.payment_amount = options[:amount] || 0
