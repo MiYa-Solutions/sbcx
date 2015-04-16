@@ -395,6 +395,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     res = false if params_to_check[:billing_status_event] == 'clear'
     res = false if params_to_check[:billing_status_event] == 'reject'
     res = false if params_to_check[:billing_status_event] == 'cancel'
+    res = false if params_to_check[:billing_status_event] == 'reopen'
 
     res
   end

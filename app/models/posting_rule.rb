@@ -148,6 +148,8 @@ class PostingRule < ActiveRecord::Base
         collection_entries
       when ServiceCallPaidEvent.name, ScProviderCollectedEvent.name
         payment_entries
+      when ScWorkReopenEvent.name
+        reopen_entries
       else
         raise "Unexpected Event (#{event.class.name}) to be processed by the posting rule (#{self.class.name})"
     end

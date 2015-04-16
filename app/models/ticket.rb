@@ -302,13 +302,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def adj_amount
-    adj_entries = AdjustmentEntry.where(account_id: customer.account.id, ticket_id: self.id)
-    cents = 0
-    adj_entries.each do |e|
-      cents = cents + e.amount_cents
-      cents = cents + e.matching_entry.amount_cents if e.matching_entry
-    end
-    Money.new(cents)
+    Money.new(AdjustmentEntry.where(account_id: customer.account.id, ticket_id: self.id).where("type != 'ReopenedJobAdjustment'").sum(:amount_cents))
   end
 
   def completed_on_text

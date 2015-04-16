@@ -126,7 +126,7 @@ class MyServiceCall < ServiceCall
   end
 
   def my_profit
-    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry'].include? e.type }.map { |e| e.amount_cents }.sum
+    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry', 'ReopenedJobAdjustment'].include? e.type }.map { |e| e.amount_cents }.sum
     cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum
     customer_cents    = entries.select { |e| e.type == 'ServiceCallCharge' }.map { |b| b.amount_cents }.sum
     adv_payment       = entries.select { |e| e.type == 'AdvancePayment' }.map { |b| b.amount_cents }.sum

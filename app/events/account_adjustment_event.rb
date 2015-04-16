@@ -25,7 +25,6 @@ class AccountAdjustmentEvent < AdjustmentEvent
   def update_entry_with_event
     entry.event = self
     entry.save!
-    Rails.logger.debug { "STAM" }
   end
 
 end

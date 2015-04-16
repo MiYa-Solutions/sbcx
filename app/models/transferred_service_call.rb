@@ -250,7 +250,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def my_profit
-    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry'].include? e.type }.map { |e| e.amount_cents }.sum
+    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry', 'ReopenedJobAdjustment'].include? e.type }.map { |e| e.amount_cents }.sum
     cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum
     prov_income       = entries.select { |e| e.type == 'IncomeFromProvider' }.map { |e| e.amount_cents }.sum
     payment_fee       = entries.select { |e| ['AmexPaymentFee', 'CashPaymentFee', 'ChequePaymentFee', 'CreditPaymentFee'].include? e.type }.map { |e| e.amount_cents }.sum

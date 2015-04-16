@@ -59,6 +59,8 @@ class AffiliatePostingRule < PostingRule
         true
       when ServiceCallCompleteEvent.name
         true
+      when ScWorkReopenEvent.name
+        true
       when ScSubconSettleEvent.name
         true
       when ScProviderSettleEvent.name
@@ -151,8 +153,9 @@ class AffiliatePostingRule < PostingRule
     charge_amount    = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
     bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id).sum(:amount_cents)
     payment_fee      = AccountingEntry.where(type: ['CashPaymentFee', 'CreditPaymentFee', 'AmexPaymentFee', 'ChequePaymentFee'], ticket_id: @ticket.id).sum(:amount_cents)
+    adj_amount      = AccountingEntry.where(type: AdjustmentEntry.descendants, ticket_id: @ticket.id, account_id: @account.id).sum(:amount_cents)
 
-    total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
+    total = Money.new(charge_amount + bom_reimu_amount + payment_fee + adj_amount)
 
 
     case @ticket.provider_payment
@@ -177,15 +180,33 @@ class AffiliatePostingRule < PostingRule
     original_entry_cents = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
     original_entry_ccy   = entry ? entry.amount_currency : Money.default_currency.to_s
 
-    fees = AccountingEntry.where(type:      ['CashPaymentFee',
+    fees = AccountingEntry.where(type:      %w('CashPaymentFee',
                                              'CreditPaymentFee',
                                              'AmexPaymentFee',
                                              'ChequePaymentFee',
-                                             'MaterialReimbursement'
-                                            ],
+                                             'MaterialReimbursement'),
                                  ticket_id: @ticket.id).sum(:amount_cents)
 
     [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount_cents: -(original_entry_cents + fees), amount_currency: original_entry_ccy, description: 'Adjustment due to a job being canceled')]
+  end
+
+  def cparty_reopen_entries
+
+    complete_event = ScCompletionEvent.where(eventable_id: @ticket.id, eventable_type: 'Ticket').order('id asc').last
+    entry          = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).first
+    total_cents    = complete_event.entries.where(account_id: @account.id).sum(:amount_cents)
+    total_ccy      = entry ? entry.amount_currency : Money.default_currency.to_s
+
+
+    [
+        ReopenedJobAdjustment.new(agreement:       agreement,
+                       event:           @event,
+                       ticket:          @ticket,
+                       amount_cents:    -(total_cents),
+                       matching_entry:    entry,
+                       amount_currency: total_ccy,
+                       description:     'Adjustment due to re-opening the job after completion')
+    ]
   end
 
   def org_cancellation_entries
@@ -205,6 +226,24 @@ class AffiliatePostingRule < PostingRule
     [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount_cents: -(original_entry_cents + fees), amount_currency: original_entry_ccy, description: "Entry to provider owned account")]
   end
 
+  def org_reopen_entries
+    complete_event = ScCompletionEvent.where(eventable_id: @ticket.id, eventable_type: 'Ticket').order('id asc').last
+    entry          = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).first
+    total_cents    = complete_event.entries.where(account_id: @account.id).sum(:amount_cents)
+    total_ccy      = entry ? entry.amount_currency : Money.default_currency.to_s
+
+
+    [
+        ReopenedJobAdjustment.new(agreement:       agreement,
+                       event:           @event,
+                       ticket:          @ticket,
+                       matching_entry:  entry,
+                       amount_cents:    -(total_cents),
+                       amount_currency: total_ccy,
+                       description:     'Adjustemnt due to reopening the job after completion')
+    ]
+  end
+
   def org_collection_entries
     OrgCollectionEntryFactory.new(event:        @event,
                                   ticket:       @ticket,
@@ -219,9 +258,9 @@ class AffiliatePostingRule < PostingRule
     charge_amount    = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
     bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id).sum(:amount_cents)
     payment_fee      = AccountingEntry.where(type: ['ReimbursementForCashPayment', 'ReimbursementForCreditPayment', 'ReimbursementForAmexPayment', 'ReimbursementForChequePayment'], ticket_id: @ticket.id).sum(:amount_cents)
+    adj_amount      = AccountingEntry.where(type: AdjustmentEntry.descendants.map(&:name), ticket_id: @ticket.id, account_id: @account.id).sum(:amount_cents)
 
-    total = Money.new(charge_amount + bom_reimu_amount + payment_fee)
-
+    total = Money.new(charge_amount + bom_reimu_amount + payment_fee + adj_amount)
 
     case @ticket.subcon_payment
       when 'cash'
@@ -309,6 +348,17 @@ class AffiliatePostingRule < PostingRule
         org_charge_entries
       when @ticket.provider.becomes(Organization)
         cparty_charge_entries
+      else
+        raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
+    end
+  end
+
+  def reopen_entries
+    case @account.accountable
+      when @ticket.subcontractor.becomes(Organization)
+        org_reopen_entries
+      when @ticket.provider.becomes(Organization)
+        cparty_reopen_entries
       else
         raise "The account beneficiary (name: '#{@account.accountable.name}', type: #{@account.accountable_type}) is neither the provider or subcontractor"
     end

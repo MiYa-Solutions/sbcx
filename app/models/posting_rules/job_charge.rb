@@ -75,7 +75,7 @@ class JobCharge < CustomerPostingRule
       amount_ccy = amount ? amount.amount_currency : 'USD'
       [
 
-          MyAdjEntry.new(event:           @event,
+          ReopenedJobAdjustment.new(event:           @event,
                          status:          AccountingEntry::STATUS_CLEARED,
                          ticket:          @ticket,
                          amount_cents:    -amount_cents,
@@ -85,7 +85,7 @@ class JobCharge < CustomerPostingRule
                          description:     'Adjustment due to reopening the job')
       ]
     else
-      []
+      AccountingEntry.none
     end
 
   end
