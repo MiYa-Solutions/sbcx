@@ -256,6 +256,15 @@ class TransferredServiceCall < ServiceCall
         ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?) || self.subcontractor.nil?)
   end
 
+  def all_affiliates_local?
+    if subcontractor
+      !subcontractor.member? && !provider.member?
+    else
+      !provider.member?
+    end
+  end
+
+
   def my_profit
     adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry', 'ReopenedJobAdjustment'].include? e.type }.map { |e| e.amount_cents }.sum
     cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum

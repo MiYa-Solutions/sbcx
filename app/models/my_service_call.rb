@@ -140,6 +140,10 @@ class MyServiceCall < ServiceCall
     update_column :ref_id, self.id
   end
 
+  def all_affiliates_local?
+    !(subcontractor && subcontractor.member?)
+  end
+
   def my_profit
     adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry', 'ReopenedJobAdjustment'].include? e.type }.map { |e| e.amount_cents }.sum
     cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum

@@ -160,7 +160,7 @@ class ServiceCall < Ticket
     end
 
     event :reopen do
-      transition :done => :in_progress
+      transition :done => :in_progress, if: ->(sc) { sc.all_affiliates_local? }
     end
 
     event :complete do
