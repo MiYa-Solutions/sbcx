@@ -116,6 +116,19 @@ class MyServiceCall < ServiceCall
     end
   end
 
+  def process_reopen_event(event)
+    # update the customer billing
+    CustomerBillingService.new(event).execute
+    # update the affiliates billing if one present
+
+    if affiliate.present?
+      AffiliateBillingService.new(event).execute
+    end
+
+    reopen_payment!
+
+  end
+
   def can_uncancel?
     !self.work_done?
   end
@@ -136,7 +149,14 @@ class MyServiceCall < ServiceCall
     payment_reimb     = entries.select { |e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |b| b.amount_cents }.sum
 
 
-    Money.new(customer_cents + reimb_amount + subcon_payments + my_bom_cents + payment_reimb + cancel_adjustment + adv_payment + adjustment) - tax_amount
+    Money.new(customer_cents +
+                  reimb_amount +
+                  subcon_payments +
+                  my_bom_cents +
+                  payment_reimb +
+                  cancel_adjustment +
+                  adv_payment +
+                  adjustment) - tax_amount
 
   end
 

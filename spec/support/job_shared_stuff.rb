@@ -21,6 +21,11 @@ shared_context 'job methods' do
     job.settle_subcon!
   end
 
+  def settle_with_provider(job, options = {})
+    job.provider_payment = options[:payment] || 'cash'
+    job.settle_provider!
+  end
+
   def start_the_job(job)
     job.start_work!
   end

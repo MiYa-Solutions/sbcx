@@ -18,19 +18,8 @@ class ScWorkReopenEvent < ServiceCallEvent
   end
 
   def process_event
-    # update the customer billing
-    CustomerBillingService.new(self).execute
-    # update the affiliates billing if one present
-    AffiliateBillingService.new(self).execute if service_call.affiliate.present?
-
-    update_customer_billing_status
-
+    service_call.process_reopen_event(self)
   end
 
-  private
-
-  def update_customer_billing_status
-    service_call.reopen_payment!
-  end
 
 end

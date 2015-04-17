@@ -61,6 +61,12 @@ class SubconServiceCall < TransferredServiceCall
 
   collection_status :prov_collection_status, initial: :pending, namespace: 'prov_collection'
 
+  def process_reopen_event(event)
+    # update the affiliates billing if one present
+    AffiliateBillingService.new(event).execute
+    reopen_provider!
+  end
+
   ## override the transfer method created by the status state_machine in TransferredServiceCall
   ## and change self to a BrokerServiceCall
   #def transfer(*)

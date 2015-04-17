@@ -36,7 +36,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
     end
 
     it 'broker_job: provider settlement is not allowed yet (need to complete the first)' do
-      expect(broker_job.provider_status_events).to eq []
+      expect(broker_job.provider_status_events).to_not include :settle
     end
 
     context 'after work completion' do
@@ -51,7 +51,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
       end
 
       it 'broker_job: provider settlement is allowed ' do
-        expect(broker_job.provider_status_events).to eq [:settle]
+        expect(broker_job.provider_status_events).to include :settle
         expect(event_permitted_for_job?('provider_status', 'settle', org_admin, broker_job)).to be_true
       end
 
@@ -75,7 +75,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
         end
 
         it 'broker_job: allowed to mark the job as cleared' do
-          expect(broker_job.provider_status_events).to eq [:clear]
+          expect(broker_job.provider_status_events).to include :clear
           expect(event_permitted_for_job?('provider_status', 'clear', org_admin, broker_job)).to be_true
         end
 
@@ -106,8 +106,8 @@ describe 'Local Broker Settlement', skip_basic_job: true do
               expect(broker_job.subcontractor_status_events).to include :settle
             end
 
-            it 'broker_job: there are no more settlement events available' do
-              expect(broker_job.provider_status_events).to eq []
+            it 'broker_job: there are no more settlement events available accept for reopen' do
+              expect(broker_job.provider_status_events).to eq [:reopen]
             end
 
           end
@@ -131,12 +131,12 @@ describe 'Local Broker Settlement', skip_basic_job: true do
         end
 
         it 'broker_job: subcon settlement clearing is not allowed for user' do
-          expect(broker_job.subcontractor_status_events).to eq [:clear]
+          expect(broker_job.subcontractor_status_events).to include :clear
           expect(event_permitted_for_job?('subcontractor_status', 'clear', org_admin, broker_job)).to be_true
         end
 
         it 'broker_job: provider settlement is permitted for a user' do
-          expect(broker_job.provider_status_events).to eq [:settle]
+          expect(broker_job.provider_status_events).to include :settle
           expect(event_permitted_for_job?('provider_status', 'settle', org_admin, broker_job)).to be_true
         end
 
@@ -161,12 +161,12 @@ describe 'Local Broker Settlement', skip_basic_job: true do
             expect(broker_job.provider_status_name).to eq :pending
           end
 
-          it 'broker_job: no subcon settlement events are left' do
-            expect(broker_job.subcontractor_status_events).to eq []
+          it 'broker_job: no subcon settlement events are left except for reopen' do
+            expect(broker_job.subcontractor_status_events).to eq [:reopen]
           end
 
           it 'broker_job: provider settlement events are settle' do
-            expect(broker_job.provider_status_events).to eq [:settle]
+            expect(broker_job.provider_status_events).to include :settle
           end
 
         end
@@ -193,8 +193,8 @@ describe 'Local Broker Settlement', skip_basic_job: true do
           expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, broker_job)).to be_true
         end
 
-        it 'broker_job: no provider settlement events are available' do
-          expect(broker_job.provider_status_events).to eq []
+        it 'broker_job: no provider settlement events are available except for reopen' do
+          expect(broker_job.provider_status_events).to eq [:reopen]
         end
 
         it 'subcon account balance for prov should be: -200 (subcon fee + bon reimbur)' do
@@ -221,12 +221,12 @@ describe 'Local Broker Settlement', skip_basic_job: true do
           expect(broker_job.provider_status_name).to eq :pending
         end
 
-        it 'broker_job: no subcon settlement events are left' do
-          expect(broker_job.subcontractor_status_events).to eq []
+        it 'broker_job: no subcon settlement events are left except for reopen' do
+          expect(broker_job.subcontractor_status_events).to eq [:reopen]
         end
 
         it 'broker_job: provider settlement is allowed' do
-          expect(broker_job.provider_status_events).to eq [:settle]
+          expect(broker_job.provider_status_events).to include :settle
           expect(event_permitted_for_job?('provider_status', 'settle', org_admin, broker_job)).to be_true
         end
 
@@ -270,7 +270,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
     end
 
     it 'broker_job: provider settlement is not allowed yet (need to deposit the collection first)' do
-      expect(broker_job.provider_status_events).to eq []
+      expect(broker_job.provider_status_events).to_not include :settle
     end
 
 
@@ -285,7 +285,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
       end
 
       it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
-        expect(broker_job.provider_status_events).to eq []
+        expect(broker_job.provider_status_events).to_not include :settle
       end
 
       context 'when confirming the deposit' do
@@ -299,7 +299,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
         end
 
         it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
-          expect(broker_job.provider_status_events).to eq []
+          expect(broker_job.provider_status_events).to_not include :settle
         end
 
         it 'subcon account balance for prov should be just the collection fee amount (100 + subcon fee)' do
@@ -330,7 +330,7 @@ describe 'Local Broker Settlement', skip_basic_job: true do
           end
 
           it 'subcon job: provider settlement is allowed (as the collection was deposited and confirmed by prov)' do
-            expect(broker_job.provider_status_events).to eq [:settle]
+            expect(broker_job.provider_status_events).to include :settle
           end
 
           context 'when depositing the subcon collection' do

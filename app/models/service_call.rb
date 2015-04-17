@@ -235,6 +235,12 @@ class ServiceCall < Ticket
       transition :pending => :na
     end
 
+    event :reopen do
+      transition [:claim_settled, :settled, :cleared, :claimed_as_settled] => :pending
+      transition :pending => :pending
+      transition :na => :na
+    end
+
   end
 
 
