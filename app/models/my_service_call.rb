@@ -127,6 +127,8 @@ class MyServiceCall < ServiceCall
 
     reopen_payment!
 
+    invoices.destroy_all
+
   end
 
   def can_uncancel?

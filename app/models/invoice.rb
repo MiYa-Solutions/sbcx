@@ -8,7 +8,7 @@ class Invoice < ActiveRecord::Base
 
   monetize :total_cents, allow_nil: true
 
-  has_many :invoice_items, :source => :invoice
+  has_many :invoice_items, :source => :invoice, dependent: :destroy
   has_many :bom_items, through: :invoice_items, :source => :bom, conditions: "invoice_items.invoiceable_type = 'Bom'"
   has_many :payment_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AmexPayment', 'CashPayment', 'ChequePayment','CreditPayment', 'RejectedPayment' )"
   has_many :adv_payment_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AdvancePayment')"

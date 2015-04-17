@@ -6,7 +6,8 @@ describe 'After completing the work' do
 
   before do
     start_the_job job
-    add_bom_to_job job, cost: 10, price: 100, quantity: 1
+    add_bom_to_job job, cost: 5, price: 50, quantity: 1
+    add_bom_to_job job, cost: 5, price: 50, quantity: 1
     complete_the_work job
   end
 
@@ -20,6 +21,38 @@ describe 'After completing the work' do
 
   it 'my profit should be 90' do
     expect(job.my_profit).to eq Money.new(9000)
+  end
+
+  context 'when creating invoices' do
+    let(:invoice_items) {invoice1.invoice_items}
+    let(:invoice1) {job.invoices.first}
+    before do
+      invoice job
+    end
+
+    it 'one invoice should be created successfully ' do
+      expect(job.invoices.size).to eq 1
+    end
+
+    context 'when reopening the job' do
+
+      it 'all invoices should be deleted' do
+        expect { reopen_the_job job }.to change(job.invoices, :size).from(1).to(0)
+      end
+
+      it 'all invoice items should be deleted' do
+        expect {
+          reopen_the_job job
+        }.to change(invoice_items, :size).from(2).to(0)
+      end
+
+      it 'boms should not be deleted' do
+        expect {
+          reopen_the_job job
+        }.to_not change(job.boms, :size)
+      end
+
+    end
   end
 
   context 'when re-opening the job' do

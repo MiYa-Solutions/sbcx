@@ -63,7 +63,7 @@ en:
           tooltip: "Click to indicate the subcontractor rejected the job"
         reopen:
           tooltip: "Click to to change the work status to In Progress to be able to update the bill"
-          confirmation: "Reopning the job allows you to change the bill. However please note that this may invalidate invoices you may have created. If so you should generate a new invoice and send it to the customer to reflect the changes."
+          confirmation: "Reopning the job allows you to change the bill. However please note that this will delete invoices you may have created. If so, after reopening the job, you should generate a new invoice and send it to the customer to reflect the changes."
         un_accept:
           tooltip: "Click to indicate the subcontractor changed his mind and therefore rejected the job"
         dispatch:
