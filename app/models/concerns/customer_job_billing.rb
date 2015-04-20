@@ -83,6 +83,13 @@ module CustomerJobBilling
         transition :paid => :over_paid
       end
 
+      event :reopen do
+        transition [:paid, :collected, :in_process, :over_paid, :partially_collected] => :partially_collected
+        transition :overdue => :overdue
+        transition :rejected => :rejected
+        transition :pending => :pending
+      end
+
     end
 
   end

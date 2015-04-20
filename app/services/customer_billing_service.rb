@@ -3,6 +3,7 @@ class CustomerBillingService < BillingService
     @event   = event
     @ticket  = event.eventable
     @accounting_entries = {}
+    @entries_to_cancel = {}
     @account = Account.where("accountable_id = ? AND accountable_type = 'Customer'", @ticket.customer_id).first
   end
 
@@ -44,6 +45,9 @@ class CustomerBillingService < BillingService
         end
 
       end
+      @entries_to_cancel.each do
+
+    end
     end
 
   end

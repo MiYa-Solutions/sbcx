@@ -42,6 +42,24 @@ FactoryGirl.define do
     end
   end
 
+  factory :local_subcon_agr, class: SubcontractingAgreement do
+    association :organization, factory: :member_org, strategy: :build
+    association :counterparty, factory: :local_subcon, strategy: :build
+    sequence(:name) { |n| "Subcontracting PF Agreement #{n}" }
+    description Faker::Lorem.paragraph(1)
+    starts_at Time.zone.now
+    ends_at 1.year.from_now
+
+    after(:build) do |agr|
+      agr.posting_rules << FactoryGirl.build(:profit_split_rule, agreement: agr)
+      # agr.organization.users << FactoryGirl.build(:user, organization: agr.organization)
+      agr.creator = agr.organization.users.first
+      agr.save!
+      agr.organization.subcontractors << agr.counterparty unless agr.organization.subcontractors.include?(agr.counterparty)
+      agr.counterparty.providers << agr.organization unless agr.organization.providers.include?(agr.organization)
+    end
+  end
+
   factory :agreement_for_subcon, class: SubcontractingAgreement do
     association :organization, factory: :member_org, strategy: :build
     association :counterparty, factory: :member_org, strategy: :build

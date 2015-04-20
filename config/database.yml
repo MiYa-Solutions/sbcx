@@ -14,7 +14,7 @@
 #
 development:
   adapter: postgresql
-  database: subcontrax-dev
+  database: sbcx-dev
 
   host: localhost
   username: postgres
@@ -43,7 +43,7 @@ test:
   adapter: postgresql
   database: sbcx-test
   host: localhost
-  port: 5433
+  port: 5432
   username: postgres
   password: Maxim2012
 
@@ -51,7 +51,7 @@ production:
   adapter: postgresql
   database: subcontrax-prod
   host: localhost
-  port: 5433
+  port: 5432
   username: postgres
   password: CHANGE ME
 

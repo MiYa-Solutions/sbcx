@@ -65,6 +65,7 @@ en:
       credit_card_deposit_from_subcon: "Subcontractor Deposited Credit Card Payment"
       credit_card_deposit_to_employer: "Employer Deposited Credit Card Payment"
       adjustment_entry: "Account Adjustment"
+      reopened_job_adjustment: "Reopened Job Adjustment"
     attributes:
       accounting_entry:
         ticket: "Job"

@@ -8,11 +8,12 @@ class Invoice < ActiveRecord::Base
 
   monetize :total_cents, allow_nil: true
 
-  has_many :invoice_items, :source => :invoice
+  has_many :invoice_items, :source => :invoice, dependent: :destroy
   has_many :bom_items, through: :invoice_items, :source => :bom, conditions: "invoice_items.invoiceable_type = 'Bom'"
   has_many :payment_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AmexPayment', 'CashPayment', 'ChequePayment','CreditPayment', 'RejectedPayment' )"
   has_many :adv_payment_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('AdvancePayment')"
   has_many :charge_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('ServiceCallCharge')"
+  has_many :adj_items, through: :invoice_items, :source => :entry, conditions: "invoice_items.invoiceable_type in ('MyAdjEntry', 'ReceivedAdjEntry')"
 
   before_validation :generate_invoice_items
   after_create :trigger_event
@@ -59,40 +60,50 @@ class Invoice < ActiveRecord::Base
   end
 
 
-  def generate_final_invoice
-    ticket.boms.each do |bom|
-      item = InvoiceItem.new(invoiceable_id: bom.id, invoiceable_type: bom.class.name)
-      self.invoice_items << item
-    end
+  # def generate_final_invoice
+  #   ticket.boms.each do |bom|
+  #     item = InvoiceItem.new(invoiceable_id: bom.id, invoiceable_type: bom.class.name)
+  #     self.invoice_items << item
+  #   end
+  #
+  #   ticket.payments.each do |payment|
+  #     item = InvoiceItem.new(invoiceable_id: payment.id, invoiceable_type: payment.class.name)
+  #     self.invoice_items << item
+  #   end
+  #
+  #   ticket.customer_entries.where(type: [RejectedPayment.name, CustomerReimbursement.name] ).order('id ASC').each do |e|
+  #     item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
+  #     self.invoice_items << item
+  #   end
+  #
+  #   ticket.customer_entries.where(type: [MyAdjEntry.name, ReceivedAdjEntry.name] ).order('id ASC').each do |e|
+  #     item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
+  #     self.invoice_items << item
+  #     if e.matching_entry
+  #       item = InvoiceItem.new(invoiceable_id: e.matching_entry_id, invoiceable_type: e.matching_entry.class.name)
+  #       self.invoice_items << item
+  #     end
+  #
+  #   end
+  #
+  #   self.total = final_total
+  #
+  #
+  # end
 
-    ticket.payments.each do |payment|
-      item = InvoiceItem.new(invoiceable_id: payment.id, invoiceable_type: payment.class.name)
-      self.invoice_items << item
-    end
-
-    ticket.customer_entries.where(type: [RejectedPayment.name,MyAdjEntry.name, ReceivedAdjEntry.name, CustomerReimbursement.name] ).order('id ASC').each do |e|
-      item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
-      self.invoice_items << item
-    end
-
-    self.total = final_total
-
-
-  end
-
-  def generate_active_invoice
-    ticket.payments.each do |payment|
-      item = InvoiceItem.new(invoiceable_id: payment.id, invoiceable_type: payment.class.name)
-      self.invoice_items << item
-    end
-
-    ticket.customer_entries.where(type: ['RejectedPayment', 'AdvancePayment']).each do |e|
-      item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
-      self.invoice_items << item
-    end
-
-    self.total = active_total
-  end
+  # def generate_active_invoice
+  #   ticket.payments.each do |payment|
+  #     item = InvoiceItem.new(invoiceable_id: payment.id, invoiceable_type: payment.class.name)
+  #     self.invoice_items << item
+  #   end
+  #
+  #   ticket.customer_entries.where(type: ['RejectedPayment', 'AdvancePayment']).each do |e|
+  #     item = InvoiceItem.new(invoiceable_id: e.id, invoiceable_type: e.class.name)
+  #     self.invoice_items << item
+  #   end
+  #
+  #   self.total = active_total
+  # end
 
   class InvoiceData
     def initialize(invoice)

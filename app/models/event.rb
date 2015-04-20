@@ -65,6 +65,7 @@ class Event < ActiveRecord::Base
   belongs_to :user
   belongs_to :triggering_event, class_name: "Event"
   has_many :accounting_entries
+  alias_method :entries, :accounting_entries
   stampable
 
   before_validation :set_default_creator, :init

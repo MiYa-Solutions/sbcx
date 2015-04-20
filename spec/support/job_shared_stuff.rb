@@ -16,6 +16,16 @@ shared_context 'job methods' do
                                      buyer:    buyer)
   end
 
+  def settle_with_subcon(job, options = {})
+    job.subcon_payment = options[:payment] || 'cash'
+    job.settle_subcon!
+  end
+
+  def settle_with_provider(job, options = {})
+    job.provider_payment = options[:payment] || 'cash'
+    job.settle_provider!
+  end
+
   def start_the_job(job)
     job.start_work!
   end
@@ -36,6 +46,10 @@ shared_context 'job methods' do
 
   def complete_the_work(job)
     job.complete_work!
+  end
+
+  def reopen_the_job(job)
+    job.reopen_work!
   end
 
   def collect_a_payment(job, options = {})
