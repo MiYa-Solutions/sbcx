@@ -383,7 +383,7 @@ describe 'Cancel Job When Transferred To a Member' do
     end
 
     it 'job status events should be :cancel and transfer' do
-      expect(job.status_events.sort).to eq [:cancel, :transfer]
+      expect(job.status_events.sort).to eq [:cancel, :cancel_transfer, :transfer]
     end
 
     it 'the job should have a notification associated to it' do

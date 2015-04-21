@@ -183,11 +183,11 @@ class AffiliatePostingRule < PostingRule
     original_entry_cents = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
     original_entry_ccy   = entry ? entry.amount_currency : Money.default_currency.to_s
 
-    fees = AccountingEntry.where(type:      %w('CashPaymentFee',
+    fees = AccountingEntry.where(type:      ['CashPaymentFee',
                                              'CreditPaymentFee',
                                              'AmexPaymentFee',
                                              'ChequePaymentFee',
-                                             'MaterialReimbursement'),
+                                             'MaterialReimbursement'],
                                  ticket_id: @ticket.id).sum(:amount_cents)
 
     [CanceledJobAdjustment.new(agreement: agreement, event: @event, ticket: @ticket, amount_cents: -(original_entry_cents + fees), amount_currency: original_entry_ccy, description: 'Adjustment due to a job being canceled')]
