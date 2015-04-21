@@ -67,6 +67,10 @@ class SubconServiceCall < TransferredServiceCall
     reopen_provider!
   end
 
+  def all_affiliates_local?
+    !provider.member?
+  end
+
   ## override the transfer method created by the status state_machine in TransferredServiceCall
   ## and change self to a BrokerServiceCall
   #def transfer(*)

@@ -10,8 +10,8 @@ describe 'Customer Billing When No Provider Transfer' do
       expect(job.billing_status_name).to eq :pending
     end
 
-    it 'paid should be the only available billing status' do
-      expect(job.billing_status_events).to eq [:late, :collect]
+    it 'available billing status should be ' do
+      expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
     end
 
     context 'when I start the job' do
@@ -24,7 +24,7 @@ describe 'Customer Billing When No Provider Transfer' do
         end
 
         it 'available billing events should be collect' do
-          job.billing_status_events.should =~ [:collect, :late]
+          expect(job.billing_status_events.sort).to eq  [:collect, :late, :reopen]
         end
 
         describe 'collecting payment' do
@@ -77,8 +77,8 @@ describe 'Customer Billing When No Provider Transfer' do
             expect(job.billing_status_name).to eq :pending
           end
 
-          it 'collect is the only available payment events' do
-            expect(job.billing_status_events.sort).to eq [:collect, :late]
+          it 'available payment events are collect late and reopen' do
+            expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
           end
 
           context 'when collecting payment' do
@@ -94,8 +94,8 @@ describe 'Customer Billing When No Provider Transfer' do
                   expect(job.billing_status_name).to eq :partially_collected
                 end
 
-                it 'available payment events are :collect, :late, :reject and :cancel' do
-                  job.billing_status_events.should =~ [:cancel, :collect, :late, :reject]
+                it 'available payment events are :collect, :late, :reject :cancel and :reopen' do
+                  expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject, :reopen]
                 end
 
                 it 'collect event is associated with the job' do
@@ -163,8 +163,8 @@ describe 'Customer Billing When No Provider Transfer' do
                   job.status_events.should =~ [:cancel, :transfer]
                 end
 
-                it 'available payment events are collect and late' do
-                  job.billing_status_events.should =~ [:cancel, :collect, :late, :reject]
+                it 'available payment events are cancel , collect late reject and reopen' do
+                  expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject, :reopen]
                 end
 
 
@@ -186,8 +186,8 @@ describe 'Customer Billing When No Provider Transfer' do
                 expect(job.billing_status_name).to eq :partially_collected
               end
 
-              it 'available payment events are collect and late' do
-                job.billing_status_events.should =~ [:cancel, :collect, :late, :reject]
+              it 'available payment events are [:cancel, :collect, :late, :reject, :reopen]' do
+                job.billing_status_events.should =~ [:cancel, :collect, :late, :reject, :reopen]
               end
 
             end
@@ -209,8 +209,8 @@ describe 'Customer Billing When No Provider Transfer' do
           expect(job).to be_payment_pending
         end
 
-        it 'collect and late are the available payment events' do
-          expect(job.billing_status_events.sort).to eq [:collect, :late]
+        it 'collect late and reopen are the available payment events' do
+          expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
         end
 
         context 'partial payment' do
@@ -222,8 +222,8 @@ describe 'Customer Billing When No Provider Transfer' do
             expect(job.billing_status_name).to eq :partially_collected
           end
 
-          it 'available payment events are collect and late' do
-            expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject]
+          it 'available payment events are [:cancel, :collect, :late, :reject, :reopen]' do
+            expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject, :reopen]
           end
 
           it 'payment event is associated with the job' do
@@ -243,8 +243,8 @@ describe 'Customer Billing When No Provider Transfer' do
               expect(job.billing_status_name).to eq :overdue
             end
 
-            it 'available payment events are only collect' do
-              expect(job.billing_status_events.sort).to eq [:cancel, :collect]
+            it 'available payment events are [:cancel, :collect, :reopen]' do
+              expect(job.billing_status_events.sort).to eq [:cancel, :collect, :reopen]
             end
 
             context 'when collecting another payment' do
@@ -352,8 +352,8 @@ describe 'Customer Billing When No Provider Transfer' do
                   expect(job.billing_status_name).to eq :overdue
                 end
 
-                it 'available payment events are only collect' do
-                  expect(job.billing_status_events.sort).to eq [:cancel, :collect]
+                it 'available payment events are [:cancel, :collect, :reopen]' do
+                  expect(job.billing_status_events.sort).to eq [:cancel, :collect, :reopen]
                 end
 
                 context 'when collecting another partial payment' do
@@ -493,8 +493,8 @@ describe 'Customer Billing When No Provider Transfer' do
                   expect(job.billing_status_name).to eq :overdue
                 end
 
-                it 'available payment events are only collect' do
-                  expect(job.billing_status_events.sort).to eq [:cancel, :collect]
+                it 'available payment events are [:cancel, :collect, :reopen]' do
+                  expect(job.billing_status_events.sort).to eq [:cancel, :collect, :reopen]
                 end
 
                 context 'when collecting another partial payment' do
@@ -541,8 +541,8 @@ describe 'Customer Billing When No Provider Transfer' do
               expect(job.billing_status_name).to eq :pending
             end
 
-            it 'available payment events are invoice and paid' do
-              job.billing_status_events.should =~ [:collect, :late]
+            it 'available payment events are [:collect, :late, :reopen]' do
+              expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
             end
 
             context 'when I collect the customer payment' do
@@ -572,8 +572,8 @@ describe 'Customer Billing When No Provider Transfer' do
                       expect(job.billing_status_name).to eq :paid
                     end
 
-                    it 'there are no available payment events' do
-                      job.billing_status_events.should =~ [:cancel]
+                    it '[:cancel, :reopen] are the available payment events' do
+                      expect(job.billing_status_events.sort).to eq [:cancel, :reopen]
                     end
                   end
                 end
@@ -587,8 +587,8 @@ describe 'Customer Billing When No Provider Transfer' do
                     expect(job.billing_status_name).to eq :partially_collected
                   end
 
-                  it 'available payment events are paid and overdue' do
-                    job.billing_status_events.should =~ [:cancel, :late, :collect, :reject]
+                  it 'available payment events are [:cancel, :late, :collect, :reject, :reopen]' do
+                    expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject, :reopen]
                   end
 
                   it 'payment amount is the submitted one' do
@@ -652,8 +652,9 @@ describe 'Customer Billing When No Provider Transfer' do
                     expect(job.billing_status_name).to eq :partially_collected
                   end
 
-                  it 'available payment events are collect and late' do
-                    job.billing_status_events.should =~ [:cancel, :late, :collect, :reject]
+                  it 'collection and late events are allowed' do
+                    expect(job.billing_status_events).to include :late
+                    expect(job.billing_status_events).to include :collect
                   end
 
                   it 'only collect and late  are events allowed for a user' do
@@ -673,9 +674,11 @@ describe 'Customer Billing When No Provider Transfer' do
                     end
 
                     it 'should have collect, and late as possible payment events, both available for the user' do
-                      job.billing_status_events.should =~ [:cancel, :collect, :late]
+                      expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reopen]
                       expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
                       expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
+                      expect(event_permitted_for_job?('billing_status', 'reopen', org_admin, job)).to be_false
+                      expect(event_permitted_for_job?('billing_status', 'cancel', org_admin, job)).to be_false
                     end
 
                     context 'when adding another payment for the full amount' do
@@ -712,8 +715,8 @@ describe 'Customer Billing When No Provider Transfer' do
                             expect(job.billing_status_name).to eq :rejected
                           end
 
-                          it 'billing events should be :collect, :late' do
-                            expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late]
+                          it 'billing events should be [:cancel, :collect, :late, :reopen]' do
+                            expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reopen]
                           end
 
 
@@ -810,9 +813,10 @@ describe 'Customer Billing When No Provider Transfer' do
                       expect(job.billing_status_name).to eq :in_process
                     end
 
-                    it 'available payment events are reject which is not available to a user' do
-                      expect(job.billing_status_events).to eq [:reject]
-                      expect(event_permitted_for_job?('billing_status', 'clear', org_admin, job)).to be_false
+                    it 'available payment events are reject and reopen which is not available to a user' do
+                      expect(job.billing_status_events).to eq [:reject, :reopen]
+                      expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
+                      expect(event_permitted_for_job?('billing_status', 'reopen', org_admin, job)).to be_false
                     end
 
 
@@ -827,9 +831,11 @@ describe 'Customer Billing When No Provider Transfer' do
                       end
 
                       it 'should have collect and late as possible payment events both available for a user' do
-                        job.reload.billing_status_events.should =~ [:cancel, :collect, :late]
+                        expect(job.reload.billing_status_events.sort).to eq [:cancel, :collect, :late, :reopen]
                         expect(event_permitted_for_job?('billing_status', 'collect', org_admin, job)).to be_true
                         expect(event_permitted_for_job?('billing_status', 'late', org_admin, job)).to be_true
+                        expect(event_permitted_for_job?('billing_status', 'cancel', org_admin, job)).to be_false
+                        expect(event_permitted_for_job?('billing_status', 'reopen', org_admin, job)).to be_false
                       end
                     end
 
@@ -844,7 +850,8 @@ describe 'Customer Billing When No Provider Transfer' do
 
 
                       it 'should have no payment events' do
-                        job.reload.billing_status_events.should eq [:cancel]
+                        expect(job.reload.billing_status_events).to_not include :collect
+                        expect(job.reload.billing_status_events).to_not include :late
                       end
                     end
                   end
@@ -863,8 +870,8 @@ describe 'Customer Billing When No Provider Transfer' do
                 expect(job.billing_status_name).to eq :overdue
               end
 
-              it 'available payment events are only collect' do
-                expect(job.billing_status_events.sort).to eq [:cancel, :collect]
+              it 'available payment events are [:cancel, :collect, :reopen]' do
+                expect(job.billing_status_events.sort).to eq [:cancel, :collect, :reopen]
               end
 
 

@@ -257,11 +257,7 @@ class TransferredServiceCall < ServiceCall
   end
 
   def all_affiliates_local?
-    if subcontractor
-      !subcontractor.member? && !provider.member?
-    else
-      !provider.member?
-    end
+    raise NotImplementedError, 'You must implement #all_affiliates_local? method'
   end
 
 

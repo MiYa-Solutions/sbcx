@@ -22,8 +22,9 @@ describe 'Customer Billing When In paid state' do
   end
 
 
-  it 'there should be no billing events' do
-    expect(job.billing_status_events.sort).to eq [:cancel]
+  it 'there should be no user billing events' do
+    expect(job.billing_status_events).to_not include :collect
+    expect(job.billing_status_events).to_not include :late
   end
 
 

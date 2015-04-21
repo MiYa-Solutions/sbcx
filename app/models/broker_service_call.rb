@@ -89,6 +89,9 @@ class BrokerServiceCall < TransferredServiceCall
     reopen_provider!
   end
 
+  def all_affiliates_local?
+    !subcontractor.member? && !provider.member?
+  end
 
 
 end

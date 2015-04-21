@@ -23,7 +23,7 @@ describe 'Billing when broker involved and in partially collected state' do
   end
 
   it 'billing events should be :collect, :late' do
-    expect(job.reload.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject]
+    expect(job.reload.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject, :reopen]
   end
 
   describe 'when payment is late' do
