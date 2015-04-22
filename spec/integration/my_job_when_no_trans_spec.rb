@@ -30,8 +30,8 @@ describe 'My Service Call When I Do The Work' do
       job.work_status_events.should =~ [:start]
     end
 
-    it 'paid should be the only available billing status' do
-      expect(job.billing_status_events).to eq [:late, :collect]
+    it 'user collection ebents should be the only available billing status' do
+      expect(job.billing_status_events).to include :late, :collect
     end
 
     it 'subcontractor status should be na' do
@@ -51,8 +51,8 @@ describe 'My Service Call When I Do The Work' do
           job.work_status_events.should =~ [:dispatch]
         end
 
-        it 'available billing events should be collect' do
-          job.billing_status_events.should =~ [:collect, :late]
+        it 'available billing events should be [:collect, :late, :reopen]' do
+          expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
         end
 
         describe 'collecting payment' do
@@ -126,8 +126,8 @@ describe 'My Service Call When I Do The Work' do
             job.work_status_events.should =~ [:start]
           end
 
-          it 'collect is the only available payment events' do
-            job.billing_status_events.should =~ [:collect, :late]
+          it '[:collect, :late, :reopen] are the available payment events' do
+            expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
           end
 
           it 'dispatch event is associated with the job' do
@@ -146,8 +146,8 @@ describe 'My Service Call When I Do The Work' do
               job.complete_work!
             end
 
-            it 'payment events are collect' do
-              job.billing_status_events.should =~ [:collect, :late]
+            it 'payment events are [:collect, :late, :reopen]' do
+              expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
             end
 
             context 'when collecting cash' do
@@ -173,12 +173,12 @@ describe 'My Service Call When I Do The Work' do
                   job.status_events.should_not include :cancel
                 end
 
-                it 'there should be no available work events' do
-                  job.work_status_events.should =~ []
+                it 'there should be no available user permitted work events' do
+                  expect(job.work_status_events).to_not include :collect, :late
                 end
 
                 it 'available payment events are deposit' do
-                  job.billing_status_events.should =~ [:deposited]
+                  expect(job.billing_status_events.sort).to eq [:deposited, :reopen]
                 end
 
                 it 'collect event is associated with the job' do
@@ -230,8 +230,8 @@ describe 'My Service Call When I Do The Work' do
                     job.status_events.should ==[:close]
                   end
 
-                  it 'there should be no available work events' do
-                    job.work_status_events.should =~ []
+                  it 'there should be no available work events except reopen' do
+                    expect(job.work_status_events.sort).to eq  [:reopen]
                   end
 
                   # it 'there should be no available payment events as this is a cash payment (no clearing)' do
@@ -273,12 +273,12 @@ describe 'My Service Call When I Do The Work' do
                   job.status_events.should == []
                 end
 
-                it 'there should be no available work events' do
-                  job.work_status_events.should =~ []
+                it 'there should be no available work events, except reopen' do
+                  expect(job.work_status_events.sort).to eq  [:reopen]
                 end
 
-                it 'available payment events are [:cancel, :collect, :late, :reject]' do
-                  job.billing_status_events.sort.should eq [:cancel, :collect, :late, :reject]
+                it 'available payment events are [:cancel, :collect, :late, :reject, :reopen]' do
+                  expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject, :reopen]
                 end
 
                 it 'collect event is associated with the job' do
@@ -322,12 +322,12 @@ describe 'My Service Call When I Do The Work' do
                 job.status_events.should eq []
               end
 
-              it 'there should be no available work events' do
-                job.work_status_events.should =~ []
+              it 'there should be no available work events except reopen' do
+                expect(job.work_status_events.sort).to eq [:reopn]
               end
 
-              it 'available payment events are deposit' do
-                job.billing_status_events.should =~ [:deposited]
+              it 'available payment events are [:deposited, :reopen]' do
+                expect(job.billing_status_events.sort).to eq [:deposited, :reopen]
               end
 
               it 'collect event is associated with the job' do
@@ -369,13 +369,14 @@ describe 'My Service Call When I Do The Work' do
                   expect(job.status_events).to eq []
                 end
 
-                it 'there should be no available work events' do
-                  expect(job.work_status_events).to eq []
+                it 'there should be no available work events except reopen' do
+                  expect(job.work_status_events).to eq [:reopen]
                 end
 
-                it 'available payment events are deposited but they are not permitted for the user' do
-                  expect(job.billing_status_events).to eq [:reject]
+                it 'available payment events are [:reject, :reopen] but they are not permitted for the user' do
+                  expect(job.billing_status_events).to eq [:reject, :reopen]
                   expect(event_permitted_for_job?('billing_status', 'reject', org_admin, job)).to be_false
+                  expect(event_permitted_for_job?('billing_status', 'reopen', org_admin, job)).to be_false
                 end
 
                 context 'when clearing the payment' do
@@ -439,8 +440,8 @@ describe 'My Service Call When I Do The Work' do
           job.work_status_events.sort.should == [:cancel, :complete, :reset]
         end
 
-        it '[:late, :collect] are the available payment events' do
-          expect(job.billing_status_events).to eq [:late, :collect]
+        it '[:collect, :late, :reopen] are the available payment events' do
+          expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
         end
 
         it 'start event is associated with the job' do
@@ -456,8 +457,8 @@ describe 'My Service Call When I Do The Work' do
             expect(job.billing_status_name).to eq :partially_collected
           end
 
-          it 'available payment events are paid' do
-            expect(job.billing_status_events).to eq [:reject, :late, :collect, :cancel]
+          it 'available payment events are [:cancel, :collect, :late, :reject, :reopen ]' do
+            expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reject, :reopen ]
           end
 
           it 'payment event is associated with the job' do
@@ -550,12 +551,12 @@ describe 'My Service Call When I Do The Work' do
               job.status_events.should eq []
             end
 
-            it 'there should be no available work events' do
-              job.work_status_events.should =~ []
+            it 'there should be no available work events except reopen' do
+              expect(job.work_status_events).to eq [:reopen]
             end
 
-            it 'available payment events are [:collect, :late]' do
-              job.billing_status_events.should =~ [:collect, :late]
+            it 'available payment events are [:collect, :late, :reopen]' do
+              expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
             end
 
             it 'complete event is associated with the job' do
