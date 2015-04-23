@@ -108,7 +108,7 @@ class Bom < ActiveRecord::Base
   end
 
   def destroy
-    unless ticket.can_change_boms?
+    unless ticket.can_change_boms? || ticket.to_be_destroyed
       self.errors.add :ticket, "Can't delete a bom for a completed ticket"
       raise ActiveRecord::RecordInvalid.new(self)
     end

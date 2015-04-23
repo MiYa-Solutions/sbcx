@@ -117,6 +117,7 @@ shared_context 'basic job testing' do
   let(:org) { FactoryGirl.create(:member_org) }
   let(:user) { org.users.first }
   let(:job) { FactoryGirl.build(:my_job, organization: org) }
+  let(:customer) { job.customer }
   let(:org_admin) { org.users.admins.first }
 
   include_context 'job methods'
