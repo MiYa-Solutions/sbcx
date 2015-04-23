@@ -142,6 +142,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :work_phone,
      :zip,
      :status_event,
+     :notes,
      :default_tax
     ]
   end
@@ -394,6 +395,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     res = false if params_to_check[:billing_status_event] == 'clear'
     res = false if params_to_check[:billing_status_event] == 'reject'
     res = false if params_to_check[:billing_status_event] == 'cancel'
+    res = false if params_to_check[:billing_status_event] == 'reopen'
 
     res
   end
@@ -407,6 +409,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = false if params_to_check[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
       res = false if params_to_check[:subcontractor_status_event] == "clear" && obj.subcontractor.subcontrax_member?
       res = false if params_to_check[:subcontractor_status_event] == "cancel"
+      res = false if params_to_check[:subcontractor_status_event] == "reopen"
     end
     res
   end
@@ -419,6 +422,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       res = false if params_to_check[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
       res = false if params_to_check[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
       res = false if params_to_check[:provider_status_event] == "cancel"
+      res = false if params_to_check[:provider_status_event] == "reopen"
 
     end
     res

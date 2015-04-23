@@ -15,8 +15,8 @@ describe 'When payment was not collected yet' do
     expect(job.billing_status_name).to eq :pending
   end
 
-  it 'billing events should be :collect, :late' do
-    expect(job.billing_status_events.sort).to eq [:collect, :late]
+  it 'billing events should be [:collect, :late, :reopen]' do
+    expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
   end
 
   describe 'when payment is late' do

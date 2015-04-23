@@ -52,10 +52,12 @@ FactoryGirl.define do
 
 
     after(:build) do |member|
+      # User.stamper = User.find_by_email('system@subcontrax.com')
       member.make_member
       member.customers << Customer.new(name: Faker::Name.name)
-      FactoryGirl.create_list(:admin, 1, organization: member, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) unless member.users.count > 0
       member.save
+      FactoryGirl.create_list(:admin, 1, organization: member, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) unless member.users.count > 0
+
     end
   end
   factory :member_with_no_user, class: Organization do
@@ -169,7 +171,6 @@ FactoryGirl.define do
   factory :my_service_call do
     association :organization, factory: :member
 
-    association :subcontractor
 
     email Faker::Internet.email
     name Faker::Name.name
@@ -321,7 +322,7 @@ FactoryGirl.define do
 
     factory :organization_agreement_by_cparty, class: OrganizationAgreement do
       after(:build) do |agr|
-        agr.creator = FactoryGirl.create(:org_admin, organization: agr.counterparty)
+        agr.creator       = FactoryGirl.create(:org_admin, organization: agr.counterparty)
         agr.payment_terms = 'cod'
       end
     end

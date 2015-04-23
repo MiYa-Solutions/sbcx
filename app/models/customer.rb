@@ -60,11 +60,15 @@ class Customer < ActiveRecord::Base
   end
   private
   def set_default_agreement
+    old_stampper = User.stamper
+    sys_user = User.find_by_email(User::SYSTEM_USER_EMAIL)
+    User.stamper = sys_user
     agr_name                    = JobCharge.model_name.human
-    cus_agreement               = CustomerAgreement.create(name: agr_name, counterparty: self, organization: self.organization, creator: User.find_by_email('system@subcontrax.com'))
+    cus_agreement               = CustomerAgreement.create(name: agr_name, counterparty: self, organization: self.organization, creator: sys_user)
     cus_agreement.posting_rules = [JobCharge.new(agreement: cus_agreement, rate: 0, rate_type: :percentage)]
     self.create_account(organization: self.organization)
     self.agreements = [cus_agreement]
+    User.stamper = old_stampper
     self
   end
 

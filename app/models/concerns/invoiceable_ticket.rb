@@ -44,7 +44,12 @@ module InvoiceableTicket
       private
 
       def entries_for_final_invoice
-        @invoiceable.customer_entries.where(type: [RejectedPayment.name, MyAdjEntry.name, ReceivedAdjEntry.name, CustomerReimbursement.name]).order('id ASC')
+        res = @invoiceable.customer_entries.where(type: [RejectedPayment.name, CustomerReimbursement.name]).order('id ASC')
+        @invoiceable.customer_entries.where(type: [MyAdjEntry.name, ReceivedAdjEntry.name]).order('id ASC').each do |e|
+          res << e
+          res << e.matching_entry if e.matching_entry
+        end
+        res
       end
 
       def entries_for_active_invoice

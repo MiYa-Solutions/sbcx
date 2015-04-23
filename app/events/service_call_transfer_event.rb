@@ -31,14 +31,14 @@ class ServiceCallTransferEvent < ServiceCallEvent
       Ticket.transaction do
         new_service_call.save!
         copy_boms_to_subcon
-        set_subcon_statuses_for_prov
+
       end
       new_service_call.events << ServiceCallReceivedEvent.new(triggering_event: self, description: I18n.t('service_call_received_event.description', name: service_call.organization.name))
       Rails.logger.debug { "created new service call after transfer: #{new_service_call.inspect}" }
       new_service_call
-    else
-      set_subcon_statuses_for_prov
     end
+    set_subcon_statuses_for_prov
+    reset_job_status
 
   end
 
@@ -110,6 +110,10 @@ class ServiceCallTransferEvent < ServiceCallEvent
     service_call.subcontractor_status     = ServiceCall::SUBCON_STATUS_PENDING
     service_call.subcon_collection_status = CollectionStateMachine::STATUS_PENDING
     service_call.save!
+  end
+
+  def reset_job_status
+    service_call.reset_work! if service_call.can_reset_work?
   end
 
 

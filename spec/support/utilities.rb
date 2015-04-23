@@ -72,15 +72,18 @@ def in_browser(name)
 end
 
 def with_user (user, &block)
+  prev_user = User.stamper
   User.stamper = user
   Authorization::Maintenance.with_user(user, &block)
+  User.stamper = prev_user
 end
 
 def sign_in(user)
-  visit new_user_session_path
-  fill_in 'user_email', with: user.email
-  fill_in 'user_password', with: user.password
-  click_button 'Sign in'
+  # visit new_user_session_path
+  # fill_in 'user_email', with: user.email
+  # fill_in 'user_password', with: user.password
+  # click_button 'Sign in'
+  login_as(user, :scope => :user)
 
   # Sign in when not using Capybara.
   #cookies[:remember_token] = user.remember_token
@@ -124,19 +127,35 @@ def clean(org)
 end
 
 def setup_standard_orgs
-  let!(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-  let!(:org_admin_user2) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-  let!(:org_admin_user3) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
-  let!(:org) { org_admin_user.organization }
-  let!(:org2) {
-    setup_profit_split_agreement(org_admin_user2.organization, org.becomes(Subcontractor))
-    setup_profit_split_agreement(org, org_admin_user2.organization.becomes(Subcontractor)).counterparty
-  }
-  let!(:org3) do
-    setup_profit_split_agreement(org_admin_user3.organization, org_admin_user.organization.becomes(Subcontractor))
-    setup_profit_split_agreement(org2, org_admin_user3.organization.becomes(Subcontractor)).counterparty
+  let(:org) { FactoryGirl.create(:member_org) }
+  let(:org_admin_user) { org.users.first }
+  let(:org2) { FactoryGirl.create(:member_org) }
+  let(:org_admin_user2) { org2.users.first }
+  let(:org3) { FactoryGirl.create(:member_org) }
+  let(:org_admin_user3) { org3.users.first }
+  let(:customer) { FactoryGirl.create(:customer, organization: org) }
+
+  before do
+    setup_profit_split_agreement(org2, org.becomes(Subcontractor))
+    setup_profit_split_agreement(org, org2.becomes(Subcontractor))
+    setup_profit_split_agreement(org3, org.becomes(Subcontractor))
+    setup_profit_split_agreement(org2, org3.becomes(Subcontractor))
+    customer
   end
-  let!(:customer) { FactoryGirl.create(:customer, organization: org) }
+
+  # let!(:org_admin_user) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  # let!(:org_admin_user2) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  # let!(:org_admin_user3) { FactoryGirl.create(:member_admin, roles: [Role.find_by_name(Role::ORG_ADMIN_ROLE_NAME), Role.find_by_name(Role::DISPATCHER_ROLE_NAME), Role.find_by_name(Role::TECHNICIAN_ROLE_NAME)]) }
+  # let!(:org) { org_admin_user.organization }
+  # let!(:org2) {
+  #   setup_profit_split_agreement(org_admin_user2.organization, org.becomes(Subcontractor))
+  #   setup_profit_split_agreement(org, org_admin_user2.organization.becomes(Subcontractor)).counterparty
+  # }
+  # let!(:org3) do
+  #   setup_profit_split_agreement(org_admin_user3.organization, org_admin_user.organization.becomes(Subcontractor))
+  #   setup_profit_split_agreement(org2, org_admin_user3.organization.becomes(Subcontractor)).counterparty
+  # end
+  # let!(:customer) { FactoryGirl.create(:customer, organization: org) }
 
 end
 
@@ -171,10 +190,10 @@ def setup_customer_agreement(org, customer)
 end
 
 def setup_flat_fee_agreement(prov, subcon, payment_rules = {})
-  agreement = SubcontractingAgreement.create(organization: prov,
-                                             counterparty: subcon,
-                                             name: "#{prov.name} (P), #{subcon.name} (S) FlatFee",
-                                             creator: User.find_by_email(User::SYSTEM_USER_EMAIL),
+  agreement = SubcontractingAgreement.create(organization:  prov,
+                                             counterparty:  subcon,
+                                             name:          "#{prov.name} (P), #{subcon.name} (S) FlatFee",
+                                             creator:       User.find_by_email(User::SYSTEM_USER_EMAIL),
                                              payment_terms: :net_10)
 
   payment_rules[:cash_rate]        ||= 0.0
@@ -263,7 +282,7 @@ def add_bom(name, cost, price, qty, buyer = nil)
   fill_in 'bom_quantity', with: qty
   select buyer, from: BOM_SELECT_BUYER if buyer.present?
   click_button 'add_part'
-                                      #sleep 1
+  #sleep 1
   page.has_selector? "td", text: name # to ensure bom is added before moving to the next action (click visit etc.)
   click_button 'new-bom-button'
 end

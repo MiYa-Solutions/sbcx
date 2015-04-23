@@ -39,7 +39,7 @@ class EntriesDatatable
         balance: humanized_money_with_symbol(entry.balance),
         actions: adjustment_entry_actions(entry, 'customer_entry_small_btn'),
         notes: entry.notes,
-        collector_name: entry.respond_to?(:collector) ? entry.collector.name : ''
+        collector_name: entry.respond_to?(:collector) ? entry.collector.try(:name) : ''
     }
 
   end

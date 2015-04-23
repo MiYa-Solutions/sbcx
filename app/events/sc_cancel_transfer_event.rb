@@ -15,7 +15,9 @@ class ScCancelTransferEvent < ServiceCallEvent
   end
 
   def update_subcontractor
-    subcon_service_call.events << ScProviderCanceledEvent.new(triggering_event: self) unless subcon_service_call.canceled?
+    unless subcon_service_call.rejected? || subcon_service_call.canceled?
+      subcon_service_call.events << ScProviderCanceledEvent.new(triggering_event: self) unless subcon_service_call.canceled?
+    end
     subcon_service_call
   end
 

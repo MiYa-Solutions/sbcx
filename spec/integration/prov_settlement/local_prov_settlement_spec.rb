@@ -18,7 +18,7 @@ describe 'Local Prov Settlement' do
       expect(job.provider_status_name).to eq :pending
     end
     it 'subcon status events should be settle' do
-      expect(job.provider_status_events).to eq [:settle]
+      expect(job.provider_status_events).to eq [:settle, :reopen]
     end
 
     it 'subcon account balance for prov should be 110.00 (subcon fee +  bom reimbursement)' do
@@ -38,8 +38,8 @@ describe 'Local Prov Settlement' do
           expect(job.provider_status_name).to eq :cleared
         end
 
-        it 'subcon status events should be clear / reject' do
-          expect(job.subcontractor_status_events).to eq []
+        it 'subcon status events should be reopen' do
+          expect(job.subcontractor_status_events).to eq [:reopen]
         end
 
         it 'subcon account balance for prov should be 0.00 ' do
@@ -58,8 +58,8 @@ describe 'Local Prov Settlement' do
           expect(job.provider_status_name).to eq :settled
         end
 
-        it 'subcon status events should be clear' do
-          expect(job.provider_status_events).to eq [:clear]
+        it 'subcon status events should be clear and reopen' do
+          expect(job.provider_status_events).to eq [:clear, :reopen]
         end
       end
 
@@ -76,7 +76,7 @@ describe 'Local Prov Settlement' do
       end
 
       it 'should not be allowed to settle with the subcon' do
-        expect(job.subcontractor_status_events).to eq []
+        expect(job.subcontractor_status_events).to eq [:reopen]
       end
 
       context 'when subcon deposits the payment' do
@@ -87,7 +87,7 @@ describe 'Local Prov Settlement' do
         end
 
         it 'should be allowed to settle with the subcon' do
-          expect(job.provider_status_events).to eq [:settle]
+          expect(job.provider_status_events).to include :settle
         end
 
 

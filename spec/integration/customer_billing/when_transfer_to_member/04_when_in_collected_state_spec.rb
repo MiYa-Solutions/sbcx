@@ -29,8 +29,8 @@ describe 'Billing when in collected state' do
         expect(job.reload.billing_status_name).to eq :collected
       end
 
-      it 'billing events should be :deposited' do
-        expect(job.reload.billing_status_events.sort).to eq [:deposited]
+      it 'billing events should be [:deposited, :reopen]' do
+        expect(job.reload.billing_status_events.sort).to eq [:deposited, :reopen]
       end
 
       it 'deposit should not be allowed for user' do
@@ -177,8 +177,8 @@ describe 'Billing when in collected state' do
         expect(job.reload.billing_status_name).to eq :collected
       end
 
-      it 'billing events should be :deposited' do
-        expect(job.reload.billing_status_events.sort).to eq [:deposited]
+      it 'billing events should be [:deposited, :reopen]' do
+        expect(job.reload.billing_status_events.sort).to eq [:deposited, :reopen]
       end
 
       it 'deposited should not be allowed for user' do

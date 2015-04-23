@@ -156,9 +156,11 @@ class ServiceCall < Ticket
     end
 
     event :reset do
-      #transition [:rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
-      transition [:in_progress, :accepted, :rejected, :canceled] => :pending, if: ->(sc) { !sc.canceled? }
+      transition [:in_progress, :accepted, :rejected, :canceled] => :pending, unless: ->(sc) { sc.canceled? }
+    end
 
+    event :reopen do
+      transition :done => :in_progress, if: ->(sc) { sc.all_affiliates_local? }
     end
 
     event :complete do
@@ -231,6 +233,12 @@ class ServiceCall < Ticket
 
     event :cancel do
       transition :pending => :na
+    end
+
+    event :reopen do
+      transition [:claim_settled, :settled, :cleared, :claimed_as_settled] => :pending
+      transition :pending => :pending
+      transition :na => :na
     end
 
   end

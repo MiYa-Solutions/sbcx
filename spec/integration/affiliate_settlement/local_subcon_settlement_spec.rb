@@ -37,8 +37,8 @@ describe 'Local Subcon Settlement' do
           expect(job.subcontractor_status_name).to eq :cleared
         end
 
-        it 'subcon status events should be clear / reject' do
-          expect(job.subcontractor_status_events).to eq []
+        it 'subcon status events should be :reopen' do
+          expect(job.subcontractor_status_events).to eq [:reopen]
         end
 
         it 'subcon account balance for prov should be 0.00 ' do
@@ -58,7 +58,7 @@ describe 'Local Subcon Settlement' do
         end
 
         it 'subcon status events should be clear' do
-          expect(job.subcontractor_status_events).to eq [:clear]
+          expect(job.subcontractor_status_events).to eq [:clear, :reopen]
         end
       end
 

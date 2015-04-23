@@ -149,6 +149,7 @@ service_call:
       in_progress: "status_blue"
       accepted: "status_blue"
       rejected: "status_red"
+      canceled: "status_red"
       done: "status_green"
       na: "status_grey"
     subcontractor_status:

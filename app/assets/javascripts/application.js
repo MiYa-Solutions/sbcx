@@ -40,5 +40,6 @@
 //= require parsley
 //= require all/accounting.min
 //= require handlebars.runtime
+//= require all/confirmation_dialog
 //= require_tree ./templates
 //= require_tree ./all/.

@@ -16,7 +16,7 @@ describe 'Cancel Transfer To Local' do
       job.reload
     end
 
-    it 'status should be be transferred' do
+    it 'status should be be new' do
       expect(job.status_name).to eq :new
     end
 

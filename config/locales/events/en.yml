@@ -27,6 +27,10 @@ en:
     name: "Job has been Completed"
     description: 'job was reported as completed by %{user}'
 
+  service_call_work_reopen_event:
+    name: "Job has been re-opened"
+    description: 'job work status has changed from completed back to in_progress. Note this has reverted back all billing calculations '
+
   service_call_subcon_settle_event:
     name: "Job Balance has been Settled with Subcontractor"
     description: "The subcontractor balance for this Job has been settled"

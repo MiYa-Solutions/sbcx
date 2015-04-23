@@ -29,8 +29,8 @@ describe 'Billing when in process state' do
       let(:status) { :deposited }
       let(:available_events) { [:clear, :reject] }
 
-      it 'billing events should be :reject, :clear' do
-        expect(job.reload.billing_status_events.sort).to eq [:reject]
+      it 'billing events should be [:reject, :reopen]' do
+        expect(job.reload.billing_status_events.sort).to eq [:reject, :reopen]
       end
 
       it 'billing status should be paid' do

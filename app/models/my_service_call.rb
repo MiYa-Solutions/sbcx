@@ -94,6 +94,7 @@ class MyServiceCall < ServiceCall
     event :transfer do
       transition :new => :transferred
       transition :open => :transferred, unless: ->(sc) { sc.work_done? }
+      transition :transferred => :transferred, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
     end
 
     event :cancel do
@@ -101,7 +102,6 @@ class MyServiceCall < ServiceCall
     end
 
     event :un_cancel do
-      transition :transferred => :new, if: ->(sc) { sc.work_canceled? || sc.work_rejected? }
       transition :canceled => :transferred, if: ->(sc) { sc.can_uncancel? && sc.subcontractor.present? }
       transition :canceled => :new, if: ->(sc) { sc.can_uncancel? }
     end
@@ -112,8 +112,23 @@ class MyServiceCall < ServiceCall
     end
 
     event :cancel_transfer do
-      transition :transferred => :new, unless: ->(sc) { sc.work_done? || sc.work_canceled? }
+      transition :transferred => :new, unless: ->(sc) { sc.work_done? }
     end
+  end
+
+  def process_reopen_event(event)
+    # update the customer billing
+    CustomerBillingService.new(event).execute
+    # update the affiliates billing if one present
+
+    if affiliate.present?
+      AffiliateBillingService.new(event).execute
+    end
+
+    reopen_payment!
+
+    invoices.destroy_all
+
   end
 
   def can_uncancel?
@@ -125,8 +140,12 @@ class MyServiceCall < ServiceCall
     update_column :ref_id, self.id
   end
 
+  def all_affiliates_local?
+    !(subcontractor && subcontractor.member?)
+  end
+
   def my_profit
-    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry'].include? e.type }.map { |e| e.amount_cents }.sum
+    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry', 'ReopenedJobAdjustment'].include? e.type }.map { |e| e.amount_cents }.sum
     cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum
     customer_cents    = entries.select { |e| e.type == 'ServiceCallCharge' }.map { |b| b.amount_cents }.sum
     adv_payment       = entries.select { |e| e.type == 'AdvancePayment' }.map { |b| b.amount_cents }.sum
@@ -136,7 +155,14 @@ class MyServiceCall < ServiceCall
     payment_reimb     = entries.select { |e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |b| b.amount_cents }.sum
 
 
-    Money.new(customer_cents + reimb_amount + subcon_payments + my_bom_cents + payment_reimb + cancel_adjustment + adv_payment + adjustment) - tax_amount
+    Money.new(customer_cents +
+                  reimb_amount +
+                  subcon_payments +
+                  my_bom_cents +
+                  payment_reimb +
+                  cancel_adjustment +
+                  adv_payment +
+                  adjustment) - tax_amount
 
   end
 

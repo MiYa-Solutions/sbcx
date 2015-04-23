@@ -77,6 +77,11 @@ class ServiceCallObserver < ActiveRecord::Observer
     service_call.events << ServiceCallRejectEvent.new unless transition.args.first == :state_only
   end
 
+  def after_reopen_work(service_call, transition)
+    Rails.logger.debug { "invoked observer AFTER reopen_work \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    service_call.events << ScWorkReopenEvent.new unless transition.args.first == :state_only
+  end
+
   def after_subcon_invoiced_payment(service_call, transition)
     Rails.logger.debug { "invoked observer before subcon_invoice \n #{service_call.inspect} \n #{transition.inspect}" }
     service_call.events << ServiceCallInvoicedEvent.new unless transition.args.first == :state_only

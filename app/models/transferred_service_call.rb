@@ -180,6 +180,13 @@ class TransferredServiceCall < ServiceCall
       transition :pending => :na, if: ->(sc) { sc.canceled? }
     end
 
+    event :reopen do
+      transition [:claim_settled, :settled, :cleared, :claimed_as_settled] => :pending
+      transition :pending => :pending
+      transition :na => :na
+    end
+
+
   end
 
   state_machine :billing_status, initial: :na, namespace: 'payment' do
@@ -249,8 +256,13 @@ class TransferredServiceCall < ServiceCall
         ((self.subcontractor.present? && !self.subcontractor.subcontrax_member?) || self.subcontractor.nil?)
   end
 
+  def all_affiliates_local?
+    raise NotImplementedError, 'You must implement #all_affiliates_local? method'
+  end
+
+
   def my_profit
-    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry'].include? e.type }.map { |e| e.amount_cents }.sum
+    adjustment        = entries.select { |e| ['AdjustmentEntry', 'ReceivedAdjEntry', 'MyAdjEntry', 'ReopenedJobAdjustment'].include? e.type }.map { |e| e.amount_cents }.sum
     cancel_adjustment = entries.select { |e| e.type == 'CanceledJobAdjustment' }.map { |e| e.amount_cents }.sum
     prov_income       = entries.select { |e| e.type == 'IncomeFromProvider' }.map { |e| e.amount_cents }.sum
     payment_fee       = entries.select { |e| ['AmexPaymentFee', 'CashPaymentFee', 'ChequePaymentFee', 'CreditPaymentFee'].include? e.type }.map { |e| e.amount_cents }.sum
@@ -259,9 +271,21 @@ class TransferredServiceCall < ServiceCall
     subcon_payments     = entries.select { |e| e.type == 'PaymentToSubcontractor' }.map { |e| e.amount_cents }.sum
     subcon_reimb_amount = entries.select { |e| e.type == 'MaterialReimbursementToCparty' }.map { |e| e.amount_cents }.sum
     my_bom_cents        = -boms.select { |b| b.mine?(really_mine: true) }.map { |b| b.cost_cents * b.quantity }.sum
-    payment_reimb       = entries.select { |e| ['ReimbursementForCashPayment', 'ReimbursementForChequePayment', 'ReimbursementForAmexPayment', 'ReimbursementForCreditPayment'].include? e.type }.map { |e| e.amount_cents }.sum
+    payment_reimb       = entries.select { |e| %w('ReimbursementForCashPayment',
+                                                'ReimbursementForChequePayment',
+                                                'ReimbursementForAmexPayment','ReimbursementForCreditPayment').include? e.type }.map { |e| e.amount_cents }.sum
 
-    Money.new(prov_income + payment_fee + bom_reimb + subcon_payments + subcon_reimb_amount + my_bom_cents + payment_reimb + cancel_adjustment + adjustment)
+    Money.new(
+        prov_income +
+            payment_fee +
+            bom_reimb +
+            subcon_payments +
+            subcon_reimb_amount +
+            my_bom_cents +
+            payment_reimb +
+            cancel_adjustment +
+            adjustment
+    )
   end
 
   def validate_subcon

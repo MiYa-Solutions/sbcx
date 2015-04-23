@@ -82,5 +82,16 @@ class BrokerServiceCall < TransferredServiceCall
     deposited_entries.with_status(:disputed).size > 0
   end
 
+  def process_reopen_event(event)
+    # update the affiliates billing if one present
+    AffiliateBillingService.new(event).execute
+    reopen_subcon!
+    reopen_provider!
+  end
+
+  def all_affiliates_local?
+    !subcontractor.member? && !provider.member?
+  end
+
 
 end

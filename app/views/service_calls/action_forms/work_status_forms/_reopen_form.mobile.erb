@@ -1,0 +1,13 @@
+
+<%= simple_form_for job.becomes(ServiceCall), html: { class: 'red-button' } do |f| %>
+    <%= hidden_field_tag 'service_call[work_status_event]', 'reopen' %>
+    <%= f.submit job.class.human_work_status_event_name(:reopen).titleize,
+                 id:    'reopen_service_call_btn',
+                 class: "ui-btn-up-r",
+                 "data-theme" => "r",
+                 title: I18n.t('service_call.forms.work_status.reject.tooltip'),
+                 rel:   'tooltip',
+                 confirm: I18n.t('service_call.forms.work_status.reject.confirmation')
+    %>
+<% end %>
+

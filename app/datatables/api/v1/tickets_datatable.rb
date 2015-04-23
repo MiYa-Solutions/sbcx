@@ -55,6 +55,21 @@ class Api::V1::TicketsDatatable < TicketsDatatable
           done_jobs_row(ticket)
         end
 
+      when 'customer_active_jobs'
+        tickets.map do |ticket|
+          customer_active_jobs_row(ticket)
+        end
+
+      when 'customer_overdue_jobs'
+        tickets.map do |ticket|
+          customer_overdue_jobs_row(ticket)
+        end
+
+      when 'all_jobs'
+        tickets.map do |ticket|
+          all_jobs_row(ticket)
+        end
+
       else
 
         tickets.map do |ticket|
@@ -143,4 +158,73 @@ class Api::V1::TicketsDatatable < TicketsDatatable
     }
 
   end
+
+  def customer_active_jobs_row(ticket)
+
+    {
+        ref_id:              ticket.ref_id,
+        name:                ticket.name,
+        human_name:          link_to(ticket.name, ticket),
+        status:              ticket.status_name,
+        billing_status:      ticket.billing_status_name,
+        human_status:        ticket.human_status_name,
+        created_at:          l(ticket.created_at),
+        total_price:         ticket.total_price.cents,
+        total_price_ccy_sym: ticket.total_price.currency.symbol,
+        work_status:         ticket.work_status_name,
+        human_work_status:   ticket.human_work_status_name
+
+    }
+
+  end
+
+  def customer_overdue_jobs_row(ticket)
+
+    {
+        ref_id:                   ticket.ref_id,
+        name:                     ticket.name,
+        human_name:               link_to(ticket.name, ticket),
+        status:                   ticket.status_name,
+        billing_status:           ticket.billing_status_name,
+        human_status:             ticket.human_status_name,
+        created_at:               l(ticket.created_at),
+        customer_balance:         ticket.customer_balance.cents,
+        customer_balance_ccy_sym: ticket.customer_balance.currency.symbol,
+        work_status:              ticket.work_status_name,
+        human_work_status:        ticket.human_work_status_name
+
+    }
+
+  end
+
+  def all_jobs_row(ticket)
+
+    {
+        id:                   ticket.id,
+        ref_id:               ticket.ref_id,
+        created_at:           l(ticket.created_at, format: :no_tz),
+        started_on:           ticket.started_on ? l(ticket.started_on,format: :no_tz) : '',
+        human_customer:       link_to(ticket.customer.name, ticket.customer),
+        human_name:           link_to(ticket.name, ticket),
+        human_provider:       link_to(ticket.provider.name, ticket.provider),
+        human_subcontractor:  ticket.subcontractor ? link_to(ticket.subcontractor.name, ticket.subcontractor) : '',
+        text:                 ticket.name,
+        status:               ticket.status_name,
+        human_status:         ticket.human_status_name,
+        human_work_status:    ticket.human_work_status_name,
+        work_status:          ticket.work_status_name,
+        human_billing_status: ticket.human_billing_status_name,
+        billing_status:       ticket.billing_status_name,
+        my_profit:            ticket.my_profit.cents,
+        my_profit_ccy_sym:    ticket.my_profit.currency.symbol,
+        total_price:          ticket.total_price.cents,
+        total_price_ccy_sym:  ticket.total_price.currency.symbol,
+        total_cost:           ticket.total_cost.cents,
+        total_cost_ccy_sym:   ticket.total_cost.currency.symbol,
+        tags:                 ticket.tag_list,
+        external_ref:         ticket.external_ref
+    }
+
+  end
+
 end

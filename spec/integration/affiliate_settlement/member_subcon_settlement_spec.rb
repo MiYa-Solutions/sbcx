@@ -25,7 +25,7 @@ describe 'Member Subcon Settlement' do
     end
 
     it 'subcon job: provider settlement is not allowed yet (need to complete the first)' do
-      expect(subcon_job.provider_status_events).to eq []
+      expect(subcon_job.provider_status_events).to_not include :settle
     end
 
     context 'after work completion' do
@@ -43,7 +43,7 @@ describe 'Member Subcon Settlement' do
       end
 
       it 'subcon job: provider settlement is allowed ' do
-        expect(subcon_job.provider_status_events).to eq [:provider_marked_as_settled, :settle]
+        expect(subcon_job.provider_status_events).to eq [:provider_marked_as_settled, :settle, :reopen]
         expect(event_permitted_for_job?('provider_status', 'provider_marked_as_settled', subcon_admin, subcon_job)).to be_false
         expect(event_permitted_for_job?('provider_status', 'settle', subcon_admin, subcon_job)).to be_true
       end
@@ -64,12 +64,12 @@ describe 'Member Subcon Settlement' do
         end
 
         it 'provider job: is able to confirm settlement' do
-          expect(job.subcontractor_status_events).to eq [:confirm_settled]
+          expect(job.subcontractor_status_events).to include :confirm_settled
           expect(event_permitted_for_job?('subcontractor_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
         end
 
         it 'subcon job: not allowed to mark the job as settlement confirmed' do
-          expect(subcon_job.provider_status_events).to eq [:provider_confirmed]
+          expect(subcon_job.provider_status_events).to include :provider_confirmed
           expect(event_permitted_for_job?('provider_status', 'provider_confirmed', subcon_admin, subcon_job)).to be_false
         end
 
@@ -96,12 +96,12 @@ describe 'Member Subcon Settlement' do
           end
 
           it 'provider job: subcon settlement clearing is not allowed for a user' do
-            expect(job.subcontractor_status_events).to eq [:clear]
+            expect(job.subcontractor_status_events).to include :clear
             expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
           end
 
           it 'subcon job: provider settlement is allowed' do
-            expect(subcon_job.provider_status_events).to eq [:clear]
+            expect(subcon_job.provider_status_events).to include :clear
             expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
           end
 
@@ -128,11 +128,11 @@ describe 'Member Subcon Settlement' do
             end
 
             it 'provider job: there are no more settlement events available' do
-              expect(job.subcontractor_status_events).to eq []
+              expect(job.subcontractor_status_events).to eq [:reopen]
             end
 
             it 'subcon job: there are no more settlement events available' do
-              expect(subcon_job.provider_status_events).to eq []
+              expect(subcon_job.provider_status_events).to eq [:reopen]
             end
 
           end
@@ -157,12 +157,12 @@ describe 'Member Subcon Settlement' do
         end
 
         it 'provider job: subcon settlement confirmation is not allowed for user' do
-          expect(job.subcontractor_status_events).to eq [:subcon_confirmed]
+          expect(job.subcontractor_status_events).to include :subcon_confirmed
           expect(event_permitted_for_job?('subcontractor_status', 'subcon_confirmed', subcon_admin, subcon_job)).to be_false
         end
 
         it 'subcon job: provider settlement confirmation is permitted for a user' do
-          expect(subcon_job.provider_status_events).to eq [:confirm_settled]
+          expect(subcon_job.provider_status_events).to include :confirm_settled
           expect(event_permitted_for_job?('provider_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
         end
 
@@ -189,12 +189,12 @@ describe 'Member Subcon Settlement' do
           end
 
           it 'provider job: subcon settlement clearing is not allowed for a user' do
-            expect(job.subcontractor_status_events).to eq [:clear]
+            expect(job.subcontractor_status_events).to include :clear
             expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
           end
 
           it 'subcon job: provider settlement clearing is allowed' do
-            expect(subcon_job.provider_status_events).to eq [:clear]
+            expect(subcon_job.provider_status_events).to include :clear
             expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
           end
 
@@ -220,12 +220,12 @@ describe 'Member Subcon Settlement' do
               expect(subcon_job.provider_status_name).to eq :cleared
             end
 
-            it 'provider job: no subcon settlement events are left' do
-              expect(job.subcontractor_status_events).to eq []
+            it 'provider job: no subcon settlement events are left exxcept for reopen' do
+              expect(job.subcontractor_status_events).to eq [:reopen]
             end
 
-            it 'subcon job: no provider settlement events are left' do
-              expect(subcon_job.provider_status_events).to eq []
+            it 'subcon job: no provider settlement events are left except for reopen' do
+              expect(subcon_job.provider_status_events).to eq [:reopen]
             end
 
           end
@@ -250,12 +250,12 @@ describe 'Member Subcon Settlement' do
         end
 
         it 'provider job: subcon settlement confirmation is allowed' do
-          expect(job.subcontractor_status_events).to eq [:confirm_settled]
+          expect(job.subcontractor_status_events).to include :confirm_settled
           expect(event_permitted_for_job?('subcontractor_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
         end
 
         it 'subcon job: provider settlement confirmation is not allowed for a user' do
-          expect(subcon_job.provider_status_events).to eq [:provider_confirmed]
+          expect(subcon_job.provider_status_events).to include :provider_confirmed
           expect(event_permitted_for_job?('provider_status', 'provider_confirmed', subcon_admin, subcon_job)).to be_false
         end
 
@@ -281,12 +281,12 @@ describe 'Member Subcon Settlement' do
             expect(subcon_job.provider_status_name).to eq :cleared
           end
 
-          it 'provider job: no subcon settlement events are left' do
-            expect(job.subcontractor_status_events).to eq []
+          it 'provider job: no subcon settlement events are left except for reopen' do
+            expect(job.subcontractor_status_events).to eq [:reopen]
           end
 
-          it 'subcon job: no provider settlement events are left' do
-            expect(subcon_job.provider_status_events).to eq []
+          it 'subcon job: no provider settlement events are left except for reopen' do
+            expect(subcon_job.provider_status_events).to eq [:reopen]
           end
 
           it 'subcon account balance for prov should be: zero' do
@@ -317,12 +317,12 @@ describe 'Member Subcon Settlement' do
         end
 
         it 'provider job: subcon settlement confirmation is NOT allowed' do
-          expect(job.subcontractor_status_events).to eq [:subcon_confirmed]
+          expect(job.subcontractor_status_events).to include :subcon_confirmed
           expect(event_permitted_for_job?('subcontractor_status', 'subcon_confirmed', subcon_admin, subcon_job)).to be_false
         end
 
         it 'subcon job: provider settlement confirmation is allowed' do
-          expect(subcon_job.provider_status_events).to eq [:confirm_settled]
+          expect(subcon_job.provider_status_events).to include :confirm_settled
           expect(event_permitted_for_job?('provider_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
         end
 
@@ -348,12 +348,12 @@ describe 'Member Subcon Settlement' do
             expect(subcon_job.provider_status_name).to eq :cleared
           end
 
-          it 'provider job: no subcon settlement events are left' do
-            expect(job.subcontractor_status_events).to eq []
+          it 'provider job: no subcon settlement events are left except for reopen' do
+            expect(job.subcontractor_status_events).to eq [:reopen]
           end
 
-          it 'subcon job: no provider settlement events are left' do
-            expect(subcon_job.provider_status_events).to eq []
+          it 'subcon job: no provider settlement events are left except for reopen' do
+            expect(subcon_job.provider_status_events).to eq [:reopen]
           end
 
           it 'subcon account balance for prov should be: zero' do
@@ -395,7 +395,7 @@ describe 'Member Subcon Settlement' do
     end
 
     it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
-      expect(subcon_job.provider_status_events).to eq []
+      expect(subcon_job.provider_status_events).to_not include [:settle]
     end
 
 
@@ -411,7 +411,7 @@ describe 'Member Subcon Settlement' do
       end
 
       it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
-        expect(subcon_job.provider_status_events).to eq []
+        expect(subcon_job.provider_status_events).to_not include [:settle]
       end
 
       context 'when confirming the deposit' do
@@ -426,7 +426,7 @@ describe 'Member Subcon Settlement' do
         end
 
         it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
-          expect(subcon_job.provider_status_events).to eq []
+          expect(subcon_job.provider_status_events).to_not include [:settle]
         end
 
         it 'subcon account balance for prov should be just the collection fee amount (100)' do
@@ -459,7 +459,8 @@ describe 'Member Subcon Settlement' do
           end
 
           it 'subcon job: provider settlement is not allowed yet (need to deposit the collection first)' do
-            expect(subcon_job.provider_status_events).to eq [:provider_marked_as_settled, :settle]
+            expect(subcon_job.provider_status_events).to include :provider_marked_as_settled
+            expect(subcon_job.provider_status_events).to include :settle
           end
 
           it 'subcon is not allowed to invoke provider_marked_as_settled ' do

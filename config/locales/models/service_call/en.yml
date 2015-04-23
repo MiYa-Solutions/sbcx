@@ -54,6 +54,7 @@ en:
             dispatched: "Dispatched"
             done: "Completed"
             pending: "Pending"
+            canceled: "Canceled"
         provider_status:
           evnets:
             provider_marked_as_settled: "Marked as Settled"

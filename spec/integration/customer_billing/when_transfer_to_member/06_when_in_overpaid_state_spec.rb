@@ -14,8 +14,8 @@ describe 'Billing when in process state' do
     job.payments.sort.last.deposit!
   end
 
-  it 'billing events should be :reimburse' do
-    expect(job.reload.billing_status_events.sort).to eq [:reimburse]
+  it 'billing events should be :reimburse, :reopen' do
+    expect(job.reload.billing_status_events.sort).to eq [:reimburse, :reopen]
   end
 
   it 'customer balance should be -100' do

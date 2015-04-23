@@ -1,10 +1,4 @@
-shared_context 'basic job testing' do
-
-  let(:org) { FactoryGirl.create(:member_org) }
-  let(:user) { org.users.first }
-  let(:job) { FactoryGirl.build(:my_job, organization: org) }
-  let(:org_admin) { org.users.admins.first }
-
+shared_context 'job methods' do
   def add_bom_to_job(ticket, options = {})
 
     cost     = options[:cost] || 10
@@ -20,6 +14,16 @@ shared_context 'basic job testing' do
                                      price:    price,
                                      quantity: quantity,
                                      buyer:    buyer)
+  end
+
+  def settle_with_subcon(job, options = {})
+    job.subcon_payment = options[:payment] || 'cash'
+    job.settle_subcon!
+  end
+
+  def settle_with_provider(job, options = {})
+    job.provider_payment = options[:payment] || 'cash'
+    job.settle_provider!
   end
 
   def start_the_job(job)
@@ -42,6 +46,10 @@ shared_context 'basic job testing' do
 
   def complete_the_work(job)
     job.complete_work!
+  end
+
+  def reopen_the_job(job)
+    job.reopen_work!
   end
 
   def collect_a_payment(job, options = {})
@@ -90,7 +98,7 @@ shared_context 'basic job testing' do
   end
 
   def reset_the_job(ticket)
-    ticket.un_cancel!
+    ticket.reset_work!
   end
 
   def add_technician(the_org, options = {})
@@ -98,8 +106,20 @@ shared_context 'basic job testing' do
     subcon.users << FactoryGirl.build(:my_technician)
   end
 
+  def un_cancel_the_job(ticket)
+    ticket.un_cancel!
+  end
 
-  alias_method :un_cancel_the_job, :reset_the_job
+end
+
+shared_context 'basic job testing' do
+
+  let(:org) { FactoryGirl.create(:member_org) }
+  let(:user) { org.users.first }
+  let(:job) { FactoryGirl.build(:my_job, organization: org) }
+  let(:org_admin) { org.users.admins.first }
+
+  include_context 'job methods'
 end
 
 shared_context 'transferred job' do
@@ -219,6 +239,10 @@ end
 
 def confirm_settled_prov(ticket)
   ticket.confirm_settled_provider!
+end
+
+def reject_the_job(ticket)
+  ticket.reject!
 end
 
 shared_context 'when canceling the job' do

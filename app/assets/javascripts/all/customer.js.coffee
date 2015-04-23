@@ -10,7 +10,7 @@ jQuery ->
     processing: true
     stateSave: true
     serverSide: true
-    sAjaxSource: '/service_calls/'
+    sAjaxSource: '/api/v1/service_calls.json'
 
     fnServerData: (sSource, aoData, fnCallback) ->
       aoData.push
@@ -33,6 +33,18 @@ jQuery ->
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
 
+    columns: [
+      {data: "ref_id", name: 'ref_id', className: 'ref_id'},
+      {data: "created_at", name: 'created_at', className: 'created_at'},
+      {data: "human_name", name: 'name', className: 'name'},
+      {data: "human_work_status", name: 'work_status', className: 'work_status' },
+      {data: "total_price", name: 'total_price', className: 'total_price' }
+    ]
+
+    fnRowCallback: (nRow, job, iDisplayIndex) ->
+      e = new App.DataTableJobsFormater
+      e.style(nRow, job)
+
   $('#customer-overdue-jobs').dataTable
     dom: "t<'row-fluid'<'span7'i><'span5'p>>"
     pagingType: 'simple'
@@ -44,7 +56,7 @@ jQuery ->
     processing: true
     stateSave: true
     serverSide: true
-    sAjaxSource: '/service_calls/'
+    sAjaxSource: '/api/v1/service_calls.json'
 
     fnServerData: (sSource, aoData, fnCallback) ->
       aoData.push
@@ -67,9 +79,22 @@ jQuery ->
       $.getJSON sSource, aoData, (json) ->
         fnCallback json
 
+    columns: [
+      {data: "ref_id", name: 'ref_id', className: 'ref_id'},
+      {data: "created_at", name: 'created_at', className: 'created_at'},
+      {data: "human_name", name: 'name', className: 'name'},
+      {data: "human_work_status", name: 'work_status', className: 'work_status' },
+      {data: "customer_balance", name: 'customer_balance', className: 'customer_balance' }
+    ]
+
+    fnRowCallback: (nRow, job, iDisplayIndex) ->
+      e = new App.DataTableJobsFormater
+      e.style(nRow, job)
+
+
   $('#customer-projects').dataTable
     dom: "t<'row-fluid'<'span7'i><'span5'p>>"
-    dom: "<'row-fluid'<'span6'f>r>tl<'row-fluid'<'span6'i><'span6'p>>"
+#    dom: "<'row-fluid'<'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
     pagingType: 'simple'
     iDisplayLength: 5
     aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2,3,4 ] }]

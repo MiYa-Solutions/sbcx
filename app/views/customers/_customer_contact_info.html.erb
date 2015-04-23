@@ -50,6 +50,10 @@
       <td></td>
       <td></td>
     </tr>
+    <tr>
+      <td><strong><%= Customer.human_attribute_name(:notes) %></strong><i class="icon-pencil"></i></td>
+      <td colspan="3"><%= best_in_place_if (permitted_attribute? @customer, :notes), @customer, :notes, type: :textarea, display_with: ->(v) { textilize(v).html_safe }, sanitize: false %></td>
+    </tr>
 
     </tbody>
   </table>

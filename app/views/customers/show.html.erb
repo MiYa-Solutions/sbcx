@@ -17,25 +17,6 @@
       <div class="span6 customer_show_right_column">
         <!--Contact Info-->
         <%= render :partial => 'customer_contact_info' %>
-        <!--Agreements-->
-        <!--<#% if @agreements.blank? %>-->
-
-            <!--<div class="row-fluid customer_agreements">-->
-
-             <!--<span class="alert alert-info" id="empty_agreement_notice">-->
-                    <!--<#%= I18n.t('general.messages.invite_member') %>-->
-               <!--<#%= button_tag I18n.t('general.general.new_agreement'), :class => 'btn btn-small btn-primary', id: 'new-agreement-button', data: { toggle: "collapse", target: "#add_new_agreement" } %>-->
-              <!--</span>-->
-              <!--<br><br>-->
-
-              <!--<div class="bom collapse" id="add_new_agreement">-->
-                <!--&lt;!&ndash;<#%= render 'agreements/agreement_form', other_party: @customer %>&ndash;&gt;-->
-              <!--</div>-->
-            <!--</div>-->
-
-        <!--<#% else %>-->
-            <!--<#%= render :partial => 'customer_agreements' %>-->
-        <%= render :partial => 'customer_jobs' %>
         <br>
         <%= render 'customer_projects' %>
 
@@ -44,19 +25,16 @@
 
 
       <div class="span6">
-
-              <%= render :partial => 'customer_balance' if @customer.account.present? %>
-              <%= render :partial => 'customer_overdue_jobs' %>
-              <!-- <#% unless @affiliate.service_calls.empty? %>-->
-              <!-- <#% end  %> -->
+        <%= render :partial => 'customer_balance' if @customer.account.present? %>
+        <%= render :partial => 'customer_overdue_jobs' %>
+        <%= render :partial => 'customer_jobs' %>
       </div>
 
 
-
-        <!--End row-->
+      <!--End row-->
+    </div>
   </div>
-</div>
 
-<!--End of Well-->
+  <!--End of Well-->
 </div>
 

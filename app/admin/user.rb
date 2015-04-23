@@ -1,4 +1,10 @@
 ActiveAdmin.register User do
+  filter :organization, collection: proc { Organization.where(subcontrax_member: true).all }
+  filter :roles
+  filter :name
+  filter :last_name
+  filter :phone
+
   index do
     column "ID" do |user|
       link_to user.id, admin_user_path(user)
@@ -23,9 +29,6 @@ ActiveAdmin.register User do
     column :zip
     column :work_phone
     column :time_zone
-
-
-
 
 
     actions :defaults => false do |user|
