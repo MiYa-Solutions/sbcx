@@ -5,6 +5,10 @@ en:
     billing_actions: "Billing Actions"
     work_actions: "Work Actions"
   service_call:
+    labels:
+      delete: 'Delete Job'
+    confirmations:
+      delete: 'Are you sure you would like to delete the job? Please note that all associated records like, invoices, recepits appointments etc. will be deleted as well'
     forms:
       subcontractor_status:
         mark_as_settled:

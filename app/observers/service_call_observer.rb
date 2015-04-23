@@ -71,10 +71,14 @@ class ServiceCallObserver < ActiveRecord::Observer
     service_call.events << ServiceCallCompleteEvent.new unless transition.args.first == :state_only
   end
 
-  # todo the unless clause doesn't seem safe in case other events happen after the corresponding one - revise
   def before_reject_work(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE reject \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.events << ServiceCallRejectEvent.new unless transition.args.first == :state_only
+  end
+
+  def after_accept_work(service_call, transition)
+    Rails.logger.debug { "invoked observer BEFORE accept_work \n #{service_call.inspect} \n #{transition.args.inspect}" }
+    service_call.events << ServiceCallAcceptedEvent.new unless transition.args.first == :state_only
   end
 
   def after_reopen_work(service_call, transition)

@@ -1,7 +1,7 @@
 module BomsAssociation
   extend ActiveSupport::Concern
   included do
-    has_many :boms, dependent: :destroy do
+    has_many :boms, dependent: :destroy, inverse_of: :ticket do
       def build(params)
         unless params[:buyer_id].nil? || params[:buyer_id].empty?
           buyer = params[:buyer_type].classify.constantize.find(params[:buyer_id])
@@ -18,13 +18,13 @@ module BomsAssociation
 
     attr_accessor :to_be_destroyed
     before_destroy :mark_as_destroyed, prepend: true
-
-    private
-
-    def mark_as_destroyed
-      self.to_be_destroyed = true
-    end
-
-
   end
+
+  private
+
+  def mark_as_destroyed
+    # self.to_be_destroyed = true
+    update_attribute(:to_be_destroyed, true)
+  end
+
 end

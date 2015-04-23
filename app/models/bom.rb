@@ -19,7 +19,7 @@
 #
 
 class Bom < ActiveRecord::Base
-  belongs_to :ticket
+  belongs_to :ticket, inverse_of: :boms
   belongs_to :material, with_deleted: true
   belongs_to :buyer, :polymorphic => true
   belongs_to :provider_bom, class_name: 'Bom'

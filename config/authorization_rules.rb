@@ -77,6 +77,11 @@ authorization do
   role :org_admin do
     includes :dispatcher
 
+    has_permission_on :service_calls, :to => :destroy do
+      if_attribute :organization_id => is { user.organization_id }
+    end
+
+
     has_permission_on :job_imports, to: [:new, :create]
     has_permission_on :invites, to: :new
     has_permission_on :settings, to: [:show, :update]

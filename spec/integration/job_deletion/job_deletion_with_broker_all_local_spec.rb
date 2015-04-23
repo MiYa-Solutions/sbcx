@@ -36,20 +36,18 @@ describe 'Job deletion with broker all local', skip_basic_job: true do
     end
 
     context 'when destroying the job' do
-      before do
-        broker_job.destroy
-      end
 
       it 'the job boms should be delete' do
-        expect(Bom.count).to eq 0
+        expect{broker_job.destroy}.to change(Bom, :count).by(-2)
       end
 
       it 'the events should be deleted' do
-        expect(Event.count).to eq 0
+        expect{broker_job.destroy}.to change(Event, :count).by(-4)
       end
 
       it 'the notifications should be deleted' do
-        expect(Notification.count).to eq 0
+        expect{broker_job.destroy}.to change(Notification, :count).by(-1)
+
       end
 
     end
