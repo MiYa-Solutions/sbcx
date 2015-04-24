@@ -77,8 +77,8 @@ authorization do
   role :org_admin do
     includes :dispatcher
 
-    has_permission_on :service_calls, :to => :destroy do
-      if_attribute :organization_id => is { user.organization_id }
+    has_permission_on [:service_calls, :my_service_calls, :subcon_service_calls, :broker_service_calls], :to => :destroy do
+      if_attribute :organization_id => is { user.organization_id }, :all_affiliates_local? => is { true }
     end
 
 

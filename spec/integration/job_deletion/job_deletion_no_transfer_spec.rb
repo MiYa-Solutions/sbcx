@@ -5,12 +5,12 @@ describe 'Job deletion (no transfer)' do
   include_context 'basic job testing'
 
   before do
-        org.users << FactoryGirl.build(:my_technician)
-        job.save!
+    org.users << FactoryGirl.build(:my_technician)
+    job.save!
   end
 
   it 'deletion should be successful' do
-    expect { job.destroy }.to change(Ticket, :count).by(-1)
+    expect { delete_the_ticket(job) }.to change(Ticket, :count).by(-1)
   end
 
   context 'when adding boms and starting the job' do
@@ -21,26 +21,29 @@ describe 'Job deletion (no transfer)' do
       start_the_job job
     end
 
-    it 'should destroy appointments when destroying the job' do
-      job.appointments << Appointment.new(starts_at: 1.day.from_now, ends_at: (1.day.from_now.to_time + 1.hours).to_datetime)
-      expect {job.destroy}.to change(Appointment, :count).by(-1)
-    end
 
     context 'when destroying the job' do
-      before do
-        job.destroy
+
+      it 'should destroy appointments when destroying the job' do
+        job.appointments << Appointment.new(starts_at: 1.day.from_now, ends_at: (1.day.from_now.to_time + 1.hours).to_datetime)
+        expect { delete_the_ticket(job) }.to change(Appointment, :count).by(-1)
       end
 
       it 'the job boms should be delete' do
-        expect(Bom.count).to eq 0
+        expect { delete_the_ticket(job) }.to change(Bom, :count).by(-2)
       end
 
       it 'the events should be deleted' do
-        expect(Event.count).to eq 0
+        event_types = job.events.map(&:type)
+        expect { delete_the_ticket(job) }.to change(Event.where(type: event_types), :count).by(-event_types.size)
       end
 
       it 'the notifications should be deleted' do
-        expect(Notification.count).to eq 0
+        expect { delete_the_ticket(job) }.to change(Notification, :count).by(-2)
+      end
+
+      it 'should log an event under the organization' do
+        expect { delete_the_ticket(job) }.to change(org.events.where(type: 'TicketDeletionEvent'), :size).by(1)
       end
 
     end
@@ -61,7 +64,7 @@ describe 'Job deletion (no transfer)' do
 
       context 'when destroying the job' do
         before do
-          job.destroy
+          delete_the_ticket(job)
         end
 
         it 'accounting entries should be deleted' do

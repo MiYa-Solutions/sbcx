@@ -111,8 +111,8 @@ class ServiceCallsController < ApplicationController
   end
 
   def destroy
-    if @service_call.destroy
-      # todo add event to organization to log the service call deletion
+
+    if TicketDeletionService.new(@service_call).execute
       redirect_to service_calls_path
     else
       redirect_to @service_call

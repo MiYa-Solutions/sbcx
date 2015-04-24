@@ -110,6 +110,10 @@ shared_context 'job methods' do
     ticket.un_cancel!
   end
 
+  def delete_the_ticket(ticket)
+    TicketDeletionService.new(ticket).execute
+  end
+
 end
 
 shared_context 'basic job testing' do

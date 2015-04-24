@@ -193,14 +193,16 @@
       </li>
       <li></li>
     </ul>
-    <ul class="unstyled ">
-      <li>
-        <%= link_to I18n.t('service_call.labels.delete'), @service_call,
-                    method: :delete,
-                    class: 'btn btn-danger',
-                    confirm: I18n.t('service_call.confirmations.delete') %>
-      </li>
-    </ul>
+    <% if permitted_to? :destroy, @service_call %>
+        <ul class="unstyled ">
+          <li>
+            <%= link_to I18n.t('service_call.labels.delete'), @service_call,
+                        method:  :delete,
+                        class:   'btn btn-danger',
+                        confirm: I18n.t('service_call.confirmations.delete') %>
+          </li>
+        </ul>
+    <% end %>
 
 
   </div>

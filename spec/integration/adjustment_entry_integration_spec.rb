@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'Adjustment Entry Integration' do
+  self.use_transactional_fixtures = false
+
   include_context 'adjustment shared tests'
 
   it 'entry created successfully' do

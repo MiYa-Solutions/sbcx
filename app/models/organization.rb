@@ -74,7 +74,7 @@ class Organization < ActiveRecord::Base
   has_many :service_calls, :inverse_of => :organization
   has_many :tickets, :inverse_of => :organization
   has_many :projects, :inverse_of => :organization
-  has_many :events, as: :eventable
+  has_many :events, as: :eventable, :order => 'id DESC'
   has_many :materials
   has_many :accounts
   belongs_to :parent_org, class_name: 'Organization', foreign_key: 'parent_org_id'

@@ -30,25 +30,23 @@ describe 'Job deletion with broker all local', skip_basic_job: true do
       start_the_job broker_job
     end
 
-    it 'should destroy appointments when destroying the job' do
-      job.appointments << Appointment.new(starts_at: 1.day.from_now, ends_at: (1.day.from_now.to_time + 1.hours).to_datetime)
-      expect {job.destroy}.to change(Appointment, :count).by(-1)
-    end
 
     context 'when destroying the job' do
 
+      it 'should destroy appointments when destroying the job' do
+        job.appointments << Appointment.new(starts_at: 1.day.from_now, ends_at: (1.day.from_now.to_time + 1.hours).to_datetime)
+        expect {delete_the_ticket(job)}.to change(Appointment, :count).by(-1)
+      end
+
       it 'the job boms should be delete' do
-        expect{broker_job.destroy}.to change(Bom, :count).by(-2)
+        expect{delete_the_ticket(broker_job)}.to change(Bom, :count).by(-2)
       end
 
       it 'the events should be deleted' do
-        expect{broker_job.destroy}.to change(Event, :count).by(-4)
+        event_types = broker_job.events.map(&:type)
+        expect { delete_the_ticket(broker_job) }.to change(Event.where(type: event_types), :count).by(-event_types.size)
       end
 
-      it 'the notifications should be deleted' do
-        expect{broker_job.destroy}.to change(Notification, :count).by(-1)
-
-      end
 
     end
 
@@ -72,7 +70,7 @@ describe 'Job deletion with broker all local', skip_basic_job: true do
 
       context 'when destroying the job' do
         before do
-          broker_job.destroy
+          delete_the_ticket(broker_job)
         end
 
         it 'accounting entries should be deleted' do

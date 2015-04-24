@@ -3,6 +3,10 @@ en:
     name: "Welcome!"
     description: '%{name}, congratulations and welcome to SubConTraX'
 
+  ticket_deletion_event:
+    name: "Deleted Ticket"
+    description: 'Deleted ticket ref %{ref}. Following are the details of the deleted record: %{data}'
+
   service_call_accept_event:
     name: "Job has been Accepted"
     description: "You have accepted the the transferred job"
