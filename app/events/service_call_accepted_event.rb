@@ -18,7 +18,7 @@ class ServiceCallAcceptedEvent < ServiceCallEvent
     # it is assumed that if the subcontractor is a member this event is generated as a result of that member accepting the service call
     # if the subcontractor is not a member, therefore it is assumed this event is triggered by the provider on behalf of a local
     # subcontractor and therefore there is no need to trigger the event again
-    service_call.accept_work if service_call.subcontractor.subcontrax_member?
+    service_call.accept_work(:state_only) if service_call.subcontractor.subcontrax_member?
     super
   end
 

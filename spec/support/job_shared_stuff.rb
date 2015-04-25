@@ -110,6 +110,10 @@ shared_context 'job methods' do
     ticket.un_cancel!
   end
 
+  def delete_the_ticket(ticket)
+    TicketDeletionService.new(ticket).execute
+  end
+
 end
 
 shared_context 'basic job testing' do
@@ -117,6 +121,7 @@ shared_context 'basic job testing' do
   let(:org) { FactoryGirl.create(:member_org) }
   let(:user) { org.users.first }
   let(:job) { FactoryGirl.build(:my_job, organization: org) }
+  let(:customer) { job.customer }
   let(:org_admin) { org.users.admins.first }
 
   include_context 'job methods'

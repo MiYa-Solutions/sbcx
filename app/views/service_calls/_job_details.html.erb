@@ -180,7 +180,6 @@
 
   <div class="row-fluid note_area_job">
 
-
     <ul class="unstyled ">
       <li><label class=""><strong><%= @service_call.class.human_attribute_name(:notes) %></strong>
         <%= image_tag("question16.png", :title => I18n.t('general.messages.add_note'), :rel => 'tooltip') %>
@@ -194,6 +193,16 @@
       </li>
       <li></li>
     </ul>
+    <% if permitted_to? :destroy, @service_call %>
+        <ul class="unstyled ">
+          <li>
+            <%= link_to I18n.t('service_call.labels.delete'), @service_call,
+                        method:  :delete,
+                        class:   'btn btn-danger',
+                        confirm: I18n.t('service_call.confirmations.delete') %>
+          </li>
+        </ul>
+    <% end %>
 
 
   </div>

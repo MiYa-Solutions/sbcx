@@ -60,6 +60,8 @@ class Ticket < ActiveRecord::Base
   include CustomerCreator
   include InvoiceableTicket
   include Forms::TicketProjectForm
+  include BomsAssociation
+  include AccountingEntriesAssociation
 
   serialize :properties, ActiveRecord::Coders::Hstore
   monetize :subcon_fee_cents
@@ -69,33 +71,19 @@ class Ticket < ActiveRecord::Base
   belongs_to :provider
   belongs_to :payment
   belongs_to :technician, class_name: User
-  has_many :events, as: :eventable, :order => 'id DESC'
+  has_many :events, as: :eventable, :order => 'id DESC', dependent: :destroy
   has_many :custom_events, as: :eventable, :order => 'id DESC', class_name: 'CustomEvent', table_name: 'events'
-  has_many :notifications, as: :notifiable
-  has_many :boms do
-    def build(params)
-      unless params[:buyer_id].nil? || params[:buyer_id].empty?
-        buyer = params[:buyer_type].classify.constantize.find(params[:buyer_id])
-      end
-      params.delete(:buyer_id)
-      params.delete(:buyer_type)
-
-      bom        = Bom.new(params)
-      bom.buyer  = buyer
-      bom.ticket = proxy_association.owner
-      bom
-    end
-  end
+  has_many :notifications, as: :notifiable, dependent: :destroy
   belongs_to :collector, :polymorphic => true
-  has_many :appointments, as: :appointable, finder_sql: proc { "SELECT appointments.* FROM appointments WHERE appointments.appointable_id = #{id} AND appointments.appointable_type = '#{self.class.name}'" }
-  has_many :accounting_entries
+  has_many :appointments, as: :appointable,
+           finder_sql: proc { "SELECT appointments.* FROM appointments WHERE appointments.appointable_id = #{id} AND appointments.appointable_type = '#{self.class.name}'" },
+           dependent: :destroy
 
   has_many :taggings, as: :taggable
   has_many :tags, through: :taggings
   belongs_to :subcon_agreement, class_name: 'Agreement'
   belongs_to :provider_agreement, class_name: 'Agreement'
 
-  alias_method :entries, :accounting_entries
 
   scope :created_after, ->(prov, subcon, after) { where("provider_id = #{prov.id} AND subcontractor_id = #{subcon.id} and created_at > '#{after}'") }
   scope :affiliated_jobs, ->(org, affiliate) { where(organization_id: org.id) & (where(provider_id: affiliate.id) | where(subcontractor_id: affiliate.id)) }
@@ -448,47 +436,6 @@ class Ticket < ActiveRecord::Base
     total
 
   end
-
-  def subcon_entries
-    if subcontractor
-      acc = Account.for_affiliate(organization, subcontractor).first
-      acc ? entries.by_acc(acc) : AccountingEntry.none
-    else
-      AccountingEntry.none
-    end
-  end
-
-  def active_subcon_entries
-    subcon_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
-  end
-
-
-  def provider_entries
-    if provider
-      acc = Account.for_affiliate(organization, provider).first
-      acc ? entries.by_acc(acc) : AccountingEntry.none
-    else
-      AccountingEntry.none
-    end
-  end
-
-  def active_provider_entries
-    provider_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
-  end
-
-  def customer_entries
-    if customer
-      acc = Account.for_customer(customer).first
-      acc ? entries.by_acc(acc) : AccountingEntry.none
-    else
-      AccountingEntry.none
-    end
-  end
-
-  def active_customer_entries
-    customer_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, CustomerPayment::STATUS_REJECTED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
-  end
-
 
   def counterparty
     case my_role

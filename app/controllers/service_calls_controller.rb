@@ -52,8 +52,7 @@ class ServiceCallsController < ApplicationController
     store_location
   end
 
-  def
-  create
+  def create
 
     respond_to do |format|
       sanitize_mobile_tag_list if request.format == 'mobile'
@@ -109,6 +108,16 @@ class ServiceCallsController < ApplicationController
         format.json { respond_bip_error @service_call.becomes(ServiceCall) }
       end
     end
+  end
+
+  def destroy
+
+    if TicketDeletionService.new(@service_call).execute
+      redirect_to service_calls_path
+    else
+      redirect_to @service_call
+    end
+
   end
 
 

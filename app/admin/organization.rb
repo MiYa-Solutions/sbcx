@@ -2,6 +2,8 @@ ActiveAdmin.register Organization do
   scope :members
   scope :all
 
+  filter :subcontrax_member
+
   #filter :subcontrax_member
   filter :name
   filter :created_at
@@ -55,6 +57,17 @@ ActiveAdmin.register Organization do
       row :state
       row :country
       row :zip
+    end
+    panel 'Events' do
+      paginated_collection(organization.events.page(params[:events_page]).per(5), param_name: 'events_page') do
+
+        table_for collection do |event|
+          column("Name") { |event| event.name }
+          column("Created At") { |event| event.created_at }
+          column("Created By") { |event| event.creator.name }
+          column("Description") { |event| event.description }
+        end
+      end
     end
     active_admin_comments
   end

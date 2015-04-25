@@ -22,7 +22,7 @@ class ScCancelTransferEvent < ServiceCallEvent
   end
 
   def process_event
-    service_call.reset_work!
+    service_call.reset_work! if service_call.can_reset_work?
     service_call.cancel_subcon_collection! if defined?(service_call.can_cancel_subcon_collection?) && service_call.can_cancel_subcon_collection?
     service_call.cancel_subcon! if service_call.can_cancel_subcon?
     invoke_affiliate_billing

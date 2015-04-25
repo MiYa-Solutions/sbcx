@@ -37,5 +37,9 @@ ActiveAdmin.register User do
 
   end
 
+  # show do |u|
+  #
+  # end
+  #
 
 end
