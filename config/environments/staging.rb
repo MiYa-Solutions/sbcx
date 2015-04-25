@@ -49,7 +49,7 @@ Sbcx::Application.configure do
   #config.assets.paths << "#{Rails.root}/app/assets/media/swf"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile                 += %w( mobile.js mobile.css )
+  config.assets.precompile                 +=  %w( mobile.js mobile.css active_admin.css active_admin.js active_admin/print.css)
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
