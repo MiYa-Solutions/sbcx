@@ -38,10 +38,22 @@ class ServiceCallsController < ApplicationController
   def show
     store_location
     respond_to do |format|
-      format.html do
+      format.any(:html, :mobile) do
         @customer = Customer.new
         @bom      = Bom.new
       end
+      format.pdf do
+        partial = params[:template].present? ? params[:template] : 'show'
+        render pdf:                    "job_#{@service_call.id}",
+               layout:                 'service_calls',
+               template:               "service_calls/#{partial}.pdf",
+               footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
+               header:                 { html: { template: 'layouts/_header.pdf.erb' } },
+               disable_internal_links: false
+
+
+      end
+
     end
 
   end
