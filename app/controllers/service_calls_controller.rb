@@ -38,10 +38,22 @@ class ServiceCallsController < ApplicationController
   def show
     store_location
     respond_to do |format|
-      format.html do
+      format.any(:html, :mobile) do
         @customer = Customer.new
         @bom      = Bom.new
       end
+      format.pdf do
+        partial = params[:template].present? ? params[:template] : 'show'
+        render pdf:                    "job_#{@service_call.id}",
+               layout:                 'service_calls',
+               template:               "service_calls/#{partial}.pdf",
+               footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
+               header:                 { html: { template: 'layouts/_header.pdf.erb' } },
+               disable_internal_links: false
+
+
+      end
+
     end
 
   end
@@ -113,8 +125,10 @@ class ServiceCallsController < ApplicationController
   def destroy
 
     if TicketDeletionService.new(@service_call).execute
+      flash[:success] = t('service_call.crud_messages.destroy.success')
       redirect_to service_calls_path
     else
+      flash[:error] = t('service_call.crud_messages.destroy.error',msg: @service_call.errors.full_messages )
       redirect_to @service_call
     end
 

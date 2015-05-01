@@ -1,0 +1,16 @@
+<% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}") %>
+
+<div class="title_label job_title">
+  <ul>
+    <li>
+      <h1 id="job_name_show"><%= best_in_place @service_call.becomes(ServiceCall), :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1>
+    </li>
+
+    <!--<li id="external_job_id">-->
+
+    <!--</li>-->
+    <li></li>
+    <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1></li>
+  </ul>
+</div>
+
