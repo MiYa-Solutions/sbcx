@@ -2,11 +2,11 @@
 
 <div class="title_label job_title">
   <ul>
-    <li>
-      <%= link_to service_call_path(@service_call, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>
-          <i class="icon-download-alt icon-white"></i>
-      <% end %>
-    </li>
+    <!--<li>-->
+      <!--<#%= link_to service_call_path(@service_call, format: :pdf), :class => 'btn btn-primary btn-mini', :target => '_blank' do %>-->
+          <!--<i class="icon-download-alt icon-white"></i>-->
+      <!--<#% end %>-->
+    <!--</li>-->
 
     <li>
       <h1 id="job_name_show"><%= best_in_place @service_call.becomes(ServiceCall), :name %>&nbsp;<i class="icon-pencil icon-white"></i>
