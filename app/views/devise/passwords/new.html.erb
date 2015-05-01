@@ -1,43 +1,45 @@
-<div class="background_welcome">
-</div>
+<div class="welcomepage_frame">
+  <br>
 
-<div class="row-fluid">
-  <div class="span1"></div>
-  <div class="span10">
-    <div class="well well_signin">
-
-
-      <div class="smart_label">
-        <ul>
-          <li><h1><%= I18n.t('general.message.forgot_pass') %></h1></li>
-          <li>
-          </li>
-        </ul>
-      </div>
-
-      <br>
-
-      <div class="row-fluid">
-        <div class="span6">
-
-          <p class="p_align">Enter you email address and click on the button below to receive instructions on how to reset your password. </p>
-
-          <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }, :html => { :class => 'form-horizontal' }) do |f| %>
-              <%= f.error_notification %>
-              <%= f.input :email, "type" => "email", :required => true %>
+  <div class="row-fluid">
+    <div class="span1"></div>
+    <div class="span10">
+      <div class="well well_signin">
 
 
-              <div class="form-actions">
-                <%= f.button :submit, I18n.t('general.general.send_inst'), :class => 'btn btn-large btn-primary' %>
-
-              </div>
-
-          <% end %>
-
+        <div class="smart_label">
+          <ul>
+            <li><h1><%= I18n.t('general.message.forgot_pass') %></h1></li>
+            <li>
+            </li>
+          </ul>
         </div>
+
+        <br>
+
+        <div class="row-fluid">
+          <div class="span6">
+
+            <p class="p_align">Enter you email address and click on the button below to receive instructions on how to
+              reset your password. </p>
+
+            <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }, :html => { :class => 'form-horizontal' }) do |f| %>
+                <%= f.error_notification %>
+                <%= f.input :email, "type" => "email", :required => true %>
+
+
+                <div class="form-actions">
+                  <%= f.button :submit, I18n.t('general.general.send_inst'), :class => 'btn btn-large btn-primary' %>
+
+                </div>
+
+            <% end %>
+
+          </div>
+        </div>
+
       </div>
 
     </div>
-
   </div>
 </div>

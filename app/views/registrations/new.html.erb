@@ -1,113 +1,114 @@
 <% provide(:title, "sign-up") %>
 
-<div class="background_welcome">
-</div>
+<div class="welcomepage_frame">
+  <br>
 
-<div class="row-fluid">
-  <div class="span1"></div>
-  <div class="span10">
+  <div class="row-fluid">
+    <div class="span1"></div>
+    <div class="span10">
 
 
-    <div class="well">
+      <div class="well">
 
-      <div class="row-fluid">
-        <div class="smart_label">
-          <h1>Register for a new account</h1>
+        <div class="row-fluid">
+          <div class="smart_label">
+            <h1>Register for a new account</h1>
+          </div>
+          <br>
         </div>
-        <br>
-      </div>
 
-      <% resource.build_organization %>
-      <%= simple_form_for(resource, :html => { :class => 'form-horizontal' }, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+        <% resource.build_organization %>
+        <%= simple_form_for(resource, :html => { :class => 'form-horizontal' }, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
 
-          <div class="sign-up">
-            <div class="row-fluid">
-
-
-              <% if f.object.errors.any? %>
-                  <div class="alert alert-block alert-error">
-                    <a class="close" data-dismiss="alert" href="#">×</a>
-                    <%= devise_error_messages! %>
-                  </div>
-              <% end %>
-
-              <div class="span6 right_block">
-
-                <div class="alert alert-info">
-                  <h4>Login Information:</h4>
-                  </br>
-
-                  <%= f.input :email, required: true, hint: 'Email address is also your new user name' %>
-                  <%= f.input :password, required: true %>
-                  <%= f.input :password_confirmation, required: true, label: 'Confirm Password' %>
-
-                </div>
-
-                <div class="alert alert-info bottom_block">
-
-                  <h4>User Information:</h4>  </br>
-                  <%= f.input :first_name %>
-                  <%= f.input :last_name %>
-                  <%= f.input :phone %>
-                  <%= f.input :mobile_phone %>
-                  <%= f.input :work_phone %>
-                </div>
-
-              </div>
-
-              <div class="span6 left_block">
-                <div class="alert alert-info left_blc_frame">
-
-                  <h4>Company/Organization Information:</h4>  </br>
-                  <%= f.simple_fields_for :organization_attributes, @organization do |fo| %>
-                      <%= render 'organizations/fields', f: fo %>
-                  <% end %>
-
-
-                </div>
-              </div>
-
-
-            </div>
-
-
-            <div class="form-actions">
+            <div class="sign-up">
               <div class="row-fluid">
-                <div class="span8">
 
-                  <%= link_to 'Back', root_path, :class => 'btn btn-large', id: 'back_from_sign_up' %>
-                  <%= f.submit "Sign up", :class => 'btn btn-large btn-primary', id: 'sign_up_btn' %>
-                  <p>
-                    By signing up, you accept SubConTraX's
-                    <strong><%= link_to 'Terms', '', "data-toggle" => "modal", "data-target" => "#termsModal" %></strong>
-                    of use and
-                    <strong><%= link_to 'Privacy', '', "data-toggle" => "modal", "data-target" => "#privacyModal" %></strong>
-                    policy.
-                  </p>
+
+                <% if f.object.errors.any? %>
+                    <div class="alert alert-block alert-error">
+                      <a class="close" data-dismiss="alert" href="#">×</a>
+                      <%= devise_error_messages! %>
+                    </div>
+                <% end %>
+
+                <div class="span6 right_block">
+
+                  <div class="alert alert-info">
+                    <h4>Login Information:</h4>
+                    </br>
+
+                    <%= f.input :email, required: true, hint: 'Email address is also your new user name' %>
+                    <%= f.input :password, required: true %>
+                    <%= f.input :password_confirmation, required: true, label: 'Confirm Password' %>
+
+                  </div>
+
+                  <div class="alert alert-info bottom_block">
+
+                    <h4>User Information:</h4>  </br>
+                    <%= f.input :first_name %>
+                    <%= f.input :last_name %>
+                    <%= f.input :phone %>
+                    <%= f.input :mobile_phone %>
+                    <%= f.input :work_phone %>
+                  </div>
+
                 </div>
 
-                <div class="span4">
-                  <strong>Recommended Browsers</strong>
+                <div class="span6 left_block">
+                  <div class="alert alert-info left_blc_frame">
 
-                  <p>For optimal performance of SubConTraX, we recommend using one of the browsers listed below:</p>
-                  <%= image_tag "firefox64.png" %><%= image_tag "chrome64.png" %>
+                    <h4>Company/Organization Information:</h4>  </br>
+                    <%= f.simple_fields_for :organization_attributes, @organization do |fo| %>
+                        <%= render 'organizations/fields', f: fo %>
+                    <% end %>
 
+
+                  </div>
                 </div>
+
 
               </div>
-            </div>
-
-      <% end %>
 
 
+              <div class="form-actions">
+                <div class="row-fluid">
+                  <div class="span8">
 
+                    <%= link_to 'Back', root_path, :class => 'btn btn-large', id: 'back_from_sign_up' %>
+                    <%= f.submit "Sign up", :class => 'btn btn-large btn-primary', id: 'sign_up_btn' %>
+                    <p>
+                      By signing up, you accept SubConTraX's
+                      <strong><%= link_to 'Terms', '', "data-toggle" => "modal", "data-target" => "#termsModal" %></strong>
+                      of use and
+                      <strong><%= link_to 'Privacy', '', "data-toggle" => "modal", "data-target" => "#privacyModal" %></strong>
+                      policy.
+                    </p>
+                  </div>
+
+                  <div class="span4">
+                    <strong>Recommended Browsers</strong>
+
+                    <p>For optimal performance of SubConTraX, we recommend using one of the browsers listed below:</p>
+                    <%= image_tag "firefox64.png" %><%= image_tag "chrome64.png" %>
+
+                  </div>
+
+                </div>
+              </div>
+
+        <% end %>
+
+
+
+        </div>
       </div>
+
+
+      <%= render 'terms' %>
+      <%= render 'privacy' %>
+
+
     </div>
-
-
-    <%= render 'terms' %>
-    <%= render 'privacy' %>
-
-
   </div>
 </div>
