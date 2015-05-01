@@ -125,8 +125,10 @@ class ServiceCallsController < ApplicationController
   def destroy
 
     if TicketDeletionService.new(@service_call).execute
+      flash[:success] = t('service_call.crud_messages.destroy.success')
       redirect_to service_calls_path
     else
+      flash[:error] = t('service_call.crud_messages.destroy.error',msg: @service_call.errors.full_messages )
       redirect_to @service_call
     end
 

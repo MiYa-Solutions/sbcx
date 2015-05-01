@@ -156,6 +156,9 @@ en:
       update:
         success: "The Job was updated successfully"
         error: 'An error encountered while updating the job: %{msg}'
+      destroy:
+        success: "The Job was deleted successfully"
+        error: 'An error encountered while deleting the job: %{msg}'
   service_call_cancel_event:
     name: "Job has been Canceled"
     description: 'The Job has been canceled by %{user}'
