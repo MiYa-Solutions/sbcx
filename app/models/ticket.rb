@@ -120,8 +120,8 @@ class Ticket < ActiveRecord::Base
   validates_numericality_of :tax
   validates_email_format_of :email, allow_nil: true, allow_blank: true
 
-  validates_uniqueness_of :external_ref, scope: :organization_id, allow_blank: false, if: :validate_external_ref?
-  validates_presence_of :external_ref, if: :validate_external_ref?
+  validates_uniqueness_of :external_ref, scope: :organization_id, allow_blank: true, allow_nil: true, if: :validate_external_ref_unique?
+  validates_presence_of :external_ref,  scope: :organization_id, if: :validate_external_ref?
 
   validate :check_project_owner, if: ->(t) { t.project_id }
 
@@ -579,6 +579,10 @@ class Ticket < ActiveRecord::Base
 
   def validate_external_ref?
     self.organization && self.organization.settings.validate_job_ext_ref?
+  end
+
+  def validate_external_ref_unique?
+    self.organization && self.organization.settings.external_ref_unique?
   end
 
 end

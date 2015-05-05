@@ -1,5 +1,6 @@
 <%= simple_form_for @org_settings, url: org_settings_path, method: 'put' do |f| %>
     <%= f.input :default_tax %>
     <%= f.input :validate_job_ext_ref, as: :boolean %>
+    <%= f.input :external_ref_unique, as: :boolean %>
     <%= f.submit %>
 <% end %>

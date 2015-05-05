@@ -3,4 +3,5 @@ en:
     attributes:
       org_settings:
         default_tax: Default Tax
-        validate_job_ext_ref: Validate Job External Reference
+        validate_job_ext_ref: Make Job External Reference Mandatory
+        external_ref_unique: Validate Job External Reference Is Unique

@@ -24,6 +24,10 @@ describe OrgSettings do
     expect(org_settings).to respond_to :validate_job_ext_ref
   end
 
+  it 'should respond to external_ref_unique' do
+    expect(org_settings).to respond_to :external_ref_unique
+  end
+
   it 'should respond to validate_job_ext_ref=' do
     expect(org_settings).to respond_to 'validate_job_ext_ref='
   end
@@ -35,6 +39,7 @@ describe OrgSettings do
   it 'translation is working' do
     expect(OrgSettings.human_attribute_name(:default_tax)).to eq I18n.t('activemodel.attributes.org_settings.default_tax')
     expect(OrgSettings.human_attribute_name(:validate_job_ext_ref)).to eq I18n.t('activemodel.attributes.org_settings.validate_job_ext_ref')
+    expect(OrgSettings.human_attribute_name(:external_ref_unique)).to eq I18n.t('activemodel.attributes.org_settings.external_ref_unique')
   end
 
 
