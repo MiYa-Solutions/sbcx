@@ -150,26 +150,16 @@ class AffiliatePostingRule < PostingRule
   def cparty_settlement_entries
     result = []
 
-    # charge_amount    = AccountingEntry.where(type: IncomeFromProvider, ticket_id: @ticket.id).sum(:amount_cents)
-    # bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursement, ticket_id: @ticket.id).sum(:amount_cents)
-    # payments         = AffiliateSettlementEntry.where(ticket_id: @ticket.id).sum(:amount_cents)
-    # payment_fee = AccountingEntry.where(type: ['CashPaymentFee', 'CreditPaymentFee', 'AmexPaymentFee', 'ChequePaymentFee'], ticket_id: @ticket.id).sum(:amount_cents)
-    # adj_amount  = AccountingEntry.where(type: AdjustmentEntry.descendants.map(&:name), ticket_id: @ticket.id, account_id: @account.id).sum(:amount_cents)
 
-    # total = Money.new(charge_amount + bom_reimu_amount + payment_fee + adj_amount + payments)
-    cents = AccountingEntry.where(account_id: @account.id, ticket_id: @ticket.id).sum(:amount_cents)
-    total = Money.new(cents)
-
-
-    case @ticket.provider_payment
+    case @event.payment_type
       when 'cash'
-        result << CashPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << CashPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Cash payment from affiliate")
       when 'credit_card'
-        result << CreditPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << CreditPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Credit card payment from affiliate")
       when 'amex_credit_card'
-        result << AmexPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << AmexPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "AMEX payment from affiliate")
       when 'cheque'
-        result << ChequePaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << ChequePaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Check payment from affiliate")
       else
 
     end
@@ -258,25 +248,23 @@ class AffiliatePostingRule < PostingRule
   def org_settlement_entries
     result = []
 
-    # charge_amount    = AccountingEntry.where(type: PaymentToSubcontractor, ticket_id: @ticket.id).sum(:amount_cents)
-    # bom_reimu_amount = AccountingEntry.where(type: MaterialReimbursementToCparty, ticket_id: @ticket.id).sum(:amount_cents)
-    # payments         = AffiliateSettlementEntry.where(ticket_id: @ticket.id).sum(:amount_cents)
-    # payment_fee      = AccountingEntry.where(type: ['ReimbursementForCashPayment', 'ReimbursementForCreditPayment', 'ReimbursementForAmexPayment', 'ReimbursementForChequePayment'], ticket_id: @ticket.id).sum(:amount_cents)
-    # adj_amount       = AccountingEntry.where(type: AdjustmentEntry.descendants.map(&:name), ticket_id: @ticket.id, account_id: @account.id).sum(:amount_cents)
-    #
-    # total = Money.new(charge_amount + bom_reimu_amount + payment_fee + adj_amount +  payments)
-    cents = AccountingEntry.where(account_id: @account.id, ticket_id: @ticket.id).sum(:amount_cents)
-    total = Money.new(cents)
-
-    case @ticket.subcon_payment
+    case @event.payment_type
       when 'cash'
-        result << CashPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << CashPaymentToAffiliate.new(agreement:   agreement,
+                                             event:       @event,
+                                             ticket:      @ticket,
+                                             amount:      @event.amount,
+                                             description: "Cash payment to #{@account.accountable.name} (Affilaite)")
       when 'credit_card'
-        result << CreditPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << CreditPaymentToAffiliate.new(agreement:   agreement,
+                                               event:       @event,
+                                               ticket:      @ticket,
+                                               amount:      @event.amount,
+                                               description: "Credit card payment to #{@account.accountable.name} (Affilaite)")
       when 'amex_credit_card'
-        result << AmexPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << AmexPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "AMEX payment to #{@account.accountable.name} (Affilaite)")
       when 'cheque'
-        result << ChequePaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: total.abs, description: "Entry to provider owned account")
+        result << ChequePaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Check payment to #{@account.accountable.name} (Affilaite)")
       else
 
     end

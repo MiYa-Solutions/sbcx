@@ -175,9 +175,6 @@ class TransferredServiceCall < ServiceCall
     EntryCollection.new(payment_entries.reject { |e| e.status == CustomerPayment::STATUS_REJECTED })
   end
 
-  def provider_settlement_allowed?
-    work_done? && (!allow_collection? || payment_deposited?)
-  end
 
   # to make the subcon_settlement_allowed? in ServiceCall work
   def payment_paid?

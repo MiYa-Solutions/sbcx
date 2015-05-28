@@ -9,5 +9,6 @@ module AffiliateSettlement
   STATUS_P_SETTLED          = 3007
   STATUS_CLAIM_P_SETTLED    = 3008
   STATUS_REJECTED           = 3009
+  STATUS_DISPUTED           = 3010
 
 end

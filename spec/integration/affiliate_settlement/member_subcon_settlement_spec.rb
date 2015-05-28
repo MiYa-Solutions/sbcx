@@ -37,8 +37,8 @@ describe 'Member Subcon Settlement' do
       it 'provider job: subcon settlement is allowed' do
         expect(job.subcontractor_status_events).to include :settle
         expect(job.subcontractor_status_events).to include :subcon_marked_as_settled
-        expect(event_permitted_for_job?('subcontractor_status', 'subcon_marked_as_settled', subcon_admin, subcon_job)).to be_false
-        expect(event_permitted_for_job?('subcontractor_status', 'settle', subcon_admin, subcon_job)).to be_true
+        expect(event_permitted_for_job?('subcontractor_status', 'subcon_marked_as_settled', org_admin, job)).to be_false
+        expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
 
       end
 
@@ -54,183 +54,88 @@ describe 'Member Subcon Settlement' do
           subcon_job.reload
         end
 
-<<<<<<< HEAD
-        it 'provider job: is able to confirm settlement' do
-          expect(job.subcontractor_status_events).to include :confirm_settled
-          expect(event_permitted_for_job?('subcontractor_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
+        it 'provider job: is able to confirm settlement by subcon' do
+          expect(job.subcontractor_status_events).to include :subcon_confirmed
+          expect(event_permitted_for_job?('subcontractor_status', 'subcon_confirmed', subcon_admin, subcon_job)).to be_false
         end
 
         it 'subcon job: not allowed to mark the job as settlement confirmed' do
           expect(subcon_job.provider_status_events).to include :provider_confirmed
           expect(event_permitted_for_job?('provider_status', 'provider_confirmed', subcon_admin, subcon_job)).to be_false
-=======
-        it 'provider job: subcon status should be claim_settled' do
+        end
+
+        it 'provider job: subcon status should be claim_p_settled' do
           expect(job.subcontractor_status_name).to eq :claim_p_settled
         end
 
         it 'subcon job: provider status should be claim_settled' do
           expect(subcon_job.provider_status_name).to eq :claimed_p_settled
->>>>>>> 3f822f7... #454 settlement with members draft - pending deposit event for the affilaite payment
         end
 
         it 'subcon account balance for prov should be: -190 (flat fee + bom reimb - settlement)' do
           expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-19000)
         end
 
+        it 'provider account balance for prov should be: 190 (flat fee + bom reimb - settlement)' do
+          expect(subcon_job.organization.account_for(org).balance).to eq Money.new(19000)
+        end
+
 
         context 'when settling with the full amount' do
           before do
-<<<<<<< HEAD
-            job.confirm_settled_subcon!
-            subcon_job.reload
-          end
-
-          it 'provider job: subcon status should be settled' do
-            expect(job.subcontractor_status_name).to eq :settled
-          end
-
-          it 'subcon job: subcon status should be settled' do
-            expect(subcon_job.provider_status_name).to eq :settled
-          end
-
-          it 'provider job: subcon settlement clearing is not allowed for a user' do
-            expect(job.subcontractor_status_events).to include :clear
-            expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
-          end
-
-          it 'subcon job: provider settlement is allowed' do
-            expect(subcon_job.provider_status_events).to include :clear
-            expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
-          end
-
-          it 'subcon account balance for prov should be: zero' do
-            expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(0)
-=======
             settle_with_subcon job, type: 'cheque', amount: '190'
->>>>>>> 3f822f7... #454 settlement with members draft - pending deposit event for the affilaite payment
+            subcon_job.reload
           end
 
           it 'provider job: subcon status should be claim_settled' do
             expect(job.subcontractor_status_name).to eq :claim_settled
           end
-<<<<<<< HEAD
 
-          context 'when subcon marks the settlement as cleared' do
-            before do
-              subcon_job.clear_provider!
-              job.reload
-            end
-
-            it 'provider job: subcon status should be cleared' do
-              expect(job.subcontractor_status_name).to eq :cleared
-            end
-
-            it 'subcon job: subcon status should be cleared' do
-              expect(subcon_job.provider_status_name).to eq :cleared
-            end
-
-            it 'provider job: there are no more settlement events available' do
-              expect(job.subcontractor_status_events).to eq [:reopen]
-            end
-
-            it 'subcon job: there are no more settlement events available' do
-              expect(subcon_job.provider_status_events).to eq [:reopen]
-            end
-
+          it 'provider job: subcon status should be claim_settled' do
+            expect(subcon_job.provider_status_name).to eq :claimed_as_settled
           end
 
-        end
-
-      end
-
-      context 'when provider initiates the cheque settlement' do
-        before do
-          settle_with_subcon job, type: 'cheque', amount: '10'
-          subcon_job.reload
-        end
-
-        it 'provider job: subcon status should be claim_settled' do
-          expect(job.subcontractor_status_name).to eq :claim_p_settled
-=======
->>>>>>> 3f822f7... #454 settlement with members draft - pending deposit event for the affilaite payment
-        end
-
-        it 'subcon job: provider settlement status should be claimed_as_settled' do
-          expect(subcon_job.provider_status_name).to eq :claimed_p_settled
-        end
-
-        it 'provider job: subcon settlement confirmation is not allowed for user' do
-          expect(job.subcontractor_status_events).to include :subcon_confirmed
-          expect(event_permitted_for_job?('subcontractor_status', 'subcon_confirmed', subcon_admin, subcon_job)).to be_false
-        end
-
-        it 'subcon job: provider settlement confirmation is permitted for a user' do
-          expect(subcon_job.provider_status_events).to include :confirm_settled
-          expect(event_permitted_for_job?('provider_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
-        end
-
-        it 'subcon account balance for prov should be: -190 (flat fee + bom reimb)' do
-          expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-19000)
-        end
-
-        it 'prov account balance for prov should be: 190 (flat fee + bom reimb)' do
-          expect(subcon_job.organization.account_for(job.provider.becomes(Organization)).balance).to eq Money.new(19000)
-        end
-
-        context 'when subcon confirms settlement' do
-          before do
-            subcon_job.confirm_settled_provider!
-            job.reload
-          end
-
-          it 'provider job: subcon status should be settled' do
-            expect(job.subcontractor_status_name).to eq :settled
-          end
-
-          it 'subcon job: subcon status should be settled' do
-            expect(subcon_job.provider_status_name).to eq :settled
-          end
-
-          it 'provider job: subcon settlement clearing is not allowed for a user' do
-            expect(job.subcontractor_status_events).to include :clear
-            expect(event_permitted_for_job?('subcontractor_status', 'clear', subcon_admin, subcon_job)).to be_false
-          end
-
-          it 'subcon job: provider settlement clearing is allowed' do
-            expect(subcon_job.provider_status_events).to include :clear
-            expect(event_permitted_for_job?('provider_status', 'clear', subcon_admin, subcon_job)).to be_true
-          end
-
-          it 'subcon account balance for prov should be: zero' do
+          it 'subcon account balance for prov should be zero' do
             expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(0)
           end
 
-          it 'prov account balance for prov should be: zero' do
-            expect(subcon_job.organization.account_for(job.provider.becomes(Organization)).balance).to eq Money.new(0)
+          it 'should have an accounting entry created for 190 in the prov owned account' do
+            expect(job.organization.account_for(subcon).entries.where(type: PaymentToAffiliate.subclasses.map(&:name)).sum(:amount_cents)).to eq 20000
           end
 
-          context 'when subcon marks the settlement as cleared' do
+          context 'when the subcon confirms the first settlement entry' do
+            let(:prov_settle_entry1) {job.subcon_settled_entries.order('id asc').first}
+            let(:prov_settle_entry2) {job.subcon_settled_entries..order('id asc').last}
+            let(:subcon_settle_entry1) {subcon_job.provider_settled_entries.order('id asc').first}
+            let(:subcon_settle_entry2) {subcon_job.provider_settled_entries.order('id asc').last}
+
+            it 'the first entry amount should be 10' do
+              expect(prov_settle_entry1.amount_cents).to eq 1000
+              expect(subcon_settle_entry1.amount_cents).to eq -1000
+            end
+            it 'the scond entry amount should be 190' do
+              expect(prov_settle_entry2.amount_cents).to eq 19000
+              expect(subcon_settle_entry2.amount_cents).to eq -19000
+            end
             before do
-              subcon_job.clear_provider!
-              job.reload
+              subcon_settle_entry1.confirm!
             end
 
-            it 'provider job: subcon status should be cleared' do
-              expect(job.subcontractor_status_name).to eq :cleared
+            it 'the provider status should remain claimed_settled' do
+              expect(subcon_job.provider_status_name).to eq :claimed_as_settled
             end
 
-            it 'subcon job: subcon status should be cleared' do
-              expect(subcon_job.provider_status_name).to eq :cleared
-            end
+            context 'when the subcon confirms the second entry' do
+              before do
+                subcon_settle_entry2.confirm!
+                subcon_job.reload
+              end
 
-            it 'provider job: no subcon settlement events are left exxcept for reopen' do
-              expect(job.subcontractor_status_events).to eq [:reopen]
-            end
+              it 'the provider status should change to settled' do
+                expect(subcon_job.provider_status_name).to eq :settled
+              end
 
-            it 'subcon job: no provider settlement events are left except for reopen' do
-              expect(subcon_job.provider_status_events).to eq [:reopen]
             end
-
           end
 
         end
@@ -239,68 +144,63 @@ describe 'Member Subcon Settlement' do
 
       context 'when subcon initiates the cash settlement' do
         before do
-          subcon_job.provider_payment = 'cash'
-          subcon_job.settle_provider!
+          settle_with_provider subcon_job, type: 'cash', amount: 10
           job.reload
         end
 
         it 'provider job: subcon status should be claimed_as_settled' do
-          expect(job.subcontractor_status_name).to eq :claimed_as_settled
+          expect(job.subcontractor_status_name).to eq :claimed_p_settled
         end
 
-        it 'subcon job: subcon status should be claim_settled' do
-          expect(subcon_job.provider_status_name).to eq :claim_settled
-        end
-
-        it 'provider job: subcon settlement confirmation is allowed' do
-          expect(job.subcontractor_status_events).to include :confirm_settled
-          expect(event_permitted_for_job?('subcontractor_status', 'confirm_settled', subcon_admin, subcon_job)).to be_true
+        it 'provider job: subcon settlement is allowed' do
+          expect(job.subcontractor_status_events).to include :settle
+          expect(event_permitted_for_job?('subcontractor_status', 'settle', subcon_admin, subcon_job)).to be_true
         end
 
         it 'subcon job: provider settlement confirmation is not allowed for a user' do
-          expect(subcon_job.provider_status_events).to include :provider_confirmed
-          expect(event_permitted_for_job?('provider_status', 'provider_confirmed', subcon_admin, subcon_job)).to be_false
+          expect(subcon_job.provider_status_events).to include :settle
+          expect(event_permitted_for_job?('provider_status', 'settle', subcon_admin, subcon_job)).to be_true
         end
 
         it 'subcon account balance for prov should be: zero' do
-          expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(0)
+          expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(-19000)
         end
 
         it 'prov account balance for prov should be: zero' do
-          expect(subcon_job.organization.account_for(job.provider.becomes(Organization)).balance).to eq Money.new(0)
+          expect(subcon_job.organization.account_for(job.provider.becomes(Organization)).balance).to eq Money.new(19000)
         end
 
-        context 'when provider confirms settlement' do
-          before do
-            job.confirm_settled_subcon!
-            subcon_job.reload
-          end
-
-          it 'provider job: subcon status should be cleared' do
-            expect(job.subcontractor_status_name).to eq :cleared
-          end
-
-          it 'subcon job: subcon status should be cleared' do
-            expect(subcon_job.provider_status_name).to eq :cleared
-          end
-
-          it 'provider job: no subcon settlement events are left except for reopen' do
-            expect(job.subcontractor_status_events).to eq [:reopen]
-          end
-
-          it 'subcon job: no provider settlement events are left except for reopen' do
-            expect(subcon_job.provider_status_events).to eq [:reopen]
-          end
-
-          it 'subcon account balance for prov should be: zero' do
-            expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(0)
-          end
-
-          it 'prov account balance for prov should be: zero' do
-            expect(subcon_job.organization.account_for(job.provider.becomes(Organization)).balance).to eq Money.new(0)
-          end
-
-        end
+        # context 'when provider confirms settlement' do
+        #   before do
+        #     job.confirm_settled_subcon!
+        #     subcon_job.reload
+        #   end
+        #
+        #   it 'provider job: subcon status should be cleared' do
+        #     expect(job.subcontractor_status_name).to eq :cleared
+        #   end
+        #
+        #   it 'subcon job: subcon status should be cleared' do
+        #     expect(subcon_job.provider_status_name).to eq :cleared
+        #   end
+        #
+        #   it 'provider job: no subcon settlement events are left except for reopen' do
+        #     expect(job.subcontractor_status_events).to eq [:reopen]
+        #   end
+        #
+        #   it 'subcon job: no provider settlement events are left except for reopen' do
+        #     expect(subcon_job.provider_status_events).to eq [:reopen]
+        #   end
+        #
+        #   it 'subcon account balance for prov should be: zero' do
+        #     expect(job.organization.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(0)
+        #   end
+        #
+        #   it 'prov account balance for prov should be: zero' do
+        #     expect(subcon_job.organization.account_for(job.provider.becomes(Organization)).balance).to eq Money.new(0)
+        #   end
+        #
+        # end
 
       end
 
@@ -568,5 +468,6 @@ describe 'Member Subcon Settlement' do
       end
 
     end
+
   end
 end

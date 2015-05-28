@@ -263,4 +263,9 @@ en:
       subject: '%{affiliate} has confirmed your payment'
       content: '%{affiliate} has confirmed your payment for %{job_ref}'
       description: "An affiliate has confirmed your payment for a job"
+    aff_payment_disputed_notification:
+      html_message: "%{affiliate} has disputed your payment for %{job_link}"
+      subject: '%{affiliate} has disputed your payment (claims to not have recevied it)'
+      content: '%{affiliate} has disputed your payment for %{job_ref}'
+      description: "An affiliate has disputed your payment for a job"
 

@@ -15,7 +15,7 @@ class ScConfirmSettledProviderEvent < ScSettlementEvent
   end
 
   def update_provider
-    prov_service_call.events << ScSubconConfirmedSettledEvent.new(triggering_event: self)
+    prov_service_call.events << ScSubconConfirmedSettledEvent.new(triggering_event: self, amount: amount)
   end
 
   def process_event

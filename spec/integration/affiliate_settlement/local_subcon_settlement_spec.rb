@@ -40,10 +40,10 @@ describe 'Local Subcon Settlement' do
           expect(org.account_for(job.subcontractor.becomes(Organization)).balance).to eq Money.new(0)
         end
 
-<<<<<<< HEAD
         it 'subcon status events should be :reopen' do
           expect(job.subcontractor_status_events).to eq [:reopen]
-=======
+        end
+
         context 'when payment is confirmed' do
           let(:subcon_payment) { job.subcon_entries.last }
           before do
@@ -80,7 +80,6 @@ describe 'Local Subcon Settlement' do
 
         it 'subcon status should be settled' do
           expect(job.subcontractor_status_name).to eq :partially_settled
->>>>>>> 537c23f... #454 settlement with local subcon is all green
         end
 
         it 'subcon account balance for prov should be 0.00 ' do
@@ -184,10 +183,10 @@ describe 'Local Subcon Settlement' do
           expect(job.subcontractor_status_name).to eq :settled
         end
 
-<<<<<<< HEAD
         it 'subcon status events should be clear' do
           expect(job.subcontractor_status_events).to eq [:clear, :reopen]
-=======
+        end
+
         context 'when depositing the cheque' do
           before do
             job.subcon_payments.last.confirmed!
@@ -226,7 +225,6 @@ describe 'Local Subcon Settlement' do
           end
 
 
->>>>>>> 537c23f... #454 settlement with local subcon is all green
         end
 
       end

@@ -1,4 +1,4 @@
-class AffPaymentRejectedEvent < PaymentEvent
+class AffPaymentRejectedEvent < RejectionEvent
 
   def init
     self.name         = I18n.t('aff_payment_rejected_event.name')
@@ -7,20 +7,12 @@ class AffPaymentRejectedEvent < PaymentEvent
   end
 
   def process_event
-    update_account_balance
-    ticket.reject_subcon! if ticket.can_reject_subcon?
+    Account.transaction do
+      ticket.reject_subcon! if ticket.can_reject_subcon?
+      payment.rejected!(:state_only) if payment.can_rejected?
+      update_account_balance
+    end
   end
 
-  private
-
-  def update_account_balance
-    rev_entry = RejectedPayment.new(event:       self,
-                                    status:      AccountingEntry::STATUS_CLEARED,
-                                    ticket:      payment.ticket,
-                                    agreement:   payment.agreement,
-                                    amount:      -payment.amount,
-                                    description: I18n.t('aff_payment_rejected_event.entry.description', payment_id: payment.id, payment_type: payment.name))
-    payment.account.entries << rev_entry
-  end
 
 end
