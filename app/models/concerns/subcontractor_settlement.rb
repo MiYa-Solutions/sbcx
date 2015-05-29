@@ -53,8 +53,8 @@ module SubcontractorSettlement
       end
 
       event :subcon_marked_as_settled do
-        transition :pending => :settled, if: ->(sc) { sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? && sc.subcon_fully_settled? }
-        transition :pending => :partially_settled, if: ->(sc) { sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? && !sc.subcon_fully_settled? }
+        transition [:rejected, :pending] => :settled, if: ->(sc) { sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? && sc.subcon_fully_settled? }
+        transition [:rejected, :pending] => :partially_settled, if: ->(sc) { sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? && !sc.subcon_fully_settled? }
       end
 
       # event :confirm_settled do
@@ -71,6 +71,7 @@ module SubcontractorSettlement
                                           !sc.subcontractor.subcontrax_member? &&
                                               sc.subcon_fully_settled? &&
                                               sc.disputed_subcon_entries.size == 0 }
+
         transition [:rejected, :partially_settled, :pending] => :partially_settled, if: ->(sc) {
                                                                                     sc.subcon_settlement_allowed? &&
                                                                                         !sc.subcontractor.subcontrax_member? &&
