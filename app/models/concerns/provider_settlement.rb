@@ -108,7 +108,7 @@ module ProviderSettlement
   end
 
   def provider_settlement_allowed?
-    !allow_collection? || payment_deposited?
+    !new? && !rejected? && (!allow_collection? || payment_deposited?)
   end
 
 
@@ -177,6 +177,15 @@ module ProviderSettlement
   def provider_settled_amount
     Money.new(provider_settled_entries.sum(:amount_cents))
   end
+
+  def provider_balance
+    if provider != organization
+      affiliate_balance(provider)
+    else
+      Money.new_with_amount(0)
+    end
+  end
+
 
 
 end

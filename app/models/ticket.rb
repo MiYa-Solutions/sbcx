@@ -256,13 +256,6 @@ class Ticket < ActiveRecord::Base
 
   end
 
-  def provider_balance
-    if provider != organization
-      affiliate_balance(provider)
-    else
-      Money.new_with_amount(0)
-    end
-  end
 
   def html_notes
     self.notes.gsub(/\n/, '<br/>')
