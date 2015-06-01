@@ -17,6 +17,35 @@ describe 'Member Subcon Settlement: When claim_p_settled' do
     expect(job.reload.subcontractor_status_name).to eq :claim_p_settled
   end
 
+
+  context 'when the subcon settles for another partial amount' do
+    before do
+      with_user(subcon_admin) do
+        settle_with_provider subcon_job, amount: 10, type: 'credit_card'
+      end
+      job.reload
+    end
+
+    it 'should not change the subcon status' do
+      expect(job.subcontractor_status_name).to eq :claim_p_settled
+    end
+
+    context 'when confirming the provider settlement entry' do
+      before do
+        subcon_entry1.confirm!
+        job.reload
+      end
+
+      it 'should change the subcon status to partially_settled' do
+        expect(job.subcontractor_status_name).to eq :partially_settled
+      end
+
+    end
+
+  end
+
+
+
   context 'when the subcon confirms the settlement entry' do
     before do
       subcon_entry1.confirm!

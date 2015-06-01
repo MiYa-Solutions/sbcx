@@ -68,6 +68,14 @@ module ProviderSettlement
                                                                                     sc.provider_settlement_allowed? &&
                                                                                         !sc.provider_fully_settled?
                                                                                   }
+        transition :claimed_p_settled => :claimed_p_settled, if: ->(sc) {
+                                                               sc.provider_settlement_allowed? &&
+                                                                   !sc.provider_fully_settled?
+                                                             }
+        transition :claimed_p_settled => :claimed_settled, if: ->(sc) {
+                                                               sc.provider_settlement_allowed? &&
+                                                                   sc.provider_fully_settled?
+                                                             }
         # transition [:rejected, :claim_p_settled, :pending] => :claim_settled, if: ->(sc) {
         #                                                                       sc.provider_settlement_allowed? &&
         #                                                                           sc.provider.subcontrax_member? &&
@@ -99,7 +107,8 @@ module ProviderSettlement
       end
 
       event :update_status do
-        transition :claimed_p_settled => :claim_settled, if: ->(sc) { sc.provider_fully_settled? }
+        transition :claimed_p_settled => :claimed_as_settled, if: ->(sc) { sc.provider_fully_settled? }
+        transition :partially_settled => :settled, if: ->(sc) { sc.provider_fully_settled? }
       end
 
 
@@ -185,7 +194,6 @@ module ProviderSettlement
       Money.new_with_amount(0)
     end
   end
-
 
 
 end
