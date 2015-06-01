@@ -49,6 +49,7 @@ module SubcontractorSettlement
         transition [:partially_settled, :claim_settled, :claim_p_settled] => :partially_settled, if: ->(sc) { sc.subcon_settlement_allowed? && !sc.subcon_fully_settled? }
         transition :disputed => :partially_settled, if: ->(sc) { !sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 }
         transition :disputed => :settled, if: ->(sc) { sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 }
+        transition :disputed => :disputed, if: ->(sc) { sc.disputed_subcon_entries.size > 0 }
 
       end
 

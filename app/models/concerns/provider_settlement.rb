@@ -55,8 +55,11 @@ module ProviderSettlement
       end
 
       event :confirm_settled do
-        transition :claimed_as_settled => :settled, if: ->(sc) { sc.provider_settlement_allowed? && sc.provider_fully_settled? }
-        transition :claimed_p_settled => :partially_settled, if: ->(sc) { sc.provider_settlement_allowed? && !sc.provider_fully_settled? }
+        transition [:claimed_as_settled] => :settled, if: ->(sc) { sc.provider_settlement_allowed? && sc.provider_fully_settled? }
+        transition [:claimed_p_settled] => :partially_settled, if: ->(sc) { sc.provider_settlement_allowed? && !sc.provider_fully_settled? }
+        transition :disputed => :partially_settled, if: ->(sc) { !sc.provider_fully_settled? && sc.disputed_prov_entries.size == 0 }
+        transition :disputed => :settled, if: ->(sc) { sc.provider_fully_settled? && sc.disputed_prov_entries.size == 0 }
+        transition :disputed => :disputed, if: ->(sc) { sc.disputed_prov_entries.size > 0}
       end
 
       event :settle do
@@ -194,6 +197,11 @@ module ProviderSettlement
       Money.new_with_amount(0)
     end
   end
+
+ def disputed_prov_entries
+    provider_payments.where(status: ConfirmableEntry::STATUS_DISPUTED)
+  end
+
 
 
 end
