@@ -12,13 +12,13 @@ describe 'Member Subcon Settlement: When claim_settled' do
     complete_the_work subcon_job
     job.reload
     settle_with_subcon job, amount: 110, type: 'cheque'
-    job.reload
+    subcon_job.reload
   end
 
   let(:subcon_entry1) { subcon_job.entries.where(type: AffiliateSettlementEntry.descendants.map(&:name)).order('id asc').first }
 
-  it 'subcon status should be claim_p_settled' do
-    expect(job.subcontractor_status_name).to eq :claim_settled
+  it 'provider status should be claimed_as_settled' do
+    expect(subcon_job.provider_status_name).to eq :claimed_as_settled
   end
 
   context 'when the subcon confirms the settlement entry' do
@@ -26,8 +26,8 @@ describe 'Member Subcon Settlement: When claim_settled' do
       subcon_entry1.confirm!
     end
 
-    it 'should change he subcon status to settled' do
-      expect(job.reload.subcontractor_status_name).to eq :settled
+    it 'should change he provider status to settled' do
+      expect(subcon_job.reload.provider_status_name).to eq :settled
     end
 
   end
@@ -35,11 +35,11 @@ describe 'Member Subcon Settlement: When claim_settled' do
   context 'when the subcon disputes the settlement entry' do
     before do
       subcon_entry1.dispute!
-      job.reload
+      subcon_job.reload
     end
 
-    it 'should change the subcon status to disputed' do
-      expect(job.subcontractor_status_name).to eq :disputed
+    it 'should change the provider status to disputed' do
+      expect(subcon_job.provider_status_name).to eq :disputed
     end
   end
 
