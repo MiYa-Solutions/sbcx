@@ -7,10 +7,17 @@ class AffPaymentRejectEvent < RejectionEvent
   end
 
   def process_event
+    update_affiliate_status
     update_account_balance
     unless entry.matching_entry.nil?
       entry.matching_entry.events << AffPaymentRejectedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
     end
+  end
+
+  private
+
+  def update_affiliate_status
+    ticket.reject_provider
   end
 
 

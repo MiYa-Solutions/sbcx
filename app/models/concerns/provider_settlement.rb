@@ -29,7 +29,7 @@ module ProviderSettlement
       # :rejected - the subcon indicates that a payment received by the contractor was rejected (check or credit card)
       state :rejected, value: AffiliateSettlement::STATUS_REJECTED
       # :disputed - the subcon indicates that he didn't receive the alleged payment by the provider
-      state :disputed, value: AffiliateSettlement::STATUS_REJECTED
+      state :disputed, value: AffiliateSettlement::STATUS_DISPUTED
 
       after_failure do |service_call, transition|
         Rails.logger.debug { "ProviderSettlement subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
@@ -50,8 +50,8 @@ module ProviderSettlement
       end
 
       event :provider_marked_as_settled do
-        transition [:claimed_p_settled, :pending] => :claimed_as_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? && sc.provider_fully_settled? }
-        transition [:claimed_p_settled, :pending] => :claimed_p_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? && !sc.provider_fully_settled? }
+        transition [:claimed_p_settled, :pending, :partially_settled] => :claimed_as_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? && sc.provider_fully_settled? }
+        transition [:claimed_p_settled, :pending, :partially_settled] => :claimed_p_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? && !sc.provider_fully_settled? }
       end
 
       event :confirm_settled do
@@ -107,6 +107,10 @@ module ProviderSettlement
 
       event :dispute do
         transition [:claimed_as_settled, :claimed_p_settled] => :disputed
+      end
+
+      event :reject do
+        transition [:settled, :partially_settled] => :rejected
       end
 
       event :update_status do
