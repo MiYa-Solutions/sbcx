@@ -53,12 +53,20 @@ describe 'Member Provider Settlement: When claimed_p_settled' do
       expect(subcon_job.reload.provider_status_name).to eq :partially_settled
     end
 
+    it 'provider entry is set to confirmed' do
+      expect(subcon_entry1.matching_entry.reload.status_name).to eq :confirmed
+    end
+
   end
 
   context 'when the subcon disputes the settlement entry' do
     before do
       subcon_entry1.dispute!
       subcon_job.reload
+    end
+
+    it 'provider entry is set to disputed' do
+      expect(subcon_entry1.matching_entry.reload.status_name).to eq :disputed
     end
 
     it 'should change the provider status to disputed' do

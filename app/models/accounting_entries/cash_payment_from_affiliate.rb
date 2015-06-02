@@ -23,4 +23,11 @@
 #
 
 class CashPaymentFromAffiliate < PaymentFromAffiliate
+  state_machine :status do
+    after_transition any => :deposited do |entry, transition|
+      entry.status = AccountingEntry::STATUS_CLEARED
+      entry.save!
+    end
+  end
+
 end

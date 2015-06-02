@@ -50,8 +50,16 @@ module ProviderSettlement
       end
 
       event :provider_marked_as_settled do
-        transition [:claimed_p_settled, :pending, :partially_settled] => :claimed_as_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? && sc.provider_fully_settled? }
-        transition [:claimed_p_settled, :pending, :partially_settled] => :claimed_p_settled, if: lambda { |sc| sc.provider_settlement_allowed? && sc.provider.subcontrax_member? && !sc.provider_fully_settled? }
+        transition [:claimed_p_settled, :pending, :partially_settled, :rejected] => :claimed_as_settled, if: ->(sc) {
+                                                                                                         sc.provider_settlement_allowed? &&
+                                                                                                             sc.provider.subcontrax_member? &&
+                                                                                                             sc.provider_fully_settled?
+                                                                                                       }
+        transition [:claimed_p_settled, :pending, :partially_settled, :rejected] => :claimed_p_settled, if: ->(sc) {
+                                                                                                        sc.provider_settlement_allowed? &&
+                                                                                                            sc.provider.subcontrax_member? &&
+                                                                                                            !sc.provider_fully_settled?
+                                                                                                      }
       end
 
       event :confirm_settled do
@@ -59,7 +67,7 @@ module ProviderSettlement
         transition [:claimed_p_settled] => :partially_settled, if: ->(sc) { sc.provider_settlement_allowed? && !sc.provider_fully_settled? }
         transition :disputed => :partially_settled, if: ->(sc) { !sc.provider_fully_settled? && sc.disputed_prov_entries.size == 0 }
         transition :disputed => :settled, if: ->(sc) { sc.provider_fully_settled? && sc.disputed_prov_entries.size == 0 }
-        transition :disputed => :disputed, if: ->(sc) { sc.disputed_prov_entries.size > 0}
+        transition :disputed => :disputed, if: ->(sc) { sc.disputed_prov_entries.size > 0 }
       end
 
       event :settle do
@@ -72,13 +80,13 @@ module ProviderSettlement
                                                                                         !sc.provider_fully_settled?
                                                                                   }
         transition :claimed_p_settled => :claimed_p_settled, if: ->(sc) {
-                                                               sc.provider_settlement_allowed? &&
-                                                                   !sc.provider_fully_settled?
-                                                             }
+                                                             sc.provider_settlement_allowed? &&
+                                                                 !sc.provider_fully_settled?
+                                                           }
         transition :claimed_p_settled => :claimed_settled, if: ->(sc) {
-                                                               sc.provider_settlement_allowed? &&
-                                                                   sc.provider_fully_settled?
-                                                             }
+                                                           sc.provider_settlement_allowed? &&
+                                                               sc.provider_fully_settled?
+                                                         }
         # transition [:rejected, :claim_p_settled, :pending] => :claim_settled, if: ->(sc) {
         #                                                                       sc.provider_settlement_allowed? &&
         #                                                                           sc.provider.subcontrax_member? &&
@@ -202,10 +210,9 @@ module ProviderSettlement
     end
   end
 
- def disputed_prov_entries
+  def disputed_prov_entries
     provider_payments.where(status: ConfirmableEntry::STATUS_DISPUTED)
   end
-
 
 
 end

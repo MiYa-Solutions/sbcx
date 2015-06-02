@@ -14,7 +14,6 @@ class ScSubconConfirmedSettledEvent < ScSettlementEvent
   end
 
   def process_event
-    clear_accounting_entries
     service_call.subcon_confirmed_subcon
     super
   end

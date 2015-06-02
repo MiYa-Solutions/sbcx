@@ -18,9 +18,4 @@ class ScConfirmSettledProviderEvent < ScSettlementEvent
     prov_service_call.events << ScSubconConfirmedSettledEvent.new(triggering_event: self, amount: amount)
   end
 
-  def process_event
-    clear_accounting_entries
-    super
-  end
-
 end
