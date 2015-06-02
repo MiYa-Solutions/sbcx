@@ -22,7 +22,7 @@ describe 'Member Subcon Settlement: When settled' do
     job.reload
   end
 
-  it 'the subcon status to partially_settled' do
+  it 'the subcon status to settled' do
     expect(job.reload.subcontractor_status_name).to eq :settled
   end
 
@@ -30,6 +30,11 @@ describe 'Member Subcon Settlement: When settled' do
     before do
       subcon_entry1.deposit!
     end
+
+    it 'provider entry is set to deposited' do
+      expect(subcon_entry1.matching_entry.reload.status_name).to eq :deposited
+    end
+
 
     context 'when the cheque is rejected' do
 
@@ -55,6 +60,11 @@ describe 'Member Subcon Settlement: When settled' do
         subcon_entry2.confirm!
         subcon_entry2.deposit!
       end
+
+      it 'provider entry is set to cleared' do
+        expect(subcon_entry1.matching_entry.reload.status_name).to eq :cleared
+      end
+
 
       it 'the subcon status should remain partially_settled' do
         expect(job.reload.subcontractor_status_name).to eq :cleared
