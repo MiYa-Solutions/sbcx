@@ -40,4 +40,17 @@ class AffiliatePaymentObserver < ActiveRecord::Observer
     payment.events << AffPaymentDisputeEvent.new(entry_id: payment.id)
   end
 
+  def after_disputed(payment, transition)
+    unless transition.args.first == :state_only
+      payment.events << AffPaymentDisputedEvent.new(entry_id: payment.id)
+    end
+  end
+
+  def after_confirmed(payment, transition)
+    unless transition.args.first == :state_only
+      payment.events << AffPaymentConfirmedEvent.new(entry_id: payment.id)
+    end
+  end
+
+
 end

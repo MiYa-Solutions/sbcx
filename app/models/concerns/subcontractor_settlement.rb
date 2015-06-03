@@ -121,6 +121,7 @@ module SubcontractorSettlement
 
       event :subcon_disputed do
         transition [:claim_p_settled, :claim_settled] => :disputed
+        transition [:settled, :partially_settled] => :disputed, if: ->(sc) { !sc.subcontractor.subcontrax_member? }
       end
 
       event :update_status do
