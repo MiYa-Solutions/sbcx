@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Member Subcon Settlement: When Pending' do
+describe 'Local Subcon Settlement: When Pending' do
 
   include_context 'job transferred to local subcon'
 
