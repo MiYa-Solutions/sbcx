@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Member Subcon Settlement: When disputed' do
+describe 'Local Subcon Settlement: When disputed' do
 
   include_context 'job transferred to local subcon'
   let(:entry1) { job.entries.where(type: AffiliateSettlementEntry.descendants.map(&:name)).order('id asc').first }
