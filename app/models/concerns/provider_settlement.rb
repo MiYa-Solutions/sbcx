@@ -87,6 +87,20 @@ module ProviderSettlement
                                                            sc.provider_settlement_allowed? &&
                                                                sc.provider_fully_settled?
                                                          }
+
+        transition :disputed => :settled, if: ->(sc) {
+                                          !sc.provider.subcontrax_member? &&
+                                              sc.provider_fully_settled? &&
+                                              sc.disputed_prov_entries.size == 0 }
+
+        transition :disputed => :partially_settled, if: ->(sc) {
+                                                    !sc.provider.subcontrax_member? &&
+                                                        !sc.provider_fully_settled? &&
+                                                        sc.disputed_prov_entries.size == 0
+                                                  }
+        transition :disputed => :disputed, if: ->(sc) { sc.disputed_prov_entries.size > 0 }
+
+
         # transition [:rejected, :claim_p_settled, :pending] => :claim_settled, if: ->(sc) {
         #                                                                       sc.provider_settlement_allowed? &&
         #                                                                           sc.provider.subcontrax_member? &&
@@ -114,7 +128,8 @@ module ProviderSettlement
       end
 
       event :dispute do
-        transition [:claimed_as_settled, :claimed_p_settled] => :disputed
+        transition [:claimed_as_settled, :claimed_p_settled] => :disputed, if: ->(sc) { sc.provider.member? }
+        transition [:settled, :partially_settled] => :disputed, if: ->(sc) { !sc.provider.member? }
       end
 
       event :reject do
