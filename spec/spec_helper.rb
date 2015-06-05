@@ -18,6 +18,7 @@ require 'capybara/poltergeist'
 require 'site_prism'
 require 'devise'
 require 'rspec_candy/all'
+require 'ext/string'
 
 
 

@@ -146,13 +146,16 @@ module ProviderSettlement
 
   end
 
-  def provider_settlement_allowed?
-    !new? && !rejected? && (!allow_collection? || payment_deposited?)
+  def prov_settlement_attributes_valid?
+    errors.add :prov_settle_amount, I18n.t('service_call.errors.prov_settlement_amount_missing') unless prov_settle_amount.present?
+    errors.add :prov_settle_type, I18n.t('service_call.errors.prov_settlement_type_invalid') unless prov_settle_type.present?
+    errors.add  :prov_settle_amount, I18n.t('service_call.errors.prov_settlement_amount_invalid') unless prov_settle_amount.is_a_number?
+    errors.empty?
   end
 
 
-  def subcon_settlement_allowed?
-    raise NotImplemented.new ('You probably forgot to implement subcon_settlement_allowed when including SubcontractorSettlement')
+  def provider_settlement_allowed?
+    !new? && !rejected? && (!allow_collection? || payment_deposited?)
   end
 
   def provider_settle_money

@@ -1,0 +1,4 @@
+<%= simple_form_for entry.becomes(AccountingEntry), html: { class: 'adj_entry_clear_form' } do |f| %>
+    <%= f.hidden_field :status_event, value: 'cleared' %>
+    <%= f.submit entry.class.human_status_event_name(:cleared).titleize, id: 'entry_cleared_btn', class: "customer_entry_small_btn btn btn-mini btn-primary" %>
+<% end %>

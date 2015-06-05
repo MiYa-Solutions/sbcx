@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Affiliate Entry' do
+describe 'Affiliate Entry For Members' do
   include_context 'transferred job'
 
   before do

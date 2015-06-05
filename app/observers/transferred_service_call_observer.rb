@@ -59,9 +59,10 @@ class TransferredServiceCallObserver < ServiceCallObserver
   end
 
   def before_settle_provider(service_call, transition)
-    service_call.events << ScProviderSettleEvent.new(amount:       service_call.prov_settle_amount,
-                                                     payment_type: service_call.prov_settle_type) unless transition.args.first == :state_only
-
+    if service_call.prov_settlement_attributes_valid?
+      service_call.events << ScProviderSettleEvent.new(amount:       service_call.prov_settle_amount,
+                                                       payment_type: service_call.prov_settle_type) unless transition.args.first == :state_only
+    end
   end
 
   def before_confirm_settled_provider(service_call, transition)

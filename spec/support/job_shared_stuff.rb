@@ -18,13 +18,13 @@ shared_context 'job methods' do
 
   def settle_with_subcon(ticket, type: 'cash', amount: '100')
     ticket.subcon_settle_type = type
-    ticket.subcon_settle_amount = amount
+    ticket.subcon_settle_amount = amount.to_s
     ticket.settle_subcon!
   end
 
   def settle_with_provider(ticket, type: 'cash', amount: '100')
     ticket.prov_settle_type = type
-    ticket.prov_settle_amount = amount
+    ticket.prov_settle_amount = amount.to_s
     ticket.settle_provider!
   end
 

@@ -22,10 +22,8 @@ en:
           tooltip: "Click to confirm this job has been settled"
         settle:
           tooltip: "Click here to indicate that the subcontractor fee is settled"
-          label: "Payment Method"
         settle_amount:
           tooltip: "The amount paid to the subcontractor"
-          label: "Amount"
       provider_status:
         mark_as_settled:
           tooltip: "click to indicate that this job has settled with the subcontractor"
@@ -36,8 +34,7 @@ en:
         confirm_settled:
           tooltip: "Click to confirm this job has been settled"
         settle:
-          tooltip: "Click here to indicate that the contractor fees has been settled"
-          label: "Select Payment Method"
+          tooltip: "Click here to indicate that the contractor fees has been collected"
         clear:
           tooltip: "Click here to indicate that the contractor fees have been cleared"
       status:

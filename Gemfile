@@ -77,6 +77,7 @@ group :development, :test do
   gem 'thin', '1.6.3'
   gem 'debase', '~> 0.1.1'
   gem 'ruby-debug-ide'
+  gem 'rack-mini-profiler'
 end
 
 # Gems used only for assets and not required

@@ -134,6 +134,13 @@ module SubcontractorSettlement
 
   end
 
+  def subcon_settlement_attributes_valid?
+    errors.add :subcon_settle_amount, I18n.t('service_call.errors.subcon_settlement_amount_missing') unless subcon_settle_amount.present?
+    errors.add :subcon_settle_type, I18n.t('service_call.errors.subcon_settlement_type_invalid') unless subcon_settle_type.present?
+    errors.add  :subcon_settle_amount, I18n.t('service_call.errors.subcon_settlement_amount_invalid') unless subcon_settle_amount.is_a_number?
+    errors.empty?
+  end
+
   def subcon_settlement_allowed?
     raise NotImplemented.new ('You probably forgot to implement subcon_settlement_allowed when including SubcontractorSettlement')
   end

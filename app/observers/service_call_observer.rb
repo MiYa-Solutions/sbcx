@@ -98,11 +98,11 @@ class ServiceCallObserver < ActiveRecord::Observer
 
   def before_settle_subcon(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE settle_subcon \n #{service_call.inspect} \n #{transition.args.inspect}" }
-
-    service_call.settled_on = Time.zone.now
-    service_call.events << ScSubconSettleEvent.new(amount:       service_call.subcon_settle_money,
-                                                   payment_type: service_call.subcon_settle_type)
-
+    if service_call.subcon_settlement_attributes_valid?
+      service_call.settled_on = Time.zone.now
+      service_call.events << ScSubconSettleEvent.new(amount:       service_call.subcon_settle_money,
+                                                     payment_type: service_call.subcon_settle_type)
+    end
   end
 
   def after_settle_subcon(service_call, transition)

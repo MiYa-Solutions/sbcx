@@ -109,7 +109,7 @@ class ServiceCallsController < ApplicationController
         format.js { respond_bip_error @service_call }
         format.html do
           flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
-          render :action => 'show'
+          redirect_to service_call_path @service_call
         end
 
         format.mobile do
