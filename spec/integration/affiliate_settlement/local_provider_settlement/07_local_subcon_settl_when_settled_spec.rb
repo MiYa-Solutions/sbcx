@@ -56,7 +56,7 @@ describe 'local Subcon Settlement: When settled' do
         entry2.deposit!
       end
 
-      it 'the provider status should remain partially_settled' do
+      it 'the provider status should change to  cleared' do
         expect(job.reload.provider_status_name).to eq :cleared
       end
 

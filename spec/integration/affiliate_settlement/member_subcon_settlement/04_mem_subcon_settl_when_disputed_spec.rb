@@ -58,40 +58,40 @@ describe 'Member Subcon Settlement: When disputed' do
         job.reload
         settle_with_subcon job, type: 'cash', amount: 60
       end
-       context 'when disputing the first payment' do
-         before do
-           subcon_entry1.dispute!
-           job.reload
-         end
-
-         it 'should change the subcon status to disputed' do
-           expect(job.subcontractor_status_name).to eq :disputed
-         end
-
-         context 'when confirming the second payment' do
-           before do
-             subcon_job.reload
-             subcon_entry2.confirm!
-             job.reload
-           end
-
-           it 'subcon status should remain disputed' do
-             expect(job.subcontractor_status_name).to eq :disputed
-           end
-
-           context 'when confirming the first payment' do
-             before do
-               subcon_job.reload
-               subcon_entry1.confirm!
-               job.reload
-             end
-             it 'subcon status should remain disputed' do
-               expect(job.subcontractor_status_name).to eq :settled
-             end
-           end
-
-         end
+      context 'when disputing the first payment' do
+        before do
+          subcon_entry1.dispute!
+          job.reload
         end
+
+        it 'should change the subcon status to disputed' do
+          expect(job.subcontractor_status_name).to eq :disputed
+        end
+
+        context 'when confirming the second payment' do
+          before do
+            subcon_job.reload
+            subcon_entry2.confirm!
+            job.reload
+          end
+
+          it 'subcon status should remain disputed' do
+            expect(job.subcontractor_status_name).to eq :disputed
+          end
+
+          context 'when confirming the first payment' do
+            before do
+              subcon_job.reload
+              subcon_entry1.confirm!
+              job.reload
+            end
+            it 'subcon status should remain disputed' do
+              expect(job.subcontractor_status_name).to eq :settled
+            end
+          end
+
+        end
+      end
     end
 
     context 'when partially settled with two payments' do

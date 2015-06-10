@@ -45,10 +45,14 @@ module SubcontractorSettlement
       end
 
       event :subcon_confirmed do
-        transition [:partially_settled, :claim_settled, :disputed, :claim_p_settled] => :settled, if: ->(sc) { sc.subcon_settlement_allowed? && sc.subcon_fully_settled? }
-        transition [:partially_settled, :claim_settled, :claim_p_settled] => :partially_settled, if: ->(sc) { sc.subcon_settlement_allowed? && !sc.subcon_fully_settled? }
-        transition :disputed => :partially_settled, if: ->(sc) { !sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 }
-        transition :disputed => :settled, if: ->(sc) { sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 }
+        transition :claim_settled => :settled, if: ->(sc) { sc.subcon_settlement_allowed? && sc.subcon_fully_confirmed? && sc.subcon_fully_settled? }
+        transition :claim_settled => :claim_settled, if: ->(sc) { sc.subcon_settlement_allowed? && !sc.subcon_fully_confirmed? && sc.subcon_fully_settled? }
+        transition :claim_p_settled => :partially_settled, if: ->(sc) { sc.subcon_settlement_allowed? && sc.subcon_fully_confirmed? && !sc.subcon_fully_settled? }
+        transition :claim_p_settled => :claim_p_settled, if: ->(sc) { sc.subcon_settlement_allowed? && !sc.subcon_fully_confirmed? && !sc.subcon_fully_settled? }
+        # transition [:partially_settled, :claim_settled, :claim_p_settled] => :partially_settled, if: ->(sc) { sc.subcon_settlement_allowed? && !sc.subcon_fully_settled? }
+        transition :disputed => :partially_settled, if: ->(sc) { !sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 &&  sc.subcon_fully_confirmed?}
+        transition :disputed => :claim_p_settled, if: ->(sc) { !sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 &&  !sc.subcon_fully_confirmed?}
+        transition :disputed => :settled, if: ->(sc) { sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0  && sc.subcon_fully_confirmed? }
         transition :disputed => :disputed, if: ->(sc) { sc.disputed_subcon_entries.size > 0 }
 
       end
@@ -150,7 +154,7 @@ module SubcontractorSettlement
   end
 
   def subcon_fully_confirmed?
-    subcon_payments.where(status: [ConfirmableEntry::STATUS_SUBMITTED, ConfirmableEntry::STATUS_DISPUTED]).size > 0
+    subcon_payments.where(status: [ConfirmableEntry::STATUS_SUBMITTED, ConfirmableEntry::STATUS_DISPUTED]).size > 0 ? false : true
 
   end
 

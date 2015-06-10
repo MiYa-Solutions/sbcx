@@ -66,7 +66,7 @@ describe 'Member Subcon Settlement: When settled' do
       end
 
 
-      it 'the subcon status should remain partially_settled' do
+      it 'the subcon status should change to cleared' do
         expect(job.reload.subcontractor_status_name).to eq :cleared
       end
 

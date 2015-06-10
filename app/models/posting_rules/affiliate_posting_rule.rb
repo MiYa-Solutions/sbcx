@@ -135,7 +135,7 @@ class AffiliatePostingRule < PostingRule
 
 
       else
-        raise "#{self.class.name}: Unexpected payment type (#{@ticket.payment_type}) when processing the event"
+        raise "#{self.class.name}: Unexpected payment type (#{@event.payment_type}) when processing the event"
 
     end
 
@@ -161,6 +161,7 @@ class AffiliatePostingRule < PostingRule
       when 'cheque'
         result << ChequePaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Check payment from affiliate")
       else
+        raise "#{self.class.name}: Unexpected payment type (#{@event.payment_type}) when processing the event #{@event.inspect}"
 
     end
 

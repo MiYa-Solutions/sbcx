@@ -8,8 +8,10 @@ describe 'Member Provider Settlement: When claimed_p_settled' do
     transfer_the_job
     accept_the_job subcon_job
     job.reload
-    settle_with_subcon job, amount: 10, type: 'cheque'
-    
+    with_user(org_admin) do
+      settle_with_subcon job, amount: 10, type: 'cheque'
+    end
+
   end
 
   let(:subcon_entry1) { subcon_job.entries.where(type: AffiliateSettlementEntry.descendants.map(&:name)).order('id asc').first }
@@ -37,8 +39,8 @@ describe 'Member Provider Settlement: When claimed_p_settled' do
         subcon_job.reload
       end
 
-      it 'should change the provider status to partially_settled' do
-        expect(subcon_job.provider_status_name).to eq :partially_settled
+      it 'provider status should remain claimed_p_settled' do
+        expect(subcon_job.provider_status_name).to eq :claimed_p_settled
       end
 
     end
@@ -97,6 +99,110 @@ describe 'Member Provider Settlement: When claimed_p_settled' do
       end
 
     end
+
+    context 'when the subcon confirms the settlement' do
+      before do
+        subcon_entry1.confirm!
+        subcon_job.reload
+      end
+
+      it 'should change the status to partially_settled' do
+        expect(subcon_job.provider_status_name).to eq :partially_settled
+      end
+
+      context 'when the subcon collects the reminder' do
+        let(:subcon_entry2) { subcon_job.entries.where(type: AffiliateSettlementEntry.descendants.map(&:name)).order('id asc').last }
+
+        before do
+          with_user(subcon_admin) do
+            settle_with_provider subcon_job, amount: 100, type: 'cheque'
+          end
+          subcon_job.reload
+        end
+
+        it 'should change the status to settled' do
+          expect(subcon_job.provider_status_name).to eq :settled
+        end
+
+        it 'should change provider balance to zero' do
+          expect(subcon_job.provider_balance).to eq Money.new(0)
+        end
+
+        context 'when depositing the first payment' do
+
+          before do
+            with_user(subcon_admin) do
+              subcon_entry1.deposit!
+            end
+            subcon_job.reload
+          end
+
+          it 'status should remain settled' do
+            expect(subcon_job.provider_status_name).to eq :settled
+          end
+
+          context 'when clearing the first payment' do
+            before do
+              with_user(subcon_admin) do
+                subcon_entry1.clear!
+              end
+              subcon_job.reload
+
+            end
+
+            it 'status should remain settled' do
+              expect(subcon_job.provider_status_name).to eq :settled
+            end
+
+            context 'when confirming the second payment' do
+              before do
+                with_user(subcon_admin) do
+                  subcon_entry2.confirm!
+                end
+                subcon_job.reload
+              end
+
+              it 'status should remain settled' do
+                expect(subcon_job.provider_status_name).to eq :settled
+              end
+
+              context 'when depositing the second payment' do
+                before do
+                  with_user(subcon_admin) do
+                    subcon_entry2.deposit!
+                  end
+                  subcon_job.reload
+                end
+
+                it 'status should remain settled' do
+                  expect(subcon_job.provider_status_name).to eq :settled
+                end
+
+                context 'when clearing the second payment' do
+                  before do
+                    with_user(subcon_admin) do
+                      subcon_entry2.clear!
+                    end
+                    subcon_job.reload
+
+                  end
+
+                  it 'status should change to cleared' do
+                    expect(subcon_job.provider_status_name).to eq :cleared
+                  end
+
+                end
+
+              end
+
+
+            end
+
+          end
+
+        end
+      end
+    end
   end
 
   context 'before completing the work' do
@@ -108,6 +214,19 @@ describe 'Member Provider Settlement: When claimed_p_settled' do
 
       it 'provider status should remain claimed_p_settled' do
         expect(subcon_job.provider_status_name).to eq :claimed_p_settled
+      end
+
+      context 'when the sucbon confirms the first payment' do
+        before do
+          with_user(subcon_admin) do
+            subcon_entry1.confirm!
+          end
+          subcon_job.reload
+        end
+        it 'provider status should remain claimed_p_settled' do
+          expect(subcon_job.provider_status_name).to eq :claimed_p_settled
+        end
+
       end
 
       context 'when competing the work' do

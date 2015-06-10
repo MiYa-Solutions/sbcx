@@ -63,8 +63,10 @@ module ProviderSettlement
       end
 
       event :confirm_settled do
-        transition [:claimed_as_settled] => :settled, if: ->(sc) { sc.provider_settlement_allowed? && sc.provider_fully_settled? }
-        transition [:claimed_p_settled] => :partially_settled, if: ->(sc) { sc.provider_settlement_allowed? && !sc.provider_fully_settled? }
+        transition :claimed_as_settled => :settled, if: ->(sc) { sc.provider_settlement_allowed? && sc.prov_fully_confirmed? && sc.provider_fully_settled? }
+        transition :claimed_p_settled => :partially_settled, if: ->(sc) { sc.provider_settlement_allowed? && sc.prov_fully_confirmed? && !sc.provider_fully_settled? }
+        transition [:claimed_p_settled, :claimed_as_settled] => :claimed_as_settled, if: ->(sc) { sc.provider_settlement_allowed? && !sc.prov_fully_confirmed? && sc.provider_fully_settled? }
+        transition :claimed_p_settled => :claimed_p_settled, if: ->(sc) { sc.provider_settlement_allowed? && !sc.prov_fully_confirmed? && !sc.provider_fully_settled? }
         transition :disputed => :partially_settled, if: ->(sc) { !sc.provider_fully_settled? && sc.disputed_prov_entries.size == 0 }
         transition :disputed => :settled, if: ->(sc) { sc.provider_fully_settled? && sc.disputed_prov_entries.size == 0 }
         transition :disputed => :disputed, if: ->(sc) { sc.disputed_prov_entries.size > 0 }
@@ -114,7 +116,7 @@ module ProviderSettlement
       end
 
       event :clear do
-        transition :settled => :cleared
+        transition :settled => :cleared, if: ->(sc) { sc.prov_fully_cleared? }
       end
 
       event :cancel do
@@ -149,7 +151,7 @@ module ProviderSettlement
   def prov_settlement_attributes_valid?
     errors.add :prov_settle_amount, I18n.t('service_call.errors.prov_settlement_amount_missing') unless prov_settle_amount.present?
     errors.add :prov_settle_type, I18n.t('service_call.errors.prov_settlement_type_invalid') unless prov_settle_type.present?
-    errors.add  :prov_settle_amount, I18n.t('service_call.errors.prov_settlement_amount_invalid') unless prov_settle_amount.is_a_number?
+    errors.add :prov_settle_amount, I18n.t('service_call.errors.prov_settlement_amount_invalid') unless prov_settle_amount.is_a_number?
     errors.empty?
   end
 
@@ -163,7 +165,7 @@ module ProviderSettlement
   end
 
   def provider_fully_confirmed?
-    subcon_payments.where(status: [ConfirmableEntry::STATUS_SUBMITTED, ConfirmableEntry::STATUS_DISPUTED]).size > 0
+    provider_payments.where(status: [ConfirmableEntry::STATUS_SUBMITTED, ConfirmableEntry::STATUS_DISPUTED]).size > 0 ? false : true
 
   end
 
@@ -208,7 +210,7 @@ module ProviderSettlement
   end
 
   def provider_fully_paid?
-    provider_total - provider_paid_amount == Money.new(0)
+    work_done? ? (provider_total + provider_paid_amount) == Money.new(0) : false
   end
 
 
@@ -232,5 +234,20 @@ module ProviderSettlement
     provider_payments.where(status: ConfirmableEntry::STATUS_DISPUTED)
   end
 
+  alias_method :cleared_prov_entries, :provider_paid_entries
+  alias_method :prov_fully_cleared?, :provider_fully_paid?
+
+  # def cleared_prov_entries
+  #   provider_payments.where(status: AccountingEntry::STATUS_CLEARED)
+  # end
+  #
+  # def fully_cleared?
+  #   work_done? ? cleared_prov_entries.sum(:amount_cents).abs == provider_total.cents.abs : false
+  # end
+  #
+
+  def prov_fully_confirmed?
+    !(provider_payments.where(status: [ConfirmableEntry::STATUS_DISPUTED, ConfirmableEntry::STATUS_SUBMITTED]).size > 0)
+  end
 
 end

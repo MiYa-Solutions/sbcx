@@ -11,7 +11,7 @@ en:
       material_reimbursement: "Material Reimbursement"
       service_call_charge: "Job Charge"
       canceled_job_adjustment: "Canceled Job Adjustment"
-      payment_to_subcontractor: "Payment To Subcontractor"
+      payment_to_subcontractor: Subcontractor Charge
       customer_reimbursement: "Customer Reimbursement"
       subcontracting_job: "Subcontracting Job"
       rejected_payment: "Rejected Payment"

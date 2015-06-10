@@ -107,7 +107,7 @@ describe 'Member Subcon Settlement: When rejected' do
 
   context 'when settling again and rejecting' do
     before do
-      settle_with_subcon job, amount: 20, type: 'cash'
+      settle_with_subcon job, amount: 20, type: 'credit_card'
       job.reload
       subcon_entry2.confirm!
       subcon_entry2.deposit!

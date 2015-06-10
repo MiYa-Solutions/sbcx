@@ -10,7 +10,7 @@ class PaymentToAffiliate < AffiliateSettlementEntry
     if account.accountable.member?
       []
     else
-      [:deposited, :cleared, :rejected] & self.status_events
+      [:deposited, :cleared, :rejected, :confirmed, :disputed] & self.status_events
     end
   end
 

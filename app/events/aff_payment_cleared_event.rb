@@ -7,7 +7,7 @@ class AffPaymentClearedEvent < PaymentEvent
   end
 
   def process_event
-    payment.cleared!(:state_only) if triggering_event
+    payment.cleared(:state_only) if triggering_event
     ticket.clear_subcon! if ticket.can_clear_subcon?
   end
 

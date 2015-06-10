@@ -12,6 +12,7 @@ describe 'Member Subcon Settlement: When claim_p_settled' do
   end
 
   let(:subcon_entry1) { subcon_job.entries.where(type: AffiliateSettlementEntry.descendants.map(&:name)).order('id asc').first }
+  let(:subcon_entry2) { subcon_job.entries.where(type: AffiliateSettlementEntry.descendants.map(&:name)).order('id asc').last }
 
   it 'subcon status should be claim_p_settled' do
     expect(job.reload.subcontractor_status_name).to eq :claim_p_settled
@@ -30,9 +31,10 @@ describe 'Member Subcon Settlement: When claim_p_settled' do
       expect(job.subcontractor_status_name).to eq :claim_p_settled
     end
 
-    context 'when confirming the provider settlement entry' do
+    context 'when confirming both the provider and subcon settlement entries' do
       before do
         subcon_entry1.confirm!
+        subcon_entry2.confirm!
         job.reload
       end
 
@@ -43,7 +45,6 @@ describe 'Member Subcon Settlement: When claim_p_settled' do
     end
 
   end
-
 
 
   context 'when the subcon confirms the settlement entry' do
@@ -95,12 +96,58 @@ describe 'Member Subcon Settlement: When claim_p_settled' do
   context 'before completing the work' do
     context 'when the provider pays the subcon the reminder' do
       before do
-        settle_with_subcon job, amount: 100, type: 'credit_card'
+        with_user(org_admin) do
+          settle_with_subcon job, amount: 100, type: 'credit_card'
+        end
         job.reload
       end
 
       it 'subcon status should remain claim_p_settled' do
         expect(job.subcontractor_status_name).to eq :claim_p_settled
+      end
+
+      context 'when the sucbon confirms the first payment' do
+        before do
+          with_user(subcon_admin) do
+            subcon_entry1.confirm!
+          end
+          job.reload
+        end
+        it 'provider status should remain claimed_p_settled' do
+          expect(job.subcontractor_status_name).to eq :claim_p_settled
+        end
+
+      end
+
+
+      context 'when disputing the payment' do
+        before do
+          with_user(subcon_admin) do
+            subcon_entry1.dispute!
+          end
+          job.reload
+        end
+
+        it 'subcon status should change to disputed' do
+          expect(job.subcontractor_status_name).to eq :disputed
+        end
+
+        context 'when the subcon confirms both payments' do
+          before do
+            with_user(subcon_admin) do
+              subcon_entry1.confirm!
+              subcon_entry2.confirm!
+            end
+            job.reload
+          end
+
+          it 'subcon status should remain partially_settled' do
+            expect(job.subcontractor_status_name).to eq :partially_settled
+          end
+
+        end
+
+
       end
 
       context 'when competing the work' do
