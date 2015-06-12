@@ -33,6 +33,20 @@
                     </tr>
                     <tr>
                       <td>
+                        <strong><%= OrgSettings.human_attribute_name(:external_ref_unique) %></strong>
+                      </td>
+                      <td>
+                        <%= best_in_place @org_settings,
+                                          :external_ref_unique,
+                                          type:       :checkbox,
+                                          path:       org_settings_path,
+                                          collection: [raw("<div class='btn btn-mini btn-danger'><i class='icon-remove icon-white'></i></div>"),
+                                                       raw("<div class='btn btn-mini btn-success'><i class='icon-ok icon-white'></i></div>")] %>
+
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
                         <%= image_tag("overdue.png", :title => I18n.t('general.messages.default_tax_signup'), :rel => 'tooltip', "data-placement" => "right") %>
                         <strong><%= OrgSettings.human_attribute_name(:default_tax) %></strong>
                       </td>
