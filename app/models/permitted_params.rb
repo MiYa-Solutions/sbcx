@@ -453,10 +453,10 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                   :collector_type,
                   :external_ref, :project_id, :project_name]
 
-    basic_attr = basic_attr | sc_technician_attr if user.roles.pluck(:name).include? Role::TECHNICIAN_ROLE_NAME
-    basic_attr = basic_attr | sc_dispatcher_attr if user.roles.pluck(:name).include? Role::DISPATCHER_ROLE_NAME
+    basic_attr = basic_attr | sc_technician_attr if user.roles.map(&:name).include? Role::TECHNICIAN_ROLE_NAME
+    basic_attr = basic_attr | sc_dispatcher_attr if user.roles.map(&:name).include? Role::DISPATCHER_ROLE_NAME
 
-    basic_attr = basic_attr | sc_org_attr if user.roles.pluck(:name).include? Role::ORG_ADMIN_ROLE_NAME
+    basic_attr = basic_attr | sc_org_attr if user.roles.map(&:name).include? Role::ORG_ADMIN_ROLE_NAME
 
     basic_attr
   end
