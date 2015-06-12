@@ -1,6 +1,6 @@
 class AffiliatePaymentNotification < Notification
   def entry
-    @entry ||= notifiable
+    @entry ||= event.entry
   end
 
   def affiliate
@@ -13,6 +13,10 @@ class AffiliatePaymentNotification < Notification
 
   def ticket
     entry.ticket
+  end
+
+  def ticket_ref
+    ticket.ref_id
   end
 
 end

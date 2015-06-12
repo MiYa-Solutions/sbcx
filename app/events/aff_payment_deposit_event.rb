@@ -9,12 +9,16 @@ class AffPaymentDepositEvent < EntryEvent
 
   def process_event
     unless entry.matching_entry.nil?
-      entry.matching_entry.events << AffPaymentDepositedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
+      matching_ticket.events << AffPaymentDepositedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
     end
   end
 
   def ticket
-    @ticket || entry.ticket
+    @ticket ||= entry.ticket
+  end
+
+  def matching_ticket
+    @matching_ticket ||= entry.matching_entry.ticket
   end
 
 end

@@ -19,7 +19,9 @@ describe 'Affiliate Entry For Members' do
     context 'when the provider initiates the settlement' do
 
       before do
-        settle_with_subcon job, type: 'cheque', amount: '10'
+        with_user(org_admin) do
+          settle_with_subcon job, type: 'cheque', amount: '10'
+        end
       end
 
       it 'subcon entry should be valid' do

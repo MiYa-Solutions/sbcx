@@ -178,6 +178,9 @@ class User < ActiveRecord::Base
                          'acc_adj_canceled_notification_email'        => 'true',
                          'account_adjusted_notification'              => 'true',
                          'account_adjusted_notification_email'        => 'true',
+                         # affiliate payment notifications
+                         'aff_payment_disputed_notification'          => 'true',
+                         'aff_payment_confirmed_notification'         => 'true',
                          #for 3rd party collection deposit
                          'entry_disputed_notification'                => 'true',
                          'entry_disputed_notification_email'          => 'true'

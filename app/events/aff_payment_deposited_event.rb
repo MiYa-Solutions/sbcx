@@ -9,6 +9,11 @@ class AffPaymentDepositedEvent < PaymentEvent
   def process_event
     ticket.deposited_subcon! if ticket.can_deposited_subcon?
     payment.deposited!(:state_only) if payment.can_deposited?
+    super
+  end
+
+  def notification_class
+    ScSubconDepositedNotification
   end
 
 end

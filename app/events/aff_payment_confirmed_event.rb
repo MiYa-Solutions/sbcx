@@ -1,4 +1,4 @@
-class AffPaymentConfirmedEvent < EntryEvent
+class AffPaymentConfirmedEvent < PaymentEvent
 
   def init
     self.name         = I18n.t('aff_entry_confirmed_event.name')

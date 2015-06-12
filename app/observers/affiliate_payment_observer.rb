@@ -3,13 +3,13 @@ class AffiliatePaymentObserver < ActiveRecord::Observer
 
   def after_deposit(payment, transition)
     Rails.logger.debug { "AffiliatePaymentObserver: invoked observer AFTER after_deposit \n #{payment.inspect} \n #{transition.args.inspect}" }
-    payment.events << AffPaymentDepositEvent.new(entry_id: payment.id)
+    payment.ticket.events << AffPaymentDepositEvent.new(entry_id: payment.id)
   end
 
   def after_deposited(payment, transition)
     Rails.logger.debug { "AffiliatePaymentObserver: invoked observer AFTER after_deposited \n #{payment.inspect} \n #{transition.args.inspect}" }
     unless transition.args.first == :state_only
-      payment.events << AffPaymentDepositedEvent.new(entry_id: payment.id)
+      payment.ticket.events << AffPaymentDepositedEvent.new(entry_id: payment.id)
     end
   end
 
@@ -40,7 +40,7 @@ class AffiliatePaymentObserver < ActiveRecord::Observer
 
   def after_confirm(payment, transition)
     Rails.logger.debug { "AffiliatePaymentObserver: invoked observer AFTER after_confirm \n #{payment.inspect} \n #{transition.args.inspect}" }
-    payment.events << AffPaymentConfirmEvent.new(entry_id: payment.id)
+    payment.ticket.events << AffPaymentConfirmEvent.new(entry_id: payment.id)
   end
 
   def after_dispute(payment, transition)
