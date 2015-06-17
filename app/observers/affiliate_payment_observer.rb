@@ -1,5 +1,6 @@
 class AffiliatePaymentObserver < ActiveRecord::Observer
-  observe [PaymentToAffiliate.subclasses.map {|s|s.name.underscore.to_sym}, PaymentFromAffiliate.subclasses.map {|s|s.name.underscore.to_sym}].flatten
+  # observe [PaymentToAffiliate.subclasses.map {|s|s.name.underscore.to_sym}, PaymentFromAffiliate.subclasses.map {|s|s.name.underscore.to_sym}].flatten
+  observe PaymentToAffiliate, PaymentFromAffiliate
 
   def after_deposit(payment, transition)
     Rails.logger.debug { "AffiliatePaymentObserver: invoked observer AFTER after_deposit \n #{payment.inspect} \n #{transition.args.inspect}" }

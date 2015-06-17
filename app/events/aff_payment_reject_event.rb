@@ -10,7 +10,7 @@ class AffPaymentRejectEvent < RejectionEvent
     update_affiliate_status
     update_account_balance
     unless entry.matching_entry.nil?
-      entry.matching_entry.events << AffPaymentRejectedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
+      entry.matching_entry.ticket.events << AffPaymentRejectedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
     end
   end
 

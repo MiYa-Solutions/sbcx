@@ -50,16 +50,28 @@ module SubcontractorSettlement
         transition :claim_p_settled => :partially_settled, if: ->(sc) { sc.subcon_settlement_allowed? && sc.subcon_fully_confirmed? && !sc.subcon_fully_settled? }
         transition :claim_p_settled => :claim_p_settled, if: ->(sc) { sc.subcon_settlement_allowed? && !sc.subcon_fully_confirmed? && !sc.subcon_fully_settled? }
         # transition [:partially_settled, :claim_settled, :claim_p_settled] => :partially_settled, if: ->(sc) { sc.subcon_settlement_allowed? && !sc.subcon_fully_settled? }
-        transition :disputed => :partially_settled, if: ->(sc) { !sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 &&  sc.subcon_fully_confirmed?}
-        transition :disputed => :claim_p_settled, if: ->(sc) { !sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 &&  !sc.subcon_fully_confirmed?}
-        transition :disputed => :settled, if: ->(sc) { sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0  && sc.subcon_fully_confirmed? }
+        transition :disputed => :partially_settled, if: ->(sc) { !sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 && sc.subcon_fully_confirmed? }
+        transition :disputed => :claim_p_settled, if: ->(sc) { !sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 && !sc.subcon_fully_confirmed? }
+        transition :disputed => :settled, if: ->(sc) { sc.subcon_fully_settled? && sc.disputed_subcon_entries.size == 0 && sc.subcon_fully_confirmed? }
         transition :disputed => :disputed, if: ->(sc) { sc.disputed_subcon_entries.size > 0 }
 
       end
 
       event :subcon_marked_as_settled do
-        transition [:rejected, :pending] => :settled, if: ->(sc) { sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? && sc.subcon_fully_settled? }
-        transition [:rejected, :pending] => :partially_settled, if: ->(sc) { sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? && !sc.subcon_fully_settled? }
+        transition [:rejected,
+                    :pending,
+                    :claim_p_settled,
+                    :partially_settled] => :claim_settled, if: ->(sc) {
+                                                           sc.subcontractor.subcontrax_member? &&
+                                                               sc.subcon_settlement_allowed? &&
+                                                               sc.subcon_fully_settled? }
+        transition [:rejected,
+                    :pending,
+                    :claim_p_settled,
+                    :partially_settled] => :claim_p_settled, if: ->(sc) {
+                                                             sc.subcontractor.subcontrax_member? &&
+                                                                 sc.subcon_settlement_allowed? &&
+                                                                 !sc.subcon_fully_settled? }
       end
 
       # event :confirm_settled do
@@ -141,7 +153,7 @@ module SubcontractorSettlement
   def subcon_settlement_attributes_valid?
     errors.add :subcon_settle_amount, I18n.t('service_call.errors.subcon_settlement_amount_missing') unless subcon_settle_amount.present?
     errors.add :subcon_settle_type, I18n.t('service_call.errors.subcon_settlement_type_invalid') unless subcon_settle_type.present?
-    errors.add  :subcon_settle_amount, I18n.t('service_call.errors.subcon_settlement_amount_invalid') unless subcon_settle_amount.is_a_number?
+    errors.add :subcon_settle_amount, I18n.t('service_call.errors.subcon_settlement_amount_invalid') unless subcon_settle_amount.is_a_number?
     errors.empty?
   end
 

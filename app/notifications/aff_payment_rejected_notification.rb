@@ -1,7 +1,7 @@
-class AffPaymentConfirmedNotification < AffiliatePaymentNotification
+class AffPaymentRejectedNotification < AffiliatePaymentNotification
 
   def html_message
-    I18n.t('notifications.aff_payment_confirmed_notification.html_message',
+    I18n.t('notifications.aff_payment_rejected_notification.html_message',
            affiliate: affiliate.name,
            type: entry.class.model_name.human,
            amount: humanized_money_with_symbol(event.amount),
@@ -9,14 +9,14 @@ class AffPaymentConfirmedNotification < AffiliatePaymentNotification
   end
 
   def default_subject
-    I18n.t('notifications.aff_payment_confirmed_notification.subject', affiliate: affiliate.name)
+    I18n.t('notifications.aff_payment_rejected_notification.subject')
   end
 
   def default_content
-    I18n.t('notifications.aff_payment_confirmed_notification.content',
+    I18n.t('notifications.aff_payment_rejected_notification.content',
            affiliate: affiliate.name,
            type: entry.class.model_name.human,
-           job_ref:  ticket_ref)
+           amount: humanized_money_with_symbol(entry.amount))
   end
 
 

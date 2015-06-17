@@ -14,7 +14,7 @@ class ScSubconDepositedEvent < ServiceCallEvent
   end
 
   def notification_class
-    ScSubconDepositedNotification
+    nil#ScSubconDepositedNotification
   end
 
   def update_provider

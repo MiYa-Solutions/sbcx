@@ -7,7 +7,7 @@ class ScSubconConfirmedSettledEvent < ScSettlementEvent
   end
 
   def notification_class
-    ScSubconConfirmedSettledNotification
+    nil#ScSubconConfirmedSettledNotification
   end
 
   def update_provider

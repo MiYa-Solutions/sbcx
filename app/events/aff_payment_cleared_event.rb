@@ -9,6 +9,11 @@ class AffPaymentClearedEvent < PaymentEvent
   def process_event
     payment.cleared(:state_only) if triggering_event
     ticket.clear_subcon! if ticket.can_clear_subcon?
+    super
+  end
+
+  def notification_class
+    AffPaymentClearedNotification
   end
 
 end

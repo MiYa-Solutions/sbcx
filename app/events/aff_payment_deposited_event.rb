@@ -13,7 +13,7 @@ class AffPaymentDepositedEvent < PaymentEvent
   end
 
   def notification_class
-    ScSubconDepositedNotification
+    AffPaymentDepositedNotification
   end
 
 end

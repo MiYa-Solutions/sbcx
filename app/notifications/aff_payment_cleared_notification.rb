@@ -1,4 +1,4 @@
-class AffPaymentConfirmedNotification < AffiliatePaymentNotification
+class AffPaymentClearedNotification < AffiliatePaymentNotification
 
   def html_message
     I18n.t('notifications.aff_payment_confirmed_notification.html_message',

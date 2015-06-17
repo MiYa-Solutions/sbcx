@@ -1,4 +1,6 @@
 class AffiliatePaymentNotification < Notification
+  include MoneyRails::ActionViewExtension
+
   def entry
     @entry ||= event.entry
   end

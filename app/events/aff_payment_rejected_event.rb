@@ -12,6 +12,11 @@ class AffPaymentRejectedEvent < RejectionEvent
       payment.rejected!(:state_only) if payment.can_rejected?
       update_account_balance
     end
+    super
+  end
+
+  def notification_class
+    AffPaymentRejectedNotification
   end
 
 

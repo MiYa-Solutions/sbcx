@@ -180,7 +180,15 @@ class User < ActiveRecord::Base
                          'account_adjusted_notification_email'        => 'true',
                          # affiliate payment notifications
                          'aff_payment_disputed_notification'          => 'true',
+                         'aff_payment_disputed_notification_email'    => 'true',
                          'aff_payment_confirmed_notification'         => 'true',
+                         'aff_payment_confirmed_notification_email'   => 'true',
+                         'aff_payment_rejected_notification'          => 'true',
+                         'aff_payment_rejected_notification_email'    => 'true',
+                         'aff_payment_deposited_notification'         => 'true',
+                         'aff_payment_deposited_notification_email'   => 'true',
+                         'aff_payment_cleared_notification'           => 'true',
+                         'aff_payment_cleared_notification_email'     => 'true',
                          #for 3rd party collection deposit
                          'entry_disputed_notification'                => 'true',
                          'entry_disputed_notification_email'          => 'true'

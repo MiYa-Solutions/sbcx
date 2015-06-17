@@ -39,6 +39,11 @@ en:
       agr_change_submitted_notification: "Change Submitted"
       agr_new_subcon_notification: "New Agreement"
       agr_subcon_accepted_notification: "Agreement Accepted"
+      aff_payment_deposited_notification: "Affiliate Deposited Payment"
+      aff_payment_confirmed_notification: "Affiliate Confirmed Payment"
+      aff_payment_disputed_notification: "Affiliate Disputed Payment"
+      aff_payment_rejected_notification: "Affiliate Payment Rejected"
+      aff_payment_cleared_notification: "Affiliate Payment Cleared"
     attributes:
       notification:
         subject: "Subject"
@@ -259,13 +264,28 @@ en:
       name: "New Agreement"
       description: "New agreement has been submitted"
     aff_payment_confirmed_notification:
-      html_message: "%{affiliate} has confirmed your payment for %{job_link}"
-      subject: '%{affiliate} has confirmed your payment'
-      content: '%{affiliate} has confirmed your payment for %{job_ref}'
-      description: "An affiliate has confirmed your payment for a job"
+      html_message: "%{affiliate} has confirmed receiving your %{type} payment of %{amount} for %{job_link}"
+      subject: '%{affiliate} has confirmed receiving your payment'
+      content: '%{affiliate} has confirmed receiving your %{type} payment for job %{job_ref}'
+      description: "An affiliate has confirmed receiving your payment"
+    aff_payment_deposited_notification:
+      html_message: "%{affiliate} has deposited your %{type} payment of %{amount} for %{job_link}"
+      subject: '%{affiliate} has deposited your payment'
+      content: '%{affiliate} has deposited your %{type} payment for job %{job_ref}'
+      description: "An affiliate has deposited your payment"
     aff_payment_disputed_notification:
       html_message: "%{affiliate} has disputed your payment for %{job_link}"
       subject: '%{affiliate} has disputed your payment (claims to not have recevied it)'
       content: '%{affiliate} has disputed your payment for %{job_ref}'
       description: "An affiliate has disputed your payment for a job"
+    aff_payment_rejected_notification:
+      html_message: "Your %{type} payment of %{amount} to %{affiliate} for job %{job_link} was rejected (e.g. the check has bounced)"
+      subject: 'Rejected Payment'
+      content: 'Your %{type} payment of %{amount} to %{affiliate} was rejected (e.g. the check has bounced)'
+      description: "Payment of %{amount} to %{affiliate} was rejected (e.g. the check has bounced)"
+    aff_payment_cleared_notification:
+      html_message: "Your %{type} payment of %{amount} to %{affiliate} for job %{job_link} was cleared"
+      subject: 'Cleared Affiliate Payment'
+      content: 'Your %{type} payment of %{amount} to %{affiliate} was cleared'
+      description: "Payment of %{amount} to %{affiliate} was cleared"
 
