@@ -50,6 +50,17 @@ class NotificationMailer < ActionMailer::Base
     end
   end
 
+  AffiliatePaymentNotification.subclasses.each do |subclass|
+    define_method subclass.name.underscore do |subject, user, entry, event|
+      @entry = event.entry
+      @service_call = event.entry.ticket
+      @user  = user
+      @event = event
+
+      mail to: user.email, subject: subject
+    end
+  end
+
   #def agr_new_subcon_notification(subject, user, agreement)
   #  @agreement = agreement
   #  @user      = user

@@ -11,7 +11,7 @@ en:
       material_reimbursement: "Material Reimbursement"
       service_call_charge: "Job Charge"
       canceled_job_adjustment: "Canceled Job Adjustment"
-      payment_to_subcontractor: "Payment To Subcontractor"
+      payment_to_subcontractor: Subcontractor Charge
       customer_reimbursement: "Customer Reimbursement"
       subcontracting_job: "Subcontracting Job"
       rejected_payment: "Rejected Payment"
@@ -105,20 +105,51 @@ en:
   payment_cleared_event:
     name: 'Cleared Payment'
     description: 'Payment has been cleared successfully'
+  aff_payment_cleared_event:
+    name: 'Cleared Affiliate Payment'
+    description: 'Affiliate payment has been cleared successfully'
   payment_deposited_event:
     name: 'Deposited Payment'
     description: 'A payment has been deposited successfully'
+  aff_payment_deposited_event:
+    name: 'Affiliate Payment Deposited'
+    description: 'An affiliate payment has been deposited successfully'
   payment_rejected_event:
     name: 'Rejected Payment'
     description: 'A %{payment_type} (id: %{payment_id}) has been rejected'
     entry:
       description: '%{payment_type} (id: %{payment_id}) was rejected'
+  aff_payment_rejected_event:
+    name: 'Affiliate Payment Rejected'
+    description: 'A %{payment_type} (id: %{payment_id}) has been rejected'
+    entry:
+      description: '%{payment_type} (id: %{payment_id}) was rejected'
+  aff_payment_reject_event:
+    name: 'Affiliate Payment Reject'
+    description: 'A %{payment_type} (id: %{payment_id}) is rejected'
+    entry:
+      description: '%{payment_type} (id: %{payment_id}) is rejected'
   entry_confirmed_event:
     name: "Payment Confirmed"
     description: 'A payment was confirmed by Contractor'
+  aff_entry_confirmed_event:
+    name: "Affiliate Payment Confirmed"
+    description: 'A payment to an affiliate was confirmed to be received'
+  aff_entry_disputed_event:
+    name: "Affiliate Payment Disputed"
+    description: 'A payment to an affiliate was disputed (claimed to not been received)'
   entry_confirm_event:
       name: "Payment Confirmed"
       description: 'You have confirmed receiving a payment'
+  aff_entry_confirm_event:
+      name: "Affiliate Payment Confirmed"
+      description: 'You have confirmed an affiliate payment'
+  aff_entry_deposit_event:
+      name: "Affiliate Payment Deposit"
+      description: 'You have deposited an affiliate payment'
+  aff_entry_dispute_event:
+      name: "Affiliate Payment Disputed"
+      description: 'You have disputed an affiliate payment'
   Cash_collection_from_subcon:
     name: "Cash collection from subcontractor"
   entry_dispute_event:

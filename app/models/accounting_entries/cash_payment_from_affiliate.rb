@@ -22,8 +22,13 @@
 #  matching_entry_id :integer
 #
 
-class CashPaymentFromAffiliate < AffiliateSettlementEntry
-  def amount_direction
-    -1
+class CashPaymentFromAffiliate < PaymentFromAffiliate
+  state_machine :status do
+    after_transition any => :deposited do |entry, transition|
+      # entry.status = AccountingEntry::STATUS_CLEARED
+      # entry.save!
+      entry.clear
+    end
   end
+
 end

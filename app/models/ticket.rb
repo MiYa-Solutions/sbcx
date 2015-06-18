@@ -216,14 +216,6 @@ class Ticket < ActiveRecord::Base
     )
   end
 
-  def subcon_balance
-    if transferred? # this is an abstract class and so transferred is assumed to be implemented by the subclasses
-      affiliate_balance(subcontractor)
-    else
-      Money.new_with_amount(0)
-    end
-
-  end
 
   def customer_attributes
     {
@@ -264,13 +256,6 @@ class Ticket < ActiveRecord::Base
 
   end
 
-  def provider_balance
-    if provider != organization
-      affiliate_balance(provider)
-    else
-      Money.new_with_amount(0)
-    end
-  end
 
   def html_notes
     self.notes.gsub(/\n/, '<br/>')

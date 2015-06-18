@@ -22,9 +22,6 @@
 #  matching_entry_id :integer
 #
 
-class CreditPaymentToAffiliate < AffiliateSettlementEntry
-  def amount_direction
-    1
-  end
+class CreditPaymentToAffiliate < PaymentToAffiliate
 
 end
