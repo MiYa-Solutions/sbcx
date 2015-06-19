@@ -103,8 +103,8 @@ describe 'Member Subcon Settlement: When Pending' do
           job.reload
         end
 
-        it 'should change the subcon status to settled' do
-          expect(job.subcontractor_status_name).to eq :settled
+        it 'should change the subcon status to claim_settled' do
+          expect(job.subcontractor_status_name).to eq :claim_settled
         end
 
         it 'job should have notification associated with it' do

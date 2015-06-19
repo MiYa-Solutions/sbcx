@@ -31,7 +31,7 @@ describe 'Member Subcon Settlement: When partially_settled' do
       end
 
       it 'status should remain :partially_settled' do
-        expect(job.reload.subcontractor_status_name).to eq :partially_settled
+        expect(job.reload.subcontractor_status_name).to eq :claim_p_settled
       end
 
       context 'when the job is completed' do
@@ -42,8 +42,8 @@ describe 'Member Subcon Settlement: When partially_settled' do
           job.reload
         end
 
-        it 'subcon status should change to settled' do
-          expect(job.subcontractor_status_name).to eq :settled
+        it 'subcon status should change to claim_settled' do
+          expect(job.subcontractor_status_name).to eq :claim_settled
         end
 
       end

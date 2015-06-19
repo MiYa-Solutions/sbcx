@@ -22,8 +22,8 @@ describe 'Member Subcon Settlement: When settled' do
     job.reload
   end
 
-  it 'the subcon status to settled' do
-    expect(job.reload.subcontractor_status_name).to eq :settled
+  it 'the subcon status to change to claim_settled' do
+    expect(job.subcontractor_status_name).to eq :claim_settled
   end
 
   context 'when the cheque is deposited' do
@@ -37,6 +37,9 @@ describe 'Member Subcon Settlement: When settled' do
 
 
     context 'when the cheque is rejected' do
+      before do
+        subcon_entry2.confirm!
+      end
 
       it 'rejecting teh cheque should change the status to rejected' do
         expect {
