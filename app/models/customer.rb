@@ -23,6 +23,7 @@
 #
 require 'hstore_setup_methods'
 class Customer < ActiveRecord::Base
+  include Statementable
   extend HstoreSetupMethods
   serialize :properties, ActiveRecord::Coders::Hstore
   setup_hstore_attr 'default_tax'
@@ -32,6 +33,7 @@ class Customer < ActiveRecord::Base
   has_many :tickets, :inverse_of => :customer
   has_many :projects, :inverse_of => :customer
   has_many :agreements, as: :counterparty
+  has_many :statements, as: :statementable
   has_one :account, as: :accountable
   stampable
 

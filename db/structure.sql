@@ -943,6 +943,41 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: statements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE statements (
+    id integer NOT NULL,
+    data json,
+    creator_id integer,
+    updater_id integer,
+    statementable_id integer,
+    statementable_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: statements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE statements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: statements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE statements_id_seq OWNED BY statements.id;
+
+
+--
 -- Name: support_tickets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1376,6 +1411,13 @@ ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY statements ALTER COLUMN id SET DEFAULT nextval('statements_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY support_tickets ALTER COLUMN id SET DEFAULT nextval('support_tickets_id_seq'::regclass);
 
 
@@ -1604,6 +1646,14 @@ ALTER TABLE ONLY roles
 
 ALTER TABLE ONLY tickets
     ADD CONSTRAINT service_calls_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: statements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY statements
+    ADD CONSTRAINT statements_pkey PRIMARY KEY (id);
 
 
 --
@@ -2265,3 +2315,5 @@ INSERT INTO schema_migrations (version) VALUES ('20150109140256');
 INSERT INTO schema_migrations (version) VALUES ('20150410222501');
 
 INSERT INTO schema_migrations (version) VALUES ('20150617222722');
+
+INSERT INTO schema_migrations (version) VALUES ('20150619114225');

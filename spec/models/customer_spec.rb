@@ -64,6 +64,7 @@ describe Customer do
   describe 'associations' do
     it { should have_one(:account) }
     it { should have_many(:agreements) }
+    it { should have_many(:statements) }
   end
 
   describe "authorization" do
