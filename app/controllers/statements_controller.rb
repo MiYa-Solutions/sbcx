@@ -1,4 +1,7 @@
 class StatementsController < ApplicationController
+  before_filter :authenticate_user!
+  filter_resource_access
+
   # GET /statements
   # GET /statements.json
   def index
@@ -13,7 +16,6 @@ class StatementsController < ApplicationController
   # GET /statements/1
   # GET /statements/1.json
   def show
-    @statement = Statement.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -33,30 +35,9 @@ class StatementsController < ApplicationController
     end
   end
 
-  # GET /statements/new
-  # GET /statements/new.json
-  def new
-    @statement = Statement.new()
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @statement }
-    end
-  end
-
-  # def new_statement_from_params
-  #   @statement = Statement.new(statement_params)
-  # end
-
-  # GET /statements/1/edit
-  def edit
-    @statement = Statement.find(params[:id])
-  end
-
   # POST /statements
   # POST /statements.json
   def create
-    @statement = Statement.new(statement_params)
 
     respond_to do |format|
       if @statement.save(StatementSerializer::CustomerStatementSerializer)
@@ -72,13 +53,18 @@ class StatementsController < ApplicationController
   # DELETE /statements/1
   # DELETE /statements/1.json
   def destroy
-    @statement = Statement.find(params[:id])
     @statement.destroy
 
     respond_to do |format|
       format.html { redirect_to statements_url }
       format.json { head :no_content }
     end
+  end
+
+  protected
+
+  def new_statement_from_params
+    @statement = Statement.new(statement_params)
   end
 
   private

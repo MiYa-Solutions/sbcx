@@ -1,0 +1,6 @@
+<%= simple_form_for Statement.new do |f| %>
+  <p>
+    <%= f.hidden_field :account_id, value: account.id %><br />
+  </p>
+  <p><%= f.submit %></p>
+<% end %>
