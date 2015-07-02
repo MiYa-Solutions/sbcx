@@ -18,6 +18,18 @@ class StatementsController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @statement }
+      format.pdf do
+        partial = params[:template].present? ? params[:template] : 'show'
+        render pdf:                    "statement_#{@statement.id}",
+               layout:                 'service_calls',
+               template:               "statements/#{partial}.pdf",
+               footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
+               header:                 { html: { template: 'layouts/_header.pdf.erb' } },
+               disable_internal_links: false
+
+
+      end
+
     end
   end
 
