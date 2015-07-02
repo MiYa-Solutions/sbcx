@@ -14,6 +14,7 @@
 #
 
 class Account < ActiveRecord::Base
+  include Statementable
 
   before_create :set_initial_synch_status
 
@@ -74,6 +75,11 @@ class Account < ActiveRecord::Base
 
   def adj_entries
     AdjustmentEntry.find_all_by_account_id(self.id)
+  end
+
+  def open_adj_entries
+    entries.where(type: [MyAdjEntry, ReceivedAdjEntry]).
+        where(status: [AdjustmentEntry::STATUS_SUBMITTED, AdjustmentEntry::STATUS_REJECTED ]).all
   end
 
   # make state machine event methods private as they should only be invoked from the following methods

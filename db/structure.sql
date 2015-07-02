@@ -102,7 +102,8 @@ CREATE TABLE accounts (
     updated_at timestamp without time zone NOT NULL,
     balance_cents integer DEFAULT 0 NOT NULL,
     balance_currency character varying(255) DEFAULT 'USD'::character varying NOT NULL,
-    synch_status integer
+    synch_status integer,
+    type character varying(255)
 );
 
 
@@ -951,10 +952,9 @@ CREATE TABLE statements (
     data json,
     creator_id integer,
     updater_id integer,
-    statementable_id integer,
-    statementable_type character varying(255),
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    account_id integer
 );
 
 
@@ -2317,3 +2317,7 @@ INSERT INTO schema_migrations (version) VALUES ('20150410222501');
 INSERT INTO schema_migrations (version) VALUES ('20150617222722');
 
 INSERT INTO schema_migrations (version) VALUES ('20150619114225');
+
+INSERT INTO schema_migrations (version) VALUES ('20150627213414');
+
+INSERT INTO schema_migrations (version) VALUES ('20150629214822');

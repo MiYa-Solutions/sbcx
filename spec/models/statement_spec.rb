@@ -8,12 +8,12 @@ describe Statement do
     expect(statement).to validate_presence_of :data
   end
 
-  it 'should validate presence of statementable' do
-    expect(statement).to validate_presence_of :statementable
+  it 'should validate presence of account' do
+    expect(statement).to validate_presence_of :account
   end
 
-  it 'should have a polymorphic association to statementable' do
-     expect(statement).to belong_to :statementable
+  it 'should have a polymorphic association to account' do
+     expect(statement).to belong_to :account
   end
 
   it {expect(statement).to respond_to :items}
