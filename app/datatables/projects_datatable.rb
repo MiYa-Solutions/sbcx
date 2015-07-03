@@ -39,7 +39,7 @@ class ProjectsDatatable
   end
 
   def projects
-    @projects ||= fetch_projects
+    @statements ||= fetch_projects
   end
 
   def fetch_projects

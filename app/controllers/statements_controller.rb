@@ -9,7 +9,7 @@ class StatementsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @statements }
+      format.json { render json: StatementsDatatable.new(view_context) }
     end
   end
 
