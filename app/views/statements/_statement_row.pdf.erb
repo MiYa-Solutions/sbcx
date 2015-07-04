@@ -1,0 +1,29 @@
+<tr>
+  <td><%= ticket.id %></td>
+  <td><%= ticket.name %></td>
+  <td><%= ticket.ref_id %></td>
+  <td><%= humanized_money_with_symbol ticket.balance %></td>
+</tr>
+<tr>
+  <td></td>
+  <td>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th><%= AccountingEntry.human_attribute_name :id %></th>
+      <th><%= AccountingEntry.human_attribute_name :type %></th>
+      <th><%= AccountingEntry.human_attribute_name :description %></th>
+      <th><%= AccountingEntry.human_attribute_name :amount %></th>
+      <th><%= AccountingEntry.human_attribute_name :notes %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% ticket.entries.each do |e| %>
+    <%= render 'statements/entry', entry: e %>
+  <% end %>
+  </td>
+    <td></td>
+    </tbody>
+  </table>
+
+</tr>

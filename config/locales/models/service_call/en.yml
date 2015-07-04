@@ -27,6 +27,8 @@ en:
         transferable: "Allow Transfer"
         provider_status: "Contractor Status"
         external_ref: "External id"
+        prov_settle_amount: Amount
+        prov_settle_type: Payment Method
       service_call:
         provider: "Contractor"
         tag_list: "Job Type(s)"
@@ -42,6 +44,8 @@ en:
         provider_status: "Contractor Status"
         provider_agreement: "Contractor Agreement"
         external_ref: "External id"
+        subcon_settle_amount: Amount
+        subcon_settle_type: Payment Method
     state_machines:
       service_call:
         work_status:
@@ -57,10 +61,11 @@ en:
             canceled: "Canceled"
         provider_status:
           evnets:
-            provider_marked_as_settled: "Marked as Settled"
+            settle: "Collect"
         subcontractor_status:
           events:
             subcon_marked_as_settled: "Marked as Settled"
+            settle: "Pay"
           states:
             pending: "Pending"
             claimed_as_settled: "Claimed Settled"
@@ -143,6 +148,8 @@ en:
             claim_settled: "Settled?"
             claimed_as_settled: "Claimed Settled"
             cleared: "Cleared"
+          events:
+            settle: Collect
   messages:
     service_call:
       event: 'The job was %{event_name} successfully'
@@ -151,11 +158,20 @@ en:
       cant_create_for_member: "You can't create a transferred Job when the Contractor is a member. Please contact the Contractor and ask him to create the job"
       missing_provider: "Please specify a Contractor for this transferred Job"
       customer_does_not_belong_to_provider: "The customer must be the Contractor's customer"
+      prov_settlement_type_invalid: Invalid contractor payment type
+      prov_settlement_amount_invalid: Invalid contractor payment amount
+      prov_settlement_amount_missing: Missing contractor payment amount
+      subcon_settlement_type_invalid: Invalid subcontractor payment type
+      subcon_settlement_amount_invalid: Invalid subcontractor payment amount
+      subcon_settlement_amount_missing: Missing subcontractor payment amount
     crud_messages:
       success: "The Job was created successfully"
       update:
         success: "The Job was updated successfully"
         error: 'An error encountered while updating the job: %{msg}'
+      destroy:
+        success: "The Job was deleted successfully"
+        error: 'An error encountered while deleting the job: %{msg}'
   service_call_cancel_event:
     name: "Job has been Canceled"
     description: 'The Job has been canceled by %{user}'

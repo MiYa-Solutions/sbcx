@@ -20,11 +20,11 @@ class NewJobPage < SbcxPage
     email.set the_email
     provider_select.select the_prov
     fill_in_autocomplete(customer_quick_select, cus_search, select: cus_name)
-    address1.set the_address1
-    # click_link cus_name unless cus_name.empty?
+    address1.native.double_click
+    address1.native.set(the_address1)
+    # address1.native.send_keys(*the_address1.chars)
 
     create_btn.click
-
   end
 
 

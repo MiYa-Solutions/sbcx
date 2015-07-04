@@ -19,7 +19,7 @@
 #
 
 class Bom < ActiveRecord::Base
-  belongs_to :ticket
+  belongs_to :ticket, inverse_of: :boms
   belongs_to :material, with_deleted: true
   belongs_to :buyer, :polymorphic => true
   belongs_to :provider_bom, class_name: 'Bom'
@@ -108,7 +108,7 @@ class Bom < ActiveRecord::Base
   end
 
   def destroy
-    unless ticket.can_change_boms?
+    unless ticket.can_change_boms? || ticket.to_be_destroyed
       self.errors.add :ticket, "Can't delete a bom for a completed ticket"
       raise ActiveRecord::RecordInvalid.new(self)
     end

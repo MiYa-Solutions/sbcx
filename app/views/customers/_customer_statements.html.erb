@@ -1,0 +1,24 @@
+<div class="affiliate_jobs">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= Statement.model_name.human.pluralize %></h1></li>
+      <li>
+      </li>
+    </ul>
+  </div>
+  <!--table of jobs-->
+  <table id="customer-statements" class="table table-striped" data-account-id="<%= account.id %>">
+    <thead>
+    <tr>
+      <th><%= Statement.human_attribute_name(:id) %></th>
+      <th><%= Statement.human_attribute_name(:created_at) %></th>
+      <th><%= Statement.human_attribute_name(:balance) %></th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+</div>
+
+

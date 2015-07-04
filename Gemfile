@@ -77,6 +77,7 @@ group :development, :test do
   gem 'thin', '1.6.3'
   gem 'debase', '~> 0.1.1'
   gem 'ruby-debug-ide'
+  gem 'rack-mini-profiler'
 end
 
 # Gems used only for assets and not required
@@ -108,7 +109,7 @@ group :test do
   gem 'poltergeist', '1.6.0'
   gem 'shoulda-matchers', require: false
   gem 'spork', '0.9.2'
-  gem 'faye-websocket', '0.4.4'
+  gem 'faye-websocket', '0.9.2'
   gem 'simplecov'
   gem 'rest-client', '~> 1.7.2'
   gem 'method_source'

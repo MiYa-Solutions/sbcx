@@ -120,67 +120,129 @@ class User < ActiveRecord::Base
   private
 
   def setup_default_notifications
-    self.preferences = { 'sc_received_notification'                   => 'true',
-                         'sc_received_notification_email'             => 'true',
-                         'sc_accepted_notification'                   => 'true',
-                         'sc_cancel_notification'                     => 'true',
-                         'sc_cancel_notification_email'               => 'true',
-                         'sc_rejected_notification'                   => 'true',
-                         'sc_rejected_notification_email'             => 'true',
-                         'sc_canceled_notification'                   => 'true',
-                         'sc_canceled_notification_email'             => 'true',
-                         'sc_completed_notification'                  => 'true',
-                         'sc_completed_notification_email'            => 'true',
-                         'sc_complete_notification'                   => 'true',
-                         'sc_complete_notification_email'             => 'true',
-                         'sc_collected_notification'                  => 'true',
-                         'sc_deposit_confirmed_notification'          => 'true',
-                         'sc_dispatch_notification'                   => 'true',
-                         'sc_dispatched_notification'                 => 'true',
-                         'sc_dispatched_notification_email'           => 'true',
-                         'sc_paid_notification'                       => 'true',
-                         'sc_props_updated_notification'              => 'true',
-                         'sc_provider_canceled_notification'          => 'true',
-                         'sc_provider_canceled_notification_email'    => 'true',
-                         'sc_provider_collected_notification'         => 'true',
-                         'sc_provider_confirmed_settled_notification' => 'true',
-                         'sc_provider_settled_notification'           => 'true',
-                         'sc_provider_settled_notification'           => 'true',
-                         'sc_provider_settled_notification_email'     => 'true',
-                         'sc_start_notification'                      => 'true',
-                         'sc_started_notification'                    => 'true',
-                         'sc_subcon_cleared_notification'             => 'true',
-                         'sc_subcon_confirmed_settled_notification'   => 'true',
-                         'sc_subcon_deposited_notification'           => 'true',
-                         'sc_subcon_settled_notification'             => 'true',
-                         #invite
-                         'invite_accepted_notification'               => 'true',
-                         'invite_accepted_notification_email'         => 'true',
-                         'invite_declined_notification'               => 'true',
-                         'invite_declined_notification_email'         => 'true',
-                         'new_invite_notification'                    => 'true',
-                         'new_invite_notification_email'              => 'true',
-                         #agreement notifications
-                         'agr_new_subcon_notification'                => 'true',
-                         'agr_new_subcon_notification_email'          => 'true',
-                         'agr_change_rejected_notification'           => 'true',
-                         'agr_change_rejected_notification_email'     => 'true',
-                         'agr_change_submitted_notification'          => 'true',
-                         'agr_change_submitted_notification_email'    => 'true',
-                         'agr_subcon_accepted_notification'           => 'true',
-                         'agr_subcon_accepted_notification_email'     => 'true',
-                         #adj entry notifications
-                         'acc_adj_accepted_notification'              => 'true',
-                         'acc_adj_accepted_notification_email'        => 'true',
-                         'acc_adj_rejected_notification'              => 'true',
-                         'acc_adj_rejected_notification_email'        => 'true',
-                         'acc_adj_canceled_notification'              => 'true',
-                         'acc_adj_canceled_notification_email'        => 'true',
-                         'account_adjusted_notification'              => 'true',
-                         'account_adjusted_notification_email'        => 'true',
-                         #for 3rd party collection deposit
-                         'entry_disputed_notification'                => 'true',
-                         'entry_disputed_notification_email'          => 'true'
+    prefs = {}
+    prefs.merge! basic_notifications
+    prefs.merge! invite_notifications if roles.map(&:id).include? Role::ORG_ADMIN_ROLE_ID
+    prefs.merge! collection_notifications if roles.map(&:id).include? Role::DISPATCHER_ROLE_ID
+    prefs.merge! job_notifications if roles.map(&:id).include? Role::DISPATCHER_ROLE_ID
+    prefs.merge! agreement_notifications if roles.map(&:id).include? Role::ORG_ADMIN_ROLE_ID
+    prefs.merge! adj_entry_notifications if roles.map(&:id).include? Role::ORG_ADMIN_ROLE_ID
+    prefs.merge! aff_payment_notifications if roles.map(&:id).include? Role::ORG_ADMIN_ROLE_ID
+    self.preferences = prefs
+  end
+
+  def basic_notifications
+    {
+        'sc_cancel_notification'           => 'true',
+        'sc_cancel_notification_email'     => 'true',
+        'sc_dispatch_notification'         => 'true',
+        'sc_dispatched_notification'       => 'true',
+        'sc_dispatched_notification_email' => 'true',
     }
+
+  end
+
+  def invite_notifications
+    {
+        'invite_accepted_notification'       => 'true',
+        'invite_accepted_notification_email' => 'true',
+        'invite_declined_notification'       => 'true',
+        'invite_declined_notification_email' => 'true',
+        'new_invite_notification'            => 'true',
+        'new_invite_notification_email'      => 'true',
+    }
+  end
+
+  def agreement_notifications
+    {
+        #agreement notifications
+        'agr_new_subcon_notification'             => 'true',
+        'agr_new_subcon_notification_email'       => 'true',
+        'agr_change_rejected_notification'        => 'true',
+        'agr_change_rejected_notification_email'  => 'true',
+        'agr_change_submitted_notification'       => 'true',
+        'agr_change_submitted_notification_email' => 'true',
+        'agr_subcon_accepted_notification'        => 'true',
+        'agr_subcon_accepted_notification_email'  => 'true',
+    }
+
+  end
+
+  def job_notifications
+    {
+        'sc_received_notification'                => 'true',
+        'sc_received_notification_email'          => 'true',
+        'sc_accepted_notification'                => 'true',
+        'sc_cancel_notification'                  => 'true',
+        'sc_cancel_notification_email'            => 'true',
+        'sc_rejected_notification'                => 'true',
+        'sc_rejected_notification_email'          => 'true',
+        'sc_canceled_notification'                => 'true',
+        'sc_canceled_notification_email'          => 'true',
+        'sc_completed_notification'               => 'true',
+        'sc_completed_notification_email'         => 'true',
+        'sc_complete_notification'                => 'true',
+        'sc_complete_notification_email'          => 'true',
+        'sc_dispatch_notification'                => 'true',
+        'sc_dispatched_notification'              => 'true',
+        'sc_dispatched_notification_email'        => 'true',
+        'sc_paid_notification'                    => 'true',
+        'sc_props_updated_notification'           => 'true',
+        'sc_provider_canceled_notification'       => 'true',
+        'sc_provider_canceled_notification_email' => 'true',
+        'sc_start_notification'                   => 'true',
+        'sc_started_notification'                 => 'true',
+    }
+
+  end
+
+  def collection_notifications
+    {
+        'sc_collected_notification'          => 'true',
+        'sc_deposit_confirmed_notification'  => 'true',
+        'sc_paid_notification'               => 'true',
+        'sc_provider_collected_notification' => 'true',
+        'sc_subcon_deposited_notification'   => 'true',
+    }
+
+  end
+
+  def adj_entry_notifications
+    {
+        'acc_adj_accepted_notification'       => 'true',
+        'acc_adj_accepted_notification_email' => 'true',
+        'acc_adj_rejected_notification'       => 'true',
+        'acc_adj_rejected_notification_email' => 'true',
+        'acc_adj_canceled_notification'       => 'true',
+        'acc_adj_canceled_notification_email' => 'true',
+        'account_adjusted_notification'       => 'true',
+        'account_adjusted_notification_email' => 'true',
+    }
+
+  end
+
+  def aff_payment_notifications
+    {
+        'sc_deposit_confirmed_notification'          => 'true',
+        'sc_provider_confirmed_settled_notification' => 'true',
+        'sc_provider_settled_notification'           => 'true',
+        'sc_provider_settled_notification'           => 'true',
+        'sc_provider_settled_notification_email'     => 'true',
+        'sc_subcon_cleared_notification'             => 'true',
+        'sc_subcon_confirmed_settled_notification'   => 'true',
+        'sc_subcon_deposited_notification'           => 'true',
+        'sc_subcon_settled_notification'             => 'true',
+        'aff_payment_disputed_notification'          => 'true',
+        'aff_payment_disputed_notification_email'    => 'true',
+        'aff_payment_confirmed_notification'         => 'true',
+        'aff_payment_confirmed_notification_email'   => 'true',
+        'aff_payment_rejected_notification'          => 'true',
+        'aff_payment_rejected_notification_email'    => 'true',
+        'aff_payment_deposited_notification'         => 'true',
+        'aff_payment_deposited_notification_email'   => 'true',
+        'aff_payment_cleared_notification'           => 'true',
+        'aff_payment_cleared_notification_email'     => 'true',
+    }
+
   end
 end

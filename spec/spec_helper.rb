@@ -18,6 +18,7 @@ require 'capybara/poltergeist'
 require 'site_prism'
 require 'devise'
 require 'rspec_candy/all'
+require 'ext/string'
 
 
 
@@ -37,7 +38,7 @@ Spork.prefork do
   Capybara.javascript_driver = :poltergeist
 
   Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, :debug => false) #, :js_errors => false)
+    Capybara::Poltergeist::Driver.new(app, :debug => true) #, :js_errors => false)
   end
 
   unless ENV['DRB']
@@ -80,8 +81,21 @@ Spork.prefork do
   full_names.collect do |full_name|
     include Object.const_get(File.basename(full_name,'.rb').camelize)
   end
+
   RSpec.configure do |config|
 
+    # config.around(:each, type: [:feature, :request]) do |ex|
+    #   example = RSpec.current_example
+    #   CAPYBARA_TIMEOUT_RETRIES.times do |i|
+    #     example.instance_variable_set('@exception', nil)
+    #     self.instance_variable_set('@__memoized', nil) # clear let variables
+    #     ex.run
+    #     break unless example.exception.is_a?(Capybara::Poltergeist::TimeoutError)
+    #     puts("\nCapybara::Poltergeist::TimeoutError at #{example.location}\n   Restarting phantomjs and retrying...")
+    #     restart_phantomjs
+    #   end
+    # end
+    #
     #config.filter_run :focus => true
     #config.run_all_when_everything_filtered = true
 
@@ -116,6 +130,10 @@ Spork.prefork do
     config.before(:suite) do
       DatabaseCleaner.strategy = :truncation
 
+    end
+
+    config.before(:each, :js => true) do
+      DatabaseCleaner.strategy = :truncation
     end
 
     config.before(:each) do
@@ -173,6 +191,22 @@ Spork.each_run do
   #end
   Dir["#{Rails.root}/spec/support/**/*.rb"].each do |model|
     load model
+  end
+end
+
+def restart_phantomjs
+  puts "-> Restarting phantomjs: iterating through capybara sessions..."
+  session_pool = Capybara.send('session_pool')
+  session_pool.each do |mode,session|
+    msg = "  => #{mode} -- "
+    driver = session.driver
+    if driver.is_a?(Capybara::Poltergeist::Driver)
+      msg += "restarting"
+      driver.restart
+    else
+      msg += "not poltergeist: #{driver.class}"
+    end
+    puts msg
   end
 end
 

@@ -11,6 +11,8 @@ class ServiceCallCompletedEvent < ScCompletionEvent
     service_call.complete_work!(:state_only)
     super
     invoke_affiliate_billing
+    service_call.update_status_provider if service_call.provider_entries.size > 0 && service_call.can_update_status_provider?
+    service_call.update_status_subcon if service_call.subcon_entries.size > 0 && service_call.can_update_status_subcon?
     CustomerBillingService.new(self).execute if service_call.organization.my_customer?(service_call.customer)
     update_payment_status
   end

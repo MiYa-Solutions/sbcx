@@ -10,7 +10,7 @@ class OrgSettings
   end
 
   def self.boolean_fields
-    [:validate_job_ext_ref]
+    [:validate_job_ext_ref, :external_ref_unique]
   end
 
   def self.fields

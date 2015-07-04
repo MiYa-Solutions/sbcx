@@ -6,7 +6,7 @@ class ScSubconSettleEvent < ScSettlementEvent
   end
 
   def update_subcontractor
-    subcon_service_call.events << ScProviderSettledEvent.new(triggering_event: self)
+    subcon_service_call.events << ScProviderSettledEvent.new(triggering_event: self, payment_type: self.payment_type, amount: self.amount)
   end
 
   def notification_recipients

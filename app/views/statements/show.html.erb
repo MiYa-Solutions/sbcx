@@ -1,0 +1,34 @@
+<% title 'SubConTraX Statement' %>
+
+<h2> General Details</h2>
+<ul>
+  <li>Balance: <%= humanized_money_with_symbol @statement.balance %></li>
+  <li>Customer Name: <%= @statement.statementable_name %></li>
+  <li>Customer Address1: <%= @statement.statementable_address1 %></li>
+  <li>Customer Address2: <%= @statement.statementable_address2 %></li>
+  <li>Customer City: <%= @statement.statementable_city %></li>
+  <li>Customer State: <%= @statement.statementable_state %></li>
+  <li>Customer Zip: <%= @statement.statementable_zip %></li>
+</ul>
+
+<h2> The Statement </h2>
+<p>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th><%= Ticket.human_attribute_name :id %></th>
+    <th><%= Ticket.human_attribute_name :name %></th>
+    <th><%= Ticket.human_attribute_name :ref_id %></th>
+    <th><%= Ticket.human_attribute_name :customer_balance %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @statement.tickets.each do |ticket| %>
+      <%= render 'statements/statement_row', ticket: ticket %>
+  <% end %>
+  </tbody>
+</table>
+</p>
+
+<%= @statement.data %>
+

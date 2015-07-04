@@ -3,6 +3,7 @@ class NewCustomerPage < SitePrism::Page
   set_url_matcher /.\/customers\/new/
 
   element :name, 'input#customer_name'
+  element :name_validation, 'input#customer_name + span'
   element :company, 'input#customer_company'
   element :address1, 'input#customer_address1'
   element :address2, 'input#customer_address2'

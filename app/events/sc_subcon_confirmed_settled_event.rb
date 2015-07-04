@@ -7,14 +7,13 @@ class ScSubconConfirmedSettledEvent < ScSettlementEvent
   end
 
   def notification_class
-    ScSubconConfirmedSettledNotification
+    nil#ScSubconConfirmedSettledNotification
   end
 
   def update_provider
   end
 
   def process_event
-    clear_accounting_entries
     service_call.subcon_confirmed_subcon
     super
   end

@@ -42,7 +42,7 @@ describe 'Customer Billing When Provider Transfers To Local' do
         end
 
         it 'collect should no longer be an available event' do
-          expect(job.billing_status_events).to eq [:deposited]
+          expect(job.billing_status_events).to_not include :collect
         end
 
 
@@ -199,8 +199,8 @@ describe 'Customer Billing When Provider Transfers To Local' do
                     job.reload
                   end
 
-                  it 'billing events should be :deposited' do
-                    expect(job.billing_status_events.sort).to eq [:deposited]
+                  it 'billing events should be [:deposited, :reopen]' do
+                    expect(job.billing_status_events.sort).to eq [:deposited, :reopen]
                   end
 
                   it 'billing status should be collected' do
@@ -228,8 +228,8 @@ describe 'Customer Billing When Provider Transfers To Local' do
                         expect(job.billing_status_name).to eq :rejected
                       end
 
-                      it 'billing events should be :collect, :late' do
-                        expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late]
+                      it 'billing events should be [:cancel, :collect, :late, :reopen]' do
+                        expect(job.billing_status_events.sort).to eq [:cancel, :collect, :late, :reopen]
                       end
 
                       describe 'over payment' do
@@ -262,8 +262,8 @@ describe 'Customer Billing When Provider Transfers To Local' do
                               expect(job.billing_status_name).to eq :over_paid
                             end
 
-                            it 'billing events should be :reimburse' do
-                              expect(job.billing_status_events.sort).to eq [:reimburse]
+                            it 'billing events should be [:reimburse, :reopen]' do
+                              expect(job.billing_status_events.sort).to eq [:reimburse, :reopen]
                             end
 
                             it 'expect customer account to have an extra 200' do
@@ -322,7 +322,7 @@ describe 'Customer Billing When Provider Transfers To Local' do
       end
 
       it 'should allow the collection of additional payments' do
-        expect(job.billing_status_events).to eq [:reject, :late, :collect, :cancel]
+        expect(job.billing_status_events).to include :collect
       end
 
       it 'billing status should be partially_collected' do
@@ -336,7 +336,7 @@ describe 'Customer Billing When Provider Transfers To Local' do
         end
 
         it 'should allow the collection of additional payments' do
-          expect(job.billing_status_events).to eq [:reject, :late, :collect, :cancel]
+          expect(job.billing_status_events).to include :collect
         end
 
         it 'billing status should be partially_collected' do
@@ -350,7 +350,7 @@ describe 'Customer Billing When Provider Transfers To Local' do
           end
 
           it 'should allow the collection of additional payments' do
-            expect(job.billing_status_events).to eq [:reject, :late, :collect, :cancel]
+            expect(job.billing_status_events).to include :collect
           end
 
           it 'billing status should be partially_collected' do
@@ -364,8 +364,8 @@ describe 'Customer Billing When Provider Transfers To Local' do
               job.reload
             end
 
-            it 'should allow the collection of additional payments' do
-              expect(job.billing_status_events).to eq [:reject]
+            it 'should not allow the collection of additional payments' do
+              expect(job.billing_status_events).to_not include :collect
             end
 
             it 'billing status should be in_process' do
@@ -380,7 +380,8 @@ describe 'Customer Billing When Provider Transfers To Local' do
               end
 
               it 'should allow the collection of additional payments' do
-                expect(job.billing_status_events).to eq [:late, :collect, :cancel]
+                expect(job.billing_status_events).to include :late
+                expect(job.billing_status_events).to include :collect
               end
 
               it 'billing status should be rejected' do
@@ -400,7 +401,8 @@ describe 'Customer Billing When Provider Transfers To Local' do
                   end
 
                   it 'should allow the collection of additional payments' do
-                    expect(job.billing_status_events).to eq [:late, :collect, :cancel]
+                    expect(job.billing_status_events).to include :late
+                    expect(job.billing_status_events).to include :collect
                   end
 
                 end

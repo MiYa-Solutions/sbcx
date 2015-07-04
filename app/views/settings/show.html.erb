@@ -13,7 +13,7 @@
                           id:    "link_to_org_settings_btn") %>
             </li>
         <% else %>
-           <li></li>
+            <li></li>
         <% end %>
       </ul>
     </div>
@@ -23,6 +23,21 @@
     </div>
   </div>
 
+  <br>
+  <br>
+
+  <div class="row-fluid">
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= t('general.general.setting_aff_payment_notifications') %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+
+    <div class="setting_table">
+      <%= render 'notifications_table', notif_names: Settings.aff_payments_settings %>
+    </div>
+  </div>
   <br>
   <br>
 

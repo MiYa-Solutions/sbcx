@@ -2,7 +2,6 @@ class TransferredServiceCallObserver < ServiceCallObserver
   observe [SubconServiceCall, BrokerServiceCall]
 
 
-
   def after_deposit_to_prov_payment(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE deposit_to_prov \n #{service_call.inspect} \n #{transition.inspect}" }
     service_call.events << ScDepositEvent.new(amount: service_call.payment_money, payment_type: service_call.payment_type)
@@ -59,13 +58,16 @@ class TransferredServiceCallObserver < ServiceCallObserver
     service_call.events << ScProviderInvoicedEvent.new unless transition.args.first == :state_only
   end
 
-  def after_settle_provider(service_call, transition)
-    service_call.events << ScProviderSettleEvent.new
+  def before_settle_provider(service_call, transition)
+    if service_call.prov_settlement_attributes_valid?
+      service_call.events << ScProviderSettleEvent.new(amount:       service_call.prov_settle_amount,
+                                                       payment_type: service_call.prov_settle_type) unless transition.args.first == :state_only
+    end
   end
 
   def before_confirm_settled_provider(service_call, transition)
     Rails.logger.debug { "invoked observer BEFORE confirm_settled_provider \n #{service_call.inspect} \n #{transition.args.inspect}" }
-    service_call.events << ScConfirmSettledProviderEvent.new
+    service_call.events << ScConfirmSettledProviderEvent.new(amount: transition.args[0][:amount])
 
   end
 

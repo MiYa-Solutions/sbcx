@@ -65,6 +65,7 @@ class AccountingEntriesController < ApplicationController
       if @accounting_entry.update_attributes(accounting_entry_params)
         format.any(:html, :mobile) {
           flash[:success] ='Accounting entry was successfully updated.'
+
           redirect_back_or_to @accounting_entry.becomes(AccountingEntry)
         }
         format.json { render json: EntriesDatatable.new(view_context, @accounting_entry.account).table_row(@accounting_entry), status: 200 }

@@ -279,7 +279,7 @@ describe 'Canceling Job With A Broker' do
       end
 
       it 'prov should have the cancel and un_cancel buttons available' do
-        expect(job.status_events.sort).to eq [:cancel, :transfer]
+        expect(job.status_events.sort).to eq [:cancel, :cancel_transfer,  :transfer]
       end
 
       it 'broker should not have the un_cancel button available' do

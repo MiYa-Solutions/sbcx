@@ -38,10 +38,22 @@ class ServiceCallsController < ApplicationController
   def show
     store_location
     respond_to do |format|
-      format.html do
+      format.any(:html, :mobile) do
         @customer = Customer.new
         @bom      = Bom.new
       end
+      format.pdf do
+        partial = params[:template].present? ? params[:template] : 'show'
+        render pdf:                    "job_#{@service_call.id}",
+               layout:                 'service_calls',
+               template:               "service_calls/#{partial}.pdf",
+               footer:                 { html: { template: 'layouts/_footer.pdf.erb' } },
+               header:                 { html: { template: 'layouts/_header.pdf.erb' } },
+               disable_internal_links: false
+
+
+      end
+
     end
 
   end
@@ -52,8 +64,7 @@ class ServiceCallsController < ApplicationController
     store_location
   end
 
-  def
-  create
+  def create
 
     respond_to do |format|
       sanitize_mobile_tag_list if request.format == 'mobile'
@@ -98,7 +109,7 @@ class ServiceCallsController < ApplicationController
         format.js { respond_bip_error @service_call }
         format.html do
           flash[:error] = t('service_call.crud_messages.update.error', msg: @service_call.errors.full_messages)
-          render :action => 'show'
+          redirect_to service_call_path @service_call
         end
 
         format.mobile do
@@ -109,6 +120,18 @@ class ServiceCallsController < ApplicationController
         format.json { respond_bip_error @service_call.becomes(ServiceCall) }
       end
     end
+  end
+
+  def destroy
+
+    if TicketDeletionService.new(@service_call).execute
+      flash[:success] = t('service_call.crud_messages.destroy.success')
+      redirect_to service_calls_path
+    else
+      flash[:error] = t('service_call.crud_messages.destroy.error',msg: @service_call.errors.full_messages )
+      redirect_to @service_call
+    end
+
   end
 
 

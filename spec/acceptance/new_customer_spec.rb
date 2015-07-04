@@ -34,8 +34,10 @@ describe 'New Customer' do
     before do
       new_customer_page.create_customer name: ''
     end
-    it 'should show an error message' do
-      expect(new_customer_page).to have_error_flash
+
+    it 'should show an error message next to the name field' do
+      expect(new_customer_page.name_validation).to_not be_nil
+      expect(new_customer_page.name_validation.text).to eq "can't be blank"
     end
   end
 

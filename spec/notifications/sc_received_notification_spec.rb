@@ -1,24 +1,23 @@
 require 'spec_helper'
 
 describe ScReceivedNotification do
-  let(:service_call) { FactoryGirl.create(:my_service_call, subcontractor: FactoryGirl.create(:member).becomes(Subcontractor)) }
+  let(:service_call) { job }
+
+  include_context 'transferred job'
 
 
   it "is created once the service call is transferred to the subcontractor" do
 
     expect {
-      FactoryGirl.create(:dispatcher, organization: service_call.subcontractor)
-      service_call.transfer
+      transfer_the_job
     }.to change { ScReceivedNotification.count }.by (1)
 
   end
 
   describe " default content and subject" do
     let(:notification) {
-      FactoryGirl.create(:dispatcher, organization: service_call.subcontractor)
-      service_call.transfer
+      transfer_the_job
       ServiceCall.find_by_organization_id_and_ref_id(service_call.subcontractor.id, service_call.ref_id).notifications.first
-
     }
 
     subject { notification }

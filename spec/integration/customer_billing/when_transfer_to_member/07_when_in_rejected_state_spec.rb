@@ -15,8 +15,8 @@ describe 'Billing when in rejected state' do
     job.payments.sort.last.reject
   end
 
-  it 'billing events should be :collect, :late' do
-    expect(job.billing_status_events.sort).to eq [:collect, :late]
+  it 'billing events should be [:collect, :late, :reopen]' do
+    expect(job.billing_status_events.sort).to eq [:collect, :late, :reopen]
   end
 
   it 'billing status should be rejected' do
