@@ -1,4 +1,4 @@
-<div class="customer_balance_show">
+<div class="row-fluid customer_balance_show">
   <div class="smart_label">
     <ul>
       <li><h1><%= Account.human_attribute_name(:balance) %></h1></li>
@@ -15,8 +15,62 @@
     <%= render 'accounting_entries/accounting_entries_table', account: @customer.account %>
   </div>
 
-  <div class="form-actions">
-    <%= link_to I18n.t('general.general.more_details'), accounting_entries_url('accounting_entry[account_id]' => @customer.account.id), class: 'btn btn-primary btn-medium' %>
+  <br>
+
+  <div class="customer_balance_actions">
+    <ul>
+      <li>
+        <%= render 'statements/form', account: @customer.account %>
+
+      </li>
+      <li>
+
+        <%= button_tag t('general.general.show_statements'), :class => 'btn btn-primary',
+                       id: 'show_statements_button', data: { toggle: 'modal', target: '#all_statements' } %>
+
+        <br>
+
+      </li>
+
+      <li>
+        <%= link_to I18n.t('general.general.more_details'), accounting_entries_url('accounting_entry[account_id]' => @customer.account.id), class: 'btn btn-primary btn-medium' %>
+
+      </li>
+    </ul>
+
+  </div>
+
+
+</div>
+
+<!--statements-->
+
+<div id='all_statements' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= Statement.model_name.human.pluralize %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="modal-body">
+
+    <div class="row-fluid">
+
+        <%= render 'customer_statements', account: @customer.account %>
+
+    </div>
   </div>
 
 </div>
+<!--end of modal-->
+
+
+
+

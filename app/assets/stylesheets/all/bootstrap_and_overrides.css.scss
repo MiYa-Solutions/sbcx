@@ -5348,7 +5348,7 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .customer_balance_show {
-  min-height: 280px;
+  min-height: 298px;
 }
 
 .contact_us {
@@ -5522,3 +5522,50 @@ table.dataTable thead th, table.dataTable thead td {
     width: 67%;
   }
 }
+
+.statement {
+  .col-xs-6{
+    width: 40%;
+  }
+
+  .text-right {
+    float: right;
+  }
+
+  .text-left {
+    float: left;
+  }
+
+  #statement_row_balance {
+    float: right;
+  }
+}
+
+.customer_balance_actions {
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: right;
+
+  }
+
+  form {
+//    line-height: 1px;
+    margin: -15px 0 1px;
+  }
+
+  input {
+//    margin-bottom: 0px;
+  }
+}
+
+

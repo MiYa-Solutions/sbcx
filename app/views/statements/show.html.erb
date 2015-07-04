@@ -1,34 +1,112 @@
-<% title 'SubConTraX Statement' %>
+<div class="container">
 
-<h2> General Details</h2>
-<ul>
-  <li>Balance: <%= humanized_money_with_symbol @statement.balance %></li>
-  <li>Customer Name: <%= @statement.statementable_name %></li>
-  <li>Customer Address1: <%= @statement.statementable_address1 %></li>
-  <li>Customer Address2: <%= @statement.statementable_address2 %></li>
-  <li>Customer City: <%= @statement.statementable_city %></li>
-  <li>Customer State: <%= @statement.statementable_state %></li>
-  <li>Customer Zip: <%= @statement.statementable_zip %></li>
-</ul>
+  <div class="row-fluid statement">
+    <div class="col-xs-6 text-left">
+      <h4>Company Name</h4>
+      Company Address <br>
+      City, State Zip <br>
+      Company Phone <br>
+      Company email <br>
 
-<h2> The Statement </h2>
-<p>
-<table class="table table-striped">
-  <thead>
-  <tr>
-    <th><%= Ticket.human_attribute_name :id %></th>
-    <th><%= Ticket.human_attribute_name :name %></th>
-    <th><%= Ticket.human_attribute_name :ref_id %></th>
-    <th><%= Ticket.human_attribute_name :customer_balance %></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @statement.tickets.each do |ticket| %>
-      <%= render 'statements/statement_row', ticket: ticket %>
-  <% end %>
-  </tbody>
-</table>
-</p>
+    </div>
+    <div class="col-xs-6 text-right">
+      <h2 class="pull-right"><%= t('general.general.statement') %></h2><br><br>
+      <div class="pull-right"><%= t('general.general.date') %>: mm/dd/2015</div>
 
-<%= @statement.data %>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row-fluid statement">
+    <div class="col-xs-6 text-left">
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.account_info') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+      <br>
+      <address>
+        <%= @statement.statementable_name %><br>
+        Customer Company<br>
+        <%= @statement.statementable_address1 %>&nbsp;<%= @statement.statementable_address2 %><br>
+        <%= @statement.statementable_city %>,&nbsp;<%= @statement.statementable_state %>&nbsp;<%= @statement.statementable_zip %>
+      </address>
+    </div>
+
+    <div class="col-xs-6 text-right">
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.account_summary') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+      <br>
+
+      <div class="row-fluid statement">
+        <div class="col-xs-6 text-left">
+          <strong><%= t('general.general.balance_due') %></strong>
+        </div>
+        <div class="col-xs-6 text-right">
+          <%= humanized_money_with_symbol @statement.balance %>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!--account activity-->
+  <div class="row-fluid statement">
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= t('general.general.account_activity') %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+    <br>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><%= Ticket.human_attribute_name :id %></th>
+        <th><%= t('general.general.description') %></th>
+        <th><%= t('general.general.balance') %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @statement.tickets.each do |ticket| %>
+          <%= render 'statements/statement_row', ticket: ticket %>
+      <% end %>
+      <tr><td></td><td></td><td><br></td></tr>
+
+
+
+
+      <tr>
+        <td></td>
+        <td><strong style="float: right"><%= t('general.general.current_balance') %></strong></td>
+        <td><strong style="float: right"><%= humanized_money_with_symbol @statement.balance %></strong></td>
+      </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+<!--<#%= @statement.data %>-->
+
 
