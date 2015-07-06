@@ -277,6 +277,10 @@ en:
       show_statements: "Show Statements"
       total_adjustment2: "Total Adjustment"
       total2: "Total"
+      billing_history: "Billing History"
+      new_payment: "New Payment"
+      pending_action: "Pending Action"
+      pending_actions: "Pending Actions"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

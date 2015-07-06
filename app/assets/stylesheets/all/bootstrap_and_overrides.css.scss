@@ -1373,6 +1373,7 @@ fieldset label {
   }
 
   .affiiate_statuses {
+
     a {
       color: #696969;
       text-decoration: underline;
@@ -1400,6 +1401,7 @@ fieldset label {
 
   h3 {
     line-height: 18px;
+    font-size: 13px;
   }
 }
 
@@ -4025,7 +4027,7 @@ div.DTTT_container {
 
   button {
     //float: right;
-    argin-right: 4%;
+//    margin-right: 4%;
     text-transform: capitalize;
 
   }
@@ -4794,6 +4796,10 @@ div.DTTT_container {
   span {
     font-size: 11px;
   }
+}
+
+.smart_label_billing {
+  padding: 0;
 }
 
 .pending_adj_entry {

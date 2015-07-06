@@ -1,17 +1,3 @@
-<div class="span6">
-<%= link_to(job.class.human_subcontractor_status_event_name(:settle).titleize, '#settle_subcon_job',
-            class: "btn btn_collapse btn-primary ",
-            data: { toggle: 'collapse' },
-            title: I18n.t('service_call.forms.subcontractor_status.settle.tooltip'),
-            rel:   'tooltip',
-            role: "button",
-            "data-placement" => "right",
-            id: "settle_subcon_button") %>
-
-
-<div class="collapse" id="settle_subcon_job">
-
-  <br>
 
   <%= simple_form_for job, as: :service_call,  html: { id: 'subcon_status_settle', class: 'blue-button' } do |f| %>
       <%= hidden_field_tag 'service_call[subcontractor_status_event]', 'settle' %>
@@ -26,7 +12,3 @@
       %>
   <% end %>
 
-
-</div>
-
-</div>

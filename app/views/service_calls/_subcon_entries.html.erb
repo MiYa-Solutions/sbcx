@@ -35,51 +35,94 @@
 
 <!--More modal-->
 <div id='job_subcon_entries' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-
-    <div class="smart_label">
-      <ul>
-        <li><h1><%= I18n.t('general.general.subcon_entries') %></h1></li>
-        <li>
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        </li>
-      </ul>
-    </div>
-
+  <div class="title_label">
+    <ul>
+      <li><h1><%= I18n.t('general.general.subcon_entries') %></h1></li>
+      <li>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </li>
+    </ul>
   </div>
-
   <div class="modal-body">
+
     <div class="row-fluid">
 
-      <table class="table table-striped" id="subcon_entries_in_service_call">
-        <thead>
-        <tr>
-          <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
-          <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
-          <th><%= AccountingEntry.human_attribute_name(:status) %> </th>
-          <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
-          <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
-          <th><%= AccountingEntry.human_attribute_name(:type) %></th>
-          <th><%= AccountingEntry.human_attribute_name(:payment_notes) %></th>
-          <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @service_call.subcon_entries.order('id desc').each do |entry| %>
+      <div class="span9">
+
+        <div class="row-fluid">
+          <div class="smart_label smart_label_billing">
+            <ul>
+              <li><h1><%= I18n.t('general.general.pending_actions') %></h1></li>
+              <li>
+              </li>
+            </ul>
+          </div>
+          <br>
+
+          <%= render 'accounting_entries/affiliate_entries_table', entries: @service_call.active_subcon_entries.order('id desc') %>
+
+        </div>
+        <br>
+        <div class="row-fluid">
+
+          <div class="smart_label smart_label_billing">
+            <ul>
+              <li><h1><%= I18n.t('general.general.billing_history') %></h1></li>
+              <li>
+              </li>
+            </ul>
+          </div>
+
+          <br>
+
+          <table class="table table-striped" id="subcon_entries_in_service_call">
+            <thead>
             <tr>
-              <td><%= entry.id %></td>
-              <td><%= entry.account.accountable.name %></td>
-              <td class="entry_status_<%= entry.status_name %>"><%= entry.human_status_name.humanize %></td>
-              <td><%= entry.account.accountable.class.model_name.human %></td>
-              <td><%= l entry.created_at %></td>
-              <td><%= entry.type.constantize.model_name.human %></td>
-              <td><%= entry.notes %></td>
-              <td><%= humanized_money_with_symbol entry.amount %></td>
+              <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
+              <th><%= AccountingEntry.human_attribute_name(:account) %> </th>
+              <th><%= AccountingEntry.human_attribute_name(:status) %> </th>
+              <th><%= Account.human_attribute_name(:accountable_type).titleize %> </th>
+              <th><%= AccountingEntry.human_attribute_name(:created_at) %> </th>
+              <th><%= AccountingEntry.human_attribute_name(:type) %></th>
+              <th><%= AccountingEntry.human_attribute_name(:payment_notes) %></th>
+              <th><%= AccountingEntry.human_attribute_name(:amount) %> </th>
             </tr>
-        <% end %>
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+            <% @service_call.subcon_entries.order('id desc').each do |entry| %>
+                <tr>
+                  <td><%= entry.id %></td>
+                  <td><%= entry.account.accountable.name %></td>
+                  <td class="entry_status_<%= entry.status_name %>"><%= entry.human_status_name.humanize %></td>
+                  <td><%= entry.account.accountable.class.model_name.human %></td>
+                  <td><%= l entry.created_at %></td>
+                  <td><%= entry.type.constantize.model_name.human %></td>
+                  <td><%= entry.notes %></td>
+                  <td><%= humanized_money_with_symbol entry.amount %></td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!--end of span 8-->
+      </div>
+
+      <div class="span3">
+
+        <div class="well">
+
+          <%= subcontractor_status_forms(@service_call) %>
+        </div>
+      </div>
+
+
     </div>
+
+
+
+
+
+
 
     <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
