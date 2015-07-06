@@ -24,7 +24,11 @@
               <% end %>
             </h1>
           </li>
-          <li></li>
+          <li class="download_job_pdf">
+            <%= link_to service_call_path(@service_call, format: :pdf), :title => I18n.t('general.messages.download_job_pdf'), :rel => 'tooltip', :class => 'btn btn-primary btn-mini', :target => '_blank' do %>
+                <i class="icon-download-alt icon-white"></i>
+            <% end %>
+          </li>
         </ul>
       </div>
     </li>
