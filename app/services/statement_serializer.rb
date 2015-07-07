@@ -78,9 +78,10 @@ class StatementSerializer
           id:            ticket.id,
           name:          ticket.name,
           ref_id:        ticket.ref_id,
+          external_ref:  ticket.external_ref,
           balance_cents: ticket.customer_balance.cents,
           balance_ccy:   ticket.customer_balance.currency.iso_code,
-          completed_on:  ticket.completed_on_text,
+          completed_on:  ticket.completed_on ? ticket.completed_on.utc : nil,
           entries:       serialized_entries(ticket)
       }
       # res.merge! serialize_boms(ticket)

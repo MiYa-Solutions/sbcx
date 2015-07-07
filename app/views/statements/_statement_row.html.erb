@@ -1,5 +1,7 @@
 <tr id=statement_row_balance">
   <td><%= ticket.id %></td>
+  <td><%= ticket.external_ref %></td>
+  <td><%= ticket.completed_on.present? ? l(ticket.completed_on, format: :date_only) : ''%></td>
   <td><%= ticket.name %></td>
   <!--<td><#%= ticket.ref_id %></td>-->
   <td style="text-align: right"><%= humanized_money_with_symbol ticket.balance %></td>

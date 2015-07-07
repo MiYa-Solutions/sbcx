@@ -1,5 +1,5 @@
 class StatementsDatatable
-  delegate :humanized_money_with_symbol, :current_user, :params, :h, :link_to, :number_to_currency, :affiliate_path, to: :@view
+  delegate :humanized_money_with_symbol, :current_user, :params, :h, :link_to, :number_to_currency, :statement_path, to: :@view
 
   def initialize(view)
     @view = view
@@ -18,7 +18,8 @@ class StatementsDatatable
     {
         id:            link_to(statement.id,statement),
         created_at:    h(statement.created_at.strftime("%b %d, %Y")),
-        balance:       humanized_money_with_symbol(statement.balance)
+        balance:       humanized_money_with_symbol(statement.balance),
+        actions:        link_to('view',statement) + '&nbsp;'.html_safe + link_to('pdf',statement_path(statement, format: :pdf))
     }
 
   end

@@ -32,8 +32,24 @@ class Statement < ActiveRecord::Base
     account.accountable.zip
   end
 
+  def statementable_company
+    account.accountable.company
+  end
+
+  def statementable_phone
+    account.accountable.phone
+  end
+
+  def statementable_email
+    account.accountable.email
+  end
+
+  def organization
+    @organization ||= account.organization
+  end
+
   def balance
-    @balance  ||= Money.new(data_hash['totals']['balance']['cents'],data_hash['totals']['balance']['ccy_code'] )
+    @balance ||= Money.new(data_hash['totals']['balance']['cents'], data_hash['totals']['balance']['ccy_code'])
   end
 
   def tickets
@@ -55,8 +71,9 @@ class Statement < ActiveRecord::Base
       OpenStruct.new(id:           t['id'],
                      name:         t['name'],
                      ref_id:       t['ref_id'],
+                     external_ref: t['external_ref'],
                      balance:      Money.new(t['balance_cents'], t['balance_ccy']),
-                     completed_on: t['completed_on'],
+                     completed_on: t['completed_on'].present? ? Time.zone.parse(t['completed_on']) : '',
                      entries:      deserialize_ticket_entries(t))
     end
   end

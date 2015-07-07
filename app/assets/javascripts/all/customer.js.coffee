@@ -165,5 +165,6 @@ jQuery ->
       { data: "id" },
       { data: "created_at" },
       { data: "balance" }
+      { data: "actions" }
     ]
 

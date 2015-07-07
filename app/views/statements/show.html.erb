@@ -2,16 +2,17 @@
 
   <div class="row-fluid statement">
     <div class="col-xs-6 text-left">
-      <h4>Company Name</h4>
-      Company Address <br>
-      City, State Zip <br>
-      Company Phone <br>
-      Company email <br>
+      <h4><%= @statement.organization.name %></h4>
+      <%= @statement.organization.address1 %>, <%= @statement.organization.address2 %> <br>
+      <%= @statement.organization.city %>, <%= @statement.organization.state %> <%= @statement.organization.zip %> <br>
+      <%= @statement.organization.phone %> <br>
+      <%= @statement.organization.email %> <br>
 
     </div>
     <div class="col-xs-6 text-right">
       <h2 class="pull-right"><%= t('general.general.statement') %></h2><br><br>
-      <div class="pull-right"><%= t('general.general.date') %>: mm/dd/2015</div>
+      <div class="pull-right"><%= Statement.human_attribute_name :id %>: <%= @statement.id %></div><br>
+      <div class="pull-right"><%= t('general.general.date') %>: <%= l @statement.created_at, format: :long %></div>
 
     </div>
   </div>
@@ -29,7 +30,7 @@
       <br>
       <address>
         <%= @statement.statementable_name %><br>
-        Customer Company<br>
+        <%= @statement.statementable_company %><br>
         <%= @statement.statementable_address1 %>&nbsp;<%= @statement.statementable_address2 %><br>
         <%= @statement.statementable_city %>,&nbsp;<%= @statement.statementable_state %>&nbsp;<%= @statement.statementable_zip %>
       </address>
@@ -71,6 +72,8 @@
       <thead>
       <tr>
         <th><%= Ticket.human_attribute_name :id %></th>
+        <th><%= Ticket.human_attribute_name :external_ref %></th>
+        <th><%= Ticket.human_attribute_name :completed_on %></th>
         <th><%= t('general.general.description') %></th>
         <th><%= t('general.general.balance') %></th>
       </tr>
