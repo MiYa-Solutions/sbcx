@@ -2,10 +2,12 @@ class Statement < ActiveRecord::Base
   validates_presence_of :data, :account
   belongs_to :account
   attr_accessor :notes
+  attr_accessor :exclude_zero_balance
 
 
   def save(serializer)
-    self.data = serializer.new(account, notes: notes).serialize.to_json
+    self.data = serializer.new(account, notes: notes,
+                               exclude_zero_balance: exclude_zero_balance).serialize.to_json
     super()
   end
 

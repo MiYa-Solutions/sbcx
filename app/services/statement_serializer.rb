@@ -8,11 +8,12 @@ class StatementSerializer
   class CustomerStatementSerializer
     attr_accessor :customer
 
-    def initialize(account, notes: '')
+    def initialize(account, notes: '', exclude_zero_balance: false)
       @account = account
       # @entries = account.statement_entries
       @tickets = account.statement_tickets
       @notes = notes
+      @exclude_zero_balance = exclude_zero_balance
     end
 
     def serialize
@@ -69,7 +70,7 @@ class StatementSerializer
       # end
       # res
       res = []
-      @tickets.each do |ticket|
+      sanitized_tickets.each do |ticket|
         res << get_ticket_data(ticket)
       end
       res
@@ -119,6 +120,14 @@ class StatementSerializer
         res << { id: e.id, type: e.type, amount_cents: e.amount_cents, description: e.description, notes: e.notes, ticket_id: e.ticket_id }
       end
       res
+    end
+
+    def sanitized_tickets
+      if @exclude_zero_balance
+        @tickets.reject {|t| t.customer_balance == 0}
+      else
+        @tickets
+      end
     end
 
 

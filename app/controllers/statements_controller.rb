@@ -73,6 +73,6 @@ class StatementsController < ApplicationController
     # params.require(:person).permit(:name, :age)
     # Also, you can specialize this method with per-user checking of permissible attributes.
     def statement_params
-      params.require(:statement).permit(:account_id, :notes)
+      params.require(:statement).permit(:account_id, :notes, :exclude_zero_balance)
     end
 end

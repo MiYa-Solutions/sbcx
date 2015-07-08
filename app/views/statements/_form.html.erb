@@ -2,6 +2,7 @@
 
     <%= f.hidden_field :account_id, value: account.id %><br />
     <%= f.input :notes %><br />
+    <%= f.input :exclude_zero_balance, as: :boolean %><br />
 
     <%= f.submit t('general.general.new_statement'), class: "btn btn-medium btn-primary" %>
 <% end %>
