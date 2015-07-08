@@ -11,6 +11,13 @@ en:
               blank: "Name field can't be blank"
       messages:
         update_error: "There can be only one system owner"
+    state_machines:
+      user:
+        status:
+          states:
+            disabled: Disabled
+            active: Active
+
   errors:
     messages:
       one_system_owner: "There can be only one system owner"

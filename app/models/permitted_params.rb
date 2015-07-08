@@ -271,6 +271,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :city,
      :zip,
      :mobile_phone,
+     :status,
      :work_phone, :time_zone, :current_password, { :role_ids => [] },]
 
   end
