@@ -12,7 +12,7 @@
         </div>
     <div class="col-xs-6 text-right">
       <h2 class="pull-right"><%= t('general.general.job_number') %>:&nbsp;<%= @service_call.ref_id %></h2><br><br>
-      <div class="pull-right"><%= t('general.general.date') %>: mm/dd/2015</div>
+      <div class="pull-right"><%= t('general.general.date') %>: <%= l Time.zone.now, format: :date_only %></div>
 
     </div>
   </div>
