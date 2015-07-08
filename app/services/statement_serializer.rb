@@ -9,10 +9,10 @@ class StatementSerializer
     attr_accessor :customer
 
     def initialize(account, notes: '', exclude_zero_balance: false)
-      @account = account
+      @account              = account
       # @entries = account.statement_entries
-      @tickets = account.statement_tickets
-      @notes = notes
+      @tickets              = account.statement_tickets
+      @notes                = notes
       @exclude_zero_balance = exclude_zero_balance
     end
 
@@ -47,12 +47,17 @@ class StatementSerializer
       {
           name:     @account.accountable.name,
           address1: @account.accountable.address1,
-          notes: @notes
+          notes:    @notes
       }
     end
 
     def statement_balance
-      balance = @tickets.sum(&:customer_balance)
+      if @tickets.size > 0
+        balance = @tickets.sum(&:customer_balance)
+
+      else
+        balance = Money.new(0, 'USD')
+      end
 
       {
           cents:      balance.cents,
@@ -60,6 +65,7 @@ class StatementSerializer
           ccy_symbol: balance.currency.symbol
 
       }
+
 
     end
 
@@ -124,7 +130,7 @@ class StatementSerializer
 
     def sanitized_tickets
       if @exclude_zero_balance
-        @tickets.reject {|t| t.customer_balance == 0}
+        @tickets.reject { |t| t.customer_balance == 0 }
       else
         @tickets
       end

@@ -11,7 +11,7 @@ describe 'Customer Statement' do
   end
 
   context 'when creating the statement' do
-    let(:statement) { job.customer.statements.build }
+    let(:statement) { job.customer.account.statements.build }
     let(:job2) { FactoryGirl.build(:job, organization: org, customer: job.customer) }
     before do
       start_the_job job2
