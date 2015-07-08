@@ -8,10 +8,11 @@ class StatementSerializer
   class CustomerStatementSerializer
     attr_accessor :customer
 
-    def initialize(account)
+    def initialize(account, notes: '')
       @account = account
       # @entries = account.statement_entries
       @tickets = account.statement_tickets
+      @notes = notes
     end
 
     def serialize
@@ -44,7 +45,8 @@ class StatementSerializer
     def serialized_statement_general_data
       {
           name:     @account.accountable.name,
-          address1: @account.accountable.address1
+          address1: @account.accountable.address1,
+          notes: @notes
       }
     end
 

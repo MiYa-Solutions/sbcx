@@ -1,6 +1,7 @@
 <%= simple_form_for Statement.new do |f| %>
 
     <%= f.hidden_field :account_id, value: account.id %><br />
+    <%= f.input :notes %><br />
 
     <%= f.submit t('general.general.new_statement'), class: "btn btn-medium btn-primary" %>
 <% end %>

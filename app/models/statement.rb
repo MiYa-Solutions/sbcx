@@ -1,11 +1,16 @@
 class Statement < ActiveRecord::Base
   validates_presence_of :data, :account
   belongs_to :account
+  attr_accessor :notes
 
 
   def save(serializer)
-    self.data = serializer.new(account).serialize.to_json
+    self.data = serializer.new(account, notes: notes).serialize.to_json
     super()
+  end
+
+  def user_notes
+    data ? data_hash['general']['notes'] : ''
   end
 
   def statementable_name
