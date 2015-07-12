@@ -20,7 +20,9 @@
   <div class="customer_balance_actions">
     <ul>
       <li>
-        <%= render 'statements/form', account: @customer.account %>
+        <%= button_tag t('general.general.new_statement'), :class => 'btn btn-primary',
+                       id: 'new-invoice-btn', data: { toggle: 'modal', target: '#new_statement' } %>
+        <!--<#%= render 'statements/form', account: @customer.account %>-->
 
       </li>
       <li>
@@ -72,5 +74,25 @@
 <!--end of modal-->
 
 
+<!-- New statement-->
+
+<div id='new_statement' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= t('general.general.new_statement') %></h1></li>
+        <li>
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+      <%= render 'statements/form', account: @customer.account %>
+
+</div>
+<!--end of modal-->
 
 
