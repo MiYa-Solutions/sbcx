@@ -281,6 +281,8 @@ en:
       new_payment: "New Payment"
       pending_action: "Pending Action"
       pending_actions: "Pending Actions"
+      ext_id: "Ref. Id"
+      external: "External"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"

@@ -1,10 +1,29 @@
-<div class="span6">
+<!--<div class="span6">-->
 
-  <%= link_to(I18n.t('service_call.forms.billing_status.collection.btn_name'), '#collect_job',
-              class: "btn btn_collapse btn-primary ",
-              data: { toggle: 'collapse' },
-              #title:       I18n.t('service_call.forms.billing_status.collection.tooltip'),
-              #rel:   'tooltip',
-              role: "button",
+  <%#= link_to(I18n.t('service_call.forms.billing_status.collection.btn_name'), '#collect_job',
+#               class: "btn btn_collapse btn-primary ",
+#               data: { toggle: 'collapse' },
+#               #title:       I18n.t('service_call.forms.billing_status.collection.tooltip'),
+#               #rel:   'tooltip',
+#               role: "button",
               id: "dispatch-button") %>
-</div>
+<!--</div>-->
+
+
+<%= simple_form_for @service_call.becomes(ServiceCall), html: { class: 'blue-button' } do |f| %>
+    <%= f.label :collector unless @service_call.available_payment_collectors.size == 1 %>
+    <%= collector_tag(@service_call) %>
+
+    <%= hidden_field_tag 'service_call[billing_status_event]', 'collect' %>
+
+    <%= f.input :payment_type, collection: payment_types, label: t('general.general.payment_type') %>
+    <%= f.input :payment_amount, input_html: { value: @service_call.customer_balance } %>
+    <%= f.input :payment_notes %>
+    <%= f.submit I18n.t('general.general.collect_payments'),
+                 id:          'collect_service_call_btn',
+                 class:       'btn btn-primary',
+                 "data-theme" => "b",
+                 title:       I18n.t('service_call.forms.billing_status.collection.tooltip'),
+                 rel:         'tooltip'
+    %>
+<% end if @service_call.billing_status_events.include? :collect %>

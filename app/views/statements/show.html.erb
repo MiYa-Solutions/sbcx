@@ -82,12 +82,14 @@
       <% @statement.tickets.each do |ticket| %>
           <%= render 'statements/statement_row', ticket: ticket %>
       <% end %>
-      <tr><td></td><td></td><td><br></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td><br></td></tr>
 
 
 
 
       <tr>
+        <td></td>
+        <td></td>
         <td></td>
         <td><strong style="float: right"><%= t('general.general.current_balance') %></strong></td>
         <td><strong style="float: right"><%= humanized_money_with_symbol @statement.balance %></strong></td>
@@ -95,7 +97,9 @@
 
       </tbody>
     </table>
-    <h2>NOTES</h2>
+    <br>
+    <br>
+    <h2><%= t('general.general.notes') %></h2>
 <div>
   <%= @statement.user_notes %>
 </div>

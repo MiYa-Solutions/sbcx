@@ -194,3 +194,6 @@ service_call:
       disputed: "status_red"
       partially_collected: "status_blue"
       na: "status_grey"
+    subcontractor_status:
+      partially_collected: "status_blue"
+

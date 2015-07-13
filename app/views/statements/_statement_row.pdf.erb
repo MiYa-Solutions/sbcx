@@ -1,6 +1,10 @@
 <tr id=statement_row_balance">
-  <td><%= ticket.id %></td>
-  <td><%= ticket.external_ref %></td>
+  <td><%= ticket.id %>
+    <% unless ticket.external_ref.empty? %>
+        (Ext. <%= ticket.external_ref %>)
+    <% end %>
+    </td>
+  <!--<td><#%= ticket.external_ref %></td>-->
   <td><%= ticket.completed_on.present? ? l(ticket.completed_on, format: :date_only) : ''%></td>
   <td><%= ticket.name %></td>
   <!--<td><#%= ticket.ref_id %></td>-->
@@ -8,6 +12,8 @@
 </tr>
 <tr>
   <td></td>
+  <td></td>
+
   <td>
     <table class="table table-striped">
       <thead>
@@ -16,7 +22,7 @@
         <th><%= AccountingEntry.human_attribute_name :type %></th>
         <th><%= AccountingEntry.human_attribute_name :description %></th>
         <th><%= AccountingEntry.human_attribute_name :amount %></th>
-        <th><%= AccountingEntry.human_attribute_name :notes %></th>
+        <!--<th><#%= AccountingEntry.human_attribute_name :notes %></th>-->
       </tr>
       </thead>
       <tbody>

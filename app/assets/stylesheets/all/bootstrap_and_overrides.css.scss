@@ -5249,6 +5249,13 @@ div.DTTT_container {
   padding-right: 20px;
 }
 
+#new_statement_btn {
+  float: left;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: 3%;
+}
+
 #new_invoice {
   top: 50%;
 }
@@ -5262,6 +5269,9 @@ div.DTTT_container {
   height: 200px;
 }
 
+#statement_notes {
+  height: 200px;
+}
 .invoice_modal {
   top: 50%;
 }
@@ -5584,4 +5594,8 @@ table.dataTable thead th, table.dataTable thead td {
     padding-bottom: 6px;
     margin-top: 2px;
   }
+}
+
+.customer_billing_title {
+  margin-left: 0%;
 }
