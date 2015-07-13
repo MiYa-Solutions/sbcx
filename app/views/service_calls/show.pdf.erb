@@ -70,10 +70,10 @@
           <% end %><br><br>
 
 
-          <%= l @service_call.started_on unless @service_call.started_on.nil? %><br>
+          <%= l @service_call.started_on, :format => :short  unless @service_call.started_on.nil? %><br>
           <%= l @service_call.scheduled_for, :format => :short unless @service_call.scheduled_for.nil? %><br>
 
-          <%= l @service_call.completed_on unless @service_call.completed_on.nil? %><br>
+          <%= l @service_call.completed_on, :format => :short  unless @service_call.completed_on.nil? %><br>
 
 
 

@@ -38,7 +38,7 @@
 <div id='job_customer_entries' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
 
-    <div class="smart_label">
+    <div class="title_label customer_title customer_billing_title">
       <ul>
         <li><h1><%= I18n.t('general.general.customer_entries') %></h1></li>
         <li>
@@ -52,7 +52,34 @@
   <div class="modal-body">
         <div class="row-fluid">
 
-           <table class="table table-striped" id="customer_entries_in_service_call">
+          <div class="span9">
+            <div class="row-fluid">
+              <div class="smart_label smart_label_billing">
+                <ul>
+                  <li><h1><%= I18n.t('general.general.pending_actions') %></h1></li>
+                  <li>
+                  </li>
+                </ul>
+              </div>
+              <br>
+
+              <%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries.order('id desc') %>
+
+            </div>
+            <br>
+            <div class="row-fluid">
+
+              <div class="smart_label smart_label_billing">
+                <ul>
+                  <li><h1><%= I18n.t('general.general.billing_history') %></h1></li>
+                  <li>
+                  </li>
+                </ul>
+              </div>
+
+              <br>
+
+              <table class="table table-striped" id="customer_entries_in_service_call">
             <thead>
             <tr>
               <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
@@ -80,11 +107,23 @@
             <% end %>
             </tbody>
           </table>
-        </div>
 
-        <div class="modal-footer">
+            </div>
+            <!--end span 9-->
+          </div>
+
+          <div class="span3">
+            <div class="well">
+            <%= billing_status_forms(@service_call) %>
+            </div>
+          </div>
+
+          </div>
+
+
+          <div class="modal-footer">
           <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         </div>
 
-  </div>
+</div>
 </div>
