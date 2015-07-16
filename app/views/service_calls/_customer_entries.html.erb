@@ -40,6 +40,7 @@
     <div class="title_label customer_title customer_billing_title">
       <ul>
         <li><h1><%= I18n.t('general.general.customer_entries') %></h1></li>
+
         <li>
           <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         </li>
@@ -121,12 +122,7 @@
 
           <% end %>
 
-          <% if @service_call.billing_status_events.include? :late %>
 
-              <%= render 'service_calls/action_forms/billing_status_forms/overdue_form', job: @service_call %>
-
-
-          <% end %>
 
           <!--<#%= billing_status_forms(@service_call) %>-->
         </div>
@@ -135,9 +131,25 @@
     </div>
 
 
-    <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    </div>
+
+      <div class="title_label customer_title customer_billing_title">
+        <ul>
+          <li>
+            <% if @service_call.billing_status_events.include? :late %>
+
+                <%= render 'service_calls/action_forms/billing_status_forms/overdue_form', job: @service_call %>
+
+
+            <% end %>
+          </li>
+          <li>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+
+          </li>
+        </ul>
+      </div>
+
+
 
   </div>
 </div>

@@ -284,6 +284,7 @@ en:
       ext_id: "Ref. Id"
       external: "External"
       billing_actions: "Billing Actions"
+      payment_overdue: "Payment Overdue"
     buttons:
       get_entries: "Get Entries"
     select_prompt: "Please select"
