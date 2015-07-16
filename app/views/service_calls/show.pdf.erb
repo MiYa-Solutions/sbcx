@@ -103,14 +103,12 @@
     <table class="table table-striped" id="boms-table">
       <thead>
       <tr>
-        <th><%= Bom.human_attribute_name(:material_name) %></th>
+        <th class="bom_first_table_pdf"><%= Bom.human_attribute_name(:material_name) %></th>
         <th class="bom_description_table"><%= Bom.human_attribute_name(:description) %></th>
         <th><%= Bom.human_attribute_name(:quantity) %></th>
-        <th><%= Bom.human_attribute_name(:cost) %></th>
         <th><%= Bom.human_attribute_name(:price) %></th>
-        <th><%= Bom.human_attribute_name(:total_cost) %></th>
         <th><%= Bom.human_attribute_name(:total_price) %></th>
-        <th><%= Bom.human_attribute_name(:buyer) %></th>
+
       </tr>
       </thead>
       <tbody id="boms">
@@ -122,19 +120,17 @@
               <%= truncate(bom.description, length: 25) %>
             </td>
             <td><%= bom.quantity %></td>
-            <td><%= humanized_money_with_symbol bom.cost %></td>
+
             <td><%= humanized_money_with_symbol bom.price %></td>
-            <td><%= humanized_money_with_symbol bom.total_cost %></td>
+
             <td><%= humanized_money_with_symbol bom.total_price %></td>
-            <td><%= bom.buyer.try(:name) %>
+
           </tr>
       <% end %>
 
 
       <tr>
-        <td class="thick-line"></td>
-        <td class="thick-line"></td>
-        <td class="thick-line"></td>
+
         <td class="thick-line"></td>
         <td class="thick-line"></td>
         <td class="thick-line"></td>
@@ -142,42 +138,19 @@
         <td class="thick-line"><%= @service_call.tax %>%</td>
       </tr>
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+
         <td></td>
         <td></td>
         <td></td>
         <td><%= @service_call.class.human_attribute_name(:tax_amount) %></td>
         <td><%= humanized_money_with_symbol @service_call.tax_amount %></td>
       </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
 
-        <td><%= @service_call.class.human_attribute_name(:total_cost) %></td>
-        <td><%= humanized_money_with_symbol @service_call.total_cost %></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><%= @service_call.class.human_attribute_name(:total_price) %></td>
-        <td><%= humanized_money_with_symbol @service_call.total_price %></td>
-      </tr>
+
 
       <% if @service_call.adj_amount != 0 %>
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+
             <td></td>
             <td></td>
             <td></td>
@@ -188,9 +161,7 @@
 
 
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+
         <td></td>
         <td></td>
         <td></td>

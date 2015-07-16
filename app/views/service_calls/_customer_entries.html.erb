@@ -1,36 +1,35 @@
 <div class="collapse" id="customer_billing_entries">
   <div class="collapse_frame">
-  <div class="row-fluid collapse_body">
+    <div class="row-fluid collapse_body">
 
 
-    <div class="row-fluid">
-      <a href="#" data-toggle="collapse" data-target="#customer_billing_entries" class="close" id="customer_billing_entries_close">×</a>
+      <div class="row-fluid">
+        <a href="#" data-toggle="collapse" data-target="#customer_billing_entries" class="close" id="customer_billing_entries_close">×</a>
+      </div>
+
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= I18n.t('general.general.customer_entries').html_safe %></h1>
+          <li>
+            <%= link_to(t('general.general.more'), '#job_customer_entries',
+                        class: "btn btn-large btn-primary ",
+                        data: {toggle: 'modal'},
+                        title: I18n.t('general.messages.show_entries'),
+                        rel: 'tooltip',
+                        role: "button",
+                        id: "job_customer_entries_btn") %>
+
+          </li>
+        </ul>
+      </div>
+
+      <%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries.order('id desc') %>
+
+
     </div>
-
-    <div class="smart_label">
-      <ul>
-        <li><h1><%= I18n.t('general.general.customer_entries').html_safe %></h1>
-        <li>
-          <%= link_to(t('general.general.more'), '#job_customer_entries',
-                      class: "btn btn-large btn-primary ",
-                      data: { toggle: 'modal' },
-                      title: I18n.t('general.messages.show_entries'),
-                      rel:   'tooltip',
-                      role: "button",
-                      id: "job_customer_entries_btn") %>
-
-        </li>
-      </ul>
-    </div>
-
-    <%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries.order('id desc') %>
-
-
-
+    <br>
+    <br>
   </div>
-  <br>
-  <br>
-</div>
 
 </div>
 
@@ -50,36 +49,37 @@
   </div>
 
   <div class="modal-body">
+    <div class="row-fluid">
+
+      <div class="span9">
+        <div class="row-fluid">
+          <div class="smart_label smart_label_billing">
+            <ul>
+              <li><h1><%= I18n.t('general.general.pending_actions') %></h1></li>
+              <li>
+              </li>
+            </ul>
+          </div>
+          <br>
+
+          <%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries.order('id desc') %>
+
+        </div>
+        <br>
+
         <div class="row-fluid">
 
-          <div class="span9">
-            <div class="row-fluid">
-              <div class="smart_label smart_label_billing">
-                <ul>
-                  <li><h1><%= I18n.t('general.general.pending_actions') %></h1></li>
-                  <li>
-                  </li>
-                </ul>
-              </div>
-              <br>
+          <div class="smart_label smart_label_billing">
+            <ul>
+              <li><h1><%= I18n.t('general.general.billing_history') %></h1></li>
+              <li>
+              </li>
+            </ul>
+          </div>
 
-              <%= render 'accounting_entries/customer_entries_table', entries: @service_call.active_customer_entries.order('id desc') %>
+          <br>
 
-            </div>
-            <br>
-            <div class="row-fluid">
-
-              <div class="smart_label smart_label_billing">
-                <ul>
-                  <li><h1><%= I18n.t('general.general.billing_history') %></h1></li>
-                  <li>
-                  </li>
-                </ul>
-              </div>
-
-              <br>
-
-              <table class="table table-striped" id="customer_entries_in_service_call">
+          <table class="table table-striped" id="customer_entries_in_service_call">
             <thead>
             <tr>
               <th><%= AccountingEntry.human_attribute_name(:id) %> </th>
@@ -93,7 +93,7 @@
             </tr>
             </thead>
             <tbody>
-                <% @service_call.customer_entries.order('id desc').all.each do |entry| %>
+            <% @service_call.customer_entries.order('id desc').all.each do |entry| %>
                 <tr>
                   <td><%= entry.id %></td>
                   <td><%= entry.account.accountable.name %></td>
@@ -108,22 +108,36 @@
             </tbody>
           </table>
 
-            </div>
-            <!--end span 9-->
-          </div>
-
-          <div class="span3">
-            <div class="well">
-            <%= billing_status_forms(@service_call) %>
-            </div>
-          </div>
-
-          </div>
-
-
-          <div class="modal-footer">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
         </div>
+        <!--end span 9-->
+      </div>
 
-</div>
+      <div class="span3">
+        <div class="well">
+
+          <% if @service_call.billing_status_events.include? :collect %>
+
+              <%= render 'service_calls/action_forms/billing_status_forms/collection_form' %>
+
+          <% end %>
+
+          <% if @service_call.billing_status_events.include? :late %>
+
+              <%= render 'service_calls/action_forms/billing_status_forms/overdue_form', job: @service_call %>
+
+
+          <% end %>
+
+          <!--<#%= billing_status_forms(@service_call) %>-->
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+
+  </div>
 </div>
