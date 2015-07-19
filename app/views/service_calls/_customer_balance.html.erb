@@ -52,7 +52,7 @@
             <span class="label label_new_entry"><%= "#{@service_call.active_customer_entries.size} new" if @service_call.active_customer_entries.size > 0 %></span>
         <% end %>
 
-        <%= link_to t('general.general.get_entries'), "#job_customer_entries", class: "", data: {toggle: 'modal'}, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
+        <%= link_to t('general.general.billing_actions'), "#job_customer_entries", class: "", data: {toggle: 'modal'}, :title => I18n.t('general.messages.click_more').html_safe, :rel => 'tooltip' %>
         <i class="icon-chevron-down"></i>
       </span>
 

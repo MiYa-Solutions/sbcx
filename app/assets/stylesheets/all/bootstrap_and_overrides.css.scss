@@ -5410,6 +5410,11 @@ table.dataTable thead th, table.dataTable thead td {
   font-weight: bold;
 }
 
+.job_status_canceled {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
 .entry_status_disputed {
   color: #DA4E49;
   font-weight: bold;
@@ -5527,7 +5532,11 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .bom_description_table {
-  width: 150px;
+  width: 40%;
+}
+
+.bom_first_table_pdf {
+  width: 20%;
 }
 
 #bom_description {
