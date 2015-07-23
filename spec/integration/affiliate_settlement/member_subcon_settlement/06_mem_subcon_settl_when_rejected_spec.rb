@@ -65,7 +65,7 @@ describe 'Member Subcon Settlement: When rejected' do
         end
 
         it 'subcon status should remain claim_p_settled' do
-          expect(job.subcontractor_status_name).to eq :claim_p_settled2
+          expect(job.subcontractor_status_name).to eq :claim_p_settled
         end
 
       end
