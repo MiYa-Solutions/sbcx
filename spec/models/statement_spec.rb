@@ -12,10 +12,13 @@ describe Statement do
     expect(statement).to validate_presence_of :account
   end
 
-  it 'should have a polymorphic association to account' do
+  it 'should have an association to account' do
      expect(statement).to belong_to :account
   end
 
-  it {expect(statement).to respond_to :items}
+  it {expect(statement).to respond_to :notes}
+  it {expect(statement).to respond_to :tickets}
+  it {expect(statement).to respond_to :balance}
+  it {expect(statement).to respond_to :organization}
 
 end

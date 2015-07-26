@@ -8,7 +8,7 @@ class CustomerAccount < Account
   end
 
   def statement_tickets
-    completed_work_tickets + adv_paymnet_tickets + adj_entry_tickets
+    completed_work_tickets + adv_paymnet_tickets + adj_entry_tickets.select { |t| t.customer_balance != 0}
   end
 
   private
@@ -28,8 +28,7 @@ class CustomerAccount < Account
 
   def adj_entry_tickets
     Ticket.where(customer_id: accountable_id).joins(:accounting_entries).
-        where('accounting_entries.type IN (?)', [MyAdjEntry, ReceivedAdjEntry]).
-        where('accounting_entries.status IN (?)', [AdjustmentEntry::STATUS_SUBMITTED, AdjustmentEntry::STATUS_REJECTED] ).all
+        where('accounting_entries.type IN (?)', ['MyAdjEntry', 'ReceivedAdjEntry']).all
   end
 
 end
