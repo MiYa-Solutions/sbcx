@@ -16,14 +16,16 @@ shared_context 'job methods' do
                                      buyer:    buyer)
   end
 
-  def settle_with_subcon(job, options = {})
-    job.subcon_payment = options[:payment] || 'cash'
-    job.settle_subcon!
+  def settle_with_subcon(ticket, type: 'cash', amount: '100')
+    ticket.subcon_settle_type = type
+    ticket.subcon_settle_amount = amount.to_s
+    ticket.settle_subcon!
   end
 
-  def settle_with_provider(job, options = {})
-    job.provider_payment = options[:payment] || 'cash'
-    job.settle_provider!
+  def settle_with_provider(ticket, type: 'cash', amount: '100')
+    ticket.prov_settle_type = type
+    ticket.prov_settle_amount = amount.to_s
+    ticket.settle_provider!
   end
 
   def start_the_job(job)
@@ -125,6 +127,7 @@ shared_context 'basic job testing' do
   let(:org_admin) { org.users.admins.first }
 
   include_context 'job methods'
+
 end
 
 shared_context 'transferred job' do

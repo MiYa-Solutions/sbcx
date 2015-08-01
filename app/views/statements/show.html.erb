@@ -1,0 +1,122 @@
+<div class="container">
+
+  <div class="row-fluid statement">
+    <div class="col-xs-6 text-left">
+      <h4><%= @statement.organization.name %></h4>
+      <%= @statement.organization.address1 %>, <%= @statement.organization.address2 %> <br>
+      <%= @statement.organization.city %>, <%= @statement.organization.state %> <%= @statement.organization.zip %> <br>
+      <%= @statement.organization.phone %> <br>
+      <%= @statement.organization.email %> <br>
+
+    </div>
+    <div class="col-xs-6 text-right">
+      <h2 class="pull-right"><%= t('general.general.statement') %></h2><br><br>
+      <div class="pull-right"><%= Statement.human_attribute_name :id %>: <%= @statement.id %></div><br>
+      <div class="pull-right"><%= t('general.general.date') %>: <%= l @statement.created_at, format: :long %></div>
+
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row-fluid statement">
+    <div class="col-xs-6 text-left">
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.account_info') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+      <br>
+      <address>
+        <%= @statement.statementable_name %><br>
+        <%= @statement.statementable_company %><br>
+        <%= @statement.statementable_address1 %>&nbsp;<%= @statement.statementable_address2 %><br>
+        <%= @statement.statementable_city %>,&nbsp;<%= @statement.statementable_state %>&nbsp;<%= @statement.statementable_zip %>
+      </address>
+    </div>
+
+    <div class="col-xs-6 text-right">
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.account_summary') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+      <br>
+
+      <div class="row-fluid statement">
+        <div class="col-xs-6 text-left">
+          <strong><%= t('general.general.balance_due') %></strong>
+        </div>
+        <div class="col-xs-6 text-right">
+          <%= humanized_money_with_symbol @statement.balance %>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!--account activity-->
+  <div class="row-fluid statement">
+    <div class="smart_label">
+      <ul>
+        <li><h1><%= t('general.general.account_activity') %></h1></li>
+        <li></li>
+      </ul>
+    </div>
+    <br>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><%= Ticket.human_attribute_name :id %></th>
+        <th><%= Ticket.human_attribute_name :external_ref %></th>
+        <th><%= Ticket.human_attribute_name :completed_on %></th>
+        <th><%= t('general.general.description') %></th>
+        <th><%= t('general.general.balance') %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @statement.tickets.each do |ticket| %>
+          <%= render 'statements/statement_row', ticket: ticket %>
+      <% end %>
+      <tr><td></td><td></td><td></td><td></td><td><br></td></tr>
+
+
+
+
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><strong style="float: right"><%= t('general.general.current_balance') %></strong></td>
+        <td><strong style="float: right"><%= humanized_money_with_symbol @statement.balance %></strong></td>
+      </tr>
+
+      </tbody>
+    </table>
+    <br>
+    <br>
+    <h2><%= t('general.general.notes') %></h2>
+<div>
+  <%= @statement.user_notes %>
+</div>
+  </div>
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+<!--<#%= @statement.data %>-->
+
+

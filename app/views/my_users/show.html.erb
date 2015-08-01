@@ -25,6 +25,11 @@
       <table class="table table-striped table-condensed">
         <tbody>
         <tr>
+          <td><%= User.human_attribute_name :status %></td>
+          <td><h4><%= @my_user.human_status_name %></h4></td>
+        </tr>
+
+        <tr>
           <td>Email:</td>
           <td><h4><%= best_in_place @my_user, :email, path: my_user_path %></h4></td>
         </tr>

@@ -1373,6 +1373,7 @@ fieldset label {
   }
 
   .affiiate_statuses {
+
     a {
       color: #696969;
       text-decoration: underline;
@@ -1400,6 +1401,7 @@ fieldset label {
 
   h3 {
     line-height: 18px;
+    font-size: 13px;
   }
 }
 
@@ -2106,6 +2108,7 @@ a:hover {
     min-width: 90%;
     padding-bottom: 0;
     padding-top: 11px;
+    text-transform: capitalize;
 //    text-transform: uppercase;
   }
 
@@ -4024,7 +4027,7 @@ div.DTTT_container {
 
   button {
     //float: right;
-    argin-right: 4%;
+//    margin-right: 4%;
     text-transform: capitalize;
 
   }
@@ -4795,6 +4798,10 @@ div.DTTT_container {
   }
 }
 
+.smart_label_billing {
+  padding: 0;
+}
+
 .pending_adj_entry {
   //width: 80%;
   //margin-left: 10%;
@@ -5172,6 +5179,11 @@ div.DTTT_container {
   border-top: 1px solid;
 }
 
+.table > tbody > tr > .thick-line-top-bottom {
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+}
+
 .table > tbody > tr > .thick-line-bottom {
   border-bottom: 1px solid;
 }
@@ -5237,6 +5249,13 @@ div.DTTT_container {
   padding-right: 20px;
 }
 
+#new_statement_btn {
+  float: left;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: 3%;
+}
+
 #new_invoice {
   top: 50%;
 }
@@ -5250,6 +5269,9 @@ div.DTTT_container {
   height: 200px;
 }
 
+#statement_notes {
+  height: 200px;
+}
 .invoice_modal {
   top: 50%;
 }
@@ -5347,7 +5369,7 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .customer_balance_show {
-  min-height: 280px;
+  min-height: 298px;
 }
 
 .contact_us {
@@ -5384,6 +5406,11 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .entry_status_rejected {
+  color: #DA4E49;
+  font-weight: bold;
+}
+
+.job_status_canceled {
   color: #DA4E49;
   font-weight: bold;
 }
@@ -5505,7 +5532,11 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .bom_description_table {
-  width: 150px;
+  width: 40%;
+}
+
+.bom_first_table_pdf {
+  width: 20%;
 }
 
 #bom_description {
@@ -5520,4 +5551,60 @@ table.dataTable thead th, table.dataTable thead td {
   input, textarea {
     width: 67%;
   }
+}
+
+.statement {
+  .col-xs-6{
+    width: 40%;
+  }
+
+  .text-right {
+    float: right;
+  }
+
+  .text-left {
+    float: left;
+  }
+
+  #statement_row_balance {
+    float: right;
+  }
+}
+
+.customer_balance_actions {
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+
+  li {
+    float: left;
+    margin: 0 10px;
+    line-height: 16px;
+  }
+
+  li:last-child {
+    float: right;
+
+  }
+
+  form {
+//    line-height: 1px;
+    margin: -15px 0 1px;
+  }
+
+  input {
+//    margin-bottom: 0px;
+  }
+}
+
+.download_job_pdf {
+  a {
+    padding-bottom: 6px;
+    margin-top: 2px;
+  }
+}
+
+.customer_billing_title {
+  margin-left: 0%;
 }

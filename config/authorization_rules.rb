@@ -53,6 +53,10 @@ authorization do
     includes :technician
     has_permission_on :authorization_rules, :to => :read
 
+    has_permission_on :statements, to: [:create, :index, :show, :destroy] do
+      if_attribute :account => {:organization_id => is {user.organization_id}}
+    end
+
     has_permission_on :my_users, to: [:index, :read]
     has_permission_on :providers, :to => :index
     has_permission_on :subcontractors, :to => :index

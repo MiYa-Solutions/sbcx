@@ -32,7 +32,7 @@ class Customer < ActiveRecord::Base
   has_many :tickets, :inverse_of => :customer
   has_many :projects, :inverse_of => :customer
   has_many :agreements, as: :counterparty
-  has_one :account, as: :accountable
+  has_one :account, as: :accountable, class_name: 'CustomerAccount'
   stampable
 
 

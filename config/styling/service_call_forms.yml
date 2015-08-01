@@ -155,17 +155,23 @@ service_call:
     subcontractor_status:
       na: "status_grey"
       pending: "status_grey"
+      partially_settled: "status_grey"
       claim_settled: "status_blue"
       claimed_as_settled: "status_blue"
       settled: "status_green"
       cleared: "status_green"
+      rejected: "status_red"
+      disputed: "status_red"
     provider_status:
       pending: "status_grey"
       claim_settled: "status_blue"
       claimed_as_settled: "status_blue"
       settled: "status_green"
       cleared: "status_green"
+      partially_settled: "status_grey"
       na: "status_grey"
+      rejected: "status_red"
+      disputed: "status_red"
     billing_status:
       na:  "status_grey"
       pending:  "status_grey"
@@ -194,3 +200,4 @@ service_call:
       disputed: "status_red"
       partially_collected: "status_blue"
       na: "status_grey"
+

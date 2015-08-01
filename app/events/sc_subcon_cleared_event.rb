@@ -8,7 +8,7 @@ class ScSubconClearedEvent < ScSettlementEvent
   end
 
   def notification_class
-    ScSubconClearedNotification
+    nil#ScSubconClearedNotification
   end
 
   def process_event

@@ -97,4 +97,8 @@ class AccountingEntry < ActiveRecord::Base
     self.class.model_name.human
   end
 
+  def accountable
+    @accountable ||= account.accountable
+  end
+
 end

@@ -11,9 +11,9 @@ class ScSubconSettledEvent < ScSettlementEvent
 
   def process_event
     service_call.settled_on = self.triggering_event.service_call.settled_on if self.triggering_event.present?
-    service_call.subcon_payment = self.triggering_event.service_call.provider_payment if self.triggering_event.present?
-    service_call.payment_type = self.triggering_event.service_call.payment_type if self.triggering_event.present?
-    service_call.subcon_marked_as_settled_subcon
+    service_call.subcon_settle_type = payment_type
+    service_call.subcon_settle_amount = amount
+    service_call.subcon_marked_as_settled_subcon(:state_only)
     update_affiliate_account(service_call.subcontractor)
     super
   end

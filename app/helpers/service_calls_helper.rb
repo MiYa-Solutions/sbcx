@@ -66,7 +66,9 @@ module ServiceCallsHelper
     if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event)
       unless service_call.subcontractor_status_events.empty?
         service_call.subcontractor_status_events.collect do |event|
-          concat (render "service_calls/action_forms/subcon_status_forms/#{event}_form", job: service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event, event.to_s)
+          if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event, event.to_s)
+            concat (render "service_calls/action_forms/subcon_status_forms/#{event}_form", job: service_call) if permitted_params(service_call).permitted_attribute?(:service_call, :subcontractor_status_event, event.to_s)
+          end
         end
       end
     end

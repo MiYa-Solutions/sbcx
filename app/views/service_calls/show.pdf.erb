@@ -1,16 +1,190 @@
 <% provide(:title, I18n.t('general.general.job_number').html_safe + "&nbsp;".html_safe + "#{@service_call.ref_id}") %>
 
-<div class="title_label job_title">
-  <ul>
-    <li>
-      <h1 id="job_name_show"><%= best_in_place @service_call.becomes(ServiceCall), :name %>&nbsp;<i class="icon-pencil icon-white"></i></h1>
-    </li>
+<div class="container">
 
-    <!--<li id="external_job_id">-->
+  <div class="row-fluid statement">
+    <div class="col-xs-6 text-left">
+          <h4><%= @service_call.organization.name %></h4>
+          <%= @service_call.organization.address1 %>&nbsp; <%= @service_call.organization.address2 %> <br>
+          <%= @service_call.organization.city %>,&nbsp; <%= @service_call.organization.state %>&nbsp;<%= @service_call.organization.zip %> <br>
+          <%= @service_call.organization.phone %> <br>
+          <%= @service_call.organization.email %> <br>
+        </div>
+    <div class="col-xs-6 text-right">
+      <h2 class="pull-right"><%= t('general.general.job_number') %>:&nbsp;<%= @service_call.ref_id %></h2><br><br>
+      <div class="pull-right"><%= t('general.general.date') %>: <%= l Time.zone.now, format: :date_only %></div>
 
-    <!--</li>-->
-    <li></li>
-    <li><h1><%= I18n.t('general.general.job_number').html_safe + ": ".html_safe + "#{@service_call.ref_id}" %></h1></li>
-  </ul>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row-fluid statement">
+    <div class="col-xs-6 text-left">
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.account_info') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+      <br>
+      <address>
+        <%= @service_call.customer.name %><br>
+        <%= @service_call.address1 %>&nbsp;<%= @service_call.address2 %><br>
+        <%= @service_call.city %>,&nbsp; <%= @service_call.state %>&nbsp;<%= @service_call.zip %> <br>
+        <%= @service_call.phone %> <br>
+        <%= @service_call.email %> <br>
+
+      </address>
+    </div>
+
+    <div class="col-xs-6 text-right">
+      <div class="smart_label">
+        <ul>
+          <li><h1><%= t('general.general.job_details') %></h1></li>
+          <li></li>
+        </ul>
+      </div>
+      <br>
+
+      <div class="row-fluid statement">
+        <div class="col-xs-6 text-left">
+          <strong><%= t('general.general.job_name') %></strong><br>
+          <strong><%= t('general.general.external_ref') %></strong><br>
+          <strong><%= t('general.general.project_number') %></strong><br>
+          <strong><%= @service_call.class.human_attribute_name(:tag_list) %></strong><br><br>
+
+          <strong><%= t('general.general.started_at') %></strong><br>
+          <strong><%= t('general.general.scheduled_for') %></strong><br>
+
+          <strong><%= t('general.general.completed_at')  %></strong><br>
+
+
+        </div>
+        <div class="col-xs-6 text-right">
+          <%= @service_call.name %> <br>
+          <%= @service_call.external_ref %> <br>
+          <%= @service_call.project_id %> <br>
+          <% @service_call.tags.each do |tag| %>
+              <span class="label"><%= tag.name %></span>
+          <% end %><br><br>
+
+
+          <%= l @service_call.started_on, :format => :short  unless @service_call.started_on.nil? %><br>
+          <%= l @service_call.scheduled_for, :format => :short unless @service_call.scheduled_for.nil? %><br>
+
+          <%= l @service_call.completed_on, :format => :short  unless @service_call.completed_on.nil? %><br>
+
+
+
+
+          <!--<#%= humanized_money_with_symbol @statement.balance %>-->
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!--account activity-->
+  <div class="row-fluid statement">
+    <br>
+    <br>
+    <br>
+        <div class="smart_label">
+          <ul>
+            <li><h1><%= t('general.general.customer_billing') %></h1></li>
+            <li></li>
+          </ul>
+        </div>
+        <br>
+
+
+    <table class="table table-striped" id="boms-table">
+      <thead>
+      <tr>
+        <th class="bom_first_table_pdf"><%= Bom.human_attribute_name(:material_name) %></th>
+        <th class="bom_description_table"><%= Bom.human_attribute_name(:description) %></th>
+        <th><%= Bom.human_attribute_name(:quantity) %></th>
+        <th><%= Bom.human_attribute_name(:price) %></th>
+        <th><%= Bom.human_attribute_name(:total_price) %></th>
+
+      </tr>
+      </thead>
+      <tbody id="boms">
+
+      <% @service_call.boms.each do |bom| %>
+          <tr id="bom_<%= bom.id %>">
+            <td><%= bom.material.name %></td>
+            <td title="<%= bom.description %>" class="bom_description_table">
+              <%= truncate(bom.description, length: 25) %>
+            </td>
+            <td><%= bom.quantity %></td>
+
+            <td><%= humanized_money_with_symbol bom.price %></td>
+
+            <td><%= humanized_money_with_symbol bom.total_price %></td>
+
+          </tr>
+      <% end %>
+
+
+      <tr>
+
+        <td class="thick-line"></td>
+        <td class="thick-line"></td>
+        <td class="thick-line"></td>
+        <td class="thick-line"><%= @service_call.class.human_attribute_name(:tax) %></td>
+        <td class="thick-line"><%= @service_call.tax %>%</td>
+      </tr>
+      <tr>
+
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><%= @service_call.class.human_attribute_name(:tax_amount) %></td>
+        <td><%= humanized_money_with_symbol @service_call.tax_amount %></td>
+      </tr>
+
+
+
+      <% if @service_call.adj_amount != 0 %>
+          <tr>
+
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><%= t('general.general.total_adjustment2').html_safe %></td>
+            <td><%= humanized_money_with_symbol @service_call.adj_amount %></td>
+          </tr>
+      <% end %>
+
+
+      <tr>
+
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="thick-line-bottom"><strong><%=  t('general.general.total2').html_safe %></strong> </td>
+        <td class="thick-line-bottom"><strong><%= humanized_money_with_symbol @service_call.total %></strong></td>
+      </tr>
+
+      </tbody>
+    </table>
+
+
+  </div>
+
 </div>
+
+<br>
+<br>
+<br>
+
+<p>
+  <strong><%= t('general.general.notes').html_safe %>:</strong><br>
+  <%= @service_call.notes %>
+</p>
+
+
 

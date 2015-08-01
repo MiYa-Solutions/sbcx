@@ -1,0 +1,18 @@
+
+  <!--table of statements-->
+  <table id="customer-statements" class="table table-striped" data-account-id="<%= account.id %>">
+    <thead>
+    <tr>
+      <th><%= Statement.human_attribute_name(:id) %></th>
+      <th><%= Statement.human_attribute_name(:created_at) %></th>
+      <th><%= Statement.human_attribute_name(:balance) %></th>
+      <th class="download_icon"><%= t('general.general.download') %></th>
+
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+
+

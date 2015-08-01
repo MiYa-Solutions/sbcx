@@ -18,10 +18,10 @@ class ScProviderClearEvent < ScSettlementEvent
     prov_service_call.events << ScSubconClearedEvent.new(triggering_event: self)
   end
 
-  def process_event
-    clear_accounting_entries
-    super
-  end
+  # def process_event
+  #   clear_accounting_entries
+  #   super
+  # end
 
 
 end

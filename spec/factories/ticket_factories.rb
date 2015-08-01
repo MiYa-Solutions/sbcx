@@ -36,6 +36,13 @@ FactoryGirl.define do
     end
   end
 
+  factory :job, class: MyServiceCall do
+    association :organization, factory: :member_org, strategy: :build
+    association :customer
+    sequence(:external_ref) { |n| "JOB2_EXTERNAL_REF_#{n}" }
+    sequence(:name) { |n| "JOB2_NAME_#{n}" }
+  end
+
   factory :member_customer, class: Customer do
     sequence(:name) { |n| "Customer #{n}" }
     association :organization, factory: :member_org, strategy: :build

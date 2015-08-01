@@ -57,6 +57,7 @@
 #
 
 class ServiceCall < Ticket
+  include SubcontractorSettlement
 
   after_create :init_tax
 
@@ -75,6 +76,10 @@ class ServiceCall < Ticket
 
   attr_accessor :payment_amount
   validate :financial_data_change
+
+  def provider_balance
+    Money.new(0)
+  end
 
   def my_role
     if self.organization_id == self.subcontractor_id # am I the subcontractor?
@@ -173,77 +178,6 @@ class ServiceCall < Ticket
 
   end
 
-# State machine for ServiceCall subcontractor_status
-# status constant list:
-  SUBCON_STATUS_NA                 = 3000
-  SUBCON_STATUS_PENDING            = 3001
-  SUBCON_STATUS_CLAIM_SETTLED      = 3002
-  SUBCON_STATUS_CLAIMED_AS_SETTLED = 3003
-  SUBCON_STATUS_SETTLED            = 3004
-  SUBCON_STATUS_CLEARED            = 3005
-
-  state_machine :subcontractor_status, :initial => :na, namespace: 'subcon' do
-    state :na, value: SUBCON_STATUS_NA
-    state :pending, value: SUBCON_STATUS_PENDING
-    state :claim_settled, value: SUBCON_STATUS_CLAIM_SETTLED do
-      # todo validate that the payment string is valid
-      validates_presence_of :subcon_payment
-    end
-    state :claimed_as_settled, value: SUBCON_STATUS_CLAIMED_AS_SETTLED do
-      validates_presence_of :subcon_payment
-    end
-    state :settled, value: SUBCON_STATUS_SETTLED do
-      validates_presence_of :subcon_payment
-    end
-    state :cleared, value: SUBCON_STATUS_CLEARED do
-      validates_presence_of :subcon_payment
-    end
-
-    after_failure do |service_call, transition|
-      Rails.logger.debug { "Service Call subcon status state machine failure. Service Call errors : \n" + service_call.errors.messages.inspect + "\n The transition: " +transition.inspect }
-    end
-
-    after_transition any => :settled do |service_call, transition|
-      if service_call.subcon_payment == 'cash'
-        service_call.subcontractor_status = SUBCON_STATUS_CLEARED
-        service_call.save
-      end
-    end
-
-    event :subcon_confirmed do
-      transition :claim_settled => :settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? }
-    end
-
-    event :subcon_marked_as_settled do
-      transition :pending => :claimed_as_settled, if: ->(sc) { !sc.canceled? && sc.subcontractor.subcontrax_member? && sc.subcon_settlement_allowed? }
-    end
-
-    event :confirm_settled do
-      transition :claimed_as_settled => :settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? }
-    end
-
-    event :settle do
-      transition :pending => :settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? && sc.work_done? && !sc.subcontractor.subcontrax_member? }
-      transition :pending => :claim_settled, if: ->(sc) { !sc.canceled? && sc.subcon_settlement_allowed? && sc.work_done? && sc.subcontractor.subcontrax_member? }
-    end
-
-    event :clear do
-      transition :settled => :cleared
-    end
-
-    event :cancel do
-      transition :pending => :na
-    end
-
-    event :reopen do
-      transition [:claim_settled, :settled, :cleared, :claimed_as_settled] => :pending
-      transition :pending => :pending
-      transition :na => :na
-    end
-
-  end
-
-
   def set_type
     case my_role
       when :prov
@@ -284,7 +218,7 @@ class ServiceCall < Ticket
 
 
   def subcon_settlement_allowed?
-    subcontractor && work_done? && subcon_collection_fully_deposited? && all_deposited_entries_confirmed?
+    !canceled? && subcontractor.present? && !work_pending? && !work_rejected?
   end
 
   def can_change_boms?

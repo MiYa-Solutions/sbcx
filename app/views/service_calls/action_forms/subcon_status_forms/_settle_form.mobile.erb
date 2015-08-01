@@ -1,8 +1,8 @@
 <%= link_to @service_call.class.human_attribute_name(:settle),
             "#settle_subcon",
-            "data-role" => "button", "data-theme" => "b",
-            :id => 'subcon_status_settle',
-            :class => "ui-btn-up-b", "data-rel" => "popup",
+            "data-role"       => "button", "data-theme" => "b",
+            :id               => 'subcon_status_settle',
+            :class            => "ui-btn-up-b", "data-rel" => "popup",
             "data-transition" => "pop" %>
 
 
@@ -15,9 +15,6 @@
   </div>
 
 
-
-
-
   <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
     <br>
     <%= simple_form_for job.becomes(ServiceCall), html: { id: 'subcon_status_settle' } do |f| %>
@@ -25,12 +22,15 @@
         <div class="customer_contacts">
           <div class="ui-grid-a">
             <div class="ui-block-a"><%= t('general.general.payment_type') %></div>
-            <div class="ui-block-b hide_lable"> <%= f.input :subcon_payment, collection: payment_types %></div>
+            <div class="ui-block-b hide_lable">
+              <%= f.input :subcon_settle_type, collection: payment_types %>
+              <%= f.input :subcon_settle_amount, input_html: { value: (job.subcon_balance.abs) } %>
+            </div>
           </div>
-       </div>
+        </div>
 
         <br>
-        <%= f.submit t('general.general.submit'), class: "ui-btn-up-b", id: 'settle_service_call_btn', "data-theme" => "b", "data-role" => "button","data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
+        <%= f.submit t('general.general.submit'), class: "ui-btn-up-b", id: 'settle_service_call_btn', "data-theme" => "b", "data-role" => "button", "data-icon" => "check", "data-iconpos" => "left", "data-transition" => "slide" %>
 
         <br>
         <%= link_to I18n.t('general.general.back'), service_call_path(@service_call), "data-role" => "button", "data-iconpos" => "left", "data-theme" => "d", "data-icon" => "arrow-l", "data-mini" => "true", id: 'back_notification_btn' %>

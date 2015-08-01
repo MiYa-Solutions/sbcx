@@ -132,4 +132,39 @@ jQuery ->
       { data: "provider" }
     ]
 
+  $('#customer-statements').dataTable
+    dom: "t<'row-fluid'<'span7'i><'span5'p>>"
+    pagingType: 'simple'
+    iDisplayLength: 5
+#    aoColumnDefs: [{ 'bSortable': false, 'aTargets': [ 1,2 ] }]
+    order: [[0, 'desc']]
+    sPaginationType: "bootstrap"
+    processing: true
+    stateSave: true
+    serverSide: true
+    sAjaxSource: '/statements/'
+
+    fnServerData: (sSource, aoData, fnCallback) ->
+      aoData.push
+        name: "from_date"
+        value: $('#statement-from-date').val()
+      aoData.push
+        name: "to_date"
+        value: $('#statement-to-date').val()
+      aoData.push
+        name: "statement[account_id]"
+        value: $('#customer-statements').data('account-id')
+      aoData.push
+        name: "table_type"
+        value: 'customer_statements'
+
+      $.getJSON sSource, aoData, (json) ->
+        fnCallback json
+
+    columns: [
+      { data: "id" },
+      { data: "created_at" },
+      { data: "balance" }
+      { data: "actions" }
+    ]
 

@@ -23,6 +23,11 @@ class Forms::NotificationsForm
     attr_accessor "#{s}_email".to_sym
   end
 
+  Settings.aff_payments_settings.each do |s|
+    attr_accessor s.to_sym
+    attr_accessor "#{s}_email".to_sym
+  end
+
   def persisted?
     false
   end

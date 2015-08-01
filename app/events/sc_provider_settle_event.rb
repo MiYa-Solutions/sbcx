@@ -15,7 +15,7 @@ class ScProviderSettleEvent < ScSettlementEvent
   end
 
   def update_provider
-    prov_service_call.events << ScSubconSettledEvent.new(triggering_event: self)
+    prov_service_call.events << ScSubconSettledEvent.new(triggering_event: self, amount: amount, payment_type: payment_type)
   end
 
   def process_event

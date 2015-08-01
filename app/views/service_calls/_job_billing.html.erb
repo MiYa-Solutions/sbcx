@@ -7,8 +7,6 @@
       <li>
         <%= button_tag Invoice.model_name.human.pluralize, :class => 'btn btn-primary',
                        id:                                        'show_invoices_button', data: { toggle: "collapse", target: "#job_invoices" } if invoice_allowed? %>
-        <%= button_tag t('general.general.collect_payments'), :class => 'btn btn-primary',
-                       id:                                           'new-collect-button', data: { toggle: "collapse", target: "#payment_collect" } unless ServiceCallsHelper::JobBillingFormsRenderer.new(@service_call, self).available_events.empty? %>
 
         <% unless @service_call.my_role == :subcon || @service_call.my_role == :broker %>
             <%= button_tag t('general.general.receipts'), :class => 'btn btn-primary',

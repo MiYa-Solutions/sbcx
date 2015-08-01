@@ -7,8 +7,8 @@ class PermittedParams < Struct.new(:params, :user, :obj)
       self[:params][attribute] = attribute_val
     end
 
-    method_sym = "#{resource}_attributes".to_sym
-    res        = send(method_sym).include?(attribute)
+    method_sym               = "#{resource}_attributes".to_sym
+    res                      = send(method_sym).include?(attribute)
     self[:params][attribute] = old_val unless attribute_val.nil?
     res
   end
@@ -271,6 +271,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
      :city,
      :zip,
      :mobile_phone,
+     :status,
      :work_phone, :time_zone, :current_password, { :role_ids => [] },]
 
   end
@@ -403,30 +404,38 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   def subcontractor_status_allowed?
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = false
-    unless obj.nil? || obj.subcontractor.nil?
-      res = true
-      res = false if params_to_check[:subcontractor_status_event] == "subcon_marked_as_settled" && obj.subcontractor.subcontrax_member?
-      res = false if params_to_check[:subcontractor_status_event] == "subcon_confirmed" && obj.subcontractor.subcontrax_member?
-      res = false if params_to_check[:subcontractor_status_event] == "clear" && obj.subcontractor.subcontrax_member?
-      res = false if params_to_check[:subcontractor_status_event] == "cancel"
-      res = false if params_to_check[:subcontractor_status_event] == "reopen"
+
+    if obj.present? && obj.subcontractor.present? && obj.subcon_settlement_allowed?
+      res = subcon_event_allowed? params_to_check
     end
     res
   end
 
-  def provider_event_allowed?
+  def subcon_event_allowed?(params_to_check)
+    res = false
+
+    res = true if params_to_check[:subcontractor_status_event] == 'settle'
+    res = true if params_to_check[:subcontractor_status_event].nil?
+
+    res
+  end
+
+  def provider_status_allowed?
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = false
-    unless obj.nil? || obj.provider.nil?
-      res = true
-      res = false if params_to_check[:provider_status_event] == "provider_marked_as_settled" && obj.provider.subcontrax_member?
-      res = false if params_to_check[:provider_status_event] == "provider_confirmed" && obj.provider.subcontrax_member?
-      res = false if params_to_check[:provider_status_event] == "cancel"
-      res = false if params_to_check[:provider_status_event] == "reopen"
 
+    if obj && obj.kind_of?(TransferredServiceCall) && obj.provider_settlement_allowed?
+      res = provider_event_allowed? params_to_check
     end
-    res
 
+    res
+  end
+
+  def provider_event_allowed?(params_to_check)
+    res = false
+    res = true if params_to_check[:provider_status_event] == 'settle'
+    res = true if params_to_check[:provider_status_event].nil?
+    res
   end
 
   def basic_service_call_attr
@@ -502,9 +511,9 @@ class PermittedParams < Struct.new(:params, :user, :obj)
     params_to_check = params[:service_call] ? params[:service_call] : params
     res             = true
 
-    res = false if obj && obj.transferred? && obj.subcontractor.subcontrax_member?
-    res = false if params_to_check[:work_status_event] == 'cancel'
-    res = false if params_to_check[:work_status_event] == 'reset'
+    res             = false if obj && obj.transferred? && obj.subcontractor.subcontrax_member?
+    res             = false if params_to_check[:work_status_event] == 'cancel'
+    res             = false if params_to_check[:work_status_event] == 'reset'
     res
 
   end
@@ -533,11 +542,11 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_subcon_status_attrs
-    subcontractor_status_allowed? ? [:subcontractor_status_event, :subcon_payment] : []
+    subcontractor_status_allowed? ? [:subcontractor_status_event, :subcon_settle_amount, :subcon_settle_type] : []
   end
 
   def sc_provider_status_attrs
-    obj.kind_of?(TransferredServiceCall) && provider_event_allowed? ? [:provider_status_event, :provider_payment] : []
+    provider_status_allowed? ? [:provider_status_event, :prov_settle_type, :prov_settle_amount] : []
   end
 
   def sc_transfer_attrs

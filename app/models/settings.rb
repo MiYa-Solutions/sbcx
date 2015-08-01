@@ -9,6 +9,10 @@ class Settings
     AdjustmentEntryNotification.subclasses.collect { |c| c.name.underscore }
   end
 
+  def self.aff_payments_settings
+    AffiliatePaymentNotification.subclasses.collect { |c| c.name.underscore }
+  end
+
   def self.agr_notification_settings
     AgreementNotification.subclasses.collect { |c| c.name.underscore }
   end
@@ -18,7 +22,11 @@ class Settings
   end
 
   def self.notification_settings
-    job_notification_settings + adj_notification_settings + agr_notification_settings + invite_notification_settings
+    job_notification_settings +
+        adj_notification_settings +
+        agr_notification_settings +
+        invite_notification_settings +
+        aff_payments_settings
   end
 
   def self.mandatory_emails

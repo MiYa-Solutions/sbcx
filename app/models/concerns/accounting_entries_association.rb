@@ -18,7 +18,24 @@ module AccountingEntriesAssociation
   end
 
   def active_subcon_entries
-    subcon_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
+    if subcontractor.member?
+      subcon_entries.where('status NOT in (?)', non_active_member_statuses)
+    else
+      subcon_entries.where('status NOT in (?)', non_active_local_statuses)
+    end
+
+  end
+
+  def non_active_member_statuses
+    [AccountingEntry::STATUS_CLEARED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED]
+  end
+
+  def non_active_member_provider_statuses
+    [AccountingEntry::STATUS_CLEARED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED]
+  end
+
+  def non_active_local_statuses
+    [AccountingEntry::STATUS_CLEARED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_REJECTED]
   end
 
 
@@ -32,7 +49,13 @@ module AccountingEntriesAssociation
   end
 
   def active_provider_entries
-    provider_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, AccountingEntry::STATUS_DEPOSITED, ConfirmableEntry::STATUS_CONFIRMED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
+    if subcontractor.member?
+      provider_entries.where('status NOT in (?)', non_active_member_provider_statuses)
+    else
+      subcon_entries.where('status NOT in (?)', non_active_local_statuses)
+    end
+
+
   end
 
   def customer_entries
