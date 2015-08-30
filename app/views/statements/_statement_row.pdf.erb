@@ -1,6 +1,6 @@
 <tr id=statement_row_balance">
   <td><%= ticket.id %>
-    <% unless ticket.external_ref.empty? %>
+    <% if ticket.external_ref.present? %>
         (Ext. <%= ticket.external_ref %>)
     <% end %>
     </td>
