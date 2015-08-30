@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby '2.0.0'
 
-gem 'rails', '3.2.21'
+gem 'rails', '3.2.22'
 gem 'jquery-rails', '2.1.4'
 gem 'jquery_mobile_rails', '1.2.0'
 gem 'bcrypt-ruby', '3.0.1'
