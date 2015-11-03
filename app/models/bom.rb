@@ -20,7 +20,7 @@
 
 class Bom < ActiveRecord::Base
   belongs_to :ticket, inverse_of: :boms
-  belongs_to :material, with_deleted: true
+  belongs_to_with_deleted :material, with_deleted: true
   belongs_to :buyer, :polymorphic => true
   belongs_to :provider_bom, class_name: 'Bom'
   belongs_to :subcon_bom, class_name: 'Bom'
@@ -56,7 +56,7 @@ class Bom < ActiveRecord::Base
   alias_method :amount, :total_price
 
   def description
-    attribute(:description) ||  material.try(:description)
+    attribute(:description) || live_or_deleted_material.try(:description)
   end
 
 
@@ -73,7 +73,11 @@ class Bom < ActiveRecord::Base
   end
 
   def material_name
-    @material_name ||= material.try(:name)
+    live_or_deleted_material ? live_or_deleted_material.name : ''
+  end
+
+  def live_or_deleted_material
+    @live_or_deleted_material ||= (material || Material.with_deleted.where(id: material_id).first)
   end
 
   def name
