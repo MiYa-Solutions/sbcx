@@ -162,6 +162,8 @@ service_call:
       cleared: "status_green"
       rejected: "status_red"
       disputed: "status_red"
+      claim_p_settled: "status_grey"
+      claimed_p_settled: "status_grey"
     provider_status:
       pending: "status_grey"
       claim_settled: "status_blue"
@@ -172,6 +174,8 @@ service_call:
       na: "status_grey"
       rejected: "status_red"
       disputed: "status_red"
+      claim_p_settled: "status_grey"
+      claimed_p_settled: "status_grey"
     billing_status:
       na:  "status_grey"
       pending:  "status_grey"
