@@ -184,7 +184,9 @@ module SubcontractorSettlement
   end
 
   def subcon_charge
-    Money.new(subcon_entries.where(type: ['PaymentToSubcontractor', 'MaterialReimbursementToCparty']).sum(:amount_cents)).abs
+    Money.new(subcon_entries.
+                  where(type: ['PaymentToSubcontractor', 'MaterialReimbursementToCparty', 'ReopenedJobAdjustment']).
+                  sum(:amount_cents)).abs
   end
 
   def subcon_total

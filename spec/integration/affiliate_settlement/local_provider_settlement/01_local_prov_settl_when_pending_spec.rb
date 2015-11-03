@@ -68,6 +68,11 @@ describe 'Local Provider Settlement: When Pending' do
         complete_the_work job
       end
 
+      it 'provider charge is 110' do
+        expect(job.provider_charge).to eq Money.new(11000)
+      end
+
+
       context 'when the provider initiates the settlement for partial amount' do
         before do
           settle_with_provider job, amount: 50
@@ -104,6 +109,57 @@ describe 'Local Provider Settlement: When Pending' do
           expect(job.provider_status_name).to eq :settled
         end
 
+      end
+
+      context 'when reopenning the job' do
+        before do
+          reopen_the_job job
+        end
+
+        it 'provider balance is 0' do
+          expect(job.provider_balance).to eq Money.new(0)
+        end
+
+        it 'provider charge is 0' do
+          expect(job.provider_charge).to eq Money.new(0)
+        end
+
+
+        context 'when completing the work (again)' do
+          before do
+            complete_the_work job
+          end
+
+          it 'provider balance is 110' do
+            expect(job.provider_balance).to eq Money.new(11000)
+          end
+
+          it 'provider charge is 110' do
+            expect(job.provider_charge).to eq Money.new(11000)
+          end
+
+
+          context 'when the provider initiates the settlement for the full amount' do
+            before do
+              settle_with_provider job, type: 'cash', amount: 110
+            end
+
+            it 'should change the provider status to settled' do
+              expect(job.provider_status_name).to eq :settled
+            end
+
+            it 'provider account balance for prov should be 0' do
+              expect(job.provider_balance).to eq Money.new(0)
+            end
+
+            it 'provider charge is 110' do
+              expect(job.provider_charge).to eq Money.new(11000)
+            end
+
+          end
+
+
+        end
       end
 
     end
