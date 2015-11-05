@@ -18,7 +18,9 @@ describe 'Job deletion (no transfer)' do
       add_bom_to_job job
       add_bom_to_job job
       dispatch_the_job job, org.users.last
-      start_the_job job
+      with_user(org.users.last) do
+        start_the_job job
+      end
     end
 
 
