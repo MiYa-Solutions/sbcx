@@ -74,7 +74,7 @@ describe 'When transferred from local subcon' do
           context 'when settling with the provider' do
 
             before do
-              settle_with_provider job
+              settle_with_provider job, type: 'cheque', amount: 120
               job.reload
             end
 
@@ -108,7 +108,10 @@ describe 'When transferred from local subcon' do
 
                 context 'when settling with the provider (again)' do
                   before do
-                    settle_with_provider job
+                    settle_with_provider job, type: 'cash', amount: 10
+                    confirm_all_provider_payments job
+                    deposit_all_provider_payments job
+                    clear_all_provider_payments job
                     job.reload
                   end
 

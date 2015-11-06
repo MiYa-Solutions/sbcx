@@ -40,8 +40,7 @@ describe 'Transferred Service Call Int' do
 
       context 'after affiliate settlement' do
         before do
-          subcon_job.provider_payment = 'cash'
-          subcon_job.settle_provider!
+          settle_with_provider subcon_job, type: 'cash', amount: 100
           job.reload
         end
 
@@ -49,7 +48,7 @@ describe 'Transferred Service Call Int' do
           expect(subcon_job.my_profit).to eq Money.new(10000)
         end
 
-        it 'my profit for subcon job should be 100.00' do
+        it 'my profit for subcon job should be 80.00' do
           expect(job.my_profit).to eq Money.new(80000)
         end
 

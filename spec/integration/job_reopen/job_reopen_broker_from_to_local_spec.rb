@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'When transferred from local subcon' do
+describe 'When transferred from local provider' do
   let(:collection_allowed?) { true }
   let(:transfer_allowed?) { true }
   include_context 'job transferred from a local provider'
@@ -99,7 +99,7 @@ describe 'When transferred from local subcon' do
             context 'when settling with the provider' do
 
               before do
-                settle_with_provider broker_job
+                settle_with_provider broker_job, type: 'cash', amount: 120
                 broker_job.reload
               end
 
@@ -113,8 +113,10 @@ describe 'When transferred from local subcon' do
 
               context 'when settling with the subcon' do
                 before do
-                  settle_with_subcon broker_job
-                  broker_job
+                  settle_with_subcon broker_job, type: 'cash', amount: 75
+                  broker_job.entries.last.confirmed!
+                  broker_job.entries.last.deposited!
+                  broker_job.reload
                 end
 
                 it 'subcon account balance should be 0' do
@@ -162,7 +164,10 @@ describe 'When transferred from local subcon' do
 
                     context 'when settling with the provider (again)' do
                       before do
-                        settle_with_provider broker_job
+                        settle_with_provider broker_job, amount: 10
+                        # confirm and deposit all provider entries
+                        confirm_all_provider_payments broker_job
+                        deposit_all_provider_payments broker_job
                         broker_job.reload
                       end
 
@@ -178,11 +183,14 @@ describe 'When transferred from local subcon' do
 
                     context 'when settling with the subcon (again)' do
                       before do
-                        settle_with_subcon broker_job
+                        settle_with_subcon broker_job, amount: 20
+                        set_subcon_entries_as_confirmed broker_job
+                        set_subcon_entries_as_deposited broker_job
+
                         broker_job.reload
                       end
 
-                      it 'expect provider status to be cleared' do
+                      it 'expect subcon status to be cleared' do
                         expect(broker_job.subcontractor_status_name).to eq :cleared
                       end
 
@@ -237,7 +245,9 @@ describe 'When transferred from local subcon' do
 
                   context 'when settling with the provider (again)' do
                     before do
-                      settle_with_provider broker_job
+                      settle_with_provider broker_job, type: 'cash', amount: 10
+                      confirm_all_provider_payments broker_job
+                      deposit_all_provider_payments broker_job
                       broker_job.reload
                     end
 

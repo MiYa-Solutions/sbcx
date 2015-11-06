@@ -116,6 +116,34 @@ shared_context 'job methods' do
     TicketDeletionService.new(ticket).execute
   end
 
+  def deposit_all_provider_payments(ticket)
+    update_all_provider_entries(ticket, :deposit)
+  end
+
+  def confirm_all_provider_payments(ticket)
+    update_all_provider_entries(ticket, :confirm)
+  end
+
+  def clear_all_provider_payments(ticket)
+    update_all_provider_entries(ticket, :clear)
+  end
+
+  def set_subcon_entries_as_confirmed(ticket)
+    update_all_subcon_entries(ticket, :confirmed)
+  end
+
+  def set_subcon_entries_as_deposited(ticket)
+    update_all_subcon_entries(ticket, :deposited)
+  end
+
+  def update_all_provider_entries(ticket, action)
+    ticket.entries.select{|e| e.kind_of?(PaymentFromAffiliate) && e.status_events.include?(action)}.map(&action)
+  end
+
+  def update_all_subcon_entries(ticket, action)
+    ticket.entries.select{|e| e.kind_of?(PaymentToAffiliate) && e.status_events.include?(action)}.map(&action)
+  end
+
 end
 
 shared_context 'basic job testing' do
