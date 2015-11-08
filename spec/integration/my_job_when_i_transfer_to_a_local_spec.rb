@@ -91,7 +91,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
     end
 
     it 'subcontractor should have the cancel and reopen events' do
-      expect(job.subcontractor_status_events).to eq [:cancel, :reopen]
+      expect(job.subcontractor_status_events).to include :cancel
+      expect(job.subcontractor_status_events).to include :reopen
     end
 
 
@@ -102,7 +103,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
       end
 
       it 'start event is associated with the job' do
-        job.events.map(&:class).should =~ [ServiceCallStartedEvent, ServiceCallTransferEvent]
+        job.events.map(&:class).should include ServiceCallStartedEvent
       end
 
       # it 'the job should have'
