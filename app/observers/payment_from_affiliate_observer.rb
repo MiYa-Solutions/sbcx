@@ -1,5 +1,5 @@
 class PaymentFromAffiliateObserver < ActiveRecord::Observer
-  observe PaymentFromAffiliate.subclasses
+  observe :cash_payment_from_affiliate, :cheque_payment_from_affiliate, :amex_payment_from_affiliate, :credit_payment_from_affiliate
 
   def after_deposit(payment, transition)
     Rails.logger.debug { "AffiliatePaymentObserver: invoked observer AFTER after_deposit \n #{payment.inspect} \n #{transition.args.inspect}" }
