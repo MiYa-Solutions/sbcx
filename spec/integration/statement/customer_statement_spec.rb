@@ -174,6 +174,10 @@ describe 'Customer Statement' do
 
     context 'when creating the statement without excluding zero balance' do
       before do
+        start_the_job job3
+        add_bom_to_job job3, price: 100, quantity: 1
+        complete_the_work job3
+
         statement.exclude_zero_balance = false
         statement.save(StatementSerializer::CustomerStatementSerializer)
       end
@@ -184,11 +188,16 @@ describe 'Customer Statement' do
     end
     context 'when creating the statement excluding zero balance' do
       before do
+        start_the_job job3
+        add_bom_to_job job3, price: 100, quantity: 1
+        complete_the_work job3
+        collect_full_amount job3
+
         statement.exclude_zero_balance = true
         statement.save(StatementSerializer::CustomerStatementSerializer)
       end
 
-      it 'should have 3 tickets ' do
+      it 'should have 2 tickets ' do
         expect(statement.tickets.size).to eq 2
       end
     end

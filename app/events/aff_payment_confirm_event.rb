@@ -9,7 +9,7 @@ class AffPaymentConfirmEvent < EntryEvent
 
   def process_event
     ticket.confirm_settled_provider(amount: entry.amount)# if ticket.can_confirm_settled_provider?
-    unless entry.matching_entry.nil?
+    if entry.matching_entry
       entry.matching_entry.ticket.events << AffPaymentConfirmedEvent.new(triggering_event: self, entry_id: entry.matching_entry.id)
     end
   end

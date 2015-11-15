@@ -183,7 +183,7 @@ module ProviderSettlement
   end
 
   def provider_charge
-    Money.new(provider_entries.where(type: ['IncomeFromProvider', 'MaterialReimbursement']).sum(:amount_cents)).abs
+    Money.new(provider_entries.where(type: ['IncomeFromProvider', 'MaterialReimbursement', 'ReopenedJobAdjustment']).sum(:amount_cents)).abs
   end
 
   def provider_total

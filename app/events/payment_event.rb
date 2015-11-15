@@ -1,5 +1,10 @@
 class PaymentEvent < EntryEvent
 
+  def amount
+    payment.amount
+  end
+
+
   protected
 
 
@@ -20,4 +25,5 @@ class PaymentEvent < EntryEvent
   def ticket
     payment.ticket
   end
+
 end

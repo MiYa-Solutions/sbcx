@@ -97,7 +97,7 @@ describe 'After completing the work' do
             expect(org.account_for(subcon).reload.balance).to eq Money.new(0)
           end
 
-          it 'an adjustment entry for the subcon should exist and with the amount of 100' do
+          it 'an adjustment entry for the subcon should exist and with the amount of 120' do
             expect(subcon_adj_entry.amount).to eq Money.new(12000)
           end
 
@@ -107,7 +107,7 @@ describe 'After completing the work' do
 
           before do
             job.reload
-            settle_with_subcon job
+            settle_with_subcon job, type: 'cheque', amount: 120
           end
 
           it 'subcon balance should be zero' do
