@@ -1,11 +1,11 @@
-class JobImportsController < ApplicationController
+class CustomerImportsController < ApplicationController
 
   filter_resource_access
 
   # GET /job_imports/new
   # GET /job_imports/new.json
   def new
-    @job_import = JobImport.new(current_user.organization)
+    @import = RecordsImport.new(current_user, klass: Customer)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -16,7 +16,7 @@ class JobImportsController < ApplicationController
   # POST /job_imports
   # POST /job_imports.json
   def create
-    @job_import = JobImport.new(current_user, job_import_params)
+    @import = RecordsImport.new(current_user, import_params)
 
     respond_to do |format|
       if @job_import.save
@@ -30,12 +30,19 @@ class JobImportsController < ApplicationController
     end
   end
 
+  protected
+
+  def new_customer_import_from_params
+    @import = RecordsImport.new(current_user, klass: Customer)
+  end
+
   private
 
-    # Use this method to whitelist the permissible parameters. Example:
-    # params.require(:person).permit(:name, :age)
-    # Also, you can specialize this method with per-user checking of permissible attributes.
-    def job_import_params
-      params.require(:import).permit(:file)
-    end
+  # Use this method to whitelist the permissible parameters. Example:
+  # params.require(:person).permit(:name, :age)
+  # Also, you can specialize this method with per-user checking of permissible attributes.
+  def import_params
+    params[:klass] = Customer
+    params.require(:import).permit(:file, :klass)
+  end
 end

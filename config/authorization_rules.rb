@@ -87,6 +87,7 @@ authorization do
 
 
     has_permission_on :job_imports, to: [:new, :create]
+    has_permission_on :customer_imports, to: [:new, :create]
     has_permission_on :invites, to: :new
     has_permission_on :settings, to: [:show, :update]
     has_permission_on :org_settings, to: [:show, :edit, :update]

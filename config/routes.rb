@@ -29,6 +29,7 @@ Sbcx::Application.routes.draw do
 
 
   resource :job_imports, only: [:new, :create]
+  resource :customer_imports, only: [:new, :create]
   resources :invites
   resource :settings, only: [:show, :edit, :update]
   resource :org_settings, only: [:show, :edit, :update]
