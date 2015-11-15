@@ -378,7 +378,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
                   context 'when cash settled with the subcon' do
                     before do
-                      job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'cash')
+                      settle_with_subcon job, type: 'cash', amount: 109
                     end
 
                     it 'the job status should be transferred' do
@@ -415,7 +415,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
                   context 'when none cash settled with the subcon' do
                     before do
-                      job.update_attributes(subcontractor_status_event: 'settle', subcon_payment: 'credit_card')
+                      settle_with_subcon job, amount 109, type: 'credit_card'
                     end
 
                     it 'the job status should be transferred' do
@@ -653,7 +653,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                 end
 
                 it 'job available subcon events are [:cancel, :reopen]' do
-                  expect(job.subcontractor_status_events).to eq [:cancel, :reopen]
+                  expect(job.subcontractor_status_events).to eq [:settle, :cancel, :reopen]
                   expect(event_permitted_for_job?('subcontractor_status', 'settle', org_admin, job)).to be_true
                 end
 
