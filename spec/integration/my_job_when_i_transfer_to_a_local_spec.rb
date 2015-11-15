@@ -138,7 +138,8 @@ describe 'My Job When I Transfer to a Local Affiliate' do
       end
 
       it 'should have [:cancel, :reopen] as the job available subcon events' do
-        expect(job.subcontractor_status_events).to eq [:cancel, :reopen]
+        expect(job.subcontractor_status_events).to include :cancel
+        expect(job.subcontractor_status_events).to include :reopen
       end
 
       context 'when the job is completed' do
@@ -234,6 +235,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                 let(:customer_balance_before_payment) { 100 }
                 let(:payment_amount) { 100 }
                 let(:job_events) { [ServiceCallTransferEvent,
+                                    ServiceCallAcceptedEvent,
                                     ServiceCallStartedEvent,
                                     ServiceCallCompleteEvent,
                                     ScCollectEvent] }
@@ -282,6 +284,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                   let(:customer_balance_before_payment) { 100 }
                   let(:payment_amount) { 10 }
                   let(:job_events) { [ServiceCallTransferEvent,
+                                      ServiceCallAcceptedEvent,
                                       ServiceCallStartedEvent,
                                       ServiceCallCompleteEvent,
                                       ScCollectEvent
@@ -341,6 +344,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                 let(:customer_balance_before_payment) { 100 }
                 let(:payment_amount) { 100 }
                 let(:job_events) { [ServiceCallTransferEvent,
+                                    ServiceCallAcceptedEvent,
                                     ServiceCallStartedEvent,
                                     ServiceCallCompleteEvent,
                                     ScCollectEvent] }
@@ -490,6 +494,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                   let(:customer_balance_before_payment) { 100 }
                   let(:payment_amount) { 10 }
                   let(:job_events) { [ServiceCallTransferEvent,
+                                      ServiceCallAcceptedEvent,
                                       ServiceCallStartedEvent,
                                       ServiceCallCompleteEvent,
                                       ScCollectEvent] }
@@ -627,6 +632,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
               let(:customer_balance_before_payment) { 100 }
               let(:payment_amount) { 100 }
               let(:job_events) { [ServiceCallTransferEvent,
+                                  ServiceCallAcceptedEvent,
                                   ServiceCallStartedEvent,
                                   ServiceCallCompleteEvent,
                                   ScCollectEvent] }
@@ -857,6 +863,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                 let(:customer_balance_before_payment) { 100 }
                 let(:payment_amount) { 10 }
                 let(:job_events) { [ServiceCallTransferEvent,
+                                    ServiceCallAcceptedEvent,
                                     ServiceCallStartedEvent,
                                     ServiceCallCompleteEvent,
                                     ScCollectEvent] }
