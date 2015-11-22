@@ -1,8 +1,7 @@
 <div class="well well_height">
-
   <div class="smart_label">
     <ul>
-      <li><h1><%= t('general.general.job_import') %></h1></li>
+      <li><h1><%= t('general.general.customer_import') %></h1></li>
       <li></li>
       <li>
     </ul>
@@ -23,17 +22,7 @@
           <div class="row-fluid">
 
 
-            <%= form_for @import do |f| %>
-                <% if @import.errors.any? %>
-                    <div id="error_explanation">
-                      <h2><%= pluralize(@import.errors.count, "error") %> prohibited this import from completing:</h2>
-                      <ul>
-                        <% @import.errors.full_messages.each do |msg| %>
-                            <li><%= msg %></li>
-                        <% end %>
-                      </ul>
-                    </div>
-                <% end %>
+            <%= form_for @customer_import do |f| %>
 
                   <%= f.file_field :file, :class => "", :id => "select_file_import" %>
                     <br>
@@ -67,18 +56,18 @@
     </thead>
     <tbody>
     <tr>
-      <td>external_ref</td>
+      <td>id</td>
       <td>String type </td>
       <td>Optional</td>
       <td></td>
-      <td>Your system Id</td>
+      <td>The customer id in case you would like to update an existing customer</td>
     </tr>
     <tr>
-      <td>customer_id</td>
-      <td>Integer type</td>
-      <td>Mandatory</td>
+      <td>name</td>
+      <td>String</td>
+      <td><strong>Mandatory</strong></td>
       <td></td>
-      <td>SubConTraX's Customer Id. If you wish to upload a job for a new customer, please add the new customer to the system first.</td>
+      <td>The customer's name to be displayed in all reports</td>
     </tr>
     <tr>
       <td>notes</td>
@@ -88,144 +77,60 @@
       <td>notes or comments.</td>
     </tr>
     <tr>
-      <td>started_on</td>
-      <td>Datetime type</td>
-      <td>Optional</td>
-      <td></td>
-      <td>Date format: YYYY-MM-DD HH:MM <br> When using Excel, please make sure to set field type to Text.</td>
-    </tr>
-    <tr>
-      <td>technician_id</td>
-      <td>Integer type</td>
-      <td>Optional</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>provider_id</td>
-      <td>Integer type</td>
-      <td>Optional</td>
-      <td></td>
-      <td>SubConTraX's Affiliate Id (the contractor).</td>
-    </tr>
-    <tr>
-      <td>provider_agreement_id</td>
-      <td>Integer type</td>
-      <td>Conditional</td>
-      <td></td>
-      <td>Only if there is a provider.</td>
-    </tr>
-    <tr>
-      <td>scheduled_for</td>
-      <td>Datetime type</td>
-      <td>Optional</td>
-      <td></td>
-      <td>Date format: YYYY-MM-DD HH:MM <br> When using Excel, please make sure to set field type to Text.</td>
-    </tr>
-    <tr>
-      <td>allow_collection</td>
-      <td>Boolean type</td>
-      <td>Optional</td>
-      <td>TRUE</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>tax</td>
-      <td>Double Precision type</td>
-      <td>Optional</td>
-      <td>0.0</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>name</td>
-      <td>String type</td>
-      <td>Optional</td>
-      <td></td>
-      <td>Job Name (if empty, the system concatenates job type & address).</td>
-    </tr>
-    <!--<tr>-->
-      <!--<td>prov_bom_reimbursement</td>-->
-      <!--<td>Boolean type</td>-->
-      <!--<td>Optional</td>-->
-      <!--<td>FALSE</td>-->
-      <!--<td>Allow profit split for Parts and Labor</td>-->
-    <!--</tr>-->
-    <tr>
-      <td>provider_fee_cents</td>
-      <td>Integer type</td>
-      <td>Optional</td>
-      <td>0</td>
-      <td>Will be available in the next release! <br>Important to get amount in cents (e.g. $20 = 2000).</td>
-    </tr>
-    <tr>
-      <td>provider_fee_currency</td>
-      <td>String type</td>
-      <td>Optional</td>
-      <td>USD</td>
-      <td>Will be available in the next release!</td>
-    </tr>
-    <tr>
-      <td>company</td>
-      <td>String type</td>
-      <td>Optional</td>
-      <td></td>
-      <td>Company name for the job only (will not overwrite the customer info).</td>
-    </tr>
-    <tr>
       <td>address1</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's address first line</td>
     </tr>
     <tr>
       <td>address2</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's address second line</td>
     </tr>
     <tr>
       <td>city</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's location info: city</td>
     </tr>
     <tr>
       <td>state</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's location info: state</td>
     </tr>
     <tr>
       <td>zip</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's location info: zip code</td>
     </tr>
     <tr>
       <td>country</td>
       <td>String type</td>
       <td>Optional</td>
       <td>US</td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's location info: country</td>
     </tr>
     <tr>
       <td>phone</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's main phone</td>
     </tr>
     <tr>
       <td>mobile_phone</td>
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's mobile phone</td>
     </tr>
     </tr>
     <tr>
@@ -233,7 +138,7 @@
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's work phone</td>
     </tr>
     </tr>
     <tr>
@@ -241,7 +146,7 @@
       <td>String type</td>
       <td>Optional</td>
       <td></td>
-      <td>Location Info for the job only (will not overwrite the customer info).</td>
+      <td>Customer's email address</td>
     </tr>
 
 

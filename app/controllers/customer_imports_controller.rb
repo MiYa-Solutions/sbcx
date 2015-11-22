@@ -5,27 +5,28 @@ class CustomerImportsController < ApplicationController
   # GET /job_imports/new
   # GET /job_imports/new.json
   def new
-    @import = RecordsImport.new(current_user, klass: Customer)
+    @customer_import = CustomerImport.new(current_user)
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @job_import }
+      format.json { render json: @customer_import }
     end
   end
 
   # POST /job_imports
   # POST /job_imports.json
   def create
-    @import = RecordsImport.new(current_user, import_params)
+    @customer_import = CustomerImport.new(current_user, import_params)
 
     respond_to do |format|
-      if @job_import.save
-        flash[:success] = 'Jobs succesfully imported imported '
+      if @customer_import.save
+        flash.now[:success] = @customer_import.import_summary.html_safe
         format.html { render action: 'new'}
-        format.json { render json: @job_import, status: :created, location: @job_import }
+        format.json { render json: @customer_import, status: :created, location: @customer_import }
       else
+        flash.now[:error] = @customer_import.import_summary.html_safe
         format.html { render action: 'new' }
-        format.json { render json: @job_import.errors, status: :unprocessable_entity }
+        format.json { render json: @customer_import.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -33,7 +34,7 @@ class CustomerImportsController < ApplicationController
   protected
 
   def new_customer_import_from_params
-    @import = RecordsImport.new(current_user, klass: Customer)
+    @customer_import = CustomerImport.new(current_user)
   end
 
   private
@@ -42,7 +43,7 @@ class CustomerImportsController < ApplicationController
   # params.require(:person).permit(:name, :age)
   # Also, you can specialize this method with per-user checking of permissible attributes.
   def import_params
-    params[:klass] = Customer
-    params.require(:import).permit(:file, :klass)
+    params[:customer_import][:klass] = 'Customer'
+    params.require(:customer_import).permit(:file, :klass)
   end
 end
