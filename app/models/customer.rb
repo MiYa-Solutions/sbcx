@@ -58,6 +58,14 @@ class Customer < ActiveRecord::Base
       end
     end
   end
+
+  def self.new_from_params(org, attrs)
+    org.customers.build(attrs)
+  end
+  def create_default_agreement
+    set_default_agreement unless agreements.size > 0
+    save!
+  end
   private
   def set_default_agreement
     old_stampper = User.stamper

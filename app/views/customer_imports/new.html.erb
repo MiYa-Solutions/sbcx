@@ -1,0 +1,167 @@
+<div class="well well_height">
+  <div class="smart_label">
+    <ul>
+      <li><h1><%= t('general.general.customer_import') %></h1></li>
+      <li></li>
+      <li>
+    </ul>
+  </div>
+
+  <br>
+
+<div class="row-fluid get_entry_info">
+
+  <div class="span4">
+    <ul class="unstyled">
+      <li id="entry_details" class="list_account_entry">
+
+        <address>
+          <h4><%= t('general.general_select_file_import') %></h4>
+          <br>
+
+          <div class="row-fluid">
+
+
+            <%= form_for @customer_import do |f| %>
+
+                  <%= f.file_field :file, :class => "", :id => "select_file_import" %>
+                    <br>
+
+                <%= f.submit "Import", :class => "btn btn-primary", :id => "import_btn" %>
+            <% end %>
+
+          </div>
+        </address>
+            </li>
+          </ul>
+
+    </div>
+
+</div>
+
+  <div class="row-fluid">
+    <label class="import_help">A <strong>'CSV'</strong> file can be used to import records. The first row should be the column name. The following columns are supported. </label>
+  </div>
+
+  <table class="table table-striped" id="import_schema">
+    <br>
+    <thead>
+    <tr>
+      <th><%= I18n.t('general.general.name') %></th>
+      <th><%= I18n.t('general.general.data_type') %></th>
+      <th><%= I18n.t('general.general.required') %></th>
+      <th><%= I18n.t('general.general.default_value') %></th>
+      <th><%= I18n.t('general.general.description') %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>id</td>
+      <td>String </td>
+      <td>Optional</td>
+      <td></td>
+      <td>The customer id in case you would like to update an existing customer</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td><strong>Mandatory</strong></td>
+      <td></td>
+      <td>The customer's name to be displayed in all reports</td>
+    </tr>
+    <tr>
+      <td>notes</td>
+      <td>Text</td>
+      <td>Optional</td>
+      <td></td>
+      <td>notes or comments.</td>
+    </tr>
+    <tr>
+      <td>address1</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's address first line</td>
+    </tr>
+    <tr>
+      <td>address2</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's address second line</td>
+    </tr>
+    <tr>
+      <td>city</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's location info: city</td>
+    </tr>
+    <tr>
+      <td>state</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's location info: state</td>
+    </tr>
+    <tr>
+      <td>zip</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's location info: zip code</td>
+    </tr>
+    <tr>
+      <td>country</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td>US</td>
+      <td>Customer's location info: country</td>
+    </tr>
+    <tr>
+      <td>phone</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's main phone</td>
+    </tr>
+    <tr>
+      <td>mobile_phone</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's mobile phone</td>
+    </tr>
+    </tr>
+    <tr>
+      <td>work_phone</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's work phone</td>
+    </tr>
+    </tr>
+    <tr>
+      <td>email</td>
+      <td>String</td>
+      <td>Optional</td>
+      <td></td>
+      <td>Customer's email address</td>
+    </tr>
+
+    <tr>
+      <td>default_tax</td>
+      <td>Number</td>
+      <td>Optional</td>
+      <td></td>
+      <td>The default tax amount for new jobs created for this customer</td>
+    </tr>
+
+
+    </tbody>
+    </table>
+
+<!--end of well-->
+</div>
+
+
