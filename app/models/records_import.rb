@@ -69,6 +69,11 @@ class RecordsImport
     {}
   end
 
+  # subclass is expected to implement this method to ensure only authorized params are allowed
+  def authorized_params(hash)
+    ActionController::Parameters.new
+  end
+
   private
 
   def error_import_summary
@@ -76,9 +81,9 @@ class RecordsImport
     fail_count = errors.size
     "<h4> Import Summary </h4>
      <ul>
-     <li># records to import: #{record_count}</li>
-     <li># failed records: #{fail_count}</li>
-     <li># Imported successfully: #{record_count - fail_count}
+     <li>Records to import: #{record_count}</li>
+     <li>Failed records: #{fail_count}</li>
+     <li>Imported successfully: #{record_count - fail_count}
     </ul>
     <h4> Failed Records </h4>
     <ul>
@@ -120,9 +125,7 @@ class RecordsImport
     batch = (first_row..last_row).map do |i|
       row = Hash[[header, @spreadsheet.row(i)].transpose]
       row.merge!(static_attributes)
-
-      # todo add permitted params to ensure unauthorized  attributes are being populated
-      record = the_class.find_by_id(row['id']) || the_class.new_from_params(@user.organization, row.to_hash)
+      record = the_class.find_by_id(row['id']) || the_class.new_from_params(@user.organization, authorized_params(row.to_hash))
       record
     end
     post_batch_load(batch)
@@ -135,7 +138,7 @@ class RecordsImport
   end
 
   def post_batch_load(batch)
-
+    # can be implemented by the subclass as a hook that runs per batch
   end
 
 

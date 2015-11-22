@@ -15,6 +15,12 @@ class CustomerImport < RecordsImport
   #   create_default_agreement(batch)
   # end
 
+  protected
+
+  def authorized_params(hash)
+    PermittedParams.new(ActionController::Parameters.new(customer: hash), @user).customer
+  end
+
   private
 
   def create_default_agreement(batch)
