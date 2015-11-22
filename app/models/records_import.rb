@@ -8,10 +8,12 @@ class RecordsImport
   attr_accessor :file
   attr_accessor :klass
 
+  MAX_RECORD_COUNT = 100
+
   def initialize(user, attributes = {})
     @user = user
     attributes.each { |name, value| send("#{name}=", value) }
-    @batch_size = 10
+    @batch_size = 50
     @batch_num
     @batch = []
   end
@@ -23,26 +25,11 @@ class RecordsImport
   def save
 
     @spreadsheet = open_file
-    calc_num_of_batches
-
-    (1..@batch_num).each do |i|
-      records = load_batch(i)
-
-      records.each_with_index do |record, index|
-        unless record.valid?
-          record.errors.full_messages.each do |message|
-            errors.add :base, "Row #{index+2}: #{message}"
-          end
-        end
-      end
-
-      import_batch(sanitized_batch(records))
-    end
-
-    if errors.size > 0
-      false
+    if @spreadsheet.last_row <= MAX_RECORD_COUNT + 1
+      import_spreadsheet
     else
-      true
+      errors.add :max_records, "Your file contains #{@spreadsheet.last_row - 1} records, however you can't import more than #{MAX_RECORD_COUNT} at once. Please split the CSV file to multiple smaller files and try again."
+      false
     end
 
   end
@@ -59,11 +46,11 @@ class RecordsImport
     end
   end
 
+
+  protected
   def sanitized_batch(records)
     records.select { |r| r.valid? }.collect { |r| r.attributes }
   end
-
-  protected
 
   def static_attributes
     {}
@@ -76,23 +63,58 @@ class RecordsImport
 
   private
 
+  def import_spreadsheet
+    calc_num_of_batches
+
+    (1..@batch_num).each do |i|
+      records = load_batch(i)
+
+      records.each_with_index do |record, index|
+        unless record.valid?
+          record_index = @batch_size*(i-1) + index
+          record.errors.full_messages.each do |message|
+            errors.add :base, "Row #{record_index + 2}: #{message}"
+          end
+        end
+      end
+
+      import_batch(sanitized_batch(records))
+    end
+
+    if errors.size > 0
+      false
+    else
+      true
+    end
+  end
+
   def error_import_summary
     record_count = @spreadsheet.last_row - 1
-    fail_count = errors.size
-    "<h4> Import Summary </h4>
-     <ul>
-     <li>Records to import: #{record_count}</li>
-     <li>Failed records: #{fail_count}</li>
-     <li>Imported successfully: #{record_count - fail_count}
-    </ul>
-    <h4> Failed Records </h4>
-    <ul>
-      #{errors.messages[:base].map {|m| "<li>#{m}</li>"}.join('\n')}
-    </ul>
-"
+    fail_count   = errors.size
 
-
-
+    if errors.messages[:max_records]
+       "<h4> Import Summary </h4>
+       <ul>
+       <li>Records to import: #{record_count}</li>
+       <li>Failed records: #{record_count}</li>
+       <li>Imported successfully: 0
+      </ul>
+      <h4> Import Failed! </h4>
+      <ul>
+        #{errors.messages[:max_records].map { |m| "<li>#{m}</li>" }.join}
+      </ul>"
+    else
+       "<h4> Import Summary </h4>
+       <ul>
+         <li>Records to import: #{record_count}</li>
+         <li>Failed records: #{fail_count}</li>
+         <li>Imported successfully: #{record_count - fail_count}
+      </ul>
+      <h4> Failed Records </h4>
+      <ol>
+        #{errors.messages[:base].map { |m| "<li>#{m}</li>" }.join}
+      </ol>"
+    end
   end
 
   def no_error_import_summary
