@@ -26,11 +26,11 @@ jQuery ->
   $("a[href='#allJobs']").one 'shown.bs.tab', ->
     $('#job-search-results').dataTable().api().ajax.reload()
 
-  $('#job-search-results').dataTable(
+  dataTable = $('#job-search-results').DataTable(
     dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
     order: [[0, 'desc']]
     aLengthMenu: [10, 25, 50, 100]
-    sPaginationType: "bootstrap"
+    pagaingType: "bootstrap"
     oTableTools:
       aButtons: ["print"]
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
@@ -39,40 +39,20 @@ jQuery ->
     serverSide: true
     autoWidth: false
     responsive: true
-    sAjaxSource: '/api/v1/service_calls.json'
     deferLoading: 0
+    ajax:
+      url: '/api/v1/service_calls.json'
+      data: (d) ->
+        d.table_type = 'all_jobs'
+        d.from_date = $('#yadcf-filter--job-search-results-from-date-1').val()
+        d.to_date = $('#yadcf-filter--job-search-results-to-date-1').val()
+        d.customer_id = $('#customer_filter_id').val()
+        d.provider_id = $('#provider').val()
+        d.subcontractor_id = $('#subcontractor').val()
+        d.affiliate_id = $('#affiliate').val()
+        d.billing_status = $('#billing_status').val()
 
-    fnServerData: (sSource, aoData, fnCallback) ->
-      aoData.push
-        name: "from_date"
-        value: $('#yadcf-filter--job-search-results-from-date-1').val()
-      aoData.push
-        name: "to_date"
-        value: $('#yadcf-filter--job-search-results-to-date-1').val()
-      aoData.push
-        name: "customer_id"
-        value: $('#customer_filter_id').val()
-      aoData.push
-        name: "provider_id"
-        value: $('#provider').val()
-      aoData.push
-        name: "subcontractor_id"
-        value: $('#subcontractor').val()
-      aoData.push
-        name: "affiliate_id"
-        value: $('#affiliate').val()
-      aoData.push
-        name: "billing_status"
-        value: $('#billing_status').val()
-      aoData.push
-        name: "work_status"
-        value: $('#work_status').val()
-      aoData.push
-        name: "table_type"
-        value: 'all_jobs'
 
-      $.getJSON sSource, aoData, (json) ->
-        fnCallback json
 
     fnStateSaveParams: (oSettings, oData) ->
       oData.customer_id = $('#customer_filter_id').val()
@@ -112,7 +92,9 @@ jQuery ->
       e.style(nRow, job)
 
 
-  ).yadcf([
+  )
+
+  yadcf.init(dataTable, [
     {
       column_number: 1
       filter_container_id: 'created_range_filter'
