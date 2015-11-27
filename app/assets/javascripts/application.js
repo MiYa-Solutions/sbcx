@@ -19,6 +19,7 @@
 //= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
 //= require dataTables/extras/dataTables.tableTools
 //= require dataTables/extras/dataTables.colVis
+//= require dataTables/extras/dataTables.colReorder
 //= require dataTables/extras/jquery.dataTables.yadcf
 //= require autocomplete-rails
 //= require bootstrap

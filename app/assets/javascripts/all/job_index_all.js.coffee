@@ -27,12 +27,20 @@ jQuery ->
     $('#job-search-results').dataTable().api().ajax.reload()
 
   dataTable = $('#job-search-results').DataTable(
-    dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
+    dom: "RCW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
     order: [[0, 'desc']]
     aLengthMenu: [10, 25, 50, 100]
     pagaingType: "bootstrap"
+
     oTableTools:
-      aButtons: ["print"]
+      sRowSelect: 'multi'
+      aButtons: [
+        {
+          sExtends: "print"
+          oSelectorOpts: 'tr:visible'
+          bSelectedOnly: true
+        }
+      ]
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     processing: true
     stateSave: true
