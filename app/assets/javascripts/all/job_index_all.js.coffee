@@ -150,7 +150,8 @@ jQuery ->
     $('#job-search-results').dataTable().api().ajax.reload()
 
   $('#provider').on 'change', ->
-    $('#customer_search').data('ref-id', $('#provider').val())
+    prov_id = $('#provider').val()
+    $('#customer_search').attr("data-ref-id", prov_id)
     $('#job-search-results').dataTable().api().ajax.reload()
 
   $('#affiliate').on 'change', ->

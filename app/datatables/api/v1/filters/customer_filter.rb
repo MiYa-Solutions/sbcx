@@ -12,7 +12,7 @@ class Api::V1::Filters::CustomerFilter
 
 
   def scope
-    if customer_id
+    if customer_id.present?
       orig_scope.where("customer_id = #{customer_id}")
     else
       orig_scope
