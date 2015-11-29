@@ -26,8 +26,9 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
     new_scope = Api::V1::Filters::CustomerFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::StatusFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::ProviderFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::SubconFilter.new(new_scope, params).scope
 
-    # new_scope = new_scope.merge(subcon_filter)
+
     # new_scope = new_scope.merge(created_date_filter)
     # new_scope = new_scope.merge(created_date_filter)
     # new_scope = new_scope.merge(affiliate_filter)

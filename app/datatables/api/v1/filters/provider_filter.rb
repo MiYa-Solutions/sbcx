@@ -5,8 +5,8 @@ class Api::V1::Filters::ProviderFilter
 
   def initialize(scope, req_params)
     @orig_scope = scope
-    @params = req_params
-    @provider_id = params[:filters] ? params[:filters][:provider_id] : nil
+    @params     = req_params
+    @provider_id  = params[:filters] ? params[:filters][:provider_id] : nil
   end
 
 
