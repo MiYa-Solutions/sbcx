@@ -49,16 +49,18 @@ jQuery ->
     responsive: true
     deferLoading: 0
     ajax:
-      url: '/api/v1/service_calls.json'
+      url: '/api/v1/datatables/service_calls.json'
       data: (d) ->
         d.table_type = 'all_jobs'
-        d.from_date = $('#yadcf-filter--job-search-results-from-date-1').val()
-        d.to_date = $('#yadcf-filter--job-search-results-to-date-1').val()
-        d.customer_id = $('#customer_filter_id').val()
-        d.provider_id = $('#provider').val()
-        d.subcontractor_id = $('#subcontractor').val()
-        d.affiliate_id = $('#affiliate').val()
-        d.billing_status = $('#billing_status').val()
+        d.filters = {}
+        d.filters.status = $('#yadcf-filter--job-search-results-5').val()
+        d.filters.from_date = $('#yadcf-filter--job-search-results-from-date-1').val()
+        d.filters.to_date = $('#yadcf-filter--job-search-results-to-date-1').val()
+        d.filters.customer_id = $('#customer_filter_id').val()
+        d.filters.provider_id = $('#provider').val()
+        d.filters.subcontractor_id = $('#subcontractor').val()
+        d.filters.affiliate_id = $('#affiliate').val()
+        d.filters.billing_status = $('#billing_status').val()
 
 
 
@@ -82,16 +84,16 @@ jQuery ->
 
     columns: [
       {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true, sWidth: '1%'},
-      {data: "started_on", className: 'started_on', name: 'started_on', orderable: false, width: '20%'},
-      {data: "human_customer", className: 'customer', name: 'human_customer', orderable: false, width: '20%'},
+      {data: "started_on", className: 'started_on', name: 'started_on', orderable: false, width: '20%', searchable: false},
+      {data: "human_customer", className: 'customer', name: 'customer_id', orderable: false, width: '20%', searchable: false},
       {data: "human_name", className: 'name', name: 'name', orderable: false, sWidth: '25%'},
-      {data: "human_provider", className: 'provider', name: 'human_provider', orderable: false, width: '1%'},
-      {data: "human_subcontractor", className: 'subcontractor', name: 'human_subcontractor', orderable: false, width: '1%'},
-      {data: "human_status", className: 'status', name: 'human_status', orderable: false, width: '1%'},
-      {data: "my_profit", className: 'my_profit', name: 'my_profit', orderable: false, width: '3%'},
-      {data: "total_price", className: 'total_price', name: 'total_price', orderable: false, width: '3%'},
-      {data: "total_cost", className: 'total_cost', name: 'total_cost', orderable: false, width: '3%'},
-      {data: "tags", className: 'tags', name: 'tags', orderable: false, width: '30%'},
+      {data: "human_provider", className: 'provider', name: 'human_provider', orderable: false, width: '1%', searchable: false},
+      {data: "human_subcontractor", className: 'subcontractor', name: 'human_subcontractor', orderable: false, width: '1%', searchable: false},
+      {data: "human_status", className: 'status', name: 'human_status', orderable: false, width: '1%', searchable: false},
+      {data: "my_profit", className: 'total_price', name: 'my_profit', orderable: false, width: '3%', searchable: false},
+      {data: "total_price", className: 'total_price', name: 'total_price', orderable: false, width: '3%', searchable: false},
+      {data: "total_cost", className: 'total_cost', name: 'total_cost', orderable: false, width: '3%', searchable: false},
+      {data: "tags", className: 'tags', name: 'tags', orderable: false, width: '30%', searchable: false},
       {data: "external_ref", className: 'external_ref', name: 'external_ref', orderable: false, width: '10%'}
     ]
 
