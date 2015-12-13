@@ -94,6 +94,8 @@ group :assets do
   gem 'compass', '0.12.6'
   gem 'handlebars_assets'
   gem 'parsley-rails'
+  gem 'momentjs-rails'
+  gem 'rails-bootstrap-daterangepicker'
 end
 
 group :test do

@@ -42,5 +42,7 @@
 //= require all/accounting.min
 //= require handlebars.runtime
 //= require all/confirmation_dialog
+//= require moment
+//= require bootstrap-daterangepicker
 //= require_tree ./templates
 //= require_tree ./all/.

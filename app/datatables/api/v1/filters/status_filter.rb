@@ -12,8 +12,8 @@ class Api::V1::Filters::StatusFilter
 
   def scope
     if status.present?
-      term = status.map { |t| status_map[t] }
-      orig_scope.where('status in (?) ', term)
+      # term = status.split(',').map { |t| t.to_i }
+      orig_scope.where('status in (?) ', status.map(&:to_i))
     else
       orig_scope
     end

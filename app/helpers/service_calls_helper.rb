@@ -21,6 +21,12 @@ module ServiceCallsHelper
     end
   end
 
+  def status_options
+    MyServiceCall.state_machines[:status].states.collect do |state|
+      [state.human_name, state.value]
+    end
+  end
+
   def billing_status_options
     MyServiceCall.state_machines[:billing_status].states.collect do |state|
       [state.human_name, state.value]
