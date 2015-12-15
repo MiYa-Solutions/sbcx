@@ -77,7 +77,19 @@ jQuery ->
         {
           sExtends: "print"
           oSelectorOpts: 'tr:visible'
-          bSelectedOnly: true
+        }
+        {
+          sExtends: "pdf"
+          mColumns: (ctx) ->
+            api = new $.fn.dataTable.Api(ctx)
+            api.columns(':visible').indexes().toArray();
+        }
+        {
+          sExtends: "xls"
+          mColumns: (ctx) ->
+            api = new $.fn.dataTable.Api(ctx)
+            api.columns(':visible').indexes().toArray();
+
         }
       ]
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
@@ -93,6 +105,7 @@ jQuery ->
         d.table_type = 'all_jobs'
         d.filters = {}
         d.filters.status = yadcf.exGetColumnFilterVal(dataTable, 6)
+        d.filters.technician_id = yadcf.exGetColumnFilterVal(dataTable, 12)
         d.filters.from_date = dateRange.startDate()
         d.filters.to_date = dateRange.endDate()
         d.filters.customer_id = $('#customer_filter_id').val()
@@ -103,9 +116,10 @@ jQuery ->
 
 
 
+
     fnStateSaveParams: (oSettings, oData) ->
       oData.customer_id = $('#customer_filter_id').val()
-#      oData.status = statusFilter.val()
+      #      oData.status = statusFilter.val()
       oData.customer_name = $('#customer_search').val()
       oData.provider_id = $('#provider').val()
       oData.subcontractor_id = $('#subcontractor').val()
@@ -127,81 +141,94 @@ jQuery ->
       {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true, sWidth: '1%', title: 'Ref'},
       {
         data: "started_on",
-        title: "started_on",
+        title: "Started On",
         className: 'started_on',
         name: 'started_on',
         orderable: false,
-        width: '20%',
         searchable: false
       },
       {
         data: "human_customer",
-        title: "human_customer",
+        title: "Customer",
         className: 'customer',
         name: 'customer_id',
         orderable: false,
-        width: '20%',
         searchable: false
       },
       {data: "human_name", className: 'name', name: 'name', orderable: false, sWidth: '25%', title: 'Name'},
       {
         data: "human_provider",
-        title: "human_provider",
+        title: "Contractor",
         className: 'provider',
         name: 'human_provider',
         orderable: false,
-        width: '1%',
         searchable: false
       },
       {
         data: "human_subcontractor",
-        title: "human_subcontractor",
+        title: "Subcontractor",
         className: 'subcontractor',
         name: 'human_subcontractor',
         orderable: false,
-        width: '1%',
         searchable: false
       },
       {
         data: "human_status",
-        title: "human_status",
+        title: "Status",
         className: 'status',
         name: 'human_status',
         orderable: false,
         searchable: true,
-        width: '1%',
         searchable: false
       },
       {
         data: "my_profit",
-        title: "my_profit",
+        title: "Profit",
         className: 'total_price',
         name: 'my_profit',
         orderable: false,
-        width: '3%',
         searchable: false
       },
       {
         data: "total_price",
-        title: "total_price",
+        title: "Total Price",
         className: 'total_price',
         name: 'total_price',
         orderable: false,
-        width: '3%',
         searchable: false
       },
       {
         data: "total_cost",
-        title: "total_cost",
+        title: "Total Cost",
         className: 'total_cost',
         name: 'total_cost',
         orderable: false,
-        width: '3%',
         searchable: false
       },
       {data: "tags", title: 'Tags', className: 'tags', name: 'tags', orderable: false, width: '30%', searchable: false},
-      {data: "external_ref", title: 'Ext. Ref',className: 'external_ref', name: 'external_ref', orderable: false, width: '10%'}
-      {data: "technician_name", title: 'Tech', className: 'technician_name', name: 'technician_name', orderable: false, width: '10%', title: 'Tech', searchable: true}
+      {
+        data: "external_ref",
+        title: 'Ext. Ref',
+        className: 'external_ref',
+        name: 'external_ref',
+        orderable: false,
+      },
+      {
+        data: "technician_name",
+        title: 'Technician',
+        className: 'technician_name',
+        name: 'technician_name',
+        orderable: false,
+        searchable: true
+      },
+      {
+        data: "full_address",
+        title: 'Address',
+        className: 'full_address',
+        name: 'full_address',
+        orderable: false,
+        searchable: true
+      }
     ]
 
     fnRowCallback: (nRow, job, iDisplayIndex) ->
@@ -240,49 +267,48 @@ jQuery ->
     dataTable.ajax.reload()
     return
 
-#  statusFilter.init()
-
+  #  statusFilter.init()
 
 
   yadcf.init(dataTable, [
-      {
-        column_number: 10
-        select_type: 'chosen'
-        filter_type: 'multi_select'
-        filter_default_label: 'Tags'
-        filter_container_id: 'tags_filter'
-        data: $('#table-filters').data("tags")
-        select_type_options:
-          {
-            width: '200px'
-          }
+    {
+      column_number: 10
+      select_type: 'chosen'
+      filter_type: 'multi_select'
+      filter_default_label: 'Tags'
+      filter_container_id: 'tags_filter'
+      data: $('#table-filters').data("tags")
+      select_type_options:
+        {
+          width: '200px'
+        }
 
-      }
+    }
 
-      {
-        column_number: 6
-        select_type: 'chosen'
-        filter_type: 'multi_select'
-        filter_default_label: 'Status'
-        filter_container_id: 'status_filter'
-        data: [{value: 1, label: 'yalla'}, {value:2, label: 'kvar'}]
-        select_type_options:
-          {
-            width: '200px'
-          }
+    {
+      column_number: 6
+      select_type: 'chosen'
+      filter_type: 'multi_select'
+      filter_default_label: 'Status'
+      filter_container_id: 'status_filter'
+      data: [{value: 1, label: 'yalla'}, {value: 2, label: 'kvar'}]
+      select_type_options:
+        {
+          width: '200px'
+        }
 
-      }
-      {
-        column_number: 12
-        filter_type: 'select'
-        select_type: 'chosen'
-        filter_default_label: 'Tech'
-        data: $('#tech_filter').data('tech-list')
-        filter_container_id: 'tech_filter'
+    }
+    {
+      column_number: 12
+      filter_type: 'select'
+      select_type: 'chosen'
+      filter_default_label: 'Tech'
+      data: $('#tech_filter').data('tech-list')
+      filter_container_id: 'tech_filter'
 
-      }
+    }
 
-    ])
+  ])
 
   # enable chosen js
   $('.chosen-select').chosen
