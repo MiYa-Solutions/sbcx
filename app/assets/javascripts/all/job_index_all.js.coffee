@@ -1,3 +1,58 @@
+class DateRangeFilter
+  constructor: (@element, @tableElem) ->
+    @init()
+
+  @dateFormat: 'MM/DD/YYYY, h:mm:ss a'
+
+  endDate: => if @element.val() != '' then @element.data('daterangepicker').endDate.format(DateRangeFilter.dateFormat) else ''
+  startDate: => if @element.val() != '' then @element.data('daterangepicker').startDate.format(DateRangeFilter.dateFormat) else ''
+
+  table: =>
+    @theTable ||= @tableElem.DataTable()
+
+  picker: =>
+    @element.data('daterangepicker')
+
+  setRange: (startDate, endDate) =>
+    startMoment = moment(startDate, DateRangeFilter.dateFormat)
+    endMoment = moment(endDate, DateRangeFilter.dateFormat)
+    if startMoment.isValid()
+      @picker().setStartDate(startMoment)
+      @picker().setEndDate(endMoment)
+      @element.val @picker().startDate.format(DateRangeFilter.dateFormat) + ' - ' + @picker().endDate.format(DateRangeFilter.dateFormat)
+
+  clear: =>
+    @element.trigger('cancel.daterangepicker')
+  init: =>
+    @element.daterangepicker(
+      timePicker: true,
+      timePickerIncrement: 30,
+      autoUpdateInput: false,
+      locale: {
+        cancelLabel: 'Clear'
+        format: 'MM/DD/YYYY h:mm A'
+      },
+      ranges: {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      }
+    )
+
+    @element.on 'apply.daterangepicker', (ev, picker) =>
+      @element.val picker.startDate.format(DateRangeFilter.dateFormat) + ' - ' + picker.endDate.format(DateRangeFilter.dateFormat)
+      @table().ajax.reload()
+      return
+
+    @element.on 'cancel.daterangepicker', (ev, picker) =>
+      @element.val ''
+      @table().ajax.reload()
+      return
+
+
 filter_params = ->
   res = ''
   res = res + 'from_date=' + $('#yadcf-filter--job-search-results-from-date-1').val() + '&'
@@ -17,12 +72,6 @@ Jobs = {
 
 
 
-dateRange = {
-  element: -> $('#created-at-range')
-  endDate: -> if this.element().val() != '' then this.element().data('daterangepicker').endDate.format('MMMM Do YYYY, h:mm:ss a') else ''
-  startDate: -> if this.element().val() != '' then this.element().data('daterangepicker').startDate.format('MMMM Do YYYY, h:mm:ss a') else ''
-}
-
 
 
 $.getRequetParam = (name)->
@@ -30,21 +79,22 @@ $.getRequetParam = (name)->
   regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
   results = regex.exec(location.search)
   (if not results? then "" else decodeURIComponent(results[1].replace(/\+/g, " ")))
+
 jQuery ->
   statusFilter = {
     ticketStatuses: [
-      {id: 0, text: 'New'}
-      {id: 1, text: 'Open'}
-      {id: 2, text: 'Transferred'}
-      {id: 3, text: 'Closed'}
-      {id: 4, text: 'Canceled'}
-      {id: 1201, text: 'Accepted'}
-      {id: 1202, text: 'Rejected'}
+      {value: 0, label: 'New'}
+      {value: 1, label: 'Open'}
+      {value: 2, label: 'Transferred'}
+      {value: 3, label: 'Closed'}
+      {value: 4, label: 'Canceled'}
+      {value: 1201, label: 'Accepted'}
+      {value: 1202, label: 'Rejected'}
     ]
 
     element: -> $('#status_filter')
-    val: ->
-      return this.element().select2('val')
+      val: ->
+        return this.element().select2('val')
 
     setVal: (value) ->
       this.element().select2('val', value)
@@ -62,8 +112,11 @@ jQuery ->
   }
 
   #  $('#myJobTab a:first').tab 'show'
-  $("a[href='#allJobs']").one 'shown.bs.tab', ->
-    $('#job-search-results').dataTable().api().ajax.reload()
+
+  dateRange = new DateRangeFilter($('#created-at-range'), $('#job-search-results'))
+  startDateRange = new DateRangeFilter($('#started-on-range'), $('#job-search-results'))
+  scheduledDateRange = new DateRangeFilter($('#scheduled-for-range'), $('#job-search-results'))
+
 
   dataTable = $('#job-search-results').DataTable(
     dom: "RCW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
@@ -108,18 +161,25 @@ jQuery ->
         d.filters.technician_id = yadcf.exGetColumnFilterVal(dataTable, 12)
         d.filters.from_date = dateRange.startDate()
         d.filters.to_date = dateRange.endDate()
+        d.filters.started_from_date = startDateRange.startDate()
+        d.filters.started_to_date = startDateRange.endDate()
+        d.filters.scheduled_from_date = scheduledDateRange.startDate()
+        d.filters.scheduled_to_date = scheduledDateRange.endDate()
         d.filters.customer_id = $('#customer_filter_id').val()
         d.filters.provider_id = $('#provider').val()
         d.filters.subcontractor_id = $('#subcontractor').val()
         d.filters.affiliate_id = $('#affiliate').val()
         d.filters.billing_status = $('#billing_status').val()
 
-
-
-
     fnStateSaveParams: (oSettings, oData) ->
       oData.customer_id = $('#customer_filter_id').val()
-      #      oData.status = statusFilter.val()
+      oData.filters = {}
+      oData.filters.from_date = dateRange.startDate()
+      oData.filters.to_date = dateRange.endDate()
+      oData.filters.started_from_date = startDateRange.startDate()
+      oData.filters.started_to_date = startDateRange.endDate()
+      oData.filters.scheduled_from_date = scheduledDateRange.startDate()
+      oData.filters.scheduled_to_date = scheduledDateRange.endDate()
       oData.customer_name = $('#customer_search').val()
       oData.provider_id = $('#provider').val()
       oData.subcontractor_id = $('#subcontractor').val()
@@ -135,7 +195,10 @@ jQuery ->
       $('#affiliate').val(oData.affiliate_id)
       $('#billing_status').val(oData.billing_status)
       $('#work_status').val(oData.work_status)
-#      statusFilter.setVal(oData.status)
+      if oData.filters != undefined
+        dateRange.setRange(oData.filters.from_date, oData.filters.to_date)
+        startDateRange.setRange(oData.filters.started_from_date, oData.filters.started_to_date)
+        scheduledDateRange.setRange(oData.filters.scheduled_from_date, oData.filters.scheduled_to_date)
 
     columns: [
       {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true, sWidth: '1%', title: 'Ref'},
@@ -228,6 +291,14 @@ jQuery ->
         name: 'full_address',
         orderable: false,
         searchable: true
+      },
+      {
+        data: "scheduled_for",
+        title: 'Scheduled For',
+        className: 'scheduled_for',
+        name: 'scheduled_for',
+        orderable: false,
+        searchable: true
       }
     ]
 
@@ -235,41 +306,6 @@ jQuery ->
       e = new App.DataTableJobsFormater
       e.style(nRow, job)
   )
-
-  $('#created-at-range').daterangepicker(
-    timePicker: true,
-    timePickerIncrement: 30,
-    autoUpdateInput: false,
-    locale: {
-      cancelLabel: 'Clear'
-      format: 'MM/DD/YYYY h:mm A'
-    },
-    ranges: {
-      'Today': [moment(), moment()],
-      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    }
-
-#    (start, end, label) ->
-#      $('#job-search-results').DataTable().ajax.reload()
-  )
-
-  dateRange.element().on 'apply.daterangepicker', (ev, picker) ->
-    $(this).val picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY')
-    dataTable.ajax.reload()
-    return
-
-  dateRange.element().on 'cancel.daterangepicker', (ev, picker) ->
-    $(this).val ''
-    dataTable.ajax.reload()
-    return
-
-  #  statusFilter.init()
-
-
   yadcf.init(dataTable, [
     {
       column_number: 10
@@ -279,25 +315,19 @@ jQuery ->
       filter_container_id: 'tags_filter'
       data: $('#table-filters').data("tags")
       select_type_options:
-        {
-          width: '200px'
-        }
-
-    }
-
+        width: '200px'
+    },
     {
       column_number: 6
       select_type: 'chosen'
       filter_type: 'multi_select'
       filter_default_label: 'Status'
       filter_container_id: 'status_filter'
-      data: [{value: 1, label: 'yalla'}, {value: 2, label: 'kvar'}]
+      data: statusFilter.ticketStatuses
       select_type_options:
-        {
-          width: '200px'
-        }
+        width: '200px'
 
-    }
+    },
     {
       column_number: 12
       filter_type: 'select'
@@ -305,10 +335,17 @@ jQuery ->
       filter_default_label: 'Tech'
       data: $('#tech_filter').data('tech-list')
       filter_container_id: 'tech_filter'
+      select_type_options:
+        width: '200px'
+
 
     }
-
   ])
+
+  $("a[href='#allJobs']").one 'shown.bs.tab', ->
+    dataTable.ajax.reload()
+    filters.init()
+
 
   # enable chosen js
   $('.chosen-select').chosen
@@ -370,6 +407,14 @@ jQuery ->
     $("#billing_status").trigger("chosen:updated")
     $('#job-search-results').dataTable().api().ajax.reload()
 
+  $('#clear-created-range').live 'click', ->
+    dateRange.clear()
+
+  $('#clear-started-range').live 'click', ->
+    startDateRange.clear()
+
+  $('#clear-scheduled-range').live 'click', ->
+    scheduledDateRange.clear()
 
   $('.download_csv').on 'click', (e)->
     e.preventDefault()
@@ -377,3 +422,7 @@ jQuery ->
 
   if $('#allJobs').is(':visible')
     dataTable.ajax.reload()
+
+
+
+

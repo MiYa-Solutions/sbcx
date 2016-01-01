@@ -29,6 +29,8 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
     new_scope = Api::V1::Filters::SubconFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::CreatedAtFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::TechnicianFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::StartedOnFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::ScheduledForFilter.new(new_scope, params).scope
 
 
     # new_scope = new_scope.merge(created_date_filter)
@@ -249,7 +251,8 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
         tags:                 ticket.tag_list,
         external_ref:         ticket.external_ref,
         technician_name:      ticket.technician ? ticket.technician_name : '',
-        full_address:         "#{ticket.address1}, #{ticket.address2} #{ticket.city}, #{ticket.state} #{ticket.zip}"
+        full_address:         "#{ticket.address1}, #{ticket.address2} #{ticket.city}, #{ticket.state} #{ticket.zip}",
+        scheduled_for:        ticket.scheduled_for ? l(ticket.scheduled_for, format: :no_tz) : ''
     }
 
   end

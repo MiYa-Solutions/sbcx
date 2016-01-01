@@ -37,6 +37,17 @@
           </div>
           <div id="created_range_filter" class="input_field">
             <input type="text" name="created-at" id="created-at-range" />
+            <%= button_tag 'x', type: 'button', id: 'clear-created-range', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+          </div>
+
+          <div id="started_range_filter" class="input_field">
+            <input type="text" name="created-at" id="started-on-range" />
+            <%= button_tag 'x', type: 'button', id: 'clear-started-range', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+          </div>
+
+          <div id="scheduled_range_filter" class="input_field">
+            <input type="text" name="created-at" id="scheduled-for-range" />
+            <%= button_tag 'x', type: 'button', id: 'clear-scheduled-range', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
           </div>
 
         </div>
