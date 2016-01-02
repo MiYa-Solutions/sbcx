@@ -177,6 +177,7 @@ jQuery ->
           d.filters = {}
           d.filters.status = yadcf.exGetColumnFilterVal(dataTable, 6)
           d.filters.technician_id = yadcf.exGetColumnFilterVal(dataTable, 12)
+          d.filters.employee_id = yadcf.exGetColumnFilterVal(dataTable, 13)
           d.filters.from_date = dateRange.startDate()
           d.filters.to_date = dateRange.endDate()
           d.filters.started_from_date = startDateRange.startDate()
@@ -338,6 +339,14 @@ jQuery ->
           name: 'notes',
           orderable: false,
           searchable: true
+        },
+        {
+          data: "employee_name",
+          title: 'Employee',
+          className: 'employee',
+          name: 'employee_name',
+          orderable: false,
+          searchable: true
         }
       ]
 
@@ -375,6 +384,18 @@ jQuery ->
         filter_default_label: 'Tech'
         data: $('#tech_filter').data('tech-list')
         filter_container_id: 'tech_filter'
+        select_type_options:
+          width: '200px'
+
+
+      },
+      {
+        column_number: 13
+        filter_type: 'select'
+        select_type: 'chosen'
+        filter_default_label: 'Employee'
+        data: $('#employee_filter').data('employee-list')
+        filter_container_id: 'employee_filter'
         select_type_options:
           width: '200px'
 

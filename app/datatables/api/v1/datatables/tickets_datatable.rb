@@ -29,6 +29,7 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
     new_scope = Api::V1::Filters::SubconFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::CreatedAtFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::TechnicianFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::EmployeeFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::StartedOnFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::CompletedOnFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::ScheduledForFilter.new(new_scope, params).scope
@@ -255,7 +256,8 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
         external_ref:         ticket.external_ref,
         technician_name:      ticket.technician ? ticket.technician_name : '',
         full_address:         "#{ticket.address1}, #{ticket.address2} #{ticket.city}, #{ticket.state} #{ticket.zip}",
-        scheduled_for:        ticket.scheduled_for ? l(ticket.scheduled_for, format: :no_tz) : ''
+        scheduled_for:        ticket.scheduled_for ? l(ticket.scheduled_for, format: :no_tz) : '',
+        employee_name:        ticket.employee ? ticket.employee_name : ''
     }
 
   end

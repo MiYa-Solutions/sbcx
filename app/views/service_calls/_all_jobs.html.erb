@@ -95,6 +95,9 @@
           <div id="tech_filter" class="input_field" data-tech-list="<%= @org.technicians('id, name').map { |u| { value: u.id, label: u.name } }.to_json %>">
           </div>
 
+          <div id="employee_filter" class="input_field" data-employee-list="<%= @org.technicians('id, name').map { |u| { value: u.id, label: u.name } }.to_json %>">
+          </div>
+
         </div>
 
       </div>
@@ -106,43 +109,9 @@
 
       <div id="">
         <table class="table table-striped display table-bordered" id="job-search-results">
-          <!--<thead>-->
-          <!--<tr>-->
-          <!--<th><#%= Ticket.human_attribute_name(:ref_id) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:started_at) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:customer) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:name) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:provider) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:subcontractor) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:status) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:my_profit) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:total_price) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:total_cost) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:tags) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:external_ref) %></th>-->
-          <!--</tr>-->
-          <!--</thead>-->
           <tbody>
           </tbody>
-          <!--<tfoot>-->
-          <!--<tr>-->
-          <!--<th><#%= Ticket.human_attribute_name(:ref_id) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:started_at) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:customer) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:name) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:provider) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:subcontractor) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:status) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:my_profit) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:total_price) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:total_cost) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:tags) %></th>-->
-          <!--<th><#%= Ticket.human_attribute_name(:external_ref) %></th>-->
-          <!--</tr>-->
-          <!--</tfoot>-->
-
         </table>
-
       </div>
 
     </div>
