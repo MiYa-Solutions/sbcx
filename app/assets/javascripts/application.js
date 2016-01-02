@@ -44,5 +44,6 @@
 //= require all/confirmation_dialog
 //= require moment
 //= require bootstrap-daterangepicker
+//= require all/textile
 //= require_tree ./templates
 //= require_tree ./all/.

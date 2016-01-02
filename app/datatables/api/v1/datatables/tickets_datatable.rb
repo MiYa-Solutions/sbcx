@@ -30,6 +30,7 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
     new_scope = Api::V1::Filters::CreatedAtFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::TechnicianFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::StartedOnFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::CompletedOnFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::ScheduledForFilter.new(new_scope, params).scope
 
 
@@ -231,11 +232,13 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
         ref_id:               ticket.ref_id,
         created_at:           l(ticket.created_at, format: :no_tz),
         started_on:           ticket.started_on ? l(ticket.started_on, format: :no_tz) : '',
+        completed_on:         ticket.completed_on ? l(ticket.completed_on, format: :no_tz) : '',
         human_customer:       link_to(ticket.customer.name, ticket.customer),
         human_name:           link_to(ticket.name, ticket),
         human_provider:       link_to(ticket.provider.name, ticket.provider),
         human_subcontractor:  ticket.subcontractor ? link_to(ticket.subcontractor.name, ticket.subcontractor) : '',
         text:                 ticket.name,
+        notes:                ticket.notes,
         status:               ticket.status_name,
         human_status:         ticket.human_status_name,
         human_work_status:    ticket.human_work_status_name,
