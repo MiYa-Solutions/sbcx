@@ -1180,7 +1180,8 @@ CREATE TABLE tickets (
     external_ref character varying(255),
     subcon_collection_status integer,
     prov_collection_status integer,
-    project_id integer
+    project_id integer,
+    employee_id integer
 );
 
 
@@ -2398,3 +2399,5 @@ INSERT INTO schema_migrations (version) VALUES ('20150627213414');
 INSERT INTO schema_migrations (version) VALUES ('20150629214822');
 
 INSERT INTO schema_migrations (version) VALUES ('20151122170125');
+
+INSERT INTO schema_migrations (version) VALUES ('20160102133545');

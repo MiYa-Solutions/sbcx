@@ -1,0 +1,42 @@
+<div class="collapse overlay" id="job-date-filters">
+  <div class="collapse_frame">
+    <div class="row-fluid collapse_body">
+
+
+      <div class="row-fluid">
+        <a href="#" data-toggle="collapse" data-target="#job-date-filters" class="close" id="job-date-filters-close">×</a>
+      </div>
+
+      <div id="created_range_filter" class="filter range span3">
+        <label for="created-at-range">Created At</label>
+        <input type="text" name="created-at" id="created-at-range"/>
+        <%= button_tag 'x', type: 'button', id: 'clear-created-range', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+      </div>
+
+      <div id="started_range_filter" class="filter range span3">
+        <label for="started-on-range">Started At</label>
+        <input type="text" name="started-at" id="started-on-range"/>
+        <%= button_tag 'x', type: 'button', id: 'clear-started-range', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+      </div>
+
+      <div id="scheduled_range_filter" class="filter range span3">
+        <label for="scheduled-for-range">Scheduled For</label>
+        <input type="text" name="scheduled-at" id="scheduled-for-range"/>
+        <%= button_tag 'x', type: 'button', id: 'clear-scheduled-range', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+      </div>
+
+      <div id="completed_range_filter" class="filter range span3">
+        <label for="completed-at-range">Completed At</label>
+        <input type="text" name="completed-at" id="completed-at-range"/>
+        <%= button_tag 'x', type: 'button', id: 'clear-completed-range', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+      </div>
+
+
+
+    </div>
+    <br>
+    <br>
+  </div>
+
+</div>
+

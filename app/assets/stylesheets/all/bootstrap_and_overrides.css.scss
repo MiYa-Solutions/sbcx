@@ -1726,6 +1726,32 @@ a:hover {
     vertical-align: middle;
   }
 
+  div.filter {
+    margin: 1px 2px 1px 2px;
+
+    input {
+      width: 80%;
+
+      margin: 1px 3px 1px 3px;
+    }
+  }
+
+
+  .collapse.overlay {
+    height: auto;
+    overflow: initial;
+  }
+
+
+
+  //div.filters {
+  //  display: inline-flex;
+  //  align-items: center;
+  //  justify-content: center
+  //
+  //
+  //
+  //}
   .yadcf-filter-wrapper-inner {
     margin-right: 1px;
     padding-right: 0;
@@ -3609,7 +3635,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 div.DTTT_container {
   float: left;
- 
+
 }
 
 #job-search-results_filter {

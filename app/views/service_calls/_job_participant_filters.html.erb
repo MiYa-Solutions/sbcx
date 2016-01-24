@@ -1,0 +1,53 @@
+<div class="overlay collapse" id="job-participant-filters">
+  <div class="collapse_frame">
+    <div class="row-fluid collapse_body">
+
+
+      <div class="row-fluid">
+        <a href="#" data-toggle="collapse" data-target="#job-participant-filters" class="close" id="#job-participant-filters-close">×</a>
+      </div>
+
+      <div class="row-fluid">
+        <div id="customer_filter" class="span3 filter chosen-container-multi chosen-choices customer_field yadcf-filter-wrapper">
+          <%= text_field_tag :customer_search, nil, placeholder: 'Customer',
+                             'data-autocomplete'                 => '/service_calls/autocomplete_customer_name',
+                             'data-update-elements'              => { id: '#customer_filter_id' }.to_json,
+                             'data-ref-id'                       => ''
+          %>
+          <%= button_tag 'x', type: 'button', id: 'clear-customer', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+        </div>
+
+        <%= hidden_field_tag :customer_filter_id %>
+
+
+        <div id="provider_filter " class="span3 input_field">
+          <%= select_tag :provider, options_from_collection_for_select(current_user.organization.providers, 'id', 'name'), prompt: "Select Provider", class: 'chosen-select' %>
+          <%= button_tag 'x', type: 'button', id: 'clear-provider', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+        </div>
+
+        <!--subcon-->
+        <div id="subcontractor_filter" class="span3 input_field">
+          <%= select_tag :subcontractor, options_from_collection_for_select(current_user.organization.subcontractors, 'id', 'name'), prompt: "Select Subcontractor", class: 'chosen-select' %>
+          <%= button_tag 'x', type: 'button', id: 'clear-subcontractor', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+        </div>
+
+        <!--Affiliate-->
+        <div id="affiliate_filter" class="span3 input_field">
+          <%= select_tag :affiliate, options_from_collection_for_select(current_user.organization.affiliates, 'id', 'name'), prompt: "Select Affiliate", class: 'chosen-select' %>
+          <%= button_tag 'x', type: 'button', id: 'clear-affiliate', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+        </div>
+      </div>
+      <div class="row-fluid">
+
+        <div id="tech_filter" class="span3 input_field" data-tech-list="<%= @org.technicians('id, name').map { |u| { value: u.id, label: u.name } }.to_json %>">
+        </div>
+
+        <div id="employee_filter" class="span3 input_field" data-employee-list="<%= @org.technicians('id, name').map { |u| { value: u.id, label: u.name } }.to_json %>">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+

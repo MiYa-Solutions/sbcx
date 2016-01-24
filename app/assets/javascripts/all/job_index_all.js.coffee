@@ -39,6 +39,7 @@ class DateRangeFilter
 
   clear: =>
     @element.trigger('cancel.daterangepicker')
+
   init: =>
     @element.daterangepicker(
       timePicker: true,
@@ -151,6 +152,7 @@ jQuery ->
           }
           {
             sExtends: "pdf"
+            sPdfOrientation: "landscape",
             mColumns: (ctx) ->
               api = new $.fn.dataTable.Api(ctx)
               api.columns(':visible').indexes().toArray();
@@ -177,7 +179,7 @@ jQuery ->
           d.filters = {}
           d.filters.status = yadcf.exGetColumnFilterVal(dataTable, 6)
           d.filters.technician_id = yadcf.exGetColumnFilterVal(dataTable, 12)
-          d.filters.employee_id = yadcf.exGetColumnFilterVal(dataTable, 13)
+          d.filters.employee_id = yadcf.exGetColumnFilterVal(dataTable, 17)
           d.filters.from_date = dateRange.startDate()
           d.filters.to_date = dateRange.endDate()
           d.filters.started_from_date = startDateRange.startDate()
@@ -225,7 +227,9 @@ jQuery ->
           completedDateRange.setRange(oData.filters.completed_from_date, oData.filters.completed_to_date)
 
       columns: [
+        # 0
         {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true, sWidth: '1%', title: 'Ref'},
+        # 1
         {
           data: "started_on",
           title: "Started On",
@@ -234,6 +238,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
+        # 2
         {
           data: "human_customer",
           title: "Customer",
@@ -242,7 +247,9 @@ jQuery ->
           orderable: false,
           searchable: false
         },
+        # 3
         {data: "human_name", className: 'name', name: 'name', orderable: false, sWidth: '25%', title: 'Name'},
+        # 4
         {
           data: "human_provider",
           title: "Contractor",
@@ -251,6 +258,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
+        # 5
         {
           data: "human_subcontractor",
           title: "Subcontractor",
@@ -259,6 +267,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
+        # 6
         {
           data: "human_status",
           title: "Status",
@@ -268,6 +277,7 @@ jQuery ->
           searchable: true,
           searchable: false
         },
+        # 7
         {
           data: "my_profit",
           title: "Profit",
@@ -276,6 +286,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
+        # 8
         {
           data: "total_price",
           title: "Total Price",
@@ -284,6 +295,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
+        # 9
         {
           data: "total_cost",
           title: "Total Cost",
@@ -292,7 +304,9 @@ jQuery ->
           orderable: false,
           searchable: false
         },
+        # 10
         {data: "tags", title: 'Tags', className: 'tags', name: 'tags', orderable: false, width: '30%', searchable: false},
+        # 11
         {
           data: "external_ref",
           title: 'Ext. Ref',
@@ -300,6 +314,7 @@ jQuery ->
           name: 'external_ref',
           orderable: false,
         },
+        # 12
         {
           data: "technician_name",
           title: 'Technician',
@@ -308,6 +323,7 @@ jQuery ->
           orderable: false,
           searchable: true
         },
+        # 13
         {
           data: "full_address",
           title: 'Address',
@@ -316,6 +332,7 @@ jQuery ->
           orderable: false,
           searchable: true
         },
+        # 14
         {
           data: "scheduled_for",
           title: 'Scheduled For',
@@ -324,6 +341,7 @@ jQuery ->
           orderable: false,
           searchable: true
         },
+        # 15
         {
           data: "completed_on",
           title: 'Completed On',
@@ -332,6 +350,7 @@ jQuery ->
           orderable: false,
           searchable: true
         },
+        # 16
         {
           data: "notes",
           title: 'Notes',
@@ -340,6 +359,7 @@ jQuery ->
           orderable: false,
           searchable: true
         },
+        # 17
         {
           data: "employee_name",
           title: 'Employee',
@@ -364,7 +384,7 @@ jQuery ->
         filter_container_id: 'tags_filter'
         data: $('#table-filters').data("tags")
         select_type_options:
-          width: '200px'
+          width: '100%'
       },
       {
         column_number: 6
@@ -374,7 +394,8 @@ jQuery ->
         filter_container_id: 'status_filter'
         data: statusFilter.ticketStatuses
         select_type_options:
-          width: '200px'
+          width: '100%'
+
 
       },
       {
@@ -390,7 +411,7 @@ jQuery ->
 
       },
       {
-        column_number: 13
+        column_number: 17
         filter_type: 'select'
         select_type: 'chosen'
         filter_default_label: 'Employee'
@@ -399,9 +420,13 @@ jQuery ->
         select_type_options:
           width: '200px'
 
-
       }
     ])
+
+#  $('#status_filter').select2
+#    data: statusFilter.ticketStatuses
+
+
 
   $("a[href='#allJobs']").one 'shown.bs.tab', ->
     dataTable.ajax.reload()
@@ -485,6 +510,27 @@ jQuery ->
 
   if $('#allJobs').is(':visible')
     dataTable.ajax.reload()
+
+  $('.collapse.overlay').on {
+    shown: ->
+      $(this).css('overflow','initial')
+    hide: ->
+      $(this).css('overflow','hidden');
+  }
+
+#  $('#job-status-filters.collapse').on {
+#    shown: ->
+#      $(this).css('overflow','initial')
+#    hide: ->
+#      $(this).css('overflow','hidden');
+#  }
+
+#  $('#status-filters').on {
+#    shown: ->
+#      $(this).css('overflow','initial')
+#    hide: ->
+#      $(this).css('overflow','hidden');
+#  }
 
 
 
