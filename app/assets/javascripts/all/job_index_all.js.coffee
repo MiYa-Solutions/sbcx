@@ -1,3 +1,4 @@
+autoload_state = true
 jQuery.fn.dataTable.Api.register 'state.load()', ->
   @iterator 'table', (s) ->
 # Force the state load. Note something isn't quite right with column visibility...
@@ -7,12 +8,17 @@ jQuery.fn.dataTable.Api.register 'state.load()', ->
     jQuery.each s.oLoadedState.columns, (i, column) ->
       if !column.visible
         hidden_cols.push i
-      return
     # set them all to be visible...
     s.oInstance.DataTable().columns().visible true
     # ...then hide the ones that should be hidden:
     s.oInstance.DataTable().columns(hidden_cols).visible false
-    return
+#    header = ""
+#    table = s.oInstance.DataTable()
+#    jQuery.each table.columns(), (i, column) ->
+#      header = header + column.header() unless column.visible == false
+#
+#    $(s.oInstance.DataTable().header()).html(header)
+
 
 class DateRangeFilter
   constructor: (@element, @tableElem) ->
@@ -138,10 +144,24 @@ jQuery ->
 
 
     dataTable = $('#job-search-results').DataTable(
-      dom: "RCW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
+      dom: "<'row-fluid'<'span4' T><'span4' f><'span4' RCW>>rtl<'row-fluid'<'span6'i><'span6'p>>"
+#      dom: "RCW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
       order: [[0, 'desc']]
       aLengthMenu: [10, 25, 50, 100]
       pagaingType: "bootstrap"
+
+      'stateLoadCallback': (settings) ->
+        console.log 'stateLoadCallback'
+        return JSON.parse(localStorage.getItem('datatable-data'+localStorage.getItem('index')))
+
+      'stateSaveCallback': (settings, data) ->
+        console.log 'stateSaveCallback'
+        t = settings.oInstance.DataTable()
+        drawVisibleColumnHeader(t)
+
+      language:
+        search: ''
+        searchPlaceholder: 'Search job name or ref'
 
       oTableTools:
         sRowSelect: 'multi'
@@ -321,7 +341,7 @@ jQuery ->
           className: 'technician_name',
           name: 'technician_name',
           orderable: false,
-          searchable: true
+          searchable: false
         },
         # 13
         {
@@ -330,7 +350,7 @@ jQuery ->
           className: 'full_address',
           name: 'full_address',
           orderable: false,
-          searchable: true
+          searchable: false
         },
         # 14
         {
@@ -357,7 +377,7 @@ jQuery ->
           className: 'notes',
           name: 'notes',
           orderable: false,
-          searchable: true
+          searchable: false
         },
         # 17
         {
@@ -366,7 +386,7 @@ jQuery ->
           className: 'employee',
           name: 'employee_name',
           orderable: false,
-          searchable: true
+          searchable: false
         }
       ]
 
@@ -384,7 +404,7 @@ jQuery ->
         filter_container_id: 'tags_filter'
         data: $('#table-filters').data("tags")
         select_type_options:
-          width: '100%'
+          width: '200px'
       },
       {
         column_number: 6
@@ -394,7 +414,7 @@ jQuery ->
         filter_container_id: 'status_filter'
         data: statusFilter.ticketStatuses
         select_type_options:
-          width: '100%'
+          width: '200px'
 
 
       },
@@ -517,6 +537,28 @@ jQuery ->
     hide: ->
       $(this).css('overflow','hidden');
   }
+
+  $('#load-state').click (e) ->
+    e.preventDefault();
+    autosave_state = false;
+    dataTable.state.load()
+#    dataTable.columns.adjust().draw()
+    dataTable.draw()
+    drawVisibleColumnHeader(dataTable)
+#    $(dataTable.table().header()).html(dataTable.columns().visible().header())
+
+
+  $('#save-state').click (e) ->
+    e.preventDefault();
+    autosave_state = false;
+    localStorage.setItem('datatable-data'+localStorage.getItem('index'), JSON.stringify(dataTable.state()))
+
+drawVisibleColumnHeader = (dataTable)->
+  visible_cols = []
+  jQuery.each dataTable.table().columns().visible(), (i, visible) ->
+    if visible
+      visible_cols.push i
+  $(dataTable.table().header()).html(dataTable.columns(visible_cols).header())
 
 #  $('#job-status-filters.collapse').on {
 #    shown: ->

@@ -1596,6 +1596,17 @@ a:hover {
 
 }
 
+#job-search-results_filter  {
+  width: 100%;
+  label {
+    width: 100%;
+    input {
+      width: 100%;
+    }
+  }
+}
+
+
 .all_jobs_filter {
   border: 1px solid #000000;
   background: none repeat scroll 0 0 #EEEEEE;
@@ -2899,7 +2910,7 @@ a:hover {
 .dataTables_filter {
 
   input, textarea {
-    width: 67%;
+    width: 100%;
   }
 }
 
@@ -5571,13 +5582,13 @@ table.dataTable thead th, table.dataTable thead td {
 
 
 
-.dataTables_filter {
-  margin-right: 60%;
-
-  input, textarea {
-    width: 67%;
-  }
-}
+//.dataTables_filter {
+//  margin-right: 60%;
+//
+//  input, textarea {
+//    width: 67%;
+//  }
+//}
 
 .statement {
   .col-xs-6{
