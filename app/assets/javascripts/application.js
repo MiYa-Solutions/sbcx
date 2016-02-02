@@ -45,5 +45,6 @@
 //= require moment
 //= require bootstrap-daterangepicker
 //= require all/textile
+//= require all/filter
 //= require_tree ./templates
 //= require_tree ./all/.

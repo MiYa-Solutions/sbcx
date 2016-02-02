@@ -473,26 +473,16 @@ jQuery ->
     autosave_state = false;
     localStorage.setItem('datatable-data' + localStorage.getItem('index'), JSON.stringify(dataTable.state()))
 
+  $('#job-index-filters').on 'show', '.collapse', (e) ->
+    $('#job-index-filters').find('.collapse.in').collapse('hide')
+
+
 drawVisibleColumnHeader = (dataTable)->
   visible_cols = []
   jQuery.each dataTable.table().columns().visible(), (i, visible) ->
     if visible
       visible_cols.push i
   $(dataTable.table().header()).html(dataTable.columns(visible_cols).header())
-
-#  $('#job-status-filters.collapse').on {
-#    shown: ->
-#      $(this).css('overflow','initial')
-#    hide: ->
-#      $(this).css('overflow','hidden');
-#  }
-
-#  $('#status-filters').on {
-#    shown: ->
-#      $(this).css('overflow','initial')
-#    hide: ->
-#      $(this).css('overflow','hidden');
-#  }
 
 
 
