@@ -12,7 +12,7 @@
       </ul>
     </div>
 
-    <div id="table-filters" class="all_jobs_filter" data-statuses="<%= service_call_statuses %>" data-tags="<%= current_user.organization.tags.map(&:name) %>">
+    <div id="table-filters" class="all_jobs_filter"  %>">
       <h4><%= t('general.general.filter_all_jobs_l1') %>
 
         <div class="header5">
@@ -20,24 +20,24 @@
         </div>
       </h4>
 
-      <button id="load-state">Load</button>
-      <button id="save-state">Save</button>
+      <!--<button id="load-state">Load</button>-->
+      <!--<button id="save-state">Save</button>-->
     </div>
 
     <div>
-      <a class="" data-toggle="collapse" data-target="#job-date-filters">
+      <a class="" data-toggle="collapse" data-target="#job-date-filters" data-collapse-group="myDivs">
         Date Filters
       </a>|
 
-      <a class="" data-toggle="collapse" data-target="#job-status-filters">
+      <a class="" data-toggle="collapse" data-target="#job-status-filters" data-collapse-group="myDivs">
         Status Filters
       </a>|
 
 
-      <a class="" data-toggle="collapse" data-target="#job-participant-filters">
+      <a class="" data-toggle="collapse" data-target="#job-participant-filters" data-collapse-group="myDivs">
         Participant Filters
       </a>|
-      <a class="" data-toggle="collapse" data-target="#job-more-filters">
+      <a class="" data-toggle="collapse" data-target="#job-more-filters" data-collapse-group="myDivs">
         More Filters
       </a>
 
@@ -47,30 +47,11 @@
     <%= render 'service_calls/job_participant_filters' %>
     <%= render 'service_calls/job_more_filters' %>
 
-
     <div class="row-fluid job_search_table">
 
       <div id="">
         <table class="table table-striped display table-bordered" id="job-search-results">
           <thead>
-          <th>Ref2</th>
-          <th>Stareted On</th>
-          <th>Customer</th>
-          <th>Name</th>
-          <th>Contractor</th>
-          <th>Subcontractor</th>
-          <th>Status</th>
-          <th>Profit</th>
-          <th>Price</th>
-          <th>Cost</th>
-          <th>Tags</th>
-          <th>External Ref</th>
-          <th>Tech Name</th>
-          <th>Address</th>
-          <th>Scheduled For</th>
-          <th>Completed On</th>
-          <th>Notes</th>
-          <th>Employee</th>
           </thead>
           <tbody>
           </tbody>

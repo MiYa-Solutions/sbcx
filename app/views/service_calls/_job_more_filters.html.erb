@@ -1,5 +1,5 @@
-<div class="collapse overlay" id="job-more-filters">
-  <div class="collapse_frame">
+<div class="collapse overlay" id="job-more-filters" data-collapse-group="myDivs">
+  <div class="all_jobs_filter">
     <div class="row-fluid collapse_body">
 
 
@@ -7,7 +7,11 @@
         <a href="" data-toggle="collapse" data-target="#job-more-filters" class="close" id="#job-more-filters-close">×</a>
       </div>
 
-      <div id="tags_filter" class="filter input_field"></div>
+      <div id="tags_filter" class="input_field filter span12">
+        <%= select_tag :tags, options_for_select(current_user.organization.tags.map(&:name)), multiple: 'multiple', class: 'chosen-select', 'data-placeholder' => 'Select Tags'%>
+        <%= button_tag 'x', type: 'button', id: 'clear-tags', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+      </div>
+
 
     </div>
   </div>

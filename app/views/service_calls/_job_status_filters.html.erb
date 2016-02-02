@@ -1,5 +1,5 @@
 <div class="collapse overlay" id="job-status-filters">
-  <div class="collapse_frame">
+  <div class="all_jobs_filter">
     <div class="row-fluid collapse_body">
 
 
@@ -7,15 +7,20 @@
         <a href="#" data-toggle="collapse" data-target="#job-status-filters" class="close" id="#job-status-filters-close">×</a>
       </div>
 
-      <div id="status_filter" class="filter span3"></div>
+      <div id="status_filter" class="input_field filter span3">
+        <!--<#%= select_tag :status, options_for_select(status_options), multiple: 'multiple', class: 'chosen-select' %>-->
+        <select id="status" name="status" multiple="multiple"></select>
+
+        <%= button_tag 'x', type: 'button', id: 'clear-status', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
+      </div>
 
       <div id="work_status_filter" class="input_field filter span3">
-        <%= select_tag :work_status, options_for_select(work_status_options), prompt: "Select Work Status", class: 'chosen-select' %>
+        <select id="work_status" name="work_status" multiple="multiple"></select>
         <%= button_tag 'x', type: 'button', id: 'clear-work-status', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
       </div>
 
       <div id="billing_status_filter" class="input_field filter span3">
-        <%= select_tag :billing_status, options_for_select(billing_status_options), prompt: "Select Billing Status", class: 'chosen-select' %>
+        <select id="billing_status" name="billing_status" multiple="multiple"></select>
         <%= button_tag 'x', type: 'button', id: 'clear-billing-status', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
       </div>
 

@@ -94,9 +94,6 @@ Jobs = {
 }
 
 
-
-
-
 $.getRequetParam = (name)->
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
   regex = new RegExp("[\\?&]" + name + "=([^&#]*)")
@@ -104,43 +101,19 @@ $.getRequetParam = (name)->
   (if not results? then "" else decodeURIComponent(results[1].replace(/\+/g, " ")))
 
 jQuery ->
-  statusFilter = {
-    ticketStatuses: [
-      {value: 0, label: 'New'}
-      {value: 1, label: 'Open'}
-      {value: 2, label: 'Transferred'}
-      {value: 3, label: 'Closed'}
-      {value: 4, label: 'Canceled'}
-      {value: 1201, label: 'Accepted'}
-      {value: 1202, label: 'Rejected'}
-    ]
 
-    element: -> $('#status_filter')
-      val: ->
-        return this.element().select2('val')
-
-    setVal: (value) ->
-      this.element().select2('val', value)
-
-    init: ->
-      this.element().select2({
-        width: 'copy'
-        data: this.ticketStatuses
-        multiple: true
-      })
-
-      this.element().on 'select2-selecting', ->
-        $('#job-search-results').DataTable().ajax.reload()
-
-  }
-
-  #  $('#myJobTab a:first').tab 'show'
-
+#  $('#myJobTab a:first').tab 'show'
   if $('#job-search-results').length > 0
     dateRange = new DateRangeFilter($('#created-at-range'), $('#job-search-results'))
     startDateRange = new DateRangeFilter($('#started-on-range'), $('#job-search-results'))
     scheduledDateRange = new DateRangeFilter($('#scheduled-for-range'), $('#job-search-results'))
     completedDateRange = new DateRangeFilter($('#completed-at-range'), $('#job-search-results'))
+    employeeFilter = new App.Filter($('#job-search-results'), $('#employee_id'), $('#clear-employee'))
+    techFilter = new App.Filter($('#job-search-results'), $('#technician_id'), $('#clear-tech'))
+    tagsFilter = new App.Filter($('#job-search-results'), $('#tags'), $('#clear-tags'))
+    statusFilter = new App.JobStatusFilter($('#job-search-results'), $('#status'), $('#clear-status'))
+    workStatusFilter = new App.WorkStatusFilter($('#job-search-results'), $('#work_status'), $('#clear-work-status'))
+    billingStatusFilter = new App.BillingStatusFilter($('#job-search-results'), $('#billing_status'), $('#clear-billing-status'))
 
 
     dataTable = $('#job-search-results').DataTable(
@@ -149,15 +122,15 @@ jQuery ->
       order: [[0, 'desc']]
       aLengthMenu: [10, 25, 50, 100]
       pagaingType: "bootstrap"
-
-      'stateLoadCallback': (settings) ->
-        console.log 'stateLoadCallback'
-        return JSON.parse(localStorage.getItem('datatable-data'+localStorage.getItem('index')))
-
-      'stateSaveCallback': (settings, data) ->
-        console.log 'stateSaveCallback'
-        t = settings.oInstance.DataTable()
-        drawVisibleColumnHeader(t)
+#
+#      'stateLoadCallback': (settings) ->
+#        console.log 'stateLoadCallback'
+#        return JSON.parse(localStorage.getItem('datatable-data'+localStorage.getItem('index')))
+#
+#      'stateSaveCallback': (settings, data) ->
+#        console.log 'stateSaveCallback'
+#        t = settings.oInstance.DataTable()
+#        drawVisibleColumnHeader(t)
 
       language:
         search: ''
@@ -190,16 +163,16 @@ jQuery ->
       stateSave: true
       serverSide: true
       autoWidth: false
-  #    responsive: true
+#    responsive: true
       deferLoading: 0
       ajax:
         url: '/api/v1/datatables/service_calls.json'
         data: (d) ->
           d.table_type = 'all_jobs'
           d.filters = {}
-          d.filters.status = yadcf.exGetColumnFilterVal(dataTable, 6)
-          d.filters.technician_id = yadcf.exGetColumnFilterVal(dataTable, 12)
-          d.filters.employee_id = yadcf.exGetColumnFilterVal(dataTable, 17)
+          d.filters.status = statusFilter.getVal()
+          d.filters.technician_id = techFilter.getVal()
+          d.filters.employee_id = employeeFilter.getVal()
           d.filters.from_date = dateRange.startDate()
           d.filters.to_date = dateRange.endDate()
           d.filters.started_from_date = startDateRange.startDate()
@@ -212,11 +185,14 @@ jQuery ->
           d.filters.provider_id = $('#provider').val()
           d.filters.subcontractor_id = $('#subcontractor').val()
           d.filters.affiliate_id = $('#affiliate').val()
-          d.filters.billing_status = $('#billing_status').val()
+          d.filters.billing_status = billingStatusFilter.getVal()
+          d.filters.work_status = workStatusFilter.getVal()
+          d.filters.tags = tagsFilter.getVal()
+          return
 
       fnStateSaveParams: (oSettings, oData) ->
-        oData.customer_id = $('#customer_filter_id').val()
         oData.filters = {}
+        oData.filters.customer_id = $('#customer_filter_id').val()
         oData.filters.from_date = dateRange.startDate()
         oData.filters.to_date = dateRange.endDate()
         oData.filters.started_from_date = startDateRange.startDate()
@@ -225,21 +201,32 @@ jQuery ->
         oData.filters.scheduled_to_date = scheduledDateRange.endDate()
         oData.filters.completed_from_date = completedDateRange.startDate()
         oData.filters.completed_to_date = completedDateRange.endDate()
-        oData.customer_name = $('#customer_search').val()
-        oData.provider_id = $('#provider').val()
-        oData.subcontractor_id = $('#subcontractor').val()
-        oData.affiliate_id = $('#affiliate').val()
-        oData.billing_status = $('#billing_status').val()
-        oData.work_status = $('#work_status').val()
+        oData.filters.customer_name = $('#customer_search').val()
+        oData.filters.provider_id = $('#provider').val()
+        oData.filters.subcontractor_id = $('#subcontractor').val()
+        oData.filters.affiliate_id = $('#affiliate').val()
+        oData.filters.billing_status = $('#billing_status').val()
+        oData.filters.work_status = workStatusFilter.getVal()
+        oData.filters.billing_status = billingStatusFilter.getVal()
+        oData.filters.technician_id = techFilter.getVal()
+        oData.filters.employee_id = employeeFilter.getVal()
+        oData.filters.status = statusFilter.getVal()
+        oData.filters.tags = tagsFilter.getVal()
+
 
       fnStateLoadParams: (oSettings, oData) ->
-        $('#customer_search').val(oData.customer_name)
-        $('#customer_filter_id').val(oData.customer_id)
-        $('#provider').val(oData.provider_id)
-        $('#subcontractor').val(oData.subcontractor_id)
-        $('#affiliate').val(oData.affiliate_id)
-        $('#billing_status').val(oData.billing_status)
-        $('#work_status').val(oData.work_status)
+        $('#customer_search').val(oData.filters.customer_name)
+        $('#customer_filter_id').val(oData.filters.customer_id)
+        $('#provider').val(oData.filters.provider_id)
+        $('#subcontractor').val(oData.filters.subcontractor_id)
+        $('#affiliate').val(oData.filters.affiliate_id)
+        $('#billing_status').val(oData.filters.billing_status)
+        workStatusFilter.setValNoReload(oData.filters.work_status)
+        employeeFilter.setValNoReload(oData.filters.employee_id)
+        techFilter.setValNoReload(oData.filters.technician_id)
+        statusFilter.setValNoReload(oData.filters.status)
+        billingStatusFilter.setValNoReload(oData.filters.billing_status)
+        tagsFilter.setValNoReload(oData.filters.tags)
         if oData.filters != undefined
           dateRange.setRange(oData.filters.from_date, oData.filters.to_date)
           startDateRange.setRange(oData.filters.started_from_date, oData.filters.started_to_date)
@@ -247,9 +234,9 @@ jQuery ->
           completedDateRange.setRange(oData.filters.completed_from_date, oData.filters.completed_to_date)
 
       columns: [
-        # 0
-        {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true, sWidth: '1%', title: 'Ref'},
-        # 1
+# 0
+        {data: "ref_id", className: 'ref_id', name: 'ref_id', orderable: true, title: 'Ref'},
+# 1
         {
           data: "started_on",
           title: "Started On",
@@ -258,7 +245,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 2
+# 2
         {
           data: "human_customer",
           title: "Customer",
@@ -267,9 +254,9 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 3
-        {data: "human_name", className: 'name', name: 'name', orderable: false, sWidth: '25%', title: 'Name'},
-        # 4
+# 3
+        {data: "human_name", className: 'name', name: 'name', orderable: false, title: 'Name'},
+# 4
         {
           data: "human_provider",
           title: "Contractor",
@@ -278,7 +265,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 5
+# 5
         {
           data: "human_subcontractor",
           title: "Subcontractor",
@@ -287,7 +274,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 6
+# 6
         {
           data: "human_status",
           title: "Status",
@@ -297,7 +284,7 @@ jQuery ->
           searchable: true,
           searchable: false
         },
-        # 7
+# 7
         {
           data: "my_profit",
           title: "Profit",
@@ -306,7 +293,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 8
+# 8
         {
           data: "total_price",
           title: "Total Price",
@@ -315,7 +302,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 9
+# 9
         {
           data: "total_cost",
           title: "Total Cost",
@@ -324,9 +311,9 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 10
-        {data: "tags", title: 'Tags', className: 'tags', name: 'tags', orderable: false, width: '30%', searchable: false},
-        # 11
+# 10
+        {data: "tags", title: 'Tags', className: 'tags', name: 'tags', orderable: false, searchable: false},
+# 11
         {
           data: "external_ref",
           title: 'Ext. Ref',
@@ -334,7 +321,7 @@ jQuery ->
           name: 'external_ref',
           orderable: false,
         },
-        # 12
+# 12
         {
           data: "technician_name",
           title: 'Technician',
@@ -343,7 +330,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 13
+# 13
         {
           data: "full_address",
           title: 'Address',
@@ -352,7 +339,7 @@ jQuery ->
           orderable: false,
           searchable: false
         },
-        # 14
+# 14
         {
           data: "scheduled_for",
           title: 'Scheduled For',
@@ -361,7 +348,7 @@ jQuery ->
           orderable: false,
           searchable: true
         },
-        # 15
+# 15
         {
           data: "completed_on",
           title: 'Completed On',
@@ -370,16 +357,7 @@ jQuery ->
           orderable: false,
           searchable: true
         },
-        # 16
-        {
-          data: "notes",
-          title: 'Notes',
-          className: 'notes',
-          name: 'notes',
-          orderable: false,
-          searchable: false
-        },
-        # 17
+# 16
         {
           data: "employee_name",
           title: 'Employee',
@@ -387,66 +365,23 @@ jQuery ->
           name: 'employee_name',
           orderable: false,
           searchable: false
+        },
+# 17
+        {
+          data: "notes",
+          title: 'Notes',
+          className: 'notes',
+          name: 'notes',
+          orderable: false,
+          searchable: false
         }
+
       ]
 
       fnRowCallback: (nRow, job, iDisplayIndex) ->
         e = new App.DataTableJobsFormater
         e.style(nRow, job)
     )
-
-    yadcf.init(dataTable, [
-      {
-        column_number: 10
-        select_type: 'chosen'
-        filter_type: 'multi_select'
-        filter_default_label: 'Tags'
-        filter_container_id: 'tags_filter'
-        data: $('#table-filters').data("tags")
-        select_type_options:
-          width: '200px'
-      },
-      {
-        column_number: 6
-        select_type: 'chosen'
-        filter_type: 'multi_select'
-        filter_default_label: 'Status'
-        filter_container_id: 'status_filter'
-        data: statusFilter.ticketStatuses
-        select_type_options:
-          width: '200px'
-
-
-      },
-      {
-        column_number: 12
-        filter_type: 'select'
-        select_type: 'chosen'
-        filter_default_label: 'Tech'
-        data: $('#tech_filter').data('tech-list')
-        filter_container_id: 'tech_filter'
-        select_type_options:
-          width: '200px'
-
-
-      },
-      {
-        column_number: 17
-        filter_type: 'select'
-        select_type: 'chosen'
-        filter_default_label: 'Employee'
-        data: $('#employee_filter').data('employee-list')
-        filter_container_id: 'employee_filter'
-        select_type_options:
-          width: '200px'
-
-      }
-    ])
-
-#  $('#status_filter').select2
-#    data: statusFilter.ticketStatuses
-
-
 
   $("a[href='#allJobs']").one 'shown.bs.tab', ->
     dataTable.ajax.reload()
@@ -476,12 +411,6 @@ jQuery ->
   $('#subcontractor').on 'change', ->
     $('#job-search-results').dataTable().api().ajax.reload()
 
-  $('#work_status').on 'change', ->
-    $('#job-search-results').dataTable().api().ajax.reload()
-
-  $('#billing_status').on 'change', ->
-    $('#job-search-results').dataTable().api().ajax.reload()
-
   $('#clear-customer').live 'click', ->
     $('#customer_filter_id').val('')
     $('#customer_search').val('')
@@ -502,15 +431,6 @@ jQuery ->
     $("#affiliate").trigger("chosen:updated")
     $('#job-search-results').dataTable().api().ajax.reload()
 
-  $('#clear-work-status').live 'click', ->
-    $('#work_status').val($('#work_status option:first').val())
-    $("#work_status").trigger("chosen:updated")
-    $('#job-search-results').dataTable().api().ajax.reload()
-
-  $('#clear-billing-status').live 'click', ->
-    $('#billing_status').val($('#billing_status option:first').val())
-    $("#billing_status").trigger("chosen:updated")
-    $('#job-search-results').dataTable().api().ajax.reload()
 
   $('#clear-created-range').live 'click', ->
     dateRange.clear()
@@ -533,25 +453,25 @@ jQuery ->
 
   $('.collapse.overlay').on {
     shown: ->
-      $(this).css('overflow','initial')
+      $(this).css('overflow', 'initial')
     hide: ->
-      $(this).css('overflow','hidden');
+      $(this).css('overflow', 'hidden');
   }
 
   $('#load-state').click (e) ->
     e.preventDefault();
     autosave_state = false;
     dataTable.state.load()
-#    dataTable.columns.adjust().draw()
+    #    dataTable.columns.adjust().draw()
     dataTable.draw()
     drawVisibleColumnHeader(dataTable)
-#    $(dataTable.table().header()).html(dataTable.columns().visible().header())
+  #    $(dataTable.table().header()).html(dataTable.columns().visible().header())
 
 
   $('#save-state').click (e) ->
     e.preventDefault();
     autosave_state = false;
-    localStorage.setItem('datatable-data'+localStorage.getItem('index'), JSON.stringify(dataTable.state()))
+    localStorage.setItem('datatable-data' + localStorage.getItem('index'), JSON.stringify(dataTable.state()))
 
 drawVisibleColumnHeader = (dataTable)->
   visible_cols = []

@@ -25,6 +25,8 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
     new_scope = scope
     new_scope = Api::V1::Filters::CustomerFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::StatusFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::WorkStatusFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::BillingStatusFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::ProviderFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::SubconFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::CreatedAtFilter.new(new_scope, params).scope
@@ -33,17 +35,10 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
     new_scope = Api::V1::Filters::StartedOnFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::CompletedOnFilter.new(new_scope, params).scope
     new_scope = Api::V1::Filters::ScheduledForFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::TagsFilter.new(new_scope, params).scope
+    new_scope = Api::V1::Filters::AffiliateFilter.new(new_scope, params).scope
 
 
-    # new_scope = new_scope.merge(created_date_filter)
-    # new_scope = new_scope.merge(created_date_filter)
-    # new_scope = new_scope.merge(affiliate_filter)
-    # new_scope = new_scope.merge(account_filter)
-    # new_scope = new_scope.merge(billing_status_filter)
-    # new_scope = new_scope.merge(billing_status_filter)
-    # new_scope = new_scope.merge(work_status_filter)
-    # new_scope = new_scope.merge(projct_status_filter)
-    # new_scope
     new_scope
   end
 

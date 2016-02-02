@@ -1,5 +1,5 @@
 <div class="overlay collapse" id="job-participant-filters">
-  <div class="collapse_frame">
+  <div class="all_jobs_filter">
     <div class="row-fluid collapse_body">
 
 
@@ -8,7 +8,7 @@
       </div>
 
       <div class="row-fluid">
-        <div id="customer_filter" class="span3 filter chosen-container-multi chosen-choices customer_field yadcf-filter-wrapper">
+        <div id="customer_filter" class="span3 chosen-container-multi chosen-choices customer_field">
           <%= text_field_tag :customer_search, nil, placeholder: 'Customer',
                              'data-autocomplete'                 => '/service_calls/autocomplete_customer_name',
                              'data-update-elements'              => { id: '#customer_filter_id' }.to_json,
@@ -36,13 +36,16 @@
           <%= select_tag :affiliate, options_from_collection_for_select(current_user.organization.affiliates, 'id', 'name'), prompt: "Select Affiliate", class: 'chosen-select' %>
           <%= button_tag 'x', type: 'button', id: 'clear-affiliate', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
         </div>
-      </div>
+        </div>
       <div class="row-fluid">
-
-        <div id="tech_filter" class="span3 input_field" data-tech-list="<%= @org.technicians('id, name').map { |u| { value: u.id, label: u.name } }.to_json %>">
+        <div id="tech_filter" class="span3 input_field">
+          <%= select_tag :technician_id, options_from_collection_for_select(current_user.organization.technicians, 'id', 'name'), prompt: 'Select Technician', class: 'chosen-select' %>
+          <%= button_tag 'x', type: 'button', id: 'clear-tech', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
         </div>
 
-        <div id="employee_filter" class="span3 input_field" data-employee-list="<%= @org.technicians('id, name').map { |u| { value: u.id, label: u.name } }.to_json %>">
+        <div id="employee_filter" class="span3 input_field">
+          <%= select_tag :employee_id, options_from_collection_for_select(current_user.organization.technicians, 'id', 'name'), prompt: 'Select Employee', class: 'chosen-select' %>
+          <%= button_tag 'x', type: 'button', id: 'clear-employee', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
         </div>
       </div>
     </div>

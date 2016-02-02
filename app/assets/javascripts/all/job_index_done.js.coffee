@@ -52,7 +52,8 @@ class App.DoneJobsFormatter
 
 $ ->
   $('#done-jobs').dataTable
-    dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
+    dom: "<'row-fluid'<'span4' T><'span4' f><'span4' RCW>>rtl<'row-fluid'<'span6'i><'span6'p>>"
+#    dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
     pagingType: "bootstrap"
     oTableTools:
       aButtons: ["print"]
@@ -67,6 +68,10 @@ $ ->
     serverSide: true
     responsive: true
     deferLoading: 0
+    language:
+      search: ''
+      searchPlaceholder: 'Search job name or ref'
+
 
 
     fnServerData: (sSource, aoData, fnCallback) ->
