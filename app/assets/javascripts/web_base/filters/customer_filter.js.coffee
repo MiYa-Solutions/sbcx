@@ -49,5 +49,11 @@ class App.CustomerFilter
     App.JobIndex.filterView.draw()
     @table.DataTable().ajax.reload()
 
+  clearNoReload: (val)=>
+    @setVal('', '')
+    @input.attr('data-ref-id',val)
+    return
+
+
 
 

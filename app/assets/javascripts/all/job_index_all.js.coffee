@@ -36,6 +36,7 @@ jQuery ->
 
 #  $('#myJobTab a:first').tab 'show'
   if $('#job-search-results').length > 0
+    customerFilter = new App.CustomerFilter({table: $('#job-search-results'), element: $('#customer_search'), id_field: $('#customer_filter_id'), btn:$('#clear-customer')})
     dateRange = new App.DateRangeFilter({element: $('#created-at-range'), table: $('#job-search-results'), btn: $('#clear-created-range')})
     startDateRange = new App.DateRangeFilter({element: $('#started-on-range'), table: $('#job-search-results'), btn: $('#clear-started-range')})
     scheduledDateRange = new App.DateRangeFilter({element: $('#scheduled-for-range'), table: $('#job-search-results'), btn: $('#clear-scheduled-range')})
@@ -46,10 +47,10 @@ jQuery ->
     statusFilter = new App.JobStatusFilter({ table: $('#job-search-results'), element: $('#status'), btn: $('#clear-status')})
     workStatusFilter = new App.WorkStatusFilter({table: $('#job-search-results'), element: $('#work_status'), btn: $('#clear-work-status')})
     billingStatusFilter = new App.BillingStatusFilter({table: $('#job-search-results'), element: $('#billing_status'), btn: $('#clear-billing-status')})
-    contractorFilter = new App.ContractorFilter({table: $('#job-search-results'),element:  $('#provider'), btn: $('#clear-provider')})
+    contractorFilter = new App.ContractorFilter({table: $('#job-search-results'),element:  $('#provider'), btn: $('#clear-provider'),customer_filter: customerFilter })
     subconFilter = new App.SubcontractorFilter({table: $('#job-search-results'), element: $('#subcontractor'), btn: $('#clear-subcontractor')})
-    affiliateFilter = new App.AffiliateFilter({table: $('#job-search-results'), element: $('#affiliate'), btn: $('#clear-affiliate')})
-    customerFilter = new App.CustomerFilter({table: $('#job-search-results'), element: $('#customer_search'), id_field: $('#customer_filter_id'), btn:$('#clear-customer')})
+    affiliateFilter = new App.AffiliateFilter({table: $('#job-search-results'), element: $('#affiliate'), btn: $('#clear-affiliate'), customer_filter: customerFilter})
+
 
 
     dataTable = $('#job-search-results').DataTable(
@@ -348,7 +349,7 @@ jQuery ->
     dataTable.state.load()
     #    dataTable.columns.adjust().draw()
     dataTable.draw()
-    drawVisibleColumnHeader(dataTable)
+#    drawVisibleColumnHeader(dataTable)
   #    $(dataTable.table().header()).html(dataTable.columns().visible().header())
 
 
