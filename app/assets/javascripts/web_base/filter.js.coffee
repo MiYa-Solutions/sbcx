@@ -14,6 +14,7 @@ class App.Filter
       @clear()
 
     @select.on "change", =>
+      App.JobIndex.filterView.draw()
       @table.DataTable().ajax.reload()
 
     return

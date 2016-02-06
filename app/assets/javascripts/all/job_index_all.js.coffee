@@ -54,7 +54,7 @@ jQuery ->
 
 
     dataTable = $('#job-search-results').DataTable(
-      dom: "<'row-fluid'<'span4' T><'span4' f><'span4' RCW>>rtl<'row-fluid'<'span6'i><'span6'p>>"
+      dom: "<'row-fluid job-table-header'<'span4' T><'span4' f><'span4' RCW>>rtl<'row-fluid'<'span6'i><'span6'p>>"
 #      dom: "RCW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
       order: [[0, 'desc']]
       aLengthMenu: [10, 25, 50, 100]

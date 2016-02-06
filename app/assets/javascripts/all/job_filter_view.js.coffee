@@ -4,12 +4,7 @@ App.JobIndex.filterView =
   rootElement: ''
 
   init: =>
-    $.each App.JobIndex.filterView.filters, (i, f) =>
-      $(f.select).on 'change apply.daterangepicker cancel.daterangepicker railsAutocomplete.select', =>
-        App.JobIndex.filterView.draw()
-        return
-
-    $('')
+    @assignDrawEvents
     return
 
   getHtml: (f, col) ->
@@ -27,7 +22,7 @@ App.JobIndex.filterView =
     rows = Math.floor(res.length / cols)
     rows = rows + 1 if (res.length % cols) > 0
 
-    html = "<div class='row-fluid'>"
+    html = "<div id='filters' class='row-fluid'><div class='row-fluid'>"
     row = 1
     filter_num = 0
     row_count = 1
@@ -55,4 +50,11 @@ App.JobIndex.filterView =
         res.push f
 
     res
+
+  assignDrawEvents: =>
+    $.each filters, (i, f) =>
+      $(f.select).on 'change apply.daterangepicker cancel.daterangepicker railsAutocomplete.select', =>
+        App.JobIndex.filterView.draw()
+        return
+
 
