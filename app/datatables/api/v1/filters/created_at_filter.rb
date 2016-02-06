@@ -16,15 +16,15 @@ class Api::V1::Filters::CreatedAtFilter
   def scope
     res_scope = orig_scope
     if from_date.present? && !to_date.present?
-      res_scope = res_scope.where('created_at >= ?', Time.zone.parse(from_date))
+      res_scope = res_scope.where('tickets.created_at >= ?', Time.zone.parse(from_date))
     end
 
     if to_date.present? && !from_date.present?
-      res_scope = res_scope.where('created_at <= ?', Time.zone.parse(to_date))
+      res_scope = res_scope.where('tickets.created_at <= ?', Time.zone.parse(to_date))
     end
 
     if to_date.present? && from_date.present?
-      res_scope = res_scope.where('created_at between ? and ?', Time.zone.parse(from_date), Time.zone.parse(to_date))
+      res_scope = res_scope.where('tickets.created_at between ? and ?', Time.zone.parse(from_date), Time.zone.parse(to_date))
     end
 
     res_scope

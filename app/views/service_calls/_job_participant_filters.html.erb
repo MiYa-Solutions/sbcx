@@ -20,14 +20,14 @@
         <%= hidden_field_tag :customer_filter_id %>
 
 
-        <div id="provider_filter " class="span3 input_field">
-          <%= select_tag :provider, options_from_collection_for_select(current_user.organization.providers, 'id', 'name'), prompt: "Select Provider", class: 'chosen-select' %>
+        <div id="provider_filter" class="span3 input_field">
+          <%= select_tag :provider, options_from_collection_for_select(current_user.organization.providers, 'id', 'name'), prompt: 'Select Contractor', class: 'chosen-select' %>
           <%= button_tag 'x', type: 'button', id: 'clear-provider', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
         </div>
 
         <!--subcon-->
         <div id="subcontractor_filter" class="span3 input_field">
-          <%= select_tag :subcontractor, options_from_collection_for_select(current_user.organization.subcontractors, 'id', 'name'), prompt: "Select Subcontractor", class: 'chosen-select' %>
+          <%= select_tag :subcontractor, options_from_collection_for_select(current_user.organization.subcontractors, 'id', 'name'), prompt: 'Select Subcontractor', class: 'chosen-select' %>
           <%= button_tag 'x', type: 'button', id: 'clear-subcontractor', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
         </div>
 

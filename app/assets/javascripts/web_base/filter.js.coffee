@@ -1,6 +1,10 @@
 class App.Filter
 
+  label: =>
+    'Filter'
+
   constructor: (@table, @select, @button) ->
+    class: ''
 
     @button.live 'click', =>
       @clear()
@@ -10,6 +14,18 @@ class App.Filter
 
     return
 
+  getText: =>
+    txt = ''
+    selected = $(@select.selector + ' option:selected')
+#    $(@select.selector + ' option:selected').text()
+    selected.each (i, opt) =>
+      txt = txt + $(opt).text()
+      if i < selected.length - 1
+        txt = txt + ' | '
+
+    txt
+
+
   getVal: =>
     @select.val()
 
@@ -18,7 +34,6 @@ class App.Filter
 
   setValNoReload: (val) =>
     @select.val(val).trigger('chosen:updated')
-
 
   clear: =>
     @setVal('')

@@ -1,5 +1,7 @@
 class App.WorkStatusFilter extends App.Filter
   placeholder_text: 'Select Work Statuses'
+  label: =>
+    'Work Status'
   options = [
     {id: 2000, text: 'Pending'}
     {id: 2001, text: 'Dispatched'}

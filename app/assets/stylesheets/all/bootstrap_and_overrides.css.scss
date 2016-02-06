@@ -1610,11 +1610,11 @@ a:hover {
 .all_jobs_filter {
   border: 1px solid #000000;
   background: none repeat scroll 0 0 #EEEEEE;
-  margin-bottom: 45px;
-  margin-left: 1%;
+  margin-bottom: 10px;
+  margin-left: 0px;
   margin-top: 10px;
   padding: 7px;
-  width: 90%;
+  width: 100%;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
   border-radius: 3px 3px 3px 3px;
 
@@ -1663,11 +1663,6 @@ a:hover {
     margin-bottom: 10px;
   }
 
-  .line2 {
-    margin-bottom: 10px;
-    margin-left: 3px;
-    margin-top: 0;
-  }
 
   #subcontractor_filter {
     margin-left: 1.5%;
@@ -3367,6 +3362,15 @@ hr {
   }
 }
 
+#filters-view {
+  .filter-view {
+    background-color: transparent;
+
+    .green {
+      color: #1c2324;
+    }
+  }
+}
 .red-balance {
   span {
     //background-color: red;
@@ -4000,11 +4004,6 @@ div.DTTT_container {
   margin-bottom: 20px;
 }
 
-.all_jobs_filter {
-  p {
-    font-style: italic;
-  }
-}
 
 #job-search-results, .table th, .table td {
   font-size: 12px;
@@ -5645,4 +5644,25 @@ table.dataTable thead th, table.dataTable thead td {
 
 .customer_billing_title {
   margin-left: 0%;
+}
+
+#table-filters {
+  margin-left: 0px;
+  h6 {
+    margin-top: 3px;
+  }
+}
+
+.filter-header {
+  background-color: #999999;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  h4 {
+    text-align: right;
+  }
+
+  span.btn-group {
+    vertical-align: middle;
+  }
 }

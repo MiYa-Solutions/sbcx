@@ -20,73 +20,19 @@ jQuery.fn.dataTable.Api.register 'state.load()', ->
 #    $(s.oInstance.DataTable().header()).html(header)
 
 
-class DateRangeFilter
-  constructor: (@element, @tableElem) ->
-    @init()
-
-  @dateFormat: 'MM/DD/YYYY, h:mm:ss a'
-
-  endDate: => if @element.val() != '' then @element.data('daterangepicker').endDate.format(DateRangeFilter.dateFormat) else ''
-  startDate: => if @element.val() != '' then @element.data('daterangepicker').startDate.format(DateRangeFilter.dateFormat) else ''
-
-  table: =>
-    @theTable ||= @tableElem.DataTable()
-
-  picker: =>
-    @element.data('daterangepicker')
-
-  setRange: (startDate, endDate) =>
-    startMoment = moment(startDate, DateRangeFilter.dateFormat)
-    endMoment = moment(endDate, DateRangeFilter.dateFormat)
-    if startMoment.isValid()
-      @picker().setStartDate(startMoment)
-      @picker().setEndDate(endMoment)
-      @element.val @picker().startDate.format(DateRangeFilter.dateFormat) + ' - ' + @picker().endDate.format(DateRangeFilter.dateFormat)
-
-  clear: =>
-    @element.trigger('cancel.daterangepicker')
-
-  init: =>
-    @element.daterangepicker(
-      timePicker: true,
-      timePickerIncrement: 30,
-      autoUpdateInput: false,
-      locale: {
-        cancelLabel: 'Clear'
-        format: 'MM/DD/YYYY h:mm A'
-      },
-      ranges: {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-      }
-    )
-
-    @element.on 'apply.daterangepicker', (ev, picker) =>
-      @element.val picker.startDate.format(DateRangeFilter.dateFormat) + ' - ' + picker.endDate.format(DateRangeFilter.dateFormat)
-      @table().ajax.reload()
-      return
-
-    @element.on 'cancel.daterangepicker', (ev, picker) =>
-      @element.val ''
-      @table().ajax.reload()
-      return
 
 
-filter_params = ->
-  res = ''
-  res = res + 'from_date=' + $('#yadcf-filter--job-search-results-from-date-1').val() + '&'
-  res = res + 'to_date=' + $('#yadcf-filter--job-search-results-to-date-1').val() + '&'
-  res = res + 'customer_id=' + $('#customer_filter_id').val() + '&'
-  res = res + 'provider_id=' + $('#provider').val() + '&'
-  res = res + 'subcontractor_id=' + $('#subcontractor').val() + '&'
-  res = res + 'affiliate_id=' + $('#affiliate').val() + '&'
-  res = res + 'billing_status=' + $('#billing_status').val() + '&'
-  res = res + 'work_status=' + $('#work_status').val() + '&'
-  res
+#filter_params = ->
+#  res = ''
+#  res = res + 'from_date=' + $('#yadcf-filter--job-search-results-from-date-1').val() + '&'
+#  res = res + 'to_date=' + $('#yadcf-filter--job-search-results-to-date-1').val() + '&'
+#  res = res + 'customer_id=' + $('#customer_filter_id').val() + '&'
+#  res = res + 'provider_id=' + $('#provider').val() + '&'
+#  res = res + 'subcontractor_id=' + $('#subcontractor').val() + '&'
+#  res = res + 'affiliate_id=' + $('#affiliate').val() + '&'
+#  res = res + 'billing_status=' + $('#billing_status').val() + '&'
+#  res = res + 'work_status=' + $('#work_status').val() + '&'
+#  res
 
 Jobs = {
   full_url: (postfix = 'csv')->
@@ -104,16 +50,19 @@ jQuery ->
 
 #  $('#myJobTab a:first').tab 'show'
   if $('#job-search-results').length > 0
-    dateRange = new DateRangeFilter($('#created-at-range'), $('#job-search-results'))
-    startDateRange = new DateRangeFilter($('#started-on-range'), $('#job-search-results'))
-    scheduledDateRange = new DateRangeFilter($('#scheduled-for-range'), $('#job-search-results'))
-    completedDateRange = new DateRangeFilter($('#completed-at-range'), $('#job-search-results'))
-    employeeFilter = new App.Filter($('#job-search-results'), $('#employee_id'), $('#clear-employee'))
-    techFilter = new App.Filter($('#job-search-results'), $('#technician_id'), $('#clear-tech'))
+    dateRange = new App.DateRangeFilter($('#created-at-range'), $('#job-search-results'), $('#clear-created-range'))
+    startDateRange = new App.DateRangeFilter($('#started-on-range'), $('#job-search-results'), $('#clear-started-range'))
+    scheduledDateRange = new App.DateRangeFilter($('#scheduled-for-range'), $('#job-search-results'), $('#clear-scheduled-range'))
+    completedDateRange = new App.DateRangeFilter($('#completed-at-range'), $('#job-search-results'), $('#clear-completed-range'))
+    employeeFilter = new App.EmployeeFilter($('#job-search-results'), $('#employee_id'), $('#clear-employee'))
+    techFilter = new App.TechnicianFilter($('#job-search-results'), $('#technician_id'), $('#clear-tech'))
     tagsFilter = new App.Filter($('#job-search-results'), $('#tags'), $('#clear-tags'))
     statusFilter = new App.JobStatusFilter($('#job-search-results'), $('#status'), $('#clear-status'))
     workStatusFilter = new App.WorkStatusFilter($('#job-search-results'), $('#work_status'), $('#clear-work-status'))
     billingStatusFilter = new App.BillingStatusFilter($('#job-search-results'), $('#billing_status'), $('#clear-billing-status'))
+    contractorFilter = new App.ContractorFilter($('#job-search-results'), $('#provider'), $('#clear-provider'))
+    subconFilter = new App.SubcontractorFilter($('#job-search-results'), $('#subcontractor'), $('#clear-subcontractor'))
+    affiliateFilter = new App.AffiliateFilter($('#job-search-results'), $('#affiliate'), $('#clear-affiliate'))
 
 
     dataTable = $('#job-search-results').DataTable(
@@ -182,9 +131,9 @@ jQuery ->
           d.filters.scheduled_from_date = scheduledDateRange.startDate()
           d.filters.scheduled_to_date = scheduledDateRange.endDate()
           d.filters.customer_id = $('#customer_filter_id').val()
-          d.filters.provider_id = $('#provider').val()
-          d.filters.subcontractor_id = $('#subcontractor').val()
-          d.filters.affiliate_id = $('#affiliate').val()
+          d.filters.provider_id = contractorFilter.getVal()
+          d.filters.subcontractor_id = subconFilter.getVal()
+          d.filters.affiliate_id = affiliateFilter.getVal()
           d.filters.billing_status = billingStatusFilter.getVal()
           d.filters.work_status = workStatusFilter.getVal()
           d.filters.tags = tagsFilter.getVal()
@@ -202,10 +151,10 @@ jQuery ->
         oData.filters.completed_from_date = completedDateRange.startDate()
         oData.filters.completed_to_date = completedDateRange.endDate()
         oData.filters.customer_name = $('#customer_search').val()
-        oData.filters.provider_id = $('#provider').val()
-        oData.filters.subcontractor_id = $('#subcontractor').val()
-        oData.filters.affiliate_id = $('#affiliate').val()
-        oData.filters.billing_status = $('#billing_status').val()
+        oData.filters.provider_id = contractorFilter.getVal()
+        oData.filters.subcontractor_id = subconFilter.getVal()
+        oData.filters.affiliate_id = affiliateFilter.getVal()
+        oData.filters.billing_status = billingStatusFilter.getVal()
         oData.filters.work_status = workStatusFilter.getVal()
         oData.filters.billing_status = billingStatusFilter.getVal()
         oData.filters.technician_id = techFilter.getVal()
@@ -217,10 +166,10 @@ jQuery ->
       fnStateLoadParams: (oSettings, oData) ->
         $('#customer_search').val(oData.filters.customer_name)
         $('#customer_filter_id').val(oData.filters.customer_id)
-        $('#provider').val(oData.filters.provider_id)
-        $('#subcontractor').val(oData.filters.subcontractor_id)
-        $('#affiliate').val(oData.filters.affiliate_id)
-        $('#billing_status').val(oData.filters.billing_status)
+        contractorFilter.setValNoReload(oData.filters.provider_id)
+        subconFilter.setValNoReload(oData.filters.subcontractor_id)
+        affiliateFilter.setValNoReload(oData.filters.affiliate_id)
+        billingStatusFilter.setValNoReload(oData.filters.billing_status)
         workStatusFilter.setValNoReload(oData.filters.work_status)
         employeeFilter.setValNoReload(oData.filters.employee_id)
         techFilter.setValNoReload(oData.filters.technician_id)
@@ -396,53 +345,27 @@ jQuery ->
   $('#customer_search').bind 'railsAutocomplete.select', (e, data)->
     $('#job-search-results').dataTable().api().ajax.reload()
 
-  $('#provider').on 'change', ->
-    $('#customer_filter_id').val('')
-    $('#customer_search').val('')
-    prov_id = $('#provider').val()
-    $('#customer_search').val('')
-    $('#customer_search').attr("data-ref-id", prov_id)
-    $('#job-search-results').dataTable().api().ajax.reload()
+#  $('#provider').on 'change', ->
+#    $('#customer_filter_id').val('')
+#    $('#customer_search').val('')
+#    prov_id = $('#provider').val()
+#    $('#customer_search').val('')
+#    $('#customer_search').attr("data-ref-id", prov_id)
+#    $('#job-search-results').dataTable().api().ajax.reload()
 
-  $('#affiliate').on 'change', ->
-    $('#customer_search').data('ref-id', $('#affiliate').val())
-    $('#job-search-results').dataTable().api().ajax.reload()
+#  $('#affiliate').on 'change', ->
+#    $('#customer_search').data('ref-id', $('#affiliate').val())
+#    $('#job-search-results').dataTable().api().ajax.reload()
 
-  $('#subcontractor').on 'change', ->
-    $('#job-search-results').dataTable().api().ajax.reload()
+#  $('#subcontractor').on 'change', ->
+#    $('#job-search-results').dataTable().api().ajax.reload()
 
   $('#clear-customer').live 'click', ->
     $('#customer_filter_id').val('')
     $('#customer_search').val('')
     $('#job-search-results').dataTable().api().ajax.reload()
 
-  $('#clear-provider').live 'click', ->
-    $('#provider').val($('#provider option:first').val())
-    $("#provider").trigger("chosen:updated")
-    $('#job-search-results').dataTable().api().ajax.reload()
 
-  $('#clear-subcontractor').live 'click', ->
-    $('#subcontractor').val($('#subcontractor option:first').val())
-    $("#subcontractor").trigger("chosen:updated")
-    $('#job-search-results').dataTable().api().ajax.reload()
-
-  $('#clear-affiliate').live 'click', ->
-    $('#affiliate').val($('#affiliate option:first').val())
-    $("#affiliate").trigger("chosen:updated")
-    $('#job-search-results').dataTable().api().ajax.reload()
-
-
-  $('#clear-created-range').live 'click', ->
-    dateRange.clear()
-
-  $('#clear-started-range').live 'click', ->
-    startDateRange.clear()
-
-  $('#clear-scheduled-range').live 'click', ->
-    scheduledDateRange.clear()
-
-  $('#clear-completed-range').live 'click', ->
-    completedDateRange.clear()
 
   $('.download_csv').on 'click', (e)->
     e.preventDefault()
@@ -476,13 +399,22 @@ jQuery ->
   $('#job-index-filters').on 'show', '.collapse', (e) ->
     $('#job-index-filters').find('.collapse.in').collapse('hide')
 
+  App.JobIndex.filterView.filters = [
+    statusFilter, billingStatusFilter, workStatusFilter, dateRange,
+    completedDateRange, scheduledDateRange, startDateRange, techFilter,
+    employeeFilter, contractorFilter, subconFilter,affiliateFilter ,tagsFilter,]
 
-drawVisibleColumnHeader = (dataTable)->
-  visible_cols = []
-  jQuery.each dataTable.table().columns().visible(), (i, visible) ->
-    if visible
-      visible_cols.push i
-  $(dataTable.table().header()).html(dataTable.columns(visible_cols).header())
+  App.JobIndex.filterView.rootElement = $('#filter-view')
+  App.JobIndex.filterView.init()
+  App.JobIndex.filterView.draw()
+
+
+#drawVisibleColumnHeader = (dataTable)->
+#  visible_cols = []
+#  jQuery.each dataTable.table().columns().visible(), (i, visible) ->
+#    if visible
+#      visible_cols.push i
+#  $(dataTable.table().header()).html(dataTable.columns(visible_cols).header())
 
 
 
