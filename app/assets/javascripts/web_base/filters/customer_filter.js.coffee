@@ -1,0 +1,53 @@
+class App.CustomerFilter
+
+  label: =>
+    'Customer'
+  class: 'badge-important'
+
+  constructor: (hash) ->
+
+    @input = hash['element']
+    @table = hash['table']
+    @button = hash['btn']
+    @id_field = hash['id_field']
+
+
+
+    @button.live 'click', =>
+      @clear()
+
+    @input.live "change", =>
+      App.JobIndex.filterView.draw()
+      @table.DataTable().ajax.reload()
+
+    @input.live 'railsAutocomplete.select', (e, data) =>
+      App.JobIndex.filterView.draw()
+      @table.DataTable().ajax.reload()
+
+#    @id_field.live "change", =>
+#      @table.DataTable().ajax.reload()
+
+
+    return
+
+  getText: =>
+    @input.val()
+
+
+  getVal: =>
+    @id_field.val()
+
+  setVal: (name, val)=>
+    @input.val(name)
+    @id_field.val(val)
+
+  setValNoReload: (name, val) =>
+    @setVal(name, val)
+
+  clear: =>
+    @setVal('', '')
+    App.JobIndex.filterView.draw()
+    @table.DataTable().ajax.reload()
+
+
+

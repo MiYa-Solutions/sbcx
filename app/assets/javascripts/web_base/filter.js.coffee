@@ -3,8 +3,12 @@ class App.Filter
   label: =>
     'Filter'
 
-  constructor: (@table, @select, @button) ->
+  constructor: (hash) ->
     class: ''
+    @select = hash['element']
+    @table = hash['table']
+    @button = hash['btn']
+
 
     @button.live 'click', =>
       @clear()

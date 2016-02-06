@@ -2,7 +2,10 @@ class App.DateRangeFilter
   class: 'badge-inverse'
   label: =>
     @element.attr('name')
-  constructor: (@element, @tableElem, @button) ->
+  constructor: (hash) ->
+    @element = hash['element']
+    @tableElem = hash['table']
+    @button = hash['btn']
     @init()
 
   select: @element

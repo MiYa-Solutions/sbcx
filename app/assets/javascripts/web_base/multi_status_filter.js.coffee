@@ -8,7 +8,11 @@ class App.MultiStatusFilter extends App.Filter
     @select.attr('name')
 
 
-  constructor: (@table, @select, @button) ->
+  constructor: (hash) ->
+    @select = hash['element']
+    @table = hash['table']
+    @button = hash['btn']
+
     @init()
     super
 

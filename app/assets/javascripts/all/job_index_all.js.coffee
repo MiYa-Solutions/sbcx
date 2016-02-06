@@ -20,20 +20,6 @@ jQuery.fn.dataTable.Api.register 'state.load()', ->
 #    $(s.oInstance.DataTable().header()).html(header)
 
 
-
-
-#filter_params = ->
-#  res = ''
-#  res = res + 'from_date=' + $('#yadcf-filter--job-search-results-from-date-1').val() + '&'
-#  res = res + 'to_date=' + $('#yadcf-filter--job-search-results-to-date-1').val() + '&'
-#  res = res + 'customer_id=' + $('#customer_filter_id').val() + '&'
-#  res = res + 'provider_id=' + $('#provider').val() + '&'
-#  res = res + 'subcontractor_id=' + $('#subcontractor').val() + '&'
-#  res = res + 'affiliate_id=' + $('#affiliate').val() + '&'
-#  res = res + 'billing_status=' + $('#billing_status').val() + '&'
-#  res = res + 'work_status=' + $('#work_status').val() + '&'
-#  res
-
 Jobs = {
   full_url: (postfix = 'csv')->
     "service_calls.#{postfix}?" + filter_params() + $.param($('#job-search-results').dataTable().api().ajax.params())
@@ -50,19 +36,20 @@ jQuery ->
 
 #  $('#myJobTab a:first').tab 'show'
   if $('#job-search-results').length > 0
-    dateRange = new App.DateRangeFilter($('#created-at-range'), $('#job-search-results'), $('#clear-created-range'))
-    startDateRange = new App.DateRangeFilter($('#started-on-range'), $('#job-search-results'), $('#clear-started-range'))
-    scheduledDateRange = new App.DateRangeFilter($('#scheduled-for-range'), $('#job-search-results'), $('#clear-scheduled-range'))
-    completedDateRange = new App.DateRangeFilter($('#completed-at-range'), $('#job-search-results'), $('#clear-completed-range'))
-    employeeFilter = new App.EmployeeFilter($('#job-search-results'), $('#employee_id'), $('#clear-employee'))
-    techFilter = new App.TechnicianFilter($('#job-search-results'), $('#technician_id'), $('#clear-tech'))
-    tagsFilter = new App.Filter($('#job-search-results'), $('#tags'), $('#clear-tags'))
-    statusFilter = new App.JobStatusFilter($('#job-search-results'), $('#status'), $('#clear-status'))
-    workStatusFilter = new App.WorkStatusFilter($('#job-search-results'), $('#work_status'), $('#clear-work-status'))
-    billingStatusFilter = new App.BillingStatusFilter($('#job-search-results'), $('#billing_status'), $('#clear-billing-status'))
-    contractorFilter = new App.ContractorFilter($('#job-search-results'), $('#provider'), $('#clear-provider'))
-    subconFilter = new App.SubcontractorFilter($('#job-search-results'), $('#subcontractor'), $('#clear-subcontractor'))
-    affiliateFilter = new App.AffiliateFilter($('#job-search-results'), $('#affiliate'), $('#clear-affiliate'))
+    dateRange = new App.DateRangeFilter({element: $('#created-at-range'), table: $('#job-search-results'), btn: $('#clear-created-range')})
+    startDateRange = new App.DateRangeFilter({element: $('#started-on-range'), table: $('#job-search-results'), btn: $('#clear-started-range')})
+    scheduledDateRange = new App.DateRangeFilter({element: $('#scheduled-for-range'), table: $('#job-search-results'), btn: $('#clear-scheduled-range')})
+    completedDateRange = new App.DateRangeFilter({element: $('#completed-at-range'), table: $('#job-search-results'), btn: $('#clear-completed-range')})
+    employeeFilter = new App.EmployeeFilter({table: $('#job-search-results'), element: $('#employee_id'), btn: $('#clear-employee')})
+    techFilter = new App.TechnicianFilter({table: $('#job-search-results'),element:  $('#technician_id'), btn: $('#clear-tech')})
+    tagsFilter = new App.Filter({table: $('#job-search-results'), element: $('#tags'),btn: $('#clear-tags')})
+    statusFilter = new App.JobStatusFilter({ table: $('#job-search-results'), element: $('#status'), btn: $('#clear-status')})
+    workStatusFilter = new App.WorkStatusFilter({table: $('#job-search-results'), element: $('#work_status'), btn: $('#clear-work-status')})
+    billingStatusFilter = new App.BillingStatusFilter({table: $('#job-search-results'), element: $('#billing_status'), btn: $('#clear-billing-status')})
+    contractorFilter = new App.ContractorFilter({table: $('#job-search-results'),element:  $('#provider'), btn: $('#clear-provider')})
+    subconFilter = new App.SubcontractorFilter({table: $('#job-search-results'), element: $('#subcontractor'), btn: $('#clear-subcontractor')})
+    affiliateFilter = new App.AffiliateFilter({table: $('#job-search-results'), element: $('#affiliate'), btn: $('#clear-affiliate')})
+    customerFilter = new App.CustomerFilter({table: $('#job-search-results'), element: $('#customer_search'), id_field: $('#customer_filter_id'), btn:$('#clear-customer')})
 
 
     dataTable = $('#job-search-results').DataTable(
@@ -130,7 +117,7 @@ jQuery ->
           d.filters.completed_to_date = completedDateRange.endDate()
           d.filters.scheduled_from_date = scheduledDateRange.startDate()
           d.filters.scheduled_to_date = scheduledDateRange.endDate()
-          d.filters.customer_id = $('#customer_filter_id').val()
+          d.filters.customer_id = customerFilter.getVal()
           d.filters.provider_id = contractorFilter.getVal()
           d.filters.subcontractor_id = subconFilter.getVal()
           d.filters.affiliate_id = affiliateFilter.getVal()
@@ -141,7 +128,7 @@ jQuery ->
 
       fnStateSaveParams: (oSettings, oData) ->
         oData.filters = {}
-        oData.filters.customer_id = $('#customer_filter_id').val()
+        oData.filters.customer_id = customerFilter.getVal()
         oData.filters.from_date = dateRange.startDate()
         oData.filters.to_date = dateRange.endDate()
         oData.filters.started_from_date = startDateRange.startDate()
@@ -150,7 +137,7 @@ jQuery ->
         oData.filters.scheduled_to_date = scheduledDateRange.endDate()
         oData.filters.completed_from_date = completedDateRange.startDate()
         oData.filters.completed_to_date = completedDateRange.endDate()
-        oData.filters.customer_name = $('#customer_search').val()
+        oData.filters.customer_name = customerFilter.getText()
         oData.filters.provider_id = contractorFilter.getVal()
         oData.filters.subcontractor_id = subconFilter.getVal()
         oData.filters.affiliate_id = affiliateFilter.getVal()
@@ -164,8 +151,7 @@ jQuery ->
 
 
       fnStateLoadParams: (oSettings, oData) ->
-        $('#customer_search').val(oData.filters.customer_name)
-        $('#customer_filter_id').val(oData.filters.customer_id)
+        customerFilter.setValNoReload(oData.filters.customer_name, oData.filters.customer_id)
         contractorFilter.setValNoReload(oData.filters.provider_id)
         subconFilter.setValNoReload(oData.filters.subcontractor_id)
         affiliateFilter.setValNoReload(oData.filters.affiliate_id)
@@ -342,31 +328,6 @@ jQuery ->
     no_results_text: 'No results matched'
     width: '200px'
 
-  $('#customer_search').bind 'railsAutocomplete.select', (e, data)->
-    $('#job-search-results').dataTable().api().ajax.reload()
-
-#  $('#provider').on 'change', ->
-#    $('#customer_filter_id').val('')
-#    $('#customer_search').val('')
-#    prov_id = $('#provider').val()
-#    $('#customer_search').val('')
-#    $('#customer_search').attr("data-ref-id", prov_id)
-#    $('#job-search-results').dataTable().api().ajax.reload()
-
-#  $('#affiliate').on 'change', ->
-#    $('#customer_search').data('ref-id', $('#affiliate').val())
-#    $('#job-search-results').dataTable().api().ajax.reload()
-
-#  $('#subcontractor').on 'change', ->
-#    $('#job-search-results').dataTable().api().ajax.reload()
-
-  $('#clear-customer').live 'click', ->
-    $('#customer_filter_id').val('')
-    $('#customer_search').val('')
-    $('#job-search-results').dataTable().api().ajax.reload()
-
-
-
   $('.download_csv').on 'click', (e)->
     e.preventDefault()
     window.location = Jobs.full_url()
@@ -401,21 +362,12 @@ jQuery ->
 
   App.JobIndex.filterView.filters = [
     statusFilter, billingStatusFilter, workStatusFilter, dateRange,
-    completedDateRange, scheduledDateRange, startDateRange, techFilter,
+    completedDateRange, scheduledDateRange, startDateRange, customerFilter, techFilter,
     employeeFilter, contractorFilter, subconFilter,affiliateFilter ,tagsFilter,]
 
   App.JobIndex.filterView.rootElement = $('#filter-view')
   App.JobIndex.filterView.init()
   App.JobIndex.filterView.draw()
-
-
-#drawVisibleColumnHeader = (dataTable)->
-#  visible_cols = []
-#  jQuery.each dataTable.table().columns().visible(), (i, visible) ->
-#    if visible
-#      visible_cols.push i
-#  $(dataTable.table().header()).html(dataTable.columns(visible_cols).header())
-
 
 
 

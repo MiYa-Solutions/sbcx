@@ -12,7 +12,11 @@ class App.WorkStatusFilter extends App.Filter
     {id: 2006, text: 'Canceled'}
   ]
 
-  constructor: (@table, @select, @button) ->
+  constructor: (hash) ->
+    @select = hash['element']
+    @table = hash['table']
+    @button = hash['btn']
+
     @init()
     super
 

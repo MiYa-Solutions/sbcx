@@ -5,9 +5,11 @@ App.JobIndex.filterView =
 
   init: =>
     $.each App.JobIndex.filterView.filters, (i, f) =>
-      $(f.select).on 'change apply.daterangepicker cancel.daterangepicker', =>
+      $(f.select).on 'change apply.daterangepicker cancel.daterangepicker railsAutocomplete.select', =>
         App.JobIndex.filterView.draw()
         return
+
+    $('')
     return
 
   getHtml: (f, col) ->
@@ -53,3 +55,4 @@ App.JobIndex.filterView =
         res.push f
 
     res
+
