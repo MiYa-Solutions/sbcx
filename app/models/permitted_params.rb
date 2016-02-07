@@ -483,6 +483,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
                           :subcontractor_id,
                           :technician_id,
                           :employee_id,
+                          :employee_id,
                           :transferable,
                           :re_transfer,
                           :new_customer]
