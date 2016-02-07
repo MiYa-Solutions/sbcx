@@ -1442,7 +1442,7 @@ a:hover {
   border-radius: 3px 3px 3px 3px;
   padding: 2px 14px;
   text-align: inherit;
-  width: 26%;
+  //width: 26%;
 
   h4 {
     float: left;
@@ -1596,7 +1596,13 @@ a:hover {
 
 }
 
-#job-search-results_filter  {
+#job-search-results_filter,
+#done-jobs_filter,
+#done-transferred-jobs_filter,
+#in-progress-jobs_filter,
+#new-jobs_filter,
+#new-transferred-jobs_filter,
+#transferred-in-progress-jobs_filter {
   width: 93%;
   label {
     width: 100%;
@@ -1606,6 +1612,9 @@ a:hover {
   }
 }
 
+td.customer_balance, td.total_cost , td.total_price, td.profit, td.subcontractor_balance, td.contractor_balance{
+  text-align: right;
+}
 
 .all_jobs_filter {
   border: 1px solid #000000;

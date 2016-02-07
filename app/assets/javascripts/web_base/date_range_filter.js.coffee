@@ -55,7 +55,7 @@ class App.DateRangeFilter
         format: 'MM/DD/YYYY h:mm A'
       },
       ranges: {
-        'Today': [moment().hour(0).minutes(0).seconds(0), moment().add(1, 'day').hour(0).minutes(0).seconds(0)],
+        'Today': [moment().hour(0).minutes(0).seconds(0), moment().hour(23).minutes(59).seconds(59)],
         'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
         'Last 30 Days': [moment().subtract(29, 'days'), moment()],

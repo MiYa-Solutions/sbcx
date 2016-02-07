@@ -318,6 +318,16 @@ jQuery ->
         e.style(nRow, job)
     )
 
+    App.JobIndex.filterView.filters = [
+      statusFilter, billingStatusFilter, workStatusFilter, dateRange,
+      completedDateRange, scheduledDateRange, startDateRange, customerFilter, techFilter,
+      employeeFilter, contractorFilter, subconFilter,affiliateFilter ,tagsFilter,]
+
+    App.JobIndex.filterView.rootElement = $('#filter-view')
+    App.JobIndex.filterView.table = dataTable
+    App.JobIndex.filterView.draw()
+
+
   $("a[href='#allJobs']").one 'shown.bs.tab', ->
     dataTable.ajax.reload()
 
@@ -360,14 +370,6 @@ jQuery ->
   $('#job-index-filters').on 'show', '.collapse', (e) ->
     $('#job-index-filters').find('.collapse.in').collapse('hide')
 
-  App.JobIndex.filterView.filters = [
-    statusFilter, billingStatusFilter, workStatusFilter, dateRange,
-    completedDateRange, scheduledDateRange, startDateRange, customerFilter, techFilter,
-    employeeFilter, contractorFilter, subconFilter,affiliateFilter ,tagsFilter,]
-
-  App.JobIndex.filterView.rootElement = $('#filter-view')
-  App.JobIndex.filterView.table = dataTable
-  App.JobIndex.filterView.draw()
 
 
 
