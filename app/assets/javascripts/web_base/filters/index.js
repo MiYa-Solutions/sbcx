@@ -7,3 +7,4 @@
 //=require web_base/filters/subcontractor_filter
 //=require web_base/filters/affiliate_filter
 //=require web_base/filters/customer_filter
+//=require web_base/filters/tags_filter

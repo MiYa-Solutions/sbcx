@@ -3370,6 +3370,11 @@ hr {
       color: #1c2324;
     }
   }
+
+  a {
+    font-size: 85%;
+  }
+
 }
 .red-balance {
   span {
@@ -5688,4 +5693,19 @@ table.dataTable thead th, table.dataTable thead td {
  .span4 {
    padding: 5px;
  }
+
+  div.filter > span {
+    cursor: pointer;
+  }
+
+}
+
+.heading4 {
+  font-size: large;
+  color: #7C7C7C;
+  margin-left: 2px;
+}
+
+a {
+  cursor: pointer;
 }

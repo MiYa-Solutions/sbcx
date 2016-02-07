@@ -10,8 +10,7 @@ class App.CustomerFilter
     @table = hash['table']
     @button = hash['btn']
     @id_field = hash['id_field']
-
-
+    @view = hash['view']
 
     @button.live 'click', =>
       @clear()
@@ -29,6 +28,9 @@ class App.CustomerFilter
 
 
     return
+
+  show: =>
+    $(@view).show()
 
   getText: =>
     @input.val()

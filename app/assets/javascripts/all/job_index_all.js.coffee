@@ -36,26 +36,25 @@ jQuery ->
 
 #  $('#myJobTab a:first').tab 'show'
   if $('#job-search-results').length > 0
-    customerFilter = new App.CustomerFilter({table: $('#job-search-results'), element: $('#customer_search'), id_field: $('#customer_filter_id'), btn:$('#clear-customer')})
-    dateRange = new App.DateRangeFilter({element: $('#created-at-range'), table: $('#job-search-results'), btn: $('#clear-created-range')})
-    startDateRange = new App.DateRangeFilter({element: $('#started-on-range'), table: $('#job-search-results'), btn: $('#clear-started-range')})
-    scheduledDateRange = new App.DateRangeFilter({element: $('#scheduled-for-range'), table: $('#job-search-results'), btn: $('#clear-scheduled-range')})
-    completedDateRange = new App.DateRangeFilter({element: $('#completed-at-range'), table: $('#job-search-results'), btn: $('#clear-completed-range')})
-    employeeFilter = new App.EmployeeFilter({table: $('#job-search-results'), element: $('#employee_id'), btn: $('#clear-employee')})
-    techFilter = new App.TechnicianFilter({table: $('#job-search-results'),element:  $('#technician_id'), btn: $('#clear-tech')})
-    tagsFilter = new App.Filter({table: $('#job-search-results'), element: $('#tags'),btn: $('#clear-tags')})
-    statusFilter = new App.JobStatusFilter({ table: $('#job-search-results'), element: $('#status'), btn: $('#clear-status')})
-    workStatusFilter = new App.WorkStatusFilter({table: $('#job-search-results'), element: $('#work_status'), btn: $('#clear-work-status')})
-    billingStatusFilter = new App.BillingStatusFilter({table: $('#job-search-results'), element: $('#billing_status'), btn: $('#clear-billing-status')})
-    contractorFilter = new App.ContractorFilter({table: $('#job-search-results'),element:  $('#provider'), btn: $('#clear-provider'),customer_filter: customerFilter })
-    subconFilter = new App.SubcontractorFilter({table: $('#job-search-results'), element: $('#subcontractor'), btn: $('#clear-subcontractor')})
-    affiliateFilter = new App.AffiliateFilter({table: $('#job-search-results'), element: $('#affiliate'), btn: $('#clear-affiliate'), customer_filter: customerFilter})
+    customerFilter = new App.CustomerFilter({table: $('#job-search-results'), element: $('#customer_search'), id_field: $('#customer_filter_id'), btn:$('#clear-customer'), view: '#job-participant-filters'})
+    dateRange = new App.DateRangeFilter({element: $('#created-at-range'), table: $('#job-search-results'), btn: $('#clear-created-range'), view: '#job-date-filters'})
+    startDateRange = new App.DateRangeFilter({element: $('#started-on-range'), table: $('#job-search-results'), btn: $('#clear-started-range'), view: '#job-date-filters'})
+    scheduledDateRange = new App.DateRangeFilter({element: $('#scheduled-for-range'), table: $('#job-search-results'), btn: $('#clear-scheduled-range'), view: '#job-date-filters'})
+    completedDateRange = new App.DateRangeFilter({element: $('#completed-at-range'), table: $('#job-search-results'), btn: $('#clear-completed-range'), view: '#job-date-filters'})
+    employeeFilter = new App.EmployeeFilter({table: $('#job-search-results'), element: $('#employee_id'), btn: $('#clear-employee'), view: '#job-participant-filters'})
+    techFilter = new App.TechnicianFilter({table: $('#job-search-results'),element:  $('#technician_id'), btn: $('#clear-tech'), view: '#job-participant-filters'})
+    tagsFilter = new App.TagsFilter({table: $('#job-search-results'), element: $('#tags'),btn: $('#clear-tags'), view: '#job-more-filters'})
+    statusFilter = new App.JobStatusFilter({ table: $('#job-search-results'), element: $('#status'), btn: $('#clear-status'), view: '#job-status-filters'})
+    workStatusFilter = new App.WorkStatusFilter({table: $('#job-search-results'), element: $('#work_status'), btn: $('#clear-work-status'), view: '#job-status-filters'})
+    billingStatusFilter = new App.BillingStatusFilter({table: $('#job-search-results'), element: $('#billing_status'), btn: $('#clear-billing-status'), view: '#job-status-filters'})
+    contractorFilter = new App.ContractorFilter({table: $('#job-search-results'),element:  $('#provider'), btn: $('#clear-provider'),customer_filter: customerFilter , view: '#job-participant-filters'})
+    subconFilter = new App.SubcontractorFilter({table: $('#job-search-results'), element: $('#subcontractor'), btn: $('#clear-subcontractor'), view: '#job-participant-filters'})
+    affiliateFilter = new App.AffiliateFilter({table: $('#job-search-results'), element: $('#affiliate'), btn: $('#clear-affiliate'), customer_filter: customerFilter, view: '#job-participant-filters'})
 
 
 
     dataTable = $('#job-search-results').DataTable(
       dom: "<'row-fluid job-table-header'<'span4' T><'span4' f><'span4' RCW>>rtl<'row-fluid'<'span6'i><'span6'p>>"
-#      dom: "RCW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
       order: [[0, 'desc']]
       aLengthMenu: [10, 25, 50, 100]
       pagaingType: "bootstrap"
@@ -367,7 +366,7 @@ jQuery ->
     employeeFilter, contractorFilter, subconFilter,affiliateFilter ,tagsFilter,]
 
   App.JobIndex.filterView.rootElement = $('#filter-view')
-  App.JobIndex.filterView.init()
+  App.JobIndex.filterView.table = dataTable
   App.JobIndex.filterView.draw()
 
 

@@ -8,6 +8,7 @@ class App.Filter
     @select = hash['element']
     @table = hash['table']
     @button = hash['btn']
+    @view = hash['view']
 
 
     @button.live 'click', =>
@@ -18,6 +19,9 @@ class App.Filter
       @table.DataTable().ajax.reload()
 
     return
+
+  show: =>
+    $(@view).show()
 
   getText: =>
     txt = ''
