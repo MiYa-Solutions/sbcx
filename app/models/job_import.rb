@@ -1,19 +1,5 @@
-class JobImport
-  # switch to ActiveModel::Model in Rails 4
-  extend ActiveModel::Naming
-  include ActiveModel::Conversion
-  include ActiveModel::Validations
+class JobImport < RecordsImport
 
-  attr_accessor :file
-
-  def initialize(org, attributes = {})
-    @user = org
-    attributes.each { |name, value| send("#{name}=", value) }
-  end
-
-  def persisted?
-    false
-  end
 
   def save
     if imported_jobs.map(&:valid?).all?

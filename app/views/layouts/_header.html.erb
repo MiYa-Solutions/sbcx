@@ -82,6 +82,11 @@
                 <ul class="dropdown-menu" id="menu3">
                   <li><%= link_to I18n.t('general.general.my_customers'), customers_path %></a></li>
                   <li><%= link_to I18n.t('general.general.new_customer'), new_customer_path %></a></li>
+                  <% if permitted_to? :create, :customers %>
+                      <li class="divider"></li>
+                      <li><%= link_to CustomerImport.model_name.human.titleize, new_customer_imports_path %></a></li>
+                  <% end %>
+
                 </ul>
               </li>
           <% end %>
@@ -135,12 +140,9 @@
           </li>
 
       <% end %>
-      </div>
-      </li>
-
-    </ul>
-  </div>
-  <!--/.nav-collapse -->
+  </ul>
+</div>
+<!--/.nav-collapse -->
 
 </div>
 

@@ -1442,7 +1442,7 @@ a:hover {
   border-radius: 3px 3px 3px 3px;
   padding: 2px 14px;
   text-align: inherit;
-  width: 26%;
+  //width: 26%;
 
   h4 {
     float: left;
@@ -1596,14 +1596,34 @@ a:hover {
 
 }
 
+#job-search-results_filter,
+#done-jobs_filter,
+#done-transferred-jobs_filter,
+#in-progress-jobs_filter,
+#new-jobs_filter,
+#new-transferred-jobs_filter,
+#transferred-in-progress-jobs_filter {
+  width: 93%;
+  label {
+    width: 100%;
+    input {
+      width: 100%;
+    }
+  }
+}
+
+td.customer_balance, td.total_cost , td.total_price, td.profit, td.subcontractor_balance, td.contractor_balance{
+  text-align: right;
+}
+
 .all_jobs_filter {
   border: 1px solid #000000;
   background: none repeat scroll 0 0 #EEEEEE;
-  margin-bottom: 45px;
-  margin-left: 1%;
+  margin-bottom: 10px;
+  margin-left: 0px;
   margin-top: 10px;
   padding: 7px;
-  width: 90%;
+  width: 100%;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
   border-radius: 3px 3px 3px 3px;
 
@@ -1652,20 +1672,15 @@ a:hover {
     margin-bottom: 10px;
   }
 
-  .line2 {
-    margin-bottom: 10px;
-    margin-left: 3px;
-    margin-top: 0;
-  }
 
   #subcontractor_filter {
     margin-left: 1.5%;
   }
 
-  #affiliate_filter {
-    margin-left: 0.7%;
-    width: 30%;
-  }
+  //#affiliate_filter {
+  //  margin-left: 0.7%;
+  //  width: 30%;
+  //}
 
   #created_range_filter {
     margin-left: 0.5%;
@@ -1726,6 +1741,32 @@ a:hover {
     vertical-align: middle;
   }
 
+  div.filter {
+    margin: 1px 2px 1px 2px;
+
+    input {
+      width: 80%;
+
+      margin: 1px 3px 1px 3px;
+    }
+  }
+
+
+  .collapse.overlay {
+    height: auto;
+    overflow: initial;
+  }
+
+
+
+  //div.filters {
+  //  display: inline-flex;
+  //  align-items: center;
+  //  justify-content: center
+  //
+  //
+  //
+  //}
   .yadcf-filter-wrapper-inner {
     margin-right: 1px;
     padding-right: 0;
@@ -2873,7 +2914,7 @@ a:hover {
 .dataTables_filter {
 
   input, textarea {
-    width: 67%;
+    width: 100%;
   }
 }
 
@@ -3330,6 +3371,20 @@ hr {
   }
 }
 
+#filters-view {
+  .filter-view {
+    background-color: transparent;
+
+    .green {
+      color: #1c2324;
+    }
+  }
+
+  a {
+    font-size: 85%;
+  }
+
+}
 .red-balance {
   span {
     //background-color: red;
@@ -3609,7 +3664,7 @@ button.DTTT_button, div.DTTT_button, a.DTTT_button {
 
 div.DTTT_container {
   float: left;
- 
+
 }
 
 #job-search-results_filter {
@@ -3963,11 +4018,6 @@ div.DTTT_container {
   margin-bottom: 20px;
 }
 
-.all_jobs_filter {
-  p {
-    font-style: italic;
-  }
-}
 
 #job-search-results, .table th, .table td {
   font-size: 12px;
@@ -4959,6 +5009,7 @@ div.DTTT_container {
 .collapse_body{
   margin-left: 2.5%;
   margin-top: 8px;
+  margin-bottom: 8px;
   width: 95%;
 }
 
@@ -5545,13 +5596,13 @@ table.dataTable thead th, table.dataTable thead td {
 
 
 
-.dataTables_filter {
-  margin-right: 60%;
-
-  input, textarea {
-    width: 67%;
-  }
-}
+//.dataTables_filter {
+//  margin-right: 60%;
+//
+//  input, textarea {
+//    width: 67%;
+//  }
+//}
 
 .statement {
   .col-xs-6{
@@ -5607,4 +5658,68 @@ table.dataTable thead th, table.dataTable thead td {
 
 .customer_billing_title {
   margin-left: 0%;
+}
+
+#table-filters {
+  margin-left: 0px;
+  h6 {
+    margin-top: 3px;
+  }
+}
+
+.filter-header {
+  background-color: #999999;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  h4 {
+    text-align: right;
+  }
+
+  span.btn-group {
+    vertical-align: middle;
+  }
+}
+
+#job-index-header {
+  margin-bottom: 5px;
+}
+
+.job-table-container {
+  margin-top: 3px;
+}
+
+.job-table-header div.ColVis {
+  margin-bottom: 0px;
+
+}
+
+#filters {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin: 3px;
+
+ .span4 {
+   padding: 5px;
+ }
+
+  div.filter > span {
+    cursor: pointer;
+  }
+
+}
+
+.heading4 {
+  font-size: large;
+  color: #7C7C7C;
+  margin-left: 2px;
+}
+
+a {
+  cursor: pointer;
+}
+
+.chosen-container
+{
+  width: 83% !important;
 }

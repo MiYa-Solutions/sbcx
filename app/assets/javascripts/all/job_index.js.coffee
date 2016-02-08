@@ -5,6 +5,11 @@ class App.DataTableJobsFormater
     @color_cells(row, job)
     @format_money(row, job)
     @add_overdue_img(row, job)
+    @format_notes(row, job)
+
+  format_notes: (row, job) ->
+    if job['notes']
+      $('.notes', row).html( textile(job['notes']) )
 
   add_overdue_img: (row, job) ->
     if job['billing_status'] == 'overdue'

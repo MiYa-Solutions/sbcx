@@ -36,6 +36,6 @@ class JobImportsController < ApplicationController
     # params.require(:person).permit(:name, :age)
     # Also, you can specialize this method with per-user checking of permissible attributes.
     def job_import_params
-      params.require(:job_import).permit(:file)
+      params.require(:import).permit(:file)
     end
 end

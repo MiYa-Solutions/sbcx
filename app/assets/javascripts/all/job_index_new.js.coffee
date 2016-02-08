@@ -1,13 +1,30 @@
 $ ->
   $('#new-jobs').dataTable
-#    dom: "t<'row-fluid'<'span7'i><'span5'p>>"
-    dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
+    dom: "<'row-fluid job-table-header'<'span4' T><'span4' f><'span4' RCW>>rtl<'row-fluid'<'span6'i><'span6'p>>"
     pagingType: "bootstrap"
     oTableTools:
-      aButtons: ["print"]
+      sRowSelect: 'multi'
+      aButtons: [
+        {
+          sExtends: "print"
+          oSelectorOpts: 'tr:visible'
+        }
+        {
+          sExtends: "pdf"
+          sPdfOrientation: "landscape",
+          mColumns: (ctx) ->
+            api = new $.fn.dataTable.Api(ctx)
+            api.columns(':visible').indexes().toArray();
+        }
+        {
+          sExtends: "xls"
+          mColumns: (ctx) ->
+            api = new $.fn.dataTable.Api(ctx)
+            api.columns(':visible').indexes().toArray();
+
+        }
+      ]
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
-
-
     iDisplayLength: 5
     columnDefs: [
       'targets': [ 1,2,3, 4, 5,6 ]
@@ -21,6 +38,9 @@ $ ->
     sAjaxSource: 'api/v1/service_calls.json'
     serverSide: true
     deferLoading: 0
+    language:
+      search: ''
+      searchPlaceholder: 'Search job name or ref'
 
 
     fnServerData: (sSource, aoData, fnCallback) ->
@@ -50,10 +70,30 @@ $ ->
       e.style(nRow, job)
 
   $('#new-transferred-jobs').dataTable
-    dom: "CW<'row-fluid'Tfr>tl<'row-fluid'<'span6'i><'span6'p>>"
+    dom: "<'row-fluid job-table-header'<'span4' T><'span4' f><'span4' RCW>>rtl<'row-fluid'<'span6'i><'span6'p>>"
     pagingType: "bootstrap"
     oTableTools:
-      aButtons: ["print"]
+      sRowSelect: 'multi'
+      aButtons: [
+        {
+          sExtends: "print"
+          oSelectorOpts: 'tr:visible'
+        }
+        {
+          sExtends: "pdf"
+          sPdfOrientation: "landscape",
+          mColumns: (ctx) ->
+            api = new $.fn.dataTable.Api(ctx)
+            api.columns(':visible').indexes().toArray();
+        }
+        {
+          sExtends: "xls"
+          mColumns: (ctx) ->
+            api = new $.fn.dataTable.Api(ctx)
+            api.columns(':visible').indexes().toArray();
+
+        }
+      ]
       sSwfPath: "/assets/dataTables/extras/swf/copy_csv_xls_pdf.swf"
     iDisplayLength: 5
     columnDefs: [
@@ -68,6 +108,9 @@ $ ->
     sAjaxSource: 'api/v1/service_calls.json'
     serverSide: true
     deferLoading: 0
+    language:
+      search: ''
+      searchPlaceholder: 'Search job name or ref'
 
 
     fnServerData: (sSource, aoData, fnCallback) ->

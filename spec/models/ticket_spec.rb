@@ -191,6 +191,7 @@ describe Ticket do
     it { should have_many(:tags).through(:taggings) }
     it { should belong_to :customer }
     it { should belong_to :technician }
+    it { should belong_to :employee }
     it { should belong_to :provider }
     it { should belong_to :subcontractor }
     it { should belong_to :collector }

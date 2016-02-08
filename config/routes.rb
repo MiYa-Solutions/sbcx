@@ -13,6 +13,9 @@ Sbcx::Application.routes.draw do
         match '/sign_out' => 'sessions#destroy', :via => :delete
       end
       resources :service_calls, only: [:show, :index, :update]
+      namespace :datatables do
+        resources :service_calls, only: [:show, :index, :update]
+      end
     end
   end
 
@@ -29,6 +32,7 @@ Sbcx::Application.routes.draw do
 
 
   resource :job_imports, only: [:new, :create]
+  resource :customer_imports, only: [:new, :create]
   resources :invites
   resource :settings, only: [:show, :edit, :update]
   resource :org_settings, only: [:show, :edit, :update]

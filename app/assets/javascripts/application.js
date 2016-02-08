@@ -19,6 +19,7 @@
 //= require dataTables/bootstrap/2/jquery.dataTables.bootstrap
 //= require dataTables/extras/dataTables.tableTools
 //= require dataTables/extras/dataTables.colVis
+//= require dataTables/extras/dataTables.colReorder
 //= require dataTables/extras/jquery.dataTables.yadcf
 //= require autocomplete-rails
 //= require bootstrap
@@ -41,5 +42,9 @@
 //= require all/accounting.min
 //= require handlebars.runtime
 //= require all/confirmation_dialog
+//= require moment
+//= require bootstrap-daterangepicker
+//= require all/textile
+//= require ./web_base.js
 //= require_tree ./templates
 //= require_tree ./all/.

@@ -1,10 +1,31 @@
 <div class="well well_job_show">
 
-  <div class= "my_jobs row-fluid">
+  <div class="my_jobs row-fluid">
 
-    <div class="smart_label">
+    <div id="job-index-header" class="smart_label row-fluid ">
       <ul>
-        <li><h1><%= I18n.t('general.general.all_jobs') %></h1></li>
+        <li class="span4"><h1><%= I18n.t('general.general.all_jobs') %></h1></li>
+        <li class="btn-group span4">
+          <a class="btn btn-inverse btn-small" data-toggle="collapse" data-target="#job-date-filters" data-collapse-group="myDivs">
+            Date Filters
+          </a>
+
+          <a class="btn btn-inverse btn-small" data-toggle="collapse" data-target="#job-status-filters" data-collapse-group="myDivs">
+            Status Filters
+          </a>
+
+
+          <a class="btn btn-inverse btn-small" data-toggle="collapse" data-target="#job-participant-filters" data-collapse-group="myDivs">
+            Participant Filters
+          </a>
+
+
+          <a class="btn btn-small btn-inverse" data-toggle="collapse" data-target="#job-more-filters" data-collapse-group="myDivs">
+            More Filters
+          </a>
+
+
+        </li>
         <li>
 
           <button href='' class='download_csv btn btn-primary'>Export</button>
@@ -13,118 +34,38 @@
     </div>
 
     <div class="row-fluid">
-        <div id="table-filters" class="all_jobs_filter" data-statuses="<%= service_call_statuses %>" data-tags="<%= current_user.organization.tags.map(&:name) %>">
-          <h4><%= t('general.general.filter_all_jobs_l1') %>
 
-            <div class="header5">
-              <%= t('general.general.filter_all_jobs_l2') %>
-            </div>
-          </h4>
-
-
-          <div class="row-fluid">
-            <div id="status_filter" class="input_field"></div>
-            <div class="input_field">
-              <div id="customer_filter" class="chosen-container-multi chosen-choices customer_field yadcf-filter-wrapper"><%= text_field_tag :customer_search, nil, placeholder: 'Customer',
-                                                                                                                                             'data-autocomplete' => '/service_calls/autocomplete_customer_name',
-                                                                                                                                             'data-update-elements' => {id: '#customer_filter_id'}.to_json,
-                                                                                                                                             'data-ref-id' => ''
-              %>
-                <%= button_tag 'x', type: 'button', id: 'clear-customer', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
-              </div>
-              <%= hidden_field_tag :customer_filter_id %>
-            </div>
-            <div id="created_range_filter" class="input_field"></div>
-
-          </div>
-          <div class="row-fluid line2">
-
-
-            <div id="work_status_filter" class="input_field" >
-              <%= select_tag :work_status, options_for_select(work_status_options), prompt: "Select Work Status",  class: 'chosen-select' %>
-              <%= button_tag 'x', type: 'button', id: 'clear-work-status', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
-            </div>
-            <div id="billing_status_filter" class="input_field" >
-              <%= select_tag :billing_status, options_for_select(billing_status_options), prompt: "Select Billing Status",  class: 'chosen-select' %>
-              <%= button_tag 'x', type: 'button', id: 'clear-billing-status', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
-            </div>
-            <div id="tags_filter" class="input_field"></div>
-          </div>
-
-
-          <div class="row-fluid affiliates_filter">
-            <!--provider-->
-            <div id="provider_filter" class="input_field" >
-              <%= select_tag :provider, options_from_collection_for_select(current_user.organization.providers, 'id', 'name'), prompt: "Select Provider",  class: 'chosen-select' %>
-              <%= button_tag 'x', type: 'button', id: 'clear-provider', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
-            </div>
-
-            <!--subcon-->
-            <div id="subcontractor_filter" class="input_field" >
-              <%= select_tag :subcontractor, options_from_collection_for_select(current_user.organization.subcontractors, 'id', 'name'), prompt: "Select Subcontractor",  class: 'chosen-select' %>
-              <%= button_tag 'x', type: 'button', id: 'clear-subcontractor', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
-            </div>
-
-            <!--Affiliate-->
-            <div id="affiliate_filter" class="input_field" >
-              <%= select_tag :affiliate, options_from_collection_for_select(current_user.organization.affiliates, 'id', 'name'), prompt: "Select Affiliate",  class: 'chosen-select' %>
-              <%= button_tag 'x', type: 'button', id: 'clear-affiliate', class: 'yadcf-filter-reset-button cancel_filter_btn' %>
-           </div>
-
-         </div>
-
-        </div>
-
-
-
-    </div>
-
-    <div class="row-fluid job_search_table">
-
-      <div id="">
-        <table class="table table-striped display table-bordered responsive" id="job-search-results">
-          <thead>
-          <tr>
-            <th><%= Ticket.human_attribute_name(:ref_id) %></th>
-            <th><%= Ticket.human_attribute_name(:started_at) %></th>
-            <th><%= Ticket.human_attribute_name(:customer) %></th>
-            <th><%= Ticket.human_attribute_name(:name) %></th>
-            <th><%= Ticket.human_attribute_name(:provider) %></th>
-            <th><%= Ticket.human_attribute_name(:subcontractor) %></th>
-            <th><%= Ticket.human_attribute_name(:status) %></th>
-            <th><%= Ticket.human_attribute_name(:my_profit) %></th>
-            <th><%= Ticket.human_attribute_name(:total_price) %></th>
-            <th><%= Ticket.human_attribute_name(:total_cost) %></th>
-            <th><%= Ticket.human_attribute_name(:tags) %></th>
-            <th><%= Ticket.human_attribute_name(:external_ref) %></th>
-          </tr>
-          </thead>
-          <tbody>
-          </tbody>
-          <tfoot>
-          <tr>
-            <th><%= Ticket.human_attribute_name(:ref_id) %></th>
-            <th><%= Ticket.human_attribute_name(:started_at) %></th>
-            <th><%= Ticket.human_attribute_name(:customer) %></th>
-            <th><%= Ticket.human_attribute_name(:name) %></th>
-            <th><%= Ticket.human_attribute_name(:provider) %></th>
-            <th><%= Ticket.human_attribute_name(:subcontractor) %></th>
-            <th><%= Ticket.human_attribute_name(:status) %></th>
-            <th><%= Ticket.human_attribute_name(:my_profit) %></th>
-            <th><%= Ticket.human_attribute_name(:total_price) %></th>
-            <th><%= Ticket.human_attribute_name(:total_cost) %></th>
-            <th><%= Ticket.human_attribute_name(:tags) %></th>
-            <th><%= Ticket.human_attribute_name(:external_ref) %></th>
-          </tr>
-          </tfoot>
-
-        </table>
+      <div id="filter-view" class="row-fluid">
 
       </div>
 
+
+      <!--<button id="load-state">Load</button>-->
+      <!--<button id="save-state">Save</button>-->
+    </div>
+    <div id="job-index-filters" class="row-fluid">
+      <%= render 'service_calls/job_date_filters' %>
+      <%= render 'service_calls/job_status_filters' %>
+      <%= render 'service_calls/job_participant_filters' %>
+      <%= render 'service_calls/job_more_filters' %>
     </div>
 
 
+    <div class="row-fluid job-table-container job_search_table">
+
+      <div id="span12">
+        <table class="table table-striped display table-bordered" id="job-search-results">
+          <thead>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <!--End of Well-->
   </div>
-  <!--End of Well-->
+
+
 </div>
+

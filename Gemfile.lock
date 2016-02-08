@@ -289,6 +289,8 @@ GEM
     mini_portile (0.6.2)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
+    momentjs-rails (2.10.6)
+      railties (>= 3.1)
     monetize (0.1.4)
     money (6.0.1)
       i18n (~> 0.6.4)
@@ -334,7 +336,7 @@ GEM
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
     rack (1.4.7)
-    rack-cache (1.2)
+    rack-cache (1.6.0)
       rack (>= 0.4)
     rack-contrib (1.1.0)
       rack (>= 0.9.1)
@@ -352,6 +354,7 @@ GEM
       activesupport (= 3.2.22)
       bundler (~> 1.0)
       railties (= 3.2.22)
+    rails-bootstrap-daterangepicker (0.1.0)
     rails3_acts_as_paranoid (0.2.5)
       activerecord (~> 3.2)
     rails_12factor (0.0.2)
@@ -378,7 +381,7 @@ GEM
       thor (>= 0.14.6, < 2.0)
     rainbow (2.0.0)
     raindrops (0.13.0)
-    rake (10.4.2)
+    rake (10.5.0)
     rb-fsevent (0.9.1)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -555,6 +558,7 @@ DEPENDENCIES
   method_source
   metric_fu
   mocha
+  momentjs-rails
   monetize (= 0.1.4)
   money-rails (= 0.9.0)
   newrelic_rpm
@@ -567,6 +571,7 @@ DEPENDENCIES
   quiet_assets
   rack-mini-profiler
   rails (= 3.2.22)
+  rails-bootstrap-daterangepicker
   rails3-jquery-autocomplete!
   rails3_acts_as_paranoid (~> 0.2.5)
   rails_12factor

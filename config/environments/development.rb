@@ -54,7 +54,7 @@ Sbcx::Application.configure do
   }
 
 
-  BetterErrors.editor='rubymine://open?url=file://%{file}&line=%{line}'
+  BetterErrors.editor='x-mine://open?file=%{file}&line=%{line}' if defined?(BetterErrors)
 
   #config.log_tags = [:uuid, :remote_ip, lambda { |req| Time.now }]
 

@@ -71,6 +71,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :provider
   belongs_to :payment
   belongs_to :technician, class_name: User
+  belongs_to :employee, class_name: User
   has_many :events, as: :eventable, :order => 'id DESC', dependent: :destroy
   has_many :custom_events, as: :eventable, :order => 'id DESC', class_name: 'CustomEvent', table_name: 'events'
   has_many :notifications, as: :notifiable, dependent: :destroy
@@ -151,6 +152,10 @@ class Ticket < ActiveRecord::Base
 
   def technician_name
     technician.try(:name)
+  end
+
+  def employee_name
+    employee.try(:name)
   end
 
   def subcontractor_name

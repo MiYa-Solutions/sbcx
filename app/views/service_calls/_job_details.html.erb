@@ -128,6 +128,22 @@
           </ul>
           <br>
       <% end %>
+      <ul class="unstyled list_service_calls">
+        <li><label><%= @service_call.class.human_attribute_name(:employee) %></label></li>
+        <li>
+          <% if permitted_attribute? @service_call, :employee_id %>
+              <i class="icon-pencil"></i>&nbsp;
+              <%= best_in_place @service_call, :employee_id, type: :select, collection: technicians_collection %>
+          <% else %>
+
+              <%= @service_call.employee_name %>
+          <% end %>
+
+        </li>
+        </li>
+        <li></li>
+      </ul>
+      <br>
 
       <% if @service_call.transferred? %>
           <ul class="unstyled list_service_calls">
