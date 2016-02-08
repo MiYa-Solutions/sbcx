@@ -35,7 +35,7 @@ $.getRequetParam = (name)->
 jQuery ->
 
 #  $('#myJobTab a:first').tab 'show'
-  if $('#job-search-results').length > 0
+  if $('#job-search-results').length
     customerFilter = new App.CustomerFilter({table: $('#job-search-results'), element: $('#customer_search'), id_field: $('#customer_filter_id'), btn:$('#clear-customer'), view: '#job-participant-filters'})
     dateRange = new App.DateRangeFilter({element: $('#created-at-range'), table: $('#job-search-results'), btn: $('#clear-created-range'), view: '#job-date-filters'})
     startDateRange = new App.DateRangeFilter({element: $('#started-on-range'), table: $('#job-search-results'), btn: $('#clear-started-range'), view: '#job-date-filters'})

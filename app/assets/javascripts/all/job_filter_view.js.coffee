@@ -30,8 +30,11 @@ App.JobIndex.filterView =
     res
 
   getFiltersHtml: =>
+    html = ''
     filters_w_values = App.JobIndex.filterView.getFiltersWithValue(App.JobIndex.filterView.filters)
-    unless filters_w_values.length == 0
+    if filters_w_values.length == 0
+      return ''
+    else
       cols = 3
       col_span = 4
 
@@ -51,7 +54,11 @@ App.JobIndex.filterView =
           row_count = row
           html = html + "</div><div class='row-fluid'>"
 
-      html = html + '</div>'
+      if html == ''
+        return ''
+      else
+        html = html + '</div>'
+        return html
 
   setupClearAll: =>
     $('#clear-all-filters').click =>

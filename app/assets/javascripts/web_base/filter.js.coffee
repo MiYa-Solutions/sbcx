@@ -11,7 +11,7 @@ class App.Filter
     @view = hash['view']
 
 
-    @button.live 'click', =>
+    @button.on 'click', =>
       @clear()
 
     @select.on "change", =>
