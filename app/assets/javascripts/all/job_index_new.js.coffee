@@ -82,15 +82,11 @@ $ ->
         {
           sExtends: "pdf"
           sPdfOrientation: "landscape",
-          mColumns: (ctx) ->
-            api = new $.fn.dataTable.Api(ctx)
-            api.columns(':visible').indexes().toArray();
+          mColumns: "visible"
         }
         {
           sExtends: "xls"
-          mColumns: (ctx) ->
-            api = new $.fn.dataTable.Api(ctx)
-            api.columns(':visible').indexes().toArray();
+          mColumns: "visible"
 
         }
       ]
