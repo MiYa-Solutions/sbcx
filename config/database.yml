@@ -47,6 +47,14 @@ test:
   username: postgres
   password: Maxim2012
 
+profile:
+  adapter: postgresql
+  database: sbcx-prod-20151101
+  host: localhost
+  port: 5432
+  username: postgres
+  password: Maxim2012
+
 production:
   adapter: postgresql
   database: subcontrax-prod
