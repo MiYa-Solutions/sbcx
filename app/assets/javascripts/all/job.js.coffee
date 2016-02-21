@@ -114,4 +114,6 @@ jQuery ->
   $('#service_call_provider_agreement_id').change ->
     show_agr_props($('#service_call_provider_agreement_id :selected'))
 
+  $('#job-billing-component').jobBillingComponenet()
+
 

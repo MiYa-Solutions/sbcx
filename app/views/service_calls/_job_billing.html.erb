@@ -132,3 +132,11 @@
 
 
 </div>
+
+<div id="job-billing-component"
+     data-customer-account="<%= @service_call.customer_account.id %>"
+     data-job-id="<%= @service_call.id %>"
+     data-subcon-account="<%= @service_call.subcon_account.try(:id) %>" data-contractor-account="<%= @service_call.provider_account.try(:id) %>">
+
+
+</div>
