@@ -1,15 +1,200 @@
-<div class="well-small">
-    <h3>Customer Billing</h3>
-    <ul>
-        {{#each entries}}
-            <li>
-                Type: {{type}}
-            </li>
-            <li>
-                Status: {{status}}
+<div class="billing-component span4" id={{element_id}}>
+    <div class="row-fluid">
+        <div class="span2">
+                    <span class="" rel="tooltip"
+                          data-original-title="You have billing entries that are pending action. Click the 'More...' link below to see the entries...">
+                        <span class="label label_new_entry">1</span>
+                    </span>
 
-            </li>
+        </div>
+        <div class="span8">
+            <h3>Customer Billing</h3>
+            <h4>{{name}}</h4>
+        </div>
+        <div class="span2"></div>
+    </div>
+    <hr>
 
-        {{/each}}
-    </ul>
+
+    <div class="row-fluid">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Status</th>
+                <th>Balance</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="status_blue" id="service_call_billing_status">
+                    partially collected
+                </td>
+                <td class="">
+                    {{balance}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row-fluid">
+        <div class="span6 billing" id="show_customer_entries">
+
+            <a href="#job_customer_comp_modal" class="row-fluid" data-toggle="modal">
+                           <span class="strong" rel="tooltip"
+                                 data-original-title="Click for billing actions (e.g. payment collections) and more details">More...
+                        <i class="icon-chevron-down"/>
+           </span>
+
+
+            </a>
+
+        </div>
+
+    </div>
+</div>
+<div id='job_customer_comp_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-header">
+
+        <div class="title_label customer_title customer_billing_title">
+            <ul>
+                <li><h1>Customer Billing Entries</h1></li>
+
+                <li>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="modal-body">
+        <div class="row-fluid">
+
+            <div class="span9">
+
+                <div class="row-fluid">
+
+                    <div class="smart_label smart_label_billing">
+                        <ul>
+                            <li><h1>Billing History</h1></li>
+                            <li>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <br>
+
+                    <table class="table table-striped" id="customer_entries_in_service_call">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Account</th>
+                            <th>Status</th>
+                            <th>Account For</th>
+                            <th>Created at</th>
+                            <th>Type</th>
+                            <th>Payment notes</th>
+                            <th>Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each entries}}
+                            <tr>
+                                <td>{{id}}</td>
+                                <td>{{account_name}}</td>
+                                <td class="{{status}}">{{human_status}}</td>
+                                <td>{{human_type}}</td>
+                                <td>{{created_at}}</td>
+                                <td>{{human_type}}</td>
+                                <td>{{notes}}</td>
+                                <td>{{balance}}</td>
+                            </tr>
+
+                        {{/each}}
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <!--end span 9-->
+            </div>
+
+            <div class="span3">
+                <div class="well">
+
+                    {{#if allow_collection}}
+                        <form accept-charset="UTF-8" action="/service_calls/{{job_id}}" class="simple_form blue-button"
+                              id="edit_service_call_{{job_id}}" method="post" novalidate="novalidate">
+                            <div style="margin:0;padding:0;display:inline">
+                                <input name="utf8" type="hidden" value="✓">
+                                <input name="_method" type="hidden" value="put">
+                                <input name="authenticity_token" type="hidden" value="{{csrf_token}}">
+                            </div>
+
+                            <input id="service_call_collector_id" name="service_call[collector_id]" type="hidden"
+                                   value="{{org_id}}">
+                            <input id="service_call_collector_type" name="service_call[collector_type]" type="hidden"
+                                   value="Organization">
+
+                            <input id="service_call_billing_status_event" name="service_call[billing_status_event]"
+                                   type="hidden" value="collect">
+
+                            <div class="control-group select optional"><label class="select optional control-label"
+                                                                              for="service_call_payment_type">Payment
+                                Method</label>
+                                <div class="controls">
+                                    <select class="select optional" id="service_call_payment_type"
+                                            name="service_call[payment_type]">
+                                        <option value=""></option>
+                                        <option value="cash">Cash</option>
+                                        <option value="cheque">Check</option>
+                                        <option value="credit_card">Credit Card</option>
+                                        <option value="amex_credit_card">American Express</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-group string optional"><label class="string optional control-label"
+                                                                              for="service_call_payment_amount">Payment
+                                amount</label>
+                                <div class="controls"><input class="string optional" id="service_call_payment_amount"
+                                                             name="service_call[payment_amount]" size="50" type="text"
+                                                             value="{{balance}}"></div>
+                            </div>
+                            <div class="control-group string optional"><label class="string optional control-label"
+                                                                              for="service_call_payment_notes">Payment
+                                notes</label>
+                                <div class="controls">
+                                    <input class="string optional" id="service_call_payment_notes"
+                                           name="service_call[payment_notes]" size="50" type="text">
+                                </div>
+                            </div>
+                            <input class="btn btn-primary" data-theme="b" id="collect_service_call_btn" name="commit"
+                                   rel="tooltip" type="submit" value="Collect Payments"
+                                   data-original-title="Click to indicate the customer payment has been collected">
+                        </form>
+                    {{/if}}
+
+
+                    <!--<#%= billing_status_forms(@service_call) %>-->
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="title_label customer_title customer_billing_title">
+            <ul>
+                <li>
+                </li>
+                <li>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
 </div>

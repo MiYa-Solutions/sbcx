@@ -40,7 +40,7 @@
 //= require all/projects
 //= require parsley
 //= require all/accounting.min
-//= require handlebars.runtime
+//= require handlebars
 //= require all/confirmation_dialog
 //= require moment
 //= require bootstrap-daterangepicker
