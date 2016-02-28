@@ -1,0 +1,44 @@
+<div class="row-fluid">
+
+    <div class="smart_label smart_label_billing">
+        <ul>
+            <li><h1>Billing History</h1></li>
+            <li>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+
+    <table class="table table-striped" id="customer_entries_in_service_call">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Account</th>
+            <th>Status</th>
+            <th>Account For</th>
+            <th>Created at</th>
+            <th>Type</th>
+            <th>Payment notes</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each entries}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{account_name}}</td>
+                <td class="{{status}}">{{human_status}}</td>
+                <td>{{human_type}}</td>
+                <td>{{created_at}}</td>
+                <td>{{human_type}}</td>
+                <td>{{notes}}</td>
+                <td>{{balance}}</td>
+            </tr>
+
+        {{/each}}
+
+        </tbody>
+    </table>
+
+</div>

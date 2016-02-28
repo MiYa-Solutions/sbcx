@@ -1,0 +1,49 @@
+<form accept-charset="UTF-8" action="/service_calls/{{job_id}}" class="simple_form blue-button"
+      id="edit_service_call_{{job_id}}" method="post" novalidate="novalidate">
+    <div style="margin:0;padding:0;display:inline">
+        <input name="utf8" type="hidden" value="✓">
+        <input name="_method" type="hidden" value="put">
+        <input name="authenticity_token" type="hidden" value="{{csrf_token}}">
+    </div>
+
+    <input id="service_call_collector_id" name="service_call[collector_id]" type="hidden"
+           value="{{org_id}}">
+    <input id="service_call_collector_type" name="service_call[collector_type]" type="hidden"
+           value="Organization">
+
+    <input id="service_call_billing_status_event" name="service_call[billing_status_event]"
+           type="hidden" value="collect">
+
+    <div class="control-group select optional"><label class="select optional control-label"
+                                                      for="service_call_payment_type">Payment
+        Method</label>
+        <div class="controls">
+            <select class="select optional" id="service_call_payment_type"
+                    name="service_call[payment_type]">
+                <option value=""></option>
+                <option value="cash">Cash</option>
+                <option value="cheque">Check</option>
+                <option value="credit_card">Credit Card</option>
+                <option value="amex_credit_card">American Express</option>
+            </select>
+        </div>
+    </div>
+    <div class="control-group string optional"><label class="string optional control-label"
+                                                      for="service_call_payment_amount">Payment
+        amount</label>
+        <div class="controls"><input class="string optional" id="service_call_payment_amount"
+                                     name="service_call[payment_amount]" size="50" type="text"
+                                     value="{{balance}}"></div>
+    </div>
+    <div class="control-group string optional"><label class="string optional control-label"
+                                                      for="service_call_payment_notes">Payment
+        notes</label>
+        <div class="controls">
+            <input class="string optional" id="service_call_payment_notes"
+                   name="service_call[payment_notes]" size="50" type="text">
+        </div>
+    </div>
+    <input class="btn btn-primary" data-theme="b" id="collect_service_call_btn" name="commit"
+           rel="tooltip" type="submit" value="Collect Payments"
+           data-original-title="Click to indicate the customer payment has been collected">
+</form>
