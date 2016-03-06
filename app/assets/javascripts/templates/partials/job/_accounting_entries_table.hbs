@@ -14,28 +14,17 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Account</th>
             <th>Status</th>
-            <th>Account For</th>
             <th>Created at</th>
             <th>Type</th>
-            <th>Payment notes</th>
             <th>Amount</th>
+            <th>Collector</th>
+            <th>Notes</th>
         </tr>
         </thead>
         <tbody>
         {{#each entries}}
-            <tr>
-                <td>{{id}}</td>
-                <td>{{account_name}}</td>
-                <td class="{{status}}">{{human_status}}</td>
-                <td>{{human_type}}</td>
-                <td>{{created_at}}</td>
-                <td>{{human_type}}</td>
-                <td>{{notes}}</td>
-                <td>{{balance}}</td>
-            </tr>
-
+            {{entryRow this}}
         {{/each}}
 
         </tbody>

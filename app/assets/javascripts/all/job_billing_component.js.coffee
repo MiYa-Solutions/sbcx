@@ -6,6 +6,10 @@ class JobBillingComponent
     @contractor_account = @rootElement.data('contractor-account')
     @subcon_account = @rootElement.data('subcon-account')
     @job_id = @rootElement.data('job-id')
+    @org_id = @rootElement.data('org-id')
+    @subcon_name = @rootElement.data('subcon-name')
+    @customer_name = @rootElement.data('customer-name')
+
 
     # get the data
     @data = @getData()
@@ -25,8 +29,22 @@ class JobBillingComponent
 
 
   getEntriesForAccount: (account_id)=>
-    $.grep @data, (e) ->
+    res = $.grep @data, (e) ->
        return `e.account_id == account_id`
+    res
+
+  getOpenEntriesForAccount: (account_id)=>
+    res = $.grep @getEntriesForAccount(account_id), (e) ->
+      return e.events.length > 0
+    res
+
+  getDoneEntriesForAccount: (account_id)=>
+    res = $.grep @getEntriesForAccount(account_id), (e) ->
+      return e.events.length == 0
+    res
+
+
+
 
   addEntry: (obj)=>
     @data.push(obj)
@@ -43,13 +61,14 @@ class JobBillingComponent
     @rootElement.append(@drawContainer(@container_id))
 
     if @contractor_account
-      $('#' + container_id).append(@drawContractorComp(contractor_comp_id))
+      $('#' + @container_id).append(@drawContractorComp(contractor_comp_id))
 
 #    $('#' + container_id).append(@drawCustomerComponent(customer_comp_id))
     @customerComp.draw()
 
     if @subcon_account
-      $('#' + container_id).append(@drawSubconComponent(contractor_comp_id))
+      @subconComp = new App.JobSubconComponent(this, @subcon_account)
+      @subconComp.draw()
 
 #    $('#' + customer_comp_id).jobCustomerComponenet()
 
@@ -59,30 +78,10 @@ class JobBillingComponent
   drawContractorComp: (root_element)=>
     HandlebarsTemplates["jobs/job_contractor_component"]({element_id: root_element})
 
-  drawSubconComponent: (root_element)=>
-    HandlebarsTemplates["jobs/job_subcon_component"]({element_id: root_element})
-
 
 
   getData: =>
-    [
-      {
-        id: '11454',
-        account_id: '307'
-        account_name: 'Stam Shem'
-        created_at: 'Thu, 29 Oct 2015 10:45',
-        ref_id: '5905',
-        type: 'Check Payment',
-        human_type: 'Check Payment',
-        status: 'cleared',
-        human_status: 'Test',
-        amount: '$1',
-        balance: '$1',
-        actions: ['accept'],
-        notes: 'static notes',
-        collector_name: 'static collector'
-      }
-    ]
+    @rootElement.data('entries')
 
 $.fn.jobBillingComponenet = (options)->
   console.log('in plugin')

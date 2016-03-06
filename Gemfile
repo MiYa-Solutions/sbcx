@@ -50,6 +50,7 @@ gem 'acts_as_commentable_with_threading'
 
 gem 'roo'
 gem 'simple_token_authentication', '~> 1.0'
+gem 'active_model_serializers', '0.9.4'
 
 group :production do
   gem 'rails_12factor'

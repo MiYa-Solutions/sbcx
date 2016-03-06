@@ -117,9 +117,14 @@
     <div id="job-billing-component"
          data-customer-account="<%= @service_call.customer_account.id %>"
          data-job-id="<%= @service_call.id %>"
-         data-subcon-account="<%= @service_call.subcon_account.try(:id) %>" data-contractor-account="<%= @service_call.provider_account.try(:id) %>"
+         data-org-id="<%= @org.id %>"
+         data-subcon-name="<%= @service_call.subcontractor.try(:name) %>"
+         data-customer-name="<%= @service_call.customer.name %>"
+         data-subcon-account="<%= @service_call.subcontractor_id ? @service_call.subcon_account.id : nil %>"
          data-billing-actions="<%= @service_call.billing_status_events.to_json %>"
-         data-actions="<%= @service_call.status_events.to_json %>">
+         data-subcon-actions="<%= @service_call.subcontractor_status_events.to_json %>"
+         data-actions="<%= @service_call.status_events.to_json %>"
+         data-entries="<%= ActiveModel::ArraySerializer.new(@service_call.entries.all, each_serializer: AccountingEntrySerializer).to_json %>">
 
 
     </div>

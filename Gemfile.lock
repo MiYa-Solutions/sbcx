@@ -34,6 +34,8 @@ GEM
     active_attr (0.7.0)
       activemodel (>= 3.0.2, < 4.1)
       activesupport (>= 3.0.2, < 4.1)
+    active_model_serializers (0.9.4)
+      activemodel (>= 3.2)
     activeadmin (0.6.6)
       arbre (~> 1.0)
       bourbon (>= 1.0.0, < 4)
@@ -518,6 +520,7 @@ PLATFORMS
 DEPENDENCIES
   RedCloth (~> 4.2.9)
   active_attr (= 0.7.0)
+  active_model_serializers (= 0.9.4)
   activeadmin (= 0.6.6)
   activerecord-postgres-hstore (= 0.7.5)
   acts_as_commentable_with_threading
