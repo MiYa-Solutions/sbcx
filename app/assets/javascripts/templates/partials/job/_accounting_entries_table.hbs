@@ -1,4 +1,17 @@
 <div class="row-fluid">
+    <div class="smart_label smart_label_billing">
+        <ul>
+            <li><h1>Pending Actions</h1></li>
+            <li>
+            </li>
+        </ul>
+    </div>
+    <br>
+
+    {{> partials/job/_active_entries_table}}
+
+</div>
+<div class="row-fluid">
 
     <div class="smart_label smart_label_billing">
         <ul>
@@ -10,24 +23,5 @@
 
     <br>
 
-    <table class="table table-striped" id="customer_entries_in_service_call">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Status</th>
-            <th>Created at</th>
-            <th>Type</th>
-            <th>Amount</th>
-            <th>Collector</th>
-            <th>Notes</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each entries}}
-            {{entryRow this}}
-        {{/each}}
-
-        </tbody>
-    </table>
-
+    {{> partials/job/_closed_entries_table}}
 </div>

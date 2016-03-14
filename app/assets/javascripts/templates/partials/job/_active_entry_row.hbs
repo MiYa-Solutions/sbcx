@@ -1,0 +1,10 @@
+<tr id="accounting_entry_{{id}}">
+    <td id="entry_{{id}}_id">{{id}}</td>
+    <td id="entry_{{id}}_type">{{type}}</td>
+    <td id="entry_{{id}}_status" class="{{status}}">{{translateEntryStatus status}}</td>
+    <td id="entry_{{id}}_collector">{{collector}}</td>
+    <td id='entry_#{{id}}_amount' class='{{amountClass amount_cents}}'>{{formatMoney amount_cents}}</td>
+    <td id="entry_{{id}}_notes">{{notes}}</td>
+    <td class="customer_entries_actions" id="entry_{{id}}_actions">{{entryActionsHtml this}}</td>
+    <td></td>
+</tr>

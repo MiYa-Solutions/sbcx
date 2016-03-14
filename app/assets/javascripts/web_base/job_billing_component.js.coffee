@@ -1,4 +1,8 @@
 class JobBillingComponent
+  customerComp: null
+  contractorComp: null
+  subconComp: null
+
   constructor: (@rootElement)->
     console.log('in component constructor')
     # get params from element
@@ -17,11 +21,8 @@ class JobBillingComponent
     @init()
 
     @draw()
-
-  customerComp: null
-  contractorComp: null
-  subconComp: null
-
+    $(@rootElement.selector + ", form").submit ->
+      $(this).find("input[type='submit']").prop('disabled',true)
 
   init: =>
     @customerComp = new App.JobCustomerComponent(this, @customer_account)

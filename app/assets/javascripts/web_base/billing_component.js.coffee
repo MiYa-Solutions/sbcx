@@ -10,9 +10,6 @@ class App.BillingComponent
     @parent.container().hide().append(html).fadeIn('slow')
     $("##{@root_element} [rel=tooltip]").tooltip()
 
-  templateContext: =>
-    alert("BillingComponent: You forgot to define a templateContext method")
-
   balance: =>
     amount_cents = @entries().sumObjProp('amount_cents')
     Handlebars.SafeString "<span class='#{App.jobComponent.amountClass(amount_cents)}'> #{App.jobComponent.formatMoney(amount_cents)}</span>"
@@ -25,4 +22,19 @@ class App.BillingComponent
 
   closedEntris: =>
     @parent.getDoneEntriesForAccount(@account_id)
+
+  templateContext: =>
+    context = {}
+    context.csrf_token = App.csrf_token()
+    context.openEntriesCount = @openEntries().length
+    context.open_entries = @openEntries()
+    context.closed_entries = @closedEntris()
+    entries = @entries()
+    context.job_id = @job_id
+    context.org_id = @org_id
+    context.name = @name()
+    context.status = @status()
+    context.balance = @balance()
+    context.element_id = @root_element
+    context
 
