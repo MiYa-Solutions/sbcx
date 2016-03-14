@@ -36,12 +36,12 @@ class JobBillingComponent
 
   getOpenEntriesForAccount: (account_id)=>
     res = $.grep @getEntriesForAccount(account_id), (e) ->
-      return e.events.length > 0
+      return $.inArray(e.status, [2, 8001, 8002, 8003]) == -1
     res
 
   getDoneEntriesForAccount: (account_id)=>
     res = $.grep @getEntriesForAccount(account_id), (e) ->
-      return e.events.length == 0
+      return $.inArray(e.status, [2, 8001, 8002, 8003]) != -1
     res
 
 
