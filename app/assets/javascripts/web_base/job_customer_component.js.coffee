@@ -2,7 +2,8 @@ class App.JobCustomerComponent extends App.BillingComponent
 
   template: "jobs/job_customer_component"
 
-  constructor: (@parent, @account_id)->
+  constructor: (@parent, attr)->
+    super
     @root_element = 'customer-component'
     @job_id = @parent.job_id
     @org_id = @parent.org_id
@@ -10,18 +11,15 @@ class App.JobCustomerComponent extends App.BillingComponent
 
   templateContext: =>
     context = super
-    context.allow_collection = App.jobComponent.customerBillingAllowed()
+#    context.allow_collection = App.jobComponent.customerBillingAllowed()
+    context.allow_collection = @allowCollection()
     context
 
+  allowCollection: =>
+    @actions.indexOf('collect') > -1
   name: =>
     @customer_name
 
-
-  customerName: =>
-    'Static Customer Name'
-
-  status: =>
-    'static status'
 
 
 

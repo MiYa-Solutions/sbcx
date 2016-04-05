@@ -37,6 +37,10 @@ class JobComponent
       App.t.entry_status[status]
     )
 
+    Handlebars.registerHelper('translateCustomerStatus', (status)=>
+      App.t.customer_status[status]
+    )
+
     Handlebars.registerHelper('entryActionsHtml', (context)=>
       @entryActionsHtml(context)
     )

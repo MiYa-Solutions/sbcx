@@ -11,7 +11,7 @@ gem 'bootstrap-will_paginate', '0.0.5'
 gem 'bootstrap-datepicker-rails', '1.3.0.2'
 gem 'carmen', '1.0.0.beta2'
 gem 'carmen-rails', '1.0.0.beta3'
-gem 'active_attr', '0.7.0'
+gem 'active_attr', '0.8.1'
 gem 'newrelic_rpm'
 
 gem 'american_date', '1.0.0'

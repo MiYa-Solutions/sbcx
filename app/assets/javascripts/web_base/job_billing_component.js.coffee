@@ -25,7 +25,7 @@ class JobBillingComponent
       $(this).find("input[type='submit']").prop('disabled',true)
 
   init: =>
-    @customerComp = new App.JobCustomerComponent(this, @customer_account)
+    @customerComp = new App.JobCustomerComponent(this, @rootElement.data('customer-comp'))
     @container_id = 'job-billing-container'
 
 
@@ -68,7 +68,7 @@ class JobBillingComponent
     @customerComp.draw()
 
     if @subcon_account
-      @subconComp = new App.JobSubconComponent(this, @subcon_account)
+      @subconComp = new App.JobSubconComponent(this, @rootElement.data('subcon-comp'))
       @subconComp.draw()
 
 #    $('#' + customer_comp_id).jobCustomerComponenet()

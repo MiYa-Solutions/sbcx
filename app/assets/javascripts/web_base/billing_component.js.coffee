@@ -1,18 +1,27 @@
 class App.BillingComponent
   template: "you/forgot/to/specify/a/template in your subclass"
 
-  constructor: (@parent, @account_id)->
+  constructor: (@parent, attr)->
     @job_id = @parent.job_id
     @org_id = @parent.org_id
+    @account_id = attr.account
+    @status = attr.status
+    @name = attr.name
+    @actions = attr.actions
 
   draw: =>
     html = HandlebarsTemplates[@template](@templateContext() )
     @parent.container().hide().append(html).fadeIn('slow')
     $("##{@root_element} [rel=tooltip]").tooltip()
 
-  balance: =>
-    amount_cents = @entries().sumObjProp('amount_cents')
-    Handlebars.SafeString "<span class='#{App.jobComponent.amountClass(amount_cents)}'> #{App.jobComponent.formatMoney(amount_cents)}</span>"
+  balanceCents: =>
+    @entries().sumObjProp('amount_cents')
+
+  balanceHtml: =>
+    res = ''
+
+    res =  "<span class='#{App.jobComponent.amountClass(@balanceCents())}'> #{App.jobComponent.formatMoney(@balanceCents())}</span>"
+    return new Handlebars.SafeString(res)
 
   entries: =>
     @parent.getEntriesForAccount(@account_id)
@@ -23,6 +32,7 @@ class App.BillingComponent
   closedEntris: =>
     @parent.getDoneEntriesForAccount(@account_id)
 
+
   templateContext: =>
     context = {}
     context.csrf_token = App.csrf_token()
@@ -32,9 +42,10 @@ class App.BillingComponent
     entries = @entries()
     context.job_id = @job_id
     context.org_id = @org_id
-    context.name = @name()
-    context.status = @status()
-    context.balance = @balance()
+    context.name = @name
+    context.status = @status
+    context.balance = @balanceHtml()
+    context.balance_amount = @balanceCents() / 100
     context.element_id = @root_element
     context
 

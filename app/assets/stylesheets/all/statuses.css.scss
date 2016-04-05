@@ -9,21 +9,25 @@
 .blue_status {
   color: #3A87AD !important;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .gray_status {
   color: #696969 !important;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .green_status {
   color: #44AD3F !important;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .red_status {
   color: #DA4E49 !important;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .job_work_status_pending {
@@ -34,7 +38,7 @@
   @extend .red_status
 }
 
-.job_work_status_dispatched {
+.job_work_status_dispatched, ._4110 {
   @extend .blue_status
 }
 

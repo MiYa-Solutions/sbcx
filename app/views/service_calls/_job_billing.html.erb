@@ -115,6 +115,20 @@
 
   <div class="row-fluid">
     <div id="job-billing-component"
+         data-customer-comp="<%= {
+                                     account: @service_call.customer_account.id,
+                                     name: @service_call.customer.name,
+                                     actions: @service_call.billing_status_events.to_json,
+                                     status: @service_call.billing_status
+
+                                 }.to_json %>"
+         data-subcon-comp="<%= {
+                                     account: @service_call.subcontractor_id ? @service_call.subcon_account.id : nil,
+                                     name: @service_call.subcontractor.try(:name),
+                                     actions: @service_call.subcontractor_status_events.to_json,
+                                     status: @service_call.subcontractor_status
+
+                                 }.to_json %>"
          data-customer-account="<%= @service_call.customer_account.id %>"
          data-job-id="<%= @service_call.id %>"
          data-org-id="<%= @org.id %>"
