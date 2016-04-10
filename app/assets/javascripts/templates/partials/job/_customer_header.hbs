@@ -1,10 +1,11 @@
 <div class="row-fluid">
     <div class="span2">
+        {{#compare openEntriesCount ">" 0}}
                     <span class="" rel="tooltip"
                           data-original-title="You have billing entries that are pending action. Click the 'More...' link below to see the entries...">
                         <span class="label label_new_entry">{{openEntriesCount}}</span>
                     </span>
-
+        {{/compare}}
     </div>
     <div class="span8">
         <h3>Customer Billing</h3>

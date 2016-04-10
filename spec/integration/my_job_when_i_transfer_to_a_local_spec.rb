@@ -415,7 +415,7 @@ describe 'My Job When I Transfer to a Local Affiliate' do
 
                   context 'when none cash settled with the subcon' do
                     before do
-                      settle_with_subcon job, amount 109, type: 'credit_card'
+                      settle_with_subcon job, amount: 109, type: 'credit_card'
                     end
 
                     it 'the job status should be transferred' do

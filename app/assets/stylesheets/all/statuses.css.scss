@@ -30,54 +30,124 @@
   text-transform: uppercase;
 }
 
-.job_work_status_pending {
-  @extend .gray_status
-}
-
-.job_work_status_canceled {
+//red job statuses
+.job_work_status_canceled, .job_work_status_rejected {
   @extend .red_status
 }
 
-.job_work_status_dispatched, ._4110 {
+//green job statuses
+.job_work_status_done, .job_status_closed {
+  @extend .green_status
+}
+
+//gray job statuses
+.job_status_new, .job_work_status_pending, .subcon_3001 {
+  @extend .gray_status
+}
+
+//blue job statuses
+.job_status_transferred, .job_status_open, .job_work_status_dispatched, .job_work_status_accepted,
+.job_work_status_in_progress, .job_status_accepted {
   @extend .blue_status
 }
 
-.job_work_status_accepted {
+// === Customer Billing Status ===
+// * STATUS_PENDING             = 4100
+// * STATUS_COLLECTED           = 4102
+// * STATUS_OVERDUE             = 4103
+// * STATUS_PAID                = 4104
+// * STATUS_CLEARED             = 4108
+// * STATUS_REJECTED            = 4109
+// * STATUS_PARTIALLY_COLLECTED = 4110
+// * STATUS_OVERPAID            = 4113
+// * STATUS_IN_PROCESS          = 4114
+
+//blue customer billing statuses
+.billing_4110, .billing_4102, .billing_4104, .billing_4114 {
   @extend .blue_status
 }
 
-.job_work_status_rejected {
+//red customer billing statuses
+.billing_4103, .billing_4109, .billing_4113  {
   @extend .red_status
 }
 
-.job_work_status_done {
+//green customer billing statuses
+.billing_4108 {
   @extend .green_status
 }
 
-.job_work_status_in_progress {
-  @extend .blue_status
-}
-
-.job_status_open  {
-  @extend .blue_status
-
-}
-
-.job_status_closed  {
-  @extend .green_status
-
-}
-
-.job_status_transferred  {
-  @extend .blue_status
-}
-
-.job_status_accepted  {
-  @extend .blue_status
-}
-
-.job_status_new {
+//gray customer billing statuses
+.billing_4100 {
   @extend .gray_status
 }
+
+// == Subcon Statuses
+// * STATUS_NA                 = 3000
+// * STATUS_PENDING            = 3001
+// * STATUS_CLAIM_SETTLED      = 3002
+// * STATUS_CLAIMED_AS_SETTLED = 3003
+// * STATUS_SETTLED            = 3004
+// * STATUS_CLEARED            = 3005
+// * STATUS_CLAIMED_P_SETTLED  = 3006
+// * STATUS_P_SETTLED          = 3007
+// * STATUS_CLAIM_P_SETTLED    = 3008
+// * STATUS_REJECTED           = 3009
+// * STATUS_DISPUTED           = 3010
+
+//blue subcon statuses
+.subcon_3002, .subcon_3003, .subcon_3004, .subcon_3006, .subcon_3007, .subcon_3008 {
+  @extend .blue_status
+}
+
+//red subcon statuses
+.subcon_3009, .subcon_3010 {
+  @extend .red_status
+}
+
+//green subcon statuses
+.subcon_3005 {
+  @extend .gray_status
+}
+
+//gray subcon statuses
+.subcon_3000, .subcon_3001 {
+  @extend .gray_status
+}
+
+// Entry Statuses
+// * STATUS_PENDING   = 0
+// * STATUS_DEPOSITED = 1
+// * STATUS_CLEARED   = 2
+// * STATUS_SUBMITTED = 1000
+// * STATUS_CONFIRMED = 1001
+// * STATUS_DISPUTED  = 1002
+// * STATUS_REJECTED = 9001
+// * STATUS_ACCEPTED  = 8001
+// * STATUS_REJECTED  = 8002
+// * STATUS_CANCELED  = 8003
+// * STATUS_SUBMITTED = 8004
+// * STATUS_SUBMITTED = 4000
+
+//gray entry statuses
+.entry_status_0, .entry_status_8003 {
+  @extend .gray_status
+}
+
+//blue entry statues
+.entry_status_1, .entry_status_1000,.entry_status_8004, .entry_status_4000  {
+  @extend .blue_status
+}
+
+//red entry statues
+.entry_status_1002, .entry_status_9001, .entry_status_8002   {
+  @extend .red_status
+}
+
+//green entry statuses
+.entry_status_1001, .entry_status_8001, .entry_status_2 {
+  @extend .green_status
+}
+
 
 

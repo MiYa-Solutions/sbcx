@@ -1,6 +1,6 @@
 <tr id='accounting_entry_{{id}}'>
     <td id='entry_#{{id}}_id'>{{id}}</td>
-    <td id='entry_#{{id}}_status' class=''>{{translateEntryStatus status}}</td>
+    <td id='entry_#{{id}}_status' class='entry_status_{{status}}'>{{translateEntryStatus status}}</td>
     <td id='entry_#{{id}}_created_at'>{{formatDate created_at}}</td>
     <td id='entry_#{{id}}_type'>{{type}}</td>
     <td id='entry_#{{id}}_amount' class='{{amountClass amount_cents}}'>{{formatMoney amount_cents}}</td>

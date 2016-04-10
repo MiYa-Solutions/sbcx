@@ -85,6 +85,10 @@ class ProjectsController < ApplicationController
     @project
   end
 
+  def default_serializer_options
+    {root: false}
+  end
+
   private
 
   # Use this method to whitelist the permissible parameters. Example:

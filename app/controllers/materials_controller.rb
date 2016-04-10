@@ -35,6 +35,7 @@ class MaterialsController < ApplicationController
     end
   end
 
+
   # GET /materials/1
   # GET /materials/1.json
   def show
@@ -110,6 +111,13 @@ class MaterialsController < ApplicationController
     end
   end
 
+
+  protected
+
+  def default_serializer_options
+    {root: false}
+  end
+
   # This is required in order to ensure the user doesn't have access to materials of other organizations
   def autocomplete_material_name_where
     "organization_id = #{current_user.organization.id}"
@@ -125,4 +133,6 @@ class MaterialsController < ApplicationController
     @material.supplier = current_user.organization.becomes(Supplier)
 
   end
+
+
 end

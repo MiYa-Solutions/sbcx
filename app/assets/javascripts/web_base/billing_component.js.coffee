@@ -18,9 +18,9 @@ class App.BillingComponent
     @entries().sumObjProp('amount_cents')
 
   balanceHtml: =>
-    res = ''
-
-    res =  "<span class='#{App.jobComponent.amountClass(@balanceCents())}'> #{App.jobComponent.formatMoney(@balanceCents())}</span>"
+    res = 'N/A'
+    if @showBalance()
+      res =  "<span class='#{App.jobComponent.amountClass(@balanceCents())}'> #{App.jobComponent.formatMoney(@balanceCents())}</span>"
     return new Handlebars.SafeString(res)
 
   entries: =>
@@ -32,6 +32,8 @@ class App.BillingComponent
   closedEntris: =>
     @parent.getDoneEntriesForAccount(@account_id)
 
+  showBalance: =>
+    true
 
   templateContext: =>
     context = {}
@@ -47,5 +49,6 @@ class App.BillingComponent
     context.balance = @balanceHtml()
     context.balance_amount = @balanceCents() / 100
     context.element_id = @root_element
+    context.actions = @actions
     context
 

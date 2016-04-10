@@ -17,6 +17,10 @@ class App.JobCustomerComponent extends App.BillingComponent
 
   allowCollection: =>
     @actions.indexOf('collect') > -1
+
+  showBalance: =>
+    App.jobComponent.work_status == 2005 || App.jobComponent.work_status == 2006
+
   name: =>
     @customer_name
 

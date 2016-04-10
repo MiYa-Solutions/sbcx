@@ -6,6 +6,8 @@ class JobComponent
     @actions = @rootElement.data('actions')
     @subcon_name = @rootElement.data('subcon-name')
     @customer_name = @rootElement.data('customer-name')
+    @status = @rootElement.data('status')
+    @work_status = @rootElement.data('work-status')
     @registerHandlebarsHelpers()
     return
 
@@ -41,6 +43,10 @@ class JobComponent
       App.t.customer_status[status]
     )
 
+    Handlebars.registerHelper('translateSubconStatus', (status)=>
+      App.t.subcon_status[status]
+    )
+
     Handlebars.registerHelper('entryActionsHtml', (context)=>
       @entryActionsHtml(context)
     )
@@ -57,7 +63,54 @@ class JobComponent
       @formatMoney(amount)
     )
 
+    Handlebars.registerHelper('drawFormPartial', (path, context) =>
+      templateContext = context.data.root
+      templateContext.event = context.hash.event
 
+      res = HandlebarsTemplates[path+context.hash.event](templateContext)
+      return new Handlebars.SafeString(res)
+    )
+
+    Handlebars.registerHelper 'compare', (lvalue, operator, rvalue, options) ->
+      operators = undefined
+      result = undefined
+      if arguments.length < 3
+        throw new Error('Handlerbars Helper \'compare\' needs 2 parameters')
+      if options == undefined
+        options = rvalue
+        rvalue = operator
+        operator = '==='
+      operators =
+        '==': (l, r) ->
+          l == r
+        '===': (l, r) ->
+          l == r
+        '!=': (l, r) ->
+          l != r
+        '!==': (l, r) ->
+          l != r
+        '<': (l, r) ->
+          l < r
+        '>': (l, r) ->
+          l > r
+        '<=': (l, r) ->
+          l <= r
+        '>=': (l, r) ->
+          l >= r
+        'typeof': (l, r) ->
+          typeof l == r
+      if !operators[operator]
+        throw new Error('Handlerbars Helper \'compare\' doesn\'t know the operator ' + operator)
+      result = operators[operator](lvalue, rvalue)
+      if result
+        options.fn this
+      else
+        options.inverse this
+
+
+
+  drawFormPartial: (path, event) =>
+    path + event
   formatDate: (dateStr)=>
     moment(dateStr).format('ddd MMM DD YYYY, HH:mm:ss')
 
