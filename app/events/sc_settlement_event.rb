@@ -1,5 +1,6 @@
 class ScSettlementEvent < ServiceCallEvent
   include HstoreAmount
+  setup_hstore_attr 'notes'
   protected
 
   def update_affiliate_account(affiliate)

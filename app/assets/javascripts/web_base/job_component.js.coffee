@@ -15,8 +15,6 @@ class JobComponent
   customerBillingAllowed: =>
     @billing_actions.indexOf('collect') > -1
 
-  subconBillingAllowed: =>
-    @subcon_actions.indexOf('settle') > -1
 
   registerHandlebarsHelpers: =>
     Handlebars.registerHelper('entryRow', (entry)=>
@@ -115,12 +113,12 @@ class JobComponent
     moment(dateStr).format('ddd MMM DD YYYY, HH:mm:ss')
 
   entryActionsHtml: (entry)=>
-    res = "<ul class='cheque_payment adj_entry_events unstyled'>"
+    res = "<div><ul class='cheque_payment adj_entry_events unstyled'>"
     context = @entryFormContext(entry)
     for event in entry.events
       context.event = event
       res = res + HandlebarsTemplates["jobs/accouting_entry_form"](context)
-    return new Handlebars.SafeString(res + "</ul>")
+    return new Handlebars.SafeString(res + "</ul></div>")
 
   formatMoney: (moneyStr)=>
     amount = parseInt(moneyStr) / 100

@@ -121,5 +121,5 @@ group :test do
   gem 'simplecov'
   gem 'rest-client', '~> 1.7.2'
   gem 'method_source'
-  gem 'rspec_candy'
+  gem 'rspec_candy', '0.3.1'
 end

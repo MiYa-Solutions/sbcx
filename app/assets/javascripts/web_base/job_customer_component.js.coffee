@@ -5,8 +5,6 @@ class App.JobCustomerComponent extends App.BillingComponent
   constructor: (@parent, attr)->
     super
     @root_element = 'customer-component'
-    @job_id = @parent.job_id
-    @org_id = @parent.org_id
     @customer_name = @parent.customer_name
 
   templateContext: =>

@@ -18,6 +18,48 @@ describe 'Local Subcon Settlement: When partially_settled' do
     expect(job.reload.subcontractor_status_name).to eq :partially_settled
   end
 
+  context 'when over-paying the subcon' do
+    before do
+      settle_with_subcon job, amount: 1000, type: 'cash'
+      entry2.confirmed!
+      entry2.deposit!
+      job.reload
+    end
+
+    it 'the status should be partially_settled' do
+      expect(job.subcontractor_status_name).to eq :partially_settled
+    end
+
+    context 'when competing the job' do
+      before do
+        start_the_job job
+        add_bom_to_job job, cost: 10, price: 100, buyer: subcon, quantity: 1, buyer: subcon
+        complete_the_work job
+        job.reload
+      end
+
+      it 'the subcon status remains partially_settled' do
+        expect(job.reload.subcontractor_status_name).to eq :partially_settled
+      end
+
+
+      it 'should have a balance of 100 (as the bom reimbursement was already paid)' do
+        expect(job.subcon_balance).to eq Money.new(90000)
+      end
+
+      context 'when submitting payment for the balance to constitute a reimbursement' do
+        before do
+          settle_with_subcon job, amount: -90000, type: 'cash'
+        end
+
+        it 'subcon status should change to settled' do
+          expect(job.reload.subcontractor_status_name).to eq :settled
+        end
+
+      end
+
+    end  end
+
   context 'when paying the subcon again' do
     before do
       settle_with_subcon job, amount: 10, type: 'cheque'

@@ -3,11 +3,11 @@
   margin: 2px;
 }
 
-.reject-event, .dispute-event, .disputed-event {
+.reject-event, .rejected-event, .dispute-event, .disputed-event {
   @extend .btn-danger;
 }
 
-.clear-event, .confirm-event, .confirmed-event {
+.clear-event, .cleared-event, .confirm-event, .confirmed-event {
   @extend .btn-success;
 }
 

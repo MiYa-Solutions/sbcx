@@ -50,9 +50,8 @@
             <%= render 'provider_balance' %>
         <% when :broker %>
             <%= render 'provider_balance' %>
-            <%= render 'subcon_balance' %>
         <% else %>
-            <%= render 'subcon_balance' unless @service_call.subcon_na? %>
+
         <% end %>
 
 
@@ -75,18 +74,26 @@
          <% if @service_call.subcontractor_id %>
          data-subcon-comp="<%= {
                                    account: @service_call.subcon_account.id,
-                                   name:    @service_call.subcontractor.try(:name),
+                                   name:    @service_call.subcontractor.name,
                                    actions: @service_call.subcontractor_status_events,
                                    status:  @service_call.subcontractor_status
 
                                }.to_json %>"
          <% end %>
+         <% if @service_call.my_role != :prov %>
+         data-prov-comp="<%= {
+                                   account: @service_call.provider_account.id,
+                                   name:    @service_call.provider.name,
+                                   actions: @service_call.provider_status_events,
+                                   status:  @service_call.provider_status
+
+                               }.to_json %>"
+         <% end %>
+
          data-job-id="<%= @service_call.id %>"
          data-org-id="<%= @org.id %>"
          data-subcon-name="<%= @service_call.subcontractor.try(:name) %>"
          data-customer-name="<%= @service_call.customer.name %>"
-         data-subcon-account="<%= @service_call.subcontractor_id ? @service_call.subcon_account.id : nil %>"
-         data-billing-actions="<%= @service_call.billing_status_events.to_json %>"
          data-subcon-actions="<%= @service_call.subcontractor_status_events.to_json %>"
          data-actions="<%= @service_call.status_events.to_json %>"
          data-status="<%= @service_call.status %>"

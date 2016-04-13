@@ -6,6 +6,7 @@ App.t = {
     1000: 'Submitted'
     1001: 'Confirmed'
     1002: 'Disputed'
+    9001: 'Disputed'
     8001: 'Accepted'
     8002: 'Rejected'
     8003: 'Cancled'
@@ -33,6 +34,7 @@ App.t = {
     3007: 'Partially Settled'
     3008: 'Claim P. Settled'
     3009: 'Payment Rejected'
+    3010: 'Disputed'
   }
 
   work_status: {

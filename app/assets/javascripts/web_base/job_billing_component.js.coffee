@@ -13,6 +13,7 @@ class JobBillingComponent
     @org_id = @rootElement.data('org-id')
     @subcon_name = @rootElement.data('subcon-name')
     @customer_name = @rootElement.data('customer-name')
+    @billing_actions = @rootElement.data('billing-actions')
 
 
     # get the data
