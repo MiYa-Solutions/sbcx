@@ -26,6 +26,6 @@ class AccountingEntrySerializer < ActiveModel::Serializer
   end
 
   def collector
-    object.method_exists?(:collector) ? object.collector.try(:name) : ''
+    object.respond_to?(:collector) ? object.collector.try(:name) : ''
   end
 end
