@@ -88,7 +88,8 @@ jQuery ->
             sExtends: "xls"
             mColumns: "visible"
             fnCellRender: ( sValue, iColumn, nTr, iDataIndex ) ->
-              if iColumn == 8
+              # format money columns
+              if $.inArray(iColumn, [7, 8, 9, 19]) > -1
                 return accounting.formatMoney(parseInt(sValue) / 100)
 
               if /<[a-z][\s\S]*>/i.test(sValue)
@@ -107,6 +108,7 @@ jQuery ->
       deferLoading: 0
       ajax:
         url: '/api/v1/datatables/service_calls.json'
+        type: 'POST'
         data: (d) ->
           d.table_type = 'all_jobs'
           d.filters = {}
