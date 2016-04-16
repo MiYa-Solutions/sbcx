@@ -13,8 +13,10 @@ Sbcx::Application.routes.draw do
         match '/sign_out' => 'sessions#destroy', :via => :delete
       end
       resources :service_calls, only: [:show, :index, :update]
+      post '/service_calls' => 'service_calls#index'
       namespace :datatables do
         resources :service_calls, only: [:show, :index, :update]
+        post '/service_calls' => 'service_calls#index'
       end
     end
   end
