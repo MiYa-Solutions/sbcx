@@ -157,7 +157,7 @@ describe FlatFee do
         collect_full_amount job, type: 'cheque', collector: job.subcontractor.becomes(Organization)
         job.entries.last.deposit!
         job.subcon_payment = 'cheque'
-        settle_with_subcon job, amount: subcon_flat_fee + Money.new_with_dollars(bom2_cost*bom2_qty)
+        job.settle_subcon
       end
 
       it 'the event associated should be ScCollectEvent' do

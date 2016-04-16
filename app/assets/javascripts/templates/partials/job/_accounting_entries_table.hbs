@@ -1,0 +1,28 @@
+<div class="row-fluid">
+    {{#compare open_entries.length ">" 0 }}
+        <div class="smart_label smart_label_billing">
+            <ul>
+                <li><h1>Pending Actions</h1></li>
+                <li>
+                </li>
+            </ul>
+        </div>
+        <br>
+
+        {{> partials/job/_active_entries_table}}
+    {{/compare}}
+</div>
+<div class="row-fluid">
+
+    <div class="smart_label smart_label_billing">
+        <ul>
+            <li><h1>Billing History</h1></li>
+            <li>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+
+    {{> partials/job/_closed_entries_table}}
+</div>

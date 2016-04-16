@@ -10,7 +10,7 @@ module AccountingEntriesAssociation
 
   def subcon_entries
     if subcontractor
-      acc = Account.for_affiliate(organization, subcontractor).first
+      acc = subcon_account
       acc ? entries.by_acc(acc) : AccountingEntry.none
     else
       AccountingEntry.none
@@ -41,7 +41,7 @@ module AccountingEntriesAssociation
 
   def provider_entries
     if provider
-      acc = Account.for_affiliate(organization, provider).first
+      acc = provider_account
       acc ? entries.by_acc(acc) : AccountingEntry.none
     else
       AccountingEntry.none
@@ -60,7 +60,7 @@ module AccountingEntriesAssociation
 
   def customer_entries
     if customer
-      acc = Account.for_customer(customer).first
+      acc = customer_account
       acc ? entries.by_acc(acc) : AccountingEntry.none
     else
       AccountingEntry.none
@@ -69,6 +69,18 @@ module AccountingEntriesAssociation
 
   def active_customer_entries
     customer_entries.where('status NOT in (?)', [AccountingEntry::STATUS_CLEARED, CustomerPayment::STATUS_REJECTED, AdjustmentEntry::STATUS_CANCELED, AdjustmentEntry::STATUS_ACCEPTED])
+  end
+
+  def customer_account
+    @customer_account ||= Account.for_customer(customer).first
+  end
+
+  def provider_account
+    @provider_account ||= Account.for_affiliate(organization, provider).first
+  end
+
+  def subcon_account
+    @subcon_account ||= Account.for_affiliate(organization, subcontractor).first
   end
 
   private

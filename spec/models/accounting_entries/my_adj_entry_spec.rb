@@ -41,7 +41,7 @@ describe MyAdjEntry do
   let(:entry) { MyAdjEntry.new(ticket: ticket, account: acc, event: event, description: 'test', ticket_ref_id: ticket.id) }
 
   describe '#validate' do
-    it_should_run_callbacks :check_ticket_ref_id
+    # it_should_run_callbacks :check_ticket_ref_id
   end
 
   describe '#check_ticket_ref_id' do

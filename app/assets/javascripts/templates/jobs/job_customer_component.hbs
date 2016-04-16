@@ -1,0 +1,73 @@
+<div class="billing-component span4" id={{element_id}}>
+    {{> partials/job/_customer_header }}
+    {{> partials/job/_customer_status }}
+    <div class="row-fluid">
+        <div class="span6 billing" id="show_customer_entries">
+            <a href="#job_customer_comp_modal" class="row-fluid" data-toggle="modal">
+               <span class="strong" rel="tooltip"
+                     data-original-title="Click for billing actions (e.g. payment collections) and more details">
+                    More...
+                    <i class="icon-chevron-down"/>
+               </span>
+            </a>
+
+        </div>
+
+    </div>
+</div>
+<div id='job_customer_comp_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-header">
+
+        <div class="title_label customer_title customer_billing_title">
+            <ul>
+                <li><h1>Customer Billing: {{name}}</h1></li>
+                <li>
+                    {{> partials/job/_customer_actions }}
+                </li>
+
+                <li>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row-fluid">
+
+            {{#if allow_collection}}
+                <div class="span9">
+                    {{> partials/job/_accounting_entries_table }}
+                </div>
+
+                <div class="span3">
+                    <div class="well">
+
+                        {{> partials/job/_accounting_entry_form}}
+
+                    </div>
+                </div>
+            {{else}}
+                <div class="">
+                    {{> partials/job/_accounting_entries_table }}
+                </div>
+            {{/if}}
+        </div>
+        <ul/>
+        <div class="title_label customer_title customer_billing_title">
+            <ul>
+                <li>
+                </li>
+                <li>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<form accept-charset="UTF-8" action="/service_calls/{{job_id}}" class="simple_form blue-button"
+      id="subcon_status_settle" method="post" novalidate="novalidate">
+    <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method"
+                                                                                                     type="hidden"
+                                                                                                     value="put"><input
+            name="authenticity_token" type="hidden" value="{{csrf_token}}"></div>
+    <input id="service_call_subcontractor_status_event" name="service_call[subcontractor_status_event]"
+           type="hidden" value="settle">
+    <div class="control-group select optional"><label class="select optional control-label"
+                                                      for="service_call_subcon_settle_type">Payment Method</label>
+        <div class="controls"><select class="select mandatory" id="service_call_subcon_settle_type"
+                                      name="service_call[subcon_settle_type]">
+            <option value=""></option>
+            <option value="amex_credit_card">American Express</option>
+            <option value="cash">Cash</option>
+            <option value="cheque">Check</option>
+            <option value="credit_card">Credit Card</option>
+        </select></div>
+    </div>
+    <div class="control-group string mandatory">
+        <label class="string mandatory control-label"
+               for="service_call_subcon_settle_amount">Amount</label>
+        <div class="controls"><input class="string optional" id="service_call_subcon_settle_amount"
+                                     name="service_call[subcon_settle_amount]" size="50" type="number"
+                                     value="{{balance_amount}}">
+        </div>
+    </div>
+    <div class="controls">
+        <label class="string mandatory control-label"
+               for="service_call_payment_notes2">Note</label>
+
+        <input class="string optional" id="service_call_payment_notes2"
+               name="service_call[payment_notes]" size="50" type="text">
+    </div>
+
+    <input class="btn btn-primary" data-placement="right" id="settle_service_call_btn" name="commit" rel="tooltip"
+           type="submit" value="Submit" data-original-title="The amount paid to the subcontractor">
+</form>
