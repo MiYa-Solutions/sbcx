@@ -87,6 +87,14 @@ jQuery ->
           {
             sExtends: "xls"
             mColumns: "visible"
+            fnCellRender: ( sValue, iColumn, nTr, iDataIndex ) ->
+              if iColumn == 8
+                return accounting.formatMoney(parseInt(sValue) / 100)
+
+              if /<[a-z][\s\S]*>/i.test(sValue)
+                return $(sValue).text()
+              else
+                return sValue
 
           }
         ]
@@ -303,6 +311,24 @@ jQuery ->
           title: 'Notes',
           className: 'notes',
           name: 'notes',
+          orderable: false,
+          searchable: false
+        },
+# 18
+        {
+          data: 'tax',
+          title: 'Tax',
+          className: 'tax',
+          name: 'tax',
+          orderable: false,
+          searchable: false
+        },
+
+        {
+          data: 'tax_amount',
+          title: 'Tax Amount',
+          className: 'tax_amount',
+          name: 'tax_amount',
           orderable: false,
           searchable: false
         }

@@ -252,7 +252,10 @@ class Api::V1::Datatables::TicketsDatatable < Api::V1::Datatables::Datatable
         technician_name:      ticket.technician ? ticket.technician_name : '',
         full_address:         "#{ticket.address1}, #{ticket.address2} #{ticket.city}, #{ticket.state} #{ticket.zip}",
         scheduled_for:        ticket.scheduled_for ? l(ticket.scheduled_for, format: :no_tz) : '',
-        employee_name:        ticket.employee ? ticket.employee_name : ''
+        employee_name:        ticket.employee ? ticket.employee_name : '',
+        tax_amount:           ticket.tax_amount.cents,
+        tax:                  ticket.tax
+
     }
 
   end
