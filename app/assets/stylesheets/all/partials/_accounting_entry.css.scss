@@ -1,0 +1,16 @@
+.minimum-padding-margin {
+  padding: 2px;
+  margin: 2px;
+}
+
+.reject-event, .rejected-event, .dispute-event, .disputed-event {
+  @extend .btn-danger;
+}
+
+.clear-event, .cleared-event, .confirm-event, .confirmed-event {
+  @extend .btn-success;
+}
+
+.deposit-event, .deposited-event {
+  @extend .btn-primary;
+}

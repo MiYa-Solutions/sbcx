@@ -1,0 +1,72 @@
+<div class="billing-component span4" id={{element_id}}>
+    {{> partials/job/_subcon_header }}
+    {{> partials/job/_subcon_status }}
+    <div class="row-fluid">
+        <div class="span6 billing" id="show_customer_entries">
+            <a href="#job_subcon_comp_modal" class="row-fluid" data-toggle="modal">
+               <span class="strong" rel="tooltip"
+                     data-original-title="Click for billing actions (e.g. payment collections) and more details">
+                    More...
+                    <i class="icon-chevron-down"/>
+               </span>
+            </a>
+
+        </div>
+
+    </div>
+</div>
+<div id='job_subcon_comp_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-header">
+
+        <div class="title_label customer_title customer_billing_title">
+            <ul>
+                <li><h1>Subcontractor Billing: {{name}}</h1></li>
+
+                <li>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row-fluid">
+
+            {{#if allow_settle}}
+                <div class="span9">
+                    {{> partials/job/_accounting_entries_table }}
+                </div>
+
+                <div class="span3">
+                    <div class="well">
+
+                        {{> partials/job/_subcon_settle_form}}
+
+                    </div>
+                </div>
+            {{else}}
+                <div class="">
+                    {{> partials/job/_accounting_entries_table }}
+                </div>
+            {{/if}}
+
+        </div>
+
+        <ul/>
+        <div class="title_label customer_title customer_billing_title">
+            <ul>
+                <li>
+                </li>
+                <li>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>

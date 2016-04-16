@@ -1,0 +1,49 @@
+<div class="">
+    <a href="#job_subcon_collection_modal" class="row-fluid" data-toggle="modal">
+               <span class="btn btn-default" rel="tooltip"
+                     data-original-title="Click for billing actions (e.g. payment collections) and more details">
+                    Customer Payment
+                    <i class="icon-chevron-down"/>
+               </span>
+    </a>
+
+</div>
+<div id='job_subcon_collection_modal' class='modal hide fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-header">
+
+        <div class="title_label customer_title customer_billing_title">
+            <ul>
+                <li><h1>Customer Payment: {{customer_name}}</h1></li>
+
+                <li>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row-fluid">
+
+            {{> partials/job/_accounting_entry_form}}
+
+        </div>
+
+        <ul/>
+        <div class="title_label customer_title customer_billing_title">
+            <ul>
+                <li>
+                </li>
+                <li>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>

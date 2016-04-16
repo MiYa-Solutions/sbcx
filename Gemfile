@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby '2.0.0'
 
-gem 'rails', '3.2.22'
+gem 'rails', '3.2.22.1'
 gem 'jquery-rails', '2.1.4'
 gem 'jquery_mobile_rails', '1.2.0'
 gem 'bcrypt-ruby', '3.0.1'
@@ -11,7 +11,7 @@ gem 'bootstrap-will_paginate', '0.0.5'
 gem 'bootstrap-datepicker-rails', '1.3.0.2'
 gem 'carmen', '1.0.0.beta2'
 gem 'carmen-rails', '1.0.0.beta3'
-gem 'active_attr', '0.7.0'
+gem 'active_attr', '0.8.1'
 gem 'newrelic_rpm'
 
 gem 'american_date', '1.0.0'
@@ -50,6 +50,7 @@ gem 'acts_as_commentable_with_threading'
 
 gem 'roo'
 gem 'simple_token_authentication', '~> 1.0'
+gem 'active_model_serializers', '0.9.4'
 
 group :production do
   gem 'rails_12factor'
@@ -80,6 +81,11 @@ group :development, :test do
   gem 'rack-mini-profiler'
 end
 
+group :profile do
+  gem 'ruby-prof'
+  gem 'test-unit'
+end
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -92,7 +98,7 @@ group :assets do
   gem 'bootstrap-sass', '2.0.4'
   gem 'chosen-rails', '1.1.0'
   gem 'compass', '0.12.6'
-  gem 'handlebars_assets'
+  gem 'handlebars_assets', '0.18'
   gem 'parsley-rails'
   gem 'momentjs-rails'
   gem 'rails-bootstrap-daterangepicker'
@@ -115,5 +121,5 @@ group :test do
   gem 'simplecov'
   gem 'rest-client', '~> 1.7.2'
   gem 'method_source'
-  gem 'rspec_candy'
+  gem 'rspec_candy', '0.3.1'
 end

@@ -101,7 +101,8 @@ class ServiceCallObserver < ActiveRecord::Observer
     if service_call.subcon_settlement_attributes_valid?
       service_call.settled_on = Time.zone.now
       service_call.events << ScSubconSettleEvent.new(amount:       service_call.subcon_settle_money,
-                                                     payment_type: service_call.subcon_settle_type)
+                                                     payment_type: service_call.subcon_settle_type,
+                                                     notes:        service_call.payment_notes)
     end
   end
 
@@ -119,7 +120,8 @@ class ServiceCallObserver < ActiveRecord::Observer
     Rails.logger.debug { "invoked observer AFTER subcon_collected_payment \n #{service_call.inspect} \n #{transition.args.inspect}" }
     service_call.events << ScCollectedEvent.new(amount:       service_call.payment_money,
                                                 payment_type: service_call.payment_type,
-                                                collector:    service_call.collector) unless transition.args.first == :state_only
+                                                collector:    service_call.collector,
+                                                notes:        service_call.payment_notes) unless transition.args.first == :state_only
 
   end
 

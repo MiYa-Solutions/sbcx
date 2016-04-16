@@ -171,6 +171,14 @@ class ServiceCallsController < ApplicationController
     params[:broker_service_call] = params[:service_call]
   end
 
+  protected
+
+  def default_serializer_options
+    {root: false}
+  end
+
+
+
   private
 
   def render_csv

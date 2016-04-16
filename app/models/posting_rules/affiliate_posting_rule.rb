@@ -150,19 +150,37 @@ class AffiliatePostingRule < PostingRule
   def cparty_settlement_entries
     result = []
 
-
     case @event.payment_type
       when 'cash'
-        result << CashPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Cash payment from affiliate")
+        result << CashPaymentFromAffiliate.new(agreement:   agreement,
+                                               event:       @event,
+                                               ticket:      @ticket,
+                                               notes:       @event.notes,
+                                               amount:      @event.amount,
+                                               description: "Cash payment from affiliate", notes: @event.notes)
       when 'credit_card'
-        result << CreditPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Credit card payment from affiliate")
+        result << CreditPaymentFromAffiliate.new(agreement:   agreement,
+                                                 event:       @event,
+                                                 ticket:      @ticket,
+                                                 notes:       @event.notes,
+                                                 amount:      @event.amount,
+                                                 description: "Credit card payment from affiliate", notes: @event.notes)
       when 'amex_credit_card'
-        result << AmexPaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "AMEX payment from affiliate")
+        result << AmexPaymentFromAffiliate.new(agreement:   agreement,
+                                               event:       @event,
+                                               notes:       @event.notes,
+                                               ticket:      @ticket,
+                                               amount:      @event.amount,
+                                               description: "AMEX payment from affiliate", notes: @event.notes)
       when 'cheque'
-        result << ChequePaymentFromAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Check payment from affiliate")
+        result << ChequePaymentFromAffiliate.new(agreement:   agreement,
+                                                 event:       @event,
+                                                 ticket:      @ticket,
+                                                 notes:      @event.notes,
+                                                 amount:      @event.amount,
+                                                 description: "Check payment from affiliate", notes: @event.notes)
       else
         raise "#{self.class.name}: Unexpected payment type (#{@event.payment_type}) when processing the event #{@event.inspect}"
-
     end
 
     result
@@ -254,18 +272,30 @@ class AffiliatePostingRule < PostingRule
         result << CashPaymentToAffiliate.new(agreement:   agreement,
                                              event:       @event,
                                              ticket:      @ticket,
+                                             notes:       @event.notes,
                                              amount:      @event.amount,
                                              description: "Cash payment to #{@account.accountable.name} (Affilaite)")
       when 'credit_card'
         result << CreditPaymentToAffiliate.new(agreement:   agreement,
                                                event:       @event,
                                                ticket:      @ticket,
+                                               notes:       @event.notes,
                                                amount:      @event.amount,
                                                description: "Credit card payment to #{@account.accountable.name} (Affilaite)")
       when 'amex_credit_card'
-        result << AmexPaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "AMEX payment to #{@account.accountable.name} (Affilaite)")
+        result << AmexPaymentToAffiliate.new(agreement:   agreement,
+                                             event:       @event,
+                                             ticket:      @ticket,
+                                             notes:       @event.notes,
+                                             amount:      @event.amount,
+                                             description: "AMEX payment to #{@account.accountable.name} (Affilaite)")
       when 'cheque'
-        result << ChequePaymentToAffiliate.new(agreement: agreement, event: @event, ticket: @ticket, amount: @event.amount, description: "Check payment to #{@account.accountable.name} (Affilaite)")
+        result << ChequePaymentToAffiliate.new(agreement:   agreement,
+                                               event:       @event,
+                                               ticket:      @ticket,
+                                               notes:       @event.notes,
+                                               amount:      @event.amount,
+                                               description: "Check payment to #{@account.accountable.name} (Affilaite)")
       else
 
     end

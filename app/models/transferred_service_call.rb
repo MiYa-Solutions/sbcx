@@ -145,6 +145,10 @@ class TransferredServiceCall < ServiceCall
     (accepted? || transferred?) && !payment_collected? && provider_pending?
   end
 
+  def user_billing_events
+    billing_status_events & [:collect]
+  end
+
   def payments
     if provider.member?
       provider_ticket.payments

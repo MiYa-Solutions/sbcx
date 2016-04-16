@@ -1,0 +1,7 @@
+<ul class="inline unstyled">
+    {{#each actions}}
+        {{#compare this '!=' 'collect' }}
+            {{drawFormPartial 'jobs/forms/customer_billing/' event=this}}
+        {{/compare}}
+    {{/each}}
+</ul>

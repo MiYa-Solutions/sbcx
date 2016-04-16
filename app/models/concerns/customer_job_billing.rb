@@ -139,6 +139,10 @@ module CustomerJobBilling
     payments.with_status([:pending, :deposited, :cleared]).size > 0
   end
 
+  def user_billing_events
+    billing_status_events & [:collect, :late, :reimburse]
+  end
+
 
   alias_method :payment_cleared?, :fully_cleared?
 

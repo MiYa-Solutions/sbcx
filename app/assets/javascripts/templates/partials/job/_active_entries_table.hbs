@@ -1,0 +1,20 @@
+<table class="table table-striped" id="customer_accounting_entries_table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Collector</th>
+        <th>Amount</th>
+        <th>Payment notes</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each open_entries}}
+        {{>  partials/job/_active_entry_row}}
+    {{/each}}
+
+    </tbody>
+
+</table>

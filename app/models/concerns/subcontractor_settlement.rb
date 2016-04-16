@@ -143,6 +143,7 @@ module SubcontractorSettlement
       event :update_status do
         transition :claim_p_settled => :claim_settled, if: ->(sc) { sc.subcon_fully_settled? }
         transition :partially_settled => :settled, if: ->(sc) { sc.subcon_fully_settled? }
+        transition :settled => :cleared, if: ->(sc) { sc.subcon_fully_paid? }
       end
 
 
@@ -176,7 +177,7 @@ module SubcontractorSettlement
     if self.canceled?
       true
     elsif self.work_done?
-      subcon_total > 0 ? subcon_total - (subcon_settled_amount.abs + Money.new(current_payment.to_f * 100, subcon_charge.currency)) <= 0 : false
+      subcon_total > 0 ? subcon_total - (subcon_settled_amount.abs + Money.new(current_payment.to_f * 100, subcon_charge.currency)) == 0 : false
     else
       false
     end

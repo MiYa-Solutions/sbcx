@@ -1,0 +1,15 @@
+<li>
+    <form accept-charset="UTF-8" action="/accounting_entries/{{id}}"
+          class="simple_form adj_entry_clear_form "
+          id="edit_accounting_entry_{{id}}" method="post" novalidate="novalidate">
+        <div style="margin:0;padding:0;display:inline">
+            <input name="utf8" type="hidden" value="✓">
+            <input name="_method" type="hidden" value="put">
+            <input name="authenticity_token" type="hidden" value="{{csrf_token}}">
+        </div>
+        <input id="accounting_entry_{{id}}_status_event" name="accounting_entry[status_event]" type="hidden"
+               value="{{event}}">
+        <input class="btn btn-mini {{event}}-event" id="{{id}}_{{event}}_btn" name="commit"
+               type="submit" value="{{event}}">
+    </form>
+</li>

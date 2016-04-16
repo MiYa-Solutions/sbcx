@@ -141,6 +141,7 @@ module ProviderSettlement
       event :update_status do
         transition :claimed_p_settled => :claimed_as_settled, if: ->(sc) { sc.provider_fully_settled? }
         transition :partially_settled => :settled, if: ->(sc) { sc.provider_fully_settled? }
+        transition :settled => :cleared, if: ->(sc) { sc.provider_fully_settled? }
       end
 
 
@@ -175,7 +176,7 @@ module ProviderSettlement
     if self.canceled?
       true
     elsif self.work_done?
-      provider_total > 0 ? provider_total - (provider_settled_amount.abs + Money.new(current_payment.to_f * 100, provider_charge.currency)) <= 0 : false
+      provider_total > 0 ? provider_total - (provider_settled_amount.abs + Money.new(current_payment.to_f * 100, provider_charge.currency)) == 0 : false
     else
       false
     end

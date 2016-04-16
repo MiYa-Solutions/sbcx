@@ -1,0 +1,15 @@
+<li>
+    <form accept-charset="UTF-8" action="/service_call/{{job_id}}"
+          class="simple_form "
+          id="billing_action_{{event}}_{{job_id}}" method="post" novalidate="novalidate">
+        <div style="margin:0;padding:0;display:inline">
+            <input name="utf8" type="hidden" value="✓">
+            <input name="_method" type="hidden" value="put">
+            <input name="authenticity_token" type="hidden" value="{{csrf_token}}">
+        </div>
+        <input id="{{job_id}}_billing_event" name="service_call[billing_event]" type="hidden"
+               value="{{event}}">
+        <input class="btn {{event}}-event" id="{{job_id}}_{{event}}_btn" name="commit"
+               type="submit" value="{{event}}">
+    </form>
+</li>

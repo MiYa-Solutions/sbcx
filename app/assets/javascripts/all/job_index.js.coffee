@@ -39,6 +39,7 @@ class App.DataTableJobsFormater
     @format_total_price(row, job) if $('.total_price', row).length > 0
     @format_my_profit(row, job) if $('.my_profit', row).length > 0
     @format_total_cost(row, job) if $('.total_cost', row).length > 0
+    @format_tax_amount(row, job) if $('.tax_amount', row).length > 0
 
   format_customer_balance: (row, job) ->
     @format_ccy(row, job, 'customer_balance')
@@ -51,6 +52,9 @@ class App.DataTableJobsFormater
 
   format_total_price: (row, job) ->
     @format_ccy(row, job, 'total_price')
+
+  format_tax_amount: (row, job) ->
+    @format_ccy(row, job, 'tax_amount')
 
   format_total_cost: (row, job) ->
     @format_ccy(row, job, 'total_cost')
