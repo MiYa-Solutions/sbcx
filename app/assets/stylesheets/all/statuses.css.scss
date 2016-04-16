@@ -63,7 +63,7 @@
 // * STATUS_IN_PROCESS          = 4114
 
 //blue customer billing statuses
-.billing_4110, .billing_4102, .billing_4104, .billing_4114 {
+.billing_4110, .billing_4102, .billing_4114 {
   @extend .blue_status
 }
 
@@ -73,7 +73,7 @@
 }
 
 //green customer billing statuses
-.billing_4108 {
+.billing_4108, .billing_4104 {
   @extend .green_status
 }
 
@@ -107,7 +107,7 @@
 
 //green subcon statuses
 .subcon_3005 {
-  @extend .gray_status
+  @extend .green_status
 }
 
 //gray subcon statuses
@@ -135,7 +135,7 @@
 }
 
 //blue entry statues
-.entry_status_1, .entry_status_1000,.entry_status_8004, .entry_status_4000  {
+.entry_status_1, .entry_status_1000, .entry_status_1001, .entry_status_8004, .entry_status_4000  {
   @extend .blue_status
 }
 
@@ -145,7 +145,7 @@
 }
 
 //green entry statuses
-.entry_status_1001, .entry_status_8001, .entry_status_2 {
+.entry_status_8001, .entry_status_2 {
   @extend .green_status
 }
 

@@ -6,6 +6,7 @@ App.t = {
     1000: 'Submitted'
     1001: 'Confirmed'
     1002: 'Disputed'
+    4000: 'Pending'
     9001: 'Disputed'
     8001: 'Accepted'
     8002: 'Rejected'
@@ -23,7 +24,7 @@ App.t = {
     4113: 'Over Paid',
     4114: 'In Process'
   }
-  subcon_status: {
+  affiliate_status: {
     3000: 'N/A'
     3001: 'Pending'
     3002: 'Claim Settled'

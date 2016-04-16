@@ -14,9 +14,6 @@ class App.JobSubconComponent extends App.BillingComponent
     context.customer_name = @customerName()
     context
 
-  showBalance: =>
-    App.jobComponent.work_status == 2005 || App.jobComponent.work_status == 2006
-
   subconBillingAllowed: =>
     @parent.billing_actions.indexOf('collect') > -1
 

@@ -377,8 +377,13 @@ describe 'My Job When I Transfer to a Local Affiliate' do
                   end
 
                   context 'when cash settled with the subcon' do
+                    let(:entry) {job.entries.order('id asc').last}
                     before do
                       settle_with_subcon job, type: 'cash', amount: 109
+                      entry.confirmed!
+                      entry.deposited!
+                      job.reload
+
                     end
 
                     it 'the job status should be transferred' do

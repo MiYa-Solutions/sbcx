@@ -14,6 +14,9 @@ class App.BillingComponent
     @parent.container().hide().append(html).fadeIn('slow')
     $("##{@root_element} [rel=tooltip]").tooltip()
 
+  showBalance: =>
+    App.jobComponent.work_status == 2005 || App.jobComponent.work_status == 2006
+
   balanceCents: =>
     @entries().sumObjProp('amount_cents')
 

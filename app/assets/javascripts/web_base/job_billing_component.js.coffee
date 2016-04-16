@@ -7,7 +7,8 @@ class JobBillingComponent
     console.log('in component constructor')
     # get params from element
     @customer_account = @rootElement.data('customer-account')
-    @contractor_account = @rootElement.data('contractor-account')
+    @billing_actions = @rootElement.data('billing-actions')
+    @job_role = @rootElement.data('job-role')
     @subcon_account = @rootElement.data('subcon-account')
     @job_id = @rootElement.data('job-id')
     @org_id = @rootElement.data('org-id')
@@ -26,26 +27,27 @@ class JobBillingComponent
       $(this).find("input[type='submit']").prop('disabled',true)
 
   init: =>
-    @customerComp = new App.JobCustomerComponent(this, @rootElement.data('customer-comp'))
     @container_id = 'job-billing-container'
 
 
   getEntriesForAccount: (account_id)=>
     res = $.grep @data, (e) ->
        return `e.account_id == account_id`
-    res
+    res.sort (a, b)->
+      b.id - b.id
 
   getOpenEntriesForAccount: (account_id)=>
     res = $.grep @getEntriesForAccount(account_id), (e) ->
-      return $.inArray(e.status, [2, 8001, 8002, 8003]) == -1
+      return e.events.length > 0
     res
 
   getDoneEntriesForAccount: (account_id)=>
     res = $.grep @getEntriesForAccount(account_id), (e) ->
-      return $.inArray(e.status, [2, 8001, 8002, 8003]) != -1
+      return e.events.length == 0
     res
 
-
+  customerCompData: =>
+    @rootElement.data('customer-comp')
 
 
   addEntry: (obj)=>
@@ -59,16 +61,17 @@ class JobBillingComponent
     contractor_comp_id = 'contractor-billing-container'
     subcon_comp_id = 'subcon-billing-container'
 
-    console.log('in draw' + @data.toString())
     @rootElement.append(@drawContainer(@container_id))
 
-    if @contractor_account
-      $('#' + @container_id).append(@drawContractorComp(contractor_comp_id))
+    if @job_role == 'prov'
+      @customerComp = new App.JobCustomerComponent(this, @rootElement.data('customer-comp'))
+      @customerComp.draw()
+    else
+      @contractorComp = new App.JobContractorComponent(this, @rootElement.data('prov-comp'))
+      @contractorComp.draw()
 
-#    $('#' + container_id).append(@drawCustomerComponent(customer_comp_id))
-    @customerComp.draw()
 
-    if @subcon_account
+    if @rootElement.data('subcon-comp')
       @subconComp = new App.JobSubconComponent(this, @rootElement.data('subcon-comp'))
       @subconComp.draw()
 
@@ -76,10 +79,6 @@ class JobBillingComponent
 
   drawContainer: (root_element)=>
     HandlebarsTemplates["jobs/job_billing_component"]({element_id: root_element})
-
-  drawContractorComp: (root_element)=>
-    HandlebarsTemplates["jobs/job_contractor_component"]({element_id: root_element})
-
 
 
   getData: =>

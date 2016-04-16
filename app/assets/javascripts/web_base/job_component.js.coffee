@@ -42,7 +42,11 @@ class JobComponent
     )
 
     Handlebars.registerHelper('translateSubconStatus', (status)=>
-      App.t.subcon_status[status]
+      App.t.affiliate_status[status]
+    )
+
+    Handlebars.registerHelper('translateContractorStatus', (status)=>
+      App.t.affiliate_status[status]
     )
 
     Handlebars.registerHelper('entryActionsHtml', (context)=>

@@ -10,5 +10,7 @@
 //=require web_base/billing_component
 //=require web_base/job_customer_component
 //=require web_base/job_subcon_component
+//=require web_base/customer_collection_component
+//=require web_base/job_contractor_component
 //=require web_base/job_billing_component
 

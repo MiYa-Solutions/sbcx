@@ -548,7 +548,7 @@ class PermittedParams < Struct.new(:params, :user, :obj)
   end
 
   def sc_provider_status_attrs
-    provider_status_allowed? ? [:provider_status_event, :prov_settle_type, :prov_settle_amount] : []
+    provider_status_allowed? ? [:provider_status_event, :prov_settle_type, :prov_settle_amount, :payment_notes] : []
   end
 
   def sc_transfer_attrs
