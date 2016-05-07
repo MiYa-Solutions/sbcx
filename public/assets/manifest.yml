@@ -253,6 +253,8 @@ application.css: application-ee16b3f54eaef040bca7e469570895b9.css
 application/index.css: application-ee16b3f54eaef040bca7e469570895b9.css
 mobile.css: mobile-a497ff44007c1ddc8285329321eb4531.css
 mobile/index.css: mobile-a497ff44007c1ddc8285329321eb4531.css
+pdf.css: pdf-06bde75408156a40eed5882c0aa17ab5.css
+pdf/index.css: pdf-06bde75408156a40eed5882c0aa17ab5.css
 dataTables/extras/bullet_delete.png: dataTables/extras/bullet_delete-bc52399892998e90bc910390c6397e0d.png
 dataTables/extras/bullet_delete/index.png: dataTables/extras/bullet_delete-bc52399892998e90bc910390c6397e0d.png
 dataTables/unchecked.gif: dataTables/unchecked-1bc833e2c46e5fc451f3821b4c100157.gif
