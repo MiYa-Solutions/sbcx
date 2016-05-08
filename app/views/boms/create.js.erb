@@ -101,4 +101,5 @@ $('#job_total_price').text('<%= j(humanized_money_with_symbol @service_call.tota
 $('#job_total').text('<%= j(humanized_money_with_symbol @service_call.total) %>');
 <% end %>
 
-$('#add_part').prop('disabled',false)
+$('#add_part').prop('disabled',false);
+$('input#bom_material_name').focus();
