@@ -100,3 +100,5 @@ $('#job_total_cost').text('<%= j(humanized_money_with_symbol @service_call.total
 $('#job_total_price').text('<%= j(humanized_money_with_symbol @service_call.total_price) %>');
 $('#job_total').text('<%= j(humanized_money_with_symbol @service_call.total) %>');
 <% end %>
+
+$('#add_part').prop('disabled',false)
