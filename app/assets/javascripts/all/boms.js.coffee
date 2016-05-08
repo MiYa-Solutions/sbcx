@@ -1,4 +1,7 @@
 jQuery ->
+  $('#bom').on 'shown', ->
+    $('#bom_material_name').focus() 
+  
   old_val = $('#add_part').val()
   $('#spinner').toggle()
   $('#new-bom-button').click (e) ->
