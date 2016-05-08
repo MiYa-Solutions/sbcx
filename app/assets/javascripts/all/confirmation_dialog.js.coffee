@@ -44,4 +44,8 @@ $.rails.allowAction = (element) ->
     $('#confirmation_modal').modal('hide')
     $('#confirmation_modal').remove()
 
+  $($link).click ->
+    $('#confirmation_modal').modal('hide')
+    $('#confirmation_modal').remove()
+
   return false
