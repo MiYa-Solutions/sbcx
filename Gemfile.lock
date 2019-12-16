@@ -181,7 +181,7 @@ GEM
     docile (1.1.5)
     erubis (2.7.0)
     eventmachine (1.0.9.1)
-    excon (0.45.4)
+    excon (0.71.0)
     execjs (2.6.0)
     factory_girl (4.1.0)
       activesupport (>= 3.0.0)
