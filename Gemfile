@@ -117,7 +117,7 @@ group :test do
   gem 'poltergeist', '1.6.0'
   gem 'shoulda-matchers', require: false
   gem 'spork', '0.9.2'
-  gem 'faye-websocket', '0.9.2'
+  gem 'faye-websocket', '0.11.0'
   gem 'simplecov'
   gem 'rest-client', '~> 1.7.2'
   gem 'method_source'
