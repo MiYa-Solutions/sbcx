@@ -119,7 +119,7 @@ group :test do
   gem 'spork', '0.9.2'
   gem 'faye-websocket', '0.9.2'
   gem 'simplecov'
-  gem 'rest-client', '~> 1.7.2'
+  gem 'rest-client', '~> 1.8.0'
   gem 'method_source'
   gem 'rspec_candy', '0.3.1'
 end
